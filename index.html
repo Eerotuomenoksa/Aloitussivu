@@ -4,32 +4,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seniorin Aloitussivu</title>
+    <title>Seniorin Aloitussivu - Helppo ja turvallinen</title>
+    <meta name="description" content="Selkeä ja turvallinen aloitussivu senioreille.">
+    
+    <!-- Tyylitiedosto -->
+    <link rel="stylesheet" href="./index.css">
+    
+    <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f8fafc;
-        }
-        /* Make tap targets large for accessibility */
-        button, a {
-            min-height: 48px;
-            min-width: 48px;
-        }
-    </style>
-<script type="importmap">
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+            },
+          },
+        },
+      }
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    
+    <script>
+      // Varmistetaan process.env olemassaolo
+      window.process = window.process || { env: {} };
+      window.process.env = window.process.env || {};
+    </script>
+
+    <script type="importmap">
 {
   "imports": {
-    "@google/genai": "https://esm.sh/@google/genai@^1.40.0",
-    "react/": "https://esm.sh/react@^19.2.4/",
-    "react": "https://esm.sh/react@^19.2.4",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.4/"
+    "react": "https://esm.sh/react@18.2.0",
+    "react-dom": "https://esm.sh/react-dom@18.2.0",
+    "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
+    "react/jsx-runtime": "https://esm.sh/react@18.2.0/jsx-runtime",
+    "@google/genai": "https://esm.sh/@google/genai",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "react/": "https://esm.sh/react@^19.2.4/"
   }
 }
 </script>
 </head>
-<body>
+<body class="bg-slate-50 dark:bg-slate-950 transition-colors duration-300">
     <div id="root"></div>
+    <script type="module" src="./index.tsx"></script>
 </body>
 </html>
