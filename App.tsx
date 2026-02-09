@@ -22,21 +22,20 @@ const App: React.FC = () => {
     setFontSizeStep(prev => (prev + 1) % 5);
   }, []);
 
-  // Määritetään fonttikoot eri askelille
   const fontClasses = [
-    'text-base',      // 0: Normaali
-    'text-lg',        // 1: Suuri
-    'text-xl',        // 2: Erittäin suuri
-    'text-2xl',       // 3: Valtava
-    'text-3xl'        // 4: Maksimaalinen
+    'text-base',      // 0: 100%
+    'text-lg',        // 1: 125%
+    'text-xl',        // 2: 150%
+    'text-2xl',       // 3: 175%
+    'text-3xl'        // 4: 200%
   ];
 
   const headingClasses = [
-    'text-5xl md:text-6xl', // 0
-    'text-6xl md:text-7xl', // 1
-    'text-7xl md:text-8xl', // 2
-    'text-8xl md:text-9xl', // 3
-    'text-9xl md:text-[10rem]' // 4
+    'text-5xl md:text-6xl',
+    'text-6xl md:text-7xl',
+    'text-7xl md:text-8xl',
+    'text-8xl md:text-9xl',
+    'text-9xl md:text-[10rem]'
   ];
 
   const fontSizeLabels = ['100%', '125%', '150%', '175%', '200%'];
@@ -72,13 +71,12 @@ const App: React.FC = () => {
           <button 
             onClick={toggleDarkMode}
             className={`${isDarkMode ? 'bg-amber-100 text-amber-950' : 'bg-slate-900 text-white'} px-6 py-3 rounded-full font-black text-lg transition-all active:scale-95 shadow-md focus:ring-4 focus:ring-blue-300`}
-            aria-label={isDarkMode ? 'Vaihda vaaleaan teemaan' : 'Vaihda tummaan teemaan'}
           >
             {isDarkMode ? '☀️ Vaalea' : '🌙 Tumma'}
           </button>
         </nav>
 
-        <header className="space-y-12">
+        <header>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
             <div className="lg:col-span-5 flex flex-col justify-center">
               <Clock fontSizeStep={fontSizeStep} />
@@ -92,9 +90,9 @@ const App: React.FC = () => {
           </div>
         </header>
 
-        <main className="space-y-16">
-          <section className="space-y-8" aria-labelledby="links-heading">
-            <h2 id="links-heading" className={`font-black text-slate-900 dark:text-white tracking-tighter transition-all duration-300 ${headingClasses[fontSizeStep]}`}>
+        <main className="space-y-12">
+          <section className="space-y-8">
+            <h2 className={`font-black text-slate-900 dark:text-white tracking-tighter transition-all duration-300 ${headingClasses[fontSizeStep]}`}>
               Mihin haluat mennä?
             </h2>
             <QuickLinks onSelectCategory={setSelectedCategory} fontSizeStep={fontSizeStep} />
@@ -106,13 +104,12 @@ const App: React.FC = () => {
             href="https://seniorsurf.fi/" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="inline-block bg-white p-6 rounded-3xl shadow-md border-2 border-slate-100 transition-transform hover:scale-105 focus:ring-4 focus:ring-blue-500"
-            aria-label="Vieraile SeniorSurf-sivustolla"
+            className="inline-block bg-white p-6 rounded-3xl shadow-md border-2 border-slate-100 transition-transform hover:scale-105"
           >
             <img 
               src="https://seniorsurf.fi/wp-content/uploads/2021/04/SeniorSurf_logo_RGB.png" 
               alt="SeniorSurf logo" 
-              className="h-20 w-auto transition-all"
+              className="h-20 w-auto"
               loading="lazy"
             />
           </a>
@@ -121,12 +118,7 @@ const App: React.FC = () => {
           </p>
         </footer>
 
-        <ProviderModal 
-          shortcut={selectedCategory} 
-          onClose={() => setSelectedCategory(null)} 
-          fontSizeStep={fontSizeStep}
-        />
-        
+        <ProviderModal shortcut={selectedCategory} onClose={() => setSelectedCategory(null)} fontSizeStep={fontSizeStep} />
         <InfoModal isOpen={isInfoOpen} onClose={() => setIsInfoOpen(false)} fontSizeStep={fontSizeStep} />
         <HomepageModal isOpen={isHomepageOpen} onClose={() => setIsHomepageOpen(false)} fontSizeStep={fontSizeStep} />
       </div>

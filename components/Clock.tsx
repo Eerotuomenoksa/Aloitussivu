@@ -13,12 +13,6 @@ const Clock: React.FC<ClockProps> = ({ fontSizeStep = 0 }) => {
     return () => clearInterval(timer);
   }, []);
 
-  const hour = time.getHours();
-  let greeting = "Hyvää huomenta!";
-  if (hour >= 10 && hour < 18) greeting = "Hyvää päivää!";
-  else if (hour >= 18 && hour < 22) greeting = "Hyvää iltaa!";
-  else if (hour >= 22 || hour < 5) greeting = "Hyvää yötä!";
-
   const timeString = time.toLocaleTimeString('fi-FI', { hour: '2-digit', minute: '2-digit' });
   const dateString = time.toLocaleDateString('fi-FI', { 
     weekday: 'long', 
@@ -26,14 +20,6 @@ const Clock: React.FC<ClockProps> = ({ fontSizeStep = 0 }) => {
     month: 'long', 
     year: 'numeric' 
   });
-
-  const greetingSizes = [
-    'text-3xl md:text-5xl',
-    'text-4xl md:text-6xl',
-    'text-5xl md:text-7xl',
-    'text-6xl md:text-8xl',
-    'text-7xl md:text-9xl'
-  ];
 
   const timeSizes = [
     'text-8xl sm:text-9xl lg:text-[10rem]',
@@ -52,11 +38,8 @@ const Clock: React.FC<ClockProps> = ({ fontSizeStep = 0 }) => {
   ];
 
   return (
-    <div className="text-center lg:text-left space-y-4">
+    <div className="text-center lg:text-left space-y-2">
       <div className="flex flex-col">
-        <span className={`font-black text-blue-700 dark:text-blue-400 tracking-wide uppercase italic mb-2 transition-all duration-300 ${greetingSizes[fontSizeStep]}`}>
-          {greeting}
-        </span>
         <h1 className={`font-black text-slate-950 dark:text-white tracking-tighter leading-none transition-all duration-300 ${timeSizes[fontSizeStep]}`}>
           {timeString}
         </h1>
