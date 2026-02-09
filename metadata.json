@@ -1,0 +1,7 @@
+{
+  "name": "Seniorin Aloitussivu",
+  "description": "Selkeä ja helppokäyttöinen aloitussivu senioreille, joka sisältää uutisia, säätietoja ja tekoälyavustajan.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
