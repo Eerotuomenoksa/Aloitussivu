@@ -4,9 +4,16 @@ import React from 'react';
 interface HomepageModalProps {
   isOpen: boolean;
   onClose: () => void;
+  // Added fontSizeStep to resolve TS error in App.tsx and support UI scaling
+  fontSizeStep?: number;
 }
 
-const HomepageModal: React.FC<HomepageModalProps> = ({ isOpen, onClose }) => {
+const HomepageModal: React.FC<HomepageModalProps> = ({ isOpen, onClose, fontSizeStep = 0 }) => {
+  // Scaling arrays for elder-friendly instruction display
+  const titleClasses = ['text-3xl', 'text-4xl', 'text-5xl', 'text-6xl', 'text-7xl'];
+  const iconClasses = ['text-5xl', 'text-6xl', 'text-7xl', 'text-8xl', 'text-9xl'];
+  const urlClasses = ['text-xl', 'text-2xl', 'text-3xl', 'text-4xl', 'text-5xl'];
+
   if (!isOpen) return null;
 
   return (
@@ -14,8 +21,8 @@ const HomepageModal: React.FC<HomepageModalProps> = ({ isOpen, onClose }) => {
       <div className="bg-white dark:bg-slate-800 rounded-[3rem] shadow-2xl w-full max-w-3xl overflow-hidden border-4 border-white/20 dark:border-slate-700 my-8">
         <div className="bg-indigo-600 dark:bg-indigo-700 p-10 text-white flex items-center justify-between sticky top-0 z-10 shadow-lg">
           <div className="flex items-center gap-6">
-            <span className="text-6xl drop-shadow-md">🏠</span>
-            <h2 className="text-4xl font-black">Aseta aloitussivuksi</h2>
+            <span className={`drop-shadow-md transition-all duration-300 ${iconClasses[fontSizeStep]}`}>🏠</span>
+            <h2 className={`font-black transition-all duration-300 ${titleClasses[fontSizeStep]}`}>Aseta aloitussivuksi</h2>
           </div>
           <button 
             onClick={onClose}
@@ -38,7 +45,7 @@ const HomepageModal: React.FC<HomepageModalProps> = ({ isOpen, onClose }) => {
             
             <div className="bg-slate-50 dark:bg-slate-900 p-8 rounded-[2rem] border-2 border-slate-200 dark:border-slate-700 space-y-6">
               <p className="text-xl font-bold dark:text-slate-300">Käytä tätä osoitetta asetuksissa:</p>
-              <div className="bg-white dark:bg-slate-800 p-6 rounded-2xl border-4 border-indigo-100 dark:border-indigo-900/50 text-indigo-700 dark:text-indigo-400 font-mono text-center text-2xl select-all cursor-pointer hover:bg-indigo-50 dark:hover:bg-indigo-950 transition-colors shadow-inner">
+              <div className={`bg-white dark:bg-slate-800 p-6 rounded-2xl border-4 border-indigo-100 dark:border-indigo-900/50 text-indigo-700 dark:text-indigo-400 font-mono text-center select-all cursor-pointer hover:bg-indigo-50 dark:hover:bg-indigo-950 transition-all shadow-inner duration-300 ${urlClasses[fontSizeStep]}`}>
                 https://eerotuomenoksa.github.io/seniorin-aloitussivu/
               </div>
             </div>
@@ -61,7 +68,7 @@ const HomepageModal: React.FC<HomepageModalProps> = ({ isOpen, onClose }) => {
               {/* Microsoft Edge */}
               <div className="space-y-4 p-6 bg-blue-50/30 dark:bg-blue-950/10 rounded-3xl border-2 border-blue-100 dark:border-blue-900/30">
                 <h4 className="text-2xl font-black flex items-center gap-4 text-blue-700 dark:text-blue-400">
-                  <span className="w-10 h-10 bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-200 rounded-xl flex items-center justify-center text-lg">E</span> Microsoft Edge:
+                  <span className="w-10 h-10 bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-red-200 rounded-xl flex items-center justify-center text-lg">E</span> Microsoft Edge:
                 </h4>
                 <ul className="list-disc ml-8 space-y-3 text-xl leading-relaxed">
                   <li>Klikkaa oikeassa yläkulmassa olevia <strong>kolmea pistettä</strong>.</li>

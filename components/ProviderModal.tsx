@@ -5,9 +5,36 @@ import { Shortcut, Provider } from '../types';
 interface ProviderModalProps {
   shortcut: Shortcut | null;
   onClose: () => void;
+  // Added fontSizeStep to resolve TS error in App.tsx and support UI scaling
+  fontSizeStep?: number;
 }
 
-const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose }) => {
+const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSizeStep = 0 }) => {
+  // Scaling arrays matching the pattern used in other components for elder-friendly design
+  const titleClasses = [
+    'text-3xl',
+    'text-4xl',
+    'text-5xl',
+    'text-6xl',
+    'text-7xl'
+  ];
+
+  const iconClasses = [
+    'text-5xl',
+    'text-6xl',
+    'text-7xl',
+    'text-8xl',
+    'text-9xl'
+  ];
+
+  const itemClasses = [
+    'text-2xl',
+    'text-3xl',
+    'text-4xl',
+    'text-5xl',
+    'text-6xl'
+  ];
+
   // Sulje ESC-näppäimellä
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
@@ -38,8 +65,8 @@ const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose }) => {
       <div className="bg-white dark:bg-slate-800 rounded-[3rem] shadow-2xl w-full max-w-2xl overflow-hidden border-4 border-white/20 my-8 flex flex-col max-h-[90vh]">
         <div className={`${shortcut.color} p-8 text-white flex items-center justify-between shadow-lg`}>
           <div className="flex items-center gap-4">
-            <span className="text-5xl" aria-hidden="true">{shortcut.icon}</span>
-            <h2 id="modal-title" className="text-3xl font-black">{shortcut.name}</h2>
+            <span className={`transition-all duration-300 ${iconClasses[fontSizeStep]}`} aria-hidden="true">{shortcut.icon}</span>
+            <h2 id="modal-title" className={`font-black transition-all duration-300 ${titleClasses[fontSizeStep]}`}>{shortcut.name}</h2>
           </div>
           <button 
             onClick={onClose}
@@ -67,7 +94,7 @@ const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose }) => {
                     rel="noopener noreferrer"
                     className="flex items-center justify-between p-6 bg-slate-50 dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-3xl hover:border-blue-600 transition-all group focus:ring-4 focus:ring-blue-500 outline-none"
                   >
-                    <span className="text-2xl font-black dark:text-white group-hover:text-blue-700 dark:group-hover:text-blue-400">{provider.name}</span>
+                    <span className={`font-black dark:text-white group-hover:text-blue-700 dark:group-hover:text-blue-400 transition-all duration-300 ${itemClasses[fontSizeStep]}`}>{provider.name}</span>
                     <span className="text-4xl opacity-30 group-hover:opacity-100 group-hover:translate-x-2 transition-all">→</span>
                   </a>
                 ))}

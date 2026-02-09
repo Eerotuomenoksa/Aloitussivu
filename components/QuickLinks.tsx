@@ -5,10 +5,28 @@ import { Shortcut } from '../types';
 
 interface QuickLinksProps {
   onSelectCategory: (shortcut: Shortcut) => void;
-  isLargeFont?: boolean;
+  fontSizeStep?: number;
 }
 
-const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, isLargeFont }) => {
+const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep = 0 }) => {
+  // Kuvakkeiden koot portain
+  const iconClasses = [
+    'text-5xl md:text-6xl', // 0
+    'text-6xl md:text-7xl', // 1
+    'text-7xl md:text-8xl', // 2
+    'text-8xl md:text-9xl', // 3
+    'text-9xl md:text-[10rem]' // 4
+  ];
+
+  // Tekstien koot portain
+  const textClasses = [
+    'text-xl',    // 0
+    'text-2xl',   // 1
+    'text-3xl',   // 2
+    'text-4xl',   // 3
+    'text-5xl'    // 4
+  ];
+
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
       {SHORTCUTS.map((link, idx) => {
@@ -17,8 +35,8 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, isLargeFont }
         
         const content = (
           <>
-            <span className={`${isLargeFont ? 'text-7xl' : 'text-6xl'}`} aria-hidden="true">{link.icon}</span>
-            <span className={`font-black leading-tight tracking-tight ${isLargeFont ? 'text-2xl' : 'text-xl'}`}>
+            <span className={`transition-all duration-300 ${iconClasses[fontSizeStep]}`} aria-hidden="true">{link.icon}</span>
+            <span className={`font-black leading-tight tracking-tight transition-all duration-300 ${textClasses[fontSizeStep]}`}>
               {link.name}
             </span>
           </>

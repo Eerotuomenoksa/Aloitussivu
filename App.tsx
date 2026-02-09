@@ -14,23 +14,45 @@ const App: React.FC = () => {
   const [isInfoOpen, setIsInfoOpen] = useState(false);
   const [isHomepageOpen, setIsHomepageOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [isLargeFont, setIsLargeFont] = useState(false);
+  const [fontSizeStep, setFontSizeStep] = useState(0); // 0, 1, 2, 3, 4
 
   const toggleDarkMode = useCallback(() => setIsDarkMode(prev => !prev), []);
-  const toggleLargeFont = useCallback(() => setIsLargeFont(prev => !prev), []);
+  
+  const cycleFontSize = useCallback(() => {
+    setFontSizeStep(prev => (prev + 1) % 5);
+  }, []);
+
+  // Määritetään fonttikoot eri askelille
+  const fontClasses = [
+    'text-base',      // 0: Normaali
+    'text-lg',        // 1: Suuri
+    'text-xl',        // 2: Erittäin suuri
+    'text-2xl',       // 3: Valtava
+    'text-3xl'        // 4: Maksimaalinen
+  ];
+
+  const headingClasses = [
+    'text-5xl md:text-6xl', // 0
+    'text-6xl md:text-7xl', // 1
+    'text-7xl md:text-8xl', // 2
+    'text-8xl md:text-9xl', // 3
+    'text-9xl md:text-[10rem]' // 4
+  ];
+
+  const fontSizeLabels = ['100%', '125%', '150%', '175%', '200%'];
 
   return (
-    <div className={`${isDarkMode ? 'dark bg-slate-950' : 'bg-slate-50'} min-h-screen transition-colors duration-300 text-slate-900 dark:text-white ${isLargeFont ? 'text-2xl' : 'text-base'}`}>
+    <div className={`${isDarkMode ? 'dark bg-slate-950' : 'bg-slate-50'} min-h-screen transition-all duration-300 text-slate-900 dark:text-white ${fontClasses[fontSizeStep]}`}>
       <div className="p-4 md:p-8 lg:p-12 max-w-[1800px] mx-auto space-y-12">
         
         {/* Yläpalkki / Asetukset */}
         <nav className="flex flex-wrap justify-end gap-3" aria-label="Asetukset">
           <button 
-            onClick={toggleLargeFont}
-            className="bg-yellow-400 hover:bg-yellow-500 text-black px-6 py-3 rounded-full font-black text-lg transition-all active:scale-95 shadow-md border-b-4 border-yellow-700 focus:ring-4 focus:ring-yellow-300"
-            aria-pressed={isLargeFont}
+            onClick={cycleFontSize}
+            className="bg-yellow-400 hover:bg-yellow-500 text-black px-6 py-3 rounded-full font-black text-lg transition-all active:scale-95 shadow-md border-b-4 border-yellow-700 focus:ring-4 focus:ring-yellow-300 flex items-center gap-2"
           >
-            🔍 {isLargeFont ? 'Normaali teksti' : 'Suurempi teksti'}
+            <span>🔍</span>
+            <span>Tekstin koko: {fontSizeLabels[fontSizeStep]}</span>
           </button>
 
           <button 
@@ -59,7 +81,7 @@ const App: React.FC = () => {
         <header className="space-y-12">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
             <div className="lg:col-span-5 flex flex-col justify-center">
-              <Clock />
+              <Clock fontSizeStep={fontSizeStep} />
             </div>
             <div className="lg:col-span-3">
               <WeatherCard />
@@ -72,10 +94,10 @@ const App: React.FC = () => {
 
         <main className="space-y-16">
           <section className="space-y-8" aria-labelledby="links-heading">
-            <h2 id="links-heading" className={`font-black text-slate-900 dark:text-white tracking-tighter ${isLargeFont ? 'text-7xl' : 'text-6xl'}`}>
+            <h2 id="links-heading" className={`font-black text-slate-900 dark:text-white tracking-tighter transition-all duration-300 ${headingClasses[fontSizeStep]}`}>
               Mihin haluat mennä?
             </h2>
-            <QuickLinks onSelectCategory={setSelectedCategory} isLargeFont={isLargeFont} />
+            <QuickLinks onSelectCategory={setSelectedCategory} fontSizeStep={fontSizeStep} />
           </section>
         </main>
 
@@ -102,10 +124,11 @@ const App: React.FC = () => {
         <ProviderModal 
           shortcut={selectedCategory} 
           onClose={() => setSelectedCategory(null)} 
+          fontSizeStep={fontSizeStep}
         />
         
-        <InfoModal isOpen={isInfoOpen} onClose={() => setIsInfoOpen(false)} />
-        <HomepageModal isOpen={isHomepageOpen} onClose={() => setIsHomepageOpen(false)} />
+        <InfoModal isOpen={isInfoOpen} onClose={() => setIsInfoOpen(false)} fontSizeStep={fontSizeStep} />
+        <HomepageModal isOpen={isHomepageOpen} onClose={() => setIsHomepageOpen(false)} fontSizeStep={fontSizeStep} />
       </div>
     </div>
   );

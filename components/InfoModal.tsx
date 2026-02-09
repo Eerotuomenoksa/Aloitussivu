@@ -5,9 +5,16 @@ import { SHORTCUTS } from '../constants';
 interface InfoModalProps {
   isOpen: boolean;
   onClose: () => void;
+  // Added fontSizeStep to resolve TS error in App.tsx and support UI scaling
+  fontSizeStep?: number;
 }
 
-const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose }) => {
+const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, fontSizeStep = 0 }) => {
+  // Scaling arrays for elder-friendly design
+  const titleClasses = ['text-3xl', 'text-4xl', 'text-5xl', 'text-6xl', 'text-7xl'];
+  const headerIconClasses = ['text-5xl', 'text-6xl', 'text-7xl', 'text-8xl', 'text-9xl'];
+  const statClasses = ['text-5xl', 'text-6xl', 'text-7xl', 'text-8xl', 'text-9xl'];
+
   if (!isOpen) return null;
 
   const categoryStats = SHORTCUTS.map(shortcut => {
@@ -27,8 +34,8 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose }) => {
       <div className="bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-2xl w-full max-w-3xl overflow-hidden border border-slate-200 dark:border-slate-700 my-8">
         <div className="bg-slate-800 dark:bg-slate-950 p-8 text-white flex items-center justify-between sticky top-0 z-10">
           <div className="flex items-center gap-4">
-            <span className="text-5xl">ℹ️</span>
-            <h2 className="text-3xl font-bold">Tietoa sivustosta</h2>
+            <span className={`transition-all duration-300 ${headerIconClasses[fontSizeStep]}`}>ℹ️</span>
+            <h2 className={`font-bold transition-all duration-300 ${titleClasses[fontSizeStep]}`}>Tietoa sivustosta</h2>
           </div>
           <button 
             onClick={onClose}
@@ -53,7 +60,7 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose }) => {
                   <span>📊</span> Sivuston laajuus
                 </h3>
                 <p className="text-2xl font-medium text-blue-900 dark:text-blue-100 leading-tight">
-                  Sivustolta löytyy yhteensä <span className="text-5xl font-black text-blue-600 dark:text-blue-400 inline-block px-2">{totalLinks}</span> tarkistettua linkkiä.
+                  Sivustolta löytyy yhteensä <span className={`font-black text-blue-600 dark:text-blue-400 inline-block px-2 transition-all duration-300 ${statClasses[fontSizeStep]}`}>{totalLinks}</span> tarkistettua linkkiä.
                 </p>
               </div>
               <div className="text-blue-700/80 dark:text-blue-300/80 italic text-lg max-w-xs">
