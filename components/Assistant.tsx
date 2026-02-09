@@ -34,25 +34,22 @@ const Assistant: React.FC = () => {
     return (
       <button 
         onClick={() => setIsMinimized(false)}
-        className="w-full h-full bg-blue-600 hover:bg-blue-700 text-white p-6 rounded-3xl shadow-xl transition-all transform hover:-translate-y-1 active:scale-95 flex items-center justify-between border-4 border-white/20 group min-h-[160px]"
+        className="w-full bg-blue-600 hover:bg-blue-700 text-white p-10 rounded-[2.5rem] shadow-xl transition-all transform hover:-translate-y-1 active:scale-95 flex flex-col items-center justify-center border-4 border-white/20 group h-full dark:border-blue-500/30 min-h-[220px]"
       >
-        <div className="flex items-center gap-6">
-          <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center text-4xl group-hover:scale-110 transition-transform">
-            🤖
-          </div>
-          <div className="text-left">
-            <h2 className="text-2xl font-black leading-tight">Tarvitsetko apua?</h2>
-            <p className="text-lg text-blue-100">Avaa avustaja</p>
-          </div>
+        <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center text-5xl group-hover:scale-110 transition-transform mb-4">
+          🤖
         </div>
-        <span className="text-4xl font-light opacity-60">＋</span>
+        <div className="text-center">
+          <h2 className="text-2xl font-black leading-tight">Tarvitsetko apua?</h2>
+          <p className="text-xl text-blue-100 opacity-90">Avaa avustaja tästä</p>
+        </div>
       </button>
     );
   }
 
   return (
-    <div className="bg-white rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col h-full border-2 border-blue-100 animate-in slide-in-from-bottom-4 duration-300 min-h-[500px]">
-      <div className="bg-blue-600 p-6 text-white flex items-center justify-between shadow-lg">
+    <div className="bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col h-full border-4 border-blue-100 dark:border-slate-700 animate-in slide-in-from-bottom-4 duration-300 min-h-[500px]">
+      <div className="bg-blue-600 dark:bg-blue-700 p-6 text-white flex items-center justify-between shadow-lg">
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center text-3xl">
             🤖
@@ -85,10 +82,10 @@ const Assistant: React.FC = () => {
         {messages.length === 0 && (
           <div className="text-center text-slate-400 mt-12 px-4">
             <div className="text-6xl mb-6">👋</div>
-            <p className="text-2xl font-bold text-slate-700 mb-4">
+            <p className="text-2xl font-bold text-slate-700 dark:text-slate-200 mb-4">
               Hei! Miten voisin auttaa?
             </p>
-            <p className="text-lg text-slate-500 leading-relaxed max-w-sm mx-auto">
+            <p className="text-lg text-slate-500 dark:text-slate-400 leading-relaxed max-w-sm mx-auto">
               Kysy reseptejä, neuvoja tai vaikkapa päivän säätä.
             </p>
           </div>
@@ -102,7 +99,7 @@ const Assistant: React.FC = () => {
               className={`max-w-[85%] p-5 rounded-3xl text-xl shadow-sm leading-relaxed ${
                 msg.role === 'user' 
                   ? 'bg-blue-600 text-white rounded-tr-none' 
-                  : 'bg-slate-100 text-slate-800 rounded-tl-none border border-slate-200'
+                  : 'bg-slate-100 dark:bg-slate-700 text-slate-800 dark:text-slate-100 rounded-tl-none border border-slate-200 dark:border-slate-600'
               }`}
             >
               {msg.content}
@@ -111,7 +108,7 @@ const Assistant: React.FC = () => {
         ))}
         {isLoading && (
           <div className="flex justify-start">
-            <div className="bg-slate-100 p-5 rounded-3xl flex gap-2 border border-slate-200">
+            <div className="bg-slate-100 dark:bg-slate-700 p-5 rounded-3xl flex gap-2 border border-slate-200 dark:border-slate-600">
               <div className="w-3 h-3 bg-blue-400 rounded-full animate-bounce"></div>
               <div className="w-3 h-3 bg-blue-400 rounded-full animate-bounce delay-100"></div>
               <div className="w-3 h-3 bg-blue-400 rounded-full animate-bounce delay-200"></div>
@@ -120,19 +117,19 @@ const Assistant: React.FC = () => {
         )}
       </div>
 
-      <div className="p-6 bg-slate-50 border-t-2 border-slate-100 flex gap-4">
+      <div className="p-6 bg-slate-50 dark:bg-slate-900 border-t-2 border-slate-100 dark:border-slate-700 flex gap-4">
         <input 
           type="text" 
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyPress={(e) => e.key === 'Enter' && handleSend()}
           placeholder="Kirjoita kysymys..."
-          className="flex-1 border-2 border-slate-200 rounded-2xl px-6 py-5 text-2xl focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 shadow-inner bg-white"
+          className="flex-1 border-2 border-slate-200 dark:border-slate-600 rounded-2xl px-6 py-5 text-2xl focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 shadow-inner bg-white dark:bg-slate-800 dark:text-white"
         />
         <button 
           onClick={handleSend}
           disabled={isLoading}
-          className="bg-blue-600 text-white px-10 py-5 rounded-2xl text-2xl font-black hover:bg-blue-700 transition-all shadow-lg shadow-blue-200 active:scale-95 disabled:opacity-50"
+          className="bg-blue-600 text-white px-10 py-5 rounded-2xl text-2xl font-black hover:bg-blue-700 transition-all shadow-lg shadow-blue-200 dark:shadow-none active:scale-95 disabled:opacity-50"
         >
           Lähetä
         </button>
