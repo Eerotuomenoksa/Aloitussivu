@@ -1,4 +1,3 @@
-
 import React, { useState, useCallback } from 'react';
 import Clock from './components/Clock';
 import WeatherCard from './components/WeatherCard';
@@ -71,6 +70,7 @@ const App: React.FC = () => {
           <button 
             onClick={toggleDarkMode}
             className={`${isDarkMode ? 'bg-amber-100 text-amber-950' : 'bg-slate-900 text-white'} px-6 py-3 rounded-full font-black text-lg transition-all active:scale-95 shadow-md focus:ring-4 focus:ring-blue-300`}
+            aria-label={isDarkMode ? 'Vaihda vaaleaan teemaan' : 'Vaihda tummaan teemaan'}
           >
             {isDarkMode ? '☀️ Vaalea' : '🌙 Tumma'}
           </button>
