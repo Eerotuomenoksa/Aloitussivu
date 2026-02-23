@@ -2,36 +2,32 @@
 import { GoogleGenAI } from "@google/genai";
 import { NewsItem } from "../types";
 
-const getApiKey = () => {
-  return (typeof process !== 'undefined' && process.env && process.env.API_KEY) || '';
-};
-
 /**
  * Palvelu, joka hoitaa keskustelun tekoälyavustajan kanssa.
  */
 export const getGeminiAssistant = async (prompt: string, history: {role: string, content: string}[]) => {
-  const apiKey = getApiKey();
-  if (!apiKey) {
-    console.warn("API_KEY puuttuu!");
-    return "Avustaja ei ole juuri nyt käytettävissä (API-avain puuttuu).";
+  const apiKey = process.env.API_KEY;
+  
+  if (!apiKey || apiKey === "undefined") {
+    return "Tekoälyavustaja ei ole vielä aktivoitu. Katso ohjeet 'Tietoa'-painikkeen alta (API-avaimen hankinta).";
   }
 
   const ai = new GoogleGenAI({ apiKey });
   
-  const formattedHistory = history.map(h => ({
-    role: h.role === 'user' ? 'user' : 'model',
-    parts: [{ text: h.content }]
-  }));
+  const formattedContents = [
+    ...history.map(h => ({
+      role: h.role === 'user' ? 'user' : 'model',
+      parts: [{ text: h.content }]
+    })),
+    { role: 'user', parts: [{ text: prompt }] }
+  ];
 
   try {
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
-      contents: [
-        ...formattedHistory,
-        { parts: [{ text: prompt }] }
-      ],
+      contents: formattedContents,
       config: {
-        systemInstruction: "Olet ystävällinen ja avulias suomenkielinen tekoälyavustaja, joka on suunniteltu auttamaan ikäihmisiä. Käytä selkeää suomen kieltä, vältä vaikeita teknisiä termejä ja vastaa rauhallisesti ja kannustavasti.",
+        systemInstruction: "Olet ystävällinen ja avulias suomenkielinen tekoälyavustaja, joka on suunniteltu auttamaan ikäihmisiä. Käytä selkeää suomen kieltä, vältä vaikeita teknisiä termejä ja vastaa rauhallisesti ja kannustavasti. Jos et tiedä vastausta, sano se rehellisesti ja ohjaa tarvittaessa SeniorSurf-palveluun.",
         temperature: 0.7,
       },
     });
@@ -39,28 +35,31 @@ export const getGeminiAssistant = async (prompt: string, history: {role: string,
     return response.text || "Pahoittelut, en pystynyt vastaamaan juuri nyt.";
   } catch (error) {
     console.error("Gemini Error:", error);
+    if (error.message?.includes("API key")) {
+      return "Virhe API-avaimessa. Tarkistathan, että se on syötetty oikein ohjeiden mukaan.";
+    }
     return "Tapahtui virhe yhteydessä avustajaan. Yritäthän hetken kuluttua uudelleen.";
   }
 };
 
 /**
- * Tiivistää uutiset ikäihmisille sopivaksi yhteenvedoksi.
+ * Tiivistää uutiset ikäihmille sopivaksi yhteenvedoksi.
  */
 export const summarizeNews = async (news: NewsItem[]) => {
-  const apiKey = getApiKey();
-  if (!apiKey) return "Uutistiivistelmä ei ole käytettävissä.";
+  const apiKey = process.env.API_KEY;
+  if (!apiKey || apiKey === "undefined") return "Tekoäly ei ole käytössä (API-avain puuttuu).";
 
   const ai = new GoogleGenAI({ apiKey });
   
   const newsContext = news.map(n => `- ${n.title}: ${n.summary}`).join('\n');
-  const prompt = `Tiivistä seuraavat uutisotsikot lyhyeksi ja selkeäksi tekstiksi ikäihmisille:\n${newsContext}`;
+  const prompt = `Tiivistä seuraavat uutisotsikot lyhyeksi ja selkeäksi (noin 2-3 lausetta) tekstiksi ikäihmisten aloitussivulle:\n${newsContext}`;
 
   try {
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
-      contents: prompt,
+      contents: [{ role: 'user', parts: [{ text: prompt }] }],
       config: {
-        systemInstruction: "Olet avulias ja selkeäsanainen uutisten tiivistäjä. Tee lyhyt, selkeä ja ystävällinen tiivistelmä päivän uutisista.",
+        systemInstruction: "Olet avulias uutisten tiivistäjä. Käytä erittäin selkeää suomen kieltä.",
         temperature: 0.5,
       }
     });

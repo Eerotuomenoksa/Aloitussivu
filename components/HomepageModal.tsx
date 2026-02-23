@@ -46,7 +46,7 @@ const HomepageModal: React.FC<HomepageModalProps> = ({ isOpen, onClose, fontSize
             <div className="bg-slate-50 dark:bg-slate-900 p-8 rounded-[2rem] border-2 border-slate-200 dark:border-slate-700 space-y-6">
               <p className="text-xl font-bold dark:text-slate-300">Käytä tätä osoitetta asetuksissa:</p>
               <div className={`bg-white dark:bg-slate-800 p-6 rounded-2xl border-4 border-indigo-100 dark:border-indigo-900/50 text-indigo-700 dark:text-indigo-400 font-mono text-center select-all cursor-pointer hover:bg-indigo-50 dark:hover:bg-indigo-950 transition-all shadow-inner duration-300 ${urlClasses[fontSizeStep]}`}>
-                https://eerotuomenoksa.github.io/seniorin-aloitussivu/
+                seniorsurf.fi/aloitussivu
               </div>
             </div>
 

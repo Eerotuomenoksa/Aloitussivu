@@ -1,15 +1,18 @@
+
 <!DOCTYPE html>
-<html lang="fi">
+<html lang="fi" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Seniorin Aloitussivu - Helppo ja turvallinen</title>
     <meta name="description" content="Selkeä ja turvallinen aloitussivu senioreille.">
     
-    <!-- Tyylitiedosto -->
-    <link rel="stylesheet" href="./index.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     
-    <!-- Tailwind CDN -->
+    <!-- Tailwind Play CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -19,35 +22,46 @@
             fontFamily: {
               sans: ['Inter', 'sans-serif'],
             },
-          },
-        },
+            colors: {
+              brand: {
+                indigo: '#330066',
+                purple: '#5c2d91',
+                orange: '#f49638',
+                cyan: '#4abdc9',
+                teal: '#34a4b1',
+                grey: '#c9c9c9',
+              }
+            }
+          }
+        }
       }
     </script>
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
-    
-    <script>
-      // Varmistetaan process.env olemassaolo tekoälypalvelua varten
-      window.process = window.process || { env: {} };
-      window.process.env = window.process.env || {};
-    </script>
-
-    <script type="importmap">
+    <style type="text/css">
+      body { margin: 0; padding: 0; }
+      .animate-in {
+        animation: fadeIn 0.5s ease-out forwards;
+      }
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+    </style>
+<script type="importmap">
 {
   "imports": {
-    "react": "https://esm.sh/react@18.2.0",
-    "react-dom": "https://esm.sh/react-dom@18.2.0",
-    "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
-    "react/jsx-runtime": "https://esm.sh/react@18.2.0/jsx-runtime",
-    "@google/genai": "https://esm.sh/@google/genai",
+    "react": "https://esm.sh/react@^19.2.4",
     "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
-    "react/": "https://esm.sh/react@^19.2.4/"
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.40.0",
+    "vite": "https://esm.sh/vite@^7.3.1",
+    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.3"
   }
 }
 </script>
 </head>
-<body class="bg-slate-50 dark:bg-slate-950 transition-colors duration-300">
-    <div id="root"></div>
+<body class="h-full overflow-x-hidden bg-slate-50 dark:bg-slate-950 transition-colors duration-300">
+    <div id="root" class="min-h-full"></div>
     <script type="module" src="./index.tsx"></script>
 </body>
 </html>

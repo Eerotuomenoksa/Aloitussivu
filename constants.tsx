@@ -11,55 +11,36 @@ export const QUOTES = [
   "Luonto on paras lääke mielenrauhaan.",
   "Tänään on hyvä päivä olla kiitollinen.",
   "Rohkeus on sitä, että tekee vaikka pelottaa.",
-  "Elämä on tässä ja nyt.",
-  "Ole oma itsesi, kaikki muut on jo varattu.",
-  "Sydän on viisas opas matkalla.",
-  "Pienet askeleet vievät suuriin kohteisiin.",
-  "Ilo on sielun aurinkoa.",
-  "Rauha alkaa sisältäpäin.",
-  "Ystävyys on elämän suola.",
-  "Kauneus on katsojan silmässä ja sydämessä.",
-  "Anna jokaiselle päivälle mahdollisuus olla elämäsi kaunein.",
-  "Viisaus on hiljaisuutta ja kuuntelua.",
-  "Hyvyys on kieli, jota kuurot kuulevat ja sokeat näkevät.",
-  "Eilinen on historiaa, huominen arvoitus, tämä päivä lahja.",
-  "Nauru pidentää ikää ja lämmittää mieltä.",
-  "Tee tänään jotain, mistä tulevaisuuden itsesi kiittää.",
-  "Kiitollisuus muuttaa sen mitä meillä on, riittäväksi.",
-  "Yksinkertaisuus on äärimmäistä hienostuneisuutta.",
-  "Mitä enemmän annat, sitä enemmän saat.",
-  "Toivo on ankkuri, joka pitää myrskyssä.",
-  "Aika on kalleinta mitä meillä on.",
-  "Kukki siellä, missä sinut on istutettu.",
-  "Elämä on matka, ei määränpää.",
-  "Suurin ilo on antaa iloa toisille."
+  "Elämä on tässä ja nyt."
 ];
+
+// Värit: bg-brand-indigo, bg-brand-purple, bg-brand-orange, bg-brand-cyan, bg-brand-teal, bg-brand-grey
 
 export const SHORTCUTS: Shortcut[] = [
   { 
-    name: 'Apua digiin', 
-    icon: '💻', 
-    color: 'bg-teal-600',
+    name: 'Apua digiin', icon: '💻', color: 'bg-brand-indigo',
     providers: [
-      { name: 'SeniorSurf - Opastuspaikat', url: 'https://seniorsurf.fi/opastuspaikat/' },
-      { name: 'SeniorSurf - Etäopastus', url: 'https://seniorsurf.fi/etaopastus/' },
-      { name: 'Digitreenit (Yle)', url: 'https://yle.fi/aihe/digitreenit' },
-      { name: 'Mukanetti', url: 'https://www.mukanetti.net' },
-      { name: 'Enter ry', url: 'https://www.entery.fi' },
       { name: 'Savonetti', url: 'https://www.savonetti.fi' },
-      { name: 'Verkosta Virtaa', url: 'https://www.elakeliitto.fi/tekemista/verkosta-virtaa' }
+      { name: 'Joen Severi', url: 'https://www.joenseveri.fi' },
+      { name: 'Verkosta virtaa', url: 'https://verkostavirtaa.fi' },
+      { name: 'HelsinkiMissio digituki', url: 'https://www.helsinkimissio.fi/apua-ja-tukea/seniorit/digituki/' },
+      { name: 'SeniorSurf - Opastuspaikat', url: 'https://seniorsurf.fi/opastuspaikat/' },
+      { name: 'Enter ry - Digiopastusta', url: 'https://www.entery.fi' },
+      { name: 'Mukanetti - ATK-apua', url: 'https://www.mukanetti.net' },
+      { name: 'Digitreenit (Yle)', url: 'https://yle.fi/aihe/digitreenit' }
     ]
   },
   { 
-    name: 'Hengellisyys', 
-    icon: '⛪', 
-    color: 'bg-amber-600',
-    url: 'https://eerotuomenoksa.github.io/seniorin-aloitussivu/hengellisyys.html'
+    name: 'Hengellisyys', icon: '⛪', color: 'bg-brand-purple',
+    providers: [
+      { name: 'Suomen ev.lut. kirkko', url: 'https://evl.fi' },
+      { name: 'Kirkko ja kaupunki', url: 'https://www.kirkkojakaupunki.fi' },
+      { name: 'Radio Dei', url: 'https://www.radiodei.fi' },
+      { name: 'Raamattu.fi', url: 'https://raamattu.fi' }
+    ]
   },
   { 
-    name: 'Julkiset palvelut', 
-    icon: '🏛️', 
-    color: 'bg-slate-600',
+    name: 'Julkiset palvelut', icon: '🏛️', color: 'bg-brand-grey',
     providers: [
       { name: 'Suomi.fi', url: 'https://www.suomi.fi' },
       { name: 'Kela', url: 'https://www.kela.fi' },
@@ -69,281 +50,253 @@ export const SHORTCUTS: Shortcut[] = [
     ]
   },
   { 
-    name: 'Kielet', 
-    icon: '🗣️', 
-    color: 'bg-rose-600',
+    name: 'Kielet', icon: '🗣️', color: 'bg-brand-purple',
     providers: [
+      { name: 'Google Kääntäjä', url: 'https://translate.google.fi' },
       { name: 'Sanakirja.fi', url: 'https://www.sanakirja.fi' },
-      { name: 'Kielitoimiston sanakirja', url: 'https://www.kielitoimistonsanakirja.fi' },
-      { name: 'Duolingo', url: 'https://www.duolingo.com' },
-      { name: 'Google Kääntäjä', url: 'https://translate.google.fi' }
+      { name: 'Duolingo', url: 'https://www.duolingo.com' }
     ]
   },
   { 
-    name: 'Kirjallisuus', 
-    icon: '📖', 
-    color: 'bg-amber-800',
+    name: 'Kirjallisuus', icon: '📖', color: 'bg-brand-teal',
     providers: [
       { name: 'Kirjasampo', url: 'https://www.kirjasampo.fi' },
-      { name: 'Lukulamppu', url: 'https://www.lukulamppu.fi' },
-      { name: 'Adlibris', url: 'https://www.adlibris.com/fi' },
+      { name: 'Sähköiset kirjat (Ellibs)', url: 'https://www.ellibs.com/fi/' },
       { name: 'BookBeat', url: 'https://www.bookbeat.fi' },
-      { name: 'Suomalainen Kirjakauppa', url: 'https://www.suomalainen.com' }
+      { name: 'Adlibris', url: 'https://www.adlibris.com' }
     ]
   },
   { 
-    name: 'Kirjastot', 
-    icon: '📚', 
-    color: 'bg-emerald-600',
+    name: 'Kirjastot', icon: '📚', color: 'bg-brand-teal',
     providers: [
-      { name: 'Kirjastot.fi (Haku)', url: 'https://www.kirjastot.fi' },
-      { name: 'Celia - Saavutettava kirjasto', url: 'https://www.celia.fi/' },
-      { name: 'Helmet (PK-seutu)', url: 'https://www.helmet.fi' },
-      { name: 'PIKI (Tampereen seutu)', url: 'https://piki.finna.fi' },
-      { name: 'Finna.fi - Kansallinen haku', url: 'https://www.finna.fi' }
+      { name: 'Kirjastot.fi', url: 'https://www.kirjastot.fi' },
+      { name: 'Helmet-kirjastot', url: 'https://www.helmet.fi' },
+      { name: 'Finna.fi', url: 'https://www.finna.fi' },
+      { name: 'Celia-äänikirjat', url: 'https://www.celia.fi' }
     ]
   },
   { 
-    name: 'Koti', 
-    icon: '🏠', 
-    color: 'bg-stone-600',
+    name: 'Koti', icon: '🏠', color: 'bg-brand-grey',
     providers: [
-      { name: 'Martat', url: 'https://www.martat.fi' },
-      { name: 'Puutarha.net', url: 'https://puutarha.net' },
-      { name: 'Meillä kotona', url: 'https://www.meillakotona.fi' },
-      { name: 'Kotiliesi', url: 'https://kotiliesi.fi' },
-      { name: 'Etuovi.com', url: 'https://www.etuovi.com' }
+      { name: 'Etuovi', url: 'https://www.etuovi.com' },
+      { name: 'Oikotie Asunnot', url: 'https://asunnot.oikotie.fi' },
+      { name: 'Martat - Kodinhoito', url: 'https://www.martat.fi/marttakoulu/kodinhoito/' }
     ]
   },
   { 
-    name: 'Kulttuuri', 
-    icon: '🎭', 
-    color: 'bg-pink-600',
+    name: 'Kulttuuri', icon: '🎭', color: 'bg-brand-orange',
     providers: [
-      { name: 'Museot.fi - Museokortti', url: 'https://www.museot.fi' },
-      { name: 'Kansallisooppera ja -baletti', url: 'https://oopperabaletti.fi' },
-      { name: 'Kansallisteatteri', url: 'https://kansallisteatteri.fi' },
-      { name: 'Lippu.fi', url: 'https://www.lippu.fi' }
+      { name: 'Museokortti', url: 'https://www.museot.fi' },
+      { name: 'Lippu.fi', url: 'https://www.lippu.fi' },
+      { name: 'Tiketti', url: 'https://www.tiketti.fi' },
+      { name: 'Kansallisooppera', url: 'https://oopperabaletti.fi' }
     ]
   },
   { 
-    name: 'Liikenne', 
-    icon: '🚌', 
-    color: 'bg-orange-500',
+    name: 'Liikenne', icon: '🚌', color: 'bg-brand-cyan',
     providers: [
-      { name: 'VR - Junat', url: 'https://www.vr.fi', group: 'Junat' },
-      { name: 'Matkahuolto', url: 'https://www.matkahuolto.fi', group: 'Linja-autot' },
-      { name: 'Tallink Silja', url: 'https://www.tallinksilja.fi', group: 'Laivat' },
-      { name: 'HSL Reittiopas', url: 'https://www.reittiopas.fi', group: 'Paikallisliikenne' }
+      { name: 'Taksi Helsinki', url: 'https://taksihelsinki.fi', group: 'Taksit' },
+      { name: 'Lähitaksi', url: 'https://www.lahitaksi.fi', group: 'Taksit' },
+      { name: 'Menevä Taksi', url: 'https://meneva.fi', group: 'Taksit' },
+      { name: '02 Taksi', url: 'https://02taksi.fi', group: 'Taksit' },
+      { name: 'VR - Junat', url: 'https://www.vr.fi', group: 'Matkustus' },
+      { name: 'Matkahuolto', url: 'https://www.matkahuolto.fi', group: 'Matkustus' },
+      { name: 'OnniBus', url: 'https://www.onnibus.com', group: 'Matkustus' },
+      { name: 'HSL Reittiopas', url: 'https://www.reittiopas.fi', group: 'Reittioppaat' }
     ]
   },
   { 
-    name: 'Luonto', 
-    icon: '🌲', 
-    color: 'bg-green-700',
+    name: 'Luonto', icon: '🌲', color: 'bg-brand-teal',
     providers: [
       { name: 'Luontoon.fi', url: 'https://www.luontoon.fi' },
-      { name: 'Retkipaikka.fi', url: 'https://retaikka.fi' },
-      { name: 'Ympäristö.fi', url: 'https://www.ymparisto.fi' }
+      { name: 'Retkipaikka', url: 'https://retkipaikka.fi' },
+      { name: 'Luontoportti', url: 'https://www.luontoportti.com' },
+      { name: 'Metsähallitus', url: 'https://www.metsa.fi' }
     ]
   },
   { 
-    name: 'Matkailu', 
-    icon: '✈️', 
-    color: 'bg-sky-600',
+    name: 'Matkailu', icon: '✈️', color: 'bg-brand-orange',
     providers: [
-      { name: 'Finnair', url: 'https://www.finnair.com/fi-fi' },
       { name: 'Aurinkomatkat', url: 'https://www.aurinkomatkat.fi' },
       { name: 'Tjäreborg', url: 'https://www.tjareborg.fi' },
-      { name: 'Booking.com', url: 'https://www.booking.com' }
+      { name: 'Momondo', url: 'https://www.momondo.fi' },
+      { name: 'Rantapallo', url: 'https://www.rantapallo.fi' }
     ]
   },
   { 
-    name: 'Musiikki', 
-    icon: '🎵', 
-    color: 'bg-fuchsia-600',
+    name: 'Musiikki', icon: '🎵', color: 'bg-brand-orange',
     providers: [
       { name: 'Spotify', url: 'https://open.spotify.com' },
-      { name: 'Radio Suomi', url: 'https://areena.yle.fi/radio/ohjelmat/57-ww2X6pX0Y' },
-      { name: 'YouTube Music', url: 'https://music.youtube.com' }
+      { name: 'Yle Areena Musiikki', url: 'https://areena.yle.fi/audio' },
+      { name: 'YouTube Musiikki', url: 'https://music.youtube.com' },
+      { name: 'Radio.fi', url: 'https://www.radio.fi' }
     ]
   },
   { 
-    name: 'Oikeus', 
-    icon: '⚖️', 
-    color: 'bg-gray-700',
+    name: 'Oikeus', icon: '⚖️', color: 'bg-brand-grey',
     providers: [
       { name: 'Oikeus.fi', url: 'https://oikeus.fi' },
       { name: 'Kuluttajaneuvonta', url: 'https://www.kkv.fi/kuluttajaneuvonta/' },
-      { name: 'Eduskunta', url: 'https://www.eduskunta.fi' },
-      { name: 'Finlex', url: 'https://www.finlex.fi' }
+      { name: 'Eduskunnan oikeusasiamies', url: 'https://www.oikeusasiamies.fi' },
+      { name: 'Tietosuojavaltuutettu', url: 'https://tietosuoja.fi' }
     ]
   },
   { 
-    name: 'Pankit', 
-    icon: '🏦', 
-    color: 'bg-indigo-600',
+    name: 'Pankit', icon: '🏦', color: 'bg-brand-indigo',
     providers: [
-      { name: 'OP', url: 'https://www.op.fi' },
+      { name: 'OP - Osuuspankki', url: 'https://www.op.fi' },
       { name: 'Nordea', url: 'https://www.nordea.fi' },
       { name: 'S-Pankki', url: 'https://www.s-pankki.fi' },
-      { name: 'Danske Bank', url: 'https://danskebank.fi' }
+      { name: 'Danske Bank', url: 'https://danskebank.fi' },
+      { name: 'Aktia', url: 'https://www.aktia.fi' },
+      { name: 'Handelsbanken', url: 'https://www.handelsbanken.fi' },
+      { name: 'Säästöpankki', url: 'https://www.saastopankki.fi' },
+      { name: 'POP Pankki', url: 'https://www.poppankki.fi' }
     ]
   },
   { 
-    name: 'Ruoka', 
-    icon: '🥘', 
-    color: 'bg-orange-700',
+    name: 'Ruoka', icon: '🥘', color: 'bg-brand-orange',
     providers: [
-      { name: 'K-Ruoka - Reseptit', url: 'https://www.k-ruoka.fi/reseptit' },
-      { name: 'Yhteishyvä - Ruoka', url: 'https://yhteishyva.fi/ruoka' },
-      { name: 'Valio - Reseptit', url: 'https://www.valio.fi/reseptit/' }
+      { name: 'K-Ruoka', url: 'https://www.k-ruoka.fi' },
+      { name: 'S-Kaupat', url: 'https://www.s-kaupat.fi' },
+      { name: 'Yhteishyvä Reseptit', url: 'https://yhteishyva.fi' },
+      { name: 'Valio Reseptit', url: 'https://www.valio.fi/reseptit/' },
+      { name: 'Kotikokki', url: 'https://www.kotikokki.net' }
     ]
   },
   { 
-    name: 'Sosiaalinen media', 
-    icon: '💬', 
-    color: 'bg-cyan-600',
+    name: 'Sosiaalinen media', icon: '💬', color: 'bg-brand-indigo',
     providers: [
-      { name: 'WhatsApp', url: 'https://web.whatsapp.com' },
       { name: 'Facebook', url: 'https://www.facebook.com' },
-      { name: 'Instagram', url: 'https://www.instagram.com' }
+      { name: 'WhatsApp Web', url: 'https://web.whatsapp.com' },
+      { name: 'Instagram', url: 'https://www.instagram.com' },
+      { name: 'X (Twitter)', url: 'https://www.x.com' }
     ]
   },
   { 
-    name: 'Sovellukset', 
-    icon: '📱', 
-    color: 'bg-neutral-600',
+    name: 'Sovellukset', icon: '📱', color: 'bg-brand-indigo',
     providers: [
-      { name: 'Play kauppa (Android)', url: 'https://play.google.com/store' },
-      { name: 'Appstore (Apple)', url: 'https://www.apple.com/fi/app-store/' },
-      { name: 'Microsoft Store (Windows)', url: 'https://apps.microsoft.com/home' }
+      { name: 'Google Play Kauppa', url: 'https://play.google.com' },
+      { name: 'App Store (Apple)', url: 'https://www.apple.com/fi/app-store/' },
+      { name: 'Huawei AppGallery', url: 'https://appgallery.huawei.com' }
     ]
   },
   { 
-    name: 'Sukututkimus', 
-    icon: '🌳', 
-    color: 'bg-amber-700',
+    name: 'Sukututkimus', icon: '🌳', color: 'bg-brand-teal',
     providers: [
-      { name: 'Sukuhistoria.fi', url: 'https://www.sukuhistoria.fi' },
-      { name: 'Kansallisarkisto', url: 'https://astia.narc.fi' },
-      { name: 'MyHeritage', url: 'https://www.myheritage.fi' }
+      { name: 'MyHeritage', url: 'https://www.myheritage.fi' },
+      { name: 'Sukuhaku', url: 'https://www.genealogia.fi' },
+      { name: 'Kansallisarkisto', url: 'https://arkisto.fi' },
+      { name: 'Suomen Sukututkimusseura', url: 'https://www.genealogia.fi' }
     ]
   },
   { 
-    name: 'Sähköposti', 
-    icon: '✉️', 
-    color: 'bg-blue-500',
+    name: 'Sähköposti', icon: '✉️', color: 'bg-brand-cyan',
     providers: [
       { name: 'Gmail', url: 'https://mail.google.com' },
       { name: 'Outlook / Hotmail', url: 'https://outlook.live.com' },
-      { name: 'iCloud Mail', url: 'https://www.icloud.com/mail' }
+      { name: 'Suomi24 Posti', url: 'https://posti.suomi24.fi' },
+      { name: 'Telia Sähköposti', url: 'https://webmail.teliatunnus.fi' }
     ]
   },
   { 
-    name: 'Sää', 
-    icon: '🌤️', 
-    color: 'bg-yellow-500',
+    name: 'Sää', icon: '☀️', color: 'bg-brand-cyan',
     providers: [
       { name: 'Ilmatieteen laitos', url: 'https://www.ilmatieteenlaitos.fi' },
-      { name: 'Foreca', url: 'https://www.foreca.fi' }
+      { name: 'Foreca', url: 'https://www.foreca.fi' },
+      { name: 'Yle Sää', url: 'https://yle.fi/saa' }
     ]
   },
   { 
-    name: 'Taiteet', 
-    icon: '🎨', 
-    color: 'bg-violet-600',
+    name: 'Taiteet', icon: '🎨', color: 'bg-brand-orange',
     providers: [
       { name: 'Ateneum', url: 'https://ateneum.fi' },
       { name: 'Kiasma', url: 'https://kiasma.fi' },
-      { name: 'HAM', url: 'https://www.hamhelsinki.fi' }
+      { name: 'Taidehalli', url: 'https://taidehalli.fi' },
+      { name: 'Amos Rex', url: 'https://amosrex.fi' }
     ]
   },
   { 
-    name: 'Tekniikka', 
-    icon: '⚙️', 
-    color: 'bg-zinc-700',
+    name: 'Tekniikka', icon: '⚙️', color: 'bg-brand-cyan',
     providers: [
       { name: 'Tekniikan Maailma', url: 'https://tekniikanmaailma.fi' },
       { name: 'Mikrobitti', url: 'https://www.mikrobitti.fi' },
-      { name: 'Digitoday', url: 'https://www.is.fi/digitoday/' }
+      { name: 'Tivi', url: 'https://www.tivi.fi' },
+      { name: 'Digitreenit (Yle)', url: 'https://yle.fi/aihe/digitreenit' }
     ]
   },
   { 
-    name: 'Terveys', 
-    icon: '🏥', 
-    color: 'bg-red-500',
+    name: 'Terveys', icon: '🏥', color: 'bg-brand-teal',
     providers: [
       { name: 'OmaKanta', url: 'https://www.kanta.fi/omakanta' },
       { name: 'Terveyskylä', url: 'https://www.terveyskyla.fi' },
-      { name: 'Apteekki.fi', url: 'https://www.apteekki.fi' }
+      { name: 'Terveyskirjasto', url: 'https://www.terveyskirjasto.fi' },
+      { name: 'Apteekki.fi', url: 'https://www.apteekki.fi' },
+      { name: 'Mehiläinen', url: 'https://www.mehilainen.fi' },
+      { name: 'Terveystalo', url: 'https://www.terveystalo.com' }
     ]
   },
   { 
-    name: 'Tiede', 
-    icon: '🧪', 
-    color: 'bg-purple-600',
+    name: 'Tiede', icon: '🧪', color: 'bg-brand-purple',
     providers: [
       { name: 'Tiede-lehti', url: 'https://www.tiede.fi' },
-      { name: 'Ursa - Tähtitaivas', url: 'https://www.ursa.fi' }
+      { name: 'Tieteen Kuvalehti', url: 'https://tieku.fi' },
+      { name: 'Tiedeykkönen (Yle)', url: 'https://areena.yle.fi/audio/1-1466035' }
     ]
   },
   { 
-    name: 'Turvallisuus', 
-    icon: '🛡️', 
-    color: 'bg-orange-600',
+    name: 'Turvallisuus', icon: '🛡️', color: 'bg-brand-orange',
     providers: [
-      { name: 'Huijausinfo', url: 'https://www.kuluttajaliitto.fi/hankkeet/huijausinfo/' },
-      { name: 'Poliisi', url: 'https://poliisi.fi/asioi-verkossa' }
+      { name: 'Kyberturvallisuuskeskus', url: 'https://www.kyberturvallisuuskeskus.fi' },
+      { name: '112.fi - Hätäkeskus', url: 'https://112.fi' },
+      { name: 'Poliisi', url: 'https://poliisi.fi' },
+      { name: 'Pelastustoimi', url: 'https://pelastustoimi.fi' }
     ]
   },
   { 
-    name: 'Urheilu', 
-    icon: '⚽', 
-    color: 'bg-green-600',
+    name: 'Urheilu', icon: '⚽', color: 'bg-brand-teal',
     providers: [
       { name: 'Yle Urheilu', url: 'https://yle.fi/urheilu' },
-      { name: 'Liiga.fi', url: 'https://liiga.fi' },
-      { name: 'Teksti-TV', url: 'https://yle.fi/tekstitv/201' }
+      { name: 'Iltalehti Urheilu', url: 'https://www.iltalehti.fi/urheilu' },
+      { name: 'MTV Urheilu', url: 'https://www.mtv.fi/urheilu' },
+      { name: 'Tulospalvelu.fi', url: 'https://www.tulospalvelu.fi' }
     ]
   },
   { 
-    name: 'Uutiset & Media', 
-    icon: '📰', 
-    color: 'bg-slate-800',
+    name: 'Uutiset & Media', icon: '📰', color: 'bg-brand-grey',
     providers: [
       { name: 'Yle Uutiset', url: 'https://yle.fi/uutiset' },
       { name: 'Helsingin Sanomat', url: 'https://www.hs.fi' },
-      { name: 'Ilta-Sanomat', url: 'https://www.is.fi' }
+      { name: 'Ilta-Sanomat', url: 'https://www.is.fi' },
+      { name: 'Iltalehti', url: 'https://www.iltalehti.fi' },
+      { name: 'Maaseudun Tulevaisuus', url: 'https://www.maaseuduntulevaisuus.fi' }
     ]
   },
   { 
-    name: 'Vapaa-aika', 
-    icon: '🧶', 
-    color: 'bg-pink-500',
+    name: 'Vapaa-aika', icon: '🎈', color: 'bg-brand-orange',
     providers: [
-      { name: 'Eläkeliitto', url: 'https://www.elakeliitto.fi' },
+      { name: 'Kansalaisopistot', url: 'https://kansalaisopistot.fi' },
       { name: 'Martat', url: 'https://www.martat.fi' },
-      { name: 'Veikkaus', url: 'https://www.veikkaus.fi' }
+      { name: 'Suomen Latu', url: 'https://www.suomenlatu.fi' },
+      { name: 'Suomi.fi harrastushaku', url: 'https://www.suomi.fi/palvelut/harrastushaku' }
     ]
   },
   { 
-    name: 'Verkkokaupat', 
-    icon: '🛒', 
-    color: 'bg-indigo-700',
+    name: 'Verkkokaupat', icon: '🛒', color: 'bg-brand-orange',
     providers: [
       { name: 'Tori.fi', url: 'https://www.tori.fi' },
       { name: 'Prisma.fi', url: 'https://www.prisma.fi' },
+      { name: 'K-Ruoka Kauppa', url: 'https://www.k-ruoka.fi/kauppa' },
+      { name: 'Tokmanni', url: 'https://www.tokmanni.fi' },
       { name: 'Zalando', url: 'https://www.zalando.fi' }
     ]
   },
   { 
-    name: 'Viihde', 
-    icon: '🍿', 
-    color: 'bg-red-600',
+    name: 'Viihde', icon: '🍿', color: 'bg-brand-orange',
     providers: [
       { name: 'Yle Areena', url: 'https://areena.yle.fi' },
-      { name: 'Netflix', url: 'https://www.netflix.com/fi/' },
+      { name: 'MTV Katsomo', url: 'https://www.mtv.fi' },
+      { name: 'Ruutu', url: 'https://www.ruutu.fi' },
       { name: 'YouTube', url: 'https://www.youtube.com' }
     ]
   }

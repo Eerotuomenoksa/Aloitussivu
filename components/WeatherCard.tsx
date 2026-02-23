@@ -76,7 +76,7 @@ const WeatherCard: React.FC = () => {
 
   return (
     <div 
-      className="bg-gradient-to-br from-blue-700 to-blue-900 rounded-[2.5rem] p-10 text-white shadow-xl flex items-center justify-between w-full h-full border-4 border-white/20 min-h-[220px]"
+      className="bg-gradient-to-br from-brand-indigo to-brand-purple rounded-[2.5rem] p-10 text-white shadow-xl flex items-center justify-between w-full h-full border-4 border-white/20 min-h-[220px]"
       aria-label="Säätiedot"
     >
       <div className="space-y-1">
