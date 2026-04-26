@@ -35,7 +35,7 @@ export const SHORTCUTS: Shortcut[] = [
     providers: [
       { name: 'Suomen ev.lut. kirkko', url: 'https://evl.fi' },
       { name: 'Kirkko ja kaupunki', url: 'https://www.kirkkojakaupunki.fi' },
-      { name: 'Radio Dei', url: 'https://www.radiodei.fi' },
+      { name: 'Radio Dei', url: 'https://deiplus.fi/radiot' },
       { name: 'Raamattu.fi', url: 'https://raamattu.fi' }
     ]
   },
@@ -62,7 +62,7 @@ export const SHORTCUTS: Shortcut[] = [
     providers: [
       { name: 'Kirjasampo', url: 'https://www.kirjasampo.fi' },
       { name: 'Sähköiset kirjat (Ellibs)', url: 'https://www.ellibs.com/fi/' },
-      { name: 'BookBeat', url: 'https://www.bookbeat.fi' },
+      { name: 'BookBeat', url: 'https://www.bookbeat.com/fi/' },
       { name: 'Adlibris', url: 'https://www.adlibris.com' }
     ]
   },
@@ -129,7 +129,7 @@ export const SHORTCUTS: Shortcut[] = [
       { name: 'Spotify', url: 'https://open.spotify.com' },
       { name: 'Yle Areena Musiikki', url: 'https://areena.yle.fi/audio' },
       { name: 'YouTube Musiikki', url: 'https://music.youtube.com' },
-      { name: 'Radio.fi', url: 'https://www.radio.fi' }
+      { name: 'Radio Player', url: 'https://play.radioplayer.org/fi' }
     ]
   },
   { 
@@ -194,9 +194,7 @@ export const SHORTCUTS: Shortcut[] = [
     name: 'Sähköposti', icon: '✉️', color: 'bg-brand-cyan',
     providers: [
       { name: 'Gmail', url: 'https://mail.google.com' },
-      { name: 'Outlook / Hotmail', url: 'https://outlook.live.com' },
-      { name: 'Suomi24 Posti', url: 'https://posti.suomi24.fi' },
-      { name: 'Telia Sähköposti', url: 'https://webmail.teliatunnus.fi' }
+      { name: 'Outlook / Hotmail', url: 'https://outlook.live.com' }
     ]
   },
   { 
@@ -241,7 +239,7 @@ export const SHORTCUTS: Shortcut[] = [
     providers: [
       { name: 'Tiede-lehti', url: 'https://www.tiede.fi' },
       { name: 'Tieteen Kuvalehti', url: 'https://tieku.fi' },
-      { name: 'Tiedeykkönen (Yle)', url: 'https://areena.yle.fi/audio/1-1466035' }
+      { name: 'Tiedeykkönen (Yle)', url: 'https://areena.yle.fi/podcastit/1-1466035' }
     ]
   },
   { 

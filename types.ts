@@ -14,6 +14,14 @@ export interface Shortcut {
   url?: string;
 }
 
+export interface Favorite {
+  name: string;
+  url: string;
+  categoryName: string;
+  categoryIcon: string;
+  color: string;
+}
+
 export interface ChatMessage {
   role: 'user' | 'assistant';
   content: string;

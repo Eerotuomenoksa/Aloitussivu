@@ -44,26 +44,10 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, fontSizeStep = 0
         </div>
         
         <div className="p-8 md:p-12 space-y-10 max-h-[75vh] overflow-y-auto">
-          {/* Tekoälyohjeet */}
-          <section className="bg-purple-50 dark:bg-purple-900/20 p-8 rounded-3xl border-4 border-purple-200 dark:border-purple-800/50 space-y-6">
-            <h3 className="text-3xl font-black text-purple-900 dark:text-purple-300 flex items-center gap-3">
-              <span>🤖</span> Tekoälyavustajan aktivointi
-            </h3>
-            <div className="space-y-4 text-xl leading-relaxed dark:text-slate-200 font-medium">
-              <p>Avustaja vaatii toimiakseen <strong>API-avaimen</strong>. Se on maksuton ja helppo ottaa käyttöön:</p>
-              <ol className="list-decimal ml-8 space-y-4">
-                <li>Mene osoitteeseen <a href="https://aistudio.google.com/" target="_blank" className="text-purple-700 dark:text-purple-400 underline font-black">aistudio.google.com</a></li>
-                <li>Luo uusi <strong>API Key</strong>.</li>
-                <li>Aseta tämä avain sovelluksen ympäristömuuttujiin nimellä <code>API_KEY</code>.</li>
-                <li>Kun avain on asetettu, voit keskustella avustajan kanssa klikkaamalla robotti-ikonia aloitussivulla.</li>
-              </ol>
-            </div>
-          </section>
-
           <section className="space-y-4">
             <h3 className="text-2xl font-black dark:text-white underline decoration-blue-500 underline-offset-8">Mikä tämä on?</h3>
             <p className="text-xl leading-relaxed dark:text-slate-300">
-              Seniorin aloitussivu on suunniteltu helpottamaan internetin käyttöä. Olemme koonneet 30 tärkeää kategoriaa ja satoja tarkistettuja linkkejä, jotta löydät etsimäsi yhdellä klikkauksella.
+              Seniorin aloitussivu on suunniteltu helpottamaan internetin käyttöä. Olemme koonneet {categoryStats.length} tärkeää kategoriaa ja {totalLinks} tarkistettua linkkiä, jotta löydät etsimäsi yhdellä klikkauksella.
             </p>
           </section>
 
