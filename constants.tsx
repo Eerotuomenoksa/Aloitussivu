@@ -25,7 +25,7 @@ export const SHORTCUTS: Shortcut[] = [
       { name: 'Verkosta virtaa', url: 'https://verkostavirtaa.fi' },
       { name: 'HelsinkiMissio digituki', url: 'https://www.helsinkimissio.fi/apua-ja-tukea/seniorit/digituki/' },
       { name: 'SeniorSurf - Opastuspaikat', url: 'https://seniorsurf.fi/opastuspaikat/' },
-      { name: 'Enter ry - Digiopastusta', url: 'https://www.entery.fi' },
+      { name: 'Enter ry - Digiopastusta', url: 'https://www.entersenior.fi/' },
       { name: 'Mukanetti - ATK-apua', url: 'https://www.mukanetti.net' },
       { name: 'Digitreenit (Yle)', url: 'https://yle.fi/aihe/digitreenit' }
     ]

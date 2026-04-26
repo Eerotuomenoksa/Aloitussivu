@@ -89,12 +89,11 @@ const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSi
                     href={provider.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex flex-col items-center justify-center p-8 bg-white dark:bg-slate-800 border-4 border-slate-200 dark:border-slate-700 rounded-[2.5rem] shadow-md hover:shadow-2xl hover:border-blue-600 dark:hover:border-blue-500 transition-all group focus:ring-8 focus:ring-blue-500/20 outline-none text-center min-h-[180px]"
+                    className="flex flex-col items-center justify-center p-6 bg-white dark:bg-slate-800 border-4 border-slate-200 dark:border-slate-700 rounded-[2.5rem] shadow-md hover:shadow-2xl hover:border-blue-600 dark:hover:border-blue-500 transition-all group focus:ring-8 focus:ring-blue-500/20 outline-none text-center min-h-[120px]"
                   >
                     <span className={`font-black text-slate-800 dark:text-white group-hover:text-blue-700 dark:group-hover:text-blue-400 transition-all duration-300 leading-tight ${itemTextClasses[fontSizeStep]}`}>
                       {provider.name}
                     </span>
-                    <span className="mt-4 text-4xl opacity-20 group-hover:opacity-100 group-hover:scale-125 transition-all">🌐</span>
                   </a>
                 ))}
               </div>
