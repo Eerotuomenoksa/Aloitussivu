@@ -7,6 +7,5 @@ export default defineConfig({
     outDir: 'dist',
     emptyOutDir: true,
   },
-  // Jos sivu on alihakemistossa (esim. /seniorin-aloitussivu/), muuta tämä:
-  base: './', 
+  base: '/Aloitussivu/',
 });

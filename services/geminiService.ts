@@ -6,7 +6,7 @@ import { NewsItem } from "../types";
  * Palvelu, joka hoitaa keskustelun tekoälyavustajan kanssa.
  */
 export const getGeminiAssistant = async (prompt: string, history: {role: string, content: string}[]) => {
-  const apiKey = process.env.API_KEY;
+  const apiKey = import.meta.env.VITE_API_KEY;
   
   if (!apiKey || apiKey === "undefined") {
     return "Tekoälyavustaja ei ole vielä aktivoitu. Katso ohjeet 'Tietoa'-painikkeen alta (API-avaimen hankinta).";
@@ -46,7 +46,7 @@ export const getGeminiAssistant = async (prompt: string, history: {role: string,
  * Tiivistää uutiset ikäihmille sopivaksi yhteenvedoksi.
  */
 export const summarizeNews = async (news: NewsItem[]) => {
-  const apiKey = process.env.API_KEY;
+  const apiKey = import.meta.env.VITE_API_KEY;
   if (!apiKey || apiKey === "undefined") return "Tekoäly ei ole käytössä (API-avain puuttuu).";
 
   const ai = new GoogleGenAI({ apiKey });
