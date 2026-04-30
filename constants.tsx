@@ -1,5 +1,6 @@
 
 import { Shortcut, NewsItem } from './types';
+import { LOCAL_NEWSPAPER_LINKS } from './localNewspaperLinks';
 
 export const QUOTES = [
   "Jokainen päivä on uusi mahdollisuus.",
@@ -406,6 +407,10 @@ export const SHORTCUTS: Shortcut[] = [
       { name: 'MTV Urheilu', url: 'https://www.mtv.fi/urheilu' },
       { name: 'Tulospalvelu.fi', url: 'https://www.tulospalvelu.fi' }
     ]
+  },
+  { 
+    name: 'Lehdet', icon: '🗞️', color: 'bg-brand-grey',
+    providers: LOCAL_NEWSPAPER_LINKS.map((item) => ({ name: item.name, url: item.url }))
   },
   { 
     name: 'Uutiset & Media', icon: '📰', color: 'bg-brand-grey',

@@ -77,6 +77,7 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, fontSizeStep = 0
                 { name: 'Kunnan palvelusivut', count: LOCAL_LINK_STATS.municipalityServicePages, note: 'esim. palvelut ja asiointi' },
                 { name: 'Paikallisliikenne', count: LOCAL_LINK_STATS.localTransport, note: 'joukkoliikenne ja reittioppaat' },
                 { name: 'Paikalliset kirjastot', count: LOCAL_LINK_STATS.localLibraries, note: 'kirjastojen omat palvelut' },
+                { name: 'Lehdet', count: LOCAL_LINK_STATS.localNewspapers, note: 'suomalaiset paikallislehdet' },
               ].map((item) => (
                 <div key={item.name} className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-700/50 rounded-2xl border border-slate-200/60 dark:border-slate-600">
                   <div className="space-y-1">
@@ -90,7 +91,7 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, fontSizeStep = 0
               ))}
             </div>
             <p className="text-sm font-bold text-slate-500 dark:text-slate-400">
-              Paikalliset uutiset haetaan sijainnin perusteella eikä niitä lasketa tähän määrään.
+              Paikalliset uutiset haetaan sijainnin perusteella eikä niitä lasketa tähän määrään. Lehdet-kategoria sisältää paikallislehtien kotisivut.
             </p>
           </section>
 

@@ -181,6 +181,11 @@ const collectLinks = async () => {
     addRow('Kuntien verkkosivut', 'Kunta', match[1], match[2], 'municipalityWebsites.ts');
   }
 
+   const localNewspapers = await readText('localNewspaperLinks.ts');
+   for (const match of localNewspapers.matchAll(/\{\s*"name":\s*"([^"]+)",\s*"url":\s*"([^"]+)"\s*\}/g)) {
+     addRow('Lehdet', 'Suomalaiset paikallislehdet', match[1], match[2], 'localNewspaperLinks.ts');
+   }
+
   addRow('Sovelluksen omat linkit', 'Footer', 'SeniorSurf', 'https://seniorsurf.fi/', 'App.tsx');
   addRow('Sovelluksen omat linkit', 'Footer', 'SeniorSurf logo', 'https://seniorsurf.fi/wp-content/uploads/SeniorSurf_White-320-x-102-px.svg', 'App.tsx');
   addRow('Sovelluksen omat linkit', 'Sää', 'Ilmatieteen laitos', 'https://www.ilmatieteenlaitos.fi/', 'WeatherCard.tsx');
@@ -198,6 +203,7 @@ const collectLinks = async () => {
     localMunicipalityServiceCount,
     localWellbeingAreaCount,
     municipalityWebsiteCount: [...municipalityWebsites.matchAll(/'([^']+)':\s*'([^']+)'/g)].length,
+    localNewspaperCount: [...localNewspapers.matchAll(/\{\s*"name":\s*"([^"]+)",\s*"url":\s*"([^"]+)"\s*\}/g)].length,
   };
 };
 
@@ -209,6 +215,7 @@ const main = async () => {
     localMunicipalityServiceCount,
     localWellbeingAreaCount,
     municipalityWebsiteCount,
+    localNewspaperCount,
   } = await collectLinks();
 
   const uniqueRows = [...new Map(
@@ -290,6 +297,7 @@ const main = async () => {
     `  municipalityServicePages: ${localMunicipalityServiceCount},`,
     `  localTransport: ${localTransportCount},`,
     `  localLibraries: ${localLibraryCount},`,
+    `  localNewspapers: ${localNewspaperCount},`,
     '} as const;',
     '',
   ];

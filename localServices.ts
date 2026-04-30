@@ -107,6 +107,39 @@ const createGoogleNewsRss = (municipality: string): RssFeedConfig => ({
   url: `https://news.google.com/rss/search?q=${encodeURIComponent(`${municipality} uutiset`)}&hl=fi&gl=FI&ceid=FI:fi`,
 });
 
+const stripDiacritics = (value: string) => value
+  .normalize('NFD')
+  .replace(/[\u0300-\u036f]/g, '');
+
+const localPaperSlugOverrides: Record<string, string> = {
+  espoo: 'espoon',
+  helsinki: 'helsingin',
+  kauniainen: 'kauniaisten',
+  kuopio: 'kuopion',
+  lappeenranta: 'lappeenrannan',
+  lahti: 'lahden',
+  oulu: 'oulun',
+  pori: 'porin',
+  porvoo: 'porvoon',
+  tampere: 'tampereen',
+  turku: 'turun',
+  vaasa: 'vaasan',
+  vantaa: 'vantaan',
+  jyvaskyla: 'jyvaskylan',
+  ylojarvi: 'ylojarven',
+};
+
+const createLocalPaperRssFeed = (municipality: string): RssFeedConfig => {
+  const normalized = stripDiacritics(normalizeMunicipality(municipality));
+  const slug = localPaperSlugOverrides[normalized]
+    ?? normalized.replace(/i$/, 'in').replace(/a$/, 'an').replace(/ä$/, 'än').replace(/o$/, 'on').replace(/u$/, 'un').replace(/e$/, 'een');
+
+  return {
+    name: `Paikallislehti: ${municipality}`,
+    url: `https://${slug}uutiset.fi/feed`,
+  };
+};
+
 const localServiceMap: Record<string, LocalServiceConfig> = {
   helsinki: {
     publicTransport: { name: 'HSL Reittiopas', url: 'https://www.hsl.fi/', group: 'Paikalliset palvelut' },
@@ -117,6 +150,10 @@ const localServiceMap: Record<string, LocalServiceConfig> = {
     publicTransport: { name: 'HSL Reittiopas', url: 'https://www.hsl.fi/', group: 'Paikalliset palvelut' },
     library: { name: 'Helmet-kirjastot', url: 'https://www.helmet.fi/', group: 'Paikalliset palvelut' },
     municipality: { name: 'Espoon palvelut', url: 'https://www.espoo.fi/fi', group: 'Paikalliset palvelut' },
+    rssFeeds: [
+      { name: 'Espoon uutiset', url: 'https://www.espoo.fi/fi/rss/news' },
+      { name: 'Espoon artikkelit', url: 'https://www.espoo.fi/fi/rss/articles' },
+    ],
   },
   vantaa: {
     publicTransport: { name: 'HSL Reittiopas', url: 'https://www.hsl.fi/', group: 'Paikalliset palvelut' },
@@ -136,6 +173,11 @@ const localServiceMap: Record<string, LocalServiceConfig> = {
     publicTransport: { name: 'Nysse', url: 'https://www.nysse.fi/', group: 'Paikalliset palvelut' },
     library: { name: 'PIKI-kirjastot', url: 'https://piki.verkkokirjasto.fi/', group: 'Paikalliset palvelut' },
     municipality: { name: 'Tampereen palvelut', url: 'https://www.tampere.fi/', group: 'Paikalliset palvelut' },
+    rssFeeds: [
+      { name: 'Tampereen uutiset', url: 'https://www.tampere.fi/ajankohtaista/uutiset.xml' },
+      { name: 'Tampereen artikkelit', url: 'https://www.tampere.fi/ajankohtaista/artikkelit.xml' },
+      { name: 'Tampereen ilmoitukset', url: 'https://www.tampere.fi/ajankohtaista/ilmoitukset.xml' },
+    ],
   },
   turku: {
     publicTransport: { name: 'Föli', url: 'https://www.foli.fi/', group: 'Paikalliset palvelut' },
@@ -146,6 +188,10 @@ const localServiceMap: Record<string, LocalServiceConfig> = {
     publicTransport: { name: 'Oulun joukkoliikenne', url: 'https://www.ouka.fi/oulu/joukkoliikenne', group: 'Paikalliset palvelut' },
     library: { name: 'OUTI-kirjastot', url: 'https://outi.finna.fi/', group: 'Paikalliset palvelut' },
     municipality: { name: 'Oulun palvelut', url: 'https://www.ouka.fi/', group: 'Paikalliset palvelut' },
+    rssFeeds: [
+      { name: 'Oulun kaupungin uutiset', url: 'https://www.ouka.fi/news/feed?audience=All&region=All&topic=All' },
+      { name: 'Kaleva: Oulun seutu', url: 'https://kaleva.fi/feedit/rss/managed-listing/oulun-seutu/' },
+    ],
   },
   kuopio: {
     publicTransport: { name: 'Kuopion seudun joukkoliikenne', url: 'https://vilkku.kuopio.fi/', group: 'Paikalliset palvelut' },
@@ -259,12 +305,9 @@ export const getRegionalRssFeeds = (context: RegionalContext): RssFeedConfig[] =
   const key = normalizeMunicipality(municipality);
   const exact = localServiceMap[key];
 
-  const exactFeeds = exact?.rssFeeds ?? [];
-  if (exactFeeds.length > 0) {
-    return uniqueFeeds(exactFeeds);
-  }
-
   return uniqueFeeds([
+    ...(exact?.rssFeeds ?? []),
+    createLocalPaperRssFeed(municipality),
     createGoogleNewsRss(municipality),
   ]);
 };
