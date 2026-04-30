@@ -311,17 +311,17 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
                       </a>
                       {onReportLink && (
                         <button
-                          onClick={() => onReportLink({
-                            name: link.name,
-                            url: link.url,
-                            category: link.categoryName,
-                            source: 'QuickLinks',
-                          })}
-                          className="absolute top-3 left-3 flex items-center justify-center rounded-full bg-white/30 hover:bg-white/50 text-white shadow-md transition-all focus:ring-4 focus:ring-blue-300 focus:outline-none opacity-0 group-hover/link:opacity-100 w-10 h-10 text-xl"
-                          aria-label={`Ilmoita linkki: ${link.name}`}
-                        >
-                          !
-                        </button>
+                        onClick={() => onReportLink({
+                          name: link.name,
+                          url: link.url,
+                          category: link.categoryName,
+                          source: 'QuickLinks',
+                        })}
+                        className="absolute bottom-3 right-3 flex items-center justify-center rounded-full bg-white/30 hover:bg-white/50 text-white shadow-md transition-all focus:ring-4 focus:ring-blue-300 focus:outline-none opacity-0 group-hover/link:opacity-100 w-10 h-10 text-xl"
+                        aria-label={`Ilmoita linkki: ${link.name}`}
+                      >
+                        !
+                      </button>
                       )}
                       <button
                         onClick={() => onToggleFavorite(fav)}

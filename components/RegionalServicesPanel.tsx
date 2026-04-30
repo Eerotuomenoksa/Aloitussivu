@@ -55,7 +55,7 @@ const ServiceLink: React.FC<{ provider: Provider; index: number; fontSizeStep: n
             category: provider.group,
             source: 'RegionalServicesPanel',
           })}
-          className="absolute top-3 left-3 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/35 text-white shadow-md transition-all focus:ring-4 focus:ring-blue-300 focus:outline-none opacity-0 group-hover/service:opacity-100 w-10 h-10 text-xl"
+          className="absolute bottom-3 right-3 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/35 text-white shadow-md transition-all focus:ring-4 focus:ring-blue-300 focus:outline-none opacity-0 group-hover/service:opacity-100 w-10 h-10 text-xl"
           aria-label={`Ilmoita linkki: ${provider.name}`}
         >
           !

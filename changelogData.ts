@@ -21,15 +21,23 @@ export type ChangelogCommit = {
   subject: string;
 };
 
-export const CHANGELOG_GENERATED_AT = "30.4.2026 klo 14.00";
+export const CHANGELOG_GENERATED_AT = "30.4.2026 klo 14.13";
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
-  "Muutosloki muutettiin selkokieliseksi kehittäjäsivuksi, joka näyttää muutokset ilman tiedostolinkkejä.",
-  "Pääsivulle lisättiin beta-merkintä sekä linkki muutoslokiin.",
-  "Linkkien tarkistus, näkyvyyden hallinta ja ylläpitoloki päivittyvät automaattisesti buildin yhteydessä.",
-  "Palvelukategorioita ja paikallisia linkkejä laajennettiin uusilla suomalaisilla palveluilla."
+  "Paikallisiin linkkeihin lisättiin seurakunnat, ja niiden piilottaminen tallentuu nyt selaimen muistiin.",
+  "Linkkien tarkistus, näkyvyyden hallinta ja ylläpitoloki päivittyvät automaattisesti buildin yhteydessä."
 ];
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
+  {
+    "hash": "3f14e72e3aed4e1e6c4f64974f04ffb72f9c699b",
+    "date": "2026-04-30",
+    "subject": "Update deploy.yml"
+  },
+  {
+    "hash": "ba43fd438b351414afb39ac28ff4fd77f7099bbb",
+    "date": "2026-04-30",
+    "subject": "muotoiluja yläriville"
+  },
   {
     "hash": "93ed1b53ba9fb781e1be2d9ad42ef2ce3668fefd",
     "date": "2026-04-30",
@@ -119,15 +127,5 @@ export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
     "hash": "ff97135e84cd7f7f32c626a67d1bf430fe329744",
     "date": "2026-02-09",
     "subject": "feat(App): Add aria-label to theme toggle button"
-  },
-  {
-    "hash": "4fa08ca995ab216231a07de027f0d4a8ff4515ec",
-    "date": "2026-02-09",
-    "subject": "fix(Clock): Remove static greeting and simplify layout"
-  },
-  {
-    "hash": "05dfff44a2f67b943517351c50c755ad33ed3c42",
-    "date": "2026-02-09",
-    "subject": "feat: Implement dynamic font size scaling"
   }
 ];

@@ -128,7 +128,7 @@ const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSi
                             category: shortcut.name,
                             source: 'ProviderModal',
                           })}
-                          className="absolute top-3 left-3 flex items-center justify-center rounded-full bg-slate-900/80 hover:bg-slate-900 text-white shadow-md transition-all focus:ring-4 focus:ring-blue-300 focus:outline-none opacity-0 group-hover/card:opacity-100 w-10 h-10 text-xl"
+                          className="absolute bottom-3 right-3 flex items-center justify-center rounded-full bg-slate-900/80 hover:bg-slate-900 text-white shadow-md transition-all focus:ring-4 focus:ring-blue-300 focus:outline-none opacity-0 group-hover/card:opacity-100 w-10 h-10 text-xl"
                           aria-label={`Ilmoita linkki: ${provider.name}`}
                         >
                           !
