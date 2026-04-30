@@ -147,6 +147,17 @@ const App: React.FC = () => {
         <header className="animate-in">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
             <div className="lg:col-span-5 flex flex-col justify-center">
+              <p className="mb-3 text-sm font-black uppercase tracking-wide text-amber-700 dark:text-amber-300">
+                Beta · sivusto on vielä kehitteillä
+              </p>
+              <a
+                href="./muutosloki.html"
+                className="mb-5 inline-flex w-fit text-sm font-bold text-indigo-700 dark:text-indigo-300 hover:underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Avaa muutosloki
+              </a>
               <Clock fontSizeStep={fontSizeStep} />
             </div>
             <div className="lg:col-span-3">

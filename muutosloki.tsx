@@ -2,9 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import {
+  CHANGELOG_DEPLOYMENTS,
   CHANGELOG_GENERATED_AT,
+  CHANGELOG_SOURCE,
   CHANGELOG_RECENT_COMMITS,
   CHANGELOG_WORKTREE_CHANGES,
+  type ChangelogDeployment,
   type ChangelogCommit,
   type ChangelogWorktreeChange,
 } from './changelogData';
@@ -20,6 +23,19 @@ const statusLabels: Record<ChangelogWorktreeChange['status'], string> = {
 
 function formatCommitHash(hash: string) {
   return hash.slice(0, 7);
+}
+
+function formatDeploymentTime(value: string) {
+  if (!value) return '';
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return value;
+  return new Intl.DateTimeFormat('fi-FI', {
+    day: 'numeric',
+    month: 'numeric',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  }).format(date);
 }
 
 function FileList({ files }: { files: string[] }) {
@@ -66,6 +82,41 @@ function CommitCard({ commit }: { commit: ChangelogCommit }) {
   );
 }
 
+function DeploymentCard({ deployment }: { deployment: ChangelogDeployment }) {
+  return (
+    <article className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm">
+      <div className="flex flex-wrap items-center gap-3">
+        <span className="font-mono text-xs font-black rounded-full bg-emerald-100 text-emerald-900 dark:bg-emerald-900/40 dark:text-emerald-200 px-3 py-1">
+          {deployment.environment}
+        </span>
+        <span className="font-mono text-xs font-black rounded-full bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-200 px-3 py-1">
+          {deployment.state}
+        </span>
+        <span className="text-sm font-bold text-slate-500 dark:text-slate-400">
+          {formatDeploymentTime(deployment.createdAt)}
+        </span>
+      </div>
+      <h2 className="mt-3 text-lg md:text-xl font-black text-slate-900 dark:text-white">
+        {deployment.subject}
+      </h2>
+      <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
+        <span className="font-mono">{deployment.shortSha}</span>
+        {deployment.description ? ` · ${deployment.description}` : ''}
+      </p>
+      {deployment.url && (
+        <a
+          href={deployment.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-3 inline-flex text-sm font-bold text-indigo-700 dark:text-indigo-300 hover:underline"
+        >
+          Avaa deployment
+        </a>
+      )}
+    </article>
+  );
+}
+
 function WorktreeRow({ change }: { change: ChangelogWorktreeChange }) {
   return (
     <li className="flex flex-wrap items-center gap-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 px-4 py-3">
@@ -96,7 +147,32 @@ function App() {
           <p className="text-sm text-slate-500 dark:text-slate-400">
             Päivitetty: <span className="font-bold">{CHANGELOG_GENERATED_AT}</span>
           </p>
+          <p className="text-sm text-slate-500 dark:text-slate-400">
+            Lähde: <span className="font-bold">{CHANGELOG_SOURCE === 'github-api' ? 'GitHub deployments' : 'paikallinen git-fallback'}</span>
+          </p>
         </header>
+
+        <section className="space-y-4">
+          <div className="flex flex-wrap items-baseline gap-3">
+            <h2 className="text-2xl md:text-3xl font-black">GitHub Pages -deployt</h2>
+            <span className="text-sm text-slate-500 dark:text-slate-400">
+              {CHANGELOG_DEPLOYMENTS.length} merkintää
+            </span>
+          </div>
+          {CHANGELOG_DEPLOYMENTS.length === 0 ? (
+            <p className="rounded-2xl border border-dashed border-slate-300 dark:border-slate-700 bg-white/60 dark:bg-slate-900/40 p-5 text-slate-600 dark:text-slate-300">
+              Deployment-historiaa ei saatu GitHub API:sta tässä ajossa. Buildissä käytetään
+              silloin paikallista fallbackia, mutta GitHub Actionsissa tämä osio täyttyy
+              oikeasta deployments-sivusta haetulla datalla.
+            </p>
+          ) : (
+            <div className="grid gap-4">
+              {CHANGELOG_DEPLOYMENTS.map(deployment => (
+                <DeploymentCard key={deployment.id} deployment={deployment} />
+              ))}
+            </div>
+          )}
+        </section>
 
         <section className="rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 md:p-8 shadow-sm space-y-4">
           <div className="flex flex-wrap items-baseline gap-3">

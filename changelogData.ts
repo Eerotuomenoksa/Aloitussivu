@@ -10,8 +10,29 @@ export type ChangelogCommit = {
   files: string[];
 };
 
-export const CHANGELOG_GENERATED_AT = "30.4.2026 klo 12.15";
+export type ChangelogDeployment = {
+  id: number;
+  environment: string;
+  createdAt: string;
+  state: string;
+  description: string;
+  sha: string;
+  shortSha: string;
+  subject: string;
+  url: string;
+};
+
+export const CHANGELOG_GENERATED_AT = "30.4.2026 klo 12.34";
+export const CHANGELOG_SOURCE = "git-fallback";
 export const CHANGELOG_WORKTREE_CHANGES: ChangelogWorktreeChange[] = [
+  {
+    "status": "modified",
+    "path": "App.tsx"
+  },
+  {
+    "status": "modified",
+    "path": "changelogData.ts"
+  },
   {
     "status": "modified",
     "path": "docs/linkit.csv"
@@ -27,9 +48,26 @@ export const CHANGELOG_WORKTREE_CHANGES: ChangelogWorktreeChange[] = [
   {
     "status": "modified",
     "path": "muutosloki.tsx"
+  },
+  {
+    "status": "modified",
+    "path": "scripts/update-changelog.mjs"
   }
 ];
+export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
+  {
+    "hash": "52a5969808d8536596d6f3c923c0ba96b9bb2fa9",
+    "date": "2026-04-30",
+    "subject": "muutosloki lisätty",
+    "files": [
+      "changelogData.ts",
+      "docs/linkit.csv",
+      "docs/linkit.md",
+      "docs/yllapito-linkkiloki.csv",
+      "muutosloki.tsx"
+    ]
+  },
   {
     "hash": "3459ef3d54a07518525195600ea9db4986841ad7",
     "date": "2026-04-30",
@@ -150,21 +188,6 @@ export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
       "municipalRegistry.ts",
       "services/rssService.ts",
       "types.ts"
-    ]
-  },
-  {
-    "hash": "758cf5b3b450c7abb6416fdcaeb58f18d16cb2a0",
-    "date": "2026-04-26",
-    "subject": "Lisätty ääniohjaus ja parannettu käyttöliittymää. Ääniohjauksella käyttäjät voivat nyt navigoida sovelluksessa ja suorittaa toimintoja äänikomennoilla, mikä parantaa saavutettavuutta ja käyttökokemusta. Käyttöliittymään on lisätty uusia elementtejä ja parannettu vanhoja, jotta sovellus olisi entistä intuitiivisempi ja visuaalisesti miellyttävämpi. Näiden muutosten myötä sovellus tarjoaa entistä paremman käyttökokemuksen kaikille käyttäjille.",
-    "files": [
-      ".claude/settings.json",
-      "App.tsx",
-      "components/InfoModal.tsx",
-      "components/ProviderModal.tsx",
-      "components/QuickLinks.tsx",
-      "constants.tsx",
-      "types.ts",
-      "vite.config.ts"
     ]
   }
 ];
