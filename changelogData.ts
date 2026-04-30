@@ -21,16 +21,20 @@ export type ChangelogCommit = {
   subject: string;
 };
 
-export const CHANGELOG_GENERATED_AT = "30.4.2026 klo 13.51";
+export const CHANGELOG_GENERATED_AT = "30.4.2026 klo 14.00";
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
   "Muutosloki muutettiin selkokieliseksi kehittäjäsivuksi, joka näyttää muutokset ilman tiedostolinkkejä.",
   "Pääsivulle lisättiin beta-merkintä sekä linkki muutoslokiin.",
-  "Paikallisiin linkkeihin lisättiin seurakunnat, ja niiden piilottaminen tallentuu nyt selaimen muistiin.",
   "Linkkien tarkistus, näkyvyyden hallinta ja ylläpitoloki päivittyvät automaattisesti buildin yhteydessä.",
   "Palvelukategorioita ja paikallisia linkkejä laajennettiin uusilla suomalaisilla palveluilla."
 ];
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
+  {
+    "hash": "93ed1b53ba9fb781e1be2d9ad42ef2ce3668fefd",
+    "date": "2026-04-30",
+    "subject": "srk poistettu"
+  },
   {
     "hash": "1d054d9a21e1ce4e620580a24bec5e033992aacf",
     "date": "2026-04-30",
@@ -125,10 +129,5 @@ export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
     "hash": "05dfff44a2f67b943517351c50c755ad33ed3c42",
     "date": "2026-02-09",
     "subject": "feat: Implement dynamic font size scaling"
-  },
-  {
-    "hash": "c290e0577010617675a4d01c4ed213df5daba687",
-    "date": "2026-02-09",
-    "subject": "feat: Improve UI and Gemini integration"
   }
 ];

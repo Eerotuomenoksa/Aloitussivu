@@ -309,6 +309,7 @@ export const SHORTCUTS: Shortcut[] = [
     providers: [
       { name: 'Poliisi', url: 'https://www.poliisi.fi' },
       { name: 'Huijausinfo', url: 'https://www.huijausinfo.fi' },
+      { name: 'Suvanto ry', url: 'https://www.suvantory.fi/' },
       { name: 'Kyberturvallisuuskeskus', url: 'https://www.kyberturvallisuuskeskus.fi' },
       { name: '112.fi - Hätäkeskus', url: 'https://112.fi' },
       { name: 'Poliisi', url: 'https://poliisi.fi' },

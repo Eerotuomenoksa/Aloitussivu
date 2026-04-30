@@ -85,9 +85,7 @@ const App: React.FC = () => {
       >
 
         {/* Yläpalkki */}
-        <nav className="flex flex-wrap justify-end gap-3" aria-label="Asetukset">
-
-          {/* Tekstikoko: A− | nro | A+ sekä palautuspainike */}
+        <nav className="flex flex-wrap items-center gap-3" aria-label="Asetukset">
           <div className="flex items-center gap-2">
             <div className="flex items-stretch rounded-full bg-yellow-400 border-b-4 border-yellow-600 shadow-md overflow-hidden" role="group" aria-label="Tekstikoko">
               <button
@@ -121,10 +119,13 @@ const App: React.FC = () => {
             )}
           </div>
 
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex-1 flex justify-center">
             <span className="text-sm font-black uppercase tracking-wide text-amber-700 dark:text-amber-300">
               Beta · sivusto on vielä kehitteillä
             </span>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2 md:gap-3 ml-auto">
             <a
               href="./muutosloki.html"
               className="text-sm font-black text-indigo-700 dark:text-indigo-300 hover:underline"
@@ -137,21 +138,21 @@ const App: React.FC = () => {
 
           <button
             onClick={() => setIsHomepageOpen(true)}
-            className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-full font-black text-lg transition-all active:scale-95 shadow-md border-b-4 border-indigo-900 focus:ring-4 focus:ring-indigo-300"
+            className="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-3 rounded-full font-black text-lg transition-all active:scale-95 shadow-md border-b-4 border-indigo-900 focus:ring-4 focus:ring-indigo-300"
           >
             🏠 Ohje
           </button>
 
           <button
             onClick={() => setIsInfoOpen(true)}
-            className="bg-slate-200 hover:bg-slate-300 text-slate-900 px-6 py-3 rounded-full font-black text-lg transition-all active:scale-95 shadow-md border-b-4 border-slate-400 focus:ring-4 focus:ring-slate-300"
+            className="bg-slate-200 hover:bg-slate-300 text-slate-900 px-5 py-3 rounded-full font-black text-lg transition-all active:scale-95 shadow-md border-b-4 border-slate-400 focus:ring-4 focus:ring-slate-300"
           >
             ℹ️ Tietoa
           </button>
 
           <button
             onClick={toggleDarkMode}
-            className={`${isDarkMode ? 'bg-amber-100 text-amber-950' : 'bg-slate-900 text-white'} px-6 py-3 rounded-full font-black text-lg transition-all active:scale-95 shadow-md focus:ring-4 focus:ring-blue-300`}
+            className={`${isDarkMode ? 'bg-amber-100 text-amber-950' : 'bg-slate-900 text-white'} px-5 py-3 rounded-full font-black text-lg transition-all active:scale-95 shadow-md focus:ring-4 focus:ring-blue-300`}
             aria-label={isDarkMode ? 'Vaihda vaaleaan teemaan' : 'Vaihda tummaan teemaan'}
           >
             {isDarkMode ? '☀️' : '🌙'}
