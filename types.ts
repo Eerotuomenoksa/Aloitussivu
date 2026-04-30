@@ -48,6 +48,15 @@ export interface NearbyGuidancePlace extends SeniorSurfGuidancePlace {
   distanceKm: number;
 }
 
+export type CalendarEventType = 'flag' | 'holiday' | 'observance';
+
+export interface CalendarEvent {
+  date: string;
+  name: string;
+  type: CalendarEventType;
+  flagType?: 'official' | 'established' | 'recommended';
+}
+
 export interface RssFeedConfig {
   name: string;
   url: string;

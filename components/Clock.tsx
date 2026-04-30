@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { getTodayEvents } from '../services/holidayService';
 
 interface ClockProps {
   fontSizeStep?: number;
@@ -13,6 +14,7 @@ const Clock: React.FC<ClockProps> = ({ fontSizeStep = 0 }) => {
   }, []);
 
   const timeString = time.toLocaleTimeString('fi-FI', { hour: '2-digit', minute: '2-digit' });
+  const todayEvents = getTodayEvents(time);
   const dateString = time.toLocaleDateString('fi-FI', { 
     weekday: 'long', 
     day: 'numeric', 
@@ -46,6 +48,18 @@ const Clock: React.FC<ClockProps> = ({ fontSizeStep = 0 }) => {
       <p className={`text-slate-800 dark:text-slate-200 capitalize font-bold tracking-tight transition-all duration-300 ${dateSizes[fontSizeStep]}`}>
         {dateString}
       </p>
+      {todayEvents.length > 0 && (
+        <div className="space-y-2 pt-2">
+          {todayEvents.map((event) => (
+            <p
+              key={`${event.date}-${event.name}`}
+              className="inline-flex mr-2 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-100 px-4 py-2 text-base md:text-xl font-black"
+            >
+              {event.name}
+            </p>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
