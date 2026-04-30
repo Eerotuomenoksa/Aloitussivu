@@ -1,7 +1,8 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { SHORTCUTS } from '../constants';
-import { Shortcut, Favorite } from '../types';
+import { getLocalizedShortcuts } from '../localServices';
+import { Shortcut, Favorite, LocalityInfo } from '../types';
 
 type SpeechState = 'idle' | 'listening' | 'unsupported';
 
@@ -10,6 +11,7 @@ interface QuickLinksProps {
   fontSizeStep?: number;
   favorites: Favorite[];
   onToggleFavorite: (fav: Favorite) => void;
+  locality: LocalityInfo | null;
 }
 
 type LinkResult = { name: string; url: string; color: string; categoryName: string; categoryIcon: string };
@@ -23,7 +25,7 @@ const rowColors = [
   'bg-brand-orange',
 ];
 
-const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep = 0, favorites, onToggleFavorite }) => {
+const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep = 0, favorites, onToggleFavorite, locality }) => {
   const [search, setSearch] = useState('');
   const [speechState, setSpeechState] = useState<SpeechState>('idle');
   const recognitionRef = useRef<any>(null);
@@ -59,7 +61,8 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
     }
   };
 
-  const sortedShortcuts = [...SHORTCUTS].sort((a, b) => a.name.localeCompare(b.name, 'fi'));
+  const shortcuts = getLocalizedShortcuts(SHORTCUTS, locality);
+  const sortedShortcuts = [...shortcuts].sort((a, b) => a.name.localeCompare(b.name, 'fi'));
 
   const iconClasses = [
     'text-4xl md:text-5xl',

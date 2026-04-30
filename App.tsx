@@ -8,12 +8,14 @@ import ProviderModal from './components/ProviderModal';
 import InfoModal from './components/InfoModal';
 import HomepageModal from './components/HomepageModal';
 import SearchBar from './components/SearchBar';
-import { Shortcut, Favorite } from './types';
+import RegionalServicesPanel from './components/RegionalServicesPanel';
+import { Shortcut, Favorite, LocalityInfo } from './types';
 
 const App: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<Shortcut | null>(null);
   const [isInfoOpen, setIsInfoOpen] = useState(false);
   const [isHomepageOpen, setIsHomepageOpen] = useState(false);
+  const [locality, setLocality] = useState<LocalityInfo | null>(null);
 
   const [isDarkMode, setIsDarkMode] = useState(() => {
     return localStorage.getItem('isDarkMode') === 'true';
@@ -143,7 +145,7 @@ const App: React.FC = () => {
               <Clock fontSizeStep={fontSizeStep} />
             </div>
             <div className="lg:col-span-3">
-              <WeatherCard />
+              <WeatherCard onLocationResolved={setLocality} />
             </div>
             <div className="lg:col-span-4">
               <Assistant />
@@ -153,12 +155,13 @@ const App: React.FC = () => {
 
         <main className="space-y-10 animate-in [animation-delay:200ms]">
           <SearchBar fontSizeStep={fontSizeStep} />
+          <RegionalServicesPanel locality={locality} fontSizeStep={fontSizeStep} />
 
           <section className="space-y-8">
             <h2 className={`font-black text-slate-900 dark:text-white tracking-tighter transition-all duration-300 ${headingClasses[fontSizeStep]}`}>
               Valitse palvelu
             </h2>
-            <QuickLinks onSelectCategory={setSelectedCategory} fontSizeStep={fontSizeStep} favorites={favorites} onToggleFavorite={toggleFavorite} />
+            <QuickLinks onSelectCategory={setSelectedCategory} fontSizeStep={fontSizeStep} favorites={favorites} onToggleFavorite={toggleFavorite} locality={locality} />
           </section>
         </main>
 
@@ -190,3 +193,4 @@ const App: React.FC = () => {
 };
 
 export default App;
+
