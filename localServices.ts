@@ -122,6 +122,10 @@ const localServiceMap: Record<string, LocalServiceConfig> = {
     publicTransport: { name: 'HSL Reittiopas', url: 'https://www.hsl.fi/', group: 'Paikalliset palvelut' },
     library: { name: 'Helmet-kirjastot', url: 'https://www.helmet.fi/', group: 'Paikalliset palvelut' },
     municipality: { name: 'Vantaan palvelut', url: 'https://www.vantaa.fi/fi', group: 'Paikalliset palvelut' },
+    rssFeeds: [
+      { name: 'Vantaan uutiset', url: 'https://www.vantaa.fi/fi/rss/topical/121' },
+      { name: 'Vantaan tiedotteet', url: 'https://www.vantaa.fi/fi/rss/topical/119' },
+    ],
   },
   kauniainen: {
     publicTransport: { name: 'HSL Reittiopas', url: 'https://www.hsl.fi/', group: 'Paikalliset palvelut' },
@@ -255,8 +259,12 @@ export const getRegionalRssFeeds = (context: RegionalContext): RssFeedConfig[] =
   const key = normalizeMunicipality(municipality);
   const exact = localServiceMap[key];
 
+  const exactFeeds = exact?.rssFeeds ?? [];
+  if (exactFeeds.length > 0) {
+    return uniqueFeeds(exactFeeds);
+  }
+
   return uniqueFeeds([
-    ...(exact?.rssFeeds ?? []),
     createGoogleNewsRss(municipality),
   ]);
 };

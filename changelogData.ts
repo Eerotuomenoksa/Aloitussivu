@@ -21,14 +21,21 @@ export type ChangelogCommit = {
   subject: string;
 };
 
-export const CHANGELOG_GENERATED_AT = "30.4.2026 klo 14.50";
+export const CHANGELOG_GENERATED_AT = "30.4.2026 klo 15.03";
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
   "Muutosloki muutettiin selkokieliseksi kehittäjäsivuksi, joka näyttää muutokset ilman tiedostolinkkejä.",
+  "Pääsivulle lisättiin beta-merkintä sekä linkki muutoslokiin.",
+  "Paikallisiin linkkeihin lisättiin seurakunnat, ja niiden piilottaminen tallentuu nyt selaimen muistiin.",
   "Linkkien tarkistus, näkyvyyden hallinta ja ylläpitoloki päivittyvät automaattisesti buildin yhteydessä.",
   "Palvelukategorioita ja paikallisia linkkejä laajennettiin uusilla suomalaisilla palveluilla."
 ];
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
+  {
+    "hash": "157ae8f63f5be05e382bdec0ef69860986f28f60",
+    "date": "2026-04-30",
+    "subject": "Add theatre member links"
+  },
   {
     "hash": "cbe4f8d4ffd114250a3abbb8e4e58c751bb11467",
     "date": "2026-04-30",
@@ -123,10 +130,5 @@ export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
     "hash": "2626f6fed8c52ec20d1c41c8c75cda36b78fe4b7",
     "date": "2026-04-26",
     "subject": "koodi korjauksia"
-  },
-  {
-    "hash": "49b3b7fbd2ea631338eca097a6371dcace0017a5",
-    "date": "2026-04-26",
-    "subject": "feat: Update app name and links"
   }
 ];

@@ -9,6 +9,7 @@ interface RegionalServicesPanelProps {
   locality: LocalityInfo | null;
   fontSizeStep?: number;
   onReportLink?: (draft: LinkReportDraft) => void;
+  showNews?: boolean;
 }
 
 const textClasses = [
@@ -65,7 +66,7 @@ const ServiceLink: React.FC<{ provider: Provider; index: number; fontSizeStep: n
   );
 };
 
-const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality, fontSizeStep = 0, onReportLink }) => {
+const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality, fontSizeStep = 0, onReportLink, showNews = true }) => {
   const [query, setQuery] = useState('');
   const context = useMemo(() => resolveRegionalContext(query, locality), [query, locality]);
   const services = useMemo(() => context ? filterVisibleProviders(getRegionalProviders(context)) ?? [] : [], [context]);
@@ -130,24 +131,26 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
 
           <NearbyGuidancePlaces locality={locality} fontSizeStep={fontSizeStep} />
 
-          <div className="space-y-3">
-            <div className="flex items-center justify-between gap-4">
-              <h3 className={`font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest ${smallTextClasses[fontSizeStep]}`}>
-                Paikalliset uutiset
-              </h3>
-              {fallbackNewsUrl && (
-                <a
-                  href={fallbackNewsUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`font-black text-brand-indigo dark:text-blue-300 hover:underline ${smallTextClasses[fontSizeStep]}`}
-                >
-                  Lisää uutisia
-                </a>
-              )}
+          {showNews && (
+            <div className="space-y-3">
+              <div className="flex items-center justify-between gap-4">
+                <h3 className={`font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest ${smallTextClasses[fontSizeStep]}`}>
+                  Paikalliset uutiset
+                </h3>
+                {fallbackNewsUrl && (
+                  <a
+                    href={fallbackNewsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`font-black text-brand-indigo dark:text-blue-300 hover:underline ${smallTextClasses[fontSizeStep]}`}
+                  >
+                    Lisää uutisia
+                  </a>
+                )}
+              </div>
+              <LocalNewsHeadlines feeds={rssFeeds} fallbackUrl={fallbackNewsUrl} fontSizeStep={fontSizeStep} />
             </div>
-            <LocalNewsHeadlines feeds={rssFeeds} fallbackUrl={fallbackNewsUrl} fontSizeStep={fontSizeStep} />
-          </div>
+          )}
         </div>
       ) : (
         <div className="rounded-2xl border-4 border-dashed border-slate-200 dark:border-slate-700 p-8 text-center">

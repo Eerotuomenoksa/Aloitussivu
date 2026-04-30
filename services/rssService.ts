@@ -84,6 +84,12 @@ const fetchOneFeed = async (feed: RssFeedConfig) => {
   }
 };
 
+const getPublishedAtTime = (value?: string) => {
+  if (!value) return Number.NEGATIVE_INFINITY;
+  const time = Date.parse(value);
+  return Number.isNaN(time) ? Number.NEGATIVE_INFINITY : time;
+};
+
 export const fetchLocalNewsHeadlines = async (feeds: RssFeedConfig[], limit = 3): Promise<LocalNewsHeadline[]> => {
   const headlines: LocalNewsHeadline[] = [];
 
@@ -93,11 +99,10 @@ export const fetchLocalNewsHeadlines = async (feeds: RssFeedConfig[], limit = 3)
     } catch {
       // Continue with the next feed; one broken municipal RSS should not hide other local headlines.
     }
-
-    if (headlines.length >= limit) break;
   }
 
   return headlines
     .filter((headline, index, all) => all.findIndex((item) => item.link === headline.link) === index)
+    .sort((a, b) => getPublishedAtTime(b.publishedAt) - getPublishedAtTime(a.publishedAt))
     .slice(0, limit);
 };

@@ -20,12 +20,39 @@ const MAX_UI_SCALE = 200;
 const DEFAULT_UI_SCALE = 100;
 const UI_SCALE_STEP = 10;
 
+interface UiVisibilityState {
+  regionalServices: boolean;
+  regionalNews: boolean;
+  weather: boolean;
+  assistant: boolean;
+  googleSearch: boolean;
+}
+
+const defaultUiVisibility: UiVisibilityState = {
+  regionalServices: true,
+  regionalNews: true,
+  weather: true,
+  assistant: true,
+  googleSearch: true,
+};
+
 const App: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<Shortcut | null>(null);
   const [isInfoOpen, setIsInfoOpen] = useState(false);
   const [isHomepageOpen, setIsHomepageOpen] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [locality, setLocality] = useState<LocalityInfo | null>(null);
   const [reportDraft, setReportDraft] = useState<LinkReportDraft | null>(null);
+  const [uiVisibility, setUiVisibility] = useState<UiVisibilityState>(() => {
+    try {
+      const saved = localStorage.getItem('uiVisibility');
+      if (!saved) return defaultUiVisibility;
+      const parsed = JSON.parse(saved) as Partial<UiVisibilityState>;
+      return { ...defaultUiVisibility, ...parsed };
+    } catch {
+      return defaultUiVisibility;
+    }
+  });
 
   const [isDarkMode, setIsDarkMode] = useState(() => {
     return localStorage.getItem('isDarkMode') === 'true';
@@ -69,6 +96,10 @@ const App: React.FC = () => {
     localStorage.setItem('uiScale', String(uiScale));
   }, [uiScale]);
 
+  useEffect(() => {
+    localStorage.setItem('uiVisibility', JSON.stringify(uiVisibility));
+  }, [uiVisibility]);
+
   const toggleDarkMode = useCallback(() => setIsDarkMode(prev => !prev), []);
   const decreaseFont = useCallback(() => setUiScale(prev => Math.max(MIN_UI_SCALE, prev - UI_SCALE_STEP)), []);
   const increaseFont = useCallback(() => setUiScale(prev => Math.min(MAX_UI_SCALE, prev + UI_SCALE_STEP)), []);
@@ -80,16 +111,19 @@ const App: React.FC = () => {
   const openReportModal = useCallback((draft: LinkReportDraft) => setReportDraft(draft), []);
   const closeReportModal = useCallback(() => setReportDraft(null), []);
   const selectedShortcut = selectedCategory ? mergeApprovedLinksIntoShortcuts([selectedCategory])[0] ?? selectedCategory : null;
+  const updateVisibility = useCallback((key: keyof UiVisibilityState, value: boolean) => {
+    setUiVisibility(prev => ({ ...prev, [key]: value }));
+  }, []);
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 transition-all duration-300 text-base overflow-x-auto">
       <div
-        className="p-4 md:p-8 lg:p-12 max-w-[1900px] mx-auto space-y-12 transition-all duration-300"
+        className="relative p-4 md:p-8 lg:p-12 max-w-[1900px] mx-auto space-y-12 transition-all duration-300"
         style={{ zoom: uiZoom }}
       >
 
         {/* Yläpalkki */}
-        <nav className="flex flex-wrap items-center gap-3" aria-label="Asetukset">
+        <nav className="relative flex flex-wrap items-center gap-3" aria-label="Asetukset">
           <div className="flex items-center gap-2">
             <div className="flex items-stretch rounded-full bg-yellow-400 border-b-4 border-yellow-600 shadow-md overflow-hidden" role="group" aria-label="Tekstikoko">
               <button
@@ -161,25 +195,87 @@ const App: React.FC = () => {
           >
             {isDarkMode ? '☀️' : '🌙'}
           </button>
+
+          <button
+            type="button"
+            onClick={() => setIsSettingsOpen(prev => !prev)}
+            className="bg-slate-200 hover:bg-slate-300 text-slate-900 px-5 py-3 rounded-full font-black text-lg transition-all active:scale-95 shadow-md border-b-4 border-slate-400 focus:ring-4 focus:ring-slate-300"
+            aria-label="Avaa asetukset"
+            aria-expanded={isSettingsOpen}
+            aria-haspopup="menu"
+          >
+            ⚙️
+          </button>
         </nav>
 
+        {isSettingsOpen && (
+          <div
+            className="absolute right-4 md:right-8 lg:right-12 top-[5.5rem] z-30 w-[min(24rem,calc(100vw-2rem))] rounded-3xl border-4 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-2xl p-5"
+            role="menu"
+            aria-label="Asetukset"
+          >
+            <div className="flex items-center justify-between gap-4 mb-4">
+              <h2 className="font-black text-slate-900 dark:text-white text-xl">Asetukset</h2>
+              <button
+                type="button"
+                onClick={() => setIsSettingsOpen(false)}
+                className="rounded-full px-3 py-2 text-sm font-black bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200"
+              >
+                Sulje
+              </button>
+            </div>
+
+            <div className="space-y-3">
+              {[
+                { key: 'regionalServices', label: 'Näytä alueelliset palvelut' },
+                { key: 'regionalNews', label: 'Näytä uutiset' },
+                { key: 'weather', label: 'Näytä sää' },
+                { key: 'assistant', label: 'Näytä tekoäly' },
+                { key: 'googleSearch', label: 'Näytä Google haku' },
+              ].map((item) => (
+                <label key={item.key} className="flex items-center justify-between gap-4 rounded-2xl border-2 border-slate-200 dark:border-slate-700 px-4 py-3 cursor-pointer">
+                  <span className="font-bold text-slate-800 dark:text-slate-100">{item.label}</span>
+                  <input
+                    type="checkbox"
+                    checked={uiVisibility[item.key as keyof UiVisibilityState]}
+                    onChange={(event) => updateVisibility(item.key as keyof UiVisibilityState, event.target.checked)}
+                    className="h-5 w-5 accent-indigo-600"
+                    aria-label={item.label}
+                  />
+                </label>
+              ))}
+            </div>
+          </div>
+        )}
+
         <header className="animate-in">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-            <div className="lg:col-span-5 flex flex-col justify-center">
+          <div className="flex flex-col xl:flex-row gap-8 items-stretch">
+            <div className="xl:flex-[1.2] flex flex-col justify-center">
               <Clock fontSizeStep={fontSizeStep} />
             </div>
-            <div className="lg:col-span-3">
-              <WeatherCard onLocationResolved={setLocality} />
-            </div>
-            <div className="lg:col-span-4">
-              <Assistant />
-            </div>
+            {uiVisibility.weather && (
+              <div className="xl:flex-1">
+                <WeatherCard onLocationResolved={setLocality} />
+              </div>
+            )}
+            {uiVisibility.assistant && (
+              <div className="xl:flex-1">
+                <Assistant />
+              </div>
+            )}
           </div>
         </header>
 
         <main className="space-y-10 animate-in [animation-delay:200ms]">
-          <SearchBar fontSizeStep={fontSizeStep} />
-          <RegionalServicesPanel locality={locality} fontSizeStep={fontSizeStep} onReportLink={openReportModal} />
+          {uiVisibility.googleSearch && <SearchBar fontSizeStep={fontSizeStep} />}
+          {uiVisibility.regionalServices && (
+            <RegionalServicesPanel
+              locality={locality}
+              fontSizeStep={fontSizeStep}
+              onReportLink={openReportModal}
+              showNews={uiVisibility.regionalNews}
+            />
+          )}
 
           <section className="space-y-8">
             <h2 className="font-black text-slate-900 dark:text-white tracking-tighter transition-all duration-300 text-4xl md:text-6xl">

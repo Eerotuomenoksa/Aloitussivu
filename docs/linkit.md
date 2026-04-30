@@ -1,6 +1,6 @@
 # Palvelun linkit
 
-Päivitetty: 30.4.2026 klo 14.50
+Päivitetty: 30.4.2026 klo 15.03
 
 Tämä tiedosto summaa sovelluksessa olevat linkit. Varsinainen avattava taulukko on tiedostossa `docs/linkit.csv`.
 
@@ -14,9 +14,9 @@ Tämä tiedosto summaa sovelluksessa olevat linkit. Varsinainen avattava taulukk
 
 Yhteensä: 623 linkkiä.
 
-Tarkistusvirheitä: 6.
-Huomioita: 94.
-Piilotettu loppukäyttäjiltä: 6 linkkiä.
+Tarkistusvirheitä: 8.
+Huomioita: 93.
+Piilotettu loppukäyttäjiltä: 8 linkkiä.
 
 Turvallisuustarkistus on perustarkistus: URL-muoto, sallittu protokolla, HTTPS, kirjautumistietojen puuttuminen sekä paikallisten/sisäverkon osoitteiden esto. Se ei korvaa haittasivustojen erillistä mainearviota.
 
