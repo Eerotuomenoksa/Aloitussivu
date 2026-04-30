@@ -10,20 +10,8 @@ export type ChangelogCommit = {
   files: string[];
 };
 
-export const CHANGELOG_GENERATED_AT = "30.4.2026 klo 12.12";
+export const CHANGELOG_GENERATED_AT = "30.4.2026 klo 12.15";
 export const CHANGELOG_WORKTREE_CHANGES: ChangelogWorktreeChange[] = [
-  {
-    "status": "untracked",
-    "path": "changelogData.ts"
-  },
-  {
-    "status": "modified",
-    "path": "components/InfoModal.tsx"
-  },
-  {
-    "status": "modified",
-    "path": "constants.tsx"
-  },
   {
     "status": "modified",
     "path": "docs/linkit.csv"
@@ -38,42 +26,32 @@ export const CHANGELOG_WORKTREE_CHANGES: ChangelogWorktreeChange[] = [
   },
   {
     "status": "modified",
-    "path": "linkHealth.ts"
-  },
-  {
-    "status": "untracked",
-    "path": "linkStats.ts"
-  },
-  {
-    "status": "untracked",
-    "path": "localStats.ts"
-  },
-  {
-    "status": "untracked",
-    "path": "muutosloki.html"
-  },
-  {
-    "status": "untracked",
     "path": "muutosloki.tsx"
-  },
-  {
-    "status": "modified",
-    "path": "package.json"
-  },
-  {
-    "status": "untracked",
-    "path": "scripts/update-changelog.mjs"
-  },
-  {
-    "status": "modified",
-    "path": "scripts/update-links.mjs"
-  },
-  {
-    "status": "modified",
-    "path": "vite.config.ts"
   }
 ];
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
+  {
+    "hash": "3459ef3d54a07518525195600ea9db4986841ad7",
+    "date": "2026-04-30",
+    "subject": "Lisätty ehdotettuja linkkejä",
+    "files": [
+      "changelogData.ts",
+      "components/InfoModal.tsx",
+      "constants.tsx",
+      "docs/linkit.csv",
+      "docs/linkit.md",
+      "docs/yllapito-linkkiloki.csv",
+      "linkHealth.ts",
+      "linkStats.ts",
+      "localStats.ts",
+      "muutosloki.html",
+      "muutosloki.tsx",
+      "package.json",
+      "scripts/update-changelog.mjs",
+      "scripts/update-links.mjs",
+      "vite.config.ts"
+    ]
+  },
   {
     "hash": "74e507d03d87f16e8b49021494d2f45817cbaef9",
     "date": "2026-04-30",
@@ -186,21 +164,6 @@ export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
       "components/QuickLinks.tsx",
       "constants.tsx",
       "types.ts",
-      "vite.config.ts"
-    ]
-  },
-  {
-    "hash": "2626f6fed8c52ec20d1c41c8c75cda36b78fe4b7",
-    "date": "2026-04-26",
-    "subject": "koodi korjauksia",
-    "files": [
-      ".claude/settings.json",
-      ".github/workflows/deploy.yml",
-      ".gitignore",
-      "index.html",
-      "package-lock.json",
-      "services/geminiService.ts",
-      "tailwind.config.js",
       "vite.config.ts"
     ]
   }
