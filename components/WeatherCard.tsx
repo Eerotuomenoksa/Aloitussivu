@@ -26,7 +26,7 @@ const vantaaDistricts = new Set([
 ]);
 
 const WeatherCard: React.FC<WeatherCardProps> = ({ onLocationResolved }) => {
-  const [locationName, setLocationName] = useState<string>('Helsinki');
+  const [locationName, setLocationName] = useState<string>('Sijainti');
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -103,9 +103,9 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ onLocationResolved }) => {
           condition: getWeatherText(weatherData.current_weather.weathercode),
           icon: getWeatherIcon(weatherData.current_weather.weathercode)
         });
-        setLocationName(city);
+        setLocationName(shouldLocalizeLinks ? city : 'Helsinki');
         if (shouldLocalizeLinks) {
-          onLocationResolved?.({ municipality, displayName: city });
+          onLocationResolved?.({ municipality, displayName: city, lat, lon });
         }
         setError(null);
       } catch (err) {

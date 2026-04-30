@@ -60,7 +60,7 @@ const App: React.FC = () => {
   }, [isDarkMode]);
 
   useEffect(() => {
-    document.documentElement.style.fontSize = `${uiScale}%`;
+    document.documentElement.style.fontSize = '100%';
     localStorage.setItem('uiScale', String(uiScale));
   }, [uiScale]);
 
@@ -69,10 +69,14 @@ const App: React.FC = () => {
   const increaseFont = useCallback(() => setUiScale(prev => Math.min(MAX_UI_SCALE, prev + UI_SCALE_STEP)), []);
   const resetFont = useCallback(() => setUiScale(DEFAULT_UI_SCALE), []);
   const fontSizeStep = 0;
+  const uiZoom = uiScale / 100;
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 transition-all duration-300 text-base">
-      <div className="p-4 md:p-8 lg:p-12 max-w-[1900px] mx-auto space-y-12">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 transition-all duration-300 text-base overflow-x-auto">
+      <div
+        className="p-4 md:p-8 lg:p-12 max-w-[1900px] mx-auto space-y-12 transition-all duration-300"
+        style={{ zoom: uiZoom }}
+      >
 
         {/* Yläpalkki */}
         <nav className="flex flex-wrap justify-end gap-3" aria-label="Asetukset">

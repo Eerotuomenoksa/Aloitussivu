@@ -20,6 +20,32 @@ export interface RegionalContext {
 export interface LocalityInfo {
   municipality: string;
   displayName: string;
+  lat?: number;
+  lon?: number;
+}
+
+export interface SeniorSurfGuidanceOrganizer {
+  name: string;
+  url?: string | null;
+  email?: string | null;
+  phone?: string | null;
+  footnote?: string | null;
+}
+
+export interface SeniorSurfGuidancePlace {
+  id: number;
+  name: string;
+  address: string;
+  postalcode: string;
+  postoffice: string;
+  wellbeing_services_county?: string;
+  lat: number;
+  lng: number;
+  organizers: SeniorSurfGuidanceOrganizer[];
+}
+
+export interface NearbyGuidancePlace extends SeniorSurfGuidancePlace {
+  distanceKm: number;
 }
 
 export interface RssFeedConfig {

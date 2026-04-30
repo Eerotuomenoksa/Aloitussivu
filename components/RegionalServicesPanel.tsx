@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { getRegionalNewsProviders, getRegionalProviders, getRegionalRssFeeds, resolveRegionalContext } from '../localServices';
 import { LocalityInfo, Provider } from '../types';
 import LocalNewsHeadlines from './LocalNewsHeadlines';
+import NearbyGuidancePlaces from './NearbyGuidancePlaces';
 
 interface RegionalServicesPanelProps {
   locality: LocalityInfo | null;
@@ -97,6 +98,8 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-5">
             {services.map((provider, index) => <ServiceLink key={provider.url} provider={provider} index={index} fontSizeStep={fontSizeStep} />)}
           </div>
+
+          <NearbyGuidancePlaces locality={locality} fontSizeStep={fontSizeStep} />
 
           <div className="space-y-3">
             <div className="flex items-center justify-between gap-4">
