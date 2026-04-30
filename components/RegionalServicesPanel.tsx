@@ -56,7 +56,7 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
 
   return (
     <section className="space-y-6" aria-labelledby="regional-services-heading">
-      <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
+      <div className="flex flex-col xl:flex-row xl:items-end xl:justify-between gap-5">
         <div className="space-y-2">
           <h2 id="regional-services-heading" className="font-black text-slate-900 dark:text-white text-3xl md:text-5xl leading-tight">
             Alueelliset palvelut
@@ -65,32 +65,35 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
             Tunnistaa Tilastokeskuksen vuoden 2026 kuntaluokituksen kaikki 308 kuntaa ja nostaa esiin kunnan palvelut, hyvinvointialueen sekä paikallisia uutisotsikoita RSS-syötteistä.
           </p>
         </div>
-        <label className="w-full lg:max-w-xl">
-          <span className={`block font-black text-slate-700 dark:text-slate-200 mb-2 ${smallTextClasses[fontSizeStep]}`}>Kunta</span>
-          <input
-            type="search"
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-            placeholder={locality?.municipality ? `Sijainti: ${locality.municipality}` : 'Kirjoita kunta, esim. Lahti'}
-            className={`w-full rounded-2xl border-4 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white px-5 py-4 font-bold focus:outline-none focus:border-brand-indigo focus:ring-4 focus:ring-brand-indigo/20 ${textClasses[fontSizeStep]}`}
-            aria-label="Hae kuntaa"
-          />
-        </label>
+        <div className="w-full xl:max-w-3xl">
+          <div className="flex flex-col md:flex-row md:items-end gap-3">
+            <label className="flex-1">
+              <span className={`block font-black text-slate-700 dark:text-slate-200 mb-2 ${smallTextClasses[fontSizeStep]}`}>Kunta</span>
+              <input
+                type="search"
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                placeholder={locality?.municipality ? `Sijainti: ${locality.municipality}` : 'Kirjoita kunta, esim. Lahti'}
+                className={`w-full rounded-2xl border-4 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white px-5 py-4 font-bold focus:outline-none focus:border-brand-indigo focus:ring-4 focus:ring-brand-indigo/20 ${textClasses[fontSizeStep]}`}
+                aria-label="Hae kuntaa"
+              />
+            </label>
+            {context && (
+              <div className="rounded-2xl bg-white dark:bg-slate-800 border-4 border-slate-100 dark:border-slate-700 px-5 py-4 shadow-sm md:min-w-[12rem]">
+                <p className={`font-black text-slate-900 dark:text-white leading-tight ${textClasses[fontSizeStep]}`}>
+                  {context.municipality.name}
+                </p>
+              </div>
+            )}
+          </div>
+          <p className={`mt-2 text-slate-500 dark:text-slate-400 font-bold ${smallTextClasses[fontSizeStep]}`}>
+            Voit vaihtaa kuntaa kirjoittamalla uuden kunnan nimen.
+          </p>
+        </div>
       </div>
 
       {context ? (
         <div className="space-y-6">
-          <div className="rounded-2xl bg-white dark:bg-slate-800 border-4 border-slate-100 dark:border-slate-700 p-5 md:p-6 shadow-md">
-            <p className={`font-black text-slate-900 dark:text-white ${textClasses[fontSizeStep]}`}>
-              {context.municipality.name}
-            </p>
-            {context.municipality.wellbeingAreaName && (
-              <p className={`text-slate-600 dark:text-slate-300 font-bold mt-2 ${smallTextClasses[fontSizeStep]}`}>
-                {context.municipality.wellbeingAreaName}
-              </p>
-            )}
-          </div>
-
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-5">
             {services.map((provider, index) => <ServiceLink key={provider.url} provider={provider} index={index} fontSizeStep={fontSizeStep} />)}
           </div>
