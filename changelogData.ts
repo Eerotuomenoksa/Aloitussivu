@@ -21,13 +21,20 @@ export type ChangelogCommit = {
   subject: string;
 };
 
-export const CHANGELOG_GENERATED_AT = "30.4.2026 klo 14.13";
+export const CHANGELOG_GENERATED_AT = "30.4.2026 klo 14.35";
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
-  "Paikallisiin linkkeihin lisättiin seurakunnat, ja niiden piilottaminen tallentuu nyt selaimen muistiin.",
-  "Linkkien tarkistus, näkyvyyden hallinta ja ylläpitoloki päivittyvät automaattisesti buildin yhteydessä."
+  "Muutosloki muutettiin selkokieliseksi kehittäjäsivuksi, joka näyttää muutokset ilman tiedostolinkkejä.",
+  "Pääsivulle lisättiin beta-merkintä sekä linkki muutoslokiin.",
+  "Linkkien tarkistus, näkyvyyden hallinta ja ylläpitoloki päivittyvät automaattisesti buildin yhteydessä.",
+  "Palvelukategorioita ja paikallisia linkkejä laajennettiin uusilla suomalaisilla palveluilla."
 ];
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
+  {
+    "hash": "f26af5d59108e2d284f861ae857097fa985105a1",
+    "date": "2026-04-30",
+    "subject": "siirretty ilmoita linkistä nappulaa"
+  },
   {
     "hash": "3f14e72e3aed4e1e6c4f64974f04ffb72f9c699b",
     "date": "2026-04-30",
@@ -122,10 +129,5 @@ export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
     "hash": "e738e3f55815c672604e75ac6491be310b0d3f1b",
     "date": "2026-02-23",
     "subject": "feat: Refactor app entry point and metadata"
-  },
-  {
-    "hash": "ff97135e84cd7f7f32c626a67d1bf430fe329744",
-    "date": "2026-02-09",
-    "subject": "feat(App): Add aria-label to theme toggle button"
   }
 ];

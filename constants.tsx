@@ -38,6 +38,8 @@ export const SHORTCUTS: Shortcut[] = [
     providers: [
       { name: 'Ortodoksinen kirkko', url: 'https://www.ort.fi' },
       { name: 'Kirkon keskusteluapu', url: 'https://kirkonkeskusteluapu.fi' },
+      { name: 'TV7', url: 'https://www.tv7.fi' },
+      { name: 'Patmos', url: 'https://www.patmos.fi' },
       { name: 'Suomen ev.lut. kirkko', url: 'https://evl.fi' },
       { name: 'Kirkko ja kaupunki', url: 'https://www.kirkkojakaupunki.fi' },
       { name: 'Radio Dei', url: 'https://deiplus.fi/radiot' },
@@ -72,6 +74,8 @@ export const SHORTCUTS: Shortcut[] = [
       { name: 'Kirjasampo', url: 'https://www.kirjasampo.fi' },
       { name: 'Project Gutenberg', url: 'https://www.gutenberg.org' },
       { name: 'Celia', url: 'https://www.celia.fi' },
+      { name: 'Booky.fi', url: 'https://www.booky.fi' },
+      { name: 'Antikvaari', url: 'https://www.antikvaari.fi' },
       { name: 'Kirjasampo', url: 'https://www.kirjasampo.fi' },
       { name: 'Sähköiset kirjat (Ellibs)', url: 'https://www.ellibs.com/fi/' },
       { name: 'BookBeat', url: 'https://www.bookbeat.com/fi/' },
@@ -134,6 +138,7 @@ export const SHORTCUTS: Shortcut[] = [
       { name: 'Luontoon.fi', url: 'https://www.luontoon.fi' },
       { name: 'Suomen Latu', url: 'https://www.suomenlatu.fi' },
       { name: 'Luontoon.fi', url: 'https://www.luontoon.fi' },
+      { name: 'Muuttolintujen kevät', url: 'https://www.jyu.fi/fi/tutkimus/muuttolintujen-kevat' },
       { name: 'Retkipaikka', url: 'https://retkipaikka.fi' },
       { name: 'Luontoportti', url: 'https://www.luontoportti.com' },
       { name: 'Metsähallitus', url: 'https://www.metsa.fi' }

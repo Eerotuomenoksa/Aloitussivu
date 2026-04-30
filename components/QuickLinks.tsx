@@ -4,6 +4,7 @@ import { SHORTCUTS } from '../constants';
 import { getLocalizedShortcuts } from '../localServices';
 import { filterVisibleShortcuts, isLinkVisible, useLinkVisibilityVersion } from '../linkVisibility';
 import { Shortcut, Favorite, LocalityInfo, LinkReportDraft } from '../types';
+import { mergeApprovedLinksIntoShortcuts, useApprovedLinkSuggestionsVersion } from '../approvedLinks';
 
 type SpeechState = 'idle' | 'listening' | 'unsupported';
 
@@ -65,7 +66,9 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
 
   const shortcuts = filterVisibleShortcuts(getLocalizedShortcuts(SHORTCUTS, locality));
   useLinkVisibilityVersion();
-  const sortedShortcuts = [...shortcuts].sort((a, b) => a.name.localeCompare(b.name, 'fi'));
+  useApprovedLinkSuggestionsVersion();
+  const approvedShortcuts = mergeApprovedLinksIntoShortcuts(shortcuts);
+  const sortedShortcuts = [...approvedShortcuts].sort((a, b) => a.name.localeCompare(b.name, 'fi'));
   const visibleFavorites = favorites.filter((fav) => isLinkVisible(fav.url));
 
   const iconClasses = [

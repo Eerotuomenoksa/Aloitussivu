@@ -33,6 +33,8 @@ const getBlockedUrls = () => {
   return new Set([...BLOCKED_LINK_URLS, ...runtimeBlocked].map(normalizeUrl));
 };
 
+export const getLinkReports = () => readJsonArray(LINK_REPORTS_KEY) as LinkReportEntry[];
+
 export const isLinkVisible = (url?: string | null) => {
   if (!url) return false;
   return !getBlockedUrls().has(normalizeUrl(url));
@@ -54,7 +56,7 @@ export const filterVisibleShortcuts = (shortcuts: Shortcut[]) => shortcuts
   .filter((shortcut) => shortcut.providers ? shortcut.providers.length > 0 : isLinkVisible(shortcut.url));
 
 export const reportLink = (entry: LinkReportEntry) => {
-  const existingReports = readJsonArray(LINK_REPORTS_KEY) as LinkReportEntry[];
+  const existingReports = getLinkReports();
   const nextReports = [entry, ...existingReports].slice(0, 1000);
   try {
     if (typeof localStorage === 'undefined') return;

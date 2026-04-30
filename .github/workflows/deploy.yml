@@ -30,6 +30,8 @@ jobs:
         run: npm ci
 
       - name: Build
+        env:
+          VITE_EHDOTUKSET_PASSWORD_HASH: ${{ secrets.EHDOTUKSET_PASSWORD_HASH }}
         run: npm run build
 
       - uses: actions/upload-pages-artifact@v3

@@ -12,6 +12,8 @@ import SearchBar from './components/SearchBar';
 import RegionalServicesPanel from './components/RegionalServicesPanel';
 import { isLinkVisible, useLinkVisibilityVersion } from './linkVisibility';
 import { Shortcut, Favorite, LocalityInfo, LinkReportDraft } from './types';
+import { mergeApprovedLinksIntoShortcuts } from './approvedLinks';
+import { useApprovedLinkSuggestionsVersion } from './approvedLinks';
 
 const MIN_UI_SCALE = 50;
 const MAX_UI_SCALE = 200;
@@ -74,8 +76,10 @@ const App: React.FC = () => {
   const fontSizeStep = 0;
   const uiZoom = uiScale / 100;
   useLinkVisibilityVersion();
+  useApprovedLinkSuggestionsVersion();
   const openReportModal = useCallback((draft: LinkReportDraft) => setReportDraft(draft), []);
   const closeReportModal = useCallback(() => setReportDraft(null), []);
+  const selectedShortcut = selectedCategory ? mergeApprovedLinksIntoShortcuts([selectedCategory])[0] ?? selectedCategory : null;
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 transition-all duration-300 text-base overflow-x-auto">
@@ -214,7 +218,7 @@ const App: React.FC = () => {
         </footer>
 
         <ProviderModal
-          shortcut={selectedCategory}
+          shortcut={selectedShortcut}
           onClose={() => setSelectedCategory(null)}
           fontSizeStep={fontSizeStep}
           favorites={favorites}
