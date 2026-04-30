@@ -4,4 +4,6 @@ export const BLOCKED_LINK_URLS: string[] = [
   "https://haapavesi.fi/",
   "https://piki.verkkokirjasto.fi/",
   "https://www.aland.fi/",
+  "https://www.digihakemisto.net",
+  "https://www.vapaaehtoistyö.fi",
 ];

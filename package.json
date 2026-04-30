@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "prebuild": "npm run links",
+    "prebuild": "npm run links && npm run changelog",
     "build": "vite build",
     "links": "node scripts/update-links.mjs",
+    "changelog": "node scripts/update-changelog.mjs",
     "preview": "vite preview"
   },
   "dependencies": {

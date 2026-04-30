@@ -1,6 +1,8 @@
 
 import React from 'react';
 import { SHORTCUTS } from '../constants';
+import { LINK_STATS } from '../linkStats';
+import { LOCAL_LINK_STATS } from '../localStats';
 import { filterVisibleShortcuts, useLinkVisibilityVersion } from '../linkVisibility';
 
 interface InfoModalProps {
@@ -27,7 +29,7 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, fontSizeStep = 0
     return { name: shortcut.name, count, icon: shortcut.icon };
   });
 
-  const totalLinks = categoryStats.reduce((acc, curr) => acc + curr.count, 0);
+  const totalLinks = LINK_STATS.visibleLinks;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-200/60 dark:bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200 overflow-y-auto text-slate-800">
@@ -49,7 +51,7 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, fontSizeStep = 0
           <section className="space-y-4">
             <h3 className="text-2xl font-black dark:text-white underline decoration-blue-500 underline-offset-8">Mikä tämä on?</h3>
             <p className="text-xl leading-relaxed dark:text-slate-300">
-              Seniorin aloitussivu on suunniteltu helpottamaan internetin käyttöä. Olemme koonneet {categoryStats.length} tärkeää kategoriaa ja {totalLinks} tarkistettua linkkiä, jotta löydät etsimäsi yhdellä klikkauksella.
+              Seniorin aloitussivu on suunniteltu helpottamaan internetin käyttöä. Olemme koonneet {categoryStats.length} tärkeää kategoriaa ja {totalLinks} näkyvää linkkiä, jotta löydät etsimäsi yhdellä klikkauksella.
             </p>
           </section>
 
@@ -59,9 +61,37 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, fontSizeStep = 0
                 <span>📊</span> Sivuston laajuus
               </h3>
               <p className="text-2xl font-medium text-blue-900 dark:text-blue-100 leading-tight">
-                Sivustolta löytyy yhteensä <span className={`font-black text-blue-600 dark:text-blue-400 inline-block px-2 transition-all duration-300 ${statClasses[fontSizeStep]}`}>{totalLinks}</span> tarkistettua linkkiä.
+                Sivustolta löytyy yhteensä <span className={`font-black text-blue-600 dark:text-blue-400 inline-block px-2 transition-all duration-300 ${statClasses[fontSizeStep]}`}>{totalLinks}</span> näkyvää linkkiä.
               </p>
             </div>
+          </section>
+
+          <section className="space-y-6">
+            <h3 className="text-2xl font-black border-b-2 border-slate-100 dark:border-slate-700 pb-2 dark:text-white">
+              Paikalliset linkit
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {[
+                { name: 'Kunnat', count: LOCAL_LINK_STATS.municipalities, note: 'kunnan omat verkkosivut' },
+                { name: 'Hyvinvointialueet', count: LOCAL_LINK_STATS.wellbeingAreas, note: 'alueen sote-sivut' },
+                { name: 'Kunnan palvelusivut', count: LOCAL_LINK_STATS.municipalityServicePages, note: 'esim. palvelut ja asiointi' },
+                { name: 'Paikallisliikenne', count: LOCAL_LINK_STATS.localTransport, note: 'joukkoliikenne ja reittioppaat' },
+                { name: 'Paikalliset kirjastot', count: LOCAL_LINK_STATS.localLibraries, note: 'kirjastojen omat palvelut' },
+              ].map((item) => (
+                <div key={item.name} className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-700/50 rounded-2xl border border-slate-200/60 dark:border-slate-600">
+                  <div className="space-y-1">
+                    <span className="block text-lg font-bold text-slate-700 dark:text-slate-200">{item.name}</span>
+                    <span className="block text-sm font-bold text-slate-500 dark:text-slate-400">{item.note}</span>
+                  </div>
+                  <span className="bg-white dark:bg-slate-800 px-3 py-1 rounded-full border border-slate-200 dark:border-slate-600 font-bold text-blue-600 dark:text-blue-400">
+                    {item.count}
+                  </span>
+                </div>
+              ))}
+            </div>
+            <p className="text-sm font-bold text-slate-500 dark:text-slate-400">
+              Paikalliset uutiset haetaan sijainnin perusteella eikä niitä lasketa tähän määrään.
+            </p>
           </section>
 
           <section className="space-y-6">
