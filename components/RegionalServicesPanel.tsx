@@ -83,7 +83,6 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
           <div className="rounded-2xl bg-white dark:bg-slate-800 border-4 border-slate-100 dark:border-slate-700 p-5 md:p-6 shadow-md">
             <p className={`font-black text-slate-900 dark:text-white ${textClasses[fontSizeStep]}`}>
               {context.municipality.name}
-              <span className="text-slate-400 dark:text-slate-500"> · kuntakoodi {context.municipality.code}</span>
             </p>
             {context.municipality.wellbeingAreaName && (
               <p className={`text-slate-600 dark:text-slate-300 font-bold mt-2 ${smallTextClasses[fontSizeStep]}`}>
@@ -125,3 +124,4 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
 };
 
 export default RegionalServicesPanel;
+
