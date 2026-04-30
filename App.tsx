@@ -21,6 +21,7 @@ const DEFAULT_UI_SCALE = 100;
 const UI_SCALE_STEP = 10;
 
 interface UiVisibilityState {
+  clock: boolean;
   regionalServices: boolean;
   regionalNews: boolean;
   weather: boolean;
@@ -29,6 +30,7 @@ interface UiVisibilityState {
 }
 
 const defaultUiVisibility: UiVisibilityState = {
+  clock: true,
   regionalServices: true,
   regionalNews: true,
   weather: true,
@@ -227,6 +229,7 @@ const App: React.FC = () => {
 
             <div className="space-y-3">
               {[
+                { key: 'clock', label: 'Näytä kello ja päivämäärä' },
                 { key: 'regionalServices', label: 'Näytä alueelliset palvelut' },
                 { key: 'regionalNews', label: 'Näytä uutiset' },
                 { key: 'weather', label: 'Näytä sää' },
@@ -250,9 +253,11 @@ const App: React.FC = () => {
 
         <header className="animate-in">
           <div className="flex flex-col xl:flex-row gap-8 items-stretch">
-            <div className="xl:flex-[1.2] flex flex-col justify-center">
-              <Clock fontSizeStep={fontSizeStep} />
-            </div>
+            {uiVisibility.clock && (
+              <div className="xl:flex-[1.2] flex flex-col justify-center">
+                <Clock fontSizeStep={fontSizeStep} />
+              </div>
+            )}
             {uiVisibility.weather && (
               <div className="xl:flex-1">
                 <WeatherCard onLocationResolved={setLocality} />

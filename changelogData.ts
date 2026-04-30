@@ -21,16 +21,24 @@ export type ChangelogCommit = {
   subject: string;
 };
 
-export const CHANGELOG_GENERATED_AT = "30.4.2026 klo 15.26";
+export const CHANGELOG_GENERATED_AT = "30.4.2026 klo 15.47";
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
   "Muutosloki muutettiin selkokieliseksi kehittäjäsivuksi, joka näyttää muutokset ilman tiedostolinkkejä.",
-  "Paikallisiin linkkeihin lisättiin seurakunnat, ja niiden piilottaminen tallentuu nyt selaimen muistiin.",
-  "Tietoa-sivua täydennettiin paikallisten linkkien alaluokilla, kuten kunnilla, hyvinvointialueilla ja kirjastoilla.",
-  "Linkkien tarkistus, näkyvyyden hallinta ja ylläpitoloki päivittyvät automaattisesti buildin yhteydessä.",
-  "Palvelukategorioita ja paikallisia linkkejä laajennettiin uusilla suomalaisilla palveluilla."
+  "Pääsivulle lisättiin beta-merkintä sekä linkki muutoslokiin.",
+  "Linkkien tarkistus, näkyvyyden hallinta ja ylläpitoloki päivittyvät automaattisesti buildin yhteydessä."
 ];
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
+  {
+    "hash": "186c74cc4924c08dae0e77586ab1c2d00edbfbb5",
+    "date": "2026-04-30",
+    "subject": "66 uutisfeediä lisätty"
+  },
+  {
+    "hash": "a6fe7ee9dd10f3dfc6be238655a208ee8402e7cd",
+    "date": "2026-04-30",
+    "subject": "Lisätty 120 paikallislehteä ja uusi kategoria"
+  },
   {
     "hash": "e376ccb5ed28d063c30aece4cdb1146ed61a1f47",
     "date": "2026-04-30",
@@ -120,15 +128,5 @@ export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
     "hash": "87f72925dd9e4a2d57230a4dc647c5ce386e3904",
     "date": "2026-04-30",
     "subject": "lisätty uutiset"
-  },
-  {
-    "hash": "642e7754422c5c68a4a8820700a22a5ab6f010ac",
-    "date": "2026-04-30",
-    "subject": "Paikalliset linkit"
-  },
-  {
-    "hash": "758cf5b3b450c7abb6416fdcaeb58f18d16cb2a0",
-    "date": "2026-04-26",
-    "subject": "Lisätty ääniohjaus ja parannettu käyttöliittymää. Ääniohjauksella käyttäjät voivat nyt navigoida sovelluksessa ja suorittaa toimintoja äänikomennoilla, mikä parantaa saavutettavuutta ja käyttökokemusta. Käyttöliittymään on lisätty uusia elementtejä ja parannettu vanhoja, jotta sovellus olisi entistä intuitiivisempi ja visuaalisesti miellyttävämpi. Näiden muutosten myötä sovellus tarjoaa entistä paremman käyttökokemuksen kaikille käyttäjille."
   }
 ];

@@ -6,7 +6,6 @@ export const BLOCKED_LINK_URLS: string[] = [
   "http://www.lakeudenjoutsen.fi",
   "http://www.maakuntalehdet.fi/lakeudenl_media.htm",
   "http://www.maaselkalehti.fi",
-  "http://www.varkaudenteatteri.fi/",
   "http://www.ykkossanomat.fi/",
   "http://www.ylakarjala.com",
   "https://haapavesi.fi/",
@@ -15,6 +14,5 @@ export const BLOCKED_LINK_URLS: string[] = [
   "https://www.aland.fi/",
   "https://www.digihakemisto.net",
   "https://www.gutenberg.org",
-  "https://www.kiuruvesi.fi/",
   "https://www.vapaaehtoistyö.fi",
 ];
