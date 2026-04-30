@@ -13,6 +13,5 @@ export const BLOCKED_LINK_URLS: string[] = [
   "https://topikki.fi/",
   "https://www.aland.fi/",
   "https://www.digihakemisto.net",
-  "https://www.gutenberg.org",
   "https://www.vapaaehtoistyö.fi",
 ];

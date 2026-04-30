@@ -21,14 +21,19 @@ export type ChangelogCommit = {
   subject: string;
 };
 
-export const CHANGELOG_GENERATED_AT = "30.4.2026 klo 15.47";
+export const CHANGELOG_GENERATED_AT = "30.4.2026 klo 15.55";
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
-  "Muutosloki muutettiin selkokieliseksi kehittäjäsivuksi, joka näyttää muutokset ilman tiedostolinkkejä.",
-  "Pääsivulle lisättiin beta-merkintä sekä linkki muutoslokiin.",
-  "Linkkien tarkistus, näkyvyyden hallinta ja ylläpitoloki päivittyvät automaattisesti buildin yhteydessä."
+  "Paikallisiin linkkeihin lisättiin seurakunnat, ja niiden piilottaminen tallentuu nyt selaimen muistiin.",
+  "Linkkien tarkistus, näkyvyyden hallinta ja ylläpitoloki päivittyvät automaattisesti buildin yhteydessä.",
+  "Palvelukategorioita ja paikallisia linkkejä laajennettiin uusilla suomalaisilla palveluilla."
 ];
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
+  {
+    "hash": "4716962d88022672767a9e8b914cdc17afbd40f4",
+    "date": "2026-04-30",
+    "subject": "Kello piilota ja näytä"
+  },
   {
     "hash": "186c74cc4924c08dae0e77586ab1c2d00edbfbb5",
     "date": "2026-04-30",
@@ -123,10 +128,5 @@ export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
     "hash": "5489a2343b8d9b231a2d305515f376569ce6c452",
     "date": "2026-04-30",
     "subject": "zoom myös pienennys"
-  },
-  {
-    "hash": "87f72925dd9e4a2d57230a4dc647c5ce386e3904",
-    "date": "2026-04-30",
-    "subject": "lisätty uutiset"
   }
 ];
