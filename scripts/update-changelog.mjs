@@ -33,10 +33,7 @@ function parseRepoSlug() {
 
   const remote = runGit(['remote', 'get-url', 'origin']);
   const match = remote.match(/github\.com[:/](?<owner>[^/]+)\/(?<repo>[^/.]+)(?:\.git)?$/i);
-  if (!match?.groups?.owner || !match?.groups?.repo) {
-    return '';
-  }
-
+  if (!match?.groups?.owner || !match?.groups?.repo) return '';
   return `${match.groups.owner}/${match.groups.repo}`;
 }
 
@@ -80,34 +77,18 @@ function readWorktreeChanges() {
   return [...tracked, ...untracked].sort((a, b) => a.path.localeCompare(b.path, 'fi'));
 }
 
-function readRecentCommits(limit = 10) {
-  const output = runGit(['log', '--no-merges', '-n', String(limit), '--date=short', '--pretty=format:@@@%H|%ad|%s', '--name-only']);
+function readRecentCommits(limit = 20) {
+  const output = runGit(['log', '--no-merges', '-n', String(limit), '--date=short', '--pretty=format:@@@%H|%ad|%s']);
   if (!output) return [];
 
-  const entries = [];
-  let current = null;
-
-  for (const rawLine of output.split(/\r?\n/)) {
-    const line = rawLine.trimEnd();
-    if (!line) continue;
-
-    if (line.startsWith('@@@')) {
-      if (current) entries.push(current);
-      const [hash, date, subject] = line.slice(3).split('|');
-      current = { hash, date, subject, files: [] };
-      continue;
-    }
-
-    if (current && !current.files.includes(line)) {
-      current.files.push(line);
-    }
-  }
-
-  if (current) entries.push(current);
-  return entries;
+  return output.split(/\r?\n/).filter(Boolean).flatMap(line => {
+    if (!line.startsWith('@@@')) return [];
+    const [hash, date, subject] = line.slice(3).split('|');
+    return [{ hash, date, subject }];
+  });
 }
 
-function gitCommitSubject(hash) {
+function readCommitSubject(hash) {
   try {
     return runGit(['show', '-s', '--format=%s', hash]);
   } catch {
@@ -115,27 +96,63 @@ function gitCommitSubject(hash) {
   }
 }
 
-function shortSha(sha) {
-  return sha.slice(0, 7);
+function uniqueBy(items, keyFn) {
+  const seen = new Set();
+  return items.filter(item => {
+    const key = keyFn(item);
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
+function summarizeWorktree(changes) {
+  const paths = changes.map((change) => change.path);
+  const notes = [];
+
+  if (paths.some((pathName) => ['App.tsx', 'muutosloki.tsx', 'scripts/update-changelog.mjs', 'changelogData.ts'].includes(pathName))) {
+    notes.push('Muutosloki muutettiin selkokieliseksi kehittäjäsivuksi, joka näyttää muutokset ilman tiedostolinkkejä.');
+  }
+
+  if (paths.some((pathName) => ['App.tsx'].includes(pathName))) {
+    notes.push('Pääsivulle lisättiin beta-merkintä sekä linkki muutoslokiin.');
+  }
+
+  if (paths.some((pathName) => ['localServices.ts', 'components/RegionalServicesPanel.tsx', 'localLinkVisibility.ts'].includes(pathName))) {
+    notes.push('Paikallisiin linkkeihin lisättiin seurakunnat, ja niiden piilottaminen tallentuu nyt selaimen muistiin.');
+  }
+
+  if (paths.some((pathName) => ['components/InfoModal.tsx', 'localStats.ts'].includes(pathName))) {
+    notes.push('Tietoa-sivua täydennettiin paikallisten linkkien alaluokilla, kuten kunnilla, hyvinvointialueilla ja kirjastoilla.');
+  }
+
+  if (paths.some((pathName) => ['linkHealth.ts', 'linkStats.ts', 'docs/linkit.csv', 'docs/linkit.md', 'docs/yllapito-linkkiloki.csv', 'scripts/update-links.mjs'].includes(pathName))) {
+    notes.push('Linkkien tarkistus, näkyvyyden hallinta ja ylläpitoloki päivittyvät automaattisesti buildin yhteydessä.');
+  }
+
+  if (paths.some((pathName) => ['constants.tsx', 'localServices.ts', 'municipalityWebsites.ts'].includes(pathName))) {
+    notes.push('Palvelukategorioita ja paikallisia linkkejä laajennettiin uusilla suomalaisilla palveluilla.');
+  }
+
+  if (notes.length === 0) {
+    notes.push('Työpuussa on paikallisia muutoksia, mutta niistä ei löytynyt vielä valmista yhteenvetokategoriaa.');
+  }
+
+  return uniqueBy(notes, (item) => item);
 }
 
 async function readDeployments(limit = 10) {
-  if (!apiToken) {
-    return { source: 'git-fallback', deployments: [] };
-  }
+  if (!apiToken) return [];
 
   const repoSlug = parseRepoSlug();
-  if (!repoSlug) {
-    return { source: 'git-fallback', deployments: [] };
-  }
+  if (!repoSlug) return [];
 
   try {
     const deployments = await fetchJson(`https://api.github.com/repos/${repoSlug}/deployments?per_page=${limit}`);
-    const normalized = await Promise.all(
-      deployments.map(async deployment => {
+    return await Promise.all(
+      deployments.map(async (deployment) => {
         const statuses = await fetchJson(`https://api.github.com/repos/${repoSlug}/deployments/${deployment.id}/statuses?per_page=1`);
         const latestStatus = statuses[0] ?? null;
-        const subject = gitCommitSubject(deployment.sha) || deployment.sha;
 
         return {
           id: deployment.id,
@@ -144,35 +161,26 @@ async function readDeployments(limit = 10) {
           state: latestStatus?.state ?? deployment.state ?? 'unknown',
           description: latestStatus?.description ?? deployment.description ?? '',
           sha: deployment.sha,
-          shortSha: shortSha(deployment.sha),
-          subject,
+          shortSha: deployment.sha.slice(0, 7),
+          subject: readCommitSubject(deployment.sha) || deployment.sha,
           url: latestStatus?.target_url ?? deployment.url ?? '',
         };
       }),
     );
-
-    return { source: 'github-api', deployments: normalized };
-  } catch (error) {
-    console.warn(`GitHub deployment history unavailable: ${error instanceof Error ? error.message : String(error)}`);
-    return { source: 'git-fallback', deployments: [] };
+  } catch {
+    return [];
   }
 }
 
 const generatedAt = formatGeneratedAt(new Date());
 const worktreeChanges = readWorktreeChanges();
+const worktreeSummary = summarizeWorktree(worktreeChanges);
 const recentCommits = readRecentCommits();
-const deploymentResult = await readDeployments();
+const deployments = await readDeployments();
 
 const fileContents = `export type ChangelogWorktreeChange = {
   status: 'modified' | 'added' | 'deleted' | 'renamed' | 'untracked' | 'unmerged';
   path: string;
-};
-
-export type ChangelogCommit = {
-  hash: string;
-  date: string;
-  subject: string;
-  files: string[];
 };
 
 export type ChangelogDeployment = {
@@ -187,10 +195,15 @@ export type ChangelogDeployment = {
   url: string;
 };
 
+export type ChangelogCommit = {
+  hash: string;
+  date: string;
+  subject: string;
+};
+
 export const CHANGELOG_GENERATED_AT = ${JSON.stringify(generatedAt)};
-export const CHANGELOG_SOURCE = ${JSON.stringify(deploymentResult.source)};
-export const CHANGELOG_WORKTREE_CHANGES: ChangelogWorktreeChange[] = ${JSON.stringify(worktreeChanges, null, 2)};
-export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = ${JSON.stringify(deploymentResult.deployments, null, 2)};
+export const CHANGELOG_WORKTREE_SUMMARY: string[] = ${JSON.stringify(worktreeSummary, null, 2)};
+export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = ${JSON.stringify(deployments, null, 2)};
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = ${JSON.stringify(recentCommits, null, 2)};
 `;
 

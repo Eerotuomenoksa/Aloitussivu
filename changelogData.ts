@@ -3,13 +3,6 @@ export type ChangelogWorktreeChange = {
   path: string;
 };
 
-export type ChangelogCommit = {
-  hash: string;
-  date: string;
-  subject: string;
-  files: string[];
-};
-
 export type ChangelogDeployment = {
   id: number;
   environment: string;
@@ -22,174 +15,120 @@ export type ChangelogDeployment = {
   url: string;
 };
 
-export const CHANGELOG_GENERATED_AT = "30.4.2026 klo 12.45";
-export const CHANGELOG_SOURCE = "git-fallback";
-export const CHANGELOG_WORKTREE_CHANGES: ChangelogWorktreeChange[] = [
-  {
-    "status": "modified",
-    "path": "changelogData.ts"
-  },
-  {
-    "status": "modified",
-    "path": "components/RegionalServicesPanel.tsx"
-  },
-  {
-    "status": "modified",
-    "path": "docs/linkit.csv"
-  },
-  {
-    "status": "modified",
-    "path": "docs/linkit.md"
-  },
-  {
-    "status": "modified",
-    "path": "docs/yllapito-linkkiloki.csv"
-  },
-  {
-    "status": "untracked",
-    "path": "localLinkVisibility.ts"
-  },
-  {
-    "status": "modified",
-    "path": "localServices.ts"
-  },
-  {
-    "status": "modified",
-    "path": "muutosloki.tsx"
-  }
+export type ChangelogCommit = {
+  hash: string;
+  date: string;
+  subject: string;
+};
+
+export const CHANGELOG_GENERATED_AT = "30.4.2026 klo 13.51";
+export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
+  "Muutosloki muutettiin selkokieliseksi kehittäjäsivuksi, joka näyttää muutokset ilman tiedostolinkkejä.",
+  "Pääsivulle lisättiin beta-merkintä sekä linkki muutoslokiin.",
+  "Paikallisiin linkkeihin lisättiin seurakunnat, ja niiden piilottaminen tallentuu nyt selaimen muistiin.",
+  "Linkkien tarkistus, näkyvyyden hallinta ja ylläpitoloki päivittyvät automaattisesti buildin yhteydessä.",
+  "Palvelukategorioita ja paikallisia linkkejä laajennettiin uusilla suomalaisilla palveluilla."
 ];
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
   {
+    "hash": "1d054d9a21e1ce4e620580a24bec5e033992aacf",
+    "date": "2026-04-30",
+    "subject": "lisätty seurakunnat"
+  },
+  {
     "hash": "5b2123294b58758a2457d6b31d021818ca2eb6d0",
     "date": "2026-04-30",
-    "subject": "lisätty beta teksti ja linkki muutoslokiin",
-    "files": [
-      "App.tsx",
-      "changelogData.ts",
-      "docs/linkit.csv",
-      "docs/linkit.md",
-      "docs/yllapito-linkkiloki.csv",
-      "muutosloki.tsx",
-      "scripts/update-changelog.mjs"
-    ]
+    "subject": "lisätty beta teksti ja linkki muutoslokiin"
   },
   {
     "hash": "52a5969808d8536596d6f3c923c0ba96b9bb2fa9",
     "date": "2026-04-30",
-    "subject": "muutosloki lisätty",
-    "files": [
-      "changelogData.ts",
-      "docs/linkit.csv",
-      "docs/linkit.md",
-      "docs/yllapito-linkkiloki.csv",
-      "muutosloki.tsx"
-    ]
+    "subject": "muutosloki lisätty"
   },
   {
     "hash": "3459ef3d54a07518525195600ea9db4986841ad7",
     "date": "2026-04-30",
-    "subject": "Lisätty ehdotettuja linkkejä",
-    "files": [
-      "changelogData.ts",
-      "components/InfoModal.tsx",
-      "constants.tsx",
-      "docs/linkit.csv",
-      "docs/linkit.md",
-      "docs/yllapito-linkkiloki.csv",
-      "linkHealth.ts",
-      "linkStats.ts",
-      "localStats.ts",
-      "muutosloki.html",
-      "muutosloki.tsx",
-      "package.json",
-      "scripts/update-changelog.mjs",
-      "scripts/update-links.mjs",
-      "vite.config.ts"
-    ]
+    "subject": "Lisätty ehdotettuja linkkejä"
   },
   {
     "hash": "74e507d03d87f16e8b49021494d2f45817cbaef9",
     "date": "2026-04-30",
-    "subject": "lisätty linkkien tarkistamine, uusien ilmoitus toiminto ja vanhentuneen linkin ilmoitus",
-    "files": [
-      "App.tsx",
-      "components/InfoModal.tsx",
-      "components/LinkReportModal.tsx",
-      "components/LocalNewsHeadlines.tsx",
-      "components/NearbyGuidancePlaces.tsx",
-      "components/ProviderModal.tsx",
-      "components/QuickLinks.tsx",
-      "components/RegionalServicesPanel.tsx",
-      "components/WeatherCard.tsx",
-      "docs/linkit.csv",
-      "docs/linkit.md",
-      "docs/yllapito-linkkiloki.csv",
-      "linkHealth.ts",
-      "linkVisibility.ts",
-      "localServices.ts",
-      "package.json",
-      "scripts/update-links.mjs",
-      "types.ts"
-    ]
+    "subject": "lisätty linkkien tarkistamine, uusien ilmoitus toiminto ja vanhentuneen linkin ilmoitus"
   },
   {
     "hash": "c9e69fd758ba3f96532c3feac5a4f399b1fbc750",
     "date": "2026-04-30",
-    "subject": "lisätty oma kunta",
-    "files": [
-      "localServices.ts",
-      "municipalityWebsites.ts"
-    ]
+    "subject": "lisätty oma kunta"
   },
   {
     "hash": "be951b415e16da4134d81958978488cda1706f90",
     "date": "2026-04-30",
-    "subject": "lisätty liputuspäivät ja teemapäivät",
-    "files": [
-      "components/Clock.tsx",
-      "services/holidayService.ts",
-      "types.ts"
-    ]
+    "subject": "lisätty liputuspäivät ja teemapäivät"
   },
   {
     "hash": "f8fa06653076ce4e6a4b9022de79cc07a04abdbf",
     "date": "2026-04-30",
-    "subject": "Lähimmät opastuspaikat",
-    "files": [
-      "App.tsx",
-      "components/NearbyGuidancePlaces.tsx",
-      "components/RegionalServicesPanel.tsx",
-      "components/WeatherCard.tsx",
-      "seniorSurfGuidancePlaces.ts",
-      "services/guidancePlacesService.ts",
-      "types.ts"
-    ]
+    "subject": "Lähimmät opastuspaikat"
   },
   {
     "hash": "f8230405efbcb3994fb9a08877d3cfbd042399b4",
     "date": "2026-04-30",
-    "subject": "muutettu kuntatiedon sijaintia",
-    "files": [
-      "components/RegionalServicesPanel.tsx"
-    ]
+    "subject": "muutettu kuntatiedon sijaintia"
   },
   {
     "hash": "5489a2343b8d9b231a2d305515f376569ce6c452",
     "date": "2026-04-30",
-    "subject": "zoom myös pienennys",
-    "files": [
-      "App.tsx",
-      "components/QuickLinks.tsx"
-    ]
+    "subject": "zoom myös pienennys"
   },
   {
     "hash": "87f72925dd9e4a2d57230a4dc647c5ce386e3904",
     "date": "2026-04-30",
-    "subject": "lisätty uutiset",
-    "files": [
-      "components/RegionalServicesPanel.tsx",
-      "services/rssService.ts"
-    ]
+    "subject": "lisätty uutiset"
+  },
+  {
+    "hash": "642e7754422c5c68a4a8820700a22a5ab6f010ac",
+    "date": "2026-04-30",
+    "subject": "Paikalliset linkit"
+  },
+  {
+    "hash": "758cf5b3b450c7abb6416fdcaeb58f18d16cb2a0",
+    "date": "2026-04-26",
+    "subject": "Lisätty ääniohjaus ja parannettu käyttöliittymää. Ääniohjauksella käyttäjät voivat nyt navigoida sovelluksessa ja suorittaa toimintoja äänikomennoilla, mikä parantaa saavutettavuutta ja käyttökokemusta. Käyttöliittymään on lisätty uusia elementtejä ja parannettu vanhoja, jotta sovellus olisi entistä intuitiivisempi ja visuaalisesti miellyttävämpi. Näiden muutosten myötä sovellus tarjoaa entistä paremman käyttökokemuksen kaikille käyttäjille."
+  },
+  {
+    "hash": "2626f6fed8c52ec20d1c41c8c75cda36b78fe4b7",
+    "date": "2026-04-26",
+    "subject": "koodi korjauksia"
+  },
+  {
+    "hash": "49b3b7fbd2ea631338eca097a6371dcace0017a5",
+    "date": "2026-04-26",
+    "subject": "feat: Update app name and links"
+  },
+  {
+    "hash": "e738e3f55815c672604e75ac6491be310b0d3f1b",
+    "date": "2026-02-23",
+    "subject": "feat: Refactor app entry point and metadata"
+  },
+  {
+    "hash": "ff97135e84cd7f7f32c626a67d1bf430fe329744",
+    "date": "2026-02-09",
+    "subject": "feat(App): Add aria-label to theme toggle button"
+  },
+  {
+    "hash": "4fa08ca995ab216231a07de027f0d4a8ff4515ec",
+    "date": "2026-02-09",
+    "subject": "fix(Clock): Remove static greeting and simplify layout"
+  },
+  {
+    "hash": "05dfff44a2f67b943517351c50c755ad33ed3c42",
+    "date": "2026-02-09",
+    "subject": "feat: Implement dynamic font size scaling"
+  },
+  {
+    "hash": "c290e0577010617675a4d01c4ed213df5daba687",
+    "date": "2026-02-09",
+    "subject": "feat: Improve UI and Gemini integration"
   }
 ];

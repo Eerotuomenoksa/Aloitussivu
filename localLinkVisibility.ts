@@ -50,6 +50,16 @@ export const hideLocalLink = (url: string) => {
   }
 };
 
+export const hideLocalLinks = (urls: string[]) => {
+  const hiddenUrls = new Set(readJsonArray(LOCAL_HIDDEN_LINKS_KEY) as string[]);
+  urls.forEach((url) => hiddenUrls.add(normalizeUrl(url)));
+  writeJsonArray(LOCAL_HIDDEN_LINKS_KEY, [...hiddenUrls]);
+
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new Event(LOCAL_LINK_VISIBILITY_CHANGE_EVENT));
+  }
+};
+
 export const useLocalLinkVisibilityVersion = () => {
   const [version, setVersion] = useState(0);
 

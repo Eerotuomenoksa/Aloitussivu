@@ -121,6 +121,20 @@ const App: React.FC = () => {
             )}
           </div>
 
+          <div className="flex flex-wrap items-center gap-3">
+            <span className="text-sm font-black uppercase tracking-wide text-amber-700 dark:text-amber-300">
+              Beta · sivusto on vielä kehitteillä
+            </span>
+            <a
+              href="./muutosloki.html"
+              className="text-sm font-black text-indigo-700 dark:text-indigo-300 hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Muutosloki
+            </a>
+          </div>
+
           <button
             onClick={() => setIsHomepageOpen(true)}
             className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-full font-black text-lg transition-all active:scale-95 shadow-md border-b-4 border-indigo-900 focus:ring-4 focus:ring-indigo-300"
@@ -147,17 +161,6 @@ const App: React.FC = () => {
         <header className="animate-in">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
             <div className="lg:col-span-5 flex flex-col justify-center">
-              <p className="mb-3 text-sm font-black uppercase tracking-wide text-amber-700 dark:text-amber-300">
-                Beta · sivusto on vielä kehitteillä
-              </p>
-              <a
-                href="./muutosloki.html"
-                className="mb-5 inline-flex w-fit text-sm font-bold text-indigo-700 dark:text-indigo-300 hover:underline"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Avaa muutosloki
-              </a>
               <Clock fontSizeStep={fontSizeStep} />
             </div>
             <div className="lg:col-span-3">

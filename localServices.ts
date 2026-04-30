@@ -9,7 +9,6 @@ interface LocalServiceConfig {
   wellbeingArea?: Provider;
   municipality?: Provider;
   municipalityWebsite?: Provider;
-  faithProviders?: Provider[];
   rssFeeds?: RssFeedConfig[];
 }
 
@@ -108,12 +107,6 @@ const createGoogleNewsRss = (municipality: string): RssFeedConfig => ({
   url: `https://news.google.com/rss/search?q=${encodeURIComponent(`${municipality} uutiset`)}&hl=fi&gl=FI&ceid=FI:fi`,
 });
 
-const createFaithSearch = (municipality: string, label: string, query: string): Provider => ({
-  name: `${label}: ${municipality}`,
-  url: `https://www.google.com/search?q=${encodeURIComponent(`${municipality} ${query}`)}`,
-  group: 'Seurakunnat',
-});
-
 const localServiceMap: Record<string, LocalServiceConfig> = {
   helsinki: {
     publicTransport: { name: 'HSL Reittiopas', url: 'https://www.hsl.fi/', group: 'Paikalliset palvelut' },
@@ -160,13 +153,6 @@ const localServiceMap: Record<string, LocalServiceConfig> = {
     municipality: { name: 'Jyväskylän palvelut', url: 'https://www.jyvaskyla.fi/', group: 'Paikalliset palvelut' },
   },
 };
-
-const getFaithProviders = (municipality: string): Provider[] => ([
-  createFaithSearch(municipality, 'Evlut seurakunta', 'evlut seurakunta'),
-  createFaithSearch(municipality, 'Ortodoksinen seurakunta', 'ortodoksinen seurakunta'),
-  createFaithSearch(municipality, 'Juutalainen yhteisö', 'juutalainen yhteisö'),
-  createFaithSearch(municipality, 'Muut uskonnot', 'uskonnolliset yhteisöt'),
-]);
 
 const addFirst = (providers: Provider[] | undefined, provider?: Provider): Provider[] | undefined => {
   if (!providers || !provider || providers.some((item) => item.url === provider.url)) return providers;
@@ -262,16 +248,6 @@ export const getRegionalNewsProviders = (context: RegionalContext): Provider[] =
     createNewsSearch(municipality, 'Kunnan uutiset'),
     wellbeingArea ? createNewsSearch(wellbeingArea, 'Hyvinvointialueen tiedotteet') : undefined,
   ].filter((provider): provider is Provider => Boolean(provider)))) ?? [];
-};
-
-export const getRegionalFaithProviders = (context: RegionalContext): Provider[] => {
-  const municipality = context.municipality.name;
-  const key = normalizeMunicipality(municipality);
-  const exact = localServiceMap[key];
-
-  return filterVisibleProviders(uniqueProviders([
-    ...(exact?.faithProviders ?? getFaithProviders(municipality)),
-  ])) ?? [];
 };
 
 export const getRegionalRssFeeds = (context: RegionalContext): RssFeedConfig[] => {

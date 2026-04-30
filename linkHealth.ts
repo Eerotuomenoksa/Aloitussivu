@@ -5,5 +5,6 @@ export const BLOCKED_LINK_URLS: string[] = [
   "https://piki.verkkokirjasto.fi/",
   "https://www.aland.fi/",
   "https://www.digihakemisto.net",
+  "https://www.gutenberg.org",
   "https://www.vapaaehtoistyö.fi",
 ];
