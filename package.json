@@ -5,10 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "prebuild": "npm run links && npm run changelog",
+    "prebuild": "npm run newspapers && npm run newspaper-feeds && npm run links && npm run changelog",
     "build": "vite build",
     "links": "node scripts/update-links.mjs",
     "newspapers": "node scripts/update-newspapers.mjs",
+    "newspaper-feeds": "node scripts/update-newspaper-feeds.mjs",
     "changelog": "node scripts/update-changelog.mjs",
     "preview": "vite preview"
   },

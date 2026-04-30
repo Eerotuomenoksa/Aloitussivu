@@ -1,5 +1,6 @@
 import { MUNICIPALITIES } from './municipalRegistry';
 import { MUNICIPALITY_WEBSITES } from './municipalityWebsites';
+import { LOCAL_NEWSPAPER_FEEDS } from './localNewspaperFeeds';
 import { filterVisibleProviders } from './linkVisibility';
 import { LocalityInfo, Municipality, Provider, RegionalContext, RssFeedConfig, Shortcut } from './types';
 
@@ -304,9 +305,18 @@ export const getRegionalRssFeeds = (context: RegionalContext): RssFeedConfig[] =
   const municipality = context.municipality.name;
   const key = normalizeMunicipality(municipality);
   const exact = localServiceMap[key];
+  const newspaperFeeds = LOCAL_NEWSPAPER_FEEDS
+    .filter((feed) => normalizeMunicipality(feed.municipality) === key)
+    .map((feed) => ({ name: feed.name, url: feed.url }));
+
+  if (newspaperFeeds.length > 0 || (exact?.rssFeeds?.length ?? 0) > 0) {
+    return uniqueFeeds([
+      ...newspaperFeeds,
+      ...(exact?.rssFeeds ?? []),
+    ]);
+  }
 
   return uniqueFeeds([
-    ...(exact?.rssFeeds ?? []),
     createLocalPaperRssFeed(municipality),
     createGoogleNewsRss(municipality),
   ]);
