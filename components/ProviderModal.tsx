@@ -1,6 +1,7 @@
 
 import React, { useEffect } from 'react';
-import { Shortcut, Provider, Favorite } from '../types';
+import { filterVisibleProviders, useLinkVisibilityVersion } from '../linkVisibility';
+import { Shortcut, Provider, Favorite, LinkReportDraft } from '../types';
 
 interface ProviderModalProps {
   shortcut: Shortcut | null;
@@ -8,9 +9,11 @@ interface ProviderModalProps {
   fontSizeStep?: number;
   favorites: Favorite[];
   onToggleFavorite: (fav: Favorite) => void;
+  onReportLink?: (draft: LinkReportDraft) => void;
 }
 
-const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSizeStep = 0, favorites, onToggleFavorite }) => {
+const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSizeStep = 0, favorites, onToggleFavorite, onReportLink }) => {
+  useLinkVisibilityVersion();
   const titleClasses = [
     'text-3xl md:text-5xl',
     'text-4xl md:text-6xl',
@@ -53,7 +56,10 @@ const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSi
 
   if (!shortcut || !shortcut.providers) return null;
 
-  const groupedProviders = shortcut.providers.reduce((acc, provider) => {
+  const visibleProviders = filterVisibleProviders(shortcut.providers) ?? [];
+  if (visibleProviders.length === 0) return null;
+
+  const groupedProviders = visibleProviders.reduce((acc, provider) => {
     const key = provider.group || 'Palvelut';
     if (!acc[key]) acc[key] = [];
     acc[key].push(provider);
@@ -114,6 +120,20 @@ const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSi
                           {provider.name}
                         </span>
                       </a>
+                      {onReportLink && (
+                        <button
+                          onClick={() => onReportLink({
+                            name: provider.name,
+                            url: provider.url,
+                            category: shortcut.name,
+                            source: 'ProviderModal',
+                          })}
+                          className="absolute top-3 left-3 flex items-center justify-center rounded-full bg-slate-900/80 hover:bg-slate-900 text-white shadow-md transition-all focus:ring-4 focus:ring-blue-300 focus:outline-none opacity-0 group-hover/card:opacity-100 w-10 h-10 text-xl"
+                          aria-label={`Ilmoita linkki: ${provider.name}`}
+                        >
+                          !
+                        </button>
+                      )}
                       <button
                         onClick={() => onToggleFavorite(fav)}
                         className={`absolute top-3 right-3 flex items-center justify-center rounded-full transition-all focus:ring-4 focus:ring-yellow-300 focus:outline-none

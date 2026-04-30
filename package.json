@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "prebuild": "npm run links",
     "build": "vite build",
+    "links": "node scripts/update-links.mjs",
     "preview": "vite preview"
   },
   "dependencies": {

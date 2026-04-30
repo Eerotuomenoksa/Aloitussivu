@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import { isLinkVisible, useLinkVisibilityVersion } from '../linkVisibility';
 import { normalizeMunicipality } from '../localServices';
 import { LocalityInfo } from '../types';
 
@@ -26,6 +27,7 @@ const vantaaDistricts = new Set([
 ]);
 
 const WeatherCard: React.FC<WeatherCardProps> = ({ onLocationResolved }) => {
+  useLinkVisibilityVersion();
   const [locationName, setLocationName] = useState<string>('Sijainti');
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -144,15 +146,21 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ onLocationResolved }) => {
         )}
       </div>
 
-      <a 
-        href="https://www.ilmatieteenlaitos.fi/" 
-        target="_blank" 
-        rel="noopener noreferrer"
-        className="text-8xl drop-shadow-2xl hover:scale-110 transition-transform cursor-pointer p-4 bg-white/10 rounded-full flex items-center justify-center min-w-[120px] min-h-[120px] focus:ring-4 focus:ring-white/50 focus:outline-none"
-        aria-label="Katso tarkempi sää Ilmatieteen laitokselta"
-      >
-        <span aria-hidden="true">{loading ? '⏳' : weather?.icon || '🌤️'}</span>
-      </a>
+      {isLinkVisible('https://www.ilmatieteenlaitos.fi/') ? (
+        <a
+          href="https://www.ilmatieteenlaitos.fi/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-8xl drop-shadow-2xl hover:scale-110 transition-transform cursor-pointer p-4 bg-white/10 rounded-full flex items-center justify-center min-w-[120px] min-h-[120px] focus:ring-4 focus:ring-white/50 focus:outline-none"
+          aria-label="Katso tarkempi sää Ilmatieteen laitokselta"
+        >
+          <span aria-hidden="true">{loading ? '⏳' : weather?.icon || '🌤️'}</span>
+        </a>
+      ) : (
+        <div className="text-8xl drop-shadow-2xl p-4 bg-white/10 rounded-full flex items-center justify-center min-w-[120px] min-h-[120px]">
+          <span aria-hidden="true">{loading ? '⏳' : weather?.icon || '🌤️'}</span>
+        </div>
+      )}
     </div>
   );
 };

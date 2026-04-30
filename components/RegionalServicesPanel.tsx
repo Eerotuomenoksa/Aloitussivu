@@ -1,12 +1,14 @@
 import React, { useMemo, useState } from 'react';
 import { getRegionalNewsProviders, getRegionalProviders, getRegionalRssFeeds, resolveRegionalContext } from '../localServices';
-import { LocalityInfo, Provider } from '../types';
+import { filterVisibleProviders, isLinkVisible, useLinkVisibilityVersion } from '../linkVisibility';
+import { LocalityInfo, Provider, LinkReportDraft } from '../types';
 import LocalNewsHeadlines from './LocalNewsHeadlines';
 import NearbyGuidancePlaces from './NearbyGuidancePlaces';
 
 interface RegionalServicesPanelProps {
   locality: LocalityInfo | null;
   fontSizeStep?: number;
+  onReportLink?: (draft: LinkReportDraft) => void;
 }
 
 const textClasses = [
@@ -25,7 +27,7 @@ const smallTextClasses = [
   'text-2xl',
 ];
 
-const ServiceLink: React.FC<{ provider: Provider; index: number; fontSizeStep: number }> = ({ provider, index, fontSizeStep }) => {
+const ServiceLink: React.FC<{ provider: Provider; index: number; fontSizeStep: number; onReportLink?: (draft: LinkReportDraft) => void }> = ({ provider, index, fontSizeStep, onReportLink }) => {
   const colors = [
     'bg-brand-indigo hover:bg-indigo-700',
     'bg-brand-teal hover:bg-teal-700',
@@ -35,25 +37,42 @@ const ServiceLink: React.FC<{ provider: Provider; index: number; fontSizeStep: n
   ];
 
   return (
-    <a
-      href={provider.url}
-      target="_blank"
-      rel="noopener noreferrer"
-      className={`${colors[index % colors.length]} text-white rounded-2xl p-5 md:p-6 shadow-md transition-all active:scale-95 focus:outline-none focus:ring-4 focus:ring-blue-300 min-h-[120px] flex flex-col justify-between gap-4`}
-    >
-      <span className={`font-black leading-tight ${textClasses[fontSizeStep]}`}>{provider.name}</span>
-      {provider.group && <span className={`font-bold opacity-80 ${smallTextClasses[fontSizeStep]}`}>{provider.group}</span>}
-    </a>
+    <div className="relative group/service">
+      <a
+        href={provider.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`${colors[index % colors.length]} text-white rounded-2xl p-5 md:p-6 shadow-md transition-all active:scale-95 focus:outline-none focus:ring-4 focus:ring-blue-300 min-h-[120px] flex flex-col justify-between gap-4`}
+      >
+        <span className={`font-black leading-tight ${textClasses[fontSizeStep]}`}>{provider.name}</span>
+        {provider.group && <span className={`font-bold opacity-80 ${smallTextClasses[fontSizeStep]}`}>{provider.group}</span>}
+      </a>
+      {onReportLink && (
+        <button
+          onClick={() => onReportLink({
+            name: provider.name,
+            url: provider.url,
+            category: provider.group,
+            source: 'RegionalServicesPanel',
+          })}
+          className="absolute top-3 left-3 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/35 text-white shadow-md transition-all focus:ring-4 focus:ring-blue-300 focus:outline-none opacity-0 group-hover/service:opacity-100 w-10 h-10 text-xl"
+          aria-label={`Ilmoita linkki: ${provider.name}`}
+        >
+          !
+        </button>
+      )}
+    </div>
   );
 };
 
-const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality, fontSizeStep = 0 }) => {
+const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality, fontSizeStep = 0, onReportLink }) => {
+  useLinkVisibilityVersion();
   const [query, setQuery] = useState('');
   const context = useMemo(() => resolveRegionalContext(query, locality), [query, locality]);
-  const services = useMemo(() => context ? getRegionalProviders(context) : [], [context]);
-  const newsFallbacks = useMemo(() => context ? getRegionalNewsProviders(context) : [], [context]);
+  const services = useMemo(() => context ? filterVisibleProviders(getRegionalProviders(context)) ?? [] : [], [context]);
+  const newsFallbacks = useMemo(() => context ? filterVisibleProviders(getRegionalNewsProviders(context)) ?? [] : [], [context]);
   const rssFeeds = useMemo(() => context ? getRegionalRssFeeds(context) : [], [context]);
-  const fallbackNewsUrl = newsFallbacks[0]?.url ?? 'https://news.google.com/home?hl=fi&gl=FI&ceid=FI:fi';
+  const fallbackNewsUrl = newsFallbacks[0]?.url ?? (isLinkVisible('https://news.google.com/home?hl=fi&gl=FI&ceid=FI:fi') ? 'https://news.google.com/home?hl=fi&gl=FI&ceid=FI:fi' : '');
 
   return (
     <section className="space-y-6" aria-labelledby="regional-services-heading">
@@ -67,6 +86,17 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
           </p>
         </div>
         <div className="w-full xl:max-w-3xl">
+          {onReportLink && (
+            <div className="flex justify-end mb-3">
+              <button
+                type="button"
+                onClick={() => onReportLink({ name: '', url: '', category: 'Alueelliset palvelut', source: 'RegionalServicesPanel' })}
+                className={`font-black text-brand-indigo dark:text-blue-300 hover:underline ${smallTextClasses[fontSizeStep]}`}
+              >
+                Ilmoita uusi linkki
+              </button>
+            </div>
+          )}
           <div className="flex flex-col md:flex-row md:items-end gap-3">
             <label className="flex-1">
               <span className={`block font-black text-slate-700 dark:text-slate-200 mb-2 ${smallTextClasses[fontSizeStep]}`}>Kunta</span>
@@ -96,7 +126,7 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
       {context ? (
         <div className="space-y-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-5">
-            {services.map((provider, index) => <ServiceLink key={provider.url} provider={provider} index={index} fontSizeStep={fontSizeStep} />)}
+            {services.map((provider, index) => <ServiceLink key={provider.url} provider={provider} index={index} fontSizeStep={fontSizeStep} onReportLink={onReportLink} />)}
           </div>
 
           <NearbyGuidancePlaces locality={locality} fontSizeStep={fontSizeStep} />
@@ -106,14 +136,16 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
               <h3 className={`font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest ${smallTextClasses[fontSizeStep]}`}>
                 Paikalliset uutiset
               </h3>
-              <a
-                href={fallbackNewsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`font-black text-brand-indigo dark:text-blue-300 hover:underline ${smallTextClasses[fontSizeStep]}`}
-              >
-                Lisää uutisia
-              </a>
+              {fallbackNewsUrl && (
+                <a
+                  href={fallbackNewsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`font-black text-brand-indigo dark:text-blue-300 hover:underline ${smallTextClasses[fontSizeStep]}`}
+                >
+                  Lisää uutisia
+                </a>
+              )}
             </div>
             <LocalNewsHeadlines feeds={rssFeeds} fallbackUrl={fallbackNewsUrl} fontSizeStep={fontSizeStep} />
           </div>

@@ -85,6 +85,22 @@ export interface Favorite {
   color: string;
 }
 
+export type LinkReportType = 'new' | 'broken' | 'wrong';
+
+export interface LinkReportDraft {
+  name: string;
+  url: string;
+  category?: string;
+  source?: string;
+}
+
+export interface LinkReportEntry extends LinkReportDraft {
+  id: string;
+  type: LinkReportType;
+  createdAt: string;
+  note: string;
+}
+
 export interface ChatMessage {
   role: 'user' | 'assistant';
   content: string;

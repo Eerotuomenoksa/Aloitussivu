@@ -7,9 +7,11 @@ import Assistant from './components/Assistant';
 import ProviderModal from './components/ProviderModal';
 import InfoModal from './components/InfoModal';
 import HomepageModal from './components/HomepageModal';
+import LinkReportModal from './components/LinkReportModal';
 import SearchBar from './components/SearchBar';
 import RegionalServicesPanel from './components/RegionalServicesPanel';
-import { Shortcut, Favorite, LocalityInfo } from './types';
+import { isLinkVisible, useLinkVisibilityVersion } from './linkVisibility';
+import { Shortcut, Favorite, LocalityInfo, LinkReportDraft } from './types';
 
 const MIN_UI_SCALE = 50;
 const MAX_UI_SCALE = 200;
@@ -21,6 +23,7 @@ const App: React.FC = () => {
   const [isInfoOpen, setIsInfoOpen] = useState(false);
   const [isHomepageOpen, setIsHomepageOpen] = useState(false);
   const [locality, setLocality] = useState<LocalityInfo | null>(null);
+  const [reportDraft, setReportDraft] = useState<LinkReportDraft | null>(null);
 
   const [isDarkMode, setIsDarkMode] = useState(() => {
     return localStorage.getItem('isDarkMode') === 'true';
@@ -70,6 +73,9 @@ const App: React.FC = () => {
   const resetFont = useCallback(() => setUiScale(DEFAULT_UI_SCALE), []);
   const fontSizeStep = 0;
   const uiZoom = uiScale / 100;
+  useLinkVisibilityVersion();
+  const openReportModal = useCallback((draft: LinkReportDraft) => setReportDraft(draft), []);
+  const closeReportModal = useCallback(() => setReportDraft(null), []);
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 transition-all duration-300 text-base overflow-x-auto">
@@ -154,38 +160,55 @@ const App: React.FC = () => {
 
         <main className="space-y-10 animate-in [animation-delay:200ms]">
           <SearchBar fontSizeStep={fontSizeStep} />
-          <RegionalServicesPanel locality={locality} fontSizeStep={fontSizeStep} />
+          <RegionalServicesPanel locality={locality} fontSizeStep={fontSizeStep} onReportLink={openReportModal} />
 
           <section className="space-y-8">
             <h2 className="font-black text-slate-900 dark:text-white tracking-tighter transition-all duration-300 text-4xl md:text-6xl">
               Valitse palvelu
             </h2>
-            <QuickLinks onSelectCategory={setSelectedCategory} fontSizeStep={fontSizeStep} favorites={favorites} onToggleFavorite={toggleFavorite} locality={locality} />
+            <QuickLinks
+              onSelectCategory={setSelectedCategory}
+              fontSizeStep={fontSizeStep}
+              favorites={favorites}
+              onToggleFavorite={toggleFavorite}
+              locality={locality}
+              onReportLink={openReportModal}
+            />
           </section>
         </main>
 
         <footer className="pt-24 pb-12 border-t-2 border-slate-200 dark:border-slate-800 text-center space-y-8 opacity-80">
-          <a
-            href="https://seniorsurf.fi/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block p-4 rounded-3xl transition-transform hover:scale-105"
-          >
-            <img
-              src="https://seniorsurf.fi/wp-content/uploads/SeniorSurf_White-320-x-102-px.svg"
-              alt="SeniorSurf logo"
-              className="h-16 w-auto brightness-0 dark:brightness-100"
-              loading="lazy"
-            />
-          </a>
+          {isLinkVisible('https://seniorsurf.fi/') && isLinkVisible('https://seniorsurf.fi/wp-content/uploads/SeniorSurf_White-320-x-102-px.svg') && (
+            <a
+              href="https://seniorsurf.fi/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block p-4 rounded-3xl transition-transform hover:scale-105"
+            >
+              <img
+                src="https://seniorsurf.fi/wp-content/uploads/SeniorSurf_White-320-x-102-px.svg"
+                alt="SeniorSurf logo"
+                className="h-16 w-auto brightness-0 dark:brightness-100"
+                loading="lazy"
+              />
+            </a>
+          )}
           <p className="text-slate-500 dark:text-slate-400 font-bold">
             © 2026 Seniorin aloitussivu — Selkeys on välittämistä.
           </p>
         </footer>
 
-        <ProviderModal shortcut={selectedCategory} onClose={() => setSelectedCategory(null)} fontSizeStep={fontSizeStep} favorites={favorites} onToggleFavorite={toggleFavorite} />
+        <ProviderModal
+          shortcut={selectedCategory}
+          onClose={() => setSelectedCategory(null)}
+          fontSizeStep={fontSizeStep}
+          favorites={favorites}
+          onToggleFavorite={toggleFavorite}
+          onReportLink={openReportModal}
+        />
         <InfoModal isOpen={isInfoOpen} onClose={() => setIsInfoOpen(false)} fontSizeStep={fontSizeStep} />
         <HomepageModal isOpen={isHomepageOpen} onClose={() => setIsHomepageOpen(false)} fontSizeStep={fontSizeStep} />
+        <LinkReportModal draft={reportDraft} onClose={closeReportModal} />
       </div>
     </div>
   );

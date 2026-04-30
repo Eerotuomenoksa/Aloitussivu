@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { SHORTCUTS } from '../constants';
+import { filterVisibleShortcuts, useLinkVisibilityVersion } from '../linkVisibility';
 
 interface InfoModalProps {
   isOpen: boolean;
@@ -9,13 +10,14 @@ interface InfoModalProps {
 }
 
 const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, fontSizeStep = 0 }) => {
+  useLinkVisibilityVersion();
   const titleClasses = ['text-3xl', 'text-4xl', 'text-5xl', 'text-6xl', 'text-7xl'];
   const headerIconClasses = ['text-5xl', 'text-6xl', 'text-7xl', 'text-8xl', 'text-9xl'];
   const statClasses = ['text-5xl', 'text-6xl', 'text-7xl', 'text-8xl', 'text-9xl'];
 
   if (!isOpen) return null;
 
-  const categoryStats = SHORTCUTS.map(shortcut => {
+  const categoryStats = filterVisibleShortcuts(SHORTCUTS).map(shortcut => {
     let count = 0;
     if (shortcut.providers) {
       count = shortcut.providers.length;

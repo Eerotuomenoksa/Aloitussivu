@@ -1,5 +1,6 @@
 import { MUNICIPALITIES } from './municipalRegistry';
 import { MUNICIPALITY_WEBSITES } from './municipalityWebsites';
+import { filterVisibleProviders } from './linkVisibility';
 import { LocalityInfo, Municipality, Provider, RegionalContext, RssFeedConfig, Shortcut } from './types';
 
 interface LocalServiceConfig {
@@ -230,23 +231,23 @@ export const getRegionalProviders = (context: RegionalContext): Provider[] => {
   const municipalityWebsite = exact?.municipalityWebsite ?? getMunicipalityWebsiteProvider(context.municipality);
   const wellbeingArea = exact?.wellbeingArea ?? getWellbeingAreaProvider(context.municipality);
 
-  return uniqueProviders([
+  return filterVisibleProviders(uniqueProviders([
     municipalityWebsite,
     exact?.municipality ?? createMunicipalitySearch(municipality, 'Kunnan palvelut', 'palvelut'),
     wellbeingArea ?? createMunicipalitySearch(municipality, 'Hyvinvointialue', 'hyvinvointialue'),
     exact?.library ?? createMunicipalitySearch(municipality, 'Kirjastot', 'kirjasto'),
     exact?.publicTransport ?? createMunicipalitySearch(municipality, 'Joukkoliikenne', 'joukkoliikenne'),
-  ].filter((provider): provider is Provider => Boolean(provider)));
+  ].filter((provider): provider is Provider => Boolean(provider)))) ?? [];
 };
 
 export const getRegionalNewsProviders = (context: RegionalContext): Provider[] => {
   const municipality = context.municipality.name;
   const wellbeingArea = context.municipality.wellbeingAreaName;
 
-  return uniqueProviders([
+  return filterVisibleProviders(uniqueProviders([
     createNewsSearch(municipality, 'Kunnan uutiset'),
     wellbeingArea ? createNewsSearch(wellbeingArea, 'Hyvinvointialueen tiedotteet') : undefined,
-  ].filter((provider): provider is Provider => Boolean(provider)));
+  ].filter((provider): provider is Provider => Boolean(provider)))) ?? [];
 };
 
 export const getRegionalRssFeeds = (context: RegionalContext): RssFeedConfig[] => {
@@ -298,7 +299,7 @@ export const getLocalizedShortcuts = (shortcuts: Shortcut[], locality: LocalityI
           services.municipalityWebsite,
           services.municipality,
           services.wellbeingArea,
-          ...shortcut.providers,
+          ...(filterVisibleProviders(shortcut.providers) ?? []),
         ].filter((provider): provider is Provider => Boolean(provider))),
       };
     }
@@ -312,5 +313,8 @@ export const getLocalizedShortcuts = (shortcuts: Shortcut[], locality: LocalityI
     }
 
     return shortcut;
-  });
+  }).map((shortcut) => shortcut.providers
+    ? { ...shortcut, providers: filterVisibleProviders(shortcut.providers) }
+    : shortcut
+  );
 };

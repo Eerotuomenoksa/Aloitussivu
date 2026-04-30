@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { fetchLocalNewsHeadlines } from '../services/rssService';
+import { isLinkVisible, useLinkVisibilityVersion } from '../linkVisibility';
 import { LocalNewsHeadline, RssFeedConfig } from '../types';
 
 interface LocalNewsHeadlinesProps {
@@ -32,6 +33,7 @@ const formatDate = (value?: string) => {
 };
 
 const LocalNewsHeadlines: React.FC<LocalNewsHeadlinesProps> = ({ feeds, fallbackUrl, fontSizeStep }) => {
+  useLinkVisibilityVersion();
   const [headlines, setHeadlines] = useState<LocalNewsHeadline[]>([]);
   const [loading, setLoading] = useState(false);
   const [failed, setFailed] = useState(false);
@@ -82,21 +84,23 @@ const LocalNewsHeadlines: React.FC<LocalNewsHeadlinesProps> = ({ feeds, fallback
         <p className={`text-slate-500 dark:text-slate-400 font-bold mb-4 ${smallTextClasses[fontSizeStep]}`}>
           Paikallista RSS-syötettä ei saatu ladattua.
         </p>
-        <a
-          href={fallbackUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={`inline-flex items-center justify-center rounded-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-6 py-3 font-black transition-all active:scale-95 ${smallTextClasses[fontSizeStep]}`}
-        >
-          Avaa uutishaku
-        </a>
+        {fallbackUrl && isLinkVisible(fallbackUrl) && (
+          <a
+            href={fallbackUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`inline-flex items-center justify-center rounded-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-6 py-3 font-black transition-all active:scale-95 ${smallTextClasses[fontSizeStep]}`}
+          >
+            Avaa uutishaku
+          </a>
+        )}
       </div>
     );
   }
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-      {headlines.map((headline) => (
+      {headlines.filter((headline) => isLinkVisible(headline.link)).map((headline) => (
         <a
           key={headline.link}
           href={headline.link}

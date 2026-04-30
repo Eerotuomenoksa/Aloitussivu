@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import { isLinkVisible, useLinkVisibilityVersion } from '../linkVisibility';
 import { getNearbyGuidancePlaces } from '../services/guidancePlacesService';
 import { LocalityInfo } from '../types';
 
@@ -29,6 +30,7 @@ const formatDistance = (value: number) => {
 };
 
 const NearbyGuidancePlaces: React.FC<NearbyGuidancePlacesProps> = ({ locality, fontSizeStep }) => {
+  useLinkVisibilityVersion();
   const places = useMemo(() => {
     if (typeof locality?.lat !== 'number' || typeof locality?.lon !== 'number') return [];
     return getNearbyGuidancePlaces(locality.lat, locality.lon, 3);
@@ -40,30 +42,29 @@ const NearbyGuidancePlaces: React.FC<NearbyGuidancePlacesProps> = ({ locality, f
         <h3 id="nearby-guidance-heading" className={`font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest ${smallTextClasses[fontSizeStep]}`}>
           Lähimmät digiopastuspaikat
         </h3>
-        <a
-          href="https://seniorsurf.fi/seniorit/opastuspaikat/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className={`font-black text-brand-indigo dark:text-blue-300 hover:underline ${smallTextClasses[fontSizeStep]}`}
-        >
-          Avaa kartta
-        </a>
+        {isLinkVisible('https://seniorsurf.fi/seniorit/opastuspaikat/') && (
+          <a
+            href="https://seniorsurf.fi/seniorit/opastuspaikat/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`font-black text-brand-indigo dark:text-blue-300 hover:underline ${smallTextClasses[fontSizeStep]}`}
+          >
+            Avaa kartta
+          </a>
+        )}
       </div>
 
       {places.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {places.map((place) => {
             const primaryOrganizer = place.organizers.find((organizer) => organizer.url) ?? place.organizers[0];
-            const href = primaryOrganizer?.url || 'https://seniorsurf.fi/seniorit/opastuspaikat/';
+            const href = primaryOrganizer?.url && isLinkVisible(primaryOrganizer.url)
+              ? primaryOrganizer.url
+              : 'https://seniorsurf.fi/seniorit/opastuspaikat/';
+            const visibleHref = isLinkVisible(href) ? href : '';
 
-            return (
-              <a
-                key={place.id}
-                href={href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded-2xl bg-white dark:bg-slate-800 border-4 border-slate-100 dark:border-slate-700 p-5 shadow-md hover:shadow-xl transition-all active:scale-95 min-h-[150px] flex flex-col justify-between gap-4"
-              >
+            const content = (
+              <>
                 <span className={`font-black text-slate-900 dark:text-white leading-tight ${textClasses[fontSizeStep]}`}>
                   {place.name}
                 </span>
@@ -73,7 +74,26 @@ const NearbyGuidancePlaces: React.FC<NearbyGuidancePlacesProps> = ({ locality, f
                 <span className={`font-black text-brand-indigo dark:text-blue-300 ${smallTextClasses[fontSizeStep]}`}>
                   {formatDistance(place.distanceKm)}
                 </span>
+              </>
+            );
+
+            return visibleHref ? (
+              <a
+                key={place.id}
+                href={visibleHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-2xl bg-white dark:bg-slate-800 border-4 border-slate-100 dark:border-slate-700 p-5 shadow-md hover:shadow-xl transition-all active:scale-95 min-h-[150px] flex flex-col justify-between gap-4"
+              >
+                {content}
               </a>
+            ) : (
+              <div
+                key={place.id}
+                className="rounded-2xl bg-white dark:bg-slate-800 border-4 border-slate-100 dark:border-slate-700 p-5 shadow-md min-h-[150px] flex flex-col justify-between gap-4"
+              >
+                {content}
+              </div>
             );
           })}
         </div>
