@@ -65,11 +65,11 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
   const sortedShortcuts = [...shortcuts].sort((a, b) => a.name.localeCompare(b.name, 'fi'));
 
   const iconClasses = [
-    'text-4xl md:text-5xl',
-    'text-5xl md:text-6xl',
-    'text-6xl md:text-7xl',
-    'text-7xl md:text-8xl',
-    'text-8xl md:text-9xl',
+    'text-[2.25rem] md:text-[2.7rem]',
+    'text-[2.7rem] md:text-[3.375rem]',
+    'text-[3.375rem] md:text-[4.05rem]',
+    'text-[4.05rem] md:text-[5.4rem]',
+    'text-[5.4rem] md:text-[7.2rem]',
   ];
 
   const textClasses = [
@@ -357,3 +357,4 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
 };
 
 export default QuickLinks;
+

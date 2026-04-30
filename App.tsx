@@ -11,6 +11,11 @@ import SearchBar from './components/SearchBar';
 import RegionalServicesPanel from './components/RegionalServicesPanel';
 import { Shortcut, Favorite, LocalityInfo } from './types';
 
+const MIN_UI_SCALE = 50;
+const MAX_UI_SCALE = 200;
+const DEFAULT_UI_SCALE = 100;
+const UI_SCALE_STEP = 10;
+
 const App: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<Shortcut | null>(null);
   const [isInfoOpen, setIsInfoOpen] = useState(false);
@@ -21,9 +26,15 @@ const App: React.FC = () => {
     return localStorage.getItem('isDarkMode') === 'true';
   });
 
-  const [fontSizeStep, setFontSizeStep] = useState(() => {
-    const saved = parseInt(localStorage.getItem('fontSizeStep') ?? '0', 10);
-    return Number.isNaN(saved) || saved < 0 || saved > 4 ? 0 : saved;
+  const [uiScale, setUiScale] = useState(() => {
+    const savedScale = parseInt(localStorage.getItem('uiScale') ?? '', 10);
+    if (!Number.isNaN(savedScale)) {
+      return Math.min(MAX_UI_SCALE, Math.max(MIN_UI_SCALE, savedScale));
+    }
+
+    const legacyStep = parseInt(localStorage.getItem('fontSizeStep') ?? '0', 10);
+    const legacyScale = [100, 125, 150, 175, 200][legacyStep] ?? DEFAULT_UI_SCALE;
+    return legacyScale;
   });
 
   const [favorites, setFavorites] = useState<Favorite[]>(() => {
@@ -49,34 +60,18 @@ const App: React.FC = () => {
   }, [isDarkMode]);
 
   useEffect(() => {
-    localStorage.setItem('fontSizeStep', String(fontSizeStep));
-  }, [fontSizeStep]);
+    document.documentElement.style.fontSize = `${uiScale}%`;
+    localStorage.setItem('uiScale', String(uiScale));
+  }, [uiScale]);
 
   const toggleDarkMode = useCallback(() => setIsDarkMode(prev => !prev), []);
-  const decreaseFont = useCallback(() => setFontSizeStep(prev => Math.max(0, prev - 1)), []);
-  const increaseFont = useCallback(() => setFontSizeStep(prev => Math.min(4, prev + 1)), []);
-  const resetFont = useCallback(() => setFontSizeStep(0), []);
-
-  const fontClasses = [
-    'text-base',
-    'text-lg',
-    'text-xl',
-    'text-2xl',
-    'text-3xl',
-  ];
-
-  const headingClasses = [
-    'text-4xl md:text-6xl',
-    'text-5xl md:text-7xl',
-    'text-6xl md:text-8xl',
-    'text-7xl md:text-9xl',
-    'text-8xl md:text-[10rem]',
-  ];
-
-  const fontSizeLabels = ['100%', '125%', '150%', '175%', '200%'];
+  const decreaseFont = useCallback(() => setUiScale(prev => Math.max(MIN_UI_SCALE, prev - UI_SCALE_STEP)), []);
+  const increaseFont = useCallback(() => setUiScale(prev => Math.min(MAX_UI_SCALE, prev + UI_SCALE_STEP)), []);
+  const resetFont = useCallback(() => setUiScale(DEFAULT_UI_SCALE), []);
+  const fontSizeStep = 0;
 
   return (
-    <div className={`min-h-screen bg-slate-50 dark:bg-slate-950 transition-all duration-300 ${fontClasses[fontSizeStep]}`}>
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 transition-all duration-300 text-base">
       <div className="p-4 md:p-8 lg:p-12 max-w-[1900px] mx-auto space-y-12">
 
         {/* Yläpalkki */}
@@ -87,25 +82,25 @@ const App: React.FC = () => {
             <div className="flex items-stretch rounded-full bg-yellow-400 border-b-4 border-yellow-600 shadow-md overflow-hidden" role="group" aria-label="Tekstikoko">
               <button
                 onClick={decreaseFont}
-                disabled={fontSizeStep === 0}
+                disabled={uiScale === MIN_UI_SCALE}
                 className="px-5 py-3 font-black text-xl hover:bg-yellow-500 transition-all active:scale-95 disabled:opacity-30 focus:ring-4 focus:ring-yellow-300 focus:outline-none"
                 aria-label="Pienennä tekstiä"
               >
                 A−
               </button>
               <span className="px-4 py-3 font-black text-lg border-x-2 border-yellow-600 flex items-center select-none" aria-live="polite">
-                {fontSizeLabels[fontSizeStep]}
+                {uiScale}%
               </span>
               <button
                 onClick={increaseFont}
-                disabled={fontSizeStep === 4}
+                disabled={uiScale === MAX_UI_SCALE}
                 className="px-5 py-3 font-black text-xl hover:bg-yellow-500 transition-all active:scale-95 disabled:opacity-30 focus:ring-4 focus:ring-yellow-300 focus:outline-none"
                 aria-label="Suurenna tekstiä"
               >
                 A+
               </button>
             </div>
-            {fontSizeStep !== 0 && (
+            {uiScale !== DEFAULT_UI_SCALE && (
               <button
                 onClick={resetFont}
                 className="bg-yellow-200 hover:bg-yellow-300 text-yellow-900 px-4 py-3 rounded-full font-black text-base transition-all active:scale-95 shadow-md border-b-4 border-yellow-500 focus:ring-4 focus:ring-yellow-300 whitespace-nowrap"
@@ -158,7 +153,7 @@ const App: React.FC = () => {
           <RegionalServicesPanel locality={locality} fontSizeStep={fontSizeStep} />
 
           <section className="space-y-8">
-            <h2 className={`font-black text-slate-900 dark:text-white tracking-tighter transition-all duration-300 ${headingClasses[fontSizeStep]}`}>
+            <h2 className="font-black text-slate-900 dark:text-white tracking-tighter transition-all duration-300 text-4xl md:text-6xl">
               Valitse palvelu
             </h2>
             <QuickLinks onSelectCategory={setSelectedCategory} fontSizeStep={fontSizeStep} favorites={favorites} onToggleFavorite={toggleFavorite} locality={locality} />
