@@ -1,4 +1,5 @@
 import { MUNICIPALITIES } from './municipalRegistry';
+import { MUNICIPALITY_WEBSITES } from './municipalityWebsites';
 import { LocalityInfo, Municipality, Provider, RegionalContext, RssFeedConfig, Shortcut } from './types';
 
 interface LocalServiceConfig {
@@ -6,6 +7,7 @@ interface LocalServiceConfig {
   library?: Provider;
   wellbeingArea?: Provider;
   municipality?: Provider;
+  municipalityWebsite?: Provider;
   rssFeeds?: RssFeedConfig[];
 }
 
@@ -79,6 +81,17 @@ const createMunicipalitySearch = (municipality: string, label: string, query: st
   url: `https://www.google.com/search?q=${encodeURIComponent(`${municipality} ${query}`)}`,
   group: 'Paikalliset palvelut',
 });
+
+const getMunicipalityWebsiteProvider = (municipality: Municipality): Provider => {
+  const url = MUNICIPALITY_WEBSITES[normalizeMunicipality(municipality.name)]
+    ?? `https://www.google.com/search?q=${encodeURIComponent(`${municipality.name} virallinen verkkosivusto`)}`;
+
+  return {
+    name: `Kunnan verkkosivut: ${municipality.name}`,
+    url,
+    group: 'Paikalliset palvelut',
+  };
+};
 
 const createNewsSearch = (municipality: string, source: string, site?: string): Provider => ({
   name: `${source}: ${municipality}`,
@@ -214,9 +227,11 @@ export const getRegionalProviders = (context: RegionalContext): Provider[] => {
   const municipality = context.municipality.name;
   const key = normalizeMunicipality(municipality);
   const exact = localServiceMap[key];
+  const municipalityWebsite = exact?.municipalityWebsite ?? getMunicipalityWebsiteProvider(context.municipality);
   const wellbeingArea = exact?.wellbeingArea ?? getWellbeingAreaProvider(context.municipality);
 
   return uniqueProviders([
+    municipalityWebsite,
     exact?.municipality ?? createMunicipalitySearch(municipality, 'Kunnan palvelut', 'palvelut'),
     wellbeingArea ?? createMunicipalitySearch(municipality, 'Hyvinvointialue', 'hyvinvointialue'),
     exact?.library ?? createMunicipalitySearch(municipality, 'Kirjastot', 'kirjasto'),
@@ -253,12 +268,14 @@ export const getLocalizedShortcuts = (shortcuts: Shortcut[], locality: LocalityI
   const key = normalizeMunicipality(municipality);
   const exact = localServiceMap[key];
   const wellbeingArea = exact?.wellbeingArea ?? getWellbeingAreaProvider(context.municipality);
+  const municipalityWebsite = exact?.municipalityWebsite ?? getMunicipalityWebsiteProvider(context.municipality);
 
   const fallback: LocalServiceConfig = {
     publicTransport: createMunicipalitySearch(municipality, 'Joukkoliikenne', 'joukkoliikenne'),
     library: createMunicipalitySearch(municipality, 'Kirjastot', 'kirjasto'),
     wellbeingArea: wellbeingArea ?? createMunicipalitySearch(municipality, 'Hyvinvointialue', 'hyvinvointialue'),
     municipality: exact?.municipality ?? createMunicipalitySearch(municipality, 'Kunnan palvelut', 'palvelut'),
+    municipalityWebsite,
   };
 
   const services = { ...fallback, ...exact, wellbeingArea: exact?.wellbeingArea ?? fallback.wellbeingArea };
@@ -278,6 +295,7 @@ export const getLocalizedShortcuts = (shortcuts: Shortcut[], locality: LocalityI
       return {
         ...shortcut,
         providers: uniqueProviders([
+          services.municipalityWebsite,
           services.municipality,
           services.wellbeingArea,
           ...shortcut.providers,
