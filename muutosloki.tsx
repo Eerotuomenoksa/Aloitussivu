@@ -135,9 +135,6 @@ function App() {
             <span className="rounded-full bg-amber-100 text-amber-900 dark:bg-amber-900/40 dark:text-amber-200 px-3 py-1 text-xs font-black uppercase tracking-wide">
               Kehittäjille
             </span>
-            <span className="rounded-full bg-slate-200 dark:bg-slate-800 px-3 py-1 text-xs font-black uppercase tracking-wide text-slate-700 dark:text-slate-300">
-              Ei linkitetty käyttöliittymään
-            </span>
           </div>
           <h1 className="text-4xl md:text-6xl font-black tracking-tighter">Muutosloki</h1>
           <p className="max-w-3xl text-base md:text-lg text-slate-600 dark:text-slate-300">

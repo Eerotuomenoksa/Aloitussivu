@@ -22,16 +22,16 @@ export type ChangelogDeployment = {
   url: string;
 };
 
-export const CHANGELOG_GENERATED_AT = "30.4.2026 klo 12.34";
+export const CHANGELOG_GENERATED_AT = "30.4.2026 klo 12.45";
 export const CHANGELOG_SOURCE = "git-fallback";
 export const CHANGELOG_WORKTREE_CHANGES: ChangelogWorktreeChange[] = [
   {
     "status": "modified",
-    "path": "App.tsx"
+    "path": "changelogData.ts"
   },
   {
     "status": "modified",
-    "path": "changelogData.ts"
+    "path": "components/RegionalServicesPanel.tsx"
   },
   {
     "status": "modified",
@@ -46,16 +46,34 @@ export const CHANGELOG_WORKTREE_CHANGES: ChangelogWorktreeChange[] = [
     "path": "docs/yllapito-linkkiloki.csv"
   },
   {
-    "status": "modified",
-    "path": "muutosloki.tsx"
+    "status": "untracked",
+    "path": "localLinkVisibility.ts"
   },
   {
     "status": "modified",
-    "path": "scripts/update-changelog.mjs"
+    "path": "localServices.ts"
+  },
+  {
+    "status": "modified",
+    "path": "muutosloki.tsx"
   }
 ];
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
+  {
+    "hash": "5b2123294b58758a2457d6b31d021818ca2eb6d0",
+    "date": "2026-04-30",
+    "subject": "lisätty beta teksti ja linkki muutoslokiin",
+    "files": [
+      "App.tsx",
+      "changelogData.ts",
+      "docs/linkit.csv",
+      "docs/linkit.md",
+      "docs/yllapito-linkkiloki.csv",
+      "muutosloki.tsx",
+      "scripts/update-changelog.mjs"
+    ]
+  },
   {
     "hash": "52a5969808d8536596d6f3c923c0ba96b9bb2fa9",
     "date": "2026-04-30",
@@ -172,22 +190,6 @@ export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
     "files": [
       "components/RegionalServicesPanel.tsx",
       "services/rssService.ts"
-    ]
-  },
-  {
-    "hash": "642e7754422c5c68a4a8820700a22a5ab6f010ac",
-    "date": "2026-04-30",
-    "subject": "Paikalliset linkit",
-    "files": [
-      "App.tsx",
-      "components/LocalNewsHeadlines.tsx",
-      "components/QuickLinks.tsx",
-      "components/RegionalServicesPanel.tsx",
-      "components/WeatherCard.tsx",
-      "localServices.ts",
-      "municipalRegistry.ts",
-      "services/rssService.ts",
-      "types.ts"
     ]
   }
 ];
