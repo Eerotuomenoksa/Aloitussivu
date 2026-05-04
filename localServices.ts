@@ -1,4 +1,5 @@
 import { MUNICIPALITIES } from './municipalRegistry';
+import { MUNICIPALITY_WEBSITES } from './municipalityWebsites';
 import { LOCAL_NEWSPAPER_FEEDS } from './localNewspaperFeeds';
 import { filterVisibleProviders } from './linkVisibility';
 import { LocalityInfo, Municipality, Provider, RegionalContext, RssFeedConfig, Shortcut } from './types';
@@ -8,6 +9,7 @@ interface LocalServiceConfig {
   library?: Provider;
   wellbeingArea?: Provider;
   municipality?: Provider;
+  regionalNews?: Provider[];
   rssFeeds?: RssFeedConfig[];
 }
 
@@ -44,7 +46,7 @@ const wellbeingAreaUrls: Record<string, string> = {
   '06': 'https://sata.fi/',
   '07': 'https://omahame.fi/',
   '08': 'https://www.pirha.fi/',
-  '09': 'https://paijat-sote.fi/',
+  '09': 'https://paijatha.fi/',
   '10': 'https://kymenhva.fi/',
   '11': 'https://www.ekhva.fi/',
   '12': 'https://etelasavonha.fi/',
@@ -58,7 +60,32 @@ const wellbeingAreaUrls: Record<string, string> = {
   '20': 'https://kainuunhyvinvointialue.fi/',
   '21': 'https://lapha.fi/',
   '90': 'https://www.hel.fi/fi/sosiaali-ja-terveyspalvelut',
-  '91': 'https://www.aland.fi/',
+  '91': 'https://www.aland.ax/sv',
+};
+
+const wellbeingAreaNewsUrls: Record<string, string> = {
+  '01': 'https://itauusimaa.fi/ajankohtaista/',
+  '02': 'https://www.keusote.fi/ajankohtaista/',
+  '03': 'https://www.luvn.fi/fi/haku?q=&type=news',
+  '04': 'https://vakehyva.fi/fi/ajankohtaista',
+  '05': 'https://www.varha.fi/fi/ajankohtaista',
+  '06': 'https://sata.fi/ajankohtaista/',
+  '07': 'https://omahame.fi/uutiset',
+  '08': 'https://www.pirha.fi/ajankohtaista/pirha-nyt',
+  '09': 'https://paijatha.fi/ajankohtaista/',
+  '10': 'https://kymenhva.fi/kategoria/uutiset/',
+  '11': 'https://www.ekhva.fi/hyvinvointialue/ajankohtaista/',
+  '12': 'https://etelasavonha.fi/eloisa/uutiset/',
+  '13': 'https://pshyvinvointialue.fi/fi/ajankohtaiset',
+  '14': 'https://www.siunsote.fi/ajankohtaista/',
+  '15': 'https://www.hyvaks.fi/uutiset',
+  '16': 'https://www.hyvaep.fi/ajankohtaista/',
+  '17': 'https://pohjanmaanhyvinvointi.fi/tietoa-meista/ajankohtaista/uutiset/',
+  '18': 'https://soite.fi/soite/ajankohtaista/',
+  '19': 'https://pohde.fi/ajankohtaista/',
+  '20': 'https://kainuunhyvinvointialue.fi/ajankohtaista?filter=All',
+  '21': 'https://lapha.fi/ajankohtaista',
+  '90': 'https://www.hel.fi/fi/uutiset',
 };
 
 const normalizeText = (value: string) => value
@@ -83,55 +110,15 @@ const municipalitiesByNormalizedName = new Map<string, Municipality>(
   MUNICIPALITIES.map((municipality) => [normalizeMunicipality(municipality.name), municipality])
 );
 
-const createMunicipalitySearch = (municipality: string, label: string, query: string): Provider => ({
-  name: `${label}: ${municipality}`,
-  url: `https://www.google.com/search?q=${encodeURIComponent(`${municipality} ${query}`)}`,
-  group: 'Paikalliset palvelut',
-});
-
-const createNewsSearch = (municipality: string, source: string, site?: string): Provider => ({
-  name: `${source}: ${municipality}`,
-  url: site
-    ? `https://www.google.com/search?q=${encodeURIComponent(`site:${site} ${municipality} uutiset`)}`
-    : `https://www.google.com/search?q=${encodeURIComponent(`${municipality} uutiset`)}`,
-  group: 'Alueelliset uutiset',
-});
-
-const createGoogleNewsRss = (municipality: string): RssFeedConfig => ({
-  name: `Google News: ${municipality}`,
-  url: `https://news.google.com/rss/search?q=${encodeURIComponent(`${municipality} uutiset`)}&hl=fi&gl=FI&ceid=FI:fi`,
-});
-
-const stripDiacritics = (value: string) => value
-  .normalize('NFD')
-  .replace(/[\u0300-\u036f]/g, '');
-
-const localPaperSlugOverrides: Record<string, string> = {
-  espoo: 'espoon',
-  helsinki: 'helsingin',
-  kauniainen: 'kauniaisten',
-  kuopio: 'kuopion',
-  lappeenranta: 'lappeenrannan',
-  lahti: 'lahden',
-  oulu: 'oulun',
-  pori: 'porin',
-  porvoo: 'porvoon',
-  tampere: 'tampereen',
-  turku: 'turun',
-  vaasa: 'vaasan',
-  vantaa: 'vantaan',
-  jyvaskyla: 'jyvaskylan',
-  ylojarvi: 'ylojarven',
-};
-
-const createLocalPaperRssFeed = (municipality: string): RssFeedConfig => {
-  const normalized = stripDiacritics(normalizeMunicipality(municipality));
-  const slug = localPaperSlugOverrides[normalized]
-    ?? normalized.replace(/i$/, 'in').replace(/a$/, 'an').replace(/ä$/, 'än').replace(/o$/, 'on').replace(/u$/, 'un').replace(/e$/, 'een');
+const getMunicipalityWebsiteProvider = (municipality: string): Provider | undefined => {
+  const key = normalizeMunicipality(municipality);
+  const url = MUNICIPALITY_WEBSITES[key] ?? MUNICIPALITY_WEBSITES[normalizeText(municipality)];
+  if (!url) return undefined;
 
   return {
-    name: `Paikallislehti: ${municipality}`,
-    url: `https://${slug}uutiset.fi/feed`,
+    name: `Kunnan palvelut: ${municipality}`,
+    url,
+    group: 'Paikalliset palvelut',
   };
 };
 
@@ -240,6 +227,12 @@ const getRegionalServiceArea = (municipalityKey: string): RegionalServiceArea | 
 
 const hslPublicTransport: Provider = { name: 'HSL', url: 'https://www.hsl.fi/', group: 'Paikalliset palvelut' };
 
+const regionalNewsProvider = (name: string, url: string): Provider => ({
+  name,
+  url,
+  group: 'Alueelliset uutiset',
+});
+
 const localServiceMap: Record<string, LocalServiceConfig> = {
   helsinki: {
     publicTransport: hslPublicTransport,
@@ -272,6 +265,7 @@ const localServiceMap: Record<string, LocalServiceConfig> = {
   tampere: {
     library: { name: 'PIKI-kirjastot', url: 'https://piki.verkkokirjasto.fi/', group: 'Paikalliset palvelut' },
     municipality: { name: 'Tampereen palvelut', url: 'https://www.tampere.fi/', group: 'Paikalliset palvelut' },
+    regionalNews: [regionalNewsProvider('Aamulehti', 'https://www.aamulehti.fi/')],
     rssFeeds: [
       { name: 'Tampereen uutiset', url: 'https://www.tampere.fi/ajankohtaista/uutiset.xml' },
       { name: 'Tampereen artikkelit', url: 'https://www.tampere.fi/ajankohtaista/artikkelit.xml' },
@@ -281,10 +275,12 @@ const localServiceMap: Record<string, LocalServiceConfig> = {
   turku: {
     library: { name: 'Vaski-kirjastot', url: 'https://vaski.finna.fi/', group: 'Paikalliset palvelut' },
     municipality: { name: 'Turun palvelut', url: 'https://www.turku.fi/', group: 'Paikalliset palvelut' },
+    regionalNews: [regionalNewsProvider('Turun Sanomat', 'https://www.ts.fi/')],
   },
   oulu: {
     library: { name: 'OUTI-kirjastot', url: 'https://outi.finna.fi/', group: 'Paikalliset palvelut' },
     municipality: { name: 'Oulun palvelut', url: 'https://www.ouka.fi/', group: 'Paikalliset palvelut' },
+    regionalNews: [regionalNewsProvider('Kaleva', 'https://www.kaleva.fi/')],
     rssFeeds: [
       { name: 'Oulun kaupungin uutiset', url: 'https://www.ouka.fi/news/feed?audience=All&region=All&topic=All' },
       { name: 'Kaleva: Oulun seutu', url: 'https://kaleva.fi/feedit/rss/managed-listing/oulun-seutu/' },
@@ -292,10 +288,45 @@ const localServiceMap: Record<string, LocalServiceConfig> = {
   },
   kuopio: {
     municipality: { name: 'Kuopion palvelut', url: 'https://www.kuopio.fi/', group: 'Paikalliset palvelut' },
+    regionalNews: [regionalNewsProvider('Savon Sanomat', 'https://savonsanomat.fi/')],
   },
   jyväskylä: {
     library: { name: 'Keski-kirjastot', url: 'https://keski.finna.fi/', group: 'Paikalliset palvelut' },
     municipality: { name: 'Jyväskylän palvelut', url: 'https://www.jyvaskyla.fi/', group: 'Paikalliset palvelut' },
+    regionalNews: [regionalNewsProvider('Keskisuomalainen', 'https://www.ksml.fi/')],
+  },
+  pori: {
+    regionalNews: [regionalNewsProvider('Satakunnan Kansa', 'https://www.satakunnankansa.fi/')],
+  },
+  joensuu: {
+    regionalNews: [regionalNewsProvider('Karjalainen', 'https://www.karjalainen.fi/')],
+  },
+  rovaniemi: {
+    regionalNews: [regionalNewsProvider('Lapin Kansa', 'https://www.lapinkansa.fi/')],
+  },
+  lahti: {
+    regionalNews: [regionalNewsProvider('Etelä-Suomen Sanomat', 'https://www.ess.fi/')],
+  },
+  hämeenlinna: {
+    regionalNews: [regionalNewsProvider('Hämeen Sanomat', 'https://www.hameensanomat.fi/')],
+  },
+  kajaani: {
+    regionalNews: [regionalNewsProvider('Kainuun Sanomat', 'https://www.kainuunsanomat.fi/')],
+  },
+  kouvola: {
+    regionalNews: [regionalNewsProvider('Kouvolan Sanomat', 'https://www.kouvolansanomat.fi/')],
+  },
+  mikkeli: {
+    regionalNews: [regionalNewsProvider('Länsi-Savo', 'https://www.lansi-savo.fi/')],
+  },
+  vaasa: {
+    regionalNews: [regionalNewsProvider('Pohjalainen', 'https://www.pohjalainen.fi/')],
+  },
+  kokkola: {
+    regionalNews: [regionalNewsProvider('Keskipohjanmaa', 'https://www.keskipohjanmaa.fi/')],
+  },
+  seinäjoki: {
+    regionalNews: [regionalNewsProvider('Ilkka-Pohjalainen', 'https://ilkkapohjalainen.fi/')],
   },
 };
 
@@ -362,10 +393,24 @@ const getWellbeingAreaProvider = (municipality: Municipality): Provider | undefi
   if (!municipality.wellbeingAreaName) return undefined;
 
   const url = municipality.wellbeingAreaCode ? wellbeingAreaUrls[municipality.wellbeingAreaCode] : undefined;
+  if (!url) return undefined;
+
   return {
     name: municipality.wellbeingAreaName,
-    url: url ?? `https://www.google.com/search?q=${encodeURIComponent(municipality.wellbeingAreaName)}`,
+    url,
     group: 'Hyvinvointialue',
+  };
+};
+
+const getWellbeingAreaNewsProvider = (municipality: Municipality): Provider | undefined => {
+  if (!municipality.wellbeingAreaName || !municipality.wellbeingAreaCode) return undefined;
+  const url = wellbeingAreaNewsUrls[municipality.wellbeingAreaCode];
+  if (!url) return undefined;
+
+  return {
+    name: `Hyvinvointialueen tiedotteet: ${municipality.wellbeingAreaName}`,
+    url,
+    group: 'Alueelliset uutiset',
   };
 };
 
@@ -378,8 +423,8 @@ export const getRegionalProviders = (context: RegionalContext): Provider[] => {
   const publicTransport = exact?.publicTransport ?? serviceArea?.services.publicTransport;
 
   return filterVisibleProviders(uniqueProviders([
-    exact?.municipality ?? createMunicipalitySearch(municipality, 'Kunnan palvelut', 'palvelut'),
-    wellbeingArea ?? createMunicipalitySearch(municipality, 'Hyvinvointialue', 'hyvinvointialue'),
+    exact?.municipality ?? getMunicipalityWebsiteProvider(municipality),
+    wellbeingArea,
     exact?.library,
     publicTransport,
   ].filter((provider): provider is Provider => Boolean(provider)))) ?? [];
@@ -387,11 +432,13 @@ export const getRegionalProviders = (context: RegionalContext): Provider[] => {
 
 export const getRegionalNewsProviders = (context: RegionalContext): Provider[] => {
   const municipality = context.municipality.name;
-  const wellbeingArea = context.municipality.wellbeingAreaName;
+  const key = normalizeMunicipality(municipality);
+  const exact = localServiceMap[key];
+  const wellbeingAreaNews = getWellbeingAreaNewsProvider(context.municipality);
 
   return filterVisibleProviders(uniqueProviders([
-    createNewsSearch(municipality, 'Kunnan uutiset'),
-    wellbeingArea ? createNewsSearch(wellbeingArea, 'Hyvinvointialueen tiedotteet') : undefined,
+    ...(exact?.regionalNews ?? []),
+    wellbeingAreaNews,
   ].filter((provider): provider is Provider => Boolean(provider)))) ?? [];
 };
 
@@ -403,16 +450,9 @@ export const getRegionalRssFeeds = (context: RegionalContext): RssFeedConfig[] =
     .filter((feed) => normalizeMunicipality(feed.municipality) === key)
     .map((feed) => ({ name: feed.name, url: feed.url }));
 
-  if (newspaperFeeds.length > 0 || (exact?.rssFeeds?.length ?? 0) > 0) {
-    return uniqueFeeds([
-      ...newspaperFeeds,
-      ...(exact?.rssFeeds ?? []),
-    ]);
-  }
-
   return uniqueFeeds([
-    createLocalPaperRssFeed(municipality),
-    createGoogleNewsRss(municipality),
+    ...newspaperFeeds,
+    ...(exact?.rssFeeds ?? []),
   ]);
 };
 
@@ -428,8 +468,8 @@ export const getLocalizedShortcuts = (shortcuts: Shortcut[], locality: LocalityI
 
   const fallback: LocalServiceConfig = {
     publicTransport: serviceArea?.services.publicTransport,
-    wellbeingArea: wellbeingArea ?? createMunicipalitySearch(municipality, 'Hyvinvointialue', 'hyvinvointialue'),
-    municipality: exact?.municipality ?? createMunicipalitySearch(municipality, 'Kunnan palvelut', 'palvelut'),
+    wellbeingArea,
+    municipality: exact?.municipality ?? getMunicipalityWebsiteProvider(municipality),
   };
 
   const services = { ...fallback, ...exact, wellbeingArea: exact?.wellbeingArea ?? fallback.wellbeingArea };

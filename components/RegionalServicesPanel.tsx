@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { getRegionalNewsProviders, getRegionalProviders, getRegionalRssFeeds, resolveRegionalContext } from '../localServices';
-import { filterVisibleProviders, isLinkVisible } from '../linkVisibility';
+import { filterVisibleProviders } from '../linkVisibility';
 import { LocalityInfo, Provider, LinkReportDraft } from '../types';
 import LocalNewsHeadlines from './LocalNewsHeadlines';
 import NearbyGuidancePlaces from './NearbyGuidancePlaces';
@@ -72,7 +72,7 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
   const services = useMemo(() => context ? filterVisibleProviders(getRegionalProviders(context)) ?? [] : [], [context]);
   const newsFallbacks = useMemo(() => context ? filterVisibleProviders(getRegionalNewsProviders(context)) ?? [] : [], [context]);
   const rssFeeds = useMemo(() => context ? getRegionalRssFeeds(context) : [], [context]);
-  const fallbackNewsUrl = newsFallbacks[0]?.url ?? (isLinkVisible('https://news.google.com/home?hl=fi&gl=FI&ceid=FI:fi') ? 'https://news.google.com/home?hl=fi&gl=FI&ceid=FI:fi' : '');
+  const fallbackNewsUrl = newsFallbacks[0]?.url ?? '';
 
   return (
     <section className="space-y-6" aria-labelledby="regional-services-heading">

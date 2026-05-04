@@ -172,6 +172,10 @@ const collectLinks = async () => {
     addRow('Paikalliset erikoislinkit', match[4], match[2], match[3], 'localServices.ts');
   }
 
+  for (const match of localServices.matchAll(/regionalNewsProvider\('([^']+)',\s*'([^']+)'\)/g)) {
+    addRow('Alueelliset uutislähteet', 'Alueelliset uutiset', match[1], match[2], 'localServices.ts');
+  }
+
   for (const match of localServices.matchAll(/'([0-9]{2})':\s*'([^']+)'/g)) {
     addRow('Hyvinvointialueet', 'Hyvinvointialue', `Hyvinvointialue ${match[1]}`, match[2], 'localServices.ts');
   }
@@ -193,7 +197,6 @@ const collectLinks = async () => {
   addRow('Sovelluksen omat linkit', 'Paikannus API', 'OpenStreetMap Nominatim reverse geocoding', 'https://nominatim.openstreetmap.org/reverse', 'WeatherCard.tsx');
   addRow('Sovelluksen omat linkit', 'Digiopastus', 'SeniorSurf opastuspaikat', 'https://seniorsurf.fi/seniorit/opastuspaikat/', 'NearbyGuidancePlaces.tsx');
   addRow('Sovelluksen omat linkit', 'RSS proxy', 'rss2json', 'https://api.rss2json.com/v1/api.json', 'rssService.ts');
-  addRow('Sovelluksen omat linkit', 'Uutiset', 'Google News Suomi', 'https://news.google.com/home?hl=fi&gl=FI&ceid=FI:fi', 'RegionalServicesPanel.tsx');
   addRow('Sovelluksen omat linkit', 'Haku', 'Google-haku', 'https://www.google.com/search', 'SearchBar.tsx / localServices.ts');
 
   return {

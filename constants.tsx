@@ -56,7 +56,17 @@ export const SHORTCUTS: Shortcut[] = [
       { name: 'OmaKanta', url: 'https://www.kanta.fi' },
       { name: 'Traficom', url: 'https://www.traficom.fi' },
       { name: 'Poliisi', url: 'https://poliisi.fi' },
-      { name: 'Digi- ja väestötietovirasto', url: 'https://dvv.fi' }
+      { name: 'Digi- ja väestötietovirasto', url: 'https://dvv.fi' },
+      { name: 'Tulli', url: 'https://www.tulli.fi/' }
+    ]
+  },
+  {
+    name: 'Hakukoneet', icon: '🔎', color: 'bg-brand-cyan',
+    providers: [
+      { name: 'Google', url: 'https://www.google.fi/' },
+      { name: 'Bing', url: 'https://www.bing.com/' },
+      { name: 'Wikipedia', url: 'https://fi.wikipedia.org/' },
+      { name: 'Fonecta', url: 'https://www.fonecta.fi/' }
     ]
   },
   { 
@@ -294,6 +304,14 @@ export const SHORTCUTS: Shortcut[] = [
       { name: 'POP Pankki', url: 'https://www.poppankki.fi' }
     ]
   },
+  {
+    name: 'Talous', icon: '📈', color: 'bg-brand-grey',
+    providers: [
+      { name: 'Kauppalehti', url: 'https://www.kauppalehti.fi/' },
+      { name: 'Talouselämä', url: 'https://www.talouselama.fi/' },
+      { name: 'Taloussanomat', url: 'https://www.taloussanomat.fi/' }
+    ]
+  },
   { 
     name: 'Ruoka', icon: '🥘', color: 'bg-brand-orange',
     providers: [
@@ -316,7 +334,8 @@ export const SHORTCUTS: Shortcut[] = [
       { name: 'Facebook', url: 'https://www.facebook.com' },
       { name: 'WhatsApp Web', url: 'https://web.whatsapp.com' },
       { name: 'Instagram', url: 'https://www.instagram.com' },
-      { name: 'X (Twitter)', url: 'https://www.x.com' }
+      { name: 'X (Twitter)', url: 'https://www.x.com' },
+      { name: 'LinkedIn', url: 'https://www.linkedin.com/' }
     ]
   },
   { 
@@ -358,7 +377,9 @@ export const SHORTCUTS: Shortcut[] = [
       { name: 'Foreca', url: 'https://www.foreca.fi' },
       { name: 'Ilmatieteen laitos', url: 'https://www.ilmatieteenlaitos.fi' },
       { name: 'Foreca', url: 'https://www.foreca.fi' },
-      { name: 'Yle Sää', url: 'https://yle.fi/saa' }
+      { name: 'Yle Sää', url: 'https://yle.fi/saa' },
+      { name: 'Supersää', url: 'https://www.is.fi/supersaa/' },
+      { name: 'Sadetutka', url: 'https://www.is.fi/supersaa/sadetutka/' }
     ]
   },
   { 
@@ -439,7 +460,9 @@ export const SHORTCUTS: Shortcut[] = [
       { name: 'Helsingin Sanomat', url: 'https://www.hs.fi' },
       { name: 'Ilta-Sanomat', url: 'https://www.is.fi' },
       { name: 'Iltalehti', url: 'https://www.iltalehti.fi' },
-      { name: 'Maaseudun Tulevaisuus', url: 'https://www.maaseuduntulevaisuus.fi' }
+      { name: 'Maaseudun Tulevaisuus', url: 'https://www.maaseuduntulevaisuus.fi' },
+      { name: 'Ampparit', url: 'https://www.ampparit.com/' },
+      { name: 'Uusi Suomi', url: 'https://www.uusisuomi.fi/' }
     ]
   },
   { 
