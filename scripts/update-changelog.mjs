@@ -110,28 +110,25 @@ function summarizeWorktree(changes) {
   const paths = changes.map((change) => change.path);
   const notes = [];
 
-  if (paths.some((pathName) => ['App.tsx', 'muutosloki.tsx', 'scripts/update-changelog.mjs', 'changelogData.ts'].includes(pathName))) {
-    notes.push('Muutosloki muutettiin selkokieliseksi kehittäjäsivuksi, joka näyttää muutokset ilman tiedostolinkkejä.');
-  }
-
   if (paths.some((pathName) => ['App.tsx'].includes(pathName))) {
-    notes.push('Pääsivulle lisättiin beta-merkintä sekä linkki muutoslokiin.');
+    notes.push('Sijainnista tunnistettu kunta tallennetaan selaimen muistiin, jotta alueelliset palvelut palautuvat automaattisesti sivun uudelleenavauksessa.');
   }
 
-  if (paths.some((pathName) => ['localServices.ts', 'components/RegionalServicesPanel.tsx', 'localLinkVisibility.ts'].includes(pathName))) {
-    notes.push('Paikallisiin linkkeihin lisättiin seurakunnat, ja niiden piilottaminen tallentuu nyt selaimen muistiin.');
+  if (paths.some((pathName) => ['localServices.ts'].includes(pathName))) {
+    notes.push('Alueellisiin palveluihin lisättiin ja laajennettiin palvelualue-mallia, jotta joukkoliikennejärjestäjät, kuten HSL, Nysse, Föli, Linkki ja Vilkku, voidaan jakaa usealle kunnalle yhdestä paikasta.');
+    notes.push('Alueellisista linkeistä poistettiin tuplana näkynyt kunnan verkkosivut -linkki, kun kunnan palvelut näyttää saman asian käyttäjälle selkeämmin.');
   }
 
-  if (paths.some((pathName) => ['components/InfoModal.tsx', 'localStats.ts'].includes(pathName))) {
-    notes.push('Tietoa-sivua täydennettiin paikallisten linkkien alaluokilla, kuten kunnilla, hyvinvointialueilla ja kirjastoilla.');
+  if (paths.some((pathName) => ['constants.tsx'].includes(pathName))) {
+    notes.push('Liikenne-kategoriaa täydennettiin suomalaisilla joukkoliikennejärjestäjillä ja suurilla liikennöitsijöillä.');
+  }
+
+  if (paths.some((pathName) => ['localNewspaperFeeds.ts', 'scripts/update-newspaper-feeds.mjs', 'docs/paikallisuutiset-puuttuvat-kunnat.md'].includes(pathName))) {
+    notes.push('Pirkkalan uutisiin lisättiin Pirkkalainen-lehden RSS-syöte.');
   }
 
   if (paths.some((pathName) => ['linkHealth.ts', 'linkStats.ts', 'docs/linkit.csv', 'docs/linkit.md', 'docs/yllapito-linkkiloki.csv', 'scripts/update-links.mjs'].includes(pathName))) {
-    notes.push('Linkkien tarkistus, näkyvyyden hallinta ja ylläpitoloki päivittyvät automaattisesti buildin yhteydessä.');
-  }
-
-  if (paths.some((pathName) => ['constants.tsx', 'localServices.ts', 'municipalityWebsites.ts'].includes(pathName))) {
-    notes.push('Palvelukategorioita ja paikallisia linkkejä laajennettiin uusilla suomalaisilla palveluilla.');
+    notes.push('Linkkien tarkistusdata ja ylläpitoloki päivitettiin uusimman buildin yhteydessä.');
   }
 
   if (notes.length === 0) {
@@ -139,6 +136,37 @@ function summarizeWorktree(changes) {
   }
 
   return uniqueBy(notes, (item) => item);
+}
+
+function summarizeCommit(commit) {
+  const subject = commit.subject.toLocaleLowerCase('fi-FI');
+  const notes = [];
+
+  if (subject.includes('elementit -10%')) {
+    notes.push('Käyttöliittymän tekstit, painikkeet ja laatikot pienennettiin 10 prosenttia aiempaa kompaktimmiksi.');
+  }
+
+  if (subject.includes('tuplana olevat kunnan sivut')) {
+    notes.push('Alueellisista linkeistä poistettiin tuplana näkynyt kunnan verkkosivut -linkki, kun kunnan palvelut näyttää saman asian käyttäjälle selkeämmin.');
+  }
+
+  if (subject.includes('pirkkalainen')) {
+    notes.push('Pirkkalan uutisiin lisättiin Pirkkalainen-lehden RSS-syöte.');
+  }
+
+  return notes;
+}
+
+function summarizeToday(recentCommits, worktreeChanges) {
+  const today = new Date().toISOString().slice(0, 10);
+  const commitNotes = recentCommits
+    .filter((commit) => commit.date === today)
+    .flatMap((commit) => summarizeCommit(commit));
+
+  return uniqueBy([
+    ...commitNotes,
+    ...summarizeWorktree(worktreeChanges),
+  ], (item) => item);
 }
 
 async function readDeployments(limit = 10) {
@@ -174,8 +202,8 @@ async function readDeployments(limit = 10) {
 
 const generatedAt = formatGeneratedAt(new Date());
 const worktreeChanges = readWorktreeChanges();
-const worktreeSummary = summarizeWorktree(worktreeChanges);
 const recentCommits = readRecentCommits();
+const worktreeSummary = summarizeToday(recentCommits, worktreeChanges);
 const deployments = await readDeployments();
 
 const fileContents = `export type ChangelogWorktreeChange = {

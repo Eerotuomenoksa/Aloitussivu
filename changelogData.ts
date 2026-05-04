@@ -21,16 +21,23 @@ export type ChangelogCommit = {
   subject: string;
 };
 
-export const CHANGELOG_GENERATED_AT = "4.5.2026 klo 16.34";
+export const CHANGELOG_GENERATED_AT = "4.5.2026 klo 17.05";
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
-  "Muutosloki muutettiin selkokieliseksi kehittäjäsivuksi, joka näyttää muutokset ilman tiedostolinkkejä.",
-  "Pääsivulle lisättiin beta-merkintä sekä linkki muutoslokiin.",
-  "Paikallisiin linkkeihin lisättiin seurakunnat, ja niiden piilottaminen tallentuu nyt selaimen muistiin.",
-  "Linkkien tarkistus, näkyvyyden hallinta ja ylläpitoloki päivittyvät automaattisesti buildin yhteydessä.",
-  "Palvelukategorioita ja paikallisia linkkejä laajennettiin uusilla suomalaisilla palveluilla."
+  "Käyttöliittymän tekstit, painikkeet ja laatikot pienennettiin 10 prosenttia aiempaa kompaktimmiksi.",
+  "Alueellisista linkeistä poistettiin tuplana näkynyt kunnan verkkosivut -linkki, kun kunnan palvelut näyttää saman asian käyttäjälle selkeämmin.",
+  "Pirkkalan uutisiin lisättiin Pirkkalainen-lehden RSS-syöte.",
+  "Sijainnista tunnistettu kunta tallennetaan selaimen muistiin, jotta alueelliset palvelut palautuvat automaattisesti sivun uudelleenavauksessa.",
+  "Alueellisiin palveluihin lisättiin ja laajennettiin palvelualue-mallia, jotta joukkoliikennejärjestäjät, kuten HSL, Nysse, Föli, Linkki ja Vilkku, voidaan jakaa usealle kunnalle yhdestä paikasta.",
+  "Liikenne-kategoriaa täydennettiin suomalaisilla joukkoliikennejärjestäjillä ja suurilla liikennöitsijöillä.",
+  "Linkkien tarkistusdata ja ylläpitoloki päivitettiin uusimman buildin yhteydessä."
 ];
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
+  {
+    "hash": "2c19aa029d1b3abeaa9710cf29da361d5589d718",
+    "date": "2026-05-04",
+    "subject": "elementit -10%, poistettu tuplana olevat kunnan sivut alueellisista linkeistä, lisätty pirkkalainen uutiset feed"
+  },
   {
     "hash": "aeed58215bd6da00dae353c3118bfbf47a6abb94",
     "date": "2026-04-30",
@@ -125,10 +132,5 @@ export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
     "hash": "f8fa06653076ce4e6a4b9022de79cc07a04abdbf",
     "date": "2026-04-30",
     "subject": "Lähimmät opastuspaikat"
-  },
-  {
-    "hash": "f8230405efbcb3994fb9a08877d3cfbd042399b4",
-    "date": "2026-04-30",
-    "subject": "muutettu kuntatiedon sijaintia"
   }
 ];

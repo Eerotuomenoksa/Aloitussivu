@@ -64,15 +64,27 @@ function CommitCard({ commit }: { commit: ChangelogCommit }) {
   );
 }
 
+function HomeLink() {
+  return (
+    <a
+      href="./index.html"
+      className="inline-flex items-center justify-center rounded-full bg-indigo-600 px-5 py-3 text-base font-black text-white shadow-sm transition-all hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-300"
+    >
+      ← Palaa etusivulle
+    </a>
+  );
+}
+
 function App() {
   return (
     <main className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white">
       <div className="mx-auto max-w-6xl px-4 py-8 md:px-8 md:py-12 space-y-10">
         <header className="space-y-4">
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex flex-wrap items-center justify-between gap-3">
             <span className="rounded-full bg-amber-100 text-amber-900 dark:bg-amber-900/40 dark:text-amber-200 px-3 py-1 text-xs font-black uppercase tracking-wide">
               Kehittäjille
             </span>
+            <HomeLink />
           </div>
           <h1 className="text-4xl md:text-6xl font-black tracking-tighter">Muutosloki</h1>
           <p className="max-w-3xl text-base md:text-lg text-slate-600 dark:text-slate-300">
@@ -139,6 +151,10 @@ function App() {
             )}
           </div>
         </section>
+
+        <footer className="border-t border-slate-200 dark:border-slate-800 pt-8">
+          <HomeLink />
+        </footer>
       </div>
     </main>
   );

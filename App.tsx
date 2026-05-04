@@ -20,6 +20,7 @@ const MAX_UI_SCALE = 200;
 const DEFAULT_UI_SCALE = 100;
 const UI_SCALE_STEP = 10;
 const BASE_UI_SCALE_MULTIPLIER = 0.9;
+const SAVED_LOCALITY_KEY = 'locality';
 
 interface UiVisibilityState {
   clock: boolean;
@@ -44,7 +45,22 @@ const App: React.FC = () => {
   const [isInfoOpen, setIsInfoOpen] = useState(false);
   const [isHomepageOpen, setIsHomepageOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [locality, setLocality] = useState<LocalityInfo | null>(null);
+  const [locality, setLocality] = useState<LocalityInfo | null>(() => {
+    try {
+      const saved = localStorage.getItem(SAVED_LOCALITY_KEY);
+      if (!saved) return null;
+      const parsed = JSON.parse(saved) as Partial<LocalityInfo>;
+      if (typeof parsed.municipality !== 'string' || typeof parsed.displayName !== 'string') return null;
+      return {
+        municipality: parsed.municipality,
+        displayName: parsed.displayName,
+        lat: typeof parsed.lat === 'number' ? parsed.lat : undefined,
+        lon: typeof parsed.lon === 'number' ? parsed.lon : undefined,
+      };
+    } catch {
+      return null;
+    }
+  });
   const [reportDraft, setReportDraft] = useState<LinkReportDraft | null>(null);
   const [uiVisibility, setUiVisibility] = useState<UiVisibilityState>(() => {
     try {
@@ -107,9 +123,12 @@ const App: React.FC = () => {
   const decreaseFont = useCallback(() => setUiScale(prev => Math.max(MIN_UI_SCALE, prev - UI_SCALE_STEP)), []);
   const increaseFont = useCallback(() => setUiScale(prev => Math.min(MAX_UI_SCALE, prev + UI_SCALE_STEP)), []);
   const resetFont = useCallback(() => setUiScale(DEFAULT_UI_SCALE), []);
+  const updateLocality = useCallback((nextLocality: LocalityInfo) => {
+    setLocality(nextLocality);
+    localStorage.setItem(SAVED_LOCALITY_KEY, JSON.stringify(nextLocality));
+  }, []);
   const fontSizeStep = 0;
-  const effectiveUiScale = Math.round(uiScale * BASE_UI_SCALE_MULTIPLIER);
-  const uiZoom = effectiveUiScale / 100;
+  const uiZoom = (uiScale * BASE_UI_SCALE_MULTIPLIER) / 100;
   useLinkVisibilityVersion();
   useApprovedLinkSuggestionsVersion();
   const openReportModal = useCallback((draft: LinkReportDraft) => setReportDraft(draft), []);
@@ -139,7 +158,7 @@ const App: React.FC = () => {
                 A−
               </button>
               <span className="px-4 py-3 font-black text-lg border-x-2 border-yellow-600 flex items-center select-none" aria-live="polite">
-                {effectiveUiScale}%
+                {uiScale}%
               </span>
               <button
                 onClick={increaseFont}
@@ -156,7 +175,7 @@ const App: React.FC = () => {
                 className="bg-yellow-200 hover:bg-yellow-300 text-yellow-900 px-4 py-3 rounded-full font-black text-base transition-all active:scale-95 shadow-md border-b-4 border-yellow-500 focus:ring-4 focus:ring-yellow-300 whitespace-nowrap"
                 aria-label="Palauta normaali tekstikoko"
               >
-                ↺ {Math.round(DEFAULT_UI_SCALE * BASE_UI_SCALE_MULTIPLIER)}%
+                ↺ 100%
               </button>
             )}
           </div>
@@ -262,7 +281,7 @@ const App: React.FC = () => {
             )}
             {uiVisibility.weather && (
               <div className="xl:flex-1">
-                <WeatherCard onLocationResolved={setLocality} />
+                <WeatherCard onLocationResolved={updateLocality} />
               </div>
             )}
             {uiVisibility.assistant && (

@@ -11,6 +11,13 @@ interface LocalServiceConfig {
   rssFeeds?: RssFeedConfig[];
 }
 
+interface RegionalServiceArea {
+  id: string;
+  name: string;
+  municipalities: string[];
+  services: Pick<LocalServiceConfig, 'publicTransport'>;
+}
+
 const municipalityAliases: Record<string, string> = {
   esbo: 'espoo',
   grankulla: 'kauniainen',
@@ -128,14 +135,115 @@ const createLocalPaperRssFeed = (municipality: string): RssFeedConfig => {
   };
 };
 
+const regionalServiceAreas: RegionalServiceArea[] = [
+  {
+    id: 'helsinki-region',
+    name: 'Helsingin seutu',
+    municipalities: ['espoo', 'helsinki', 'kauniainen', 'kerava', 'kirkkonummi', 'siuntio', 'sipoo', 'tuusula', 'vantaa'],
+    services: {
+      publicTransport: { name: 'HSL Reittiopas', url: 'https://www.hsl.fi/', group: 'Paikalliset palvelut' },
+    },
+  },
+  {
+    id: 'tampere-region',
+    name: 'Tampereen kaupunkiseutu',
+    municipalities: ['kangasala', 'lempäälä', 'nokia', 'orivesi', 'pirkkala', 'tampere', 'vesilahti', 'ylöjärvi'],
+    services: {
+      publicTransport: { name: 'Nysse', url: 'https://www.nysse.fi/', group: 'Paikalliset palvelut' },
+    },
+  },
+  {
+    id: 'turku-region',
+    name: 'Turun seutu',
+    municipalities: ['kaarina', 'lieto', 'naantali', 'paimio', 'raisio', 'rusko', 'turku'],
+    services: {
+      publicTransport: { name: 'Föli', url: 'https://www.foli.fi/', group: 'Paikalliset palvelut' },
+    },
+  },
+  {
+    id: 'oulu-region',
+    name: 'Oulun seutu',
+    municipalities: ['ii', 'kempele', 'liminka', 'lumijoki', 'muhos', 'oulu', 'tyrnävä', 'utajärvi'],
+    services: {
+      publicTransport: { name: 'Oulun joukkoliikenne', url: 'https://www.oulunjoukkoliikenne.fi/', group: 'Paikalliset palvelut' },
+    },
+  },
+  {
+    id: 'jyvaskyla-region',
+    name: 'Jyväskylän seutu',
+    municipalities: ['hankasalmi', 'jyväskylä', 'laukaa', 'muurame', 'petäjävesi', 'toivakka', 'äänekoski'],
+    services: {
+      publicTransport: { name: 'Linkki-paikallisliikenne', url: 'https://linkki.jyvaskyla.fi/', group: 'Paikalliset palvelut' },
+    },
+  },
+  {
+    id: 'kuopio-region',
+    name: 'Kuopion seutu',
+    municipalities: ['kuopio', 'siilinjärvi'],
+    services: {
+      publicTransport: { name: 'Vilkku', url: 'https://vilkku.kuopio.fi/', group: 'Paikalliset palvelut' },
+    },
+  },
+  {
+    id: 'joensuu-region',
+    name: 'Joensuun seutu',
+    municipalities: ['joensuu', 'kontiolahti', 'liperi'],
+    services: {
+      publicTransport: { name: 'JOJO', url: 'https://jojo.joensuu.fi/', group: 'Paikalliset palvelut' },
+    },
+  },
+  {
+    id: 'kouvola-region',
+    name: 'Kouvola',
+    municipalities: ['kouvola'],
+    services: {
+      publicTransport: { name: 'Koutsi', url: 'https://www.kouvola.fi/koutsi/', group: 'Paikalliset palvelut' },
+    },
+  },
+  {
+    id: 'lappeenranta-region',
+    name: 'Lappeenrannan seutu',
+    municipalities: ['imatra', 'lappeenranta'],
+    services: {
+      publicTransport: { name: 'Jouko', url: 'https://lappeenranta.fi/fi/palvelut/jouko-joukkoliikenne', group: 'Paikalliset palvelut' },
+    },
+  },
+  {
+    id: 'pori-region',
+    name: 'Pori',
+    municipalities: ['pori'],
+    services: {
+      publicTransport: { name: 'Porin joukkoliikenne', url: 'https://pjl.pori.fi/', group: 'Paikalliset palvelut' },
+    },
+  },
+  {
+    id: 'kotka-region',
+    name: 'Kotkan seutu',
+    municipalities: ['hamina', 'kotka', 'pyhtää'],
+    services: {
+      publicTransport: { name: 'Jonne & Minne', url: 'https://www.kotkanaikataulut.fi/', group: 'Paikalliset palvelut' },
+    },
+  },
+  {
+    id: 'aland-region',
+    name: 'Ahvenanmaa',
+    municipalities: ['brändö', 'eckerö', 'finström', 'föglö', 'geta', 'hammarland', 'jomala', 'kumlinge', 'kökar', 'lemland', 'lumparland', 'maarianhamina', 'saltvik', 'sottunga', 'sund', 'vårdö'],
+    services: {
+      publicTransport: { name: 'Ålandstrafiken', url: 'https://www.alandstrafiken.ax/', group: 'Paikalliset palvelut' },
+    },
+  },
+];
+
+const getRegionalServiceArea = (municipalityKey: string): RegionalServiceArea | undefined => (
+  regionalServiceAreas.find((area) => area.municipalities.includes(municipalityKey))
+);
+
 const localServiceMap: Record<string, LocalServiceConfig> = {
   helsinki: {
-    publicTransport: { name: 'HSL Reittiopas', url: 'https://www.hsl.fi/', group: 'Paikalliset palvelut' },
     library: { name: 'Helmet-kirjastot', url: 'https://www.helmet.fi/', group: 'Paikalliset palvelut' },
     municipality: { name: 'Helsingin palvelut', url: 'https://www.hel.fi/fi', group: 'Paikalliset palvelut' },
   },
   espoo: {
-    publicTransport: { name: 'HSL Reittiopas', url: 'https://www.hsl.fi/', group: 'Paikalliset palvelut' },
     library: { name: 'Helmet-kirjastot', url: 'https://www.helmet.fi/', group: 'Paikalliset palvelut' },
     municipality: { name: 'Espoon palvelut', url: 'https://www.espoo.fi/fi', group: 'Paikalliset palvelut' },
     rssFeeds: [
@@ -144,7 +252,6 @@ const localServiceMap: Record<string, LocalServiceConfig> = {
     ],
   },
   vantaa: {
-    publicTransport: { name: 'HSL Reittiopas', url: 'https://www.hsl.fi/', group: 'Paikalliset palvelut' },
     library: { name: 'Helmet-kirjastot', url: 'https://www.helmet.fi/', group: 'Paikalliset palvelut' },
     municipality: { name: 'Vantaan palvelut', url: 'https://www.vantaa.fi/fi', group: 'Paikalliset palvelut' },
     rssFeeds: [
@@ -153,12 +260,10 @@ const localServiceMap: Record<string, LocalServiceConfig> = {
     ],
   },
   kauniainen: {
-    publicTransport: { name: 'HSL Reittiopas', url: 'https://www.hsl.fi/', group: 'Paikalliset palvelut' },
     library: { name: 'Helmet-kirjastot', url: 'https://www.helmet.fi/', group: 'Paikalliset palvelut' },
     municipality: { name: 'Kauniaisten palvelut', url: 'https://www.kauniainen.fi/', group: 'Paikalliset palvelut' },
   },
   tampere: {
-    publicTransport: { name: 'Nysse', url: 'https://www.nysse.fi/', group: 'Paikalliset palvelut' },
     library: { name: 'PIKI-kirjastot', url: 'https://piki.verkkokirjasto.fi/', group: 'Paikalliset palvelut' },
     municipality: { name: 'Tampereen palvelut', url: 'https://www.tampere.fi/', group: 'Paikalliset palvelut' },
     rssFeeds: [
@@ -168,12 +273,10 @@ const localServiceMap: Record<string, LocalServiceConfig> = {
     ],
   },
   turku: {
-    publicTransport: { name: 'Föli', url: 'https://www.foli.fi/', group: 'Paikalliset palvelut' },
     library: { name: 'Vaski-kirjastot', url: 'https://vaski.finna.fi/', group: 'Paikalliset palvelut' },
     municipality: { name: 'Turun palvelut', url: 'https://www.turku.fi/', group: 'Paikalliset palvelut' },
   },
   oulu: {
-    publicTransport: { name: 'Oulun joukkoliikenne', url: 'https://www.ouka.fi/oulu/joukkoliikenne', group: 'Paikalliset palvelut' },
     library: { name: 'OUTI-kirjastot', url: 'https://outi.finna.fi/', group: 'Paikalliset palvelut' },
     municipality: { name: 'Oulun palvelut', url: 'https://www.ouka.fi/', group: 'Paikalliset palvelut' },
     rssFeeds: [
@@ -182,11 +285,9 @@ const localServiceMap: Record<string, LocalServiceConfig> = {
     ],
   },
   kuopio: {
-    publicTransport: { name: 'Kuopion seudun joukkoliikenne', url: 'https://vilkku.kuopio.fi/', group: 'Paikalliset palvelut' },
     municipality: { name: 'Kuopion palvelut', url: 'https://www.kuopio.fi/', group: 'Paikalliset palvelut' },
   },
   jyväskylä: {
-    publicTransport: { name: 'Linkki-paikallisliikenne', url: 'https://linkki.jyvaskyla.fi/', group: 'Paikalliset palvelut' },
     library: { name: 'Keski-kirjastot', url: 'https://keski.finna.fi/', group: 'Paikalliset palvelut' },
     municipality: { name: 'Jyväskylän palvelut', url: 'https://www.jyvaskyla.fi/', group: 'Paikalliset palvelut' },
   },
@@ -266,13 +367,15 @@ export const getRegionalProviders = (context: RegionalContext): Provider[] => {
   const municipality = context.municipality.name;
   const key = normalizeMunicipality(municipality);
   const exact = localServiceMap[key];
+  const serviceArea = getRegionalServiceArea(key);
   const wellbeingArea = exact?.wellbeingArea ?? getWellbeingAreaProvider(context.municipality);
+  const publicTransport = exact?.publicTransport ?? serviceArea?.services.publicTransport;
 
   return filterVisibleProviders(uniqueProviders([
     exact?.municipality ?? createMunicipalitySearch(municipality, 'Kunnan palvelut', 'palvelut'),
     wellbeingArea ?? createMunicipalitySearch(municipality, 'Hyvinvointialue', 'hyvinvointialue'),
     exact?.library,
-    exact?.publicTransport,
+    publicTransport,
   ].filter((provider): provider is Provider => Boolean(provider)))) ?? [];
 };
 
@@ -314,9 +417,11 @@ export const getLocalizedShortcuts = (shortcuts: Shortcut[], locality: LocalityI
   const municipality = context.municipality.name;
   const key = normalizeMunicipality(municipality);
   const exact = localServiceMap[key];
+  const serviceArea = getRegionalServiceArea(key);
   const wellbeingArea = exact?.wellbeingArea ?? getWellbeingAreaProvider(context.municipality);
 
   const fallback: LocalServiceConfig = {
+    publicTransport: serviceArea?.services.publicTransport,
     wellbeingArea: wellbeingArea ?? createMunicipalitySearch(municipality, 'Hyvinvointialue', 'hyvinvointialue'),
     municipality: exact?.municipality ?? createMunicipalitySearch(municipality, 'Kunnan palvelut', 'palvelut'),
   };
