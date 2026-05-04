@@ -14,6 +14,7 @@ import { isLinkVisible, useLinkVisibilityVersion } from './linkVisibility';
 import { Shortcut, Favorite, LocalityInfo, LinkReportDraft } from './types';
 import { mergeApprovedLinksIntoShortcuts } from './approvedLinks';
 import { useApprovedLinkSuggestionsVersion } from './approvedLinks';
+import { LanguageProvider, LANGUAGES, useI18n } from './i18n';
 
 const MIN_UI_SCALE = 50;
 const MAX_UI_SCALE = 200;
@@ -40,7 +41,8 @@ const defaultUiVisibility: UiVisibilityState = {
   googleSearch: true,
 };
 
-const App: React.FC = () => {
+const AppContent: React.FC = () => {
+  const { language, setLanguage, t } = useI18n();
   const [selectedCategory, setSelectedCategory] = useState<Shortcut | null>(null);
   const [isInfoOpen, setIsInfoOpen] = useState(false);
   const [isHomepageOpen, setIsHomepageOpen] = useState(false);
@@ -146,14 +148,14 @@ const App: React.FC = () => {
       >
 
         {/* Yläpalkki */}
-        <nav className="relative flex flex-wrap items-center gap-3" aria-label="Asetukset">
+        <nav className="relative flex flex-wrap items-center gap-3" aria-label={t('settings')}>
           <div className="flex items-center gap-2">
-            <div className="flex items-stretch rounded-full bg-yellow-400 border-b-4 border-yellow-600 shadow-md overflow-hidden" role="group" aria-label="Tekstikoko">
+            <div className="flex items-stretch rounded-full bg-yellow-400 border-b-4 border-yellow-600 shadow-md overflow-hidden" role="group" aria-label={t('resetText')}>
               <button
                 onClick={decreaseFont}
                 disabled={uiScale === MIN_UI_SCALE}
                 className="px-5 py-3 font-black text-xl hover:bg-yellow-500 transition-all active:scale-95 disabled:opacity-30 focus:ring-4 focus:ring-yellow-300 focus:outline-none"
-                aria-label="Pienennä tekstiä"
+                aria-label={t('decreaseText')}
               >
                 A−
               </button>
@@ -164,7 +166,7 @@ const App: React.FC = () => {
                 onClick={increaseFont}
                 disabled={uiScale === MAX_UI_SCALE}
                 className="px-5 py-3 font-black text-xl hover:bg-yellow-500 transition-all active:scale-95 disabled:opacity-30 focus:ring-4 focus:ring-yellow-300 focus:outline-none"
-                aria-label="Suurenna tekstiä"
+                aria-label={t('increaseText')}
               >
                 A+
               </button>
@@ -173,7 +175,7 @@ const App: React.FC = () => {
               <button
                 onClick={resetFont}
                 className="bg-yellow-200 hover:bg-yellow-300 text-yellow-900 px-4 py-3 rounded-full font-black text-base transition-all active:scale-95 shadow-md border-b-4 border-yellow-500 focus:ring-4 focus:ring-yellow-300 whitespace-nowrap"
-                aria-label="Palauta normaali tekstikoko"
+                aria-label={t('resetText')}
               >
                 ↺ 100%
               </button>
@@ -182,7 +184,7 @@ const App: React.FC = () => {
 
           <div className="flex-1 flex justify-center">
             <span className="text-sm font-black uppercase tracking-wide text-amber-700 dark:text-amber-300">
-              Beta · sivusto on vielä kehitteillä
+              {t('beta')}
             </span>
           </div>
 
@@ -193,7 +195,7 @@ const App: React.FC = () => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              Muutosloki
+              {t('changelog')}
             </a>
             <a
               href="./linkit.html"
@@ -201,7 +203,7 @@ const App: React.FC = () => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              Linkkiluettelo
+              {t('linkList')}
             </a>
           </div>
 
@@ -209,20 +211,20 @@ const App: React.FC = () => {
             onClick={() => setIsHomepageOpen(true)}
             className="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-3 rounded-full font-black text-lg transition-all active:scale-95 shadow-md border-b-4 border-indigo-900 focus:ring-4 focus:ring-indigo-300"
           >
-            🏠 Ohje
+            🏠 {t('help')}
           </button>
 
           <button
             onClick={() => setIsInfoOpen(true)}
             className="bg-slate-200 hover:bg-slate-300 text-slate-900 px-5 py-3 rounded-full font-black text-lg transition-all active:scale-95 shadow-md border-b-4 border-slate-400 focus:ring-4 focus:ring-slate-300"
           >
-            ℹ️ Tietoa
+            ℹ️ {t('info')}
           </button>
 
           <button
             onClick={toggleDarkMode}
             className={`${isDarkMode ? 'bg-amber-100 text-amber-950' : 'bg-slate-900 text-white'} px-5 py-3 rounded-full font-black text-lg transition-all active:scale-95 shadow-md focus:ring-4 focus:ring-blue-300`}
-            aria-label={isDarkMode ? 'Vaihda vaaleaan teemaan' : 'Vaihda tummaan teemaan'}
+            aria-label={isDarkMode ? t('lightTheme') : t('darkTheme')}
           >
             {isDarkMode ? '☀️' : '🌙'}
           </button>
@@ -231,7 +233,7 @@ const App: React.FC = () => {
             type="button"
             onClick={() => setIsSettingsOpen(prev => !prev)}
             className="bg-slate-200 hover:bg-slate-300 text-slate-900 px-5 py-3 rounded-full font-black text-lg transition-all active:scale-95 shadow-md border-b-4 border-slate-400 focus:ring-4 focus:ring-slate-300"
-            aria-label="Avaa asetukset"
+            aria-label={t('openSettings')}
             aria-expanded={isSettingsOpen}
             aria-haspopup="menu"
           >
@@ -243,27 +245,40 @@ const App: React.FC = () => {
           <div
             className="absolute right-4 md:right-8 lg:right-12 top-[5.5rem] z-30 w-[min(24rem,calc(100vw-2rem))] rounded-3xl border-4 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-2xl p-5"
             role="menu"
-            aria-label="Asetukset"
+            aria-label={t('settings')}
           >
             <div className="flex items-center justify-between gap-4 mb-4">
-              <h2 className="font-black text-slate-900 dark:text-white text-xl">Asetukset</h2>
+              <h2 className="font-black text-slate-900 dark:text-white text-xl">{t('settings')}</h2>
               <button
                 type="button"
                 onClick={() => setIsSettingsOpen(false)}
                 className="rounded-full px-3 py-2 text-sm font-black bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200"
               >
-                Sulje
+                {t('close')}
               </button>
             </div>
 
+            <label className="block mb-4 space-y-2">
+              <span className="block font-black text-slate-700 dark:text-slate-200">{t('language')}</span>
+              <select
+                value={language}
+                onChange={(event) => setLanguage(event.target.value as typeof language)}
+                className="w-full rounded-2xl border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 font-bold text-slate-900 dark:text-white"
+              >
+                {LANGUAGES.map((item) => (
+                  <option key={item.code} value={item.code}>{item.nativeName}</option>
+                ))}
+              </select>
+            </label>
+
             <div className="space-y-3">
               {[
-                { key: 'clock', label: 'Näytä kello ja päivämäärä' },
-                { key: 'regionalServices', label: 'Näytä alueelliset palvelut' },
-                { key: 'regionalNews', label: 'Näytä uutiset' },
-                { key: 'weather', label: 'Näytä sää' },
-                { key: 'assistant', label: 'Näytä tekoäly' },
-                { key: 'googleSearch', label: 'Näytä Google haku' },
+                { key: 'clock', label: t('showClock') },
+                { key: 'regionalServices', label: t('showRegionalServices') },
+                { key: 'regionalNews', label: t('showNews') },
+                { key: 'weather', label: t('showWeather') },
+                { key: 'assistant', label: t('showAssistant') },
+                { key: 'googleSearch', label: t('showGoogleSearch') },
               ].map((item) => (
                 <label key={item.key} className="flex items-center justify-between gap-4 rounded-2xl border-2 border-slate-200 dark:border-slate-700 px-4 py-3 cursor-pointer">
                   <span className="font-bold text-slate-800 dark:text-slate-100">{item.label}</span>
@@ -313,7 +328,7 @@ const App: React.FC = () => {
 
           <section className="space-y-8">
             <h2 className="font-black text-slate-900 dark:text-white tracking-tighter transition-all duration-300 text-4xl md:text-6xl">
-              Valitse palvelu
+              {t('chooseService')}
             </h2>
             <QuickLinks
               onSelectCategory={setSelectedCategory}
@@ -343,7 +358,7 @@ const App: React.FC = () => {
             </a>
           )}
           <p className="text-slate-500 dark:text-slate-400 font-bold">
-            © 2026 Seniorin aloitussivu — Selkeys on välittämistä.
+            {t('footer')}
           </p>
         </footer>
 
@@ -362,6 +377,12 @@ const App: React.FC = () => {
     </div>
   );
 };
+
+const App: React.FC = () => (
+  <LanguageProvider>
+    <AppContent />
+  </LanguageProvider>
+);
 
 export default App;
 

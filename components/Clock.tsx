@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { getTodayEvents } from '../services/holidayService';
+import { useI18n } from '../i18n';
 
 interface ClockProps {
   fontSizeStep?: number;
 }
 
 const Clock: React.FC<ClockProps> = ({ fontSizeStep = 0 }) => {
+  const { locale } = useI18n();
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
@@ -13,9 +15,9 @@ const Clock: React.FC<ClockProps> = ({ fontSizeStep = 0 }) => {
     return () => clearInterval(timer);
   }, []);
 
-  const timeString = time.toLocaleTimeString('fi-FI', { hour: '2-digit', minute: '2-digit' });
+  const timeString = time.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' });
   const todayEvents = getTodayEvents(time);
-  const dateString = time.toLocaleDateString('fi-FI', { 
+  const dateString = time.toLocaleDateString(locale, { 
     weekday: 'long', 
     day: 'numeric', 
     month: 'long', 

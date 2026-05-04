@@ -4,6 +4,7 @@ import { filterVisibleProviders } from '../linkVisibility';
 import { LocalityInfo, Provider, LinkReportDraft } from '../types';
 import LocalNewsHeadlines from './LocalNewsHeadlines';
 import NearbyGuidancePlaces from './NearbyGuidancePlaces';
+import { useI18n } from '../i18n';
 
 interface RegionalServicesPanelProps {
   locality: LocalityInfo | null;
@@ -29,6 +30,7 @@ const smallTextClasses = [
 ];
 
 const ServiceLink: React.FC<{ provider: Provider; index: number; fontSizeStep: number; onReportLink?: (draft: LinkReportDraft) => void }> = ({ provider, index, fontSizeStep, onReportLink }) => {
+  const { t, categoryName } = useI18n();
   const colors = [
     'bg-brand-indigo hover:bg-indigo-700',
     'bg-brand-teal hover:bg-teal-700',
@@ -46,7 +48,7 @@ const ServiceLink: React.FC<{ provider: Provider; index: number; fontSizeStep: n
         className={`${colors[index % colors.length]} text-white rounded-2xl p-5 md:p-6 shadow-md transition-all active:scale-95 focus:outline-none focus:ring-4 focus:ring-blue-300 min-h-[120px] flex flex-col justify-between gap-4`}
       >
         <span className={`font-black leading-tight ${textClasses[fontSizeStep]}`}>{provider.name}</span>
-        {provider.group && <span className={`font-bold opacity-80 ${smallTextClasses[fontSizeStep]}`}>{provider.group}</span>}
+        {provider.group && <span className={`font-bold opacity-80 ${smallTextClasses[fontSizeStep]}`}>{categoryName(provider.group)}</span>}
       </a>
       {onReportLink && (
         <button
@@ -57,7 +59,7 @@ const ServiceLink: React.FC<{ provider: Provider; index: number; fontSizeStep: n
             source: 'RegionalServicesPanel',
           })}
           className="absolute bottom-3 right-3 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/35 text-white shadow-md transition-all focus:ring-4 focus:ring-blue-300 focus:outline-none opacity-0 group-hover/service:opacity-100 w-10 h-10 text-xl"
-          aria-label={`Ilmoita linkki: ${provider.name}`}
+          aria-label={`${t('reportLink')}: ${provider.name}`}
         >
           !
         </button>
@@ -67,6 +69,7 @@ const ServiceLink: React.FC<{ provider: Provider; index: number; fontSizeStep: n
 };
 
 const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality, fontSizeStep = 0, onReportLink, showNews = true }) => {
+  const { t } = useI18n();
   const [query, setQuery] = useState('');
   const context = useMemo(() => resolveRegionalContext(query, locality), [query, locality]);
   const services = useMemo(() => context ? filterVisibleProviders(getRegionalProviders(context)) ?? [] : [], [context]);
@@ -79,10 +82,10 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
       <div className="flex flex-col xl:flex-row xl:items-end xl:justify-between gap-5">
         <div className="space-y-2">
           <h2 id="regional-services-heading" className="font-black text-slate-900 dark:text-white text-3xl md:text-5xl leading-tight">
-            Alueelliset palvelut
+            {t('regionalServicesTitle')}
           </h2>
           <p className={`text-slate-600 dark:text-slate-300 font-bold max-w-4xl ${smallTextClasses[fontSizeStep]}`}>
-            Tunnistaa Tilastokeskuksen vuoden 2026 kuntaluokituksen kaikki 308 kuntaa ja nostaa esiin kunnan palvelut, hyvinvointialueen sekä paikallisia uutisotsikoita RSS-syötteistä.
+            {t('regionalServicesDescription')}
           </p>
         </div>
         <div className="w-full xl:max-w-3xl">
@@ -93,20 +96,20 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
                 onClick={() => onReportLink({ name: '', url: '', category: 'Alueelliset palvelut', source: 'RegionalServicesPanel' })}
                 className={`font-black text-brand-indigo dark:text-blue-300 hover:underline ${smallTextClasses[fontSizeStep]}`}
               >
-                Ilmoita uusi linkki
+                {t('reportNewLink')}
               </button>
             </div>
           )}
           <div className="flex flex-col md:flex-row md:items-end gap-3">
             <label className="flex-1">
-              <span className={`block font-black text-slate-700 dark:text-slate-200 mb-2 ${smallTextClasses[fontSizeStep]}`}>Kunta</span>
+              <span className={`block font-black text-slate-700 dark:text-slate-200 mb-2 ${smallTextClasses[fontSizeStep]}`}>{t('municipality')}</span>
               <input
                 type="search"
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
-                placeholder={locality?.municipality ? `Sijainti: ${locality.municipality}` : 'Kirjoita kunta, esim. Lahti'}
+                placeholder={locality?.municipality ? `${t('localityPrefix')}: ${locality.municipality}` : t('municipalityPlaceholder')}
                 className={`w-full rounded-2xl border-4 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white px-5 py-4 font-bold focus:outline-none focus:border-brand-indigo focus:ring-4 focus:ring-brand-indigo/20 ${textClasses[fontSizeStep]}`}
-                aria-label="Hae kuntaa"
+                aria-label={t('municipality')}
               />
             </label>
             {context && (
@@ -118,7 +121,7 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
             )}
           </div>
           <p className={`mt-2 text-slate-500 dark:text-slate-400 font-bold ${smallTextClasses[fontSizeStep]}`}>
-            Voit vaihtaa kuntaa kirjoittamalla uuden kunnan nimen.
+            {t('changeMunicipalityHint')}
           </p>
         </div>
       </div>
@@ -135,7 +138,7 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
             <div className="space-y-3">
               <div className="flex items-center justify-between gap-4">
                 <h3 className={`font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest ${smallTextClasses[fontSizeStep]}`}>
-                  Paikalliset uutiset
+                  {t('localNews')}
                 </h3>
                 {fallbackNewsUrl && (
                   <a
@@ -144,7 +147,7 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
                     rel="noopener noreferrer"
                     className={`font-black text-brand-indigo dark:text-blue-300 hover:underline ${smallTextClasses[fontSizeStep]}`}
                   >
-                    Lisää uutisia
+                    {t('moreNews')}
                   </a>
                 )}
               </div>
@@ -155,7 +158,7 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
       ) : (
         <div className="rounded-2xl border-4 border-dashed border-slate-200 dark:border-slate-700 p-8 text-center">
           <p className={`font-black text-slate-500 dark:text-slate-400 ${textClasses[fontSizeStep]}`}>
-            Kirjoita kunnan nimi nähdäksesi alueelliset palvelut.
+            {t('typeMunicipalityPrompt')}
           </p>
         </div>
       )}

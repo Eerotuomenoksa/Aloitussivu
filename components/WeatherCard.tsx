@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { isLinkVisible, useLinkVisibilityVersion } from '../linkVisibility';
 import { normalizeMunicipality } from '../localServices';
 import { LocalityInfo } from '../types';
+import { useI18n } from '../i18n';
 
 interface WeatherData {
   temp: number;
@@ -27,8 +28,9 @@ const vantaaDistricts = new Set([
 ]);
 
 const WeatherCard: React.FC<WeatherCardProps> = ({ onLocationResolved }) => {
+  const { t } = useI18n();
   useLinkVisibilityVersion();
-  const [locationName, setLocationName] = useState<string>('Sijainti');
+  const [locationName, setLocationName] = useState<string>(t('location'));
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -45,14 +47,14 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ onLocationResolved }) => {
   };
 
   const getWeatherText = (code: number) => {
-    if (code === 0) return 'Selkeää';
-    if (code >= 1 && code <= 3) return 'Puolipilvistä';
-    if (code >= 45 && code <= 48) return 'Sumua';
-    if (code >= 51 && code <= 67) return 'Sadetta';
-    if (code >= 71 && code <= 77) return 'Lumisadetta';
-    if (code >= 80 && code <= 82) return 'Kuuroja';
-    if (code >= 95) return 'Ukkosta';
-    return 'Vaihtelevaa';
+    if (code === 0) return t('weatherClear');
+    if (code >= 1 && code <= 3) return t('weatherPartlyCloudy');
+    if (code >= 45 && code <= 48) return t('weatherFog');
+    if (code >= 51 && code <= 67) return t('weatherRain');
+    if (code >= 71 && code <= 77) return t('weatherSnow');
+    if (code >= 80 && code <= 82) return t('weatherShowers');
+    if (code >= 95) return t('weatherThunder');
+    return t('weatherVariable');
   };
 
   const resolveMunicipality = (address: Record<string, string | undefined>, displayName: string) => {
@@ -80,7 +82,7 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ onLocationResolved }) => {
       return 'Vantaa';
     }
 
-    return candidates[0] || 'Sijaintisi';
+    return candidates[0] || t('yourLocation');
   };
 
   useEffect(() => {
@@ -97,7 +99,7 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ onLocationResolved }) => {
         );
         const geoData = await geoRes.json();
         const address = geoData.address || {};
-        const city = address.city || address.town || address.municipality || 'Sijaintisi';
+        const city = address.city || address.town || address.municipality || t('yourLocation');
         const municipality = resolveMunicipality(address, geoData.display_name || '');
 
         setWeather({
@@ -111,7 +113,7 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ onLocationResolved }) => {
         }
         setError(null);
       } catch (err) {
-        setError("Sää ei saatavilla");
+        setError(t('weatherUnavailable'));
       } finally {
         setLoading(false);
       }
@@ -125,12 +127,12 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ onLocationResolved }) => {
     } else {
       fetchWeather(60.1695, 24.9354, false);
     }
-  }, [onLocationResolved]);
+  }, [onLocationResolved, t]);
 
   return (
     <div 
       className="bg-gradient-to-br from-brand-indigo to-brand-purple rounded-[2.5rem] p-10 text-white shadow-xl flex items-center justify-between w-full h-full border-4 border-white/20 min-h-[220px]"
-      aria-label="Säätiedot"
+      aria-label={t('showWeather')}
     >
       <div className="space-y-1">
         <h3 className="text-2xl font-black opacity-90 tracking-tight">{locationName}</h3>
@@ -152,7 +154,7 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ onLocationResolved }) => {
           target="_blank"
           rel="noopener noreferrer"
           className="text-8xl drop-shadow-2xl hover:scale-110 transition-transform cursor-pointer p-4 bg-white/10 rounded-full flex items-center justify-center min-w-[120px] min-h-[120px] focus:ring-4 focus:ring-white/50 focus:outline-none"
-          aria-label="Katso tarkempi sää Ilmatieteen laitokselta"
+          aria-label={t('weatherDetails')}
         >
           <span aria-hidden="true">{loading ? '⏳' : weather?.icon || '🌤️'}</span>
         </a>

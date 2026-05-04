@@ -2,6 +2,7 @@
 import React, { useEffect } from 'react';
 import { filterVisibleProviders, useLinkVisibilityVersion } from '../linkVisibility';
 import { Shortcut, Provider, Favorite, LinkReportDraft } from '../types';
+import { useI18n } from '../i18n';
 
 interface ProviderModalProps {
   shortcut: Shortcut | null;
@@ -13,6 +14,7 @@ interface ProviderModalProps {
 }
 
 const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSizeStep = 0, favorites, onToggleFavorite, onReportLink }) => {
+  const { t, categoryName } = useI18n();
   useLinkVisibilityVersion();
   const titleClasses = [
     'text-3xl md:text-5xl',
@@ -60,7 +62,7 @@ const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSi
   if (visibleProviders.length === 0) return null;
 
   const groupedProviders = visibleProviders.reduce((acc, provider) => {
-    const key = provider.group || 'Palvelut';
+    const key = categoryName(provider.group || t('services'));
     if (!acc[key]) acc[key] = [];
     acc[key].push(provider);
     return acc;
@@ -79,12 +81,12 @@ const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSi
         <div className={`${shortcut.color} p-10 text-white flex items-center justify-between shadow-xl`}>
           <div className="flex items-center gap-6">
             <span className={`transition-all duration-300 ${iconClasses[fontSizeStep]}`} aria-hidden="true">{shortcut.icon}</span>
-            <h2 id="modal-title" className={`font-black tracking-tighter transition-all duration-300 ${titleClasses[fontSizeStep]}`}>{shortcut.name}</h2>
+            <h2 id="modal-title" className={`font-black tracking-tighter transition-all duration-300 ${titleClasses[fontSizeStep]}`}>{categoryName(shortcut.name)}</h2>
           </div>
           <button
             onClick={onClose}
             className="w-16 h-16 flex items-center justify-center bg-white/20 hover:bg-white/40 rounded-full text-4xl transition-all focus:ring-4 focus:ring-white active:scale-90"
-            aria-label="Sulje"
+            aria-label={t('close')}
           >
             ✕
           </button>
@@ -93,7 +95,7 @@ const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSi
         <div className="p-10 space-y-12 overflow-y-auto flex-1 bg-slate-50 dark:bg-slate-950">
           {groupKeys.map((group) => (
             <div key={group} className="space-y-6">
-              {group !== 'Palvelut' && (
+              {group !== categoryName(t('services')) && (
                 <h3 className="text-2xl font-black text-slate-400 dark:text-slate-600 uppercase tracking-[0.2em] border-b-4 border-slate-200 dark:border-slate-800 pb-2">
                   {group}
                 </h3>
@@ -129,7 +131,7 @@ const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSi
                             source: 'ProviderModal',
                           })}
                           className="absolute bottom-3 right-3 flex items-center justify-center rounded-full bg-slate-900/80 hover:bg-slate-900 text-white shadow-md transition-all focus:ring-4 focus:ring-blue-300 focus:outline-none opacity-0 group-hover/card:opacity-100 w-10 h-10 text-xl"
-                          aria-label={`Ilmoita linkki: ${provider.name}`}
+                          aria-label={`${t('reportLink')}: ${provider.name}`}
                         >
                           !
                         </button>
@@ -141,7 +143,7 @@ const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSi
                             ? 'bg-yellow-400 hover:bg-yellow-500 shadow-md'
                             : 'bg-slate-100 dark:bg-slate-700 hover:bg-yellow-100 dark:hover:bg-yellow-900/40 opacity-0 group-hover/card:opacity-100'
                           } ${starClasses[fontSizeStep]}`}
-                        aria-label={isFav ? `Poista suosikeista: ${provider.name}` : `Lisää suosikiksi: ${provider.name}`}
+                        aria-label={isFav ? `${t('removeFavorite')}: ${provider.name}` : `${t('addFavorite')}: ${provider.name}`}
                       >
                         {isFav ? '⭐' : '☆'}
                       </button>
@@ -158,7 +160,7 @@ const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSi
             onClick={onClose}
             className="px-12 py-4 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-full text-2xl font-black text-slate-600 dark:text-slate-300 transition-all active:scale-95 border-b-4 border-slate-300 dark:border-slate-950"
           >
-            Palaa takaisin
+            {t('back')}
           </button>
         </div>
       </div>

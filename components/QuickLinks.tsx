@@ -5,6 +5,7 @@ import { getLocalizedShortcuts } from '../localServices';
 import { filterVisibleShortcuts, isLinkVisible, useLinkVisibilityVersion } from '../linkVisibility';
 import { Shortcut, Favorite, LocalityInfo, LinkReportDraft } from '../types';
 import { mergeApprovedLinksIntoShortcuts, useApprovedLinkSuggestionsVersion } from '../approvedLinks';
+import { useI18n } from '../i18n';
 
 type SpeechState = 'idle' | 'listening' | 'unsupported';
 
@@ -29,6 +30,7 @@ const rowColors = [
 ];
 
 const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep = 0, favorites, onToggleFavorite, locality, onReportLink }) => {
+  const { t, categoryName, speechLocale } = useI18n();
   const [search, setSearch] = useState('');
   const [speechState, setSpeechState] = useState<SpeechState>('idle');
   const recognitionRef = useRef<any>(null);
@@ -40,7 +42,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
       return;
     }
     const r = new SpeechRecognition();
-    r.lang = 'fi-FI';
+    r.lang = speechLocale;
     r.continuous = false;
     r.interimResults = false;
     r.onresult = (e: any) => {
@@ -51,7 +53,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
     r.onerror = () => setSpeechState('idle');
     r.onend = () => setSpeechState('idle');
     recognitionRef.current = r;
-  }, []);
+  }, [speechLocale]);
 
   const toggleListening = () => {
     if (speechState === 'listening') {
@@ -68,7 +70,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
   useLinkVisibilityVersion();
   useApprovedLinkSuggestionsVersion();
   const approvedShortcuts = mergeApprovedLinksIntoShortcuts(shortcuts);
-  const sortedShortcuts = [...approvedShortcuts].sort((a, b) => a.name.localeCompare(b.name, 'fi'));
+  const sortedShortcuts = [...approvedShortcuts].sort((a, b) => categoryName(a.name).localeCompare(categoryName(b.name), 'fi'));
   const visibleFavorites = favorites.filter((fav) => isLinkVisible(fav.url));
 
   const iconClasses = [
@@ -119,7 +121,8 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
   if (q) {
     sortedShortcuts.forEach((shortcut, idx) => {
       const color = rowColors[Math.floor(idx / 6) % rowColors.length];
-      const categoryMatches = shortcut.name.toLowerCase().includes(q);
+      const translatedShortcutName = categoryName(shortcut.name);
+      const categoryMatches = `${shortcut.name} ${translatedShortcutName}`.toLowerCase().includes(q);
 
       if (categoryMatches) {
         matchedCategories.push({ shortcut, color });
@@ -153,7 +156,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
       {visibleFavorites.length > 0 && !q && (
         <div className="space-y-4">
           <h3 className={`font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest flex items-center gap-2 ${subTextClasses[fontSizeStep]}`}>
-            <span>⭐</span> Suosikit
+            <span>⭐</span> {t('favorites')}
           </h3>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6">
             {visibleFavorites.map((fav, idx) => (
@@ -163,20 +166,20 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
                   target="_blank"
                   rel="noopener noreferrer"
                   className={baseCardStyles(fav.color)}
-                  aria-label={`Siirry sivustolle: ${fav.name}`}
+                  aria-label={`${t('goToSite')}: ${fav.name}`}
                 >
                   <span className={`transition-all duration-300 ${iconClasses[fontSizeStep]}`} aria-hidden="true">{fav.categoryIcon}</span>
                   <span className={`font-black leading-tight tracking-tight transition-all duration-300 ${textClasses[fontSizeStep]}`}>
                     {fav.name}
                   </span>
                   <span className={`opacity-75 font-semibold ${subTextClasses[fontSizeStep]}`}>
-                    {fav.categoryName}
+                    {categoryName(fav.categoryName)}
                   </span>
                 </a>
                 <button
                   onClick={() => onToggleFavorite(fav)}
                   className={`absolute top-3 right-3 flex items-center justify-center rounded-full bg-yellow-400 hover:bg-yellow-500 shadow-md transition-all focus:ring-4 focus:ring-yellow-300 focus:outline-none ${starClasses[fontSizeStep]}`}
-                  aria-label={`Poista suosikeista: ${fav.name}`}
+                  aria-label={`${t('removeFavorite')}: ${fav.name}`}
                 >
                   ⭐
                 </button>
@@ -189,7 +192,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
 
       <div className="flex items-center justify-between gap-4">
         <p className={`font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest ${subTextClasses[fontSizeStep]}`}>
-          Haku
+          {t('search')}
         </p>
         {onReportLink && (
           <button
@@ -197,7 +200,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
             onClick={() => onReportLink({ name: '', url: '', category: '', source: 'QuickLinks' })}
             className={`font-black text-brand-indigo dark:text-blue-300 hover:underline ${subTextClasses[fontSizeStep]}`}
           >
-            Ilmoita uusi linkki
+            {t('reportNewLink')}
           </button>
         )}
       </div>
@@ -209,20 +212,20 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
           type="search"
           value={search}
           onChange={e => setSearch(e.target.value)}
-          placeholder={speechState === 'listening' ? 'Kuuntelen...' : 'Etsi kategoriaa tai linkkiä...'}
+          placeholder={speechState === 'listening' ? t('listeningPlaceholder') : t('searchPlaceholder')}
           className={`w-full pl-14 py-4 rounded-2xl border-4 transition-all font-bold bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-4
             ${speechState === 'listening'
               ? 'border-red-400 focus:border-red-500 focus:ring-red-200 dark:focus:ring-red-900 pr-28'
               : 'border-slate-200 dark:border-slate-700 focus:border-blue-500 focus:ring-blue-200 dark:focus:ring-blue-900 pr-24'
             } ${inputClasses[fontSizeStep]}`}
-          aria-label="Etsi kategoriaa tai linkkiä"
+          aria-label={t('searchPlaceholder')}
         />
         <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2">
           {search && (
             <button
               onClick={() => setSearch('')}
               className="text-slate-400 hover:text-slate-700 dark:hover:text-white text-2xl font-black transition-colors"
-              aria-label="Tyhjennä haku"
+              aria-label={t('clearSearch')}
             >
               ✕
             </button>
@@ -235,7 +238,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
                   ? 'bg-red-500 text-white animate-pulse w-12 h-12 text-2xl shadow-lg shadow-red-300'
                   : 'bg-slate-100 dark:bg-slate-700 hover:bg-red-100 dark:hover:bg-red-900/40 text-slate-500 dark:text-slate-400 hover:text-red-600 w-12 h-12 text-2xl'
                 }`}
-              aria-label={speechState === 'listening' ? 'Lopeta kuuntelu' : 'Puhu hakusana'}
+              aria-label={speechState === 'listening' ? t('stopListening') : t('startListening')}
             >
               🎤
             </button>
@@ -244,7 +247,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
       </div>
       {speechState === 'listening' && (
         <p className={`text-red-500 font-bold text-center animate-pulse ${subTextClasses[fontSizeStep]}`}>
-          🎤 Kuuntelen — puhu nyt...
+          🎤 {t('listeningNow')}
         </p>
       )}
 
@@ -253,14 +256,14 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
         <>
           {!hasResults && (
             <p className={`text-center text-slate-500 dark:text-slate-400 font-bold py-12 ${inputClasses[fontSizeStep]}`}>
-              Ei hakutuloksia — kokeile eri hakusanaa
+              {t('noResults')}
             </p>
           )}
 
           {matchedCategories.length > 0 && (
             <div className="space-y-3">
               <p className={`font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest ${subTextClasses[fontSizeStep]}`}>
-                Kategoriat
+                {t('categories')}
               </p>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6">
                 {matchedCategories.map(({ shortcut, color }, idx) => (
@@ -268,11 +271,11 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
                     key={idx}
                     onClick={() => onSelectCategory({ ...shortcut, color })}
                     className={baseCardStyles(color)}
-                    aria-label={`Avaa kategoria: ${shortcut.name}`}
+                    aria-label={`${t('openCategory')}: ${categoryName(shortcut.name)}`}
                   >
                     <span className={`transition-all duration-300 ${iconClasses[fontSizeStep]}`} aria-hidden="true">{shortcut.icon}</span>
                     <span className={`font-black leading-tight tracking-tight transition-all duration-300 ${textClasses[fontSizeStep]}`}>
-                      {shortcut.name}
+                      {categoryName(shortcut.name)}
                     </span>
                   </button>
                 ))}
@@ -283,7 +286,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
           {matchedLinks.length > 0 && (
             <div className="space-y-3">
               <p className={`font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest ${subTextClasses[fontSizeStep]}`}>
-                Linkit
+                {t('links')}
               </p>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6">
                 {matchedLinks.map((link, idx) => {
@@ -302,14 +305,14 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
                         target="_blank"
                         rel="noopener noreferrer"
                         className={baseCardStyles(link.color)}
-                        aria-label={`Siirry sivustolle: ${link.name}`}
+                        aria-label={`${t('goToSite')}: ${link.name}`}
                       >
                         <span className={`transition-all duration-300 ${iconClasses[fontSizeStep]}`} aria-hidden="true">{link.categoryIcon}</span>
                         <span className={`font-black leading-tight tracking-tight transition-all duration-300 ${textClasses[fontSizeStep]}`}>
                           {link.name}
                         </span>
                         <span className={`opacity-75 font-semibold ${subTextClasses[fontSizeStep]}`}>
-                          {link.categoryName}
+                          {categoryName(link.categoryName)}
                         </span>
                       </a>
                       {onReportLink && (
@@ -321,7 +324,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
                           source: 'QuickLinks',
                         })}
                         className="absolute bottom-3 right-3 flex items-center justify-center rounded-full bg-white/30 hover:bg-white/50 text-white shadow-md transition-all focus:ring-4 focus:ring-blue-300 focus:outline-none opacity-0 group-hover/link:opacity-100 w-10 h-10 text-xl"
-                        aria-label={`Ilmoita linkki: ${link.name}`}
+                        aria-label={`${t('reportLink')}: ${link.name}`}
                       >
                         !
                       </button>
@@ -333,7 +336,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
                             ? 'bg-yellow-400 hover:bg-yellow-500 shadow-md'
                             : 'bg-white/30 hover:bg-yellow-100/80 opacity-0 group-hover/link:opacity-100'
                           } ${starClasses[fontSizeStep]}`}
-                        aria-label={isFav ? `Poista suosikeista: ${link.name}` : `Lisää suosikiksi: ${link.name}`}
+                        aria-label={isFav ? `${t('removeFavorite')}: ${link.name}` : `${t('addFavorite')}: ${link.name}`}
                       >
                         {isFav ? '⭐' : '☆'}
                       </button>
@@ -355,7 +358,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
               <>
                 <span className={`transition-all duration-300 ${iconClasses[fontSizeStep]}`} aria-hidden="true">{link.icon}</span>
                 <span className={`font-black leading-tight tracking-tight transition-all duration-300 ${textClasses[fontSizeStep]}`}>
-                  {link.name}
+                  {categoryName(link.name)}
                 </span>
               </>
             );
@@ -366,7 +369,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
                   key={idx}
                   onClick={() => onSelectCategory({ ...link, color })}
                   className={baseCardStyles(color)}
-                  aria-label={`Avaa kategoria: ${link.name}`}
+                  aria-label={`${t('openCategory')}: ${categoryName(link.name)}`}
                 >
                   {content}
                 </button>
@@ -380,7 +383,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
                 target="_blank"
                 rel="noopener noreferrer"
                 className={baseCardStyles(color)}
-                aria-label={`Siirry sivustolle: ${link.name}`}
+                aria-label={`${t('goToSite')}: ${categoryName(link.name)}`}
               >
                 {content}
               </a>
