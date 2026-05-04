@@ -11,6 +11,7 @@ export default defineConfig({
         main: 'index.html',
         changelog: 'muutosloki.html',
         suggestions: 'ehdotukset.html',
+        links: 'linkit.html',
       },
     },
   },

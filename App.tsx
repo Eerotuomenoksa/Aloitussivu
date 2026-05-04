@@ -195,6 +195,14 @@ const App: React.FC = () => {
             >
               Muutosloki
             </a>
+            <a
+              href="./linkit.html"
+              className="text-sm font-black text-indigo-700 dark:text-indigo-300 hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Linkkiluettelo
+            </a>
           </div>
 
           <button
