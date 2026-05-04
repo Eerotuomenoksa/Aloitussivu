@@ -238,12 +238,16 @@ const getRegionalServiceArea = (municipalityKey: string): RegionalServiceArea | 
   regionalServiceAreas.find((area) => area.municipalities.includes(municipalityKey))
 );
 
+const hslPublicTransport: Provider = { name: 'HSL', url: 'https://www.hsl.fi/', group: 'Paikalliset palvelut' };
+
 const localServiceMap: Record<string, LocalServiceConfig> = {
   helsinki: {
+    publicTransport: hslPublicTransport,
     library: { name: 'Helmet-kirjastot', url: 'https://www.helmet.fi/', group: 'Paikalliset palvelut' },
     municipality: { name: 'Helsingin palvelut', url: 'https://www.hel.fi/fi', group: 'Paikalliset palvelut' },
   },
   espoo: {
+    publicTransport: hslPublicTransport,
     library: { name: 'Helmet-kirjastot', url: 'https://www.helmet.fi/', group: 'Paikalliset palvelut' },
     municipality: { name: 'Espoon palvelut', url: 'https://www.espoo.fi/fi', group: 'Paikalliset palvelut' },
     rssFeeds: [
@@ -252,6 +256,7 @@ const localServiceMap: Record<string, LocalServiceConfig> = {
     ],
   },
   vantaa: {
+    publicTransport: hslPublicTransport,
     library: { name: 'Helmet-kirjastot', url: 'https://www.helmet.fi/', group: 'Paikalliset palvelut' },
     municipality: { name: 'Vantaan palvelut', url: 'https://www.vantaa.fi/fi', group: 'Paikalliset palvelut' },
     rssFeeds: [
@@ -260,6 +265,7 @@ const localServiceMap: Record<string, LocalServiceConfig> = {
     ],
   },
   kauniainen: {
+    publicTransport: hslPublicTransport,
     library: { name: 'Helmet-kirjastot', url: 'https://www.helmet.fi/', group: 'Paikalliset palvelut' },
     municipality: { name: 'Kauniaisten palvelut', url: 'https://www.kauniainen.fi/', group: 'Paikalliset palvelut' },
   },
