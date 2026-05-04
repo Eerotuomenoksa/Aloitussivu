@@ -50,6 +50,11 @@ export const LOCAL_NEWSPAPER_FEEDS = [
     "url": "https://www.nivala-lehti.fi/feed"
   },
   {
+    "municipality": "Pirkkala",
+    "name": "Pirkkalainen",
+    "url": "https://pirkkalainen.fi/feed/"
+  },
+  {
     "municipality": "Somero",
     "name": "Somero (lehti)",
     "url": "https://www.somerolehti.fi/feed/"

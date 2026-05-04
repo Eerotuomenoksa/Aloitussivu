@@ -1,7 +1,7 @@
 # Paikallisuutiset ilman RSS-syötettä
 
-Löydettyjä paikallislehtien RSS-/feed-linkkejä: 66
-Kuntia ilman paikallislehtien RSS-/feed-löydöstä: 296
+Löydettyjä paikallislehtien RSS-/feed-linkkejä: 67
+Kuntia ilman paikallislehtien RSS-/feed-löydöstä: 295
 
 ## Kunnat
 - Alajärvi
@@ -190,7 +190,6 @@ Kuntia ilman paikallislehtien RSS-/feed-löydöstä: 296
 - Pielavesi
 - Pietarsaari
 - Pihtipudas
-- Pirkkala
 - Polvijärvi
 - Pomarkku
 - Pori

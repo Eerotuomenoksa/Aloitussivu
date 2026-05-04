@@ -2,7 +2,9 @@
 // Links listed here are hidden from the end-user UI until the next successful check.
 export const BLOCKED_LINK_URLS: string[] = [
   "http://kuopionkaupunginteatteri.fi/",
+  "http://nyaostis.fi",
   "http://www.auranmaanviikkolehti.fi",
+  "http://www.glimsgloms.com/",
   "http://www.lakeudenjoutsen.fi",
   "http://www.maakuntalehdet.fi/lakeudenl_media.htm",
   "http://www.maaselkalehti.fi",
@@ -13,5 +15,6 @@ export const BLOCKED_LINK_URLS: string[] = [
   "https://topikki.fi/",
   "https://www.aland.fi/",
   "https://www.digihakemisto.net",
+  "https://www.suomi.fi/ohjeet-ja-tuki",
   "https://www.vapaaehtoistyö.fi",
 ];

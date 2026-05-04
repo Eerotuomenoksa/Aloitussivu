@@ -9,6 +9,13 @@ const OUTPUT_FILE = path.join(ROOT, 'localNewspaperFeeds.ts');
 const DOCS_DIR = path.join(ROOT, 'docs');
 const MISSING_DOC = path.join(DOCS_DIR, 'paikallisuutiset-puuttuvat-kunnat.md');
 const SCAN_CONCURRENCY = 6;
+const MANUAL_NEWSPAPER_FEEDS = [
+  {
+    municipality: 'Pirkkala',
+    name: 'Pirkkalainen',
+    url: 'https://pirkkalainen.fi/feed/',
+  },
+];
 
 const fetchWithTimeout = async (url, timeoutMs = 12000) => {
   const controller = new AbortController();
@@ -206,6 +213,20 @@ const main = async () => {
       list.push({ name: item.paper, url: item.feedUrl });
       feedsByMunicipality.set(item.municipality, list);
     }
+  }
+
+  for (const feed of MANUAL_NEWSPAPER_FEEDS) {
+    const list = feedsByMunicipality.get(feed.municipality) ?? [];
+    if (!list.some((item) => item.url === feed.url)) {
+      list.push({ name: feed.name, url: feed.url });
+      discovered.push({
+        municipality: feed.municipality,
+        paper: feed.name,
+        siteUrl: feed.url,
+        feedUrl: feed.url,
+      });
+    }
+    feedsByMunicipality.set(feed.municipality, list);
   }
 
   const feedEntries = [...feedsByMunicipality.entries()]

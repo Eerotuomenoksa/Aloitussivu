@@ -19,6 +19,7 @@ const MIN_UI_SCALE = 50;
 const MAX_UI_SCALE = 200;
 const DEFAULT_UI_SCALE = 100;
 const UI_SCALE_STEP = 10;
+const BASE_UI_SCALE_MULTIPLIER = 0.9;
 
 interface UiVisibilityState {
   clock: boolean;
@@ -107,7 +108,8 @@ const App: React.FC = () => {
   const increaseFont = useCallback(() => setUiScale(prev => Math.min(MAX_UI_SCALE, prev + UI_SCALE_STEP)), []);
   const resetFont = useCallback(() => setUiScale(DEFAULT_UI_SCALE), []);
   const fontSizeStep = 0;
-  const uiZoom = uiScale / 100;
+  const effectiveUiScale = Math.round(uiScale * BASE_UI_SCALE_MULTIPLIER);
+  const uiZoom = effectiveUiScale / 100;
   useLinkVisibilityVersion();
   useApprovedLinkSuggestionsVersion();
   const openReportModal = useCallback((draft: LinkReportDraft) => setReportDraft(draft), []);
@@ -137,7 +139,7 @@ const App: React.FC = () => {
                 A−
               </button>
               <span className="px-4 py-3 font-black text-lg border-x-2 border-yellow-600 flex items-center select-none" aria-live="polite">
-                {uiScale}%
+                {effectiveUiScale}%
               </span>
               <button
                 onClick={increaseFont}
@@ -154,7 +156,7 @@ const App: React.FC = () => {
                 className="bg-yellow-200 hover:bg-yellow-300 text-yellow-900 px-4 py-3 rounded-full font-black text-base transition-all active:scale-95 shadow-md border-b-4 border-yellow-500 focus:ring-4 focus:ring-yellow-300 whitespace-nowrap"
                 aria-label="Palauta normaali tekstikoko"
               >
-                ↺ 100%
+                ↺ {Math.round(DEFAULT_UI_SCALE * BASE_UI_SCALE_MULTIPLIER)}%
               </button>
             )}
           </div>

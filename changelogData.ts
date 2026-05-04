@@ -21,14 +21,21 @@ export type ChangelogCommit = {
   subject: string;
 };
 
-export const CHANGELOG_GENERATED_AT = "30.4.2026 klo 15.55";
+export const CHANGELOG_GENERATED_AT = "4.5.2026 klo 16.34";
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
+  "Muutosloki muutettiin selkokieliseksi kehittäjäsivuksi, joka näyttää muutokset ilman tiedostolinkkejä.",
+  "Pääsivulle lisättiin beta-merkintä sekä linkki muutoslokiin.",
   "Paikallisiin linkkeihin lisättiin seurakunnat, ja niiden piilottaminen tallentuu nyt selaimen muistiin.",
   "Linkkien tarkistus, näkyvyyden hallinta ja ylläpitoloki päivittyvät automaattisesti buildin yhteydessä.",
   "Palvelukategorioita ja paikallisia linkkejä laajennettiin uusilla suomalaisilla palveluilla."
 ];
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
+  {
+    "hash": "aeed58215bd6da00dae353c3118bfbf47a6abb94",
+    "date": "2026-04-30",
+    "subject": "Poistettu google haku linkkejä"
+  },
   {
     "hash": "4716962d88022672767a9e8b914cdc17afbd40f4",
     "date": "2026-04-30",
@@ -123,10 +130,5 @@ export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
     "hash": "f8230405efbcb3994fb9a08877d3cfbd042399b4",
     "date": "2026-04-30",
     "subject": "muutettu kuntatiedon sijaintia"
-  },
-  {
-    "hash": "5489a2343b8d9b231a2d305515f376569ce6c452",
-    "date": "2026-04-30",
-    "subject": "zoom myös pienennys"
   }
 ];
