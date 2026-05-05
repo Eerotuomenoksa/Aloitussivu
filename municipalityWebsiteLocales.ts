@@ -84,16 +84,12 @@ export const MUNICIPALITY_WEBSITE_LANGUAGE_URLS: Record<string, Partial<Record<L
     sv: "https://www.hameenlinna.fi/sv/"
   },
   "ilmajoki": {
-    en: "http://ilmajoki.fi/ilmajoki-in-english/"
+    en: "https://ilmajoki.fi/ilmajoki-in-english/"
   },
   "inari": {
     en: "https://www.inari.fi/en/home-page.html",
-    ru: "https://www.inari.fi/ru/glavnaja-stranica.html",
     se: "https://www.inari.fi/se/se/koltansaameetusivu-2018.html",
     sv: "https://www.inari.fi/sv/forstasida.html"
-  },
-  "inkoo": {
-    sv: "https://www.inga.fi/sv/?s="
   },
   "isojoki": {
     en: "https://isojoki.fi/english/"
@@ -355,7 +351,6 @@ export const MUNICIPALITY_WEBSITE_LANGUAGE_URLS: Record<string, Partial<Record<L
     en: "https://parkano.fi/en/"
   },
   "pedersören kunta": {
-    en: "https://www.pedersore.fi/en/",
     sv: "https://www.pedersore.fi/sv/soek/"
   },
   "pelkosenniemi": {
@@ -386,9 +381,6 @@ export const MUNICIPALITY_WEBSITE_LANGUAGE_URLS: Record<string, Partial<Record<L
   },
   "posio": {
     en: "https://www.posio.fi/"
-  },
-  "pukkila": {
-    en: "https://www.pukkila.fi/in-english/"
   },
   "puumala": {
     en: "https://puumala.fi/en/home/",
@@ -514,10 +506,6 @@ export const MUNICIPALITY_WEBSITE_LANGUAGE_URLS: Record<string, Partial<Record<L
   "tampere": {
     en: "https://www.tampere.fi/en"
   },
-  "tervo": {
-    en: "https://www.tervo.fi/english",
-    sv: "https://www.tervo.fi/svenska"
-  },
   "tervola": {
     en: "https://tervola.fi/en/"
   },
@@ -538,10 +526,6 @@ export const MUNICIPALITY_WEBSITE_LANGUAGE_URLS: Record<string, Partial<Record<L
   "turku": {
     en: "https://www.turku.fi/en",
     sv: "https://www.turku.fi/sv"
-  },
-  "tuusniemi": {
-    en: "https://www.tuusniemi.fi/english",
-    sv: "https://www.tuusniemi.fi/svenska"
   },
   "tuusula": {
     en: "https://tuusula.fi/en/home/"
@@ -596,10 +580,4 @@ export const MUNICIPALITY_WEBSITE_LANGUAGE_URLS: Record<string, Partial<Record<L
     en: "https://www.ylojarvi.fi/in-english/",
     uk: "https://www.ylojarvi.fi/ukraina/"
   },
-  "äänekoski": {
-    en: "http://www.aanekoski.fi/en/",
-    ru: "https://www.aanekoski.fi/ru/",
-    sv: "https://www.aanekoski.fi/sv/",
-    uk: "http://www.aanekoski.fi/uk/"
-  }
 };

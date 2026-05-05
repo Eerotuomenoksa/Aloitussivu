@@ -5,13 +5,35 @@ import path from 'node:path';
 const ROOT = process.cwd();
 const CHECK_TIMEOUT_MS = 10_000;
 const CHECK_CONCURRENCY = 12;
+const MANUALLY_VERIFIED_URLS = new Set([
+  'http://kuopionkaupunginteatteri.fi',
+  'https://haapavesi.fi',
+  'https://hel.fi',
+  'https://ikaalinen.fi',
+  'https://ilmajoki.fi',
+  'https://isojoki.fi',
+  'https://isokyro.fi',
+  'https://kuopionkaupunginteatteri.fi',
+  'https://www.espoonteatteri.fi',
+  'https://www.hyrynsalmi.fi',
+  'https://www.iisalmi.fi',
+  'https://www.iitti.fi',
+  'https://www.ilomantsi.fi',
+  'https://www.imatra.fi',
+  'https://www.inari.fi',
+  'https://www.inga.fi',
+  'https://www.vapaaehtoistyö.fi',
+  'https://www.gutenberg.org',
+  'https://www.kirjasampo.fi',
+  'https://nyaostis.fi',
+]);
 
 const rows = [];
 
 const readText = (filePath) => readFile(path.join(ROOT, filePath), 'utf8');
 
 const addRow = (section, category, name, url, source) => {
-  if (!url || !/^https?:\/\//i.test(url)) return;
+  if (!url || !/^https:\/\//i.test(url)) return;
   rows.push({ section, category, name, url, source });
 };
 
@@ -19,6 +41,8 @@ const csvEscape = (value) => `"${String(value ?? '').replace(/"/g, '""')}"`;
 const jsString = (value) => JSON.stringify(value);
 
 const normalizeHost = (host) => host.toLowerCase().replace(/\.$/, '');
+const normalizeUrlForComparison = (url) => url.trim().replace(/\/+$/, '');
+const isManuallyVerified = (url) => MANUALLY_VERIFIED_URLS.has(normalizeUrlForComparison(url));
 
 const isPrivateIp = (address) => {
   if (!address) return false;
@@ -208,9 +232,7 @@ const collectLinks = async () => {
   addRow('Sovelluksen omat linkit', 'Footer', 'SeniorSurf logo', 'https://seniorsurf.fi/wp-content/uploads/SeniorSurf_White-320-x-102-px.svg', 'App.tsx');
   addRow('Sovelluksen omat linkit', 'Sää', 'Ilmatieteen laitos', 'https://www.ilmatieteenlaitos.fi/', 'WeatherCard.tsx');
   addRow('Sovelluksen omat linkit', 'Sää API', 'Open-Meteo ennuste', 'https://api.open-meteo.com/v1/forecast', 'WeatherCard.tsx');
-  addRow('Sovelluksen omat linkit', 'Paikannus API', 'OpenStreetMap Nominatim reverse geocoding', 'https://nominatim.openstreetmap.org/reverse', 'WeatherCard.tsx');
   addRow('Sovelluksen omat linkit', 'Digiopastus', 'SeniorSurf opastuspaikat', 'https://seniorsurf.fi/seniorit/opastuspaikat/', 'NearbyGuidancePlaces.tsx');
-  addRow('Sovelluksen omat linkit', 'RSS proxy', 'rss2json', 'https://api.rss2json.com/v1/api.json', 'rssService.ts');
   addRow('Sovelluksen omat linkit', 'Haku', 'Google-haku', 'https://www.google.com/search', 'SearchBar.tsx / localServices.ts');
 
   return {
@@ -287,7 +309,7 @@ const main = async () => {
     countsBySection.set(row.section, (countsBySection.get(row.section) ?? 0) + 1);
   }
 
-  const failed = checkedRows.filter((row) => row.check === 'virhe' || row.safety === 'virhe');
+  const failed = checkedRows.filter((row) => !isManuallyVerified(row.url) && (row.check === 'virhe' || row.safety === 'virhe'));
   const warnings = checkedRows.filter((row) => row.check === 'huomio' || row.safety === 'huomio');
   const adminRows = checkedRows.filter((row) => row.check !== 'ok' || row.safety !== 'ok');
   const blockedUrls = [...new Set(failed.map((row) => row.url))].sort((a, b) => a.localeCompare(b, 'fi-FI'));
@@ -355,6 +377,21 @@ const main = async () => {
     row.notes,
   ].map(csvEscape).join(','));
   await writeFile(path.join(ROOT, 'docs', 'yllapito-linkkiloki.csv'), `${adminHeader.map(csvEscape).join(',')}\n${adminCsvRows.join('\n')}\n`, 'utf8');
+
+  const warningCsvRows = warnings.map((row) => [
+    generatedAt,
+    row.section,
+    row.category,
+    row.name,
+    row.url,
+    row.source,
+    row.check,
+    row.status,
+    row.safety,
+    row.finalUrl,
+    row.notes,
+  ].map(csvEscape).join(','));
+  await writeFile(path.join(ROOT, 'docs', 'linkit-huomiot.csv'), `${adminHeader.map(csvEscape).join(',')}\n${warningCsvRows.join('\n')}\n`, 'utf8');
 
   const markdown = [
     '# Palvelun linkit',

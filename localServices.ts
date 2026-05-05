@@ -86,7 +86,6 @@ const wellbeingAreaNewsUrls: Record<string, string> = {
   '17': 'https://pohjanmaanhyvinvointi.fi/tietoa-meista/ajankohtaista/uutiset/',
   '18': 'https://soite.fi/soite/ajankohtaista/',
   '19': 'https://pohde.fi/ajankohtaista/',
-  '20': 'https://kainuunhyvinvointialue.fi/ajankohtaista?filter=All',
   '21': 'https://lapha.fi/ajankohtaista',
   '90': 'https://www.hel.fi/fi/uutiset',
 };
@@ -235,14 +234,6 @@ const regionalServiceAreas: RegionalServiceArea[] = [
     },
   },
   {
-    id: 'kotka-region',
-    name: 'Kotkan seutu',
-    municipalities: ['hamina', 'kotka', 'pyhtää'],
-    services: {
-      publicTransport: { name: 'Jonne & Minne', url: 'https://www.kotkanaikataulut.fi/', group: 'Julkinen liikenne' },
-    },
-  },
-  {
     id: 'aland-region',
     name: 'Ahvenanmaa',
     municipalities: ['brändö', 'eckerö', 'finström', 'föglö', 'geta', 'hammarland', 'jomala', 'kumlinge', 'kökar', 'lemland', 'lumparland', 'maarianhamina', 'saltvik', 'sottunga', 'sund', 'vårdö'],
@@ -297,7 +288,6 @@ const localServiceMap: Record<string, LocalServiceConfig> = {
     municipality: { name: 'Kauniaisten palvelut', url: 'https://www.kauniainen.fi/', group: 'Paikalliset palvelut' },
   },
   tampere: {
-    library: { name: 'PIKI-kirjastot', url: 'https://piki.verkkokirjasto.fi/', group: 'Kirjastot' },
     municipality: { name: 'Tampereen palvelut', url: 'https://www.tampere.fi/', group: 'Paikalliset palvelut' },
     regionalNews: [regionalNewsProvider('Aamulehti', 'https://www.aamulehti.fi/')],
     rssFeeds: [
