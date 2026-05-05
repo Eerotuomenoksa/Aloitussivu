@@ -2,14 +2,14 @@ import React, { createContext, useContext, useEffect, useMemo, useState } from '
 
 export type LanguageCode = 'fi' | 'sv' | 'en' | 'uk' | 'et' | 'ru' | 'se';
 
-export const LANGUAGES: { code: LanguageCode; name: string; nativeName: string; locale: string; speechLocale: string }[] = [
-  { code: 'fi', name: 'Suomi', nativeName: 'Suomi', locale: 'fi-FI', speechLocale: 'fi-FI' },
-  { code: 'sv', name: 'Ruotsi', nativeName: 'Svenska', locale: 'sv-SE', speechLocale: 'sv-SE' },
-  { code: 'en', name: 'Englanti', nativeName: 'English', locale: 'en-GB', speechLocale: 'en-GB' },
-  { code: 'uk', name: 'Ukraina', nativeName: 'Українська', locale: 'uk-UA', speechLocale: 'uk-UA' },
-  { code: 'et', name: 'Eesti', nativeName: 'Eesti', locale: 'et-EE', speechLocale: 'et-EE' },
-  { code: 'ru', name: 'Venäjä', nativeName: 'Русский', locale: 'ru-RU', speechLocale: 'ru-RU' },
-  { code: 'se', name: 'Saame', nativeName: 'Davvisámegiella', locale: 'se-FI', speechLocale: 'fi-FI' },
+export const LANGUAGES: { code: LanguageCode; name: string; nativeName: string; flag: string; locale: string; speechLocale: string }[] = [
+  { code: 'fi', name: 'Suomi', nativeName: 'Suomi', flag: '🇫🇮', locale: 'fi-FI', speechLocale: 'fi-FI' },
+  { code: 'sv', name: 'Ruotsi', nativeName: 'Svenska', flag: '🇸🇪', locale: 'sv-SE', speechLocale: 'sv-SE' },
+  { code: 'en', name: 'Englanti', nativeName: 'English', flag: '🇬🇧', locale: 'en-GB', speechLocale: 'en-GB' },
+  { code: 'uk', name: 'Ukraina', nativeName: 'Українська', flag: '🇺🇦', locale: 'uk-UA', speechLocale: 'uk-UA' },
+  { code: 'et', name: 'Eesti', nativeName: 'Eesti', flag: '🇪🇪', locale: 'et-EE', speechLocale: 'et-EE' },
+  { code: 'ru', name: 'Venäjä', nativeName: 'Русский', flag: '🇷🇺', locale: 'ru-RU', speechLocale: 'ru-RU' },
+  { code: 'se', name: 'Saame', nativeName: 'Davvisámegiella', flag: 'SÁ', locale: 'se-FI', speechLocale: 'fi-FI' },
 ];
 
 const LANGUAGE_STORAGE_KEY = 'language';
@@ -549,13 +549,38 @@ const isLanguageCode = (value: string | null): value is LanguageCode => (
   Boolean(value && LANGUAGES.some((language) => language.code === value))
 );
 
+const detectBrowserLanguage = (): LanguageCode => {
+  if (typeof navigator === 'undefined') return 'fi';
+
+  const languageMap: Record<string, LanguageCode> = {
+    fi: 'fi',
+    sv: 'sv',
+    en: 'en',
+    uk: 'uk',
+    et: 'et',
+    ru: 'ru',
+    se: 'se',
+    sme: 'se',
+    smn: 'se',
+    sms: 'se',
+  };
+
+  for (const language of navigator.languages ?? [navigator.language]) {
+    const normalized = language.toLocaleLowerCase().split('-')[0];
+    const mapped = languageMap[normalized];
+    if (mapped) return mapped;
+  }
+
+  return 'fi';
+};
+
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [language, setLanguageState] = useState<LanguageCode>(() => {
     try {
       const saved = localStorage.getItem(LANGUAGE_STORAGE_KEY);
-      return isLanguageCode(saved) ? saved : 'fi';
+      return isLanguageCode(saved) ? saved : detectBrowserLanguage();
     } catch {
-      return 'fi';
+      return detectBrowserLanguage();
     }
   });
 

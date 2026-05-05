@@ -14,7 +14,7 @@ import { isLinkVisible, useLinkVisibilityVersion } from './linkVisibility';
 import { Shortcut, Favorite, LocalityInfo, LinkReportDraft } from './types';
 import { mergeApprovedLinksIntoShortcuts } from './approvedLinks';
 import { useApprovedLinkSuggestionsVersion } from './approvedLinks';
-import { LanguageProvider, LANGUAGES, useI18n } from './i18n';
+import { LanguageCode, LanguageProvider, LANGUAGES, useI18n } from './i18n';
 
 const MIN_UI_SCALE = 50;
 const MAX_UI_SCALE = 200;
@@ -40,6 +40,33 @@ const defaultUiVisibility: UiVisibilityState = {
   assistant: true,
   googleSearch: true,
 };
+
+interface LanguageFlagSelectorProps {
+  language: LanguageCode;
+  setLanguage: (language: LanguageCode) => void;
+  label: string;
+}
+
+const LanguageFlagSelector: React.FC<LanguageFlagSelectorProps> = ({ language, setLanguage, label }) => (
+  <div className="flex flex-wrap items-center gap-1 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 p-1 shadow-sm" role="group" aria-label={label}>
+    {LANGUAGES.map((item) => {
+      const isActive = item.code === language;
+      return (
+        <button
+          key={item.code}
+          type="button"
+          onClick={() => setLanguage(item.code)}
+          className={`${isActive ? 'bg-indigo-600 text-white shadow-md' : 'bg-transparent text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'} flex h-11 min-w-11 items-center justify-center rounded-full px-2 text-lg font-black transition-all focus:outline-none focus:ring-4 focus:ring-indigo-300`}
+          aria-label={`${label}: ${item.nativeName}`}
+          aria-pressed={isActive}
+          title={item.nativeName}
+        >
+          <span aria-hidden="true">{item.flag}</span>
+        </button>
+      );
+    })}
+  </div>
+);
 
 const AppContent: React.FC = () => {
   const { language, setLanguage, t } = useI18n();
@@ -229,6 +256,8 @@ const AppContent: React.FC = () => {
             {isDarkMode ? '☀️' : '🌙'}
           </button>
 
+          <LanguageFlagSelector language={language} setLanguage={setLanguage} label={t('language')} />
+
           <button
             type="button"
             onClick={() => setIsSettingsOpen(prev => !prev)}
@@ -258,18 +287,10 @@ const AppContent: React.FC = () => {
               </button>
             </div>
 
-            <label className="block mb-4 space-y-2">
+            <div className="mb-4 space-y-2">
               <span className="block font-black text-slate-700 dark:text-slate-200">{t('language')}</span>
-              <select
-                value={language}
-                onChange={(event) => setLanguage(event.target.value as typeof language)}
-                className="w-full rounded-2xl border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 font-bold text-slate-900 dark:text-white"
-              >
-                {LANGUAGES.map((item) => (
-                  <option key={item.code} value={item.code}>{item.nativeName}</option>
-                ))}
-              </select>
-            </label>
+              <LanguageFlagSelector language={language} setLanguage={setLanguage} label={t('language')} />
+            </div>
 
             <div className="space-y-3">
               {[
