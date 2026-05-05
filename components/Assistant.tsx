@@ -2,8 +2,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { getGeminiAssistant } from '../services/geminiService';
 import { ChatMessage } from '../types';
+import { useI18n } from '../i18n';
 
 const Assistant: React.FC = () => {
+  const { t } = useI18n();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -29,7 +31,7 @@ const Assistant: React.FC = () => {
       const aiMsg: ChatMessage = { role: 'assistant', content: responseText };
       setMessages(prev => [...prev, aiMsg]);
     } catch (e) {
-      setMessages(prev => [...prev, { role: 'assistant', content: 'Pahoittelut, yhteysvirhe. Yritä uudelleen.' }]);
+      setMessages(prev => [...prev, { role: 'assistant', content: t('assistantError') }]);
     } finally {
       setIsLoading(false);
     }
@@ -40,12 +42,12 @@ const Assistant: React.FC = () => {
       <button 
         onClick={() => setIsMinimized(false)}
         className="w-full bg-brand-indigo hover:bg-brand-purple dark:bg-brand-indigo dark:hover:bg-brand-purple text-white p-8 rounded-[2.5rem] shadow-xl transition-all transform hover:-translate-y-1 flex flex-col items-center justify-center border-4 border-white/20 dark:border-brand-indigo/50 min-h-[220px] focus:ring-4 focus:ring-blue-400 outline-none"
-        aria-label="Avaa tekoälyavustaja"
+        aria-label={t('assistantOpen')}
       >
         <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center text-5xl mb-4" aria-hidden="true">🤖</div>
         <div className="text-center">
-          <h2 className="text-2xl font-black">Tarvitsetko apua?</h2>
-          <p className="text-lg text-blue-100">Kysy mitä vain suomeksi</p>
+          <h2 className="text-2xl font-black">{t('assistantNeedHelp')}</h2>
+          <p className="text-lg text-blue-100">{t('assistantAskAnything')}</p>
         </div>
       </button>
     );
@@ -54,18 +56,18 @@ const Assistant: React.FC = () => {
   return (
     <section 
       className="bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col h-full border-4 border-brand-indigo dark:border-brand-purple animate-in slide-in-from-bottom-4 duration-300 min-h-[500px]"
-      aria-label="Keskusteluavustaja"
+      aria-label={t('assistantChat')}
     >
       <div className="bg-brand-indigo dark:bg-brand-purple p-6 text-white flex items-center justify-between">
         <div className="flex items-center gap-4">
           <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center text-2xl" aria-hidden="true">🤖</div>
-          <h2 className="text-xl font-black uppercase tracking-tight">Avustaja</h2>
+          <h2 className="text-xl font-black uppercase tracking-tight">{t('assistantTitle')}</h2>
         </div>
         <button 
           onClick={() => setIsMinimized(true)}
           className="bg-black/20 hover:bg-black/40 px-4 py-2 rounded-full font-bold transition-colors focus:ring-2 focus:ring-white"
         >
-          Sulje ✕
+          {t('assistantClose')} ✕
         </button>
       </div>
 
@@ -76,7 +78,7 @@ const Assistant: React.FC = () => {
       >
         {messages.length === 0 && (
           <div className="text-center py-10">
-            <p className="text-xl font-bold text-slate-500 dark:text-slate-400">Miten voin auttaa tänään?</p>
+            <p className="text-xl font-bold text-slate-500 dark:text-slate-400">{t('assistantGreeting')}</p>
           </div>
         )}
         {messages.map((msg, i) => (
@@ -92,7 +94,7 @@ const Assistant: React.FC = () => {
         ))}
         {isLoading && (
           <div className="flex justify-start">
-            <div className="bg-white dark:bg-slate-700 p-4 rounded-2xl flex gap-1 items-center border border-slate-200 dark:border-slate-600" aria-label="Ladataan vastausta">
+            <div className="bg-white dark:bg-slate-700 p-4 rounded-2xl flex gap-1 items-center border border-slate-200 dark:border-slate-600" aria-label={t('assistantLoading')}>
               <span className="w-2 h-2 bg-brand-indigo dark:bg-brand-cyan rounded-full animate-bounce"></span>
               <span className="w-2 h-2 bg-brand-indigo dark:bg-brand-cyan rounded-full animate-bounce [animation-delay:0.2s]"></span>
               <span className="w-2 h-2 bg-brand-indigo dark:bg-brand-cyan rounded-full animate-bounce [animation-delay:0.4s]"></span>
@@ -107,16 +109,16 @@ const Assistant: React.FC = () => {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-          placeholder="Kirjoita kysymys..."
+          placeholder={t('assistantPlaceholder')}
           className="flex-1 border-2 border-slate-400 dark:border-slate-600 rounded-xl px-4 py-3 text-lg focus:ring-4 focus:ring-blue-200 outline-none bg-white dark:bg-slate-700 text-slate-950 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 transition-colors font-bold"
-          aria-label="Kysymyskenttä"
+          aria-label={t('assistantInput')}
         />
         <button 
           onClick={handleSend}
           disabled={isLoading || !input.trim()}
           className="bg-brand-indigo text-white px-6 py-3 rounded-xl font-black hover:bg-brand-purple disabled:opacity-50 transition-all focus:ring-4 focus:ring-blue-300 shadow-md active:scale-95"
         >
-          Lähetä
+          {t('assistantSend')}
         </button>
       </div>
     </section>

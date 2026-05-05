@@ -45,6 +45,67 @@ const fetchRss2JsonFeed = async (feed: RssFeedConfig) => {
   })).filter((headline) => headline.title && headline.link);
 };
 
+const fetchTextWithCorsFallback = async (url: string) => {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error('Sivua ei voitu hakea.');
+    return response.text();
+  } catch {
+    const proxiedUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
+    const response = await fetch(proxiedUrl);
+    if (!response.ok) throw new Error('Sivun CORS-välitys epäonnistui.');
+    return response.text();
+  }
+};
+
+const toAbsoluteUrl = (url: string, baseUrl: string) => {
+  try {
+    return new URL(url, baseUrl).toString();
+  } catch {
+    return url;
+  }
+};
+
+const parseFinnishPublishedAt = (value: string) => {
+  const match = value.match(/(\d{1,2})\.(\d{1,2})\.(\d{4})(?:\s+(\d{1,2}):(\d{2}))?/);
+  if (!match) return '';
+
+  const [, day, month, year, hour = '0', minute = '0'] = match;
+  return new Date(
+    Number(year),
+    Number(month) - 1,
+    Number(day),
+    Number(hour),
+    Number(minute)
+  ).toISOString();
+};
+
+const fetchHtmlNewsPage = async (feed: RssFeedConfig) => {
+  const html = await fetchTextWithCorsFallback(feed.url);
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+
+  return Array.from(doc.querySelectorAll('a[href]'))
+    .map((link): LocalNewsHeadline => {
+      const href = link.getAttribute('href') ?? '';
+      const title = decodeText(link.textContent ?? '').replace(/\s+/g, ' ');
+      const container = link.closest('li, article, div, section') ?? link.parentElement;
+      const publishedText = container?.textContent?.match(/Julkaistu\s+\d{1,2}\.\d{1,2}\.\d{4}(?:\s+\d{1,2}:\d{2})?/)?.[0] ?? '';
+
+      return {
+        title,
+        link: toAbsoluteUrl(href, feed.url),
+        source: feed.name,
+        publishedAt: parseFinnishPublishedAt(publishedText),
+      };
+    })
+    .filter((headline) => (
+      headline.title
+      && headline.link.includes('/uutiset/')
+      && !headline.link.endsWith('/fi/uutiset')
+      && !headline.title.toLocaleLowerCase('fi-FI').includes('image:')
+    ));
+};
+
 const readFirstText = (element: Element, selectors: string[]) => {
   for (const selector of selectors) {
     const match = element.querySelector(selector);
@@ -80,7 +141,11 @@ const fetchOneFeed = async (feed: RssFeedConfig) => {
   try {
     return await fetchDirectFeed(feed);
   } catch {
-    return fetchRss2JsonFeed(feed);
+    try {
+      return await fetchRss2JsonFeed(feed);
+    } catch {
+      return fetchHtmlNewsPage(feed);
+    }
   }
 };
 

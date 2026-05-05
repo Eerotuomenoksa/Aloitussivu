@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import { SHORTCUTS } from './constants';
 import { MUNICIPALITIES } from './municipalRegistry';
-import { getRegionalNewsProviders, getRegionalProviders, getRegionalPublicTransportProviders, getRegionalRssFeeds } from './localServices';
+import { getRegionalLibraryProviders, getRegionalNewsProviders, getRegionalProviders, getRegionalPublicTransportProviders, getRegionalRssFeeds } from './localServices';
 import { Provider } from './types';
 
 interface GeneralLinkRow {
@@ -23,6 +23,7 @@ interface RegionalLinkRow {
 interface MunicipalityLinkRow {
   municipality: string;
   localServices: RegionalLinkRow[];
+  libraries: RegionalLinkRow[];
   publicTransport: RegionalLinkRow[];
   regionalNews: RegionalLinkRow[];
   rssFeeds: RegionalLinkRow[];
@@ -71,9 +72,12 @@ const municipalityRows: MunicipalityLinkRow[] = MUNICIPALITIES
     const publicTransport = getRegionalPublicTransportProviders(context).map((provider) => (
       providerToRegionalRow(municipality.name, 'Julkinen liikenne', provider)
     ));
-    const publicTransportUrls = new Set(publicTransport.map((row) => row.url));
+    const libraries = getRegionalLibraryProviders(context).map((provider) => (
+      providerToRegionalRow(municipality.name, 'Kirjastot', provider)
+    ));
+    const separatedUrls = new Set([...publicTransport, ...libraries].map((row) => row.url));
     const localServices = getRegionalProviders(context)
-      .filter((provider) => !publicTransportUrls.has(provider.url))
+      .filter((provider) => !separatedUrls.has(provider.url))
       .map((provider) => (
       providerToRegionalRow(municipality.name, 'Paikalliset palvelut', provider)
     ));
@@ -90,6 +94,7 @@ const municipalityRows: MunicipalityLinkRow[] = MUNICIPALITIES
     return {
       municipality: municipality.name,
       localServices: uniqueByKey(localServices, (row) => `${row.category}|${row.name}|${row.url}`),
+      libraries: uniqueByKey(libraries, (row) => `${row.category}|${row.name}|${row.url}`),
       publicTransport: uniqueByKey(publicTransport, (row) => `${row.category}|${row.name}|${row.url}`),
       regionalNews: uniqueByKey(regionalNews, (row) => `${row.category}|${row.name}|${row.url}`),
       rssFeeds: uniqueByKey(rssFeeds, (row) => `${row.category}|${row.name}|${row.url}`),
@@ -98,7 +103,7 @@ const municipalityRows: MunicipalityLinkRow[] = MUNICIPALITIES
   .sort((a, b) => collator.compare(a.municipality, b.municipality));
 
 const regionalLinks = uniqueByKey(
-  municipalityRows.flatMap((row) => [...row.localServices, ...row.publicTransport, ...row.regionalNews, ...row.rssFeeds]),
+  municipalityRows.flatMap((row) => [...row.localServices, ...row.libraries, ...row.publicTransport, ...row.regionalNews, ...row.rssFeeds]),
   (row) => `${row.municipality}|${row.category}|${row.name}|${row.url}`
 ).sort((a, b) => collator.compare(`${a.municipality} ${a.category} ${a.name}`, `${b.municipality} ${b.category} ${b.name}`));
 
@@ -150,6 +155,7 @@ function App() {
     !search || [
       row.municipality,
       ...row.localServices.map((link) => `${link.category} ${link.name} ${link.url}`),
+      ...row.libraries.map((link) => `${link.category} ${link.name} ${link.url}`),
       ...row.publicTransport.map((link) => `${link.category} ${link.name} ${link.url}`),
       ...row.regionalNews.map((link) => `${link.category} ${link.name} ${link.url}`),
       ...row.rssFeeds.map((link) => `${link.category} ${link.name} ${link.url}`),
@@ -325,6 +331,7 @@ function App() {
                 <tr>
                   <th className="w-44 px-4 py-3">Paikkakunta</th>
                   <th className="min-w-80 px-4 py-3">Paikalliset palvelut</th>
+                  <th className="min-w-80 px-4 py-3">Kirjasto</th>
                   <th className="min-w-80 px-4 py-3">Julkinen liikenne</th>
                   <th className="min-w-80 px-4 py-3">Alueelliset uutiset</th>
                   <th className="min-w-80 px-4 py-3">Uutisvirrat</th>
@@ -335,6 +342,7 @@ function App() {
                   <tr key={row.municipality}>
                     <td className="px-4 py-4 text-base font-black">{row.municipality}</td>
                     <td className="px-4 py-4"><LinkList links={row.localServices} /></td>
+                    <td className="px-4 py-4"><LinkList links={row.libraries} /></td>
                     <td className="px-4 py-4"><LinkList links={row.publicTransport} /></td>
                     <td className="px-4 py-4"><LinkList links={row.regionalNews} /></td>
                     <td className="px-4 py-4"><LinkList links={row.rssFeeds} /></td>

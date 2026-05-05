@@ -1,8 +1,11 @@
 import { MUNICIPALITIES } from './municipalRegistry';
 import { MUNICIPALITY_WEBSITES } from './municipalityWebsites';
+import { MUNICIPALITY_WEBSITE_LANGUAGE_URLS } from './municipalityWebsiteLocales';
+import { MUNICIPALITY_SWEDISH_NAMES_BY_CODE } from './municipalityNames';
 import { LOCAL_NEWSPAPER_FEEDS } from './localNewspaperFeeds';
 import { filterVisibleProviders } from './linkVisibility';
 import { LocalityInfo, Municipality, Provider, RegionalContext, RssFeedConfig, Shortcut } from './types';
+import type { LanguageCode } from './i18n';
 
 interface LocalServiceConfig {
   publicTransport?: Provider;
@@ -100,6 +103,7 @@ export const normalizeMunicipality = (name: string) => {
     .replace(/^kunta\s+/i, '')
     .replace(/\s+kaupunki$/i, '')
     .replace(/\s+kunta$/i, '')
+    .replace(/\s+seutukunta$/i, '')
     .replace(/\s+-\s+.*$/i, '')
     .trim();
 
@@ -110,9 +114,30 @@ const municipalitiesByNormalizedName = new Map<string, Municipality>(
   MUNICIPALITIES.map((municipality) => [normalizeMunicipality(municipality.name), municipality])
 );
 
-const getMunicipalityWebsiteProvider = (municipality: string): Provider | undefined => {
+const municipalitiesByNormalizedSwedishName = new Map<string, Municipality>(
+  MUNICIPALITIES.map((municipality) => [
+    normalizeText(MUNICIPALITY_SWEDISH_NAMES_BY_CODE[municipality.code] ?? municipality.name),
+    municipality,
+  ])
+);
+
+export const getLocalizedMunicipalityName = (municipality: Municipality | null | undefined, language: string) => {
+  if (!municipality) return '';
+  if (language === 'sv') {
+    return MUNICIPALITY_SWEDISH_NAMES_BY_CODE[municipality.code] ?? municipality.name;
+  }
+  return municipality.name;
+};
+
+const getMunicipalityWebsiteUrl = (municipality: string, language: LanguageCode = 'fi') => {
   const key = normalizeMunicipality(municipality);
-  const url = MUNICIPALITY_WEBSITES[key] ?? MUNICIPALITY_WEBSITES[normalizeText(municipality)];
+  return MUNICIPALITY_WEBSITE_LANGUAGE_URLS[key]?.[language]
+    ?? MUNICIPALITY_WEBSITES[key]
+    ?? MUNICIPALITY_WEBSITES[normalizeText(municipality)];
+};
+
+const getMunicipalityWebsiteProvider = (municipality: string, language: LanguageCode = 'fi'): Provider | undefined => {
+  const url = getMunicipalityWebsiteUrl(municipality, language);
   if (!url) return undefined;
 
   return {
@@ -120,6 +145,12 @@ const getMunicipalityWebsiteProvider = (municipality: string): Provider | undefi
     url,
     group: 'Paikalliset palvelut',
   };
+};
+
+const localizeMunicipalityProvider = (provider: Provider | undefined, municipality: string, language: LanguageCode = 'fi'): Provider | undefined => {
+  if (!provider) return provider;
+  const url = getMunicipalityWebsiteUrl(municipality, language);
+  return url ? { ...provider, url } : provider;
 };
 
 const regionalServiceAreas: RegionalServiceArea[] = [
@@ -238,6 +269,9 @@ const localServiceMap: Record<string, LocalServiceConfig> = {
     publicTransport: hslPublicTransport,
     library: { name: 'Helmet-kirjastot', url: 'https://www.helmet.fi/', group: 'Kirjastot' },
     municipality: { name: 'Helsingin palvelut', url: 'https://www.hel.fi/fi', group: 'Paikalliset palvelut' },
+    rssFeeds: [
+      { name: 'Helsingin uutiset', url: 'https://www.hel.fi/fi/uutiset' },
+    ],
   },
   espoo: {
     publicTransport: hslPublicTransport,
@@ -364,6 +398,9 @@ export const findMunicipality = (value: string): Municipality | null => {
   const exact = municipalitiesByNormalizedName.get(normalized);
   if (exact) return exact;
 
+  const exactSwedish = municipalitiesByNormalizedSwedishName.get(normalizeText(value));
+  if (exactSwedish) return exactSwedish;
+
   const haystack = ` ${normalizeText(value)} `;
   const municipalitiesByLength = [...MUNICIPALITIES].sort((a, b) => b.name.length - a.name.length);
 
@@ -414,16 +451,18 @@ const getWellbeingAreaNewsProvider = (municipality: Municipality): Provider | un
   };
 };
 
-export const getRegionalProviders = (context: RegionalContext): Provider[] => {
+export const getRegionalProviders = (context: RegionalContext, language: LanguageCode = 'fi'): Provider[] => {
   const municipality = context.municipality.name;
   const key = normalizeMunicipality(municipality);
   const exact = localServiceMap[key];
   const serviceArea = getRegionalServiceArea(key);
   const wellbeingArea = exact?.wellbeingArea ?? getWellbeingAreaProvider(context.municipality);
   const publicTransport = exact?.publicTransport ?? serviceArea?.services.publicTransport;
+  const municipalityProvider = localizeMunicipalityProvider(exact?.municipality, municipality, language)
+    ?? getMunicipalityWebsiteProvider(municipality, language);
 
   return filterVisibleProviders(uniqueProviders([
-    exact?.municipality ?? getMunicipalityWebsiteProvider(municipality),
+    municipalityProvider,
     wellbeingArea,
     exact?.library,
     publicTransport,
@@ -437,6 +476,15 @@ export const getRegionalPublicTransportProviders = (context: RegionalContext): P
 
   return filterVisibleProviders(uniqueProviders([
     exact?.publicTransport ?? serviceArea?.services.publicTransport,
+  ].filter((provider): provider is Provider => Boolean(provider)))) ?? [];
+};
+
+export const getRegionalLibraryProviders = (context: RegionalContext): Provider[] => {
+  const key = normalizeMunicipality(context.municipality.name);
+  const exact = localServiceMap[key];
+
+  return filterVisibleProviders(uniqueProviders([
+    exact?.library,
   ].filter((provider): provider is Provider => Boolean(provider)))) ?? [];
 };
 
@@ -466,7 +514,7 @@ export const getRegionalRssFeeds = (context: RegionalContext): RssFeedConfig[] =
   ]);
 };
 
-export const getLocalizedShortcuts = (shortcuts: Shortcut[], locality: LocalityInfo | null): Shortcut[] => {
+export const getLocalizedShortcuts = (shortcuts: Shortcut[], locality: LocalityInfo | null, language: LanguageCode = 'fi'): Shortcut[] => {
   const context = resolveRegionalContext('', locality);
   if (!context) return shortcuts;
 
@@ -479,7 +527,8 @@ export const getLocalizedShortcuts = (shortcuts: Shortcut[], locality: LocalityI
   const fallback: LocalServiceConfig = {
     publicTransport: serviceArea?.services.publicTransport,
     wellbeingArea,
-    municipality: exact?.municipality ?? getMunicipalityWebsiteProvider(municipality),
+    municipality: localizeMunicipalityProvider(exact?.municipality, municipality, language)
+      ?? getMunicipalityWebsiteProvider(municipality, language),
   };
 
   const services = { ...fallback, ...exact, wellbeingArea: exact?.wellbeingArea ?? fallback.wellbeingArea };

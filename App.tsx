@@ -64,7 +64,7 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({ language, setLangua
         className="absolute inset-0 h-full w-full cursor-pointer appearance-none rounded-full bg-transparent pl-4 pr-10 text-transparent outline-none"
       >
         {LANGUAGES.map((item) => (
-          <option key={item.code} value={item.code}>
+          <option key={item.code} value={item.code} className="bg-white text-slate-900">
             {item.flag} {item.nativeName}
           </option>
         ))}

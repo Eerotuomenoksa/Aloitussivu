@@ -1,5 +1,5 @@
-import React, { useMemo, useState } from 'react';
-import { getRegionalNewsProviders, getRegionalProviders, getRegionalRssFeeds, resolveRegionalContext } from '../localServices';
+import React, { useEffect, useMemo, useState } from 'react';
+import { getLocalizedMunicipalityName, getRegionalNewsProviders, getRegionalProviders, getRegionalRssFeeds, resolveRegionalContext } from '../localServices';
 import { filterVisibleProviders } from '../linkVisibility';
 import { LocalityInfo, Provider, LinkReportDraft } from '../types';
 import LocalNewsHeadlines from './LocalNewsHeadlines';
@@ -69,13 +69,22 @@ const ServiceLink: React.FC<{ provider: Provider; index: number; fontSizeStep: n
 };
 
 const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality, fontSizeStep = 0, onReportLink, showNews = true }) => {
-  const { t } = useI18n();
+  const { language, t } = useI18n();
   const [query, setQuery] = useState('');
+  const [isManualQuery, setIsManualQuery] = useState(false);
+
+  useEffect(() => {
+    if (!locality?.municipality || isManualQuery) return;
+    setQuery(locality.municipality);
+  }, [isManualQuery, locality?.municipality]);
+
   const context = useMemo(() => resolveRegionalContext(query, locality), [query, locality]);
-  const services = useMemo(() => context ? filterVisibleProviders(getRegionalProviders(context)) ?? [] : [], [context]);
+  const services = useMemo(() => context ? filterVisibleProviders(getRegionalProviders(context, language)) ?? [] : [], [context, language]);
   const newsFallbacks = useMemo(() => context ? filterVisibleProviders(getRegionalNewsProviders(context)) ?? [] : [], [context]);
   const rssFeeds = useMemo(() => context ? getRegionalRssFeeds(context) : [], [context]);
   const fallbackNewsUrl = newsFallbacks[0]?.url ?? '';
+  const localizedMunicipalityName = context ? getLocalizedMunicipalityName(context.municipality, language) : '';
+  const displayedQuery = !isManualQuery && localizedMunicipalityName ? localizedMunicipalityName : query;
 
   return (
     <section className="space-y-6" aria-labelledby="regional-services-heading">
@@ -105,9 +114,13 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
               <span className={`block font-black text-slate-700 dark:text-slate-200 mb-2 ${smallTextClasses[fontSizeStep]}`}>{t('municipality')}</span>
               <input
                 type="search"
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
-                placeholder={locality?.municipality ? `${t('localityPrefix')}: ${locality.municipality}` : t('municipalityPlaceholder')}
+                value={displayedQuery}
+                onChange={(event) => {
+                  const nextQuery = event.target.value;
+                  setQuery(nextQuery);
+                  setIsManualQuery(nextQuery.trim().length > 0);
+                }}
+                placeholder={localizedMunicipalityName ? `${t('localityPrefix')}: ${localizedMunicipalityName}` : t('municipalityPlaceholder')}
                 className={`w-full rounded-2xl border-4 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white px-5 py-4 font-bold focus:outline-none focus:border-brand-indigo focus:ring-4 focus:ring-brand-indigo/20 ${textClasses[fontSizeStep]}`}
                 aria-label={t('municipality')}
               />
@@ -115,7 +128,7 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
             {context && (
               <div className="rounded-2xl bg-white dark:bg-slate-800 border-4 border-slate-100 dark:border-slate-700 px-5 py-4 shadow-sm md:min-w-[12rem]">
                 <p className={`font-black text-slate-900 dark:text-white leading-tight ${textClasses[fontSizeStep]}`}>
-                  {context.municipality.name}
+                  {localizedMunicipalityName}
                 </p>
               </div>
             )}

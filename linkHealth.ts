@@ -2,19 +2,21 @@
 // Links listed here are hidden from the end-user UI until the next successful check.
 export const BLOCKED_LINK_URLS: string[] = [
   "http://kuopionkaupunginteatteri.fi/",
+  "http://seinajoenkaupunginteatteri.fi/",
   "http://www.auranmaanviikkolehti.fi",
   "http://www.glimsgloms.com/",
   "http://www.lakeudenjoutsen.fi",
   "http://www.maakuntalehdet.fi/lakeudenl_media.htm",
   "http://www.maaselkalehti.fi",
+  "http://www.reisjarvilehti.fi/",
   "http://www.ykkossanomat.fi/",
   "http://www.ylakarjala.com",
   "https://haapavesi.fi/",
+  "https://lappeenranta.fi/fi/palvelut/jouko-joukkoliikenne",
   "https://piki.verkkokirjasto.fi/",
   "https://topikki.fi/",
   "https://www.digihakemisto.net",
   "https://www.kotkanaikataulut.fi/",
-  "https://www.rantapallo.fi",
   "https://www.transdev.fi/",
   "https://www.vapaaehtoistyö.fi",
 ];

@@ -30,7 +30,7 @@ const rowColors = [
 ];
 
 const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep = 0, favorites, onToggleFavorite, locality, onReportLink }) => {
-  const { t, categoryName, speechLocale } = useI18n();
+  const { t, categoryName, language, speechLocale } = useI18n();
   const [search, setSearch] = useState('');
   const [speechState, setSpeechState] = useState<SpeechState>('idle');
   const recognitionRef = useRef<any>(null);
@@ -66,7 +66,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
     }
   };
 
-  const shortcuts = filterVisibleShortcuts(getLocalizedShortcuts(SHORTCUTS, locality));
+  const shortcuts = filterVisibleShortcuts(getLocalizedShortcuts(SHORTCUTS, locality, language));
   useLinkVisibilityVersion();
   useApprovedLinkSuggestionsVersion();
   const approvedShortcuts = mergeApprovedLinksIntoShortcuts(shortcuts);

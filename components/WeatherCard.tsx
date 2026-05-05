@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { isLinkVisible, useLinkVisibilityVersion } from '../linkVisibility';
-import { normalizeMunicipality } from '../localServices';
+import { findMunicipality, getLocalizedMunicipalityName, normalizeMunicipality } from '../localServices';
 import { LocalityInfo } from '../types';
 import { useI18n } from '../i18n';
 
@@ -28,7 +28,7 @@ const vantaaDistricts = new Set([
 ]);
 
 const WeatherCard: React.FC<WeatherCardProps> = ({ onLocationResolved }) => {
-  const { t } = useI18n();
+  const { language, t } = useI18n();
   useLinkVisibilityVersion();
   const [locationName, setLocationName] = useState<string>(t('location'));
   const [weather, setWeather] = useState<WeatherData | null>(null);
@@ -101,13 +101,16 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ onLocationResolved }) => {
         const address = geoData.address || {};
         const city = address.city || address.town || address.municipality || t('yourLocation');
         const municipality = resolveMunicipality(address, geoData.display_name || '');
+        const municipalityInfo = findMunicipality(municipality);
+        const localizedMunicipality = getLocalizedMunicipalityName(municipalityInfo, language) || city;
+        const fallbackMunicipality = getLocalizedMunicipalityName(findMunicipality('Helsinki'), language) || 'Helsinki';
 
         setWeather({
           temp: Math.round(weatherData.current_weather.temperature),
           condition: getWeatherText(weatherData.current_weather.weathercode),
           icon: getWeatherIcon(weatherData.current_weather.weathercode)
         });
-        setLocationName(shouldLocalizeLinks ? city : 'Helsinki');
+        setLocationName(shouldLocalizeLinks ? localizedMunicipality : fallbackMunicipality);
         if (shouldLocalizeLinks) {
           onLocationResolved?.({ municipality, displayName: city, lat, lon });
         }
@@ -127,7 +130,7 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ onLocationResolved }) => {
     } else {
       fetchWeather(60.1695, 24.9354, false);
     }
-  }, [onLocationResolved, t]);
+  }, [language, onLocationResolved, t]);
 
   return (
     <div 
