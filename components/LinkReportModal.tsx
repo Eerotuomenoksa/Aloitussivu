@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { addBlockedLink, reportLink } from '../linkVisibility';
+import { submitLinkReport } from '../linkVisibility';
 import { LinkReportDraft, LinkReportEntry, LinkReportType } from '../types';
 
 interface LinkReportModalProps {
@@ -20,6 +20,8 @@ const LinkReportModal: React.FC<LinkReportModalProps> = ({ draft, onClose }) => 
   const [category, setCategory] = useState('');
   const [note, setNote] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const closeTimerRef = useRef<number | null>(null);
 
   useEffect(() => {
@@ -30,6 +32,8 @@ const LinkReportModal: React.FC<LinkReportModalProps> = ({ draft, onClose }) => 
     setCategory(draft.category ?? '');
     setNote('');
     setSubmitted(false);
+    setSubmitError('');
+    setIsSubmitting(false);
   }, [draft]);
 
   useEffect(() => {
@@ -48,8 +52,9 @@ const LinkReportModal: React.FC<LinkReportModalProps> = ({ draft, onClose }) => 
 
   if (!draft) return null;
 
-  const submit = (event: React.FormEvent) => {
+  const submit = async (event: React.FormEvent) => {
     event.preventDefault();
+    setSubmitError('');
 
     const trimmedName = name.trim() || draft.name.trim() || 'Tuntematon linkki';
     const trimmedUrl = url.trim() || draft.url.trim();
@@ -57,28 +62,32 @@ const LinkReportModal: React.FC<LinkReportModalProps> = ({ draft, onClose }) => 
     const trimmedNote = note.trim();
 
     if (!trimmedUrl) return;
+    setIsSubmitting(true);
 
     const entry: LinkReportEntry = {
       id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
       type,
       name: trimmedName,
       url: trimmedUrl,
-      category: trimmedCategory || undefined,
-      source: draft.source,
+      category: trimmedCategory,
+      source: draft.source || 'Käyttäjän ilmoitus',
       createdAt: new Date().toISOString(),
       note: trimmedNote,
     };
 
-    reportLink(entry);
-    if (type !== 'new') {
-      addBlockedLink(trimmedUrl);
-    }
+    try {
+      await submitLinkReport(entry);
 
-    setSubmitted(true);
-    if (closeTimerRef.current !== null) {
-      window.clearTimeout(closeTimerRef.current);
+      setSubmitted(true);
+      if (closeTimerRef.current !== null) {
+        window.clearTimeout(closeTimerRef.current);
+      }
+      closeTimerRef.current = window.setTimeout(onClose, 900);
+    } catch {
+      setSubmitError('Tallennus ei onnistunut. Yritä hetken päästä uudelleen.');
+    } finally {
+      setIsSubmitting(false);
     }
-    closeTimerRef.current = window.setTimeout(onClose, 900);
   };
 
   return (
@@ -163,6 +172,12 @@ const LinkReportModal: React.FC<LinkReportModalProps> = ({ draft, onClose }) => 
             </p>
           ) : null}
 
+          {submitError ? (
+            <p className="rounded-2xl bg-rose-50 dark:bg-rose-900/20 border-4 border-rose-200 dark:border-rose-900 p-4 font-black text-rose-800 dark:text-rose-200">
+              {submitError}
+            </p>
+          ) : null}
+
           <div className="flex flex-wrap items-center justify-end gap-3 pt-2">
             <button
               type="button"
@@ -173,9 +188,10 @@ const LinkReportModal: React.FC<LinkReportModalProps> = ({ draft, onClose }) => 
             </button>
             <button
               type="submit"
+              disabled={isSubmitting}
               className="px-8 py-3 rounded-full font-black text-white bg-blue-600 hover:bg-blue-700 transition-all active:scale-95"
             >
-              Tallenna ilmoitus
+              {isSubmitting ? 'Tallennetaan...' : 'Tallenna ilmoitus'}
             </button>
           </div>
         </form>

@@ -12,6 +12,7 @@ export default defineConfig({
         changelog: 'muutosloki.html',
         suggestions: 'ehdotukset.html',
         links: 'linkit.html',
+        admin: 'yllapito.html',
       },
     },
   },

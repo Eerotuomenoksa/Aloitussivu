@@ -525,6 +525,7 @@ const categoryTranslations: Record<string, Partial<Record<LanguageCode, string>>
   'Paikalliset palvelut': { sv: 'Lokala tjänster', en: 'Local services', uk: 'Місцеві послуги', et: 'Kohalikud teenused', ru: 'Местные услуги', se: 'Báikkálaš bálvalusat' },
   'Alueelliset uutiset': { sv: 'Regionala nyheter', en: 'Regional news', uk: 'Регіональні новини', et: 'Piirkondlikud uudised', ru: 'Региональные новости', se: 'Guovllulaš ođđasat' },
   'Hyvinvointialue': { sv: 'Välfärdsområde', en: 'Wellbeing services county', uk: 'Регіон добробуту', et: 'Heaolupiirkond', ru: 'Регион благополучия', se: 'Buresveadjinguovlu' },
+  'Julkinen liikenne': { sv: 'Kollektivtrafik', en: 'Public transport', uk: 'Громадський транспорт', et: 'Ühistransport', ru: 'Общественный транспорт', se: 'Almmolaš johtolat' },
   'Joukkoliikennejärjestäjät': { sv: 'Kollektivtrafik', en: 'Public transport', uk: 'Громадський транспорт', et: 'Ühistransport', ru: 'Общественный транспорт', se: 'Almmolaš johtolat' },
   'Liikennöitsijät': { sv: 'Trafikbolag', en: 'Operators', uk: 'Перевізники', et: 'Vedajad', ru: 'Перевозчики', se: 'Johtolatdoaimmaheaddjit' },
   'Taksit': { sv: 'Taxi', en: 'Taxis', uk: 'Таксі', et: 'Taksod', ru: 'Такси', se: 'Táksit' },

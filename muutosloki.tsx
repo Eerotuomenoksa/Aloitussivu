@@ -136,7 +136,7 @@ function App() {
 
         <section className="space-y-4">
           <div className="flex flex-wrap items-baseline gap-3">
-            <h2 className="text-2xl md:text-3xl font-black">Viimeisimmät commitit</h2>
+            <h2 className="text-2xl md:text-3xl font-black">Koko muutoshistoria</h2>
             <span className="text-sm text-slate-500 dark:text-slate-400">
               {CHANGELOG_RECENT_COMMITS.length} merkintää
             </span>

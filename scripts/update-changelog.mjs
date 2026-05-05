@@ -77,8 +77,8 @@ function readWorktreeChanges() {
   return [...tracked, ...untracked].sort((a, b) => a.path.localeCompare(b.path, 'fi'));
 }
 
-function readRecentCommits(limit = 20) {
-  const output = runGit(['log', '--no-merges', '-n', String(limit), '--date=short', '--pretty=format:@@@%H|%ad|%s']);
+function readRecentCommits() {
+  const output = runGit(['log', '--no-merges', '--date=short', '--pretty=format:@@@%H|%ad|%s']);
   if (!output) return [];
 
   return output.split(/\r?\n/).filter(Boolean).flatMap(line => {

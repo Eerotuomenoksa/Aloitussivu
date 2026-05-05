@@ -1,4 +1,14 @@
 import { useEffect, useState } from 'react';
+import {
+  collection,
+  deleteDoc,
+  doc,
+  onSnapshot,
+  orderBy,
+  query,
+  setDoc,
+} from 'firebase/firestore';
+import { getFirebaseDb, isFirebaseConfigured } from './firebaseClient';
 import { Shortcut } from './types';
 
 export interface ApprovedLinkSuggestion {
@@ -13,8 +23,10 @@ export interface ApprovedLinkSuggestion {
 
 const APPROVED_LINKS_KEY = 'approvedLinkSuggestions';
 const APPROVED_LINKS_CHANGE_EVENT = 'approvedlinkchange';
+const APPROVED_LINKS_COLLECTION = 'approvedLinks';
 
 const normalizeText = (value: string) => value.trim().toLocaleLowerCase('fi-FI').replace(/\s+/g, ' ');
+const normalizeUrl = (url: string) => url.trim().replace(/\/+$/, '');
 
 const readJsonArray = <T,>(key: string): T[] => {
   try {
@@ -37,9 +49,55 @@ const writeJsonArray = <T,>(key: string, value: T[]) => {
   }
 };
 
-export const getApprovedLinkSuggestions = () => readJsonArray<ApprovedLinkSuggestion>(APPROVED_LINKS_KEY);
+let approvedLinksCache = readJsonArray<ApprovedLinkSuggestion>(APPROVED_LINKS_KEY);
 
-export const approveLinkSuggestion = (suggestion: Omit<ApprovedLinkSuggestion, 'id' | 'createdAt'> & Partial<Pick<ApprovedLinkSuggestion, 'id' | 'createdAt'>>) => {
+const emitApprovedLinksChange = () => {
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new Event(APPROVED_LINKS_CHANGE_EVENT));
+  }
+};
+
+const setApprovedLinksCache = (links: ApprovedLinkSuggestion[]) => {
+  approvedLinksCache = links;
+  writeJsonArray(APPROVED_LINKS_KEY, links);
+  emitApprovedLinksChange();
+};
+
+export const getApprovedLinkSuggestions = () => approvedLinksCache;
+
+export const subscribeApprovedLinkSuggestions = (callback: (links: ApprovedLinkSuggestion[]) => void) => {
+  if (!isFirebaseConfigured) {
+    const handleChange = () => callback(getApprovedLinkSuggestions());
+    callback(getApprovedLinkSuggestions());
+    window.addEventListener('storage', handleChange);
+    window.addEventListener(APPROVED_LINKS_CHANGE_EVENT, handleChange);
+    return () => {
+      window.removeEventListener('storage', handleChange);
+      window.removeEventListener(APPROVED_LINKS_CHANGE_EVENT, handleChange);
+    };
+  }
+
+  const db = getFirebaseDb();
+  if (!db) {
+    callback(getApprovedLinkSuggestions());
+    return () => {};
+  }
+
+  return onSnapshot(
+    query(collection(db, APPROVED_LINKS_COLLECTION), orderBy('createdAt', 'desc')),
+    (snapshot) => {
+      const links = snapshot.docs.map((document) => ({
+        id: document.id,
+        ...document.data(),
+      })) as ApprovedLinkSuggestion[];
+      setApprovedLinksCache(links);
+      callback(links);
+    },
+    () => callback(getApprovedLinkSuggestions())
+  );
+};
+
+export const approveLinkSuggestion = async (suggestion: Omit<ApprovedLinkSuggestion, 'id' | 'createdAt'> & Partial<Pick<ApprovedLinkSuggestion, 'id' | 'createdAt'>>) => {
   const next: ApprovedLinkSuggestion = {
     id: suggestion.id ?? `${Date.now()}-${Math.random().toString(16).slice(2)}`,
     createdAt: suggestion.createdAt ?? new Date().toISOString(),
@@ -47,31 +105,36 @@ export const approveLinkSuggestion = (suggestion: Omit<ApprovedLinkSuggestion, '
     url: suggestion.url.trim(),
     category: suggestion.category.trim(),
     source: suggestion.source,
-    note: suggestion.note?.trim() || undefined,
+    note: suggestion.note?.trim() || '',
   };
 
   const existing = getApprovedLinkSuggestions();
-  const normalizedUrl = next.url.replace(/\/+$/, '');
+  const normalizedNextUrl = normalizeUrl(next.url);
   const merged = [
     next,
-    ...existing.filter((item) => item.id !== next.id && item.url.replace(/\/+$/, '') !== normalizedUrl),
+    ...existing.filter((item) => item.id !== next.id && normalizeUrl(item.url) !== normalizedNextUrl),
   ];
-  writeJsonArray(APPROVED_LINKS_KEY, merged);
 
-  if (typeof window !== 'undefined') {
-    window.dispatchEvent(new Event(APPROVED_LINKS_CHANGE_EVENT));
+  if (isFirebaseConfigured) {
+    const db = getFirebaseDb();
+    if (db) {
+      await setDoc(doc(db, APPROVED_LINKS_COLLECTION, next.id), next);
+    }
   }
 
+  setApprovedLinksCache(merged);
   return next;
 };
 
-export const removeApprovedLinkSuggestion = (id: string) => {
+export const removeApprovedLinkSuggestion = async (id: string) => {
   const next = getApprovedLinkSuggestions().filter((item) => item.id !== id);
-  writeJsonArray(APPROVED_LINKS_KEY, next);
-
-  if (typeof window !== 'undefined') {
-    window.dispatchEvent(new Event(APPROVED_LINKS_CHANGE_EVENT));
+  if (isFirebaseConfigured) {
+    const db = getFirebaseDb();
+    if (db) {
+      await deleteDoc(doc(db, APPROVED_LINKS_COLLECTION, id));
+    }
   }
+  setApprovedLinksCache(next);
 };
 
 export const useApprovedLinkSuggestionsVersion = () => {
@@ -81,9 +144,11 @@ export const useApprovedLinkSuggestionsVersion = () => {
     const handleChange = () => setVersion((current) => current + 1);
     window.addEventListener('storage', handleChange);
     window.addEventListener(APPROVED_LINKS_CHANGE_EVENT, handleChange);
+    const unsubscribe = subscribeApprovedLinkSuggestions(() => handleChange());
     return () => {
       window.removeEventListener('storage', handleChange);
       window.removeEventListener(APPROVED_LINKS_CHANGE_EVENT, handleChange);
+      unsubscribe();
     };
   }, []);
 

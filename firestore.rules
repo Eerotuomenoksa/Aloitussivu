@@ -1,0 +1,46 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAdmin() {
+      return request.auth != null
+        && request.auth.token.email == 'eero.tuomenoksa@gmail.com';
+    }
+
+    function isValidReport() {
+      return request.resource.data.keys().hasOnly([
+          'id',
+          'type',
+          'name',
+          'url',
+          'category',
+          'source',
+          'createdAt',
+          'note',
+          'status',
+          'updatedAt'
+        ])
+        && request.resource.data.id is string
+        && request.resource.data.type in ['new', 'broken', 'wrong']
+        && request.resource.data.name is string
+        && request.resource.data.url is string
+        && request.resource.data.source is string
+        && request.resource.data.createdAt is string
+        && request.resource.data.note is string
+        && request.resource.data.status == 'pending'
+        && request.resource.data.url.size() <= 500
+        && request.resource.data.name.size() <= 160
+        && request.resource.data.note.size() <= 1000;
+    }
+
+    match /linkReports/{reportId} {
+      allow create: if isValidReport();
+      allow read, update, delete: if isAdmin();
+    }
+
+    match /approvedLinks/{linkId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+  }
+}
