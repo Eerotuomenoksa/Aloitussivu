@@ -21,15 +21,48 @@ export type ChangelogCommit = {
   subject: string;
 };
 
-export const CHANGELOG_GENERATED_AT = "5.5.2026 klo 06.20";
+export const CHANGELOG_GENERATED_AT = "7.5.2026 klo 08.52";
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
-  "Sijainnista tunnistettu kunta tallennetaan selaimen muistiin, jotta alueelliset palvelut palautuvat automaattisesti sivun uudelleenavauksessa.",
-  "Alueellisiin palveluihin lisättiin ja laajennettiin palvelualue-mallia, jotta joukkoliikennejärjestäjät, kuten HSL, Nysse, Föli, Linkki ja Vilkku, voidaan jakaa usealle kunnalle yhdestä paikasta.",
-  "Alueellisista linkeistä poistettiin tuplana näkynyt kunnan verkkosivut -linkki, kun kunnan palvelut näyttää saman asian käyttäjälle selkeämmin.",
-  "Linkkien tarkistusdata ja ylläpitoloki päivitettiin uusimman buildin yhteydessä."
+  "Etusivulle lisättiin uudet kategoriat Museot, Potilasyhdistykset ja Eläkeyhdistykset sekä CSV-pohjainen datan generointi näille linkkilistoille.",
+  "Lisättiin uusi Kotihoito-palvelut-kategoria VTKL:n jäsenyhteisöjen kotihoitopalveluista sekä paikkakuntatiedot linkkien yhteyteen.",
+  "Vapaa-aika-kategoriaan lisättiin Vahvike-palvelu.",
+  "Ylläpitoon lisättiin huijausvaroitusten NCSC-automaatio, joka hakee Kyberturvallisuuskeskuksen viikkokatsauksia ja tallentaa selkokielistettyjä varoituksia Firestoreen.",
+  "Firebase-määrityksiä täydennettiin Functions-, Firestore- ja ylläpidon testikäyttöä varten sekä lisättiin Firebase-käyttöönoton ohjetiedosto.",
+  "Saman kategorian sisäiset tuplalinkit poistettiin ja CSV-generaattori deduplikoi jatkossa linkit URL-osoitteen perusteella.",
+  "Sivulle lisättiin saavutettava kelluva ylös-nuolipainike, joka toimii näppäimistöllä ja huomioi vähennetyn liikkeen asetuksen."
 ];
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
+  {
+    "hash": "b452f10203d293c54622c4b8a192525240eb9d04",
+    "date": "2026-05-07",
+    "subject": "Firebase määritykset ja uusi kategoria Kotihoito-palvelut"
+  },
+  {
+    "hash": "0fc8aae40dbe0cccbe0035448024f751b1bd107d",
+    "date": "2026-05-07",
+    "subject": "tuplien poistoja"
+  },
+  {
+    "hash": "ae4d9c472a1bfc5aab1d011837adbc0fe0c70718",
+    "date": "2026-05-07",
+    "subject": "Lisätty Kategoriat Museot, Potilasyhdistykset ja Eläkeyhdistykset sekä huijausvaroitukset"
+  },
+  {
+    "hash": "32e24dddf9eb3f7ea40cf2dcca6c98bdc34989c2",
+    "date": "2026-05-05",
+    "subject": "Linkkien tarkituksia ja poistoja\""
+  },
+  {
+    "hash": "aa461854769845c67f590aea737be76da0f291c5",
+    "date": "2026-05-05",
+    "subject": "Haettiin kieliversioihin sopivat linkit"
+  },
+  {
+    "hash": "15a60ac9961cac77076f942593c51ed331ad61f9",
+    "date": "2026-05-05",
+    "subject": "Lisää ylläpidon työkalut ja Firebase-linkkiehdotukset"
+  },
   {
     "hash": "154d3e775ec4af6db48dc64f426a844b092afbf0",
     "date": "2026-05-05",
