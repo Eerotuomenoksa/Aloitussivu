@@ -62,18 +62,30 @@ const splitMunicipalities = (value) => clean(value)
   .map((item) => clean(item))
   .filter((item) => item && item !== 'Toimii koko Suomessa');
 
+const normalizeUrl = (url) => clean(url).replace(/\/+$/, '').toLocaleLowerCase('fi-FI');
+
+const uniqueByUrl = (items) => {
+  const seen = new Set();
+  return items.filter((item) => {
+    const key = normalizeUrl(item.url);
+    if (!key || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+};
+
 const stringify = (value) => JSON.stringify(value, null, 2)
   .replace(/"([^"]+)":/g, '$1:')
   .replace(/\n/g, '\n');
 
-const patientAssociations = readCsv(sources.patientAssociations)
+const patientAssociations = uniqueByUrl(readCsv(sources.patientAssociations)
   .map((row) => ({
     name: clean(row.Nimi),
     url: clean(row.Verkkosivu),
   }))
-  .filter((item) => item.name && item.url);
+  .filter((item) => item.name && item.url));
 
-const seniorAssociations = readCsv(sources.seniorAssociations)
+const seniorAssociations = uniqueByUrl(readCsv(sources.seniorAssociations)
   .map((row) => ({
     name: clean(row.Nimi),
     url: clean(row.Verkkosivu),
@@ -82,9 +94,9 @@ const seniorAssociations = readCsv(sources.seniorAssociations)
     area: clean(row.Alue),
     municipalities: splitMunicipalities(row.Kunnat),
   }))
-  .filter((item) => item.name && item.url);
+  .filter((item) => item.name && item.url));
 
-const museums = readCsv(sources.museums)
+const museums = uniqueByUrl(readCsv(sources.museums)
   .map((row) => ({
     name: clean(row.Nimi),
     url: clean(row.Verkkosivu),
@@ -94,7 +106,7 @@ const museums = readCsv(sources.museums)
     municipality: clean(row.Kunta),
     specialty: clean(row.Erikoisala),
   }))
-  .filter((item) => item.name && item.url);
+  .filter((item) => item.name && item.url));
 
 const output = `import { Provider } from './types';
 
