@@ -3,6 +3,7 @@ import { MUNICIPALITY_WEBSITES } from './municipalityWebsites';
 import { MUNICIPALITY_WEBSITE_LANGUAGE_URLS } from './municipalityWebsiteLocales';
 import { MUNICIPALITY_SWEDISH_NAMES_BY_CODE } from './municipalityNames';
 import { LOCAL_NEWSPAPER_FEEDS } from './localNewspaperFeeds';
+import type { RegionalProvider } from './communityLinks';
 import { filterVisibleProviders } from './linkVisibility';
 import { LocalityInfo, Municipality, Provider, RegionalContext, RssFeedConfig, Shortcut } from './types';
 import type { LanguageCode } from './i18n';
@@ -363,6 +364,41 @@ const uniqueProviders = (providers: Provider[]) => providers.filter(
   (provider, index, all) => all.findIndex((item) => item.url === provider.url) === index
 );
 
+const normalizeArea = (value: string) => normalizeText(value)
+  .replace(/\bhyvinvointialue\b/g, '')
+  .replace(/\bmaakunta\b/g, '')
+  .replace(/\s+/g, ' ')
+  .trim()
+  .split(' ')
+  .map((word) => word.length > 4 ? word.replace(/n$/u, '') : word)
+  .join(' ');
+
+const regionalProviderRank = (provider: Provider, context: RegionalContext) => {
+  const regional = provider as RegionalProvider;
+  const municipalityKey = normalizeMunicipality(context.municipality.name);
+  const providerMunicipality = regional.municipality ? normalizeMunicipality(regional.municipality) : '';
+  const providerMunicipalities = regional.municipalities?.map(normalizeMunicipality) ?? [];
+
+  if (providerMunicipality === municipalityKey || providerMunicipalities.includes(municipalityKey)) {
+    return 0;
+  }
+
+  const wellbeingArea = context.municipality.wellbeingAreaName;
+  if (regional.area && wellbeingArea) {
+    const providerArea = normalizeArea(regional.area);
+    const municipalityArea = normalizeArea(wellbeingArea);
+    if (providerArea && municipalityArea && (providerArea.includes(municipalityArea) || municipalityArea.includes(providerArea))) {
+      return 1;
+    }
+  }
+
+  return 2;
+};
+
+const prioritizeRegionalProviders = (providers: Provider[], context: RegionalContext) => (
+  [...providers].sort((a, b) => regionalProviderRank(a, context) - regionalProviderRank(b, context))
+);
+
 const uniqueFeeds = (feeds: RssFeedConfig[]) => feeds.filter(
   (feed, index, all) => all.findIndex((item) => item.url === feed.url) === index
 );
@@ -551,6 +587,10 @@ export const getLocalizedShortcuts = (shortcuts: Shortcut[], locality: LocalityI
 
     if (shortcut.name === 'Uutiset & Media') {
       return { ...shortcut, providers: uniqueProviders([...getRegionalNewsProviders(context), ...shortcut.providers]) };
+    }
+
+    if (shortcut.name === 'Museot' || shortcut.name === 'Eläkeyhdistykset') {
+      return { ...shortcut, providers: uniqueProviders(prioritizeRegionalProviders(shortcut.providers, context)) };
     }
 
     return shortcut;

@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "lib": ["ES2022", "DOM"],
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@google/genai": ["node_modules/@google/genai"],
+      "fast-xml-parser": ["node_modules/fast-xml-parser"],
+      "firebase-admin/app": ["node_modules/firebase-admin/lib/app/index"],
+      "firebase-admin/firestore": ["node_modules/firebase-admin/lib/firestore/index"],
+      "node-html-parser": ["node_modules/node-html-parser"]
+    },
+    "rootDir": "..",
+    "outDir": "lib",
+    "declaration": false,
+    "sourceMap": true
+  },
+  "include": [
+    "*.ts",
+    "../services/ncscScraper.ts",
+    "../services/ncscScheduler.ts"
+  ]
+}

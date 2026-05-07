@@ -22,6 +22,14 @@ import {
   signOutAdmin,
   subscribeToAuth,
 } from './firebaseClient';
+import {
+  NcscScrapeLogEntry,
+  ScamAlertEntry,
+  runNcscScrapeNow,
+  subscribeNcscScrapeLogs,
+  subscribeScamAlerts,
+  updateScamAlertActiveState,
+} from './scamAlerts';
 
 const normalizeUrl = (url: string) => url.trim().replace(/\/+$/, '');
 
@@ -41,6 +49,28 @@ const statusLabel = {
   rejected: 'Hylätty',
 };
 
+const severityLabel = {
+  info: 'Tieto',
+  warning: 'Varoitus',
+  danger: 'Vakava',
+};
+
+const formatDateTime = (value?: string) => {
+  if (!value) return '-';
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return value;
+  return new Intl.DateTimeFormat('fi-FI', {
+    dateStyle: 'short',
+    timeStyle: 'short',
+  }).format(date);
+};
+
+const ncscBadgeClass = (log: NcscScrapeLogEntry) => {
+  if (log.structureVersion === 'unknown') return 'bg-rose-100 text-rose-900 dark:bg-rose-900/40 dark:text-rose-200';
+  if (log.alertsCreated > 0) return 'bg-emerald-100 text-emerald-900 dark:bg-emerald-900/40 dark:text-emerald-200';
+  return 'bg-amber-100 text-amber-900 dark:bg-amber-900/40 dark:text-amber-200';
+};
+
 function App() {
   const [user, setUser] = useState<User | null>(null);
   const [authReady, setAuthReady] = useState(false);
@@ -49,6 +79,10 @@ function App() {
   const [approvedLinks, setApprovedLinks] = useState<ApprovedLinkSuggestion[]>(() => getApprovedLinkSuggestions());
   const [reportDrafts, setReportDrafts] = useState<Record<string, { name: string; url: string; category: string; note: string }>>({});
   const [busyId, setBusyId] = useState<string | null>(null);
+  const [scamAlerts, setScamAlerts] = useState<ScamAlertEntry[]>([]);
+  const [ncscLogs, setNcscLogs] = useState<NcscScrapeLogEntry[]>([]);
+  const [ncscBusy, setNcscBusy] = useState(false);
+  const [ncscMessage, setNcscMessage] = useState('');
 
   const hasAdminAccess = isAdminUser(user);
 
@@ -68,6 +102,21 @@ function App() {
       return () => {};
     }
     return subscribeLinkReports(setReports);
+  }, [hasAdminAccess]);
+
+  useEffect(() => {
+    if (!hasAdminAccess) {
+      setScamAlerts([]);
+      setNcscLogs([]);
+      return () => {};
+    }
+
+    const unsubscribeAlerts = subscribeScamAlerts(setScamAlerts);
+    const unsubscribeLogs = subscribeNcscScrapeLogs(setNcscLogs);
+    return () => {
+      unsubscribeAlerts();
+      unsubscribeLogs();
+    };
   }, [hasAdminAccess]);
 
   const signIn = async () => {
@@ -154,6 +203,19 @@ function App() {
     await navigator.clipboard.writeText(JSON.stringify(approvedLinks, null, 2));
   };
 
+  const runNcscNow = async () => {
+    setNcscBusy(true);
+    setNcscMessage('');
+    try {
+      const result = await runNcscScrapeNow();
+      setNcscMessage(`Luotu ${result.alertsCreated} varoitusta.`);
+    } catch (error) {
+      setNcscMessage(error instanceof Error ? error.message : 'NCSC-ajon käynnistys epäonnistui.');
+    } finally {
+      setNcscBusy(false);
+    }
+  };
+
   return (
     <main className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white">
       <div className="mx-auto max-w-7xl px-4 py-8 md:px-8 md:py-12 space-y-10">
@@ -238,6 +300,113 @@ function App() {
                 </button>
               </div>
             </div>
+
+            <section className="space-y-4">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div>
+                  <h2 className="text-2xl md:text-3xl font-black">Huijausvaroitukset</h2>
+                  <p className="text-sm font-bold text-slate-500 dark:text-slate-400">
+                    Aktiiviset varoitukset ja Kyberturvallisuuskeskuksen viikkokatsauksen automaattinen haku.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  disabled={ncscBusy}
+                  onClick={runNcscNow}
+                  className="rounded-full bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white px-5 py-3 font-black shadow-md transition-all active:scale-95"
+                >
+                  {ncscBusy ? 'Ajetaan...' : 'Aja nyt'}
+                </button>
+              </div>
+
+              {ncscMessage && (
+                <p className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 py-3 font-bold text-slate-700 dark:text-slate-200">
+                  {ncscMessage}
+                </p>
+              )}
+
+              <div className="grid gap-4 xl:grid-cols-[1.25fr_1fr]">
+                <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm space-y-4">
+                  <h3 className="text-xl font-black">Aktiiviset varoitukset</h3>
+                  {scamAlerts.length === 0 ? (
+                    <p className="text-slate-500 dark:text-slate-400 font-bold">Ei varoituksia.</p>
+                  ) : (
+                    <div className="grid gap-3">
+                      {scamAlerts.slice(0, 20).map((alert) => (
+                        <article key={alert.id} className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/60 p-4 space-y-3">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span className="rounded-full bg-slate-200 text-slate-800 dark:bg-slate-800 dark:text-slate-200 px-3 py-1 text-xs font-black uppercase tracking-wide">
+                              {severityLabel[alert.severity]}
+                            </span>
+                            {alert.source === 'ncsc-auto' && (
+                              <span className="rounded-full bg-blue-100 text-blue-900 dark:bg-blue-900/40 dark:text-blue-200 px-3 py-1 text-xs font-black uppercase tracking-wide">
+                                NCSC
+                              </span>
+                            )}
+                            <span className={`rounded-full px-3 py-1 text-xs font-black uppercase tracking-wide ${alert.active ? 'bg-emerald-100 text-emerald-900 dark:bg-emerald-900/40 dark:text-emerald-200' : 'bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-300'}`}>
+                              {alert.active ? 'Aktiivinen' : 'Pois päältä'}
+                            </span>
+                          </div>
+                          <div>
+                            <p className="font-black text-lg">{alert.title}</p>
+                            <p className="mt-1 font-bold text-slate-600 dark:text-slate-300">{alert.body}</p>
+                          </div>
+                          {alert.source === 'ncsc-auto' && alert.originalHeading && (
+                            <details className="rounded-xl bg-white dark:bg-slate-900 p-3">
+                              <summary className="cursor-pointer text-sm font-black text-slate-500 dark:text-slate-400">
+                                Alkuperäinen otsikko
+                              </summary>
+                              <p className="mt-2 text-sm font-bold text-slate-700 dark:text-slate-200">{alert.originalHeading}</p>
+                              {alert.sourceUrl && (
+                                <a href={alert.sourceUrl} target="_blank" rel="noopener noreferrer" className="mt-2 block text-sm font-black text-indigo-600 dark:text-indigo-300 hover:underline">
+                                  Avaa lähde
+                                </a>
+                              )}
+                            </details>
+                          )}
+                          <div className="flex flex-wrap items-center justify-between gap-3 text-xs font-bold text-slate-500 dark:text-slate-400">
+                            <span>Luotu {formatDateTime(alert.createdAt)}</span>
+                            <button
+                              type="button"
+                              onClick={() => updateScamAlertActiveState(alert.id, !alert.active)}
+                              className="rounded-full bg-slate-200 hover:bg-slate-300 text-slate-900 px-4 py-2 font-black transition-all active:scale-95"
+                            >
+                              {alert.active ? 'Poista näkyvistä' : 'Näytä'}
+                            </button>
+                          </div>
+                        </article>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm space-y-4">
+                  <h3 className="text-xl font-black">NCSC-automaatio</h3>
+                  {ncscLogs.length === 0 ? (
+                    <p className="text-slate-500 dark:text-slate-400 font-bold">Ei ajolokia.</p>
+                  ) : (
+                    <div className="grid gap-3">
+                      {ncscLogs.map((log) => (
+                        <article key={log.id} className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/60 p-4">
+                          <div className="flex flex-wrap items-center justify-between gap-2">
+                            <p className="font-black">{log.weekLabel || 'Viikko tuntematon'}</p>
+                            <span className={`rounded-full px-3 py-1 text-xs font-black uppercase tracking-wide ${ncscBadgeClass(log)}`}>
+                              {log.structureVersion}
+                            </span>
+                          </div>
+                          <p className="mt-2 text-sm font-bold text-slate-500 dark:text-slate-400">
+                            {formatDateTime(log.processedAt)}
+                          </p>
+                          <p className="mt-1 text-sm font-bold text-slate-700 dark:text-slate-200">
+                            Luotu {log.alertsCreated} varoitusta
+                          </p>
+                        </article>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </section>
 
             <section className="space-y-4">
               <h2 className="text-2xl md:text-3xl font-black">Hyväksyttävät uudet linkit</h2>

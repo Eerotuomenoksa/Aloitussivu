@@ -1,6 +1,8 @@
 node_modules/
 dist/
+functions/lib/
 .env
 .env.local
 *.local
 .vite-dev*.log
+.vite-current*.log

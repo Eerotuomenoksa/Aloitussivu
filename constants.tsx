@@ -1,6 +1,7 @@
 
 import { Shortcut, NewsItem } from './types';
 import { LOCAL_NEWSPAPER_LINKS } from './localNewspaperLinks';
+import { MUSEUM_LINKS, PATIENT_ASSOCIATION_LINKS, SENIOR_ASSOCIATION_LINKS } from './communityLinks';
 
 export const QUOTES = [
   "Jokainen päivä on uusi mahdollisuus.",
@@ -124,6 +125,10 @@ export const SHORTCUTS: Shortcut[] = [
       { name: 'Tiketti', url: 'https://www.tiketti.fi' },
       { name: 'Kansallisooppera', url: 'https://oopperabaletti.fi' }
     ]
+  },
+  {
+    name: 'Museot', icon: '🖼️', color: 'bg-brand-orange',
+    providers: MUSEUM_LINKS
   },
   {
     name: 'Teatterit', icon: '🎟️', color: 'bg-brand-indigo',
@@ -412,6 +417,10 @@ export const SHORTCUTS: Shortcut[] = [
       { name: 'Terveystalo', url: 'https://www.terveystalo.com' }
     ]
   },
+  {
+    name: 'Potilasyhdistykset', icon: '🫶', color: 'bg-brand-teal',
+    providers: PATIENT_ASSOCIATION_LINKS
+  },
   { 
     name: 'Tiede', icon: '🧪', color: 'bg-brand-purple',
     providers: [
@@ -468,6 +477,10 @@ export const SHORTCUTS: Shortcut[] = [
       { name: 'Suomen Latu', url: 'https://www.suomenlatu.fi' },
       { name: 'Suomi.fi harrastushaku', url: 'https://www.suomi.fi/palvelut/harrastushaku' }
     ]
+  },
+  {
+    name: 'Eläkeyhdistykset', icon: '👥', color: 'bg-brand-purple',
+    providers: SENIOR_ASSOCIATION_LINKS
   },
   { 
     name: 'Verkkokaupat', icon: '🛒', color: 'bg-brand-orange',
