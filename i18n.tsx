@@ -93,6 +93,7 @@ const translations = {
     assistantInput: 'Kysymyskenttä',
     assistantSend: 'Lähetä',
     assistantError: 'Pahoittelut, yhteysvirhe. Yritä uudelleen.',
+    backToTop: 'Siirry sivun alkuun',
   },
   sv: {
     settings: 'Inställningar',
@@ -172,6 +173,7 @@ const translations = {
     assistantInput: 'Frågefält',
     assistantSend: 'Skicka',
     assistantError: 'Tyvärr, anslutningsfel. Försök igen.',
+    backToTop: 'Gå till sidans början',
   },
   en: {
     settings: 'Settings',
@@ -251,6 +253,7 @@ const translations = {
     assistantInput: 'Question field',
     assistantSend: 'Send',
     assistantError: 'Sorry, connection error. Please try again.',
+    backToTop: 'Go to top of page',
   },
   uk: {
     settings: 'Налаштування',
@@ -330,6 +333,7 @@ const translations = {
     assistantInput: 'Поле запитання',
     assistantSend: 'Надіслати',
     assistantError: 'Вибачте, помилка з’єднання. Спробуйте ще раз.',
+    backToTop: 'Перейти на початок сторінки',
   },
   et: {
     settings: 'Seaded',
@@ -409,6 +413,7 @@ const translations = {
     assistantInput: 'Küsimuse väli',
     assistantSend: 'Saada',
     assistantError: 'Vabandust, ühenduse viga. Proovi uuesti.',
+    backToTop: 'Mine lehe algusesse',
   },
   ru: {
     settings: 'Настройки',
@@ -488,6 +493,7 @@ const translations = {
     assistantInput: 'Поле вопроса',
     assistantSend: 'Отправить',
     assistantError: 'Извините, ошибка соединения. Попробуйте снова.',
+    backToTop: 'Перейти к началу страницы',
   },
   se: {
     settings: 'Heivehusat',
@@ -567,6 +573,7 @@ const translations = {
     assistantInput: 'Gažaldatgieddi',
     assistantSend: 'Sádde',
     assistantError: 'Ándagassii, oktavuođameattáhus. Geahččal ođđasit.',
+    backToTop: 'Mana siiddu álgui',
   },
 } as const;
 
@@ -606,6 +613,7 @@ const categoryTranslations: Record<string, Partial<Record<LanguageCode, string>>
   'Uutiset & Media': { sv: 'Nyheter & media', en: 'News & media', uk: 'Новини та медіа', et: 'Uudised ja meedia', ru: 'Новости и медиа', se: 'Ođđasat ja media' },
   'Vapaa-aika': { sv: 'Fritid', en: 'Leisure', uk: 'Дозвілля', et: 'Vaba aeg', ru: 'Досуг', se: 'Friddjaáigi' },
   'Eläkeyhdistykset': { sv: 'Pensionärsföreningar', en: 'Pensioner associations', uk: 'Об’єднання пенсіонерів', et: 'Pensionäride ühendused', ru: 'Объединения пенсионеров', se: 'Ealáhatsearvvit' },
+  'Kotihoito-palvelut': { sv: 'Hemvårdstjänster', en: 'Home care services', uk: 'Послуги догляду вдома', et: 'Koduhooldusteenused', ru: 'Услуги ухода на дому', se: 'Ruoktodikšunbálvalusat' },
   'Verkkokaupat': { sv: 'Webbutiker', en: 'Online shops', uk: 'Інтернет-магазини', et: 'Veebipoed', ru: 'Интернет-магазины', se: 'Neahttagávppit' },
   'Viihde': { sv: 'Underhållning', en: 'Entertainment', uk: 'Розваги', et: 'Meelelahutus', ru: 'Развлечения', se: 'Guoimmuheapmi' },
   'Palvelut': { sv: 'Tjänster', en: 'Services', uk: 'Послуги', et: 'Teenused', ru: 'Услуги', se: 'Bálvalusat' },

@@ -449,12 +449,24 @@ export const SHORTCUTS: Shortcut[] = [
       { name: 'Kansalaisopistot', url: 'https://kansalaisopistot.fi' },
       { name: 'Martat', url: 'https://www.martat.fi' },
       { name: 'Suomen Latu', url: 'https://www.suomenlatu.fi' },
+      { name: 'Vahvike', url: 'https://vahvike.fi/' },
       { name: 'Suomi.fi harrastushaku', url: 'https://www.suomi.fi/palvelut/harrastushaku' }
     ]
   },
   {
     name: 'Eläkeyhdistykset', icon: '👥', color: 'bg-brand-purple',
     providers: SENIOR_ASSOCIATION_LINKS
+  },
+  {
+    name: 'Kotihoito-palvelut', icon: '🤝', color: 'bg-brand-teal',
+    providers: [
+      { name: 'Valkealan Iltatähti ry', url: 'https://www.valkealaniltatahti.fi', group: 'Kouvola' },
+      { name: 'Vanhustyöyhdistys Sofia – Åldringsvårdsföreningen Sofia', url: 'https://www.palvelukotisofia.fi/', group: 'Helsinki' },
+      { name: 'Viola-kotiyhdistys ry', url: 'https://viola-koti.fi', group: 'Tampere' },
+      { name: 'Yrjö ja Hanna-säätiö / Yrjö ja Hanna Kodit', url: 'https://yrjojahanna.fi', group: 'Helsinki' },
+      { name: 'Savonlinnan Hopearanta ry', url: 'https://hopearanta.fi', group: 'Savonlinna' },
+      { name: 'Suomussalmen Vanhustentaloyhdistys ry', url: 'https://vtkl.fi/liitto/jasenpalvelut/jasenyhteisojen-tarjoamat-palvelut/?service-category=kotihoito', group: 'Suomussalmi' }
+    ]
   },
   { 
     name: 'Verkkokaupat', icon: '🛒', color: 'bg-brand-orange',

@@ -10,6 +10,7 @@ import HomepageModal from './components/HomepageModal';
 import LinkReportModal from './components/LinkReportModal';
 import SearchBar from './components/SearchBar';
 import RegionalServicesPanel from './components/RegionalServicesPanel';
+import BackToTopButton from './components/BackToTopButton';
 import { isLinkVisible, useLinkVisibilityVersion } from './linkVisibility';
 import { Shortcut, Favorite, LocalityInfo, LinkReportDraft } from './types';
 import { mergeApprovedLinksIntoShortcuts } from './approvedLinks';
@@ -411,6 +412,7 @@ const AppContent: React.FC = () => {
         <HomepageModal isOpen={isHomepageOpen} onClose={() => setIsHomepageOpen(false)} fontSizeStep={fontSizeStep} />
         <LinkReportModal draft={reportDraft} onClose={closeReportModal} />
       </div>
+      <BackToTopButton label={t('backToTop')} />
     </div>
   );
 };
