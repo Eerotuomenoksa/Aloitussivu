@@ -116,15 +116,28 @@ export const runNcscScrapeNow = async () => {
     throw new Error('Cloud Function -osoitetta ei voitu muodostaa.');
   }
 
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'x-admin-secret': secret,
-    },
-  });
+  let response: Response;
+  try {
+    response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'x-admin-secret': secret,
+      },
+    });
+  } catch {
+    throw new Error('Kyberturvallisuuskeskuksen ajon kutsu ei tavoittanut Cloud Functionia. Varmista, että funktiot on deployattu Firebaseen ja CORS on käytössä.');
+  }
 
   if (!response.ok) {
-    throw new Error(`NCSC-ajon käynnistys epäonnistui (${response.status}).`);
+    if (response.status === 404) {
+      throw new Error('Kyberturvallisuuskeskuksen ajon Cloud Functionia ei löydy. Deployaa ncscScrapeNow Firebaseen.');
+    }
+
+    if (response.status === 403) {
+      throw new Error('Kyberturvallisuuskeskuksen ajon salainen avain ei täsmää. Tarkista ADMIN_TRIGGER_SECRET ja VITE_ADMIN_TRIGGER_SECRET.');
+    }
+
+    throw new Error(`Kyberturvallisuuskeskuksen ajon käynnistys epäonnistui (${response.status}).`);
   }
 
   return response.json() as Promise<{ alertsCreated: number; url: string | null }>;

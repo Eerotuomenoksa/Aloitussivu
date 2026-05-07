@@ -22,6 +22,7 @@ export const ncscScrapeNow = onRequest(
     memory: '256MiB',
     timeoutSeconds: 120,
     cors: true,
+    invoker: 'public',
   },
   async (req, res) => {
     const secret = req.headers['x-admin-secret'];

@@ -4,6 +4,7 @@ import { filterVisibleProviders } from '../linkVisibility';
 import { LocalityInfo, Provider, LinkReportDraft } from '../types';
 import LocalNewsHeadlines from './LocalNewsHeadlines';
 import NearbyGuidancePlaces from './NearbyGuidancePlaces';
+import ScamAlertsBanner from './ScamAlertsBanner';
 import { useI18n } from '../i18n';
 
 interface RegionalServicesPanelProps {
@@ -167,6 +168,8 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
               <LocalNewsHeadlines feeds={rssFeeds} fallbackUrl={fallbackNewsUrl} fontSizeStep={fontSizeStep} />
             </div>
           )}
+
+          <ScamAlertsBanner />
         </div>
       ) : (
         <div className="rounded-2xl border-4 border-dashed border-slate-200 dark:border-slate-700 p-8 text-center">

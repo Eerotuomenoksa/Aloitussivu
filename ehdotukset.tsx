@@ -16,6 +16,8 @@ import {
 } from './linkVisibility';
 import {
   ADMIN_EMAIL,
+  getUserAuthDebugInfo,
+  getUserEmail,
   isAdminUser,
   isFirebaseConfigured,
   signInWithGoogle,
@@ -71,6 +73,36 @@ const ncscBadgeClass = (log: NcscScrapeLogEntry) => {
   return 'bg-amber-100 text-amber-900 dark:bg-amber-900/40 dark:text-amber-200';
 };
 
+const getErrorCode = (error: unknown) => {
+  if (typeof error !== 'object' || error === null || !('code' in error)) return '';
+  const code = (error as { code?: unknown }).code;
+  return typeof code === 'string' ? code : '';
+};
+
+const getSignInErrorMessage = (error: unknown) => {
+  const code = getErrorCode(error);
+
+  if (code === 'auth/unauthorized-domain') {
+    return 'Kirjautuminen ei onnistu tästä osoitteesta. Lisää Firebase Authenticationin Authorized domains -listaan 127.0.0.1 ja GitHub Pages -domain, tai avaa paikallinen sivu osoitteella localhost:5173.';
+  }
+
+  if (code === 'auth/operation-not-allowed') {
+    return 'Google-kirjautuminen ei ole käytössä Firebase Authenticationissa. Ota Google provider käyttöön Firebase Consolessa.';
+  }
+
+  if (code === 'auth/popup-blocked') {
+    return 'Selain esti Google-kirjautumisen ponnahdusikkunan. Salli ponnahdusikkunat tälle sivulle ja yritä uudelleen.';
+  }
+
+  if (code === 'auth/popup-closed-by-user') {
+    return 'Kirjautumisikkuna suljettiin ennen kirjautumista.';
+  }
+
+  return code
+    ? `Kirjautuminen ei onnistunut. Firebase-virhe: ${code}.`
+    : 'Kirjautuminen ei onnistunut. Tarkista Firebase-asetukset ja Google-kirjautuminen.';
+};
+
 function App() {
   const [user, setUser] = useState<User | null>(null);
   const [authReady, setAuthReady] = useState(false);
@@ -85,6 +117,8 @@ function App() {
   const [ncscMessage, setNcscMessage] = useState('');
 
   const hasAdminAccess = isAdminUser(user);
+  const userEmail = getUserEmail(user);
+  const authDebugInfo = getUserAuthDebugInfo(user);
 
   useEffect(() => {
     const unsubscribe = subscribeToAuth((nextUser) => {
@@ -123,8 +157,8 @@ function App() {
     setAuthError('');
     try {
       await signInWithGoogle();
-    } catch {
-      setAuthError('Kirjautuminen ei onnistunut. Tarkista Firebase-asetukset ja Google-kirjautuminen.');
+    } catch (error) {
+      setAuthError(getSignInErrorMessage(error));
     }
   };
 
@@ -210,7 +244,7 @@ function App() {
       const result = await runNcscScrapeNow();
       setNcscMessage(`Luotu ${result.alertsCreated} varoitusta.`);
     } catch (error) {
-      setNcscMessage(error instanceof Error ? error.message : 'NCSC-ajon käynnistys epäonnistui.');
+      setNcscMessage(error instanceof Error ? error.message : 'Kyberturvallisuuskeskuksen ajon käynnistys epäonnistui.');
     } finally {
       setNcscBusy(false);
     }
@@ -257,8 +291,13 @@ function App() {
           <section className="max-w-2xl rounded-2xl border border-rose-200 dark:border-rose-900 bg-white dark:bg-slate-900 p-8 shadow-sm space-y-4">
             <h2 className="text-3xl font-black">Ei käyttöoikeutta</h2>
             <p className="font-bold text-slate-600 dark:text-slate-300">
-              Olet kirjautunut osoitteella {user.email}. Ylläpitoon pääsee vain osoitteella {ADMIN_EMAIL}.
+              Olet kirjautunut osoitteella {userEmail || 'tuntematon sähköposti'}. Ylläpitoon pääsee vain osoitteella {ADMIN_EMAIL}.
             </p>
+            {authDebugInfo && (
+              <p className="rounded-xl bg-slate-100 dark:bg-slate-950 p-3 text-sm font-bold text-slate-600 dark:text-slate-300">
+                {authDebugInfo}
+              </p>
+            )}
             <button
               type="button"
               onClick={signOutAdmin}
@@ -271,7 +310,7 @@ function App() {
           <>
             <div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm">
               <div>
-                <p className="font-black">Kirjautunut: {user.email}</p>
+                <p className="font-black">Kirjautunut: {userEmail}</p>
                 <p className="text-sm font-bold text-slate-500 dark:text-slate-400">
                   Odottaa: {pendingReports.length} · Hyväksyttyjä linkkejä: {approvedLinks.length}
                 </p>
@@ -340,7 +379,7 @@ function App() {
                             </span>
                             {alert.source === 'ncsc-auto' && (
                               <span className="rounded-full bg-blue-100 text-blue-900 dark:bg-blue-900/40 dark:text-blue-200 px-3 py-1 text-xs font-black uppercase tracking-wide">
-                                NCSC
+                                Kyberturvallisuuskeskus
                               </span>
                             )}
                             <span className={`rounded-full px-3 py-1 text-xs font-black uppercase tracking-wide ${alert.active ? 'bg-emerald-100 text-emerald-900 dark:bg-emerald-900/40 dark:text-emerald-200' : 'bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-300'}`}>
@@ -381,7 +420,7 @@ function App() {
                 </div>
 
                 <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm space-y-4">
-                  <h3 className="text-xl font-black">NCSC-automaatio</h3>
+                  <h3 className="text-xl font-black">Kyberturvallisuuskeskuksen automaatio</h3>
                   {ncscLogs.length === 0 ? (
                     <p className="text-slate-500 dark:text-slate-400 font-bold">Ei ajolokia.</p>
                   ) : (

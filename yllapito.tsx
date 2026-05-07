@@ -9,8 +9,8 @@ const adminLinks = [
     href: './muutosloki.html',
   },
   {
-    title: 'Ehdotukset',
-    description: 'Käsittele käyttäjien ilmoittamat uudet, rikkinäiset ja korjattavat linkit.',
+    title: 'Kirjautuminen ja huijausvaroitukset',
+    description: 'Kirjaudu ylläpitoon, käsittele linkkiehdotukset ja aja Kyberturvallisuuskeskuksen huijausvaroitusten haku.',
     href: './ehdotukset.html',
   },
   {
@@ -44,7 +44,7 @@ function App() {
           </div>
           <h1 className="text-4xl md:text-6xl font-black tracking-tighter">Ylläpitäjän työpöytä</h1>
           <p className="max-w-3xl text-base md:text-lg text-slate-600 dark:text-slate-300">
-            Nopea näkymä sivuston ylläpidon tärkeimpiin työkaluihin.
+            Nopea näkymä sivuston ylläpidon tärkeimpiin työkaluihin. Kirjautuminen ja huijausvaroitukset löytyvät samasta suojatusta ylläpitonäkymästä.
           </p>
         </header>
 
