@@ -91,9 +91,9 @@ const LinkReportModal: React.FC<LinkReportModalProps> = ({ draft, onClose }) => 
   };
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-slate-200/90 dark:bg-slate-950/90 backdrop-blur-lg">
-      <div className="w-full max-w-2xl rounded-[2.5rem] overflow-hidden bg-white dark:bg-slate-900 border-4 border-slate-100 dark:border-slate-700 shadow-2xl">
-        <div className="p-8 bg-slate-900 dark:bg-slate-950 text-white flex items-center justify-between gap-4">
+    <div className="fixed inset-0 z-[60] flex items-start justify-center overflow-y-auto p-3 sm:p-4 bg-slate-200/90 dark:bg-slate-950/90 backdrop-blur-lg sm:items-center">
+      <div className="flex max-h-[calc(100dvh-1.5rem)] w-full max-w-2xl flex-col overflow-hidden rounded-[2rem] bg-white dark:bg-slate-900 border-4 border-slate-100 dark:border-slate-700 shadow-2xl sm:max-h-[calc(100dvh-2rem)] sm:rounded-[2.5rem]">
+        <div className="shrink-0 p-5 md:p-8 bg-slate-900 dark:bg-slate-950 text-white flex items-center justify-between gap-4">
           <div className="space-y-1">
             <p className="text-sm font-black uppercase tracking-widest text-white/70">Linkin ilmoitus</p>
             <h2 className="text-3xl md:text-5xl font-black leading-tight">Ilmoita linkki</h2>
@@ -107,78 +107,80 @@ const LinkReportModal: React.FC<LinkReportModalProps> = ({ draft, onClose }) => 
           </button>
         </div>
 
-        <form onSubmit={submit} className="p-8 space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-            {typeOptions.map((option) => (
-              <button
-                key={option.value}
-                type="button"
-                onClick={() => setType(option.value)}
-                className={`text-left rounded-2xl border-4 p-4 transition-all ${type === option.value ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' : 'border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800'}`}
-              >
-                <span className="block font-black text-slate-900 dark:text-white">{option.label}</span>
-                <span className="block mt-1 text-sm font-bold text-slate-500 dark:text-slate-400">{option.description}</span>
-              </button>
-            ))}
-          </div>
+        <form onSubmit={submit} className="flex min-h-0 flex-1 flex-col">
+          <div className="min-h-0 flex-1 space-y-5 overflow-y-auto p-5 md:p-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              {typeOptions.map((option) => (
+                <button
+                  key={option.value}
+                  type="button"
+                  onClick={() => setType(option.value)}
+                  className={`text-left rounded-2xl border-4 p-4 transition-all ${type === option.value ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' : 'border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800'}`}
+                >
+                  <span className="block font-black text-slate-900 dark:text-white">{option.label}</span>
+                  <span className="block mt-1 text-sm font-bold text-slate-500 dark:text-slate-400">{option.description}</span>
+                </button>
+              ))}
+            </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <label className="space-y-2">
-              <span className="block font-black text-slate-700 dark:text-slate-200">Linkin nimi</span>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <label className="space-y-2">
+                <span className="block font-black text-slate-700 dark:text-slate-200">Linkin nimi</span>
+                <input
+                  value={name}
+                  onChange={(event) => setName(event.target.value)}
+                  className="w-full rounded-2xl border-4 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 font-bold text-slate-900 dark:text-white focus:outline-none focus:border-blue-500"
+                  placeholder="Esim. Kunnan sivut"
+                />
+              </label>
+
+              <label className="space-y-2">
+                <span className="block font-black text-slate-700 dark:text-slate-200">Osoite</span>
+                <input
+                  type="url"
+                  value={url}
+                  onChange={(event) => setUrl(event.target.value)}
+                  className="w-full rounded-2xl border-4 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 font-bold text-slate-900 dark:text-white focus:outline-none focus:border-blue-500"
+                  placeholder="https://..."
+                  required
+                />
+              </label>
+            </div>
+
+            <label className="space-y-2 block">
+              <span className="block font-black text-slate-700 dark:text-slate-200">Kategoria</span>
               <input
-                value={name}
-                onChange={(event) => setName(event.target.value)}
+                value={category}
+                onChange={(event) => setCategory(event.target.value)}
                 className="w-full rounded-2xl border-4 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 font-bold text-slate-900 dark:text-white focus:outline-none focus:border-blue-500"
-                placeholder="Esim. Kunnan sivut"
+                placeholder="Valinnainen, esim. Liikenne"
               />
             </label>
 
-            <label className="space-y-2">
-              <span className="block font-black text-slate-700 dark:text-slate-200">Osoite</span>
-              <input
-                type="url"
-                value={url}
-                onChange={(event) => setUrl(event.target.value)}
-                className="w-full rounded-2xl border-4 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 font-bold text-slate-900 dark:text-white focus:outline-none focus:border-blue-500"
-                placeholder="https://..."
-                required
+            <label className="space-y-2 block">
+              <span className="block font-black text-slate-700 dark:text-slate-200">Lisätieto</span>
+              <textarea
+                value={note}
+                onChange={(event) => setNote(event.target.value)}
+                className="w-full min-h-[110px] rounded-2xl border-4 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 font-bold text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 resize-y"
+                placeholder="Vapaa lisähuomio ylläpidolle"
               />
             </label>
+
+            {submitted ? (
+              <p className="rounded-2xl bg-green-50 dark:bg-green-900/20 border-4 border-green-200 dark:border-green-900 p-4 font-black text-green-800 dark:text-green-200">
+                Ilmoitus tallennettu ylläpitolokiin.
+              </p>
+            ) : null}
+
+            {submitError ? (
+              <p className="rounded-2xl bg-rose-50 dark:bg-rose-900/20 border-4 border-rose-200 dark:border-rose-900 p-4 font-black text-rose-800 dark:text-rose-200">
+                {submitError}
+              </p>
+            ) : null}
           </div>
 
-          <label className="space-y-2 block">
-            <span className="block font-black text-slate-700 dark:text-slate-200">Kategoria</span>
-            <input
-              value={category}
-              onChange={(event) => setCategory(event.target.value)}
-              className="w-full rounded-2xl border-4 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 font-bold text-slate-900 dark:text-white focus:outline-none focus:border-blue-500"
-              placeholder="Valinnainen, esim. Liikenne"
-            />
-          </label>
-
-          <label className="space-y-2 block">
-            <span className="block font-black text-slate-700 dark:text-slate-200">Lisätieto</span>
-            <textarea
-              value={note}
-              onChange={(event) => setNote(event.target.value)}
-              className="w-full min-h-[110px] rounded-2xl border-4 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 font-bold text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 resize-y"
-              placeholder="Vapaa lisähuomio ylläpidolle"
-            />
-          </label>
-
-          {submitted ? (
-            <p className="rounded-2xl bg-green-50 dark:bg-green-900/20 border-4 border-green-200 dark:border-green-900 p-4 font-black text-green-800 dark:text-green-200">
-              Ilmoitus tallennettu ylläpitolokiin.
-            </p>
-          ) : null}
-
-          {submitError ? (
-            <p className="rounded-2xl bg-rose-50 dark:bg-rose-900/20 border-4 border-rose-200 dark:border-rose-900 p-4 font-black text-rose-800 dark:text-rose-200">
-              {submitError}
-            </p>
-          ) : null}
-
-          <div className="flex flex-wrap items-center justify-end gap-3 pt-2">
+          <div className="shrink-0 flex flex-wrap items-center justify-end gap-3 border-t-4 border-slate-100 bg-white p-4 dark:border-slate-800 dark:bg-slate-900 sm:p-5">
             <button
               type="button"
               onClick={onClose}

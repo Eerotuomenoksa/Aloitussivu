@@ -399,6 +399,21 @@ const prioritizeRegionalProviders = (providers: Provider[], context: RegionalCon
   [...providers].sort((a, b) => regionalProviderRank(a, context) - regionalProviderRank(b, context))
 );
 
+const filterRegionalProviders = (providers: Provider[], context: RegionalContext) => (
+  providers.filter((provider) => regionalProviderRank(provider, context) < 2)
+);
+
+const filterPatientAssociationProviders = (providers: Provider[], context: RegionalContext) => {
+  const memoryGroup = 'Muistiyhdistykset';
+  const nonMemoryProviders = providers.filter((provider) => provider.group !== memoryGroup);
+  const localMemoryProviders = filterRegionalProviders(
+    providers.filter((provider) => provider.group === memoryGroup),
+    context
+  );
+
+  return uniqueProviders([...nonMemoryProviders, ...prioritizeRegionalProviders(localMemoryProviders, context)]);
+};
+
 const uniqueFeeds = (feeds: RssFeedConfig[]) => feeds.filter(
   (feed, index, all) => all.findIndex((item) => item.url === feed.url) === index
 );
@@ -563,11 +578,11 @@ export const getLocalizedShortcuts = (shortcuts: Shortcut[], locality: LocalityI
     if (!shortcut.providers) return shortcut;
 
     if (shortcut.name === 'Liikenne') {
-      return { ...shortcut, providers: addFirst(shortcut.providers, services.publicTransport) };
+      return { ...shortcut, providers: getRegionalPublicTransportProviders(context) };
     }
 
     if (shortcut.name === 'Kirjastot') {
-      return { ...shortcut, providers: addFirst(shortcut.providers, services.library) };
+      return { ...shortcut, providers: getRegionalLibraryProviders(context) };
     }
 
     if (shortcut.name === 'Julkiset palvelut') {
@@ -590,7 +605,11 @@ export const getLocalizedShortcuts = (shortcuts: Shortcut[], locality: LocalityI
     }
 
     if (shortcut.name === 'Museot' || shortcut.name === 'Eläkeyhdistykset') {
-      return { ...shortcut, providers: uniqueProviders(prioritizeRegionalProviders(shortcut.providers, context)) };
+      return { ...shortcut, providers: uniqueProviders(prioritizeRegionalProviders(filterRegionalProviders(shortcut.providers, context), context)) };
+    }
+
+    if (shortcut.name === 'Potilasyhdistykset') {
+      return { ...shortcut, providers: filterPatientAssociationProviders(shortcut.providers, context) };
     }
 
     return shortcut;

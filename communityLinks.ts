@@ -8,7 +8,7 @@ export interface RegionalProvider extends Provider {
   type?: string;
 }
 
-export const PATIENT_ASSOCIATION_LINKS: Provider[] = [
+export const PATIENT_ASSOCIATION_LINKS: RegionalProvider[] = [
   {
     name: "22q11 Finland (ent. Catch-yhdistys)",
     url: "https://www.22q11finland.fi/"
@@ -308,6 +308,198 @@ export const PATIENT_ASSOCIATION_LINKS: Provider[] = [
   {
     name: "A-klinikkasäätiö",
     url: "https://www.a-klinikka.fi/"
+  },
+  {
+    name: "Espoon ja Kauniaisten Muistiyhdistys ry / Esbo och Grankulla Minnesförening rf",
+    url: "https://muistiliitto.fi/muistiyhdistykset/espoon-ja-kauniaisten-muistiyhdistys-ry-esbo-och-grankulla-minnesforening-rf/etusivu-espoo/",
+    group: "Muistiyhdistykset",
+    municipalities: ["Espoo", "Kauniainen"]
+  },
+  {
+    name: "Etelä-Karjalan Muisti ry",
+    url: "https://muistiliitto.fi/muistiyhdistykset/etela-karjalan-muisti-ry/etusivu-etela-karjala/",
+    group: "Muistiyhdistykset",
+    area: "Etelä-Karjala"
+  },
+  {
+    name: "Etelä-Pohjanmaan Muistiyhdistys ry",
+    url: "https://muistiliitto.fi/muistiyhdistykset/etela-pohjanmaan-muistiyhdistys-ry/etusivu-2/",
+    group: "Muistiyhdistykset",
+    area: "Etelä-Pohjanmaa"
+  },
+  {
+    name: "Helsingin Muistiyhdistys ry",
+    url: "https://muistihelsinki.fi/",
+    group: "Muistiyhdistykset",
+    municipality: "Helsinki"
+  },
+  {
+    name: "Hyvinkään Muisti ry",
+    url: "https://muistiliitto.fi/muistiyhdistykset/hyvinkaan-muisti-ry/etusivu-hyvinkaa/",
+    group: "Muistiyhdistykset",
+    municipality: "Hyvinkää"
+  },
+  {
+    name: "Jämsän Muistiyhdistys ry",
+    url: "https://www.jamsanmuistiyhdistys.fi/",
+    group: "Muistiyhdistykset",
+    municipality: "Jämsä"
+  },
+  {
+    name: "Kainuun Muistiyhdistys",
+    url: "https://muistiliitto.fi/muistiyhdistykset/kainuun-muistiyhdistys/etusivu-kainuu/",
+    group: "Muistiyhdistykset",
+    area: "Kainuu"
+  },
+  {
+    name: "Kanta-Hämeen Muistiyhdistys ry",
+    url: "https://muistiaina.fi/",
+    group: "Muistiyhdistykset",
+    area: "Kanta-Häme"
+  },
+  {
+    name: "Karjaan ja Pohjan ikäihmisten tuki ry / Stöd för de äldre i Karis och Pojo rf",
+    url: "https://muistiliitto.fi/muistiyhdistykset/karjaan-ja-pohjan-ikaihmisten-tuki-ry-stod-for-de-aldre-i-karis-och-pojo-rf/etusivu-karjaa/",
+    group: "Muistiyhdistykset",
+    municipalities: ["Raasepori"]
+  },
+  {
+    name: "Keski-Suomen Muistiyhdistys ry",
+    url: "https://ksmuistiyhdistys.fi/",
+    group: "Muistiyhdistykset",
+    area: "Keski-Suomi"
+  },
+  {
+    name: "Keski-Uudenmaan Muistiyhdistys ry",
+    url: "https://muistiliitto.fi/muistiyhdistykset/keski-uudenmaan-muistiyhdistys-ry/etusivu-keski-uusimaa/",
+    group: "Muistiyhdistykset",
+    municipalities: ["Hyvinkää", "Järvenpää", "Kerava", "Mäntsälä", "Nurmijärvi", "Pornainen", "Sipoo", "Tuusula"]
+  },
+  {
+    name: "Koillismaan Seudun Muisti ry",
+    url: "https://www.koillismaanseudunmuisti.fi/",
+    group: "Muistiyhdistykset",
+    municipalities: ["Kuusamo", "Taivalkoski", "Pudasjärvi"]
+  },
+  {
+    name: "Kotkan Seudun muistiyhdistys ry",
+    url: "https://muistiliitto.fi/muistiyhdistykset/kotkan-seudun-muistiyhdistys-ry/etusivu-kotka/",
+    group: "Muistiyhdistykset",
+    municipalities: ["Kotka", "Hamina", "Pyhtää", "Virolahti", "Miehikkälä"]
+  },
+  {
+    name: "Kouvolan seudun Muisti ry",
+    url: "https://muistiliitto.fi/muistiyhdistykset/kouvolan-seudun-muisti/etusivu-kouvola/",
+    group: "Muistiyhdistykset",
+    municipality: "Kouvola"
+  },
+  {
+    name: "Lapin Muistiyhdistys ry",
+    url: "https://lapinmuistiyhdistys.fi/",
+    group: "Muistiyhdistykset",
+    area: "Lappi"
+  },
+  {
+    name: "Länsi-Pohjan Muistiyhdistys ry",
+    url: "https://muistiliitto.fi/muistiyhdistykset/lansi-pohjan-muistiyhdistys/etusivu-lansi-pohja/",
+    group: "Muistiyhdistykset",
+    municipalities: ["Kemi", "Keminmaa", "Simo", "Tervola", "Tornio", "Ylitornio"]
+  },
+  {
+    name: "Mikkelin seudun Muisti ry",
+    url: "https://muistiliitto.fi/muistiyhdistykset/mikkelin-seudun-muisti/etusivu-2/",
+    group: "Muistiyhdistykset",
+    municipality: "Mikkeli"
+  },
+  {
+    name: "Oulun Seudun Muistiyhdistys ry",
+    url: "https://www.osmy.fi/",
+    group: "Muistiyhdistykset",
+    municipalities: ["Oulu", "Ii", "Kempele", "Liminka", "Lumijoki", "Muhos", "Tyrnävä"]
+  },
+  {
+    name: "Pieksämäen Muistiyhdistys",
+    url: "https://muistiliitto.fi/muistiyhdistykset/pieksamaen-muistiyhdistys/pieksamaen-muistiyhdistys-ry/",
+    group: "Muistiyhdistykset",
+    municipality: "Pieksämäki"
+  },
+  {
+    name: "Pirkanmaan Muistiyhdistys ry",
+    url: "https://www.pirkanmaanmuistiyhdistys.fi/",
+    group: "Muistiyhdistykset",
+    area: "Pirkanmaa"
+  },
+  {
+    name: "Pohjois-Karjalan Muisti ry",
+    url: "https://www.pkmuistiry.fi/",
+    group: "Muistiyhdistykset",
+    area: "Pohjois-Karjala"
+  },
+  {
+    name: "Pohjois-Savon Muisti ry",
+    url: "https://www.psmuisti.fi/",
+    group: "Muistiyhdistykset",
+    area: "Pohjois-Savo"
+  },
+  {
+    name: "Porin Seudun Muistiyhdistys",
+    url: "https://muistiliitto.fi/muistiyhdistykset/porin-seudun-muistiyhdistys/etusivu-pori/",
+    group: "Muistiyhdistykset",
+    municipality: "Pori"
+  },
+  {
+    name: "Päijät-Hämeen Muistiyhdistys ry",
+    url: "https://www.ph-muistiyhdistys.fi/",
+    group: "Muistiyhdistykset",
+    area: "Päijät-Häme"
+  },
+  {
+    name: "Raahen seudun muistiyhdistys",
+    url: "https://muistiliitto.fi/muistiyhdistykset/raahen-seudun-muistiyhdistys/etusivu-raahe/",
+    group: "Muistiyhdistykset",
+    municipality: "Raahe"
+  },
+  {
+    name: "Rauman Seudun Muistiyhdistys ry",
+    url: "https://muistiliitto.fi/muistiyhdistykset/rauman-seudun-muistiyhdistys/etusivu-rauma/",
+    group: "Muistiyhdistykset",
+    municipality: "Rauma"
+  },
+  {
+    name: "Salon Muistiyhdistys",
+    url: "https://muistiliitto.fi/muistiyhdistykset/salon-muistiyhdistys/tietoa-yhdistyksesta-4/",
+    group: "Muistiyhdistykset",
+    municipality: "Salo"
+  },
+  {
+    name: "Savonlinnan Seudun Muistiyhdistys ry",
+    url: "https://muistiliitto.fi/muistiyhdistykset/savonlinnan-seudun-muistiyhdistys/etusivu-savonlinna/",
+    group: "Muistiyhdistykset",
+    municipality: "Savonlinna"
+  },
+  {
+    name: "Suomenselän Muisti ry",
+    url: "https://www.suomenselanmuisti.fi/",
+    group: "Muistiyhdistykset",
+    municipalities: ["Alajärvi", "Soini", "Vimpeli"]
+  },
+  {
+    name: "Vaasan Seudun Muistiyhdistys ry",
+    url: "https://muistiliitto.fi/muistiyhdistykset/vaasan-seudun-muistiyhdistys-ry/etusivu-8/",
+    group: "Muistiyhdistykset",
+    municipality: "Vaasa"
+  },
+  {
+    name: "Vantaan Muistiyhdistys ry",
+    url: "https://www.vantaanmuisti.fi/fi/etusivu",
+    group: "Muistiyhdistykset",
+    municipality: "Vantaa"
+  },
+  {
+    name: "Varsinais-Suomen Muistiyhdistys ry / Egentliga Finlands Minnesförening rf",
+    url: "https://www.muistiturku.fi/fi/",
+    group: "Muistiyhdistykset",
+    area: "Varsinais-Suomi"
   }
 ];
 
