@@ -10,7 +10,8 @@ import HomepageModal from './components/HomepageModal';
 import LinkReportModal from './components/LinkReportModal';
 import SearchBar from './components/SearchBar';
 import RegionalServicesPanel from './components/RegionalServicesPanel';
-import BackToTopButton from './components/BackToTopButton';
+import FloatingControls from './components/FloatingControls';
+import FavoriteLinks from './components/FavoriteLinks';
 import { isLinkVisible, useLinkVisibilityVersion } from './linkVisibility';
 import { Shortcut, Favorite, LocalityInfo, LinkReportDraft } from './types';
 import { mergeApprovedLinksIntoShortcuts } from './approvedLinks';
@@ -21,7 +22,7 @@ const MIN_UI_SCALE = 50;
 const MAX_UI_SCALE = 200;
 const DEFAULT_UI_SCALE = 100;
 const UI_SCALE_STEP = 10;
-const BASE_UI_SCALE_MULTIPLIER = 0.72;
+const BASE_UI_SCALE_MULTIPLIER = 0.792;
 const SAVED_LOCALITY_KEY = 'locality';
 
 interface UiVisibilityState {
@@ -183,109 +184,53 @@ const AppContent: React.FC = () => {
         style={{ zoom: uiZoom }}
       >
 
-        {/* Yläpalkki */}
-        <nav className="relative flex flex-wrap items-center gap-3" aria-label={t('settings')}>
-          <div className="flex items-center gap-2">
-            <div className="flex items-stretch rounded-full bg-yellow-400 border-b-4 border-yellow-600 shadow-md overflow-hidden" role="group" aria-label={t('resetText')}>
-              <button
-                onClick={decreaseFont}
-                disabled={uiScale === MIN_UI_SCALE}
-                className="px-5 py-3 font-black text-xl hover:bg-yellow-500 transition-all active:scale-95 disabled:opacity-30 focus:ring-4 focus:ring-yellow-300 focus:outline-none"
-                aria-label={t('decreaseText')}
-              >
-                A−
-              </button>
-              <span className="px-4 py-3 font-black text-lg border-x-2 border-yellow-600 flex items-center select-none" aria-live="polite">
-                {uiScale}%
-              </span>
-              <button
-                onClick={increaseFont}
-                disabled={uiScale === MAX_UI_SCALE}
-                className="px-5 py-3 font-black text-xl hover:bg-yellow-500 transition-all active:scale-95 disabled:opacity-30 focus:ring-4 focus:ring-yellow-300 focus:outline-none"
-                aria-label={t('increaseText')}
-              >
-                A+
-              </button>
+        <header className="relative -mx-4 -mt-4 overflow-visible bg-white px-4 py-6 text-slate-950 shadow-xl ring-1 ring-slate-200 dark:bg-slate-900 dark:text-white dark:ring-slate-800 md:-mx-8 md:-mt-8 md:px-8 md:py-8 lg:-mx-12 lg:-mt-12 lg:px-12">
+          <nav className="relative flex flex-wrap items-center gap-3" aria-label={t('settings')}>
+            <div className="flex min-w-[16rem] flex-1 items-center gap-4">
+              <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-brand-indigo text-3xl font-black text-white shadow-lg border-b-4 border-indigo-900" aria-hidden="true">
+                S
+              </div>
+              <div>
+                <p className="text-3xl md:text-4xl font-black tracking-tight">Seniorin Aloitussivu</p>
+                <p className="text-base md:text-lg font-bold text-slate-600 dark:text-slate-300">Helppo ja turvallinen pääsy nettiin</p>
+              </div>
             </div>
-            {uiScale !== DEFAULT_UI_SCALE && (
-              <button
-                onClick={resetFont}
-                className="bg-yellow-200 hover:bg-yellow-300 text-yellow-900 px-4 py-3 rounded-full font-black text-base transition-all active:scale-95 shadow-md border-b-4 border-yellow-500 focus:ring-4 focus:ring-yellow-300 whitespace-nowrap"
-                aria-label={t('resetText')}
-              >
-                ↺ 100%
-              </button>
-            )}
-          </div>
 
-          <div className="flex-1 flex justify-center">
-            <span className="text-sm font-black uppercase tracking-wide text-amber-700 dark:text-amber-300">
+            <span className="rounded-full bg-amber-100 px-4 py-2 text-sm font-black uppercase tracking-wide text-amber-800 ring-1 ring-amber-200 dark:bg-amber-300/15 dark:text-amber-200 dark:ring-amber-200/20">
               {t('beta')}
             </span>
+
+            <button
+              onClick={() => setIsHomepageOpen(true)}
+              className="bg-brand-indigo hover:bg-brand-purple text-white px-5 py-3 rounded-full font-black text-lg transition-all active:scale-95 shadow-md border-b-4 border-indigo-900 focus:ring-4 focus:ring-indigo-300 focus:outline-none"
+            >
+              🏠 {t('help')}
+            </button>
+
+            <LanguageSelector language={language} setLanguage={setLanguage} label={t('language')} />
+
+            <button
+              type="button"
+              onClick={() => setIsSettingsOpen(prev => !prev)}
+              className="bg-slate-200 hover:bg-slate-300 text-slate-900 px-5 py-3 rounded-full font-black text-lg transition-all active:scale-95 shadow-md border-b-4 border-slate-400 focus:ring-4 focus:ring-slate-300 focus:outline-none dark:bg-slate-800 dark:text-white dark:hover:bg-slate-700 dark:border-slate-950"
+              aria-label={t('openSettings')}
+              aria-expanded={isSettingsOpen}
+              aria-haspopup="menu"
+            >
+              ⚙️
+            </button>
+          </nav>
+
+          <div className="mt-8 grid gap-6 xl:grid-cols-[minmax(0,1fr)_22rem_24rem] xl:items-center">
+            {uiVisibility.googleSearch && <SearchBar fontSizeStep={fontSizeStep} variant="header" />}
+            {uiVisibility.assistant && (
+              <div className="relative">
+                <Assistant variant="header" />
+              </div>
+            )}
+            {uiVisibility.clock && <Clock fontSizeStep={fontSizeStep} variant="compact" />}
           </div>
-
-          <div className="flex flex-wrap items-center gap-2 md:gap-3 ml-auto">
-            <a
-              href="./yllapito.html"
-              className="text-sm font-black text-indigo-700 dark:text-indigo-300 hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Ylläpito
-            </a>
-            <a
-              href="./muutosloki.html"
-              className="text-sm font-black text-indigo-700 dark:text-indigo-300 hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {t('changelog')}
-            </a>
-            <a
-              href="./linkit.html"
-              className="text-sm font-black text-indigo-700 dark:text-indigo-300 hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {t('linkList')}
-            </a>
-          </div>
-
-          <button
-            onClick={() => setIsHomepageOpen(true)}
-            className="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-3 rounded-full font-black text-lg transition-all active:scale-95 shadow-md border-b-4 border-indigo-900 focus:ring-4 focus:ring-indigo-300"
-          >
-            🏠 {t('help')}
-          </button>
-
-          <button
-            onClick={() => setIsInfoOpen(true)}
-            className="bg-slate-200 hover:bg-slate-300 text-slate-900 px-5 py-3 rounded-full font-black text-lg transition-all active:scale-95 shadow-md border-b-4 border-slate-400 focus:ring-4 focus:ring-slate-300"
-          >
-            ℹ️ {t('info')}
-          </button>
-
-          <button
-            onClick={toggleDarkMode}
-            className={`${isDarkMode ? 'bg-amber-100 text-amber-950' : 'bg-slate-900 text-white'} px-5 py-3 rounded-full font-black text-lg transition-all active:scale-95 shadow-md focus:ring-4 focus:ring-blue-300`}
-            aria-label={isDarkMode ? t('lightTheme') : t('darkTheme')}
-          >
-            {isDarkMode ? '☀️' : '🌙'}
-          </button>
-
-          <LanguageSelector language={language} setLanguage={setLanguage} label={t('language')} />
-
-          <button
-            type="button"
-            onClick={() => setIsSettingsOpen(prev => !prev)}
-            className="bg-slate-200 hover:bg-slate-300 text-slate-900 px-5 py-3 rounded-full font-black text-lg transition-all active:scale-95 shadow-md border-b-4 border-slate-400 focus:ring-4 focus:ring-slate-300"
-            aria-label={t('openSettings')}
-            aria-expanded={isSettingsOpen}
-            aria-haspopup="menu"
-          >
-            ⚙️
-          </button>
-        </nav>
+        </header>
 
         {isSettingsOpen && (
           <div
@@ -304,10 +249,15 @@ const AppContent: React.FC = () => {
               </button>
             </div>
 
-            <div className="mb-4 space-y-2">
-              <span className="block font-black text-slate-700 dark:text-slate-200">{t('language')}</span>
-              <LanguageSelector language={language} setLanguage={setLanguage} label={t('language')} />
-            </div>
+            <button
+              type="button"
+              onClick={toggleDarkMode}
+              className="mb-4 flex w-full items-center justify-between gap-4 rounded-2xl border-2 border-slate-200 dark:border-slate-700 px-4 py-3 text-left font-black text-slate-800 dark:text-slate-100 hover:bg-slate-50 dark:hover:bg-slate-800 focus:outline-none focus:ring-4 focus:ring-indigo-300"
+              aria-label={isDarkMode ? t('lightTheme') : t('darkTheme')}
+            >
+              <span>{isDarkMode ? t('lightTheme') : t('darkTheme')}</span>
+              <span aria-hidden="true">{isDarkMode ? '☀️' : '🌙'}</span>
+            </button>
 
             <div className="space-y-3">
               {[
@@ -333,34 +283,16 @@ const AppContent: React.FC = () => {
           </div>
         )}
 
-        <header className="animate-in">
-          <div className="flex flex-col xl:flex-row gap-8 items-stretch">
-            {uiVisibility.clock && (
-              <div className="xl:flex-[1.2] flex flex-col justify-center">
-                <Clock fontSizeStep={fontSizeStep} />
-              </div>
-            )}
-            {uiVisibility.weather && (
-              <div className="xl:flex-1">
-                <WeatherCard onLocationResolved={updateLocality} />
-              </div>
-            )}
-            {uiVisibility.assistant && (
-              <div className="xl:flex-1">
-                <Assistant />
-              </div>
-            )}
-          </div>
-        </header>
-
         <main className="space-y-10 animate-in [animation-delay:200ms]">
-          {uiVisibility.googleSearch && <SearchBar fontSizeStep={fontSizeStep} />}
+          <FavoriteLinks favorites={favorites} onToggleFavorite={toggleFavorite} fontSizeStep={fontSizeStep} />
+
           {uiVisibility.regionalServices && (
             <RegionalServicesPanel
               locality={locality}
               fontSizeStep={fontSizeStep}
               onReportLink={openReportModal}
               showNews={uiVisibility.regionalNews}
+              weatherSlot={uiVisibility.weather ? <WeatherCard onLocationResolved={updateLocality} variant="compact" /> : null}
             />
           )}
 
@@ -380,6 +312,46 @@ const AppContent: React.FC = () => {
         </main>
 
         <footer className="pt-24 pb-12 border-t-2 border-slate-200 dark:border-slate-800 text-center space-y-8 opacity-80">
+          <button
+            type="button"
+            onClick={() => setIsInfoOpen(true)}
+            className="rounded-full bg-slate-200 px-6 py-3 text-base font-black text-slate-900 shadow-md border-b-4 border-slate-400 transition-all hover:bg-slate-300 active:scale-95 focus:outline-none focus:ring-4 focus:ring-slate-300 dark:bg-slate-800 dark:text-white dark:hover:bg-slate-700 dark:border-slate-950"
+          >
+            ℹ️ {t('info')}
+          </button>
+          <button
+            type="button"
+            onClick={() => openReportModal({ name: '', url: '', category: '', source: 'Footer' })}
+            className="rounded-full bg-brand-indigo px-6 py-3 text-base font-black text-white shadow-md border-b-4 border-indigo-900 transition-all hover:bg-brand-purple active:scale-95 focus:outline-none focus:ring-4 focus:ring-indigo-300"
+          >
+            {t('reportNewLink')}
+          </button>
+          <nav className="flex flex-wrap justify-center gap-4" aria-label={t('settings')}>
+            <a
+              href="./yllapito.html"
+              className="rounded-full bg-white dark:bg-slate-900 px-5 py-3 text-sm font-black text-indigo-700 dark:text-indigo-300 shadow-sm hover:underline focus:outline-none focus:ring-4 focus:ring-indigo-300"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Ylläpito
+            </a>
+            <a
+              href="./muutosloki.html"
+              className="rounded-full bg-white dark:bg-slate-900 px-5 py-3 text-sm font-black text-indigo-700 dark:text-indigo-300 shadow-sm hover:underline focus:outline-none focus:ring-4 focus:ring-indigo-300"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t('changelog')}
+            </a>
+            <a
+              href="./linkit.html"
+              className="rounded-full bg-white dark:bg-slate-900 px-5 py-3 text-sm font-black text-indigo-700 dark:text-indigo-300 shadow-sm hover:underline focus:outline-none focus:ring-4 focus:ring-indigo-300"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t('linkList')}
+            </a>
+          </nav>
           {isLinkVisible('https://seniorsurf.fi/') && isLinkVisible('https://seniorsurf.fi/wp-content/uploads/SeniorSurf_White-320-x-102-px.svg') && (
             <a
               href="https://seniorsurf.fi/"
@@ -412,7 +384,19 @@ const AppContent: React.FC = () => {
         <HomepageModal isOpen={isHomepageOpen} onClose={() => setIsHomepageOpen(false)} fontSizeStep={fontSizeStep} />
         <LinkReportModal draft={reportDraft} onClose={closeReportModal} />
       </div>
-      <BackToTopButton label={t('backToTop')} />
+      <FloatingControls
+        decreaseLabel={t('decreaseText')}
+        increaseLabel={t('increaseText')}
+        resetLabel={t('resetText')}
+        backToTopLabel={t('backToTop')}
+        onDecrease={decreaseFont}
+        onIncrease={increaseFont}
+        onReset={resetFont}
+        canDecrease={uiScale > MIN_UI_SCALE}
+        canIncrease={uiScale < MAX_UI_SCALE}
+        showReset={uiScale !== DEFAULT_UI_SCALE}
+        uiScale={uiScale}
+      />
     </div>
   );
 };

@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { SHORTCUTS } from '../constants';
 import { getLocalizedShortcuts } from '../localServices';
-import { filterVisibleShortcuts, isLinkVisible, useLinkVisibilityVersion } from '../linkVisibility';
+import { filterVisibleShortcuts, useLinkVisibilityVersion } from '../linkVisibility';
 import { Shortcut, Favorite, LocalityInfo, LinkReportDraft } from '../types';
 import { mergeApprovedLinksIntoShortcuts, useApprovedLinkSuggestionsVersion } from '../approvedLinks';
 import { useI18n } from '../i18n';
@@ -71,7 +71,6 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
   useApprovedLinkSuggestionsVersion();
   const approvedShortcuts = mergeApprovedLinksIntoShortcuts(shortcuts);
   const sortedShortcuts = [...approvedShortcuts].sort((a, b) => categoryName(a.name).localeCompare(categoryName(b.name), 'fi'));
-  const visibleFavorites = favorites.filter((fav) => isLinkVisible(fav.url));
 
   const iconClasses = [
     'text-[2.25rem] md:text-[2.7rem]',
@@ -152,57 +151,10 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
   return (
     <div className="space-y-8 animate-in">
 
-      {/* Suosikit */}
-      {visibleFavorites.length > 0 && !q && (
-        <div className="space-y-4">
-          <h3 className={`font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest flex items-center gap-2 ${subTextClasses[fontSizeStep]}`}>
-            <span>⭐</span> {t('favorites')}
-          </h3>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6">
-            {visibleFavorites.map((fav, idx) => (
-              <div key={idx} className="relative group/fav">
-                <a
-                  href={fav.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={baseCardStyles(fav.color)}
-                  aria-label={`${t('goToSite')}: ${fav.name}`}
-                >
-                  <span className={`transition-all duration-300 ${iconClasses[fontSizeStep]}`} aria-hidden="true">{fav.categoryIcon}</span>
-                  <span className={`font-black leading-tight tracking-tight transition-all duration-300 ${textClasses[fontSizeStep]}`}>
-                    {fav.name}
-                  </span>
-                  <span className={`opacity-75 font-semibold ${subTextClasses[fontSizeStep]}`}>
-                    {categoryName(fav.categoryName)}
-                  </span>
-                </a>
-                <button
-                  onClick={() => onToggleFavorite(fav)}
-                  className={`absolute top-3 right-3 flex items-center justify-center rounded-full bg-yellow-400 hover:bg-yellow-500 shadow-md transition-all focus:ring-4 focus:ring-yellow-300 focus:outline-none ${starClasses[fontSizeStep]}`}
-                  aria-label={`${t('removeFavorite')}: ${fav.name}`}
-                >
-                  ⭐
-                </button>
-              </div>
-            ))}
-          </div>
-          <div className="border-t-4 border-slate-200 dark:border-slate-800" />
-        </div>
-      )}
-
       <div className="flex items-center justify-between gap-4">
         <p className={`font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest ${subTextClasses[fontSizeStep]}`}>
           {t('search')}
         </p>
-        {onReportLink && (
-          <button
-            type="button"
-            onClick={() => onReportLink({ name: '', url: '', category: '', source: 'QuickLinks' })}
-            className={`font-black text-brand-indigo dark:text-blue-300 hover:underline ${subTextClasses[fontSizeStep]}`}
-          >
-            {t('reportNewLink')}
-          </button>
-        )}
       </div>
 
       {/* Hakukenttä */}

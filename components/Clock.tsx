@@ -4,9 +4,10 @@ import { useI18n } from '../i18n';
 
 interface ClockProps {
   fontSizeStep?: number;
+  variant?: 'hero' | 'compact';
 }
 
-const Clock: React.FC<ClockProps> = ({ fontSizeStep = 0 }) => {
+const Clock: React.FC<ClockProps> = ({ fontSizeStep = 0, variant = 'hero' }) => {
   const { locale } = useI18n();
   const [time, setTime] = useState(new Date());
 
@@ -39,6 +40,31 @@ const Clock: React.FC<ClockProps> = ({ fontSizeStep = 0 }) => {
     'text-6xl md:text-8xl',
     'text-7xl md:text-9xl'
   ];
+
+  if (variant === 'compact') {
+    return (
+      <div className="text-left xl:text-right space-y-2">
+        <p className="font-black text-5xl md:text-6xl leading-none tracking-tight text-brand-indigo dark:text-blue-200" aria-live="polite">
+          {timeString}
+        </p>
+        <p className="capitalize text-base md:text-lg font-bold text-slate-700 dark:text-slate-200">
+          {dateString}
+        </p>
+        {todayEvents.length > 0 && (
+          <div className="flex flex-wrap xl:justify-end gap-2 pt-1">
+            {todayEvents.map((event) => (
+              <p
+                key={`${event.date}-${event.name}`}
+                className="inline-flex rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-100 px-3 py-1 text-sm font-black"
+              >
+                {event.name}
+              </p>
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  }
 
   return (
     <div className="text-center lg:text-left space-y-2">

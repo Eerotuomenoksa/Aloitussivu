@@ -20,7 +20,11 @@ const isVisibleAlert = (alert: ScamAlertEntry) => {
   return !Number.isFinite(expiresAt) || expiresAt > Date.now();
 };
 
-const ScamAlertsBanner: React.FC = () => {
+interface ScamAlertsBannerProps {
+  compact?: boolean;
+}
+
+const ScamAlertsBanner: React.FC<ScamAlertsBannerProps> = ({ compact = false }) => {
   const [alerts, setAlerts] = useState<ScamAlertEntry[]>([]);
   const [selectedAlert, setSelectedAlert] = useState<ScamAlertEntry | null>(null);
 
@@ -37,22 +41,19 @@ const ScamAlertsBanner: React.FC = () => {
     <section className="space-y-3" aria-labelledby="scam-alerts-heading">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <p className="text-sm font-black uppercase tracking-wide text-rose-700 dark:text-rose-300">
-            Ajankohtaista
-          </p>
           <h3 id="scam-alerts-heading" className="text-xl md:text-2xl font-black text-slate-950 dark:text-white">
             Huijausvaroitukset
           </h3>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4" aria-label="Huijausvaroitusten otsikot">
+      <div className={compact ? 'space-y-3' : 'grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4'} aria-label="Huijausvaroitusten otsikot">
         {visibleAlerts.map((alert) => (
           <button
             key={alert.id}
             type="button"
             onClick={() => setSelectedAlert(alert)}
-            className={`${severityStyles[alert.severity]} rounded-2xl border-4 p-5 text-left shadow-md transition-all hover:shadow-xl active:scale-95 focus:outline-none focus:ring-4 focus:ring-rose-300 min-h-[130px] flex flex-col justify-between gap-4`}
+            className={`${severityStyles[alert.severity]} rounded-2xl border-4 p-5 text-left shadow-md transition-all hover:shadow-xl active:scale-95 focus:outline-none focus:ring-4 focus:ring-rose-300 ${compact ? 'min-h-[72px]' : 'min-h-[130px]'} flex flex-col justify-between gap-4`}
             aria-haspopup="dialog"
           >
             <span className="font-black text-lg md:text-xl leading-tight">
@@ -82,9 +83,6 @@ const ScamAlertsBanner: React.FC = () => {
           >
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div>
-                <p className="text-sm font-black uppercase tracking-wide text-rose-700 dark:text-rose-300">
-                  Ajankohtaista
-                </p>
                 <h2 id="scam-alerts-dialog-heading" className="text-2xl md:text-4xl font-black text-slate-950 dark:text-white">
                   Huijausvaroitukset
                 </h2>

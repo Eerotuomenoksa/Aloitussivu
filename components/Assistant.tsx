@@ -4,7 +4,11 @@ import { getGeminiAssistant } from '../services/geminiService';
 import { ChatMessage } from '../types';
 import { useI18n } from '../i18n';
 
-const Assistant: React.FC = () => {
+interface AssistantProps {
+  variant?: 'default' | 'header';
+}
+
+const Assistant: React.FC<AssistantProps> = ({ variant = 'default' }) => {
   const { t } = useI18n();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
@@ -37,6 +41,22 @@ const Assistant: React.FC = () => {
     }
   };
 
+  if (isMinimized && variant === 'header') {
+    return (
+      <button
+        onClick={() => setIsMinimized(false)}
+        className="w-full rounded-2xl md:rounded-3xl bg-brand-indigo p-4 md:p-5 text-white shadow-xl transition-all hover:bg-brand-purple active:scale-95 focus:outline-none focus:ring-4 focus:ring-indigo-300 border-4 border-indigo-500/20 min-h-[92px] md:min-h-[150px] flex items-center justify-center gap-3 md:gap-4"
+        aria-label={t('assistantOpen')}
+      >
+        <span className="flex h-12 w-12 md:h-16 md:w-16 items-center justify-center rounded-full bg-white/20 text-3xl md:text-5xl" aria-hidden="true">🤖</span>
+        <span className="text-left">
+          <span className="block text-base md:text-xl font-black leading-tight">{t('assistantNeedHelp')}</span>
+          <span className="block text-sm md:text-base font-bold text-blue-100">{t('assistantAskAnything')}</span>
+        </span>
+      </button>
+    );
+  }
+
   if (isMinimized) {
     return (
       <button 
@@ -55,7 +75,7 @@ const Assistant: React.FC = () => {
 
   return (
     <section 
-      className="bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col h-full border-4 border-brand-indigo dark:border-brand-purple animate-in slide-in-from-bottom-4 duration-300 min-h-[500px]"
+      className={`bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col h-full border-4 border-brand-indigo dark:border-brand-purple animate-in slide-in-from-bottom-4 duration-300 ${variant === 'header' ? 'min-h-[440px] xl:absolute xl:right-0 xl:top-full xl:z-40 xl:mt-4 xl:w-[28rem]' : 'min-h-[500px]'}`}
       aria-label={t('assistantChat')}
     >
       <div className="bg-brand-indigo dark:bg-brand-purple p-6 text-white flex items-center justify-between">

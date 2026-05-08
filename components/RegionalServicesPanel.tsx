@@ -12,6 +12,7 @@ interface RegionalServicesPanelProps {
   fontSizeStep?: number;
   onReportLink?: (draft: LinkReportDraft) => void;
   showNews?: boolean;
+  weatherSlot?: React.ReactNode;
 }
 
 const textClasses = [
@@ -69,7 +70,7 @@ const ServiceLink: React.FC<{ provider: Provider; index: number; fontSizeStep: n
   );
 };
 
-const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality, fontSizeStep = 0, onReportLink, showNews = true }) => {
+const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality, fontSizeStep = 0, onReportLink, showNews = true, weatherSlot }) => {
   const { language, t } = useI18n();
   const [query, setQuery] = useState('');
   const [isManualQuery, setIsManualQuery] = useState(false);
@@ -89,30 +90,16 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
 
   return (
     <section className="space-y-6" aria-labelledby="regional-services-heading">
-      <div className="flex flex-col xl:flex-row xl:items-end xl:justify-between gap-5">
-        <div className="space-y-2">
+      <div className="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-5">
+        <div>
           <h2 id="regional-services-heading" className="font-black text-slate-900 dark:text-white text-3xl md:text-5xl leading-tight">
             {t('regionalServicesTitle')}
           </h2>
-          <p className={`text-slate-600 dark:text-slate-300 font-bold max-w-4xl ${smallTextClasses[fontSizeStep]}`}>
-            {t('regionalServicesDescription')}
-          </p>
         </div>
-        <div className="w-full xl:max-w-3xl">
-          {onReportLink && (
-            <div className="flex justify-end mb-3">
-              <button
-                type="button"
-                onClick={() => onReportLink({ name: '', url: '', category: 'Alueelliset palvelut', source: 'RegionalServicesPanel' })}
-                className={`font-black text-brand-indigo dark:text-blue-300 hover:underline ${smallTextClasses[fontSizeStep]}`}
-              >
-                {t('reportNewLink')}
-              </button>
-            </div>
-          )}
-          <div className="flex flex-col md:flex-row md:items-end gap-3">
+        <div className="w-full xl:max-w-2xl">
+          <div className="flex flex-col md:flex-row md:items-center gap-3">
             <label className="flex-1">
-              <span className={`block font-black text-slate-700 dark:text-slate-200 mb-2 ${smallTextClasses[fontSizeStep]}`}>{t('municipality')}</span>
+              <span className={`block font-black text-slate-700 dark:text-slate-200 mb-1 ${smallTextClasses[fontSizeStep]}`}>{t('municipality')}</span>
               <input
                 type="search"
                 value={displayedQuery}
@@ -122,19 +109,19 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
                   setIsManualQuery(nextQuery.trim().length > 0);
                 }}
                 placeholder={localizedMunicipalityName ? `${t('localityPrefix')}: ${localizedMunicipalityName}` : t('municipalityPlaceholder')}
-                className={`w-full rounded-2xl border-4 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white px-5 py-4 font-bold focus:outline-none focus:border-brand-indigo focus:ring-4 focus:ring-brand-indigo/20 ${textClasses[fontSizeStep]}`}
+                className={`w-full rounded-xl border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white px-4 py-3 font-bold focus:outline-none focus:border-brand-indigo focus:ring-4 focus:ring-brand-indigo/20 ${smallTextClasses[fontSizeStep]}`}
                 aria-label={t('municipality')}
               />
             </label>
             {context && (
-              <div className="rounded-2xl bg-white dark:bg-slate-800 border-4 border-slate-100 dark:border-slate-700 px-5 py-4 shadow-sm md:min-w-[12rem]">
-                <p className={`font-black text-slate-900 dark:text-white leading-tight ${textClasses[fontSizeStep]}`}>
+              <div className="rounded-xl bg-white dark:bg-slate-800 border-2 border-slate-100 dark:border-slate-700 px-4 py-3 shadow-sm md:min-w-[10rem]">
+                <p className={`font-black text-slate-900 dark:text-white leading-tight ${smallTextClasses[fontSizeStep]}`}>
                   {localizedMunicipalityName}
                 </p>
               </div>
             )}
           </div>
-          <p className={`mt-2 text-slate-500 dark:text-slate-400 font-bold ${smallTextClasses[fontSizeStep]}`}>
+          <p className="sr-only">
             {t('changeMunicipalityHint')}
           </p>
         </div>
@@ -148,28 +135,36 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
 
           <NearbyGuidancePlaces locality={locality} fontSizeStep={fontSizeStep} />
 
-          {showNews && (
-            <div className="space-y-3">
-              <div className="flex items-center justify-between gap-4">
-                <h3 className={`font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest ${smallTextClasses[fontSizeStep]}`}>
-                  {t('localNews')}
-                </h3>
-                {fallbackNewsUrl && (
-                  <a
-                    href={fallbackNewsUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`font-black text-brand-indigo dark:text-blue-300 hover:underline ${smallTextClasses[fontSizeStep]}`}
-                  >
-                    {t('moreNews')}
-                  </a>
-                )}
-              </div>
-              <LocalNewsHeadlines feeds={rssFeeds} fallbackUrl={fallbackNewsUrl} fontSizeStep={fontSizeStep} />
+          <div className="grid gap-6 xl:grid-cols-[minmax(0,2fr)_minmax(0,1fr)_minmax(0,1fr)] xl:items-start">
+            {showNews && (
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between gap-4">
+                    <h3 className={`font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest ${smallTextClasses[fontSizeStep]}`}>
+                      {t('localNews')}
+                    </h3>
+                    {fallbackNewsUrl && (
+                      <a
+                        href={fallbackNewsUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`font-black text-brand-indigo dark:text-blue-300 hover:underline ${smallTextClasses[fontSizeStep]}`}
+                      >
+                        {t('moreNews')}
+                      </a>
+                    )}
+                  </div>
+                  <LocalNewsHeadlines feeds={rssFeeds} fallbackUrl={fallbackNewsUrl} fontSizeStep={fontSizeStep} compact />
+                </div>
+            )}
+            {weatherSlot && (
+              <aside className={showNews ? 'xl:pt-10' : ''}>
+                {weatherSlot}
+              </aside>
+            )}
+            <div>
+              <ScamAlertsBanner compact />
             </div>
-          )}
-
-          <ScamAlertsBanner />
+          </div>
         </div>
       ) : (
         <div className="rounded-2xl border-4 border-dashed border-slate-200 dark:border-slate-700 p-8 text-center">

@@ -13,6 +13,7 @@ interface WeatherData {
 
 interface WeatherCardProps {
   onLocationResolved?: (location: LocalityInfo) => void;
+  variant?: 'default' | 'compact';
 }
 
 const vantaaDistricts = new Set([
@@ -27,7 +28,7 @@ const vantaaDistricts = new Set([
   'tikkurila',
 ]);
 
-const WeatherCard: React.FC<WeatherCardProps> = ({ onLocationResolved }) => {
+const WeatherCard: React.FC<WeatherCardProps> = ({ onLocationResolved, variant = 'default' }) => {
   const { language, t } = useI18n();
   useLinkVisibilityVersion();
   const [locationName, setLocationName] = useState<string>(t('location'));
@@ -132,21 +133,23 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ onLocationResolved }) => {
     }
   }, [language, onLocationResolved, t]);
 
+  const isCompact = variant === 'compact';
+
   return (
     <div 
-      className="bg-gradient-to-br from-brand-indigo to-brand-purple rounded-[2.5rem] p-10 text-white shadow-xl flex items-center justify-between w-full h-full border-4 border-white/20 min-h-[220px]"
+      className={`bg-gradient-to-br from-brand-indigo to-brand-purple ${isCompact ? 'rounded-[2rem] p-6 min-h-[160px]' : 'rounded-[2.5rem] p-10 min-h-[220px]'} text-white shadow-xl flex items-center justify-between w-full h-full border-4 border-white/20`}
       aria-label={t('showWeather')}
     >
       <div className="space-y-1">
-        <h3 className="text-2xl font-black opacity-90 tracking-tight">{locationName}</h3>
+        <h3 className={`${isCompact ? 'text-xl' : 'text-2xl'} font-black opacity-90 tracking-tight`}>{locationName}</h3>
         {loading ? (
           <div className="animate-pulse h-12 w-24 bg-white/20 rounded-xl" aria-hidden="true"></div>
         ) : error ? (
           <p className="text-xl font-bold">{error}</p>
         ) : (
           <>
-            <p className="text-6xl font-black my-1 tracking-tighter">{weather?.temp}°C</p>
-            <p className="text-xl font-bold opacity-80 uppercase">{weather?.condition}</p>
+            <p className={`${isCompact ? 'text-4xl' : 'text-6xl'} font-black my-1 tracking-tighter`}>{weather?.temp}°C</p>
+            <p className={`${isCompact ? 'text-lg' : 'text-xl'} font-bold opacity-80 uppercase`}>{weather?.condition}</p>
           </>
         )}
       </div>
@@ -156,13 +159,13 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ onLocationResolved }) => {
           href="https://www.ilmatieteenlaitos.fi/"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-8xl drop-shadow-2xl hover:scale-110 transition-transform cursor-pointer p-4 bg-white/10 rounded-full flex items-center justify-center min-w-[120px] min-h-[120px] focus:ring-4 focus:ring-white/50 focus:outline-none"
+          className={`${isCompact ? 'text-5xl min-w-[76px] min-h-[76px]' : 'text-8xl min-w-[120px] min-h-[120px]'} drop-shadow-2xl hover:scale-110 transition-transform cursor-pointer p-4 bg-white/10 rounded-full flex items-center justify-center focus:ring-4 focus:ring-white/50 focus:outline-none`}
           aria-label={t('weatherDetails')}
         >
           <span aria-hidden="true">{loading ? '⏳' : weather?.icon || '🌤️'}</span>
         </a>
       ) : (
-        <div className="text-8xl drop-shadow-2xl p-4 bg-white/10 rounded-full flex items-center justify-center min-w-[120px] min-h-[120px]">
+        <div className={`${isCompact ? 'text-5xl min-w-[76px] min-h-[76px]' : 'text-8xl min-w-[120px] min-h-[120px]'} drop-shadow-2xl p-4 bg-white/10 rounded-full flex items-center justify-center`}>
           <span aria-hidden="true">{loading ? '⏳' : weather?.icon || '🌤️'}</span>
         </div>
       )}
