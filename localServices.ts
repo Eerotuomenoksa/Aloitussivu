@@ -3,6 +3,7 @@ import { MUNICIPALITY_WEBSITES } from './municipalityWebsites';
 import { MUNICIPALITY_WEBSITE_LANGUAGE_URLS } from './municipalityWebsiteLocales';
 import { MUNICIPALITY_SWEDISH_NAMES_BY_CODE } from './municipalityNames';
 import { LOCAL_NEWSPAPER_FEEDS } from './localNewspaperFeeds';
+import { LOCAL_NEWSPAPER_LINKS } from './localNewspaperLinks';
 import type { RegionalProvider } from './communityLinks';
 import { filterVisibleProviders } from './linkVisibility';
 import { LocalityInfo, Municipality, Provider, RegionalContext, RssFeedConfig, Shortcut } from './types';
@@ -414,6 +415,20 @@ const filterPatientAssociationProviders = (providers: Provider[], context: Regio
   return uniqueProviders([...nonMemoryProviders, ...prioritizeRegionalProviders(localMemoryProviders, context)]);
 };
 
+const alwaysVisibleTransportProviders: Provider[] = [
+  { name: 'VR', url: 'https://www.vr.fi', group: 'Matkustus' },
+  { name: 'Finnair', url: 'https://www.finnair.com/fi-fi', group: 'Matkustus' },
+  { name: 'Tallink Silja Line', url: 'https://fi.tallink.com/', group: 'Matkustus' },
+  { name: 'Viking Line', url: 'https://www.vikingline.fi/', group: 'Matkustus' },
+  { name: 'Finnlines', url: 'https://www.finnlines.com/fi/', group: 'Matkustus' },
+];
+
+const alwaysVisibleLibraryProviders: Provider[] = [
+  { name: 'Finna', url: 'https://www.finna.fi', group: 'Kirjastot' },
+  { name: 'Kirjastot.fi', url: 'https://www.kirjastot.fi', group: 'Kirjastot' },
+  { name: 'Celia-äänikirjat', url: 'https://www.celia.fi', group: 'Kirjastot' },
+];
+
 const uniqueFeeds = (feeds: RssFeedConfig[]) => feeds.filter(
   (feed, index, all) => all.findIndex((item) => item.url === feed.url) === index
 );
@@ -541,6 +556,19 @@ export const getRegionalNewsProviders = (context: RegionalContext): Provider[] =
   ].filter((provider): provider is Provider => Boolean(provider)))) ?? [];
 };
 
+const getRegionalNewspaperProviders = (context: RegionalContext): Provider[] => {
+  const key = normalizeMunicipality(context.municipality.name);
+  const localNewspaperNames = new Set(LOCAL_NEWSPAPER_FEEDS
+    .filter((feed) => normalizeMunicipality(feed.municipality) === key)
+    .map((feed) => normalizeText(feed.name)));
+
+  if (localNewspaperNames.size === 0) return [];
+
+  return LOCAL_NEWSPAPER_LINKS
+    .filter((link) => localNewspaperNames.has(normalizeText(link.name)))
+    .map((link) => ({ ...link, group: context.municipality.name }));
+};
+
 export const getRegionalRssFeeds = (context: RegionalContext): RssFeedConfig[] => {
   const municipality = context.municipality.name;
   const key = normalizeMunicipality(municipality);
@@ -578,11 +606,23 @@ export const getLocalizedShortcuts = (shortcuts: Shortcut[], locality: LocalityI
     if (!shortcut.providers) return shortcut;
 
     if (shortcut.name === 'Liikenne') {
-      return { ...shortcut, providers: getRegionalPublicTransportProviders(context) };
+      return {
+        ...shortcut,
+        providers: uniqueProviders([
+          ...getRegionalPublicTransportProviders(context),
+          ...alwaysVisibleTransportProviders,
+        ]),
+      };
     }
 
     if (shortcut.name === 'Kirjastot') {
-      return { ...shortcut, providers: getRegionalLibraryProviders(context) };
+      return {
+        ...shortcut,
+        providers: uniqueProviders([
+          ...getRegionalLibraryProviders(context),
+          ...alwaysVisibleLibraryProviders,
+        ]),
+      };
     }
 
     if (shortcut.name === 'Julkiset palvelut') {
@@ -604,12 +644,25 @@ export const getLocalizedShortcuts = (shortcuts: Shortcut[], locality: LocalityI
       return { ...shortcut, providers: uniqueProviders([...getRegionalNewsProviders(context), ...shortcut.providers]) };
     }
 
+    if (shortcut.name === 'Lehdet') {
+      return { ...shortcut, providers: uniqueProviders([...getRegionalNewspaperProviders(context), ...shortcut.providers]) };
+    }
+
     if (shortcut.name === 'Museot' || shortcut.name === 'Eläkeyhdistykset') {
       return { ...shortcut, providers: uniqueProviders(prioritizeRegionalProviders(filterRegionalProviders(shortcut.providers, context), context)) };
     }
 
     if (shortcut.name === 'Potilasyhdistykset') {
       return { ...shortcut, providers: filterPatientAssociationProviders(shortcut.providers, context) };
+    }
+
+    if (shortcut.name === 'Kotihoito-palvelut') {
+      return {
+        ...shortcut,
+        providers: shortcut.providers.filter((provider) => (
+          provider.group && normalizeMunicipality(provider.group) === key
+        )),
+      };
     }
 
     return shortcut;

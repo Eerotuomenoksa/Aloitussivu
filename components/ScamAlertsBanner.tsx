@@ -20,6 +20,19 @@ const isVisibleAlert = (alert: ScamAlertEntry) => {
   return !Number.isFinite(expiresAt) || expiresAt > Date.now();
 };
 
+const formatDateTime = (value?: string) => {
+  if (!value) return '';
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return '';
+  return new Intl.DateTimeFormat('fi-FI', {
+    day: 'numeric',
+    month: 'numeric',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  }).format(date);
+};
+
 interface ScamAlertsBannerProps {
   compact?: boolean;
 }
@@ -59,6 +72,11 @@ const ScamAlertsBanner: React.FC<ScamAlertsBannerProps> = ({ compact = false }) 
             <span className="font-black text-lg md:text-xl leading-tight">
               {alert.title}
             </span>
+            {formatDateTime(alert.createdAt) && (
+              <span className="text-xs font-bold text-current opacity-75">
+                {formatDateTime(alert.createdAt)}
+              </span>
+            )}
             <span className="flex flex-wrap items-center gap-2">
               <span className="rounded-full bg-white/80 px-3 py-1 text-xs font-black uppercase tracking-wide text-slate-900 dark:bg-slate-950/60 dark:text-white">
                 {severityLabel[alert.severity]}
@@ -110,6 +128,11 @@ const ScamAlertsBanner: React.FC<ScamAlertsBannerProps> = ({ compact = false }) 
               <h3 className="mt-3 text-xl md:text-2xl font-black">
                 {selectedAlert.title}
               </h3>
+              {formatDateTime(selectedAlert.createdAt) && (
+                <p className="mt-1 text-sm font-bold opacity-75">
+                  {formatDateTime(selectedAlert.createdAt)}
+                </p>
+              )}
               <p className="mt-2 text-base md:text-lg font-bold leading-relaxed">
                 {selectedAlert.body}
               </p>

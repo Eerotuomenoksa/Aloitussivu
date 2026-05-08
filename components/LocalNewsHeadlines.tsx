@@ -26,11 +26,17 @@ const smallTextClasses = [
   'text-2xl',
 ];
 
-const formatDate = (value?: string) => {
+const formatDateTime = (value?: string) => {
   if (!value) return '';
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return '';
-  return new Intl.DateTimeFormat('fi-FI', { day: 'numeric', month: 'numeric' }).format(date);
+  return new Intl.DateTimeFormat('fi-FI', {
+    day: 'numeric',
+    month: 'numeric',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  }).format(date);
 };
 
 const LocalNewsHeadlines: React.FC<LocalNewsHeadlinesProps> = ({ feeds, fallbackUrl, fontSizeStep, compact = false }) => {
@@ -112,11 +118,9 @@ const LocalNewsHeadlines: React.FC<LocalNewsHeadlinesProps> = ({ feeds, fallback
           <span className={`font-black text-slate-900 dark:text-white leading-tight ${textClasses[fontSizeStep]}`}>
             {headline.title}
           </span>
-          {!compact && (
-            <span className={`font-bold text-slate-500 dark:text-slate-400 ${smallTextClasses[fontSizeStep]}`}>
-              {headline.source}{formatDate(headline.publishedAt) ? ` · ${formatDate(headline.publishedAt)}` : ''}
-            </span>
-          )}
+          <span className={`font-bold text-slate-500 dark:text-slate-400 ${compact ? 'text-xs' : smallTextClasses[fontSizeStep]}`}>
+            {headline.source}{formatDateTime(headline.publishedAt) ? ` · ${formatDateTime(headline.publishedAt)}` : ''}
+          </span>
         </a>
       ))}
     </div>
