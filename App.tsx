@@ -21,7 +21,7 @@ const MIN_UI_SCALE = 50;
 const MAX_UI_SCALE = 200;
 const DEFAULT_UI_SCALE = 100;
 const UI_SCALE_STEP = 10;
-const BASE_UI_SCALE_MULTIPLIER = 0.9;
+const BASE_UI_SCALE_MULTIPLIER = 0.72;
 const SAVED_LOCALITY_KEY = 'locality';
 
 interface UiVisibilityState {
