@@ -21,18 +21,50 @@ export type ChangelogCommit = {
   subject: string;
 };
 
-export const CHANGELOG_GENERATED_AT = "7.5.2026 klo 08.52";
+export const CHANGELOG_GENERATED_AT = "8.5.2026 klo 08.02";
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
+  "Etusivun header uudistettiin: Google-haku nostettiin yläosaan, tekoälyrobotti siirrettiin headeriin kellon vasemmalle puolelle ja kello, päivämäärä sekä liputuspäivät näytetään oikeassa reunassa tiiviimpänä kokonaisuutena.",
+  "Headerin toimintoja siivottiin: kielivalinta ja asetukset jäivät yläosaan, vaalea ja tumma tila siirrettiin asetusten alle, Ohje säilytettiin headerissa ja Tietoa siirrettiin footeriin.",
+  "Ylläpito, Muutosloki, Linkkiluettelo sekä Ilmoita uusi linkki siirrettiin footeriin, jotta etusivun yläosa pysyy rauhallisempana.",
+  "Suosikit nostettiin omaksi osiokseen ennen alueellisia palveluita, jolloin käyttäjän tallentamat tärkeät linkit löytyvät aiempaa nopeammin.",
+  "Alueelliset palvelut -osion yläosa tiivistettiin: kuvausteksti poistettiin, kunta-valinta pienennettiin ja se asetetaan leveällä näytöllä samalle riville otsikon kanssa.",
+  "Paikallisuutiset, sää ja huijausvaroitukset koottiin samalle riville. Uutisista näytetään vain otsikot, sääkorttia pienennettiin kategoriaruudun suuntaan ja huijausvaroituksista poistettiin punainen Ajankohtaista-teksti.",
+  "Sivulle lisättiin kelluva saavutettava ohjausryhmä tekstin suurentamiseen, pienentämiseen, koon palauttamiseen sekä sivun alkuun palaamiseen. Painikkeiden värit yhtenäistettiin sivun indigo/purppura-värimaailmaan.",
+  "Mobiilinäkymää parannettiin pienentämällä headerissa näkyvää tekoälyrobottia ja kasvattamalla sivun perusfonttiskaalaa 10 prosenttia aiempaan verrattuna.",
   "Etusivulle lisättiin uudet kategoriat Museot, Potilasyhdistykset ja Eläkeyhdistykset sekä CSV-pohjainen datan generointi näille linkkilistoille.",
   "Lisättiin uusi Kotihoito-palvelut-kategoria VTKL:n jäsenyhteisöjen kotihoitopalveluista sekä paikkakuntatiedot linkkien yhteyteen.",
   "Vapaa-aika-kategoriaan lisättiin Vahvike-palvelu.",
   "Ylläpitoon lisättiin huijausvaroitusten NCSC-automaatio, joka hakee Kyberturvallisuuskeskuksen viikkokatsauksia ja tallentaa selkokielistettyjä varoituksia Firestoreen.",
   "Firebase-määrityksiä täydennettiin Functions-, Firestore- ja ylläpidon testikäyttöä varten sekä lisättiin Firebase-käyttöönoton ohjetiedosto.",
-  "Saman kategorian sisäiset tuplalinkit poistettiin ja CSV-generaattori deduplikoi jatkossa linkit URL-osoitteen perusteella.",
-  "Sivulle lisättiin saavutettava kelluva ylös-nuolipainike, joka toimii näppäimistöllä ja huomioi vähennetyn liikkeen asetuksen."
+  "Saman kategorian sisäiset tuplalinkit poistettiin ja CSV-generaattori deduplikoi jatkossa linkit URL-osoitteen perusteella."
 ];
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
+  {
+    "hash": "360ea3d3dd76c6a4612efdaa9257db3c5827eeb6",
+    "date": "2026-05-08",
+    "subject": "käyttöliittymän siivousta"
+  },
+  {
+    "hash": "e0b8a689187e142e03c2103e0511bbeb41c44abd",
+    "date": "2026-05-08",
+    "subject": "koodi tarkistus"
+  },
+  {
+    "hash": "39d2d6c53df90afbadb0bf0ec704d0ab802cc001",
+    "date": "2026-05-07",
+    "subject": "Lehtilinkit"
+  },
+  {
+    "hash": "59898548a2d2ce91bb20eb60fecac320cc68b9bb",
+    "date": "2026-05-07",
+    "subject": "Huijausvaroitukset"
+  },
+  {
+    "hash": "73c16755f3cdc9e7ccfa80339ef9363484da81e7",
+    "date": "2026-05-07",
+    "subject": "secrets"
+  },
   {
     "hash": "b452f10203d293c54622c4b8a192525240eb9d04",
     "date": "2026-05-07",
