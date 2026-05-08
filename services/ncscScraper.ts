@@ -10,18 +10,29 @@ export interface NcscScamItem {
   publishedAt: string;
 }
 
+export type NcscStructureVersion = '2026' | '2025' | 'news' | 'unknown';
+
 export interface NcscScrapeResult {
   url: string;
   weekLabel: string;
   publishedAt: string;
   scamItems: NcscScamItem[];
-  structureVersion: '2026' | '2025' | 'unknown';
+  structureVersion: NcscStructureVersion;
+}
+
+export interface NcscFeedTarget {
+  url: string;
+  title: string;
+  publishedAt?: string;
+  kind: 'review' | 'news';
 }
 
 type FeedItem = {
   title?: string;
   link?: string;
   pubDate?: string;
+  description?: string;
+  'content:encoded'?: string;
 };
 
 type RssFeed = {
@@ -43,6 +54,8 @@ const USER_AGENT = 'Mozilla/5.0 (compatible; SeniorSurf-bot/1.0)';
 const REVIEW_TITLE = 'viikkokatsaus';
 const SCAM_SECTION_HEADING = 'Ajankohtaiset huijaukset';
 const MODEL = 'gemini-3-flash-preview';
+const NEWS_LOOKBACK_MS = 14 * 24 * 60 * 60 * 1000;
+const MAX_NEWS_TARGETS = 5;
 
 const CONSUMER_KEYWORDS = [
   'huijaus',
@@ -59,6 +72,15 @@ const CONSUMER_KEYWORDS = [
   'varaus',
   'booking',
   'nimissä',
+  'pikaviesti',
+  'whatsapp',
+  'telegram',
+  'signal',
+  'tilikaappaus',
+  'tilin kaappaus',
+  'kaappaus',
+  'rikollis',
+  'suojautumiskeino',
 ];
 
 const TECHNICAL_KEYWORDS = [
@@ -105,6 +127,54 @@ const sortByDateDesc = (items: FeedItem[]) => [...items].sort((a, b) => {
   return bTime - aTime;
 });
 
+const getFeedPublishedAt = (item: FeedItem) => {
+  if (!item.pubDate) return undefined;
+  const time = Date.parse(item.pubDate);
+  return Number.isFinite(time) ? new Date(time).toISOString() : undefined;
+};
+
+const isRecentFeedItem = (item: FeedItem) => {
+  if (!item.pubDate) return true;
+  const publishedAt = Date.parse(item.pubDate);
+  return Number.isFinite(publishedAt) && Date.now() - publishedAt <= NEWS_LOOKBACK_MS;
+};
+
+const getFeedSearchText = (item: FeedItem) => [
+  item.title ?? '',
+  item.description ?? '',
+  item['content:encoded'] ?? '',
+].join(' ');
+
+const isReviewFeedItem = (item: FeedItem) => (
+  Boolean(item.link) && item.title?.toLocaleLowerCase('fi-FI').includes(REVIEW_TITLE)
+);
+
+const isRelevantNewsFeedItem = (item: FeedItem) => {
+  if (!item.link || isReviewFeedItem(item) || !isRecentFeedItem(item)) return false;
+  const text = getFeedSearchText(item);
+  return hasKeyword(text, CONSUMER_KEYWORDS) && !hasKeyword(text, TECHNICAL_KEYWORDS);
+};
+
+const toFeedTarget = (item: FeedItem, kind: NcscFeedTarget['kind']): NcscFeedTarget | null => {
+  const url = item.link?.trim();
+  if (!url) return null;
+  return {
+    url,
+    title: cleanText(item.title ?? url, 180),
+    publishedAt: getFeedPublishedAt(item),
+    kind,
+  };
+};
+
+const uniqueTargets = (targets: NcscFeedTarget[]) => {
+  const seen = new Set<string>();
+  return targets.filter((target) => {
+    if (seen.has(target.url)) return false;
+    seen.add(target.url);
+    return true;
+  });
+};
+
 const switchReviewUrlPath = (url: string) => {
   if (url.includes('/ajankohtaista/')) return url.replace('/ajankohtaista/', '/uutiset/');
   if (url.includes('/uutiset/')) return url.replace('/uutiset/', '/ajankohtaista/');
@@ -136,6 +206,12 @@ const extractPublishedAt = (root: HTMLElement, weekLabel: string) => {
   const datetime = timeElement?.getAttribute('datetime')?.trim();
   if (datetime) return datetime;
   return dateFromIsoWeek(weekLabel);
+};
+
+const extractNewsPublishedAt = (root: HTMLElement, fallbackPublishedAt?: string) => {
+  const timeElement = root.querySelector('time');
+  const datetime = timeElement?.getAttribute('datetime')?.trim();
+  return datetime || fallbackPublishedAt || new Date().toISOString();
 };
 
 const toScamItem = (
@@ -190,6 +266,32 @@ export async function fetchLatestNcscReviewUrl(): Promise<string | null> {
   ));
 
   return latest?.link?.trim() ?? null;
+}
+
+export async function fetchNcscFeedTargets(): Promise<NcscFeedTarget[]> {
+  const response = await fetch(RSS_URL, {
+    headers: { 'User-Agent': USER_AGENT },
+  });
+
+  if (!response.ok) {
+    throw new Error(`NCSC RSS fetch failed: ${response.status}`);
+  }
+
+  const xml = await response.text();
+  const parser = new XMLParser({ ignoreAttributes: false });
+  const feed = parser.parse(xml) as RssFeed;
+  const items = sortByDateDesc(ensureArray(feed.rss?.channel?.item));
+  const reviewTarget = toFeedTarget(items.find(isReviewFeedItem) ?? {}, 'review');
+  const newsTargets = items
+    .filter(isRelevantNewsFeedItem)
+    .slice(0, MAX_NEWS_TARGETS)
+    .map((item) => toFeedTarget(item, 'news'))
+    .filter((target): target is NcscFeedTarget => Boolean(target));
+
+  return uniqueTargets([
+    ...(reviewTarget ? [reviewTarget] : []),
+    ...newsTargets,
+  ]);
 }
 
 export async function fetchPageHtml(url: string): Promise<string> {
@@ -276,6 +378,36 @@ export async function parseNcscReview(html: string, url: string): Promise<NcscSc
   }
 
   return { url, weekLabel, publishedAt, scamItems: [], structureVersion: 'unknown' };
+}
+
+export async function parseNcscNews(
+  html: string,
+  url: string,
+  fallbackTitle = '',
+  fallbackPublishedAt?: string
+): Promise<NcscScrapeResult> {
+  const root = parse(html);
+  const contentRoot = root.querySelector('article') ?? root.querySelector('main') ?? root;
+  const heading = getElementText(root.querySelector('h1') ?? contentRoot) || fallbackTitle;
+  const publishedAt = extractNewsPublishedAt(root, fallbackPublishedAt);
+  const bodyText = contentRoot
+    .querySelectorAll('p,li')
+    .map(getElementText)
+    .filter((text) => text.length > 20)
+    .join(' ');
+  const searchableText = `${heading} ${bodyText}`;
+
+  if (!heading || !bodyText || !hasKeyword(searchableText, CONSUMER_KEYWORDS) || hasKeyword(heading, TECHNICAL_KEYWORDS)) {
+    return { url, weekLabel: 'Uutinen', publishedAt, scamItems: [], structureVersion: 'unknown' };
+  }
+
+  return {
+    url,
+    weekLabel: 'Uutinen',
+    publishedAt,
+    scamItems: [toScamItem(heading, bodyText, 'Uutinen', url, publishedAt)],
+    structureVersion: 'news',
+  };
 }
 
 export async function simplifyForSeniors(item: NcscScamItem): Promise<SimplifiedScam> {
