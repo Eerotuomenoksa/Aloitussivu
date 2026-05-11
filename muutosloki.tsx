@@ -2,50 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import {
-  CHANGELOG_DEPLOYMENTS,
   CHANGELOG_GENERATED_AT,
   CHANGELOG_RECENT_COMMITS,
   CHANGELOG_WORKTREE_SUMMARY,
-  type ChangelogDeployment,
   type ChangelogCommit,
 } from './changelogData';
 
 function formatCommitHash(hash: string) {
   return hash.slice(0, 7);
-}
-
-function formatDeploymentTime(value: string) {
-  if (!value) return '';
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return value;
-  return new Intl.DateTimeFormat('fi-FI', {
-    day: 'numeric',
-    month: 'numeric',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  }).format(date);
-}
-
-function DeploymentCard({ deployment }: { deployment: ChangelogDeployment }) {
-  return (
-    <article className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm">
-      <div className="flex flex-wrap items-center gap-3">
-        <span className="font-mono text-xs font-black rounded-full bg-emerald-100 text-emerald-900 dark:bg-emerald-900/40 dark:text-emerald-200 px-3 py-1">
-          {deployment.environment}
-        </span>
-        <span className="font-mono text-xs font-black rounded-full bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-200 px-3 py-1">
-          {deployment.state}
-        </span>
-        <span className="text-sm font-bold text-slate-500 dark:text-slate-400">
-          {formatDeploymentTime(deployment.createdAt)}
-        </span>
-      </div>
-      <p className="mt-3 text-base md:text-lg font-bold text-slate-800 dark:text-slate-200">
-        {deployment.description || deployment.subject}
-      </p>
-    </article>
-  );
 }
 
 function CommitCard({ commit }: { commit: ChangelogCommit }) {
@@ -76,6 +40,8 @@ function HomeLink() {
 }
 
 function App() {
+  const latestSummary = CHANGELOG_WORKTREE_SUMMARY[0] || CHANGELOG_RECENT_COMMITS[0]?.subject || '';
+
   return (
     <main className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white">
       <div className="mx-auto max-w-6xl px-4 py-8 md:px-8 md:py-12 space-y-10">
@@ -96,39 +62,20 @@ function App() {
         </header>
 
         <section className="space-y-4">
-          <h2 className="text-2xl md:text-3xl font-black">Tämän päivän muutokset</h2>
-          {CHANGELOG_WORKTREE_SUMMARY.length === 0 ? (
-            <p className="text-slate-600 dark:text-slate-300">
-              Tämän ajon aikana ei löytynyt uusia paikallisia muutoksia.
+          <h2 className="text-2xl md:text-3xl font-black">Viimeisin muutos</h2>
+          <article className="rounded-3xl border-4 border-indigo-200 bg-white p-6 shadow-lg dark:border-indigo-900/60 dark:bg-slate-900">
+            <p className="text-xl md:text-2xl font-black leading-snug text-slate-900 dark:text-white">
+              {latestSummary || 'Ei uusia muutoksia saatavilla.'}
             </p>
-          ) : (
-            <div className="grid gap-4">
-              {CHANGELOG_WORKTREE_SUMMARY.map((summary) => (
-                <article key={summary} className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm">
-                  <p className="text-base md:text-lg font-bold text-slate-800 dark:text-slate-200">
+          </article>
+          {CHANGELOG_WORKTREE_SUMMARY.length > 1 && (
+            <div className="grid gap-3">
+              {CHANGELOG_WORKTREE_SUMMARY.slice(1).map((summary) => (
+                <article key={summary} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+                  <p className="text-base md:text-lg font-bold text-slate-700 dark:text-slate-200">
                     {summary}
                   </p>
                 </article>
-              ))}
-            </div>
-          )}
-        </section>
-
-        <section className="space-y-4">
-          <div className="flex flex-wrap items-baseline gap-3">
-            <h2 className="text-2xl md:text-3xl font-black">Viimeisimmät julkaisut</h2>
-            <span className="text-sm text-slate-500 dark:text-slate-400">
-              {CHANGELOG_DEPLOYMENTS.length} merkintää
-            </span>
-          </div>
-          {CHANGELOG_DEPLOYMENTS.length === 0 ? (
-            <p className="text-slate-600 dark:text-slate-300">
-              Julkaisutietoja ei saatu tähän ajoon.
-            </p>
-          ) : (
-            <div className="grid gap-4">
-              {CHANGELOG_DEPLOYMENTS.map((deployment) => (
-                <DeploymentCard key={deployment.id} deployment={deployment} />
               ))}
             </div>
           )}

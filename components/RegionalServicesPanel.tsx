@@ -12,7 +12,6 @@ interface RegionalServicesPanelProps {
   fontSizeStep?: number;
   onReportLink?: (draft: LinkReportDraft) => void;
   showNews?: boolean;
-  weatherSlot?: React.ReactNode;
 }
 
 const textClasses = [
@@ -70,7 +69,7 @@ const ServiceLink: React.FC<{ provider: Provider; index: number; fontSizeStep: n
   );
 };
 
-const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality, fontSizeStep = 0, onReportLink, showNews = true, weatherSlot }) => {
+const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality, fontSizeStep = 0, onReportLink, showNews = true }) => {
   const { language, t } = useI18n();
   const [query, setQuery] = useState('');
   const [isManualQuery, setIsManualQuery] = useState(false);
@@ -135,7 +134,7 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
 
           <NearbyGuidancePlaces locality={locality} fontSizeStep={fontSizeStep} />
 
-          <div className="grid gap-6 xl:grid-cols-[minmax(0,2fr)_minmax(0,1fr)_minmax(0,1fr)] xl:items-start">
+          <div className="grid gap-6 xl:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] xl:items-start">
             {showNews && (
                 <div className="space-y-3">
                   <div className="flex items-center justify-between gap-4">
@@ -155,11 +154,6 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
                   </div>
                   <LocalNewsHeadlines feeds={rssFeeds} fallbackUrl={fallbackNewsUrl} fontSizeStep={fontSizeStep} compact />
                 </div>
-            )}
-            {weatherSlot && (
-              <aside className={showNews ? 'xl:pt-10' : ''}>
-                {weatherSlot}
-              </aside>
             )}
             <div>
               <ScamAlertsBanner compact />

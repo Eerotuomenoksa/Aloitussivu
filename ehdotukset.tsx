@@ -10,12 +10,12 @@ import {
   ApprovedLinkSuggestion,
 } from './approvedLinks';
 import {
+  addBlockedLink,
   ManagedLinkReportEntry,
   subscribeLinkReports,
   updateLinkReportStatus,
 } from './linkVisibility';
 import {
-  ADMIN_EMAIL,
   getUserAuthDebugInfo,
   getUserEmail,
   isAdminUser,
@@ -47,8 +47,8 @@ function exportJson(filename: string, content: unknown) {
 
 const statusLabel = {
   pending: 'Odottaa',
-  approved: 'Hyväksytty',
-  rejected: 'Hylätty',
+  approved: 'Toteutettu',
+  rejected: 'Sivuutettu',
 };
 
 const severityLabel = {
@@ -237,6 +237,16 @@ function App() {
     }
   };
 
+  const hideReportedLink = async (report: ManagedLinkReportEntry) => {
+    setBusyId(report.id);
+    try {
+      await addBlockedLink(report.url);
+      await updateLinkReportStatus(report.id, 'approved', user?.email);
+    } finally {
+      setBusyId(null);
+    }
+  };
+
   const copyApprovedJson = async () => {
     await navigator.clipboard.writeText(JSON.stringify(approvedLinks, null, 2));
   };
@@ -263,7 +273,7 @@ function App() {
           </span>
           <h1 className="text-4xl md:text-6xl font-black tracking-tighter">Linkkiehdotukset</h1>
           <p className="max-w-3xl text-base md:text-lg text-slate-600 dark:text-slate-300">
-            Ilmoitetut muutokset tallentuvat yhteiseen ylläpitojonoon. Hyväksyntä on rajattu Google-tunnukselle {ADMIN_EMAIL}.
+            Ilmoitetut muutokset tallentuvat yhteiseen ylläpitojonoon. Hyväksyntä on rajattu ylläpitäjän Google-tunnukselle.
           </p>
         </header>
 
@@ -280,7 +290,7 @@ function App() {
           <section className="mx-auto max-w-xl rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-8 shadow-sm space-y-6">
             <h2 className="text-3xl font-black">Kirjaudu ylläpitoon</h2>
             <p className="font-bold text-slate-600 dark:text-slate-300">
-              Käytä Google-tunnusta {ADMIN_EMAIL}.
+              Käytä ylläpitäjän Google-tunnusta.
             </p>
             {authError && <p className="font-bold text-rose-600">{authError}</p>}
             <button
@@ -295,7 +305,7 @@ function App() {
           <section className="max-w-2xl rounded-2xl border border-rose-200 dark:border-rose-900 bg-white dark:bg-slate-900 p-8 shadow-sm space-y-4">
             <h2 className="text-3xl font-black">Ei käyttöoikeutta</h2>
             <p className="font-bold text-slate-600 dark:text-slate-300">
-              Olet kirjautunut osoitteella {userEmail || 'tuntematon sähköposti'}. Ylläpitoon pääsee vain osoitteella {ADMIN_EMAIL}.
+              Olet kirjautunut osoitteella {userEmail || 'tuntematon sähköposti'}. Ylläpitoon pääsee vain ylläpitäjän tunnuksella.
             </p>
             {authDebugInfo && (
               <p className="rounded-xl bg-slate-100 dark:bg-slate-950 p-3 text-sm font-bold text-slate-600 dark:text-slate-300">
@@ -533,7 +543,7 @@ function App() {
                             onClick={() => rejectReport(report)}
                             className="rounded-full bg-slate-200 hover:bg-slate-300 disabled:opacity-50 text-slate-900 px-5 py-3 font-black shadow-md transition-all active:scale-95"
                           >
-                            Hylkää
+                            Sivuuta ilmoitus
                           </button>
                           <button
                             type="button"
@@ -541,7 +551,7 @@ function App() {
                             onClick={() => approveReport(report)}
                             className="rounded-full bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white px-5 py-3 font-black shadow-md transition-all active:scale-95"
                           >
-                            Hyväksy sivustolle
+                            Lisää linkki
                           </button>
                         </div>
                       </article>
@@ -575,7 +585,15 @@ function App() {
                           onClick={() => rejectReport(report)}
                           className="rounded-full bg-slate-200 hover:bg-slate-300 disabled:opacity-50 text-slate-900 px-5 py-3 font-black shadow-md transition-all active:scale-95"
                         >
-                          Merkitse käsitellyksi
+                          Sivuuta ilmoitus
+                        </button>
+                        <button
+                          type="button"
+                          disabled={busyId === report.id}
+                          onClick={() => hideReportedLink(report)}
+                          className="rounded-full bg-rose-600 hover:bg-rose-700 disabled:opacity-50 text-white px-5 py-3 font-black shadow-md transition-all active:scale-95"
+                        >
+                          Poista linkki näkyvistä
                         </button>
                       </div>
                     </article>

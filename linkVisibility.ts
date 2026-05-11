@@ -18,6 +18,7 @@ const LINK_REPORTS_KEY = 'linkReports';
 const LINK_HEALTH_CHANGE_EVENT = 'linkhealthchange';
 const LINK_REPORTS_CHANGE_EVENT = 'linkreportschange';
 const LINK_REPORTS_COLLECTION = 'linkReports';
+const BLOCKED_LINKS_COLLECTION = 'blockedLinks';
 
 export type LinkReportStatus = 'pending' | 'approved' | 'rejected';
 
@@ -50,7 +51,26 @@ const writeJsonArray = (key: string, value: string[]) => {
   }
 };
 
-const getBlockedUrls = () => new Set(BLOCKED_LINK_URLS.map(normalizeUrl));
+let runtimeBlockedUrlsCache = (readJsonArray(RUNTIME_BLOCKED_LINKS_KEY) as string[]).map(normalizeUrl);
+
+const emitLinkHealthChange = () => {
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new Event(LINK_HEALTH_CHANGE_EVENT));
+  }
+};
+
+const setRuntimeBlockedUrlsCache = (urls: string[]) => {
+  runtimeBlockedUrlsCache = [...new Set(urls.map(normalizeUrl))];
+  writeJsonArray(RUNTIME_BLOCKED_LINKS_KEY, runtimeBlockedUrlsCache);
+  emitLinkHealthChange();
+};
+
+const getRuntimeBlockedUrls = () => runtimeBlockedUrlsCache;
+
+const getBlockedUrls = () => new Set([
+  ...BLOCKED_LINK_URLS.map(normalizeUrl),
+  ...getRuntimeBlockedUrls(),
+]);
 
 export const getLinkReports = () => readJsonArray(LINK_REPORTS_KEY) as LinkReportEntry[];
 
@@ -170,15 +190,33 @@ export const updateLinkReportStatus = async (
   emitLinkReportsChange();
 };
 
-export const addBlockedLink = (url: string) => {
+export const addBlockedLink = async (url: string) => {
   const normalized = normalizeUrl(url);
-  const runtimeBlocked = new Set(readJsonArray(RUNTIME_BLOCKED_LINKS_KEY) as string[]);
+  const runtimeBlocked = new Set(runtimeBlockedUrlsCache);
   runtimeBlocked.add(normalized);
-  writeJsonArray(RUNTIME_BLOCKED_LINKS_KEY, [...runtimeBlocked]);
+  setRuntimeBlockedUrlsCache([...runtimeBlocked]);
 
-  if (typeof window !== 'undefined') {
-    window.dispatchEvent(new Event(LINK_HEALTH_CHANGE_EVENT));
+  if (isFirebaseConfigured) {
+    const db = getFirebaseDb();
+    if (db) {
+      await setDoc(doc(db, BLOCKED_LINKS_COLLECTION, encodeURIComponent(normalized)), {
+        url: normalized,
+        createdAt: new Date().toISOString(),
+      });
+    }
   }
+};
+
+const subscribeBlockedLinks = () => {
+  if (!isFirebaseConfigured) return () => {};
+  const db = getFirebaseDb();
+  if (!db) return () => {};
+
+  return onSnapshot(
+    collection(db, BLOCKED_LINKS_COLLECTION),
+    (snapshot) => setRuntimeBlockedUrlsCache(snapshot.docs.map((document) => normalizeUrl(String(document.data().url ?? ''))).filter(Boolean)),
+    () => setRuntimeBlockedUrlsCache(readJsonArray(RUNTIME_BLOCKED_LINKS_KEY) as string[])
+  );
 };
 
 export const useLinkVisibilityVersion = () => {
@@ -188,9 +226,11 @@ export const useLinkVisibilityVersion = () => {
     const handleChange = () => setVersion((current) => current + 1);
     window.addEventListener('storage', handleChange);
     window.addEventListener(LINK_HEALTH_CHANGE_EVENT, handleChange);
+    const unsubscribeBlockedLinks = subscribeBlockedLinks();
     return () => {
       window.removeEventListener('storage', handleChange);
       window.removeEventListener(LINK_HEALTH_CHANGE_EVENT, handleChange);
+      unsubscribeBlockedLinks();
     };
   }, []);
 

@@ -221,11 +221,18 @@ const AppContent: React.FC = () => {
             </button>
           </nav>
 
-          <div className="mt-8 grid gap-6 xl:grid-cols-[minmax(0,1fr)_22rem_24rem] xl:items-center">
+          <div className="mt-8 grid gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(0,46rem)_24rem] xl:items-center">
             {uiVisibility.googleSearch && <SearchBar fontSizeStep={fontSizeStep} variant="header" />}
-            {uiVisibility.assistant && (
-              <div className="relative">
-                <Assistant variant="header" />
+            {(uiVisibility.assistant || uiVisibility.weather) && (
+              <div className="grid gap-4 md:grid-cols-2 md:items-stretch">
+                {uiVisibility.assistant && (
+                  <div className="relative">
+                    <Assistant variant="header" />
+                  </div>
+                )}
+                {uiVisibility.weather && (
+                  <WeatherCard onLocationResolved={updateLocality} variant="compact" />
+                )}
               </div>
             )}
             {uiVisibility.clock && <Clock fontSizeStep={fontSizeStep} variant="compact" />}
@@ -292,7 +299,6 @@ const AppContent: React.FC = () => {
               fontSizeStep={fontSizeStep}
               onReportLink={openReportModal}
               showNews={uiVisibility.regionalNews}
-              weatherSlot={uiVisibility.weather ? <WeatherCard onLocationResolved={updateLocality} variant="compact" /> : null}
             />
           )}
 

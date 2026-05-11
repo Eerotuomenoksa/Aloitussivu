@@ -44,7 +44,7 @@ const ScamAlertsBanner: React.FC<ScamAlertsBannerProps> = ({ compact = false }) 
   useEffect(() => subscribeScamAlerts(setAlerts), []);
 
   const visibleAlerts = useMemo(
-    () => alerts.filter(isVisibleAlert).slice(0, 3),
+    () => alerts.filter(isVisibleAlert).slice(0, 2),
     [alerts]
   );
 
