@@ -90,6 +90,10 @@ const getSignInErrorMessage = (error: unknown) => {
     return 'Google-kirjautuminen ei ole käytössä Firebase Authenticationissa. Ota Google provider käyttöön Firebase Consolessa.';
   }
 
+  if (code === 'auth/api-key-not-valid') {
+    return 'Firebase API key ei kelpaa. Tarkista GitHub Secrets -arvo VITE_FIREBASE_API_KEY ja varmista, että se on saman Firebase-projektin Web app -asetuksista kuin muut VITE_FIREBASE_* arvot.';
+  }
+
   if (code === 'auth/popup-blocked') {
     return 'Selain esti Google-kirjautumisen ponnahdusikkunan. Salli ponnahdusikkunat tälle sivulle ja yritä uudelleen.';
   }

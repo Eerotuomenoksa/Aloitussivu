@@ -465,6 +465,7 @@ export const SHORTCUTS: Shortcut[] = [
       { name: 'Kansalaisopistot', url: 'https://kansalaisopistot.fi' },
       { name: 'Martat', url: 'https://www.martat.fi' },
       { name: 'Suomen Latu', url: 'https://www.suomenlatu.fi' },
+      { name: 'Geokätköily', url: 'https://www.geocache.fi/' },
       { name: 'Vahvike', url: 'https://vahvike.fi/' },
       { name: 'Suomi.fi harrastushaku', url: 'https://www.suomi.fi/palvelut/harrastushaku' }
     ]

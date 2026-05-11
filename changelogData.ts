@@ -21,15 +21,18 @@ export type ChangelogCommit = {
   subject: string;
 };
 
-export const CHANGELOG_GENERATED_AT = "11.5.2026 klo 08.40";
+export const CHANGELOG_GENERATED_AT = "11.5.2026 klo 08.56";
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
-  "Alueellisiin palveluihin lisättiin ja laajennettiin palvelualue-mallia, jotta joukkoliikennejärjestäjät, kuten HSL, Nysse, Föli, Linkki ja Vilkku, voidaan jakaa usealle kunnalle yhdestä paikasta.",
-  "Alueellisista linkeistä poistettiin tuplana näkynyt kunnan verkkosivut -linkki, kun kunnan palvelut näyttää saman asian käyttäjälle selkeämmin.",
   "Liikenne-kategoriaa täydennettiin suomalaisilla joukkoliikennejärjestäjillä ja suurilla liikennöitsijöillä.",
   "Linkkien tarkistusdata ja ylläpitoloki päivitettiin uusimman buildin yhteydessä."
 ];
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
+  {
+    "hash": "0d557441cc41361cf4078dff093e84e38c4e54de",
+    "date": "2026-05-11",
+    "subject": "Tupla linkkien poistoja ja alueellisten linkkien näkyvyys, lisätty myös paikallisia urheiluseuroja"
+  },
   {
     "hash": "bb547c7ebb9331b5a5f947b50d8aba0d756cb068",
     "date": "2026-05-08",
