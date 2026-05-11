@@ -21,25 +21,35 @@ export type ChangelogCommit = {
   subject: string;
 };
 
-export const CHANGELOG_GENERATED_AT = "8.5.2026 klo 08.02";
+export const CHANGELOG_GENERATED_AT = "11.5.2026 klo 08.40";
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
-  "Etusivun header uudistettiin: Google-haku nostettiin yläosaan, tekoälyrobotti siirrettiin headeriin kellon vasemmalle puolelle ja kello, päivämäärä sekä liputuspäivät näytetään oikeassa reunassa tiiviimpänä kokonaisuutena.",
-  "Headerin toimintoja siivottiin: kielivalinta ja asetukset jäivät yläosaan, vaalea ja tumma tila siirrettiin asetusten alle, Ohje säilytettiin headerissa ja Tietoa siirrettiin footeriin.",
-  "Ylläpito, Muutosloki, Linkkiluettelo sekä Ilmoita uusi linkki siirrettiin footeriin, jotta etusivun yläosa pysyy rauhallisempana.",
-  "Suosikit nostettiin omaksi osiokseen ennen alueellisia palveluita, jolloin käyttäjän tallentamat tärkeät linkit löytyvät aiempaa nopeammin.",
-  "Alueelliset palvelut -osion yläosa tiivistettiin: kuvausteksti poistettiin, kunta-valinta pienennettiin ja se asetetaan leveällä näytöllä samalle riville otsikon kanssa.",
-  "Paikallisuutiset, sää ja huijausvaroitukset koottiin samalle riville. Uutisista näytetään vain otsikot, sääkorttia pienennettiin kategoriaruudun suuntaan ja huijausvaroituksista poistettiin punainen Ajankohtaista-teksti.",
-  "Sivulle lisättiin kelluva saavutettava ohjausryhmä tekstin suurentamiseen, pienentämiseen, koon palauttamiseen sekä sivun alkuun palaamiseen. Painikkeiden värit yhtenäistettiin sivun indigo/purppura-värimaailmaan.",
-  "Mobiilinäkymää parannettiin pienentämällä headerissa näkyvää tekoälyrobottia ja kasvattamalla sivun perusfonttiskaalaa 10 prosenttia aiempaan verrattuna.",
-  "Etusivulle lisättiin uudet kategoriat Museot, Potilasyhdistykset ja Eläkeyhdistykset sekä CSV-pohjainen datan generointi näille linkkilistoille.",
-  "Lisättiin uusi Kotihoito-palvelut-kategoria VTKL:n jäsenyhteisöjen kotihoitopalveluista sekä paikkakuntatiedot linkkien yhteyteen.",
-  "Vapaa-aika-kategoriaan lisättiin Vahvike-palvelu.",
-  "Ylläpitoon lisättiin huijausvaroitusten NCSC-automaatio, joka hakee Kyberturvallisuuskeskuksen viikkokatsauksia ja tallentaa selkokielistettyjä varoituksia Firestoreen.",
-  "Firebase-määrityksiä täydennettiin Functions-, Firestore- ja ylläpidon testikäyttöä varten sekä lisättiin Firebase-käyttöönoton ohjetiedosto.",
-  "Saman kategorian sisäiset tuplalinkit poistettiin ja CSV-generaattori deduplikoi jatkossa linkit URL-osoitteen perusteella."
+  "Alueellisiin palveluihin lisättiin ja laajennettiin palvelualue-mallia, jotta joukkoliikennejärjestäjät, kuten HSL, Nysse, Föli, Linkki ja Vilkku, voidaan jakaa usealle kunnalle yhdestä paikasta.",
+  "Alueellisista linkeistä poistettiin tuplana näkynyt kunnan verkkosivut -linkki, kun kunnan palvelut näyttää saman asian käyttäjälle selkeämmin.",
+  "Liikenne-kategoriaa täydennettiin suomalaisilla joukkoliikennejärjestäjillä ja suurilla liikennöitsijöillä.",
+  "Linkkien tarkistusdata ja ylläpitoloki päivitettiin uusimman buildin yhteydessä."
 ];
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
+  {
+    "hash": "bb547c7ebb9331b5a5f947b50d8aba0d756cb068",
+    "date": "2026-05-08",
+    "subject": "Paikalliset linkit ja hakupäivitykset"
+  },
+  {
+    "hash": "e2fe1b4c2593e9f1db47710070c000b1a7c03909",
+    "date": "2026-05-08",
+    "subject": "ilmoita linkki lähetä-nappulan korjaus ja alueellisten linkkien näkyvyys"
+  },
+  {
+    "hash": "4578fb7091e7ebb23cf5214e9c59474b8087942d",
+    "date": "2026-05-08",
+    "subject": "Huijausvaroitusten tarkennukset"
+  },
+  {
+    "hash": "b75d9b8c630ea216c1e1e5e5cc8c7247cb8a74e2",
+    "date": "2026-05-08",
+    "subject": "muutosloki tarkennus"
+  },
   {
     "hash": "360ea3d3dd76c6a4612efdaa9257db3c5827eeb6",
     "date": "2026-05-08",
@@ -64,6 +74,16 @@ export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
     "hash": "73c16755f3cdc9e7ccfa80339ef9363484da81e7",
     "date": "2026-05-07",
     "subject": "secrets"
+  },
+  {
+    "hash": "2222e5e511815ba3928dd5653e77296b6123d556",
+    "date": "2026-05-07",
+    "subject": "Huijausvaroitukset toimii ja on etusivulla"
+  },
+  {
+    "hash": "8cd1a097e22536e18a62bfdc7e9e7aac0ff1a408",
+    "date": "2026-05-07",
+    "subject": "Päivitä muutosloki"
   },
   {
     "hash": "b452f10203d293c54622c4b8a192525240eb9d04",

@@ -4,6 +4,7 @@ import { MUNICIPALITY_WEBSITE_LANGUAGE_URLS } from './municipalityWebsiteLocales
 import { MUNICIPALITY_SWEDISH_NAMES_BY_CODE } from './municipalityNames';
 import { LOCAL_NEWSPAPER_FEEDS } from './localNewspaperFeeds';
 import { LOCAL_NEWSPAPER_LINKS } from './localNewspaperLinks';
+import { LOCAL_SPORTS_CLUBS } from './localSportsClubs';
 import type { RegionalProvider } from './communityLinks';
 import { filterVisibleProviders } from './linkVisibility';
 import { LocalityInfo, Municipality, Provider, RegionalContext, RssFeedConfig, Shortcut } from './types';
@@ -400,6 +401,23 @@ const prioritizeRegionalProviders = (providers: Provider[], context: RegionalCon
   [...providers].sort((a, b) => regionalProviderRank(a, context) - regionalProviderRank(b, context))
 );
 
+const getProviderPlaceName = (provider: Provider) => {
+  const regional = provider as RegionalProvider;
+  return provider.group || regional.municipality || regional.area || '';
+};
+
+const sortProvidersByLocality = (providers: Provider[], context: RegionalContext) => (
+  [...providers].sort((a, b) => {
+    const rankDiff = regionalProviderRank(a, context) - regionalProviderRank(b, context);
+    if (rankDiff !== 0) return rankDiff;
+
+    const placeDiff = getProviderPlaceName(a).localeCompare(getProviderPlaceName(b), 'fi');
+    if (placeDiff !== 0) return placeDiff;
+
+    return a.name.localeCompare(b.name, 'fi');
+  })
+);
+
 const filterRegionalProviders = (providers: Provider[], context: RegionalContext) => (
   providers.filter((provider) => regionalProviderRank(provider, context) < 2)
 );
@@ -448,6 +466,11 @@ const getMunicipalityInflections = (name: string) => {
 
   return [...forms];
 };
+
+const normalizeNameForMatch = (value: string) => normalizeText(value)
+  .replace(/[-/]/g, ' ')
+  .replace(/\s+/g, ' ')
+  .trim();
 
 export const findMunicipality = (value: string): Municipality | null => {
   const normalized = normalizeMunicipality(value);
@@ -562,12 +585,20 @@ const getRegionalNewspaperProviders = (context: RegionalContext): Provider[] => 
     .filter((feed) => normalizeMunicipality(feed.municipality) === key)
     .map((feed) => normalizeText(feed.name)));
 
-  if (localNewspaperNames.size === 0) return [];
-
   return LOCAL_NEWSPAPER_LINKS
-    .filter((link) => localNewspaperNames.has(normalizeText(link.name)))
+    .filter((link) => {
+      if (localNewspaperNames.has(normalizeText(link.name))) return true;
+
+      const newspaperName = ` ${normalizeNameForMatch(link.name)} `;
+      return getMunicipalityInflections(context.municipality.name)
+        .some((form) => newspaperName.includes(` ${normalizeNameForMatch(form)} `));
+    })
     .map((link) => ({ ...link, group: context.municipality.name }));
 };
+
+const getRegionalSportsClubProviders = (context: RegionalContext): Provider[] => (
+  sortProvidersByLocality(filterRegionalProviders(LOCAL_SPORTS_CLUBS, context), context)
+);
 
 export const getRegionalRssFeeds = (context: RegionalContext): RssFeedConfig[] => {
   const municipality = context.municipality.name;
@@ -648,7 +679,15 @@ export const getLocalizedShortcuts = (shortcuts: Shortcut[], locality: LocalityI
       return { ...shortcut, providers: uniqueProviders([...getRegionalNewspaperProviders(context), ...shortcut.providers]) };
     }
 
-    if (shortcut.name === 'Museot' || shortcut.name === 'Eläkeyhdistykset') {
+    if (shortcut.name === 'Urheilu') {
+      return { ...shortcut, providers: uniqueProviders([...getRegionalSportsClubProviders(context), ...shortcut.providers]) };
+    }
+
+    if (shortcut.name === 'Museot' || shortcut.name === 'Teatterit') {
+      return { ...shortcut, providers: uniqueProviders(sortProvidersByLocality(shortcut.providers, context)) };
+    }
+
+    if (shortcut.name === 'Eläkeyhdistykset') {
       return { ...shortcut, providers: uniqueProviders(prioritizeRegionalProviders(filterRegionalProviders(shortcut.providers, context), context)) };
     }
 

@@ -26,6 +26,13 @@ const MANUALLY_VERIFIED_URLS = new Set([
   'https://www.gutenberg.org',
   'https://www.kirjasampo.fi',
   'https://nyaostis.fi',
+  'https://hifkfotboll.fi',
+  'https://hjk.fi',
+  'https://hpk.fi',
+  'https://www.hyvinkaantahko.fi',
+  'https://www.jku.fi',
+  'https://www.joensuunkataja.fi',
+  'https://www.jypliiga.fi',
 ]);
 
 const rows = [];
@@ -228,6 +235,11 @@ const collectLinks = async () => {
      addRow('Lehdet', 'Suomalaiset paikallislehdet', match[1], match[2], 'localNewspaperLinks.ts');
    }
 
+  const localSportsClubs = await readText('localSportsClubs.ts');
+  for (const match of localSportsClubs.matchAll(/\{\s*name:\s*'([^']+)',\s*url:\s*'([^']+)',\s*group:\s*'([^']+)'/g)) {
+    addRow('Paikalliset urheiluseurat', match[3], match[1], match[2], 'localSportsClubs.ts');
+  }
+
   addRow('Sovelluksen omat linkit', 'Footer', 'SeniorSurf', 'https://seniorsurf.fi/', 'App.tsx');
   addRow('Sovelluksen omat linkit', 'Footer', 'SeniorSurf logo', 'https://seniorsurf.fi/wp-content/uploads/SeniorSurf_White-320-x-102-px.svg', 'App.tsx');
   addRow('Sovelluksen omat linkit', 'Sää', 'Ilmatieteen laitos', 'https://www.ilmatieteenlaitos.fi/', 'WeatherCard.tsx');
@@ -244,6 +256,7 @@ const collectLinks = async () => {
     municipalityWebsiteCount: [...municipalityWebsites.matchAll(/'([^']+)':\s*'([^']+)'/g)].length,
     municipalityWebsiteLocaleCount: [...municipalityWebsiteLocales.matchAll(/^\s*(sv|en|uk|et|ru|se):\s*"([^"]+)"/gm)].length,
     localNewspaperCount: [...localNewspapers.matchAll(/\{\s*"name":\s*"([^"]+)",\s*"url":\s*"([^"]+)"\s*\}/g)].length,
+    localSportsClubCount: [...localSportsClubs.matchAll(/\{\s*name:\s*'([^']+)',\s*url:\s*'([^']+)',\s*group:\s*'([^']+)'/g)].length,
   };
 };
 
@@ -257,6 +270,7 @@ const main = async () => {
     municipalityWebsiteCount,
     municipalityWebsiteLocaleCount,
     localNewspaperCount,
+    localSportsClubCount,
   } = await collectLinks();
 
   const uniqueRows = [...new Map(
@@ -340,6 +354,7 @@ const main = async () => {
     `  localTransport: ${localTransportCount},`,
     `  localLibraries: ${localLibraryCount},`,
     `  localNewspapers: ${localNewspaperCount},`,
+    `  localSportsClubs: ${localSportsClubCount},`,
     '} as const;',
     '',
   ];

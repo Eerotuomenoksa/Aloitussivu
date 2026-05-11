@@ -64,6 +64,7 @@ export const SHORTCUTS: Shortcut[] = [
     providers: [
       { name: 'Google', url: 'https://www.google.fi/' },
       { name: 'Bing', url: 'https://www.bing.com/' },
+      { name: 'YouTube', url: 'https://www.youtube.com' },
       { name: 'Wikipedia', url: 'https://fi.wikipedia.org/' },
       { name: 'Fonecta', url: 'https://www.fonecta.fi/' }
     ]
@@ -107,7 +108,8 @@ export const SHORTCUTS: Shortcut[] = [
       { name: 'Motiva', url: 'https://www.motiva.fi' },
       { name: 'Etuovi', url: 'https://www.etuovi.com' },
       { name: 'Oikotie Asunnot', url: 'https://asunnot.oikotie.fi' },
-      { name: 'Martat - Kodinhoito', url: 'https://www.martat.fi/marttakoulu/kodinhoito/' }
+      { name: 'Martat - Kodinhoito', url: 'https://www.martat.fi/marttakoulu/kodinhoito/' },
+      { name: 'Suomen kotikorjaukset', url: 'https://kotikorjaukset.fi/' }
     ]
   },
   { 
@@ -259,10 +261,28 @@ export const SHORTCUTS: Shortcut[] = [
     name: 'Musiikki', icon: '🎵', color: 'bg-brand-orange',
     providers: [
       { name: 'Yle Areena audio', url: 'https://areena.yle.fi/audio' },
-      { name: 'Spotify', url: 'https://www.spotify.com' },
       { name: 'Spotify', url: 'https://open.spotify.com' },
       { name: 'YouTube Musiikki', url: 'https://music.youtube.com' },
-      { name: 'Radio Player', url: 'https://play.radioplayer.org/fi' }
+      { name: 'Radio Player', url: 'https://play.radioplayer.org/fi' },
+      { name: 'Avanti! Kamariorkesteri', url: 'https://avantimusic.fi/', group: 'Orkesterit' },
+      { name: 'Helsingin Barokkiorkesteri', url: 'https://hebo.fi/', group: 'Orkesterit' },
+      { name: 'Helsingin kaupunginorkesteri', url: 'https://helsinginkaupunginorkesteri.fi/', group: 'Orkesterit' },
+      { name: 'Joensuun kaupunginorkesteri', url: 'https://www.joensuunkaupunginorkesteri.fi/', group: 'Orkesterit' },
+      { name: 'Jyväskylä Sinfonia', url: 'https://www.jyvaskylasinfonia.fi/', group: 'Orkesterit' },
+      { name: 'Keski-Pohjanmaan Kamariorkesteri', url: 'https://www.kamariorkesteri.fi/', group: 'Orkesterit' },
+      { name: 'Kuopion kaupunginorkesteri', url: 'https://www.kuopionkaupunginorkesteri.fi/', group: 'Orkesterit' },
+      { name: 'Kymi Sinfonietta', url: 'https://kymisinfonietta.fi/', group: 'Orkesterit' },
+      { name: 'Lapin kamariorkesteri', url: 'https://korundi.fi/fi/kavijalle/lapin-kamariorkesteri', group: 'Orkesterit' },
+      { name: 'Lappeenrannan kaupunginorkesteri', url: 'https://www.lprorkesteri.fi/', group: 'Orkesterit' },
+      { name: 'Oulu Sinfonia', url: 'https://www.oulusinfonia.fi/', group: 'Orkesterit' },
+      { name: 'Radion sinfoniaorkesteri', url: 'https://yle.fi/aihe/rso', group: 'Orkesterit' },
+      { name: 'Sinfonia Lahti', url: 'https://www.sinfonialahti.fi/', group: 'Orkesterit' },
+      { name: 'Suomalainen barokkiorkesteri', url: 'https://fibo.fi/', group: 'Orkesterit' },
+      { name: 'Tampere Filharmonia', url: 'https://www.tamperefilharmonia.fi/', group: 'Orkesterit' },
+      { name: 'Tapiola Sinfonietta', url: 'https://tapiolasinfonietta.fi/', group: 'Orkesterit' },
+      { name: 'Turun filharmoninen orkesteri', url: 'https://www.tfo.fi/', group: 'Orkesterit' },
+      { name: 'UMO Helsinki Jazz Orchestra', url: 'https://umohelsinki.fi/', group: 'Orkesterit' },
+      { name: 'Vaasan kaupunginorkesteri', url: 'https://www.vaasa.fi/koe-ja-nae/kulttuuria-vaasassa-ja-seudulla/vaasan-kaupunginorkesteri/', group: 'Orkesterit' }
     ]
   },
   { 
@@ -271,7 +291,6 @@ export const SHORTCUTS: Shortcut[] = [
       { name: 'Oikeus.fi', url: 'https://www.oikeus.fi' },
       { name: 'Finlex', url: 'https://www.finlex.fi' },
       { name: 'Kuluttajaneuvonta', url: 'https://www.kuluttajaneuvonta.fi' },
-      { name: 'Oikeus.fi', url: 'https://oikeus.fi' },
       { name: 'Kuluttajaneuvonta', url: 'https://www.kkv.fi/kuluttajaneuvonta/' },
       { name: 'Eduskunnan oikeusasiamies', url: 'https://www.oikeusasiamies.fi' },
       { name: 'Tietosuojavaltuutettu', url: 'https://tietosuoja.fi' }
@@ -284,7 +303,6 @@ export const SHORTCUTS: Shortcut[] = [
       { name: 'Nordea', url: 'https://www.nordea.fi' },
       { name: 'Danske Bank', url: 'https://danskebank.fi' },
       { name: 'S-Pankki', url: 'https://www.spankki.fi' },
-      { name: 'Mobiilivarmenne', url: 'https://mobiilivarmenne.fi' },
       { name: 'S-Pankki', url: 'https://www.s-pankki.fi' },
       { name: 'Aktia', url: 'https://www.aktia.fi' },
       { name: 'Handelsbanken', url: 'https://www.handelsbanken.fi' },
@@ -327,8 +345,6 @@ export const SHORTCUTS: Shortcut[] = [
       { name: 'Google Play', url: 'https://play.google.com/store/apps' },
       { name: 'App Store', url: 'https://apps.apple.com' },
       { name: '112 Suomi', url: 'https://112.fi' },
-      { name: 'Google Play Kauppa', url: 'https://play.google.com' },
-      { name: 'App Store (Apple)', url: 'https://www.apple.com/fi/app-store/' },
       { name: 'Huawei AppGallery', url: 'https://appgallery.huawei.com' }
     ]
   },
@@ -407,10 +423,10 @@ export const SHORTCUTS: Shortcut[] = [
   { 
     name: 'Turvallisuus', icon: '🛡️', color: 'bg-brand-orange',
     providers: [
-      { name: 'Poliisi', url: 'https://www.poliisi.fi' },
       { name: 'Huijausinfo', url: 'https://www.huijausinfo.fi' },
       { name: 'Suvanto ry', url: 'https://www.suvantory.fi/' },
       { name: 'Kyberturvallisuuskeskus', url: 'https://www.kyberturvallisuuskeskus.fi' },
+      { name: 'Mobiilivarmenne', url: 'https://mobiilivarmenne.fi' },
       { name: '112.fi - Hätäkeskus', url: 'https://112.fi' },
       { name: 'Poliisi', url: 'https://poliisi.fi' },
       { name: 'Pelastustoimi', url: 'https://pelastustoimi.fi' }
@@ -419,10 +435,10 @@ export const SHORTCUTS: Shortcut[] = [
   { 
     name: 'Urheilu', icon: '⚽', color: 'bg-brand-teal',
     providers: [
-      { name: 'Yle Urheilu', url: 'https://yle.fi/urheilu' },
-      { name: 'Iltalehti Urheilu', url: 'https://www.iltalehti.fi/urheilu' },
-      { name: 'MTV Urheilu', url: 'https://www.mtv.fi/urheilu' },
-      { name: 'Tulospalvelu.fi', url: 'https://www.tulospalvelu.fi' }
+      { name: 'Yle Urheilu', url: 'https://yle.fi/urheilu', group: 'Valtakunnallinen' },
+      { name: 'Iltalehti Urheilu', url: 'https://www.iltalehti.fi/urheilu', group: 'Valtakunnallinen' },
+      { name: 'MTV Urheilu', url: 'https://www.mtv.fi/urheilu', group: 'Valtakunnallinen' },
+      { name: 'Tulospalvelu.fi', url: 'https://www.tulospalvelu.fi', group: 'Valtakunnallinen' }
     ]
   },
   { 

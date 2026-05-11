@@ -7,25 +7,16 @@ interface SearchBarProps {
   variant?: 'default' | 'header';
 }
 
-type SearchEngine = 'google' | 'youtube';
-
 const SearchBar: React.FC<SearchBarProps> = ({ fontSizeStep = 0, variant = 'default' }) => {
   const { t } = useI18n();
   const [query, setQuery] = useState('');
-  const [engine, setEngine] = useState<SearchEngine>('google');
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     const trimmedQuery = query.trim();
-    if (engine === 'youtube' && !trimmedQuery) {
-      window.open('https://www.youtube.com/', '_blank');
-      return;
-    }
 
     if (trimmedQuery) {
-      const targetUrl = engine === 'youtube'
-        ? `https://www.youtube.com/results?search_query=${encodeURIComponent(trimmedQuery)}`
-        : `https://www.google.com/search?q=${encodeURIComponent(trimmedQuery)}`;
+      const targetUrl = `https://www.google.com/search?q=${encodeURIComponent(trimmedQuery)}`;
       window.open(targetUrl, '_blank');
       setQuery('');
     }
@@ -54,26 +45,6 @@ const SearchBar: React.FC<SearchBarProps> = ({ fontSizeStep = 0, variant = 'defa
         >
           {t('searchButton')}
         </button>
-      </div>
-      <div className="flex flex-wrap gap-2" role="group" aria-label="Valitse hakukone">
-        {[
-          { id: 'google', label: 'Google' },
-          { id: 'youtube', label: 'YouTube' },
-        ].map((item) => (
-          <button
-            key={item.id}
-            type="button"
-            onClick={() => setEngine(item.id as SearchEngine)}
-            className={`rounded-full px-4 py-2 text-sm font-black transition-all focus:outline-none focus:ring-4 focus:ring-indigo-300 ${
-              engine === item.id
-                ? 'bg-brand-indigo text-white shadow-md'
-                : 'bg-white text-slate-700 ring-2 ring-slate-200 hover:bg-slate-50 dark:bg-slate-800 dark:text-slate-100 dark:ring-slate-700'
-            }`}
-            aria-pressed={engine === item.id}
-          >
-            {item.label}
-          </button>
-        ))}
       </div>
     </form>
   );
