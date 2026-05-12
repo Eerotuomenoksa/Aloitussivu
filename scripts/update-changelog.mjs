@@ -98,6 +98,23 @@ function readAppVersion() {
   }
 }
 
+function readVersionMinor(version) {
+  const minor = Number(version.split('.')[1] ?? 0);
+  return Number.isFinite(minor) ? minor : 0;
+}
+
+function formatHistoryVersion(currentVersion, index) {
+  const minor = Math.max(0, readVersionMinor(currentVersion) - index);
+  return `0.${String(minor).padStart(2, '0')}`;
+}
+
+function addVersionsToCommits(commits, currentVersion) {
+  return commits.map((commit, index) => ({
+    ...commit,
+    version: formatHistoryVersion(currentVersion, index),
+  }));
+}
+
 function readCommitSubject(hash) {
   try {
     return runGit(['show', '-s', '--format=%s', hash]);
@@ -122,6 +139,7 @@ function summarizeWorktree(changes) {
 
   if (paths.some((pathName) => ['appVersion.ts', 'package.json', 'package-lock.json', 'muutosloki.tsx', 'App.tsx', 'scripts/update-changelog.mjs'].includes(pathName))) {
     notes.push('Versionumerointi otettiin käyttöön: nykyinen versio näkyy footerissa ja muutoslokin yläosassa.');
+    notes.push('Muutoshistoria näyttää versionumeron jokaisen muutoksen yhteydessä.');
   }
 
   if (paths.some((pathName) => ['localServices.ts'].includes(pathName))) {
@@ -214,7 +232,7 @@ async function readDeployments(limit = 10) {
 const generatedAt = formatGeneratedAt(new Date());
 const appVersion = readAppVersion();
 const worktreeChanges = readWorktreeChanges();
-const recentCommits = readRecentCommits();
+const recentCommits = addVersionsToCommits(readRecentCommits(), appVersion);
 const worktreeSummary = summarizeToday(recentCommits, worktreeChanges);
 const deployments = await readDeployments();
 
@@ -238,6 +256,7 @@ export type ChangelogDeployment = {
 export type ChangelogCommit = {
   hash: string;
   date: string;
+  version: string;
   subject: string;
 };
 

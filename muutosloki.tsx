@@ -18,6 +18,9 @@ function CommitCard({ commit }: { commit: ChangelogCommit }) {
   return (
     <article className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm">
       <div className="flex flex-wrap items-center gap-3">
+        <span className="rounded-full bg-slate-900 px-3 py-1 text-xs font-black text-white dark:bg-white dark:text-slate-950">
+          v{commit.version}
+        </span>
         <span className="font-mono text-xs font-black rounded-full bg-indigo-100 text-indigo-900 dark:bg-indigo-900/40 dark:text-indigo-200 px-3 py-1">
           {formatCommitHash(commit.hash)}
         </span>
@@ -74,6 +77,9 @@ function App() {
         <section className="space-y-4">
           <h2 className="text-2xl md:text-3xl font-black">Viimeisin muutos</h2>
           <article className="rounded-3xl border-4 border-indigo-200 bg-white p-6 shadow-lg dark:border-indigo-900/60 dark:bg-slate-900">
+            <span className="mb-4 inline-flex rounded-full bg-slate-900 px-4 py-2 text-sm font-black text-white dark:bg-white dark:text-slate-950">
+              Versio {CHANGELOG_VERSION}
+            </span>
             <p className="text-xl md:text-2xl font-black leading-snug text-slate-900 dark:text-white">
               {latestSummary || 'Ei uusia muutoksia saatavilla.'}
             </p>
