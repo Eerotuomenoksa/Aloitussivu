@@ -5,5 +5,4 @@ export const BLOCKED_LINK_URLS: string[] = [
   "https://pyhtaa.fi/en",
   "https://pyhtaa.fi/sv",
   "https://topikki.fi/",
-  "https://www.keskipohjanmaa.fi/",
 ];

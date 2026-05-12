@@ -4,9 +4,11 @@ import './index.css';
 import {
   CHANGELOG_GENERATED_AT,
   CHANGELOG_RECENT_COMMITS,
+  CHANGELOG_VERSION,
   CHANGELOG_WORKTREE_SUMMARY,
   type ChangelogCommit,
 } from './changelogData';
+import { APP_VERSION_BASIS } from './appVersion';
 
 function formatCommitHash(hash: string) {
   return hash.slice(0, 7);
@@ -56,6 +58,14 @@ function App() {
           <p className="max-w-3xl text-base md:text-lg text-slate-600 dark:text-slate-300">
             Tämä sivu näyttää viimeisimmät muutokset suomenkielisinä yhteenvetoina.
           </p>
+          <div className="flex flex-wrap items-center gap-3">
+            <span className="rounded-full bg-indigo-100 px-4 py-2 text-sm font-black text-indigo-900 dark:bg-indigo-900/40 dark:text-indigo-100">
+              Versio {CHANGELOG_VERSION}
+            </span>
+            <span className="text-sm font-bold text-slate-500 dark:text-slate-400">
+              {APP_VERSION_BASIS}
+            </span>
+          </div>
           <p className="text-sm text-slate-500 dark:text-slate-400">
             Päivitetty: <span className="font-bold">{CHANGELOG_GENERATED_AT}</span>
           </p>

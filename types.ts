@@ -3,6 +3,8 @@ export interface Provider {
   url: string;
   logo?: string;
   group?: string;
+  phone?: string;
+  phoneUrl?: string;
 }
 
 export interface Municipality {

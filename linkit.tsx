@@ -66,6 +66,11 @@ const generalLinks = uniqueByKey(
   (row) => `${row.category}|${row.group}|${row.name}|${row.url}`
 ).sort((a, b) => collator.compare(`${a.category} ${a.name}`, `${b.category} ${b.name}`));
 
+const phoneLinkCount = uniqueByKey(
+  SHORTCUTS.flatMap((shortcut) => (shortcut.providers ?? []).filter((provider) => provider.phone)),
+  (provider) => `${provider.name}|${provider.url}|${provider.phone}`
+).length;
+
 const municipalityRows: MunicipalityLinkRow[] = MUNICIPALITIES
   .map((municipality) => {
     const context = { municipality, displayName: municipality.name };
@@ -224,7 +229,7 @@ function App() {
               </button>
             </div>
           </div>
-          <dl className="grid gap-3 sm:grid-cols-3">
+          <dl className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             <div className="rounded-lg border border-slate-200 bg-white p-4">
               <dt className="text-sm font-black uppercase tracking-wide text-slate-500">Yleiset linkit</dt>
               <dd className="text-3xl font-black">{generalLinks.length}</dd>
@@ -236,6 +241,10 @@ function App() {
             <div className="rounded-lg border border-slate-200 bg-white p-4">
               <dt className="text-sm font-black uppercase tracking-wide text-slate-500">Paikkakunnat</dt>
               <dd className="text-3xl font-black">{municipalityRows.length}</dd>
+            </div>
+            <div className="rounded-lg border border-slate-200 bg-white p-4">
+              <dt className="text-sm font-black uppercase tracking-wide text-slate-500">Puhelinnumeroita</dt>
+              <dd className="text-3xl font-black">{phoneLinkCount}</dd>
             </div>
           </dl>
           <nav className="flex flex-wrap gap-2 rounded-xl border border-slate-200 bg-white p-2 shadow-sm" aria-label="Linkkiluettelon näkymät">

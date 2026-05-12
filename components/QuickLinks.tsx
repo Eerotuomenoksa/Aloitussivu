@@ -18,8 +18,14 @@ interface QuickLinksProps {
   onReportLink?: (draft: LinkReportDraft) => void;
 }
 
-type LinkResult = { name: string; url: string; color: string; categoryName: string; categoryIcon: string };
+type LinkResult = { name: string; url: string; color: string; categoryName: string; categoryIcon: string; phone?: string; phoneUrl?: string };
 type CategoryResult = { shortcut: Shortcut; color: string };
+
+const getPhoneHref = (phone?: string, phoneUrl?: string) => {
+  if (phoneUrl) return phoneUrl;
+  if (!phone) return undefined;
+  return `tel:${phone.replace(/[^\d+]/g, '')}`;
+};
 
 const rowColors = [
   'bg-[#214f76]',
@@ -131,10 +137,13 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
 
       if (shortcut.providers) {
         shortcut.providers.forEach(provider => {
-          if (provider.name.toLowerCase().includes(q) && !categoryMatches) {
+          const providerSearchText = `${provider.name} ${provider.phone ?? ''}`.toLowerCase();
+          if (providerSearchText.includes(q) && !categoryMatches) {
             matchedLinks.push({
               name: provider.name,
               url: provider.url,
+              phone: provider.phone,
+              phoneUrl: provider.phoneUrl,
               color,
               categoryName: shortcut.name,
               categoryIcon: shortcut.icon,
@@ -239,6 +248,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6">
                 {matchedLinks.map((link, idx) => {
                   const isFav = favorites.some(f => f.url === link.url);
+                  const phoneHref = getPhoneHref(link.phone, link.phoneUrl);
                   const fav: Favorite = {
                     name: link.name,
                     url: link.url,
@@ -262,6 +272,11 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
                         <span className={`opacity-75 font-semibold ${subTextClasses[fontSizeStep]}`}>
                           {categoryName(link.categoryName)}
                         </span>
+                        {link.phone && phoneHref && (
+                          <span className={`font-black ${subTextClasses[fontSizeStep]}`}>
+                            ☎ {link.phone}
+                          </span>
+                        )}
                       </a>
                       {onReportLink && (
                         <button

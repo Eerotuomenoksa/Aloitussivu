@@ -179,6 +179,7 @@ const collectLinks = async () => {
   const constants = await readText('constants.tsx');
   let category = '';
   const categoryNames = new Set();
+  const phoneLinks = new Map();
   for (const line of constants.split(/\r?\n/)) {
     const categoryMatch = line.match(/name:\s*'([^']+)',\s*icon:/);
     if (categoryMatch) {
@@ -190,6 +191,15 @@ const collectLinks = async () => {
     const providerMatch = line.match(/\{\s*name:\s*'([^']+)',\s*url:\s*'([^']+)'(?:,\s*group:\s*'([^']+)')?/);
     if (providerMatch) {
       addRow('Palvelukategoriat', category, providerMatch[1], providerMatch[2], 'constants.tsx');
+    }
+
+    const phoneMatch = line.match(/\{\s*name:\s*'([^']+)',\s*url:\s*'([^']+)'.*?\bphone:\s*'([^']+)'/);
+    if (phoneMatch) {
+      phoneLinks.set(`${phoneMatch[1]}|${phoneMatch[2]}|${phoneMatch[3]}`, {
+        name: phoneMatch[1],
+        url: phoneMatch[2],
+        phone: phoneMatch[3],
+      });
     }
   }
 
@@ -263,6 +273,7 @@ const collectLinks = async () => {
     localNewspaperCount: [...localNewspapers.matchAll(/\{\s*"name":\s*"([^"]+)",\s*"url":\s*"([^"]+)"\s*\}/g)].length,
     localSportsClubCount: [...localSportsClubs.matchAll(/\{\s*name:\s*'([^']+)',\s*url:\s*'([^']+)',\s*group:\s*'([^']+)'/g)].length,
     localExerciseLinkCount: [...localExerciseLinks.matchAll(/\{\s*"name":\s*"([^"]+)",\s*"url":\s*"([^"]+)",\s*"group":\s*"([^"]+)"\s*\}/g)].length,
+    phoneLinkCount: phoneLinks.size,
   };
 };
 
@@ -278,6 +289,7 @@ const main = async () => {
     localNewspaperCount,
     localSportsClubCount,
     localExerciseLinkCount,
+    phoneLinkCount,
   } = await collectLinks();
 
   const uniqueRows = [...new Map(
@@ -374,6 +386,7 @@ const main = async () => {
     `  totalLinks: ${checkedRows.length},`,
     `  visibleLinks: ${visibleLinks},`,
     `  hiddenLinks: ${blockedUrls.length},`,
+    `  phoneLinks: ${phoneLinkCount},`,
     `  categoryCount: ${categoryNames.size},`,
     '  sections: {',
     ...[...countsBySection.entries()]
@@ -428,6 +441,7 @@ const main = async () => {
     ...[...countsBySection.entries()].sort(([a], [b]) => a.localeCompare(b, 'fi-FI')).map(([section, count]) => `| ${section} | ${count} |`),
     '',
     `Yhteensä: ${checkedRows.length} linkkiä.`,
+    `Puhelinnumeroita linkkikorteissa: ${phoneLinkCount}.`,
     '',
     `Tarkistusvirheitä: ${failed.length}.`,
     `Huomioita: ${warnings.length}.`,

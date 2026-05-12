@@ -1,9 +1,10 @@
 import { execFileSync } from 'node:child_process';
-import { writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 
 const repoRoot = process.cwd();
 const outputPath = path.join(repoRoot, 'changelogData.ts');
+const versionPath = path.join(repoRoot, 'appVersion.ts');
 const apiToken = process.env.GITHUB_TOKEN ?? process.env.GH_TOKEN ?? '';
 
 function runGit(args) {
@@ -88,6 +89,15 @@ function readRecentCommits() {
   });
 }
 
+function readAppVersion() {
+  try {
+    const source = readFileSync(versionPath, 'utf8');
+    return source.match(/APP_VERSION\s*=\s*['"]([^'"]+)['"]/)?.[1] ?? '0.0';
+  } catch {
+    return '0.0';
+  }
+}
+
 function readCommitSubject(hash) {
   try {
     return runGit(['show', '-s', '--format=%s', hash]);
@@ -110,8 +120,8 @@ function summarizeWorktree(changes) {
   const paths = changes.map((change) => change.path);
   const notes = [];
 
-  if (paths.some((pathName) => ['App.tsx'].includes(pathName))) {
-    notes.push('Sijainnista tunnistettu kunta tallennetaan selaimen muistiin, jotta alueelliset palvelut palautuvat automaattisesti sivun uudelleenavauksessa.');
+  if (paths.some((pathName) => ['appVersion.ts', 'package.json', 'package-lock.json', 'muutosloki.tsx', 'App.tsx', 'scripts/update-changelog.mjs'].includes(pathName))) {
+    notes.push('Versionumerointi otettiin käyttöön: nykyinen versio näkyy footerissa ja muutoslokin yläosassa.');
   }
 
   if (paths.some((pathName) => ['localServices.ts'].includes(pathName))) {
@@ -120,7 +130,8 @@ function summarizeWorktree(changes) {
   }
 
   if (paths.some((pathName) => ['constants.tsx'].includes(pathName))) {
-    notes.push('Liikenne-kategoriaa täydennettiin suomalaisilla joukkoliikennejärjestäjillä ja suurilla liikennöitsijöillä.');
+    notes.push('Puhelinnumerot lisättiin omaksi kategoriakseen ja tärkeimpien palveluiden korteille lisättiin soittopainikkeet.');
+    notes.push('Liikunta-kategoriaa täydennettiin Tanssit-ryhmällä, josta löytyy lavatansseja, päivätansseja ja seuratanssia tukevia linkkejä.');
   }
 
   if (paths.some((pathName) => ['localNewspaperFeeds.ts', 'scripts/update-newspaper-feeds.mjs', 'docs/paikallisuutiset-puuttuvat-kunnat.md'].includes(pathName))) {
@@ -201,6 +212,7 @@ async function readDeployments(limit = 10) {
 }
 
 const generatedAt = formatGeneratedAt(new Date());
+const appVersion = readAppVersion();
 const worktreeChanges = readWorktreeChanges();
 const recentCommits = readRecentCommits();
 const worktreeSummary = summarizeToday(recentCommits, worktreeChanges);
@@ -230,6 +242,7 @@ export type ChangelogCommit = {
 };
 
 export const CHANGELOG_GENERATED_AT = ${JSON.stringify(generatedAt)};
+export const CHANGELOG_VERSION = ${JSON.stringify(appVersion)};
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = ${JSON.stringify(worktreeSummary, null, 2)};
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = ${JSON.stringify(deployments, null, 2)};
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = ${JSON.stringify(recentCommits, null, 2)};

@@ -21,14 +21,26 @@ export type ChangelogCommit = {
   subject: string;
 };
 
-export const CHANGELOG_GENERATED_AT = "12.5.2026 klo 08.44";
+export const CHANGELOG_GENERATED_AT = "12.5.2026 klo 09.48";
+export const CHANGELOG_VERSION = "0.64";
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
-  "Sivun värimaailmaa yhtenäistettiin sinisen ja kullan sävyihin sekä poistettiin violetit ja oranssit korttivärit.",
-  "Headerin, footerin ja sisältöalueen linjausta säädettiin, jotta sivun elementit asettuvat yhtenäisemmin samaan pystylinjaan.",
-  "Valitse palvelu -alueen hakurivin ylimääräinen HAKU-teksti poistettiin."
+  "Versionumerointi otettiin käyttöön: nykyinen versio näkyy footerissa ja muutoslokin yläosassa.",
+  "Puhelinnumerot lisättiin omaksi kategoriakseen ja tärkeimpien palveluiden korteille lisättiin soittopainikkeet.",
+  "Liikunta-kategoriaa täydennettiin Tanssit-ryhmällä, josta löytyy lavatansseja, päivätansseja ja seuratanssia tukevia linkkejä.",
+  "Linkkien tarkistusdata ja ylläpitoloki päivitettiin uusimman buildin yhteydessä."
 ];
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
+  {
+    "hash": "b03bd630df085f5b3724916aa02fd3afa46ed4dc",
+    "date": "2026-05-12",
+    "subject": "lisätty 152 alueellista liikuntapaikka linkkiä"
+  },
+  {
+    "hash": "84a8861b6688f3f8ed3b97c3e7a0701668856cb9",
+    "date": "2026-05-12",
+    "subject": "Päivitä muutosloki"
+  },
   {
     "hash": "899318babdf949f10bfea7189db6637a345ed293",
     "date": "2026-05-12",

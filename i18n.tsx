@@ -596,6 +596,7 @@ const categoryTranslations: Record<string, Partial<Record<LanguageCode, string>>
   'Musiikki': { sv: 'Musik', en: 'Music', uk: 'Музика', et: 'Muusika', ru: 'Музыка', se: 'Musihkka' },
   'Oikeus': { sv: 'Juridik', en: 'Legal', uk: 'Право', et: 'Õigus', ru: 'Право', se: 'Vuoigatvuohta' },
   'Pankit': { sv: 'Banker', en: 'Banks', uk: 'Банки', et: 'Pangad', ru: 'Банки', se: 'Báŋkkut' },
+  'Puhelinnumerot': { sv: 'Telefonnummer', en: 'Phone numbers', uk: 'Номери телефонів', et: 'Telefoninumbrid', ru: 'Телефонные номера', se: 'Telefonnummarat' },
   'Talous': { sv: 'Ekonomi', en: 'Finance', uk: 'Фінанси', et: 'Majandus', ru: 'Финансы', se: 'Ekonomiija' },
   'Ruoka': { sv: 'Mat', en: 'Food', uk: 'Їжа', et: 'Toit', ru: 'Еда', se: 'Biebmu' },
   'Sosiaalinen media': { sv: 'Sociala medier', en: 'Social media', uk: 'Соціальні мережі', et: 'Sotsiaalmeedia', ru: 'Социальные сети', se: 'Sosiála media' },

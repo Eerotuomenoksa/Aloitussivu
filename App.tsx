@@ -18,6 +18,7 @@ import { Shortcut, Favorite, LocalityInfo, LinkReportDraft } from './types';
 import { mergeApprovedLinksIntoShortcuts } from './approvedLinks';
 import { useApprovedLinkSuggestionsVersion } from './approvedLinks';
 import { LanguageCode, LanguageProvider, LANGUAGES, useI18n } from './i18n';
+import { APP_VERSION_LABEL } from './appVersion';
 
 const MIN_UI_SCALE = 50;
 const MAX_UI_SCALE = 200;
@@ -408,6 +409,9 @@ const AppContent: React.FC = () => {
           )}
           <p className="font-bold text-white/80">
             {t('footer')}
+          </p>
+          <p className="text-sm font-black uppercase tracking-[0.24em] text-white/70">
+            {APP_VERSION_LABEL}
           </p>
           </div>
         </footer>

@@ -13,6 +13,12 @@ interface ProviderModalProps {
   onReportLink?: (draft: LinkReportDraft) => void;
 }
 
+const getPhoneHref = (provider: Provider) => {
+  if (provider.phoneUrl) return provider.phoneUrl;
+  if (!provider.phone) return undefined;
+  return `tel:${provider.phone.replace(/[^\d+]/g, '')}`;
+};
+
 const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSizeStep = 0, favorites, onToggleFavorite, onReportLink }) => {
   const { t, categoryName } = useI18n();
   useLinkVisibilityVersion();
@@ -103,6 +109,7 @@ const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSi
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {groupedProviders[group].map((provider, idx) => {
                   const isFav = favorites.some(f => f.url === provider.url);
+                  const phoneHref = getPhoneHref(provider);
                   const fav: Favorite = {
                     name: provider.name,
                     url: provider.url,
@@ -112,16 +119,25 @@ const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSi
                   };
                   return (
                     <div key={idx} className="relative group/card">
-                      <a
-                        href={provider.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex flex-col items-center justify-center p-6 bg-white dark:bg-slate-800 border-4 border-slate-200 dark:border-slate-700 rounded-[2.5rem] shadow-md hover:shadow-2xl hover:border-blue-600 dark:hover:border-blue-500 transition-all focus:ring-8 focus:ring-blue-500/20 outline-none text-center min-h-[120px]"
-                      >
-                        <span className={`font-black text-slate-800 dark:text-white group-hover/card:text-blue-700 dark:group-hover/card:text-blue-400 transition-all duration-300 leading-tight ${itemTextClasses[fontSizeStep]}`}>
+                      <div className="flex flex-col items-center justify-center gap-4 p-6 bg-white dark:bg-slate-800 border-4 border-slate-200 dark:border-slate-700 rounded-[2.5rem] shadow-md hover:shadow-2xl hover:border-blue-600 dark:hover:border-blue-500 transition-all text-center min-h-[150px]">
+                        <a
+                          href={provider.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={`font-black text-slate-800 dark:text-white group-hover/card:text-blue-700 dark:group-hover/card:text-blue-400 transition-all duration-300 leading-tight focus:ring-8 focus:ring-blue-500/20 outline-none rounded-2xl px-2 py-1 ${itemTextClasses[fontSizeStep]}`}
+                        >
                           {provider.name}
-                        </span>
-                      </a>
+                        </a>
+                        {provider.phone && phoneHref && (
+                          <a
+                            href={phoneHref}
+                            className="inline-flex items-center justify-center rounded-full bg-slate-100 dark:bg-slate-700 hover:bg-blue-50 dark:hover:bg-blue-900/40 px-5 py-2 text-lg md:text-xl font-black text-slate-700 dark:text-slate-100 transition-all focus:ring-4 focus:ring-blue-300 focus:outline-none"
+                            aria-label={`Soita: ${provider.name}, ${provider.phone}`}
+                          >
+                            ☎ {provider.phone}
+                          </a>
+                        )}
+                      </div>
                       {onReportLink && (
                         <button
                           onClick={() => onReportLink({

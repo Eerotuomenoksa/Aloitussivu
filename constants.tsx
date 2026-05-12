@@ -50,14 +50,41 @@ export const SHORTCUTS: Shortcut[] = [
   { 
     name: 'Julkiset palvelut', icon: '🏛️', color: 'bg-brand-grey',
     providers: [
-      { name: 'Suomi.fi', url: 'https://www.suomi.fi' },
-      { name: 'Kela', url: 'https://www.kela.fi' },
-      { name: 'Vero.fi', url: 'https://www.vero.fi' },
+      { name: 'Suomi.fi', url: 'https://www.suomi.fi', phone: '0295 000', phoneUrl: 'tel:0295000' },
+      { name: 'Kela', url: 'https://www.kela.fi', phone: '020 692 202', phoneUrl: 'tel:020692202' },
+      { name: 'Vero.fi', url: 'https://www.vero.fi', phone: '029 497 000', phoneUrl: 'tel:029497000' },
       { name: 'OmaKanta', url: 'https://www.kanta.fi' },
-      { name: 'Traficom', url: 'https://www.traficom.fi' },
-      { name: 'Poliisi', url: 'https://poliisi.fi' },
-      { name: 'Digi- ja väestötietovirasto', url: 'https://dvv.fi' },
+      { name: 'Traficom', url: 'https://www.traficom.fi', phone: '029 534 5000', phoneUrl: 'tel:0295345000' },
+      { name: 'Poliisi', url: 'https://poliisi.fi', phone: '0295 419 800', phoneUrl: 'tel:0295419800' },
+      { name: 'Digi- ja väestötietovirasto', url: 'https://dvv.fi', phone: '0295 536 256', phoneUrl: 'tel:0295536256' },
       { name: 'Tulli', url: 'https://www.tulli.fi/' }
+    ]
+  },
+  {
+    name: 'Puhelinnumerot', icon: '☎️', color: 'bg-brand-grey',
+    providers: [
+      { name: 'Hätänumero 112', url: 'https://112.fi/hatanumero112', group: 'Hätä ja terveys', phone: '112', phoneUrl: 'tel:112' },
+      { name: 'Päivystysapu', url: 'https://116117.fi/', group: 'Hätä ja terveys', phone: '116117', phoneUrl: 'tel:116117' },
+      { name: 'Myrkytystietokeskus', url: 'https://www.terveyskyla.fi/paivystystalo/paivystykseen/myrkytystietokeskus', group: 'Hätä ja terveys', phone: '0800 147 111', phoneUrl: 'tel:0800147111' },
+      { name: 'Kela - eläkkeet ja eläkkeensaajan asumistuki', url: 'https://www.kela.fi/soita-kelaan/', group: 'Julkiset palvelut', phone: '020 692 202', phoneUrl: 'tel:020692202' },
+      { name: 'Suomi.fi-palvelujen neuvonta', url: 'https://www.suomi.fi/ohjeet-ja-tuki/tuki-ja-neuvonta/suomi-fi-palvelujen-neuvonta', group: 'Julkiset palvelut', phone: '0295 000', phoneUrl: 'tel:0295000' },
+      { name: 'Verohallinto - verokortti ja ennakkovero', url: 'https://www.vero.fi/tietoa-verohallinnosta/yhteystiedot-ja-asiointi/soita/henkiloasiakkaat/', group: 'Julkiset palvelut', phone: '029 497 000', phoneUrl: 'tel:029497000' },
+      { name: 'Verohallinto - henkilöasiakkaan tuloverotus', url: 'https://www.vero.fi/tietoa-verohallinnosta/yhteystiedot-ja-asiointi/soita/henkiloasiakkaat/', group: 'Julkiset palvelut', phone: '029 497 002', phoneUrl: 'tel:029497002' },
+      { name: 'DVV - holhous ja edunvalvonta', url: 'https://www.suomi.fi/palvelut/puhelinasiointi/holhous-ja-edunvalvonta-asioiden-puhelinpalvelu-digi-ja-vaestotietovirasto/56a1313c-1742-43b7-8910-6bc5e0898d41', group: 'Julkiset palvelut', phone: '0295 536 256', phoneUrl: 'tel:0295536256' },
+      { name: 'Poliisin valtakunnallinen neuvonta', url: 'https://poliisi.fi/yhteystiedot', group: 'Julkiset palvelut', phone: '0295 419 800', phoneUrl: 'tel:0295419800' },
+      { name: 'Traficomin vaihde', url: 'https://www.traficom.fi/fi/traficom/yhteystiedot', group: 'Julkiset palvelut', phone: '029 534 5000', phoneUrl: 'tel:0295345000' },
+      { name: 'Helsinki-info', url: 'https://www.hel.fi/fi/paatoksenteko-ja-hallinto/stoa-helsinki-info', group: 'Kunnat', phone: '09 310 11111', phoneUrl: 'tel:0931011111' },
+      { name: 'Espoo-info', url: 'https://www.espoo.fi/fi/espoon-kaupungin-yhteystiedot-ja-palaute', group: 'Kunnat', phone: '09 816 21', phoneUrl: 'tel:0981621' },
+      { name: 'Vantaa-info', url: 'https://www.vantaa.fi/fi/kaupunki-ja-paatoksenteko/asiakaspalvelu', group: 'Kunnat', phone: '09 839 11', phoneUrl: 'tel:0983911' },
+      { name: 'Turun kaupungin vaihde', url: 'https://www.turku.fi/toimipaikat/kauppatorin-monitori-asiointipiste', group: 'Kunnat', phone: '02 330 000', phoneUrl: 'tel:02330000' },
+      { name: 'Oulu10-asiakaspalvelu', url: 'https://www.ouka.fi/yhteystiedot-ja-palaute', group: 'Kunnat', phone: '08 558 558 00', phoneUrl: 'tel:0855855800' },
+      { name: 'OP henkilöasiakkaat', url: 'https://www.op.fi/henkiloasiakkaat/asiakaspalvelu', group: 'Pankit', phone: '0100 0500', phoneUrl: 'tel:01000500' },
+      { name: 'Nordea asiakaspalvelu ja seniorilinja', url: 'https://www.nordea.fi/henkiloasiakkaat/palvelumme/verkko-mobiilipalvelut/digineuvontaa.html', group: 'Pankit', phone: '0200 3000', phoneUrl: 'tel:02003000' },
+      { name: 'Danske Bank - seniorit ja erityisryhmät', url: 'https://danskebank.fi/sinulle/asiakaspalvelu', group: 'Pankit', phone: '0200 25889', phoneUrl: 'tel:020025889' },
+      { name: 'Danske Bank asiakaspalvelu', url: 'https://danskebank.fi/sinulle/asiakaspalvelu', group: 'Pankit', phone: '0200 2580', phoneUrl: 'tel:02002580' },
+      { name: 'S-Pankki asiakaspalvelu', url: 'https://www.s-pankki.fi/fi/tiedotteet/2025/s-pankki-kehottaa-asiakaspalveluun-soittavia-tarkistamaan-puhelinnumeron/', group: 'Pankit', phone: '010 76 5800', phoneUrl: 'tel:010765800' },
+      { name: 'Aktia henkilöasiakkaat', url: 'https://www.aktia.fi/fi/', group: 'Pankit', phone: '010 247 010', phoneUrl: 'tel:010247010' },
+      { name: 'Säästöpankki asiakaspalvelu', url: 'https://www.saastopankki.fi/fi-fi/pankit-ja-konttorit/saastopankki-optia/yhteystiedot', group: 'Pankit', phone: '0100 5252', phoneUrl: 'tel:01005252' }
     ]
   },
   {
@@ -255,6 +282,12 @@ export const SHORTCUTS: Shortcut[] = [
       { name: 'Vahvike - jumppavideoita', url: 'https://vahvike.fi/liikunta/jumppavideoita/', group: 'Valtakunnallinen' },
       { name: 'UKK-instituutti - ikäihmisten liikkumisen suositusvideot', url: 'https://ukkinstituutti.fi/aineistot/ikaihmisten-liikkumisen-suositukset-tietoiskuvideot/', group: 'Valtakunnallinen' },
       { name: 'Coronaria - seniorijumppaa', url: 'https://www.coronaria.fi/fysioterapia/seniorijumppaa/', group: 'Valtakunnallinen' },
+      { name: 'Tanssi.net - lavatanssikalenteri', url: 'https://www.tanssi.io/', group: 'Tanssit' },
+      { name: 'Tanssiin.fi - tanssit ja keikat', url: 'https://www.tanssiin.fi/keikat/', group: 'Tanssit' },
+      { name: 'Tanssiin.fi - tanssipaikat kartalla', url: 'https://www.tanssiin.fi/tanssilavat/', group: 'Tanssit' },
+      { name: 'Suomen Seuratanssiliitto SUSEL', url: 'https://www.susel.fi/', group: 'Tanssit' },
+      { name: 'SUSEL - seuratanssin tietoa', url: 'https://www.susel.fi/susel/seuratanssi/', group: 'Tanssit' },
+      { name: 'Tanssit.fi - tanssin ABC', url: 'https://www.tanssit.fi/tanssin-abc/', group: 'Tanssit' },
       { name: 'Helsinki - etäliikuntavideot', url: 'https://www.hel.fi/fi/kulttuuri-ja-vapaa-aika/itsenaisesti-katsottavat-etaliikuntavideot', group: 'Alueelliset' },
       { name: 'Espoo - omatoimiliikunta', url: 'https://www.espoo.fi/fi/liikunta-ja-luonto/liikuntaryhmat-ja-kurssit/omatoimiliikunta', group: 'Alueelliset' },
       { name: 'Somero - tuoli- ja tasapainojumppa', url: 'https://www.somero.fi/vapaa-aika-ja-matkailu/liikunta-ja-ulkoilu/etajumppa/', group: 'Alueelliset' },
@@ -316,14 +349,14 @@ export const SHORTCUTS: Shortcut[] = [
   { 
     name: 'Pankit', icon: '🏦', color: 'bg-[#173e5f]',
     providers: [
-      { name: 'OP', url: 'https://www.op.fi' },
-      { name: 'Nordea', url: 'https://www.nordea.fi' },
-      { name: 'Danske Bank', url: 'https://danskebank.fi' },
-      { name: 'S-Pankki', url: 'https://www.spankki.fi' },
-      { name: 'S-Pankki', url: 'https://www.s-pankki.fi' },
-      { name: 'Aktia', url: 'https://www.aktia.fi' },
+      { name: 'OP', url: 'https://www.op.fi', phone: '0100 0500', phoneUrl: 'tel:01000500' },
+      { name: 'Nordea', url: 'https://www.nordea.fi', phone: '0200 3000', phoneUrl: 'tel:02003000' },
+      { name: 'Danske Bank', url: 'https://danskebank.fi', phone: '0200 2580', phoneUrl: 'tel:02002580' },
+      { name: 'S-Pankki', url: 'https://www.spankki.fi', phone: '010 76 5800', phoneUrl: 'tel:010765800' },
+      { name: 'S-Pankki', url: 'https://www.s-pankki.fi', phone: '010 76 5800', phoneUrl: 'tel:010765800' },
+      { name: 'Aktia', url: 'https://www.aktia.fi', phone: '010 247 010', phoneUrl: 'tel:010247010' },
       { name: 'Handelsbanken', url: 'https://www.handelsbanken.fi' },
-      { name: 'Säästöpankki', url: 'https://www.saastopankki.fi' },
+      { name: 'Säästöpankki', url: 'https://www.saastopankki.fi', phone: '0100 5252', phoneUrl: 'tel:01005252' },
       { name: 'POP Pankki', url: 'https://www.poppankki.fi' }
     ]
   },
@@ -420,6 +453,8 @@ export const SHORTCUTS: Shortcut[] = [
       { name: 'THL', url: 'https://thl.fi' },
       { name: 'OmaKanta', url: 'https://www.kanta.fi/omakanta' },
       { name: 'Terveyskylä', url: 'https://www.terveyskyla.fi' },
+      { name: 'Päivystysapu', url: 'https://116117.fi/', phone: '116117', phoneUrl: 'tel:116117' },
+      { name: 'Myrkytystietokeskus', url: 'https://www.terveyskyla.fi/paivystystalo/paivystykseen/myrkytystietokeskus', phone: '0800 147 111', phoneUrl: 'tel:0800147111' },
       { name: 'Apteekki.fi', url: 'https://www.apteekki.fi' },
       { name: 'Mehiläinen', url: 'https://www.mehilainen.fi' },
       { name: 'Terveystalo', url: 'https://www.terveystalo.com' }
