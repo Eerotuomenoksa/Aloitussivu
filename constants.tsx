@@ -78,13 +78,23 @@ export const SHORTCUTS: Shortcut[] = [
       { name: 'Vantaa-info', url: 'https://www.vantaa.fi/fi/kaupunki-ja-paatoksenteko/asiakaspalvelu', group: 'Kunnat', phone: '09 839 11', phoneUrl: 'tel:0983911' },
       { name: 'Turun kaupungin vaihde', url: 'https://www.turku.fi/toimipaikat/kauppatorin-monitori-asiointipiste', group: 'Kunnat', phone: '02 330 000', phoneUrl: 'tel:02330000' },
       { name: 'Oulu10-asiakaspalvelu', url: 'https://www.ouka.fi/yhteystiedot-ja-palaute', group: 'Kunnat', phone: '08 558 558 00', phoneUrl: 'tel:0855855800' },
+      { name: 'OP seniorit ja erityistä tukea tarvitsevat', url: 'https://seniorsurf.fi/materiaalipankki/verkkopankit-ja-mobiilipankit/', group: 'Pankit', phone: '010 252 9627', phoneUrl: 'tel:0102529627' },
       { name: 'OP henkilöasiakkaat', url: 'https://www.op.fi/henkiloasiakkaat/asiakaspalvelu', group: 'Pankit', phone: '0100 0500', phoneUrl: 'tel:01000500' },
       { name: 'Nordea asiakaspalvelu ja seniorilinja', url: 'https://www.nordea.fi/henkiloasiakkaat/palvelumme/verkko-mobiilipalvelut/digineuvontaa.html', group: 'Pankit', phone: '0200 3000', phoneUrl: 'tel:02003000' },
       { name: 'Danske Bank - seniorit ja erityisryhmät', url: 'https://danskebank.fi/sinulle/asiakaspalvelu', group: 'Pankit', phone: '0200 25889', phoneUrl: 'tel:020025889' },
       { name: 'Danske Bank asiakaspalvelu', url: 'https://danskebank.fi/sinulle/asiakaspalvelu', group: 'Pankit', phone: '0200 2580', phoneUrl: 'tel:02002580' },
       { name: 'S-Pankki asiakaspalvelu', url: 'https://www.s-pankki.fi/fi/tiedotteet/2025/s-pankki-kehottaa-asiakaspalveluun-soittavia-tarkistamaan-puhelinnumeron/', group: 'Pankit', phone: '010 76 5800', phoneUrl: 'tel:010765800' },
       { name: 'Aktia henkilöasiakkaat', url: 'https://www.aktia.fi/fi/', group: 'Pankit', phone: '010 247 010', phoneUrl: 'tel:010247010' },
-      { name: 'Säästöpankki asiakaspalvelu', url: 'https://www.saastopankki.fi/fi-fi/pankit-ja-konttorit/saastopankki-optia/yhteystiedot', group: 'Pankit', phone: '0100 5252', phoneUrl: 'tel:01005252' }
+      { name: 'Säästöpankki asiakaspalvelu', url: 'https://www.saastopankki.fi/fi-fi/pankit-ja-konttorit/saastopankki-optia/yhteystiedot', group: 'Pankit', phone: '0100 5252', phoneUrl: 'tel:01005252' },
+      { name: 'Alisa Pankki asiakaspalvelu', url: 'https://www.alisapankki.fi/', group: 'Pankit', phone: '020 380 101', phoneUrl: 'tel:020380101' },
+      { name: 'Ålandsbanken asiakaspalvelu', url: 'https://www.alandsbanken.fi/', group: 'Pankit', phone: '0204 292 920', phoneUrl: 'tel:0204292920' },
+      { name: 'Korttien sulkupalvelu - Nordea, Handelsbanken, POP Pankki, S-Pankki, Säästöpankit ja Ålandsbanken', url: 'https://seniorsurf.fi/materiaalipankki/verkkopankit-ja-mobiilipankit/', group: 'Pankkien sulkupalvelut', phone: '020 333', phoneUrl: 'tel:020333' },
+      { name: 'OP kortin sulkupalvelu', url: 'https://seniorsurf.fi/materiaalipankki/verkkopankit-ja-mobiilipankit/', group: 'Pankkien sulkupalvelut', phone: '0100 0555', phoneUrl: 'tel:01000555' },
+      { name: 'Aktia kortin sulkupalvelu', url: 'https://seniorsurf.fi/materiaalipankki/verkkopankit-ja-mobiilipankit/', group: 'Pankkien sulkupalvelut', phone: '0800 0 2477', phoneUrl: 'tel:080002477' },
+      { name: 'Danske Bank kortin sulkupalvelu', url: 'https://seniorsurf.fi/materiaalipankki/verkkopankit-ja-mobiilipankit/', group: 'Pankkien sulkupalvelut', phone: '0200 2585', phoneUrl: 'tel:02002585' },
+      { name: 'Alisa Pankki kortin sulku', url: 'https://seniorsurf.fi/materiaalipankki/verkkopankit-ja-mobiilipankit/', group: 'Pankkien sulkupalvelut', phone: '020 380 101', phoneUrl: 'tel:020380101' },
+      { name: 'S-Pankki pankkitunnusten sulku', url: 'https://seniorsurf.fi/materiaalipankki/verkkopankit-ja-mobiilipankit/', group: 'Pankkien sulkupalvelut', phone: '09 6964 6820', phoneUrl: 'tel:0969646820' },
+      { name: 'Ålandsbanken Internetkonttorin sulku', url: 'https://seniorsurf.fi/materiaalipankki/verkkopankit-ja-mobiilipankit/', group: 'Pankkien sulkupalvelut', phone: '09 696 468 00', phoneUrl: 'tel:0969646800' }
     ]
   },
   {
@@ -357,7 +367,9 @@ export const SHORTCUTS: Shortcut[] = [
       { name: 'Aktia', url: 'https://www.aktia.fi', phone: '010 247 010', phoneUrl: 'tel:010247010' },
       { name: 'Handelsbanken', url: 'https://www.handelsbanken.fi' },
       { name: 'Säästöpankki', url: 'https://www.saastopankki.fi', phone: '0100 5252', phoneUrl: 'tel:01005252' },
-      { name: 'POP Pankki', url: 'https://www.poppankki.fi' }
+      { name: 'POP Pankki', url: 'https://www.poppankki.fi' },
+      { name: 'Alisa Pankki', url: 'https://www.alisapankki.fi/', phone: '020 380 101', phoneUrl: 'tel:020380101' },
+      { name: 'Ålandsbanken', url: 'https://www.alandsbanken.fi/', phone: '0204 292 920', phoneUrl: 'tel:0204292920' }
     ]
   },
   {

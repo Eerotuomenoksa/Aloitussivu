@@ -119,24 +119,34 @@ const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSi
                   };
                   return (
                     <div key={idx} className="relative group/card">
-                      <div className="flex flex-col items-center justify-center gap-4 p-6 bg-white dark:bg-slate-800 border-4 border-slate-200 dark:border-slate-700 rounded-[2.5rem] shadow-md hover:shadow-2xl hover:border-blue-600 dark:hover:border-blue-500 transition-all text-center min-h-[150px]">
-                        <a
-                          href={provider.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={`font-black text-slate-800 dark:text-white group-hover/card:text-blue-700 dark:group-hover/card:text-blue-400 transition-all duration-300 leading-tight focus:ring-8 focus:ring-blue-500/20 outline-none rounded-2xl px-2 py-1 ${itemTextClasses[fontSizeStep]}`}
-                        >
-                          {provider.name}
-                        </a>
-                        {provider.phone && phoneHref && (
+                      <div className={`flex flex-col justify-between gap-5 p-6 bg-white dark:bg-slate-800 border-4 border-slate-200 dark:border-slate-700 rounded-[2.5rem] shadow-md hover:shadow-2xl hover:border-blue-600 dark:hover:border-blue-500 transition-all text-center ${provider.phone ? 'min-h-[220px]' : 'min-h-[150px]'}`}>
+                        <div className="flex flex-1 items-center justify-center px-8">
+                          <span className={`font-black text-slate-800 dark:text-white leading-tight ${itemTextClasses[fontSizeStep]}`}>
+                            {provider.name}
+                          </span>
+                        </div>
+                        <div className="grid w-full grid-cols-1 gap-3">
                           <a
-                            href={phoneHref}
-                            className="inline-flex items-center justify-center rounded-full bg-slate-100 dark:bg-slate-700 hover:bg-blue-50 dark:hover:bg-blue-900/40 px-5 py-2 text-lg md:text-xl font-black text-slate-700 dark:text-slate-100 transition-all focus:ring-4 focus:ring-blue-300 focus:outline-none"
-                            aria-label={`Soita: ${provider.name}, ${provider.phone}`}
+                            href={provider.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex min-h-14 items-center justify-center gap-3 rounded-2xl bg-blue-600 px-5 py-3 text-base md:text-lg font-black text-white shadow-sm transition-all hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 focus:outline-none active:scale-95"
+                            aria-label={`Avaa verkkosivu: ${provider.name}`}
                           >
-                            ☎ {provider.phone}
+                            <span aria-hidden="true">↗</span>
+                            <span>Verkkosivu</span>
                           </a>
-                        )}
+                          {provider.phone && phoneHref && (
+                            <a
+                              href={phoneHref}
+                              className="inline-flex min-h-16 items-center justify-center gap-3 rounded-2xl bg-[#d09a32] px-5 py-3 text-xl md:text-2xl font-black text-slate-950 shadow-sm transition-all hover:bg-[#e2ad45] focus:ring-4 focus:ring-amber-200 focus:outline-none active:scale-95"
+                              aria-label={`Soita: ${provider.name}, ${provider.phone}`}
+                            >
+                              <span aria-hidden="true">☎</span>
+                              <span>{provider.phone}</span>
+                            </a>
+                          )}
+                        </div>
                       </div>
                       {onReportLink && (
                         <button
