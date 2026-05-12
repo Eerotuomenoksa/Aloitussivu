@@ -21,14 +21,19 @@ export type ChangelogCommit = {
   subject: string;
 };
 
-export const CHANGELOG_GENERATED_AT = "12.5.2026 klo 08.29";
+export const CHANGELOG_GENERATED_AT = "12.5.2026 klo 08.44";
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
-  "Sijainnista tunnistettu kunta tallennetaan selaimen muistiin, jotta alueelliset palvelut palautuvat automaattisesti sivun uudelleenavauksessa.",
-  "Liikenne-kategoriaa täydennettiin suomalaisilla joukkoliikennejärjestäjillä ja suurilla liikennöitsijöillä.",
-  "Linkkien tarkistusdata ja ylläpitoloki päivitettiin uusimman buildin yhteydessä."
+  "Sivun värimaailmaa yhtenäistettiin sinisen ja kullan sävyihin sekä poistettiin violetit ja oranssit korttivärit.",
+  "Headerin, footerin ja sisältöalueen linjausta säädettiin, jotta sivun elementit asettuvat yhtenäisemmin samaan pystylinjaan.",
+  "Valitse palvelu -alueen hakurivin ylimääräinen HAKU-teksti poistettiin."
 ];
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
+  {
+    "hash": "899318babdf949f10bfea7189db6637a345ed293",
+    "date": "2026-05-12",
+    "subject": "väri muutoksia"
+  },
   {
     "hash": "b995b0538ce132d9b6559b2ad7b5dd293af184c1",
     "date": "2026-05-11",
