@@ -22,11 +22,13 @@ type LinkResult = { name: string; url: string; color: string; categoryName: stri
 type CategoryResult = { shortcut: Shortcut; color: string };
 
 const rowColors = [
-  'bg-brand-indigo',
-  'bg-brand-purple',
-  'bg-brand-cyan',
-  'bg-brand-teal',
-  'bg-brand-orange',
+  'bg-[#214f76]',
+  'bg-[#2a6387]',
+  'bg-[#4fb8c3]',
+  'bg-[#3aa9b5]',
+  'bg-[#d09a32]',
+  'bg-[#dcae55]',
+  'bg-[#6bc7cf]',
 ];
 
 const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep = 0, favorites, onToggleFavorite, locality, onReportLink }) => {
@@ -150,12 +152,6 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
 
   return (
     <div className="space-y-8 animate-in">
-
-      <div className="flex items-center justify-between gap-4">
-        <p className={`font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest ${subTextClasses[fontSizeStep]}`}>
-          {t('search')}
-        </p>
-      </div>
 
       {/* Hakukenttä */}
       <div className="relative">

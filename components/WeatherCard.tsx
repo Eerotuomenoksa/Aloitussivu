@@ -137,7 +137,7 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ onLocationResolved, variant =
 
   return (
     <div 
-      className={`bg-gradient-to-br from-brand-indigo to-brand-purple ${isCompact ? 'rounded-[2rem] p-6 min-h-[160px]' : 'rounded-[2.5rem] p-10 min-h-[220px]'} text-white shadow-xl flex items-center justify-between w-full h-full border-4 border-white/20`}
+      className={`bg-gradient-to-br ${isCompact ? 'from-[#214f76] to-[#173e5f] rounded-[2rem] p-6 min-h-[160px]' : 'from-[#214f76] to-[#173e5f] rounded-[2.5rem] p-10 min-h-[220px]'} text-white shadow-xl flex items-center justify-between w-full h-full border-4 border-white/20`}
       aria-label={t('showWeather')}
     >
       <div className="space-y-1">
@@ -148,7 +148,7 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ onLocationResolved, variant =
           <p className="text-xl font-bold">{error}</p>
         ) : (
           <>
-            <p className={`${isCompact ? 'text-4xl' : 'text-6xl'} font-black my-1 tracking-tighter`}>{weather?.temp}°C</p>
+            <p className={`${isCompact ? 'text-4xl text-[#d09a32]' : 'text-6xl'} font-black my-1 tracking-tighter`}>{weather?.temp}°C</p>
             <p className={`${isCompact ? 'text-lg' : 'text-xl'} font-bold opacity-80 uppercase`}>{weather?.condition}</p>
           </>
         )}

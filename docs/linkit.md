@@ -1,6 +1,6 @@
 # Palvelun linkit
 
-Päivitetty: 11.5.2026 klo 12.54
+Päivitetty: 12.5.2026 klo 8.29
 
 Tämä tiedosto summaa sovelluksessa olevat linkit. Varsinainen avattava taulukko on tiedostossa `docs/linkit.csv`.
 

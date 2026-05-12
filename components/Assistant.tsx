@@ -45,13 +45,13 @@ const Assistant: React.FC<AssistantProps> = ({ variant = 'default' }) => {
     return (
       <button
         onClick={() => setIsMinimized(false)}
-        className="w-full rounded-2xl md:rounded-3xl bg-brand-indigo p-4 md:p-5 text-white shadow-xl transition-all hover:bg-brand-purple active:scale-95 focus:outline-none focus:ring-4 focus:ring-indigo-300 border-4 border-indigo-500/20 min-h-[92px] md:min-h-[150px] flex items-center justify-center gap-3 md:gap-4"
+        className="w-full rounded-2xl md:rounded-3xl bg-[#d09a32] p-4 md:p-5 text-slate-950 shadow-xl transition-all hover:bg-[#e0aa43] active:scale-95 focus:outline-none focus:ring-4 focus:ring-amber-200 border-4 border-white/20 min-h-[92px] md:min-h-[150px] flex items-center justify-center gap-3 md:gap-4"
         aria-label={t('assistantOpen')}
       >
-        <span className="flex h-12 w-12 md:h-16 md:w-16 items-center justify-center rounded-full bg-white/20 text-3xl md:text-5xl" aria-hidden="true">🤖</span>
+        <span className="flex h-12 w-12 md:h-16 md:w-16 items-center justify-center rounded-full bg-white/30 text-3xl md:text-5xl" aria-hidden="true">🤖</span>
         <span className="text-left">
           <span className="block text-base md:text-xl font-black leading-tight">{t('assistantNeedHelp')}</span>
-          <span className="block text-sm md:text-base font-bold text-blue-100">{t('assistantAskAnything')}</span>
+          <span className="block text-sm md:text-base font-bold text-slate-800">{t('assistantAskAnything')}</span>
         </span>
       </button>
     );
@@ -61,7 +61,7 @@ const Assistant: React.FC<AssistantProps> = ({ variant = 'default' }) => {
     return (
       <button 
         onClick={() => setIsMinimized(false)}
-        className="w-full bg-brand-indigo hover:bg-brand-purple dark:bg-brand-indigo dark:hover:bg-brand-purple text-white p-8 rounded-[2.5rem] shadow-xl transition-all transform hover:-translate-y-1 flex flex-col items-center justify-center border-4 border-white/20 dark:border-brand-indigo/50 min-h-[220px] focus:ring-4 focus:ring-blue-400 outline-none"
+        className="w-full bg-[#173e5f] hover:bg-[#214f76] text-white p-8 rounded-[2.5rem] shadow-xl transition-all transform hover:-translate-y-1 flex flex-col items-center justify-center border-4 border-white/20 dark:border-brand-indigo/50 min-h-[220px] focus:ring-4 focus:ring-blue-400 outline-none"
         aria-label={t('assistantOpen')}
       >
         <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center text-5xl mb-4" aria-hidden="true">🤖</div>
@@ -75,10 +75,10 @@ const Assistant: React.FC<AssistantProps> = ({ variant = 'default' }) => {
 
   return (
     <section 
-      className={`bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col h-full border-4 border-brand-indigo dark:border-brand-purple animate-in slide-in-from-bottom-4 duration-300 ${variant === 'header' ? 'min-h-[440px] xl:absolute xl:right-0 xl:top-full xl:z-40 xl:mt-4 xl:w-[28rem]' : 'min-h-[500px]'}`}
+      className={`bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col h-full border-4 border-brand-indigo dark:border-[#173e5f] animate-in slide-in-from-bottom-4 duration-300 ${variant === 'header' ? 'min-h-[440px] xl:absolute xl:right-0 xl:top-full xl:z-40 xl:mt-4 xl:w-[28rem]' : 'min-h-[500px]'}`}
       aria-label={t('assistantChat')}
     >
-      <div className="bg-brand-indigo dark:bg-brand-purple p-6 text-white flex items-center justify-between">
+      <div className="bg-[#173e5f] p-6 text-white flex items-center justify-between">
         <div className="flex items-center gap-4">
           <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center text-2xl" aria-hidden="true">🤖</div>
           <h2 className="text-xl font-black uppercase tracking-tight">{t('assistantTitle')}</h2>
@@ -136,7 +136,7 @@ const Assistant: React.FC<AssistantProps> = ({ variant = 'default' }) => {
         <button 
           onClick={handleSend}
           disabled={isLoading || !input.trim()}
-          className="bg-brand-indigo text-white px-6 py-3 rounded-xl font-black hover:bg-brand-purple disabled:opacity-50 transition-all focus:ring-4 focus:ring-blue-300 shadow-md active:scale-95"
+          className="bg-[#173e5f] text-white px-6 py-3 rounded-xl font-black hover:bg-[#214f76] disabled:opacity-50 transition-all focus:ring-4 focus:ring-blue-300 shadow-md active:scale-95"
         >
           {t('assistantSend')}
         </button>

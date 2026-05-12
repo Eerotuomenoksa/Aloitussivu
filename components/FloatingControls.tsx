@@ -49,7 +49,7 @@ const FloatingControls: React.FC<FloatingControlsProps> = ({
     });
   };
 
-  const buttonClass = 'flex h-16 w-16 items-center justify-center rounded-full bg-brand-indigo text-2xl font-black leading-none text-white shadow-2xl border-b-4 border-indigo-900 transition-all duration-200 hover:bg-brand-purple focus:outline-none focus:ring-4 focus:ring-indigo-300 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed';
+  const buttonClass = 'flex h-16 w-16 items-center justify-center rounded-full bg-[#173e5f] text-2xl font-black leading-none text-white shadow-2xl border-b-4 border-[#0f2942] transition-all duration-200 hover:bg-[#214f76] focus:outline-none focus:ring-4 focus:ring-[#d09a32]/40 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed';
 
   return (
     <div className="fixed bottom-5 right-5 md:bottom-8 md:right-8 z-40 flex flex-col items-end gap-3" role="group" aria-label={resetLabel}>
@@ -75,7 +75,7 @@ const FloatingControls: React.FC<FloatingControlsProps> = ({
         <button
           type="button"
           onClick={onReset}
-          className="rounded-full bg-yellow-200 px-4 py-3 text-base font-black text-yellow-950 shadow-xl border-b-4 border-yellow-600 transition-all hover:bg-yellow-300 focus:outline-none focus:ring-4 focus:ring-yellow-300 active:scale-95"
+          className="rounded-full bg-[#d09a32] px-4 py-3 text-base font-black text-slate-950 shadow-xl border-b-4 border-[#8f651e] transition-all hover:bg-[#e0aa43] focus:outline-none focus:ring-4 focus:ring-amber-200 active:scale-95"
           aria-label={resetLabel}
         >
           100%

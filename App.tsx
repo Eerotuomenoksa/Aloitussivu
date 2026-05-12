@@ -12,6 +12,7 @@ import SearchBar from './components/SearchBar';
 import RegionalServicesPanel from './components/RegionalServicesPanel';
 import FloatingControls from './components/FloatingControls';
 import FavoriteLinks from './components/FavoriteLinks';
+import TimeAwareLogo, { LogoPhase, getLogoPhase } from './components/TimeAwareLogo';
 import { isLinkVisible, useLinkVisibilityVersion } from './linkVisibility';
 import { Shortcut, Favorite, LocalityInfo, LinkReportDraft } from './types';
 import { mergeApprovedLinksIntoShortcuts } from './approvedLinks';
@@ -41,6 +42,25 @@ const defaultUiVisibility: UiVisibilityState = {
   weather: true,
   assistant: true,
   googleSearch: true,
+};
+
+const headerBackgrounds: Record<LogoPhase, { light: string; dark: string }> = {
+  dawn: {
+    light: 'linear-gradient(135deg, #173e5f 0%, #214f76 100%)',
+    dark: 'linear-gradient(135deg, #0f2942 0%, #173e5f 100%)',
+  },
+  day: {
+    light: 'linear-gradient(135deg, #173e5f 0%, #214f76 100%)',
+    dark: 'linear-gradient(135deg, #0f2942 0%, #173e5f 100%)',
+  },
+  evening: {
+    light: 'linear-gradient(135deg, #173e5f 0%, #214f76 100%)',
+    dark: 'linear-gradient(135deg, #0f2942 0%, #173e5f 100%)',
+  },
+  night: {
+    light: 'linear-gradient(135deg, #173e5f 0%, #214f76 100%)',
+    dark: 'linear-gradient(135deg, #0f2942 0%, #173e5f 100%)',
+  },
 };
 
 interface LanguageSelectorProps {
@@ -126,6 +146,7 @@ const AppContent: React.FC = () => {
     const legacyScale = [100, 125, 150, 175, 200][legacyStep] ?? DEFAULT_UI_SCALE;
     return legacyScale;
   });
+  const [logoPhase, setLogoPhase] = useState<LogoPhase>(() => getLogoPhase(new Date()));
 
   const [favorites, setFavorites] = useState<Favorite[]>(() => {
     try {
@@ -158,6 +179,11 @@ const AppContent: React.FC = () => {
     localStorage.setItem('uiVisibility', JSON.stringify(uiVisibility));
   }, [uiVisibility]);
 
+  useEffect(() => {
+    const interval = window.setInterval(() => setLogoPhase(getLogoPhase(new Date())), 60 * 1000);
+    return () => window.clearInterval(interval);
+  }, []);
+
   const toggleDarkMode = useCallback(() => setIsDarkMode(prev => !prev), []);
   const decreaseFont = useCallback(() => setUiScale(prev => Math.max(MIN_UI_SCALE, prev - UI_SCALE_STEP)), []);
   const increaseFont = useCallback(() => setUiScale(prev => Math.min(MAX_UI_SCALE, prev + UI_SCALE_STEP)), []);
@@ -168,6 +194,7 @@ const AppContent: React.FC = () => {
   }, []);
   const fontSizeStep = 0;
   const uiZoom = (uiScale * BASE_UI_SCALE_MULTIPLIER) / 100;
+  const fullBleedWidth = `calc(100vw / ${uiZoom})`;
   useLinkVisibilityVersion();
   useApprovedLinkSuggestionsVersion();
   const openReportModal = useCallback((draft: LinkReportDraft) => setReportDraft(draft), []);
@@ -178,51 +205,22 @@ const AppContent: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 transition-all duration-300 text-base overflow-x-auto">
+    <div className="min-h-screen bg-[#f5f1e8] dark:bg-slate-950 transition-all duration-300 text-base overflow-x-auto">
       <div
-        className="relative p-4 md:p-8 lg:p-12 max-w-[1900px] mx-auto space-y-12 transition-all duration-300"
+        className="relative p-6 md:p-10 lg:p-16 max-w-[1900px] mx-auto space-y-12 transition-all duration-300"
         style={{ zoom: uiZoom }}
       >
 
-        <header className="relative -mx-4 -mt-4 overflow-visible bg-white px-4 py-6 text-slate-950 shadow-xl ring-1 ring-slate-200 dark:bg-slate-900 dark:text-white dark:ring-slate-800 md:-mx-8 md:-mt-8 md:px-8 md:py-8 lg:-mx-12 lg:-mt-12 lg:px-12">
-          <nav className="relative flex flex-wrap items-center gap-3" aria-label={t('settings')}>
-            <div className="flex min-w-[16rem] flex-1 items-center gap-4">
-              <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-brand-indigo text-3xl font-black text-white shadow-lg border-b-4 border-indigo-900" aria-hidden="true">
-                S
-              </div>
-              <div>
-                <p className="text-3xl md:text-4xl font-black tracking-tight">Seniorin Aloitussivu</p>
-                <p className="text-base md:text-lg font-bold text-slate-600 dark:text-slate-300">Helppo ja turvallinen pääsy nettiin</p>
-              </div>
+        <header
+          className="relative left-1/2 -mt-6 w-screen -translate-x-1/2 overflow-visible text-white shadow-xl ring-1 ring-white/15 md:-mt-10 lg:-mt-16"
+          style={{ background: headerBackgrounds[logoPhase][isDarkMode ? 'dark' : 'light'], width: fullBleedWidth }}
+        >
+          <div className="mx-auto w-full max-w-[1900px] px-6 py-6 md:px-10 md:py-8 lg:px-16">
+          <nav className="relative grid gap-5 xl:grid-cols-[minmax(18rem,28rem)_minmax(0,46rem)_auto] xl:items-center" aria-label={t('settings')}>
+            <div className="flex min-w-[18rem] items-center">
+              <TimeAwareLogo phase={logoPhase} isDarkMode={isDarkMode} className="h-auto w-full max-w-[28rem] drop-shadow-lg" />
             </div>
 
-            <span className="rounded-full bg-amber-100 px-4 py-2 text-sm font-black uppercase tracking-wide text-amber-800 ring-1 ring-amber-200 dark:bg-amber-300/15 dark:text-amber-200 dark:ring-amber-200/20">
-              {t('beta')}
-            </span>
-
-            <button
-              onClick={() => setIsHomepageOpen(true)}
-              className="bg-brand-indigo hover:bg-brand-purple text-white px-5 py-3 rounded-full font-black text-lg transition-all active:scale-95 shadow-md border-b-4 border-indigo-900 focus:ring-4 focus:ring-indigo-300 focus:outline-none"
-            >
-              🏠 {t('help')}
-            </button>
-
-            <LanguageSelector language={language} setLanguage={setLanguage} label={t('language')} />
-
-            <button
-              type="button"
-              onClick={() => setIsSettingsOpen(prev => !prev)}
-              className="bg-slate-200 hover:bg-slate-300 text-slate-900 px-5 py-3 rounded-full font-black text-lg transition-all active:scale-95 shadow-md border-b-4 border-slate-400 focus:ring-4 focus:ring-slate-300 focus:outline-none dark:bg-slate-800 dark:text-white dark:hover:bg-slate-700 dark:border-slate-950"
-              aria-label={t('openSettings')}
-              aria-expanded={isSettingsOpen}
-              aria-haspopup="menu"
-            >
-              ⚙️
-            </button>
-          </nav>
-
-          <div className="mt-8 grid gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(0,46rem)_24rem] xl:items-center">
-            {uiVisibility.googleSearch && <SearchBar fontSizeStep={fontSizeStep} variant="header" />}
             {(uiVisibility.assistant || uiVisibility.weather) && (
               <div className="grid gap-4 md:grid-cols-2 md:items-stretch">
                 {uiVisibility.assistant && (
@@ -235,7 +233,38 @@ const AppContent: React.FC = () => {
                 )}
               </div>
             )}
+
+            <div className="flex flex-wrap items-center gap-3 xl:justify-end">
+              <span className="rounded-full bg-white/90 px-4 py-2 text-sm font-black uppercase tracking-wide text-amber-800 ring-1 ring-white/50">
+                {t('beta')}
+              </span>
+
+              <button
+                onClick={() => setIsHomepageOpen(true)}
+                className="bg-white/95 hover:bg-white text-slate-950 px-5 py-3 rounded-full font-black text-lg transition-all active:scale-95 shadow-md border-b-4 border-black/20 focus:ring-4 focus:ring-white/60 focus:outline-none"
+              >
+                🏠 {t('help')}
+              </button>
+
+              <LanguageSelector language={language} setLanguage={setLanguage} label={t('language')} />
+
+              <button
+                type="button"
+                onClick={() => setIsSettingsOpen(prev => !prev)}
+                className="bg-white/95 hover:bg-white text-slate-950 px-5 py-3 rounded-full font-black text-lg transition-all active:scale-95 shadow-md border-b-4 border-black/20 focus:ring-4 focus:ring-white/60 focus:outline-none"
+                aria-label={t('openSettings')}
+                aria-expanded={isSettingsOpen}
+                aria-haspopup="menu"
+              >
+                ⚙️
+              </button>
+            </div>
+          </nav>
+
+          <div className="mt-8 grid gap-6 xl:grid-cols-[minmax(0,1fr)_24rem] xl:items-center">
+            {uiVisibility.googleSearch && <SearchBar fontSizeStep={fontSizeStep} variant="header" />}
             {uiVisibility.clock && <Clock fontSizeStep={fontSizeStep} variant="compact" />}
+          </div>
           </div>
         </header>
 
@@ -317,25 +346,29 @@ const AppContent: React.FC = () => {
           </section>
         </main>
 
-        <footer className="pt-24 pb-12 border-t-2 border-slate-200 dark:border-slate-800 text-center space-y-8 opacity-80">
+        <footer
+          className="relative left-1/2 w-screen -translate-x-1/2 text-center text-white shadow-inner"
+          style={{ background: headerBackgrounds[logoPhase][isDarkMode ? 'dark' : 'light'], width: fullBleedWidth }}
+        >
+          <div className="mx-auto w-full max-w-[1900px] space-y-8 px-6 py-12 md:px-10 lg:px-16">
           <button
             type="button"
             onClick={() => setIsInfoOpen(true)}
-            className="rounded-full bg-slate-200 px-6 py-3 text-base font-black text-slate-900 shadow-md border-b-4 border-slate-400 transition-all hover:bg-slate-300 active:scale-95 focus:outline-none focus:ring-4 focus:ring-slate-300 dark:bg-slate-800 dark:text-white dark:hover:bg-slate-700 dark:border-slate-950"
+            className="rounded-full bg-white/95 px-6 py-3 text-base font-black text-slate-950 shadow-md border-b-4 border-black/20 transition-all hover:bg-white active:scale-95 focus:outline-none focus:ring-4 focus:ring-white/60"
           >
             ℹ️ {t('info')}
           </button>
           <button
             type="button"
             onClick={() => openReportModal({ name: '', url: '', category: '', source: 'Footer' })}
-            className="rounded-full bg-brand-indigo px-6 py-3 text-base font-black text-white shadow-md border-b-4 border-indigo-900 transition-all hover:bg-brand-purple active:scale-95 focus:outline-none focus:ring-4 focus:ring-indigo-300"
+            className="rounded-full bg-[#d09a32] px-6 py-3 text-base font-black text-slate-950 shadow-md border-b-4 border-[#8f651e] transition-all hover:bg-[#e2ad45] active:scale-95 focus:outline-none focus:ring-4 focus:ring-amber-200"
           >
             {t('reportNewLink')}
           </button>
           <nav className="flex flex-wrap justify-center gap-4" aria-label={t('settings')}>
             <a
               href="./yllapito.html"
-              className="rounded-full bg-white dark:bg-slate-900 px-5 py-3 text-sm font-black text-indigo-700 dark:text-indigo-300 shadow-sm hover:underline focus:outline-none focus:ring-4 focus:ring-indigo-300"
+              className="rounded-full bg-white/95 px-5 py-3 text-sm font-black text-[#173e5f] shadow-sm hover:bg-white hover:underline focus:outline-none focus:ring-4 focus:ring-white/60"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -343,7 +376,7 @@ const AppContent: React.FC = () => {
             </a>
             <a
               href="./muutosloki.html"
-              className="rounded-full bg-white dark:bg-slate-900 px-5 py-3 text-sm font-black text-indigo-700 dark:text-indigo-300 shadow-sm hover:underline focus:outline-none focus:ring-4 focus:ring-indigo-300"
+              className="rounded-full bg-white/95 px-5 py-3 text-sm font-black text-[#173e5f] shadow-sm hover:bg-white hover:underline focus:outline-none focus:ring-4 focus:ring-white/60"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -351,7 +384,7 @@ const AppContent: React.FC = () => {
             </a>
             <a
               href="./linkit.html"
-              className="rounded-full bg-white dark:bg-slate-900 px-5 py-3 text-sm font-black text-indigo-700 dark:text-indigo-300 shadow-sm hover:underline focus:outline-none focus:ring-4 focus:ring-indigo-300"
+              className="rounded-full bg-white/95 px-5 py-3 text-sm font-black text-[#173e5f] shadow-sm hover:bg-white hover:underline focus:outline-none focus:ring-4 focus:ring-white/60"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -373,9 +406,10 @@ const AppContent: React.FC = () => {
               />
             </a>
           )}
-          <p className="text-slate-500 dark:text-slate-400 font-bold">
+          <p className="font-bold text-white/80">
             {t('footer')}
           </p>
+          </div>
         </footer>
 
         <ProviderModal

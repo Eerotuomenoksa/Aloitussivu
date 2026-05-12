@@ -33,11 +33,11 @@ const smallTextClasses = [
 const ServiceLink: React.FC<{ provider: Provider; index: number; fontSizeStep: number; onReportLink?: (draft: LinkReportDraft) => void }> = ({ provider, index, fontSizeStep, onReportLink }) => {
   const { t, categoryName } = useI18n();
   const colors = [
-    'bg-brand-indigo hover:bg-indigo-700',
+    'bg-[#173e5f] hover:bg-[#214f76]',
     'bg-brand-teal hover:bg-teal-700',
     'bg-brand-cyan hover:bg-cyan-700',
-    'bg-brand-purple hover:bg-purple-700',
-    'bg-brand-orange hover:bg-orange-700',
+    'bg-[#173e5f] hover:bg-[#214f76]',
+    'bg-brand-orange hover:bg-[#e2ad45]',
   ];
 
   return (

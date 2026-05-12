@@ -16,11 +16,11 @@ export const QUOTES = [
   "Elämä on tässä ja nyt."
 ];
 
-// Värit: bg-brand-indigo, bg-brand-purple, bg-brand-orange, bg-brand-cyan, bg-brand-teal, bg-brand-grey
+// Värit: bg-[#173e5f], bg-brand-orange, bg-brand-cyan, bg-brand-teal, bg-brand-grey
 
 export const SHORTCUTS: Shortcut[] = [
   { 
-    name: 'Apua digiin', icon: '💻', color: 'bg-brand-indigo',
+    name: 'Apua digiin', icon: '💻', color: 'bg-[#173e5f]',
     providers: [
       { name: 'Yle Digitreenit', url: 'https://yle.fi/aihe/digitreenit' },
       { name: 'Suomi.fi ohjeet', url: 'https://www.suomi.fi/ohjeet-ja-tuki' },
@@ -34,7 +34,7 @@ export const SHORTCUTS: Shortcut[] = [
     ]
   },
   { 
-    name: 'Hengellisyys', icon: '⛪', color: 'bg-brand-purple',
+    name: 'Hengellisyys', icon: '⛪', color: 'bg-[#173e5f]',
     providers: [
       { name: 'Ortodoksinen kirkko', url: 'https://www.ort.fi' },
       { name: 'Kirkon keskusteluapu', url: 'https://kirkonkeskusteluapu.fi' },
@@ -70,7 +70,7 @@ export const SHORTCUTS: Shortcut[] = [
     ]
   },
   { 
-    name: 'Kielet', icon: '🗣️', color: 'bg-brand-purple',
+    name: 'Kielet', icon: '🗣️', color: 'bg-[#173e5f]',
     providers: [
       { name: 'Kielitoimiston sanakirja', url: 'https://www.kielitoimistonsanakirja.fi' },
       { name: 'Sanakirja.fi', url: 'https://www.sanakirja.fi' },
@@ -127,7 +127,7 @@ export const SHORTCUTS: Shortcut[] = [
     providers: MUSEUM_LINKS
   },
   {
-    name: 'Teatterit', icon: '🎟️', color: 'bg-brand-indigo',
+    name: 'Teatterit', icon: '🎟️', color: 'bg-[#173e5f]',
     providers: [
       { name: 'Åbo Svenska Teater', url: 'https://www.abosvenskateater.fi/sv/start/', group: 'Turku' },
       { name: 'Ahaa Teatteri', url: 'https://www.ahaateatteri.com', group: 'Tampere' },
@@ -297,7 +297,7 @@ export const SHORTCUTS: Shortcut[] = [
     ]
   },
   { 
-    name: 'Pankit', icon: '🏦', color: 'bg-brand-indigo',
+    name: 'Pankit', icon: '🏦', color: 'bg-[#173e5f]',
     providers: [
       { name: 'OP', url: 'https://www.op.fi' },
       { name: 'Nordea', url: 'https://www.nordea.fi' },
@@ -329,7 +329,7 @@ export const SHORTCUTS: Shortcut[] = [
     ]
   },
   { 
-    name: 'Sosiaalinen media', icon: '💬', color: 'bg-brand-indigo',
+    name: 'Sosiaalinen media', icon: '💬', color: 'bg-[#173e5f]',
     providers: [
       { name: 'Facebook', url: 'https://www.facebook.com' },
       { name: 'Instagram', url: 'https://www.instagram.com' },
@@ -340,7 +340,7 @@ export const SHORTCUTS: Shortcut[] = [
     ]
   },
   { 
-    name: 'Sovellukset', icon: '📱', color: 'bg-brand-indigo',
+    name: 'Sovellukset', icon: '📱', color: 'bg-[#173e5f]',
     providers: [
       { name: 'Google Play', url: 'https://play.google.com/store/apps' },
       { name: 'App Store', url: 'https://apps.apple.com' },
@@ -413,7 +413,7 @@ export const SHORTCUTS: Shortcut[] = [
     providers: PATIENT_ASSOCIATION_LINKS
   },
   { 
-    name: 'Tiede', icon: '🧪', color: 'bg-brand-purple',
+    name: 'Tiede', icon: '🧪', color: 'bg-[#173e5f]',
     providers: [
       { name: 'Heureka', url: 'https://www.heureka.fi' },
       { name: 'Tiede-lehti', url: 'https://www.tiede.fi' },
@@ -471,7 +471,7 @@ export const SHORTCUTS: Shortcut[] = [
     ]
   },
   {
-    name: 'Eläkeyhdistykset', icon: '👥', color: 'bg-brand-purple',
+    name: 'Eläkeyhdistykset', icon: '👥', color: 'bg-[#173e5f]',
     providers: SENIOR_ASSOCIATION_LINKS
   },
   {

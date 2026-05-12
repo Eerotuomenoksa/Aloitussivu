@@ -15,9 +15,9 @@ export default {
       },
       colors: {
         brand: {
-          indigo: '#330066',
-          purple: '#5c2d91',
-          orange: '#f49638',
+          indigo: '#173e5f',
+          purple: '#214f76',
+          orange: '#d09a32',
           cyan: '#4abdc9',
           teal: '#34a4b1',
           grey: '#c9c9c9',

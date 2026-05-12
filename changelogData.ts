@@ -21,13 +21,19 @@ export type ChangelogCommit = {
   subject: string;
 };
 
-export const CHANGELOG_GENERATED_AT = "11.5.2026 klo 12.54";
+export const CHANGELOG_GENERATED_AT = "12.5.2026 klo 08.29";
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
   "Sijainnista tunnistettu kunta tallennetaan selaimen muistiin, jotta alueelliset palvelut palautuvat automaattisesti sivun uudelleenavauksessa.",
+  "Liikenne-kategoriaa täydennettiin suomalaisilla joukkoliikennejärjestäjillä ja suurilla liikennöitsijöillä.",
   "Linkkien tarkistusdata ja ylläpitoloki päivitettiin uusimman buildin yhteydessä."
 ];
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
+  {
+    "hash": "b995b0538ce132d9b6559b2ad7b5dd293af184c1",
+    "date": "2026-05-11",
+    "subject": "sään paikkaa vaihdettu takaisin headeriin ja huijausvaroitusten määrä max 2kpl"
+  },
   {
     "hash": "2eeea59d71d758ab420b0454746aff1818468eb0",
     "date": "2026-05-11",

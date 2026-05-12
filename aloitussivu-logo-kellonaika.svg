@@ -1,0 +1,271 @@
+<svg viewBox="0 0 320 120" xmlns="http://www.w3.org/2000/svg" font-family="Georgia, 'Times New Roman', serif" id="seniorsurf-logo">
+  <defs>
+    <!-- SKY GRADIENTS -->
+    <!-- Aamu 06-10 -->
+    <linearGradient id="skyAamu" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#f97316"/>
+      <stop offset="60%" style="stop-color:#fb923c"/>
+      <stop offset="100%" style="stop-color:#fed7aa"/>
+    </linearGradient>
+    <!-- Päivä 10-17 -->
+    <linearGradient id="skyPaiva" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a3a5c"/>
+      <stop offset="100%" style="stop-color:#2a5a8c"/>
+    </linearGradient>
+    <!-- Ilta 17-21 -->
+    <linearGradient id="skyIlta" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e1b4b"/>
+      <stop offset="50%" style="stop-color:#7c3aed"/>
+      <stop offset="100%" style="stop-color:#f97316"/>
+    </linearGradient>
+    <!-- Yö 21-06 -->
+    <linearGradient id="skyYo" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0a1a"/>
+      <stop offset="100%" style="stop-color:#1a1a3a"/>
+    </linearGradient>
+
+    <!-- SUN GRADIENT -->
+    <radialGradient id="sunGrad" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" style="stop-color:#fef08a"/>
+      <stop offset="100%" style="stop-color:#f59e0b"/>
+    </radialGradient>
+    <!-- MOON GRADIENT -->
+    <radialGradient id="moonGrad" cx="40%" cy="35%" r="60%">
+      <stop offset="0%" style="stop-color:#f1f5f9"/>
+      <stop offset="100%" style="stop-color:#cbd5e1"/>
+    </radialGradient>
+    <!-- DAWN/DUSK SUN -->
+    <radialGradient id="sunDawnGrad" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" style="stop-color:#fed7aa"/>
+      <stop offset="100%" style="stop-color:#f97316"/>
+    </radialGradient>
+
+    <clipPath id="logoClip">
+      <rect width="320" height="120" rx="18"/>
+    </clipPath>
+  </defs>
+
+  <!-- BACKGROUND — filled by JS -->
+  <rect id="skyBg" width="320" height="120" rx="18" fill="url(#skyPaiva)"/>
+
+  <!-- WAVES -->
+  <path id="wave1" d="M0 90 Q40 80 80 88 Q120 96 160 86 Q200 76 240 84 Q280 92 320 82 L320 120 L0 120 Z" fill="#163050" opacity="0.6"/>
+  <path id="wave2" d="M0 98 Q50 88 100 95 Q150 102 200 92 Q250 82 320 94 L320 120 L0 120 Z" fill="#0f2035" opacity="0.5"/>
+
+  <!-- STARS GROUP (yö/ilta) -->
+  <g id="starsGroup" opacity="0">
+    <circle cx="100" cy="12" r="1.5" fill="white" opacity="0.9"/>
+    <circle cx="130" cy="8"  r="1"   fill="white" opacity="0.7"/>
+    <circle cx="155" cy="18" r="1.5" fill="white" opacity="0.8"/>
+    <circle cx="180" cy="6"  r="1"   fill="white" opacity="0.6"/>
+    <circle cx="210" cy="14" r="2"   fill="white" opacity="0.9"/>
+    <circle cx="240" cy="9"  r="1"   fill="white" opacity="0.7"/>
+    <circle cx="265" cy="20" r="1.5" fill="white" opacity="0.8"/>
+    <circle cx="290" cy="11" r="1"   fill="white" opacity="0.6"/>
+    <circle cx="305" cy="24" r="1.5" fill="white" opacity="0.7"/>
+    <circle cx="115" cy="30" r="1"   fill="white" opacity="0.5"/>
+    <circle cx="195" cy="28" r="1"   fill="white" opacity="0.6"/>
+    <circle cx="275" cy="32" r="1"   fill="white" opacity="0.5"/>
+    <!-- Twinkling star -->
+    <circle cx="170" cy="13" r="2" fill="#fde68a" opacity="0.9">
+      <animate attributeName="opacity" values="0.9;0.2;0.9" dur="3s" repeatCount="indefinite"/>
+      <animate attributeName="r" values="2;1.2;2" dur="3s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="250" cy="16" r="1.5" fill="#fde68a" opacity="0.7">
+      <animate attributeName="opacity" values="0.7;0.1;0.7" dur="4s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+
+  <!-- CLOUDS (aamu/päivä) -->
+  <g id="cloudsGroup" opacity="1">
+    <ellipse cx="200" cy="22" rx="22" ry="10" fill="white" opacity="0.25"/>
+    <ellipse cx="215" cy="18" rx="14" ry="9" fill="white" opacity="0.2"/>
+    <ellipse cx="185" cy="19" rx="12" ry="8" fill="white" opacity="0.2"/>
+    <ellipse cx="280" cy="30" rx="18" ry="8" fill="white" opacity="0.18"/>
+    <ellipse cx="293" cy="27" rx="10" ry="7" fill="white" opacity="0.15"/>
+  </g>
+
+  <!-- SUN (aamu/päivä) -->
+  <g id="sunGroup">
+    <!-- Glow -->
+    <circle id="sunGlow" cx="62" cy="46" r="26" fill="#fde68a" opacity="0.15"/>
+    <!-- Rays -->
+    <g id="sunRays" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" opacity="0.7">
+      <line x1="62" y1="14" x2="62" y2="8"/>
+      <line x1="62" y1="78" x2="62" y2="84"/>
+      <line x1="30"  y1="46" x2="24" y2="46"/>
+      <line x1="94"  y1="46" x2="100" y2="46"/>
+      <line x1="40"  y1="24" x2="36" y2="20"/>
+      <line x1="84"  y1="68" x2="88" y2="72"/>
+      <line x1="84"  y1="24" x2="88" y2="20"/>
+      <line x1="40"  y1="68" x2="36" y2="72"/>
+    </g>
+    <!-- Sun body -->
+    <circle id="sunBody" cx="62" cy="46" r="18" fill="url(#sunGrad)"/>
+    <!-- Face -->
+    <circle cx="56" cy="43" r="2.5" fill="#92400e"/>
+    <circle cx="68" cy="43" r="2.5" fill="#92400e"/>
+    <path   id="sunMouth" d="M55 50 Q62 56 69 50" stroke="#92400e" stroke-width="2" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- MOON (ilta/yö) -->
+  <g id="moonGroup" opacity="0">
+    <!-- Moon glow -->
+    <circle cx="62" cy="46" r="26" fill="#e2e8f0" opacity="0.08"/>
+    <!-- Moon crescent -->
+    <circle cx="62" cy="46" r="18" fill="url(#moonGrad)"/>
+    <circle cx="70" cy="40" r="14" fill="#1a1a3a"/><!-- cut-out for crescent -->
+    <!-- Stars near moon -->
+    <circle cx="86" cy="30" r="2" fill="#fde68a" opacity="0.9">
+      <animate attributeName="opacity" values="0.9;0.3;0.9" dur="2.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="92" cy="42" r="1.2" fill="white" opacity="0.7">
+      <animate attributeName="opacity" values="0.7;0.1;0.7" dur="3.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="80" cy="22" r="1.5" fill="white" opacity="0.6"/>
+  </g>
+
+  <!-- DAWN/DUSK SUN (aamuhämärä / iltahämärä) -->
+  <g id="dawnSunGroup" opacity="0">
+    <circle cx="62" cy="72" r="22" fill="url(#sunDawnGrad)" opacity="0.8"/>
+    <circle cx="62" cy="72" r="28" fill="#f97316" opacity="0.15"/>
+    <!-- Horizon glow -->
+    <ellipse cx="62" cy="88" rx="40" ry="8" fill="#fb923c" opacity="0.3"/>
+  </g>
+
+  <!-- HOUSE body -->
+  <rect x="28" y="62" width="34" height="26" rx="2" fill="#e8f0f8"/>
+  <!-- Roof -->
+  <polygon points="24,63 45,46 66,63" fill="#2a7d6f"/>
+  <!-- Chimney -->
+  <rect x="53" y="48" width="6" height="10" rx="1" fill="#2a7d6f"/>
+  <!-- Chimney smoke (päivä/aamu only) -->
+  <g id="smokeGroup" opacity="0.6">
+    <circle cx="56" cy="44" r="2.5" fill="#94a3b8" opacity="0">
+      <animate attributeName="cy" values="44;36;28" dur="3s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.5;0.3;0" dur="3s" repeatCount="indefinite"/>
+      <animate attributeName="r" values="2.5;3.5;5" dur="3s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="56" cy="44" r="2.5" fill="#94a3b8" opacity="0">
+      <animate attributeName="cy" values="44;36;28" dur="3s" begin="1s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.5;0.3;0" dur="3s" begin="1s" repeatCount="indefinite"/>
+      <animate attributeName="r" values="2.5;3.5;5" dur="3s" begin="1s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+  <!-- Door -->
+  <rect x="38" y="75" width="10" height="13" rx="2" fill="#c9963a"/>
+  <circle cx="46" cy="82" r="1.2" fill="#8a6020"/>
+  <!-- Windows -->
+  <rect x="30" y="67" width="8" height="7" rx="1" fill="#a8d4e6"/>
+  <rect x="51" y="67" width="8" height="7" rx="1" fill="#a8d4e6"/>
+  <!-- Window light (yö) -->
+  <rect id="winLight1" x="30" y="67" width="8" height="7" rx="1" fill="#fde68a" opacity="0"/>
+  <rect id="winLight2" x="51" y="67" width="8" height="7" rx="1" fill="#fde68a" opacity="0"/>
+  <!-- Window cross -->
+  <line x1="34" y1="67" x2="34" y2="74" stroke="white" stroke-width="0.8"/>
+  <line x1="30" y1="70.5" x2="38" y2="70.5" stroke="white" stroke-width="0.8"/>
+  <line x1="55" y1="67" x2="55" y2="74" stroke="white" stroke-width="0.8"/>
+  <line x1="51" y1="70.5" x2="59" y2="70.5" stroke="white" stroke-width="0.8"/>
+
+  <!-- TEXT -->
+  <text id="logoTitle" x="118" y="46" font-size="26" font-weight="bold" fill="white" letter-spacing="0.5">SeniorSurf</text>
+  <rect id="logoLine" x="118" y="52" width="170" height="2.5" rx="1.5" fill="#c9963a" opacity="0.9"/>
+  <text id="logoSub" x="119" y="70" font-size="12.5" fill="#a8c8e8" letter-spacing="1.5" font-style="italic">Aloitussivu</text>
+  <text id="logoTagline" x="119" y="90" font-size="10" fill="#7aa8c8" letter-spacing="0.8">Helppo ja turvallinen pääsy nettiin</text>
+  <!-- Time label (pieni) -->
+  <text id="timeLabel" x="119" y="108" font-size="9" fill="#4a7a9a" letter-spacing="0.5" opacity="0.7"></text>
+
+  <script type="text/javascript"><![CDATA[
+    (function() {
+      var h = new Date().getHours();
+
+      // Aika-alueet
+      // 05-09: aamunkoitto
+      // 09-17: päivä
+      // 17-21: ilta/auringonlasku
+      // 21-05: yö
+
+      var isAamu  = h >= 5  && h < 9;
+      var isPaiva = h >= 9  && h < 17;
+      var isIlta  = h >= 17 && h < 21;
+      var isYo    = h >= 21 || h < 5;
+
+      function setOpacity(id, val) {
+        var el = document.getElementById(id);
+        if (el) el.setAttribute('opacity', val);
+      }
+      function setAttr(id, attr, val) {
+        var el = document.getElementById(id);
+        if (el) el.setAttribute(attr, val);
+      }
+
+      if (isAamu) {
+        setAttr('skyBg', 'fill', 'url(#skyAamu)');
+        setOpacity('sunGroup', '1');
+        setAttr('sunBody', 'fill', 'url(#sunDawnGrad)');
+        setOpacity('moonGroup', '0');
+        setOpacity('dawnSunGroup', '0');
+        setOpacity('starsGroup', '0');
+        setOpacity('cloudsGroup', '0.5');
+        setAttr('wave1', 'fill', '#7c2d12');
+        setAttr('wave2', 'fill', '#431407');
+        setAttr('logoTagline', 'fill', '#fde68a');
+        setAttr('logoSub', 'fill', '#fed7aa');
+        // Aurinko nousee — matala sijainti
+        setAttr('sunGroup', 'transform', 'translate(0, 15)');
+        document.getElementById('timeLabel').textContent = 'Hyvää huomenta ☀️';
+      }
+
+      else if (isPaiva) {
+        setAttr('skyBg', 'fill', 'url(#skyPaiva)');
+        setOpacity('sunGroup', '1');
+        setAttr('sunBody', 'fill', 'url(#sunGrad)');
+        setOpacity('moonGroup', '0');
+        setOpacity('dawnSunGroup', '0');
+        setOpacity('starsGroup', '0');
+        setOpacity('cloudsGroup', '1');
+        setAttr('wave1', 'fill', '#163050');
+        setAttr('wave2', 'fill', '#0f2035');
+        setAttr('logoTagline', 'fill', '#7aa8c8');
+        setAttr('logoSub', 'fill', '#a8c8e8');
+        document.getElementById('timeLabel').textContent = 'Hyvää päivää ☀️';
+      }
+
+      else if (isIlta) {
+        setAttr('skyBg', 'fill', 'url(#skyIlta)');
+        setOpacity('sunGroup', '0.4');
+        setAttr('sunGroup', 'transform', 'translate(0, 20)');
+        setAttr('sunBody', 'fill', 'url(#sunDawnGrad)');
+        setOpacity('moonGroup', '0');
+        setOpacity('dawnSunGroup', '0');
+        setOpacity('starsGroup', '0.7');
+        setOpacity('cloudsGroup', '0.3');
+        setAttr('wave1', 'fill', '#1e1b4b');
+        setAttr('wave2', 'fill', '#12104f');
+        // Ikkunat palaa
+        setAttr('winLight1', 'opacity', '0.7');
+        setAttr('winLight2', 'opacity', '0.7');
+        setAttr('logoTagline', 'fill', '#c4b5fd');
+        setAttr('logoSub', 'fill', '#ddd6fe');
+        document.getElementById('timeLabel').textContent = 'Hyvää iltaa 🌇';
+      }
+
+      else { // Yö
+        setAttr('skyBg', 'fill', 'url(#skyYo)');
+        setOpacity('sunGroup', '0');
+        setOpacity('moonGroup', '1');
+        setOpacity('dawnSunGroup', '0');
+        setOpacity('starsGroup', '1');
+        setOpacity('cloudsGroup', '0');
+        setAttr('wave1', 'fill', '#0a0a2a');
+        setAttr('wave2', 'fill', '#05050f');
+        // Ikkunat palaa kirkkaammin
+        setAttr('winLight1', 'opacity', '0.9');
+        setAttr('winLight2', 'opacity', '0.9');
+        setAttr('logoTagline', 'fill', '#93c5fd');
+        setAttr('logoSub', 'fill', '#bfdbfe');
+        document.getElementById('timeLabel').textContent = 'Hyvää yötä 🌙';
+      }
+    })();
+  ]]></script>
+</svg>

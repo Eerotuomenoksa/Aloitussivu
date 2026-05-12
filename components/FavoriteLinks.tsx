@@ -10,11 +10,13 @@ interface FavoriteLinksProps {
 }
 
 const rowColors = [
-  'bg-brand-indigo',
-  'bg-brand-purple',
-  'bg-brand-cyan',
-  'bg-brand-teal',
-  'bg-brand-orange',
+  'bg-[#214f76]',
+  'bg-[#2a6387]',
+  'bg-[#4fb8c3]',
+  'bg-[#3aa9b5]',
+  'bg-[#d09a32]',
+  'bg-[#dcae55]',
+  'bg-[#6bc7cf]',
 ];
 
 const FavoriteLinks: React.FC<FavoriteLinksProps> = ({ favorites, onToggleFavorite, fontSizeStep = 0 }) => {

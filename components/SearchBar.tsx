@@ -41,7 +41,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ fontSizeStep = 0, variant = 'defa
         </div>
         <button
           type="submit"
-          className={`absolute right-4 top-1/2 -translate-y-1/2 ${isHeader ? 'bg-brand-indigo hover:bg-brand-purple text-white border-b-4 border-indigo-900 px-7 py-3' : 'bg-brand-indigo hover:bg-brand-purple text-white px-8 py-3'} rounded-full font-black text-xl transition-all shadow-lg active:scale-95 focus:outline-none focus:ring-4 focus:ring-indigo-300`}
+          className={`absolute right-4 top-1/2 -translate-y-1/2 ${isHeader ? 'bg-[#d09a32] hover:bg-[#e0aa43] text-slate-950 border-b-4 border-[#8f651e] px-7 py-3 focus:ring-amber-200' : 'bg-[#173e5f] hover:bg-[#214f76] text-white px-8 py-3 focus:ring-indigo-300'} rounded-full font-black text-xl transition-all shadow-lg active:scale-95 focus:outline-none focus:ring-4`}
         >
           {t('searchButton')}
         </button>
