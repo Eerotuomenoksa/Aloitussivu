@@ -2,6 +2,7 @@
 import { Shortcut, NewsItem } from './types';
 import { LOCAL_NEWSPAPER_LINKS } from './localNewspaperLinks';
 import { MUSEUM_LINKS, PATIENT_ASSOCIATION_LINKS, SENIOR_ASSOCIATION_LINKS } from './communityLinks';
+import { MUNICIPALITY_EXERCISE_LINKS } from './localExerciseLinks';
 
 export const QUOTES = [
   "Jokainen päivä on uusi mahdollisuus.",
@@ -244,6 +245,22 @@ export const SHORTCUTS: Shortcut[] = [
       { name: 'Retkipaikka', url: 'https://retkipaikka.fi' },
       { name: 'Luontoportti', url: 'https://www.luontoportti.com' },
       { name: 'Metsähallitus', url: 'https://www.metsa.fi' }
+    ]
+  },
+  {
+    name: 'Liikunta', icon: '🚶', color: 'bg-brand-cyan',
+    providers: [
+      { name: 'Voitas.fi - liikuntavideot', url: 'https://voitas.fi/liikuntavideot', group: 'Valtakunnallinen' },
+      { name: 'Ikäinstituutti - harjoittelu videoiden avulla', url: 'https://www.ikainstituutti.fi/liikunta-ja-ulkoilu-etusivu/voimaa-etajumpasta/harjoittelu-videoiden-avulla/', group: 'Valtakunnallinen' },
+      { name: 'Vahvike - jumppavideoita', url: 'https://vahvike.fi/liikunta/jumppavideoita/', group: 'Valtakunnallinen' },
+      { name: 'UKK-instituutti - ikäihmisten liikkumisen suositusvideot', url: 'https://ukkinstituutti.fi/aineistot/ikaihmisten-liikkumisen-suositukset-tietoiskuvideot/', group: 'Valtakunnallinen' },
+      { name: 'Coronaria - seniorijumppaa', url: 'https://www.coronaria.fi/fysioterapia/seniorijumppaa/', group: 'Valtakunnallinen' },
+      { name: 'Helsinki - etäliikuntavideot', url: 'https://www.hel.fi/fi/kulttuuri-ja-vapaa-aika/itsenaisesti-katsottavat-etaliikuntavideot', group: 'Alueelliset' },
+      { name: 'Espoo - omatoimiliikunta', url: 'https://www.espoo.fi/fi/liikunta-ja-luonto/liikuntaryhmat-ja-kurssit/omatoimiliikunta', group: 'Alueelliset' },
+      { name: 'Somero - tuoli- ja tasapainojumppa', url: 'https://www.somero.fi/vapaa-aika-ja-matkailu/liikunta-ja-ulkoilu/etajumppa/', group: 'Alueelliset' },
+      { name: 'Eläkeliitto Akaa - jumppavinkkejä ikäihmisille', url: 'https://www.elakeliitto.fi/yhdistykset/akaa/jumppavinkkeja-ja-videoita-ikaihmisille', group: 'Alueelliset' },
+      { name: 'Siilinjärvi - kotijumppavideoita senioreille', url: 'https://siilinjarvi.fi/hyvinvointi-ja-vapaa-aika/liikuntapalvelut/terveys-ja-erityisliikunta/kotijumppavideoita-senioreille/', group: 'Alueelliset' },
+      ...MUNICIPALITY_EXERCISE_LINKS,
     ]
   },
   { 

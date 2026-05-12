@@ -591,6 +591,7 @@ const categoryTranslations: Record<string, Partial<Record<LanguageCode, string>>
   'Teatterit': { sv: 'Teatrar', en: 'Theatres', uk: 'Театри', et: 'Teatrid', ru: 'Театры', se: 'Teáhterat' },
   'Liikenne': { sv: 'Trafik', en: 'Transport', uk: 'Транспорт', et: 'Transport', ru: 'Транспорт', se: 'Johtolat' },
   'Luonto': { sv: 'Natur', en: 'Nature', uk: 'Природа', et: 'Loodus', ru: 'Природа', se: 'Luondu' },
+  'Liikunta': { sv: 'Motion', en: 'Exercise', uk: 'Фізичні вправи', et: 'Liikumine', ru: 'Физическая активность', se: 'Lihkadeapmi' },
   'Matkailu': { sv: 'Resor', en: 'Travel', uk: 'Подорожі', et: 'Reisimine', ru: 'Путешествия', se: 'Mátkkošteapmi' },
   'Musiikki': { sv: 'Musik', en: 'Music', uk: 'Музика', et: 'Muusika', ru: 'Музыка', se: 'Musihkka' },
   'Oikeus': { sv: 'Juridik', en: 'Legal', uk: 'Право', et: 'Õigus', ru: 'Право', se: 'Vuoigatvuohta' },

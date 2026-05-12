@@ -240,6 +240,11 @@ const collectLinks = async () => {
     addRow('Paikalliset urheiluseurat', match[3], match[1], match[2], 'localSportsClubs.ts');
   }
 
+  const localExerciseLinks = await readText('localExerciseLinks.ts');
+  for (const match of localExerciseLinks.matchAll(/\{\s*"name":\s*"([^"]+)",\s*"url":\s*"([^"]+)",\s*"group":\s*"([^"]+)"\s*\}/g)) {
+    addRow('Paikallinen ohjattu liikunta', match[3], match[1], match[2], 'localExerciseLinks.ts');
+  }
+
   addRow('Sovelluksen omat linkit', 'Footer', 'SeniorSurf', 'https://seniorsurf.fi/', 'App.tsx');
   addRow('Sovelluksen omat linkit', 'Footer', 'SeniorSurf logo', 'https://seniorsurf.fi/wp-content/uploads/SeniorSurf_White-320-x-102-px.svg', 'App.tsx');
   addRow('Sovelluksen omat linkit', 'Sää', 'Ilmatieteen laitos', 'https://www.ilmatieteenlaitos.fi/', 'WeatherCard.tsx');
@@ -257,6 +262,7 @@ const collectLinks = async () => {
     municipalityWebsiteLocaleCount: [...municipalityWebsiteLocales.matchAll(/^\s*(sv|en|uk|et|ru|se):\s*"([^"]+)"/gm)].length,
     localNewspaperCount: [...localNewspapers.matchAll(/\{\s*"name":\s*"([^"]+)",\s*"url":\s*"([^"]+)"\s*\}/g)].length,
     localSportsClubCount: [...localSportsClubs.matchAll(/\{\s*name:\s*'([^']+)',\s*url:\s*'([^']+)',\s*group:\s*'([^']+)'/g)].length,
+    localExerciseLinkCount: [...localExerciseLinks.matchAll(/\{\s*"name":\s*"([^"]+)",\s*"url":\s*"([^"]+)",\s*"group":\s*"([^"]+)"\s*\}/g)].length,
   };
 };
 
@@ -271,6 +277,7 @@ const main = async () => {
     municipalityWebsiteLocaleCount,
     localNewspaperCount,
     localSportsClubCount,
+    localExerciseLinkCount,
   } = await collectLinks();
 
   const uniqueRows = [...new Map(
@@ -355,6 +362,7 @@ const main = async () => {
     `  localLibraries: ${localLibraryCount},`,
     `  localNewspapers: ${localNewspaperCount},`,
     `  localSportsClubs: ${localSportsClubCount},`,
+    `  localExerciseLinks: ${localExerciseLinkCount},`,
     '} as const;',
     '',
   ];

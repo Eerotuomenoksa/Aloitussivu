@@ -1,6 +1,6 @@
 # Palvelun linkit
 
-Päivitetty: 12.5.2026 klo 8.29
+Päivitetty: 12.5.2026 klo 9.19
 
 Tämä tiedosto summaa sovelluksessa olevat linkit. Varsinainen avattava taulukko on tiedostossa `docs/linkit.csv`.
 
@@ -11,16 +11,17 @@ Tämä tiedosto summaa sovelluksessa olevat linkit. Varsinainen avattava taulukk
 | Kuntien kieliversiot | 235 |
 | Kuntien verkkosivut | 297 |
 | Lehdet | 58 |
+| Paikallinen ohjattu liikunta | 152 |
 | Paikalliset erikoislinkit | 24 |
 | Paikalliset urheiluseurat | 41 |
-| Palvelukategoriat | 302 |
+| Palvelukategoriat | 312 |
 | Sovelluksen omat linkit | 6 |
 
-Yhteensä: 1023 linkkiä.
+Yhteensä: 1185 linkkiä.
 
-Tarkistusvirheitä: 4.
-Huomioita: 29.
-Piilotettu loppukäyttäjiltä: 4 linkkiä.
+Tarkistusvirheitä: 5.
+Huomioita: 30.
+Piilotettu loppukäyttäjiltä: 5 linkkiä.
 
 Turvallisuustarkistus on perustarkistus: URL-muoto, sallittu protokolla, HTTPS, kirjautumistietojen puuttuminen sekä paikallisten/sisäverkon osoitteiden esto. Se ei korvaa haittasivustojen erillistä mainearviota.
 
