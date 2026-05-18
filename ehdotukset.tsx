@@ -240,7 +240,10 @@ function App() {
   const hideReportedLink = async (report: ManagedLinkReportEntry) => {
     setBusyId(report.id);
     try {
+      const normalizedReportUrl = normalizeUrl(report.url);
+      const matchingApprovedLinks = approvedLinks.filter((link) => normalizeUrl(link.url) === normalizedReportUrl);
       await addBlockedLink(report.url);
+      await Promise.all(matchingApprovedLinks.map((link) => removeApprovedLinkSuggestion(link.id)));
       await updateLinkReportStatus(report.id, 'approved', user?.email);
     } finally {
       setBusyId(null);
