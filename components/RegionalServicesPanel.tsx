@@ -12,6 +12,7 @@ interface RegionalServicesPanelProps {
   fontSizeStep?: number;
   onReportLink?: (draft: LinkReportDraft) => void;
   showNews?: boolean;
+  showScamAlerts?: boolean;
 }
 
 const textClasses = [
@@ -69,7 +70,7 @@ const ServiceLink: React.FC<{ provider: Provider; index: number; fontSizeStep: n
   );
 };
 
-const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality, fontSizeStep = 0, onReportLink, showNews = true }) => {
+const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality, fontSizeStep = 0, onReportLink, showNews = true, showScamAlerts = true }) => {
   const { language, t } = useI18n();
   const [query, setQuery] = useState('');
   const [isManualQuery, setIsManualQuery] = useState(false);
@@ -134,7 +135,8 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
 
           <NearbyGuidancePlaces locality={locality} fontSizeStep={fontSizeStep} />
 
-          <div className="grid gap-6 xl:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] xl:items-start">
+          {(showNews || showScamAlerts) && (
+          <div className={`grid gap-6 xl:items-start ${showNews && showScamAlerts ? 'xl:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]' : 'xl:grid-cols-1'}`}>
             {showNews && (
                 <div className="space-y-3">
                   <div className="flex items-center justify-between gap-4">
@@ -155,10 +157,13 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
                   <LocalNewsHeadlines feeds={rssFeeds} fallbackUrl={fallbackNewsUrl} fontSizeStep={fontSizeStep} compact />
                 </div>
             )}
-            <div>
-              <ScamAlertsBanner compact />
-            </div>
+            {showScamAlerts && (
+              <div>
+                <ScamAlertsBanner compact />
+              </div>
+            )}
           </div>
+          )}
         </div>
       ) : (
         <div className="rounded-2xl border-4 border-dashed border-slate-200 dark:border-slate-700 p-8 text-center">

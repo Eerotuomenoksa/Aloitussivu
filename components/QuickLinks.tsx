@@ -20,6 +20,11 @@ interface QuickLinksProps {
 
 type LinkResult = { name: string; url: string; color: string; categoryName: string; categoryIcon: string; phone?: string; phoneUrl?: string };
 type CategoryResult = { shortcut: Shortcut; color: string };
+type ShortcutGroup = {
+  name: string;
+  icon: string;
+  categories: string[];
+};
 
 const getPhoneHref = (phone?: string, phoneUrl?: string) => {
   if (phoneUrl) return phoneUrl;
@@ -35,6 +40,54 @@ const rowColors = [
   'bg-[#d09a32]',
   'bg-[#dcae55]',
   'bg-[#6bc7cf]',
+];
+
+const shortcutGroups: ShortcutGroup[] = [
+  {
+    name: 'Asiointi ja viranomaiset',
+    icon: '🏛️',
+    categories: ['Julkiset palvelut', 'Oikeus', 'Pankit', 'Talous', 'Puhelinnumerot'],
+  },
+  {
+    name: 'Terveys ja apu',
+    icon: '🏥',
+    categories: ['Terveys', 'Potilasyhdistykset', 'Kotihoito-palvelut', 'Turvallisuus'],
+  },
+  {
+    name: 'Digi ja yhteydenpito',
+    icon: '💻',
+    categories: ['Apua digiin', 'Hakukoneet', 'Sähköposti', 'Sosiaalinen media', 'Sovellukset', 'Tekniikka'],
+  },
+  {
+    name: 'Uutiset ja tieto',
+    icon: '📰',
+    categories: ['Uutiset & Media', 'Lehdet', 'Sää', 'Tiede'],
+  },
+  {
+    name: 'Kulttuuri',
+    icon: '🎭',
+    categories: ['Kulttuuri', 'Museot', 'Teatterit', 'Musiikki', 'Taiteet', 'Kirjallisuus', 'Kirjastot'],
+  },
+  {
+    name: 'Liikkuminen ja matkailu',
+    icon: '🚌',
+    categories: ['Liikenne', 'Matkailu', 'Kielet'],
+  },
+  {
+    name: 'Liikunta ja ulkoilu',
+    icon: '🚶',
+    categories: ['Liikunta', 'Luonto', 'Urheilu'],
+  },
+  {
+    name: 'Koti ja arki',
+    icon: '🏠',
+    categories: ['Koti', 'Ruoka', 'Verkkokaupat', 'Viihde'],
+  },
+  {
+    name: 'Harrastukset ja yhteisöt',
+    icon: '🎈',
+    categories: ['Vapaa-aika', 'Eläkeyhdistykset', 'Sukututkimus', 'Hengellisyys'],
+  },
 ];
 
 const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep = 0, favorites, onToggleFavorite, locality, onReportLink }) => {
@@ -79,6 +132,26 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
   useApprovedLinkSuggestionsVersion();
   const approvedShortcuts = mergeApprovedLinksIntoShortcuts(shortcuts);
   const sortedShortcuts = [...approvedShortcuts].sort((a, b) => categoryName(a.name).localeCompare(categoryName(b.name), 'fi'));
+  const shortcutsByName = new Map(sortedShortcuts.map((shortcut) => [shortcut.name, shortcut]));
+  const groupedShortcutNames = new Set(shortcutGroups.flatMap((group) => group.categories));
+  const groupedShortcuts = [
+    ...shortcutGroups
+      .map((group) => ({
+        ...group,
+        shortcuts: group.categories
+          .map((name) => shortcutsByName.get(name))
+          .filter((shortcut): shortcut is Shortcut => Boolean(shortcut)),
+      }))
+      .filter((group) => group.shortcuts.length > 0),
+    ...sortedShortcuts
+      .filter((shortcut) => !groupedShortcutNames.has(shortcut.name))
+      .map((shortcut) => ({
+        name: shortcut.name,
+        icon: shortcut.icon,
+        categories: [shortcut.name],
+        shortcuts: [shortcut],
+      })),
+  ];
 
   const iconClasses = [
     'text-[2.25rem] md:text-[2.7rem]',
@@ -124,6 +197,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
 
   const matchedCategories: CategoryResult[] = [];
   const matchedLinks: LinkResult[] = [];
+  const matchedCategoryNames = new Set<string>();
 
   if (q) {
     sortedShortcuts.forEach((shortcut, idx) => {
@@ -133,6 +207,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
 
       if (categoryMatches) {
         matchedCategories.push({ shortcut, color });
+        matchedCategoryNames.add(shortcut.name);
       }
 
       if (shortcut.providers) {
@@ -152,12 +227,29 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
         });
       }
     });
+
+    shortcutGroups.forEach((group, idx) => {
+      const translatedGroupName = categoryName(group.name);
+      const groupMatches = `${group.name} ${translatedGroupName}`.toLowerCase().includes(q);
+      if (!groupMatches) return;
+
+      const color = rowColors[idx % rowColors.length];
+      group.categories.forEach((name) => {
+        const shortcut = shortcutsByName.get(name);
+        if (!shortcut || matchedCategoryNames.has(shortcut.name)) return;
+        matchedCategories.push({ shortcut, color });
+        matchedCategoryNames.add(shortcut.name);
+      });
+    });
   }
 
   const hasResults = matchedCategories.length + matchedLinks.length > 0;
 
   const baseCardStyles = (color: string) =>
     `${color} p-6 md:p-8 rounded-[2rem] shadow-md hover:shadow-2xl transition-all transform hover:-translate-y-2 active:scale-95 text-white border-4 border-transparent hover:border-white/40 focus:ring-4 focus:ring-blue-400 focus:outline-none flex flex-col items-center justify-center text-center gap-3 h-full min-h-[160px] md:min-h-[220px]`;
+
+  const groupCardStyles = (color: string) =>
+    `${color} rounded-[2rem] shadow-md text-white border-4 border-white/10 flex h-full min-h-[250px] flex-col gap-5 p-6 md:min-h-[310px] md:p-8`;
 
   return (
     <div className="space-y-8 animate-in">
@@ -312,44 +404,62 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
         </>
       ) : (
         /* Normaali kategoriaruudukko */
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6">
-          {sortedShortcuts.map((link, idx) => {
-            const color = rowColors[Math.floor(idx / 6) % rowColors.length];
-            const isCategory = !!link.providers;
-
-            const content = (
-              <>
-                <span className={`transition-all duration-300 ${iconClasses[fontSizeStep]}`} aria-hidden="true">{link.icon}</span>
-                <span className={`font-black leading-tight tracking-tight transition-all duration-300 ${textClasses[fontSizeStep]}`}>
-                  {categoryName(link.name)}
-                </span>
-              </>
-            );
-
-            if (isCategory) {
-              return (
-                <button
-                  key={idx}
-                  onClick={() => onSelectCategory({ ...link, color })}
-                  className={baseCardStyles(color)}
-                  aria-label={`${t('openCategory')}: ${categoryName(link.name)}`}
-                >
-                  {content}
-                </button>
-              );
-            }
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3 md:gap-7">
+          {groupedShortcuts.map((group, idx) => {
+            const color = rowColors[idx % rowColors.length];
 
             return (
-              <a
-                key={idx}
-                href={link.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={baseCardStyles(color)}
-                aria-label={`${t('goToSite')}: ${categoryName(link.name)}`}
+              <section
+                key={group.name}
+                className={groupCardStyles(color)}
+                aria-labelledby={`shortcut-group-${idx}`}
               >
-                {content}
-              </a>
+                <div className="flex items-start gap-4">
+                  <span className={`shrink-0 transition-all duration-300 ${iconClasses[fontSizeStep]}`} aria-hidden="true">
+                    {group.icon}
+                  </span>
+                  <div className="min-w-0">
+                    <h3 id={`shortcut-group-${idx}`} className={`font-black leading-tight tracking-tight transition-all duration-300 ${textClasses[fontSizeStep]}`}>
+                      {categoryName(group.name)}
+                    </h3>
+                  </div>
+                </div>
+
+                <div className="grid flex-1 content-start gap-3 sm:grid-cols-2">
+                  {group.shortcuts.map((shortcut) => {
+                    const isCategory = !!shortcut.providers;
+                    const label = categoryName(shortcut.name);
+                    const subCategoryClasses = `flex min-h-14 items-center justify-center rounded-2xl border-2 border-white/55 bg-white/20 px-4 py-3 text-center font-black leading-tight text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.28),0_3px_0_rgba(15,23,42,0.22)] transition-all hover:-translate-y-0.5 hover:border-white/80 hover:bg-white/30 focus:outline-none focus:ring-4 focus:ring-white/60 active:translate-y-0 active:shadow-[inset_0_1px_0_rgba(255,255,255,0.24),0_1px_0_rgba(15,23,42,0.25)] ${subTextClasses[fontSizeStep]}`;
+
+                    if (isCategory) {
+                      return (
+                        <button
+                          key={shortcut.name}
+                          type="button"
+                          onClick={() => onSelectCategory({ ...shortcut, color })}
+                          className={subCategoryClasses}
+                          aria-label={`${t('openCategory')}: ${label}`}
+                        >
+                          {label}
+                        </button>
+                      );
+                    }
+
+                    return (
+                      <a
+                        key={shortcut.name}
+                        href={shortcut.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={subCategoryClasses}
+                        aria-label={`${t('goToSite')}: ${label}`}
+                      >
+                        {label}
+                      </a>
+                    );
+                  })}
+                </div>
+              </section>
             );
           })}
         </div>

@@ -31,6 +31,7 @@ interface UiVisibilityState {
   clock: boolean;
   regionalServices: boolean;
   regionalNews: boolean;
+  scamAlerts: boolean;
   weather: boolean;
   assistant: boolean;
   googleSearch: boolean;
@@ -40,6 +41,7 @@ const defaultUiVisibility: UiVisibilityState = {
   clock: true,
   regionalServices: true,
   regionalNews: true,
+  scamAlerts: true,
   weather: true,
   assistant: true,
   googleSearch: true,
@@ -213,7 +215,7 @@ const AppContent: React.FC = () => {
       >
 
         <header
-          className="relative left-1/2 -mt-6 w-screen -translate-x-1/2 overflow-visible text-white shadow-xl ring-1 ring-white/15 md:-mt-10 lg:-mt-16"
+          className="relative z-20 left-1/2 -mt-6 w-screen -translate-x-1/2 overflow-visible text-white shadow-xl ring-1 ring-white/15 md:-mt-10 lg:-mt-16"
           style={{ background: headerBackgrounds[logoPhase][isDarkMode ? 'dark' : 'light'], width: fullBleedWidth }}
         >
           <div className="mx-auto w-full max-w-[1900px] px-6 py-6 md:px-10 md:py-8 lg:px-16">
@@ -225,7 +227,7 @@ const AppContent: React.FC = () => {
             {(uiVisibility.assistant || uiVisibility.weather) && (
               <div className="grid gap-4 md:grid-cols-2 md:items-stretch">
                 {uiVisibility.assistant && (
-                  <div className="relative">
+                  <div className="relative z-50">
                     <Assistant variant="header" />
                   </div>
                 )}
@@ -301,6 +303,7 @@ const AppContent: React.FC = () => {
                 { key: 'clock', label: t('showClock') },
                 { key: 'regionalServices', label: t('showRegionalServices') },
                 { key: 'regionalNews', label: t('showNews') },
+                { key: 'scamAlerts', label: t('showScamAlerts') },
                 { key: 'weather', label: t('showWeather') },
                 { key: 'assistant', label: t('showAssistant') },
                 { key: 'googleSearch', label: t('showGoogleSearch') },
@@ -329,6 +332,7 @@ const AppContent: React.FC = () => {
               fontSizeStep={fontSizeStep}
               onReportLink={openReportModal}
               showNews={uiVisibility.regionalNews}
+              showScamAlerts={uiVisibility.scamAlerts}
             />
           )}
 

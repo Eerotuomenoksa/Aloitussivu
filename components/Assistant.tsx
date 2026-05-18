@@ -75,7 +75,7 @@ const Assistant: React.FC<AssistantProps> = ({ variant = 'default' }) => {
 
   return (
     <section 
-      className={`bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col h-full border-4 border-brand-indigo dark:border-[#173e5f] animate-in slide-in-from-bottom-4 duration-300 ${variant === 'header' ? 'min-h-[440px] xl:absolute xl:right-0 xl:top-full xl:z-40 xl:mt-4 xl:w-[28rem]' : 'min-h-[500px]'}`}
+      className={`bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col h-full border-4 border-brand-indigo dark:border-[#173e5f] animate-in slide-in-from-bottom-4 duration-300 ${variant === 'header' ? 'min-h-[440px] xl:absolute xl:right-0 xl:top-full xl:z-[80] xl:mt-4 xl:w-[28rem]' : 'min-h-[500px]'}`}
       aria-label={t('assistantChat')}
     >
       <div className="bg-[#173e5f] p-6 text-white flex items-center justify-between">
