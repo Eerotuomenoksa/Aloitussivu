@@ -323,7 +323,7 @@ export async function parseNcscReview(html: string, url: string): Promise<NcscSc
     .map((element, index) => ({ element, index }))
     .filter(({ element }) => getTagName(element) === 'h2' && getElementText(element) === SCAM_SECTION_HEADING);
 
-  if (h2Indexes.length >= 2) {
+  if (h2Indexes.length >= 1) {
     const startIndex = h2Indexes[h2Indexes.length - 1].index;
     const h3Indexes = elements
       .map((element, index) => ({ element, index }))
