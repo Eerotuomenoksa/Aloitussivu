@@ -49,10 +49,10 @@ const FloatingControls: React.FC<FloatingControlsProps> = ({
     });
   };
 
-  const buttonClass = 'flex h-16 w-16 items-center justify-center rounded-full bg-[#173e5f] text-2xl font-black leading-none text-white shadow-2xl border-b-4 border-[#0f2942] transition-all duration-200 hover:bg-[#214f76] focus:outline-none focus:ring-4 focus:ring-[#d09a32]/40 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed';
+  const buttonClass = 'flex h-12 w-12 md:h-16 md:w-16 items-center justify-center rounded-full bg-[#173e5f] text-lg md:text-2xl font-black leading-none text-white shadow-2xl border-b-4 border-[#0f2942] transition-all duration-200 hover:bg-[#214f76] focus:outline-none focus:ring-4 focus:ring-[#d09a32]/40 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed';
 
   return (
-    <div className="fixed bottom-5 right-5 md:bottom-8 md:right-8 z-40 flex flex-col items-end gap-3" role="group" aria-label={resetLabel}>
+    <div className="fixed bottom-3 right-3 md:bottom-8 md:right-8 z-40 flex flex-col items-end gap-2 md:gap-3" role="group" aria-label={resetLabel}>
       <button
         type="button"
         onClick={onIncrease}
@@ -75,7 +75,7 @@ const FloatingControls: React.FC<FloatingControlsProps> = ({
         <button
           type="button"
           onClick={onReset}
-          className="rounded-full bg-[#d09a32] px-4 py-3 text-base font-black text-slate-950 shadow-xl border-b-4 border-[#8f651e] transition-all hover:bg-[#e0aa43] focus:outline-none focus:ring-4 focus:ring-amber-200 active:scale-95"
+          className="rounded-full bg-[#d09a32] px-3 py-2 md:px-4 md:py-3 text-sm md:text-base font-black text-slate-950 shadow-xl border-b-4 border-[#8f651e] transition-all hover:bg-[#e0aa43] focus:outline-none focus:ring-4 focus:ring-amber-200 active:scale-95"
           aria-label={resetLabel}
         >
           100%
@@ -87,7 +87,7 @@ const FloatingControls: React.FC<FloatingControlsProps> = ({
         aria-label={backToTopLabel}
         aria-hidden={!isTopVisible}
         tabIndex={isTopVisible ? 0 : -1}
-        className={`${buttonClass} text-4xl ${isTopVisible ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-4 opacity-0'}`}
+        className={`${buttonClass} text-3xl md:text-4xl ${isTopVisible ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-4 opacity-0'}`}
       >
         <span aria-hidden="true">↑</span>
       </button>

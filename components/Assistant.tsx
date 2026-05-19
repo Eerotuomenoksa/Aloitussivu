@@ -75,17 +75,17 @@ const Assistant: React.FC<AssistantProps> = ({ variant = 'default' }) => {
 
   return (
     <section 
-      className={`bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col h-full border-4 border-brand-indigo dark:border-[#173e5f] animate-in slide-in-from-bottom-4 duration-300 ${variant === 'header' ? 'min-h-[440px] xl:absolute xl:right-0 xl:top-full xl:z-[80] xl:mt-4 xl:w-[28rem]' : 'min-h-[500px]'}`}
+      className={`bg-white dark:bg-slate-800 rounded-3xl md:rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col border-4 border-brand-indigo dark:border-[#173e5f] animate-in slide-in-from-bottom-4 duration-300 ${variant === 'header' ? 'h-[min(68dvh,390px)] min-h-[300px] xl:absolute xl:right-0 xl:top-full xl:z-[80] xl:mt-4 xl:h-[440px] xl:w-[28rem]' : 'min-h-[420px] md:min-h-[500px]'}`}
       aria-label={t('assistantChat')}
     >
-      <div className="bg-[#173e5f] p-6 text-white flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center text-2xl" aria-hidden="true">🤖</div>
-          <h2 className="text-xl font-black uppercase tracking-tight">{t('assistantTitle')}</h2>
+      <div className="bg-[#173e5f] p-4 md:p-6 text-white flex items-center justify-between gap-3">
+        <div className="flex min-w-0 items-center gap-3 md:gap-4">
+          <div className="w-9 h-9 md:w-10 md:h-10 bg-white/20 rounded-full flex items-center justify-center text-xl md:text-2xl" aria-hidden="true">🤖</div>
+          <h2 className="text-lg md:text-xl font-black uppercase tracking-tight">{t('assistantTitle')}</h2>
         </div>
         <button 
           onClick={() => setIsMinimized(true)}
-          className="bg-black/20 hover:bg-black/40 px-4 py-2 rounded-full font-bold transition-colors focus:ring-2 focus:ring-white"
+          className="shrink-0 bg-black/20 hover:bg-black/40 px-3 py-2 md:px-4 rounded-full text-sm md:text-base font-bold transition-colors focus:ring-2 focus:ring-white"
         >
           {t('assistantClose')} ✕
         </button>
@@ -93,7 +93,7 @@ const Assistant: React.FC<AssistantProps> = ({ variant = 'default' }) => {
 
       <div 
         ref={scrollRef}
-        className="flex-1 p-6 overflow-y-auto space-y-4 bg-slate-100 dark:bg-slate-900 transition-colors duration-300"
+        className="min-h-0 flex-1 p-4 md:p-6 overflow-y-auto space-y-3 md:space-y-4 bg-slate-100 dark:bg-slate-900 transition-colors duration-300"
         aria-live="polite"
       >
         {messages.length === 0 && (
@@ -103,7 +103,7 @@ const Assistant: React.FC<AssistantProps> = ({ variant = 'default' }) => {
         )}
         {messages.map((msg, i) => (
           <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-            <div className={`max-w-[85%] p-4 rounded-2xl text-lg font-bold shadow-sm transition-colors duration-200 ${
+            <div className={`max-w-[88%] p-3 md:p-4 rounded-2xl text-base md:text-lg font-bold shadow-sm transition-colors duration-200 ${
               msg.role === 'user' 
                 ? 'bg-brand-indigo text-white rounded-tr-none' 
                 : 'bg-white dark:bg-slate-700 text-slate-950 dark:text-white rounded-tl-none border border-slate-300 dark:border-slate-600'
@@ -123,20 +123,20 @@ const Assistant: React.FC<AssistantProps> = ({ variant = 'default' }) => {
         )}
       </div>
 
-      <div className="p-4 bg-white dark:bg-slate-800 border-t-2 border-slate-200 dark:border-slate-700 flex gap-2">
+      <div className="p-3 md:p-4 bg-white dark:bg-slate-800 border-t-2 border-slate-200 dark:border-slate-700 flex gap-2">
         <input 
           type="text" 
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && handleSend()}
           placeholder={t('assistantPlaceholder')}
-          className="flex-1 border-2 border-slate-400 dark:border-slate-600 rounded-xl px-4 py-3 text-lg focus:ring-4 focus:ring-blue-200 outline-none bg-white dark:bg-slate-700 text-slate-950 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 transition-colors font-bold"
+          className="min-w-0 flex-1 border-2 border-slate-400 dark:border-slate-600 rounded-xl px-3 py-2 md:px-4 md:py-3 text-base md:text-lg focus:ring-4 focus:ring-blue-200 outline-none bg-white dark:bg-slate-700 text-slate-950 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 transition-colors font-bold"
           aria-label={t('assistantInput')}
         />
         <button 
           onClick={handleSend}
           disabled={isLoading || !input.trim()}
-          className="bg-[#173e5f] text-white px-6 py-3 rounded-xl font-black hover:bg-[#214f76] disabled:opacity-50 transition-all focus:ring-4 focus:ring-blue-300 shadow-md active:scale-95"
+          className="bg-[#173e5f] text-white px-4 py-2 md:px-6 md:py-3 rounded-xl font-black hover:bg-[#214f76] disabled:opacity-50 transition-all focus:ring-4 focus:ring-blue-300 shadow-md active:scale-95"
         >
           {t('assistantSend')}
         </button>

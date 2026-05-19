@@ -34,11 +34,9 @@ const smallTextClasses = [
 const ServiceLink: React.FC<{ provider: Provider; index: number; fontSizeStep: number; onReportLink?: (draft: LinkReportDraft) => void }> = ({ provider, index, fontSizeStep, onReportLink }) => {
   const { t, categoryName } = useI18n();
   const colors = [
-    'bg-[#173e5f] hover:bg-[#214f76]',
-    'bg-brand-teal hover:bg-teal-700',
-    'bg-brand-cyan hover:bg-cyan-700',
-    'bg-[#173e5f] hover:bg-[#214f76]',
-    'bg-brand-orange hover:bg-[#e2ad45]',
+    'bg-[#dceff4] hover:bg-[#cce7ee] dark:bg-[#173e5f] dark:hover:bg-[#214f76]',
+    'bg-[#d8f0ee] hover:bg-[#c8e7e4] dark:bg-[#1d5c62] dark:hover:bg-[#23727a]',
+    'bg-[#f8e2af] hover:bg-[#f3d48d] dark:bg-[#73501e] dark:hover:bg-[#8c6225]',
   ];
 
   return (
@@ -47,7 +45,7 @@ const ServiceLink: React.FC<{ provider: Provider; index: number; fontSizeStep: n
         href={provider.url}
         target="_blank"
         rel="noopener noreferrer"
-        className={`${colors[index % colors.length]} text-white rounded-2xl p-5 md:p-6 shadow-md transition-all active:scale-95 focus:outline-none focus:ring-4 focus:ring-blue-300 min-h-[120px] flex flex-col justify-between gap-4`}
+        className={`${colors[index % colors.length]} text-slate-950 dark:text-white rounded-2xl p-5 md:p-6 shadow-md border-4 border-slate-900/10 dark:border-white/10 transition-all active:scale-95 focus:outline-none focus:ring-4 focus:ring-blue-300 min-h-[120px] flex flex-col justify-between gap-4`}
       >
         <span className={`font-black leading-tight ${textClasses[fontSizeStep]}`}>{provider.name}</span>
         {provider.group && <span className={`font-bold opacity-80 ${smallTextClasses[fontSizeStep]}`}>{categoryName(provider.group)}</span>}
@@ -60,7 +58,7 @@ const ServiceLink: React.FC<{ provider: Provider; index: number; fontSizeStep: n
             category: provider.group,
             source: 'RegionalServicesPanel',
           })}
-          className="absolute bottom-3 right-3 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/35 text-white shadow-md transition-all focus:ring-4 focus:ring-blue-300 focus:outline-none opacity-0 group-hover/service:opacity-100 focus:opacity-100 w-10 h-10 text-xl"
+          className="absolute bottom-3 right-3 flex items-center justify-center rounded-full bg-white/70 hover:bg-white text-slate-950 shadow-md transition-all focus:ring-4 focus:ring-blue-300 focus:outline-none opacity-0 group-hover/service:opacity-100 focus:opacity-100 w-10 h-10 text-xl"
           aria-label={`${t('reportLink')}: ${provider.name}`}
         >
           !
@@ -124,8 +122,8 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
               />
             </label>
             {context && (
-              <div className="rounded-xl bg-brand-cyan/10 dark:bg-brand-cyan/10 border-2 border-brand-cyan/50 dark:border-brand-cyan/40 px-4 py-3 shadow-sm md:min-w-[14rem]">
-                <p className="text-xs font-black uppercase tracking-wide text-brand-indigo dark:text-blue-200">
+              <div className="rounded-xl bg-[#dceff4] dark:bg-[#173e5f] border-2 border-[#9fcbd6] dark:border-white/15 px-4 py-3 shadow-sm md:min-w-[14rem]">
+                <p className="text-xs font-black uppercase tracking-wide text-[#173e5f] dark:text-blue-100">
                   Näytetään kuntaa
                 </p>
                 <p className={`font-black text-slate-900 dark:text-white leading-tight ${smallTextClasses[fontSizeStep]}`}>
@@ -135,8 +133,8 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
             )}
           </div>
           {context && (
-            <div className="mt-3 flex flex-wrap items-center gap-3 rounded-2xl border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-4 py-3 shadow-sm">
-              <p className={`font-bold text-slate-600 dark:text-slate-300 ${smallTextClasses[fontSizeStep]}`}>
+            <div className="mt-3 flex flex-wrap items-center gap-3 rounded-2xl border-2 border-[#9fcbd6] dark:border-white/15 bg-[#f3fbfc] dark:bg-[#102d45] px-4 py-3 shadow-sm">
+              <p className={`font-bold text-slate-700 dark:text-slate-200 ${smallTextClasses[fontSizeStep]}`}>
                 Paikalliset linkit rajataan nyt tähän paikkakuntaan.
               </p>
               <button

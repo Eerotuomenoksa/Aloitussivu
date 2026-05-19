@@ -34,13 +34,9 @@ const getPhoneHref = (phone?: string, phoneUrl?: string) => {
 };
 
 const rowColors = [
-  'bg-[#214f76]',
-  'bg-[#2a6387]',
-  'bg-[#4fb8c3]',
-  'bg-[#3aa9b5]',
-  'bg-[#d09a32]',
-  'bg-[#dcae55]',
-  'bg-[#6bc7cf]',
+  'bg-[#dceff4] dark:bg-[#173e5f]',
+  'bg-[#d8f0ee] dark:bg-[#1d5c62]',
+  'bg-[#f8e2af] dark:bg-[#73501e]',
 ];
 
 const shortcutGroups: ShortcutGroup[] = [
@@ -171,11 +167,11 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
   ];
 
   const subTextClasses = [
-    'text-sm',
     'text-base',
     'text-lg',
     'text-xl',
     'text-2xl',
+    'text-3xl',
   ];
 
   const inputClasses = [
@@ -275,10 +271,10 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
   const hasResults = matchedCategories.length + matchedLinks.length + matchedPhones.length > 0;
 
   const baseCardStyles = (color: string) =>
-    `${color} p-6 md:p-8 rounded-[2rem] shadow-md hover:shadow-2xl transition-all transform hover:-translate-y-2 active:scale-95 text-white border-4 border-transparent hover:border-white/40 focus:ring-4 focus:ring-blue-400 focus:outline-none flex flex-col items-center justify-center text-center gap-3 h-full min-h-[160px] md:min-h-[220px]`;
+    `${color} p-6 md:p-8 rounded-[2rem] shadow-md hover:shadow-2xl transition-all transform hover:-translate-y-2 active:scale-95 text-slate-950 dark:text-white border-4 border-slate-900/10 dark:border-white/10 hover:border-slate-900/25 dark:hover:border-white/30 focus:ring-4 focus:ring-blue-400 focus:outline-none flex flex-col items-center justify-center text-center gap-3 h-full min-h-[160px] md:min-h-[220px]`;
 
   const groupCardStyles = (color: string) =>
-    `${color} rounded-[2rem] shadow-md text-white border-4 border-white/10 flex h-full min-h-[250px] flex-col gap-5 p-6 md:min-h-[310px] md:p-8`;
+    `${color} rounded-[2rem] shadow-md text-slate-950 dark:text-white border-4 border-slate-900/10 dark:border-white/10 flex h-full min-h-[250px] flex-col gap-5 p-6 md:min-h-[310px] md:p-8`;
 
   return (
     <div className="space-y-8 animate-in">
@@ -412,7 +408,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
                           category: link.categoryName,
                           source: 'QuickLinks',
                         })}
-                        className="absolute bottom-3 right-3 flex items-center justify-center rounded-full bg-white/30 hover:bg-white/50 text-white shadow-md transition-all focus:ring-4 focus:ring-blue-300 focus:outline-none opacity-0 group-hover/link:opacity-100 focus:opacity-100 w-10 h-10 text-xl"
+                        className="absolute bottom-3 right-3 flex items-center justify-center rounded-full bg-white/70 hover:bg-white text-slate-950 shadow-md transition-all focus:ring-4 focus:ring-blue-300 focus:outline-none opacity-0 group-hover/link:opacity-100 focus:opacity-100 w-10 h-10 text-xl"
                         aria-label={`${t('reportLink')}: ${link.name}`}
                       >
                         !
@@ -423,7 +419,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
                         className={`absolute top-3 right-3 flex items-center justify-center rounded-full transition-all focus:ring-4 focus:ring-yellow-300 focus:outline-none
                           ${isFav
                             ? 'bg-yellow-400 hover:bg-yellow-500 shadow-md'
-                            : 'bg-white/30 hover:bg-yellow-100/80 opacity-0 group-hover/link:opacity-100 focus:opacity-100'
+                            : 'bg-white/70 hover:bg-yellow-100/90 opacity-0 group-hover/link:opacity-100 focus:opacity-100'
                           } ${starClasses[fontSizeStep]}`}
                         aria-label={isFav ? `${t('removeFavorite')}: ${link.name}` : `${t('addFavorite')}: ${link.name}`}
                       >
@@ -495,7 +491,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
                   {group.shortcuts.map((shortcut) => {
                     const isCategory = !!shortcut.providers;
                     const label = categoryName(shortcut.name);
-                    const subCategoryClasses = `flex min-h-14 items-center justify-center rounded-2xl border-2 border-white/55 bg-white/20 px-4 py-3 text-center font-black leading-tight text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.28),0_3px_0_rgba(15,23,42,0.22)] transition-all hover:-translate-y-0.5 hover:border-white/80 hover:bg-white/30 focus:outline-none focus:ring-4 focus:ring-white/60 active:translate-y-0 active:shadow-[inset_0_1px_0_rgba(255,255,255,0.24),0_1px_0_rgba(15,23,42,0.25)] ${subTextClasses[fontSizeStep]}`;
+                    const subCategoryClasses = `flex min-h-14 items-center justify-center rounded-2xl border-2 border-white bg-white/95 px-4 py-3 text-center font-black leading-tight text-slate-950 shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_3px_0_rgba(15,23,42,0.16)] transition-all hover:-translate-y-0.5 hover:border-white hover:bg-white focus:outline-none focus:ring-4 focus:ring-white/80 active:translate-y-0 active:shadow-[inset_0_1px_0_rgba(255,255,255,0.76),0_1px_0_rgba(15,23,42,0.18)] dark:border-white/15 dark:bg-white/90 dark:text-slate-950 ${subTextClasses[fontSizeStep]}`;
 
                     if (isCategory) {
                       return (

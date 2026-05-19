@@ -25,7 +25,7 @@ const MIN_UI_SCALE = 50;
 const MAX_UI_SCALE = 200;
 const DEFAULT_UI_SCALE = 100;
 const UI_SCALE_STEP = 10;
-const BASE_UI_SCALE_MULTIPLIER = 0.792;
+const BASE_UI_SCALE_MULTIPLIER = 0.9;
 const SAVED_LOCALITY_KEY = 'locality';
 const ONBOARDING_SEEN_KEY = 'onboardingSeen';
 
@@ -221,6 +221,7 @@ const AppContent: React.FC = () => {
   }, []);
   const startOnboarding = useCallback(() => {
     setIsInfoOpen(false);
+    setIsHomepageOpen(false);
     setIsOnboardingOpen(true);
   }, []);
   const completeOnboarding = useCallback(() => {
@@ -336,6 +337,45 @@ const AppContent: React.FC = () => {
               <span>{isDarkMode ? t('lightTheme') : t('darkTheme')}</span>
               <span aria-hidden="true">{isDarkMode ? '☀️' : '🌙'}</span>
             </button>
+
+            <div className="mb-4 rounded-2xl border-2 border-slate-200 dark:border-slate-700 p-4">
+              <p className="mb-3 font-black text-slate-900 dark:text-white">
+                Tekstin koko
+              </p>
+              <div className="flex flex-wrap items-center gap-3">
+                <button
+                  type="button"
+                  onClick={decreaseFont}
+                  disabled={uiScale <= MIN_UI_SCALE}
+                  className="flex h-12 w-12 items-center justify-center rounded-full bg-[#173e5f] text-lg font-black text-white shadow-md transition-all hover:bg-[#214f76] focus:outline-none focus:ring-4 focus:ring-[#d09a32]/40 active:scale-95 disabled:opacity-40"
+                  aria-label={`${t('decreaseText')} (${uiScale}%)`}
+                >
+                  A-
+                </button>
+                <span className="min-w-16 text-center text-lg font-black text-slate-800 dark:text-slate-100" aria-live="polite">
+                  {uiScale}%
+                </span>
+                <button
+                  type="button"
+                  onClick={increaseFont}
+                  disabled={uiScale >= MAX_UI_SCALE}
+                  className="flex h-12 w-12 items-center justify-center rounded-full bg-[#173e5f] text-lg font-black text-white shadow-md transition-all hover:bg-[#214f76] focus:outline-none focus:ring-4 focus:ring-[#d09a32]/40 active:scale-95 disabled:opacity-40"
+                  aria-label={`${t('increaseText')} (${uiScale}%)`}
+                >
+                  A+
+                </button>
+                {uiScale !== DEFAULT_UI_SCALE && (
+                  <button
+                    type="button"
+                    onClick={resetFont}
+                    className="rounded-full bg-[#d09a32] px-4 py-3 text-sm font-black text-slate-950 shadow-md transition-all hover:bg-[#e0aa43] focus:outline-none focus:ring-4 focus:ring-amber-200 active:scale-95"
+                    aria-label={t('resetText')}
+                  >
+                    100%
+                  </button>
+                )}
+              </div>
+            </div>
 
             <div className="space-y-3">
               {[
@@ -484,7 +524,12 @@ const AppContent: React.FC = () => {
           showOnboardingOffer={!hasSeenOnboarding}
           onStartOnboarding={startOnboarding}
         />
-        <HomepageModal isOpen={isHomepageOpen} onClose={() => setIsHomepageOpen(false)} fontSizeStep={fontSizeStep} />
+        <HomepageModal
+          isOpen={isHomepageOpen}
+          onClose={() => setIsHomepageOpen(false)}
+          fontSizeStep={fontSizeStep}
+          onStartOnboarding={startOnboarding}
+        />
         <OnboardingTour
           isOpen={isOnboardingOpen}
           onClose={() => setIsOnboardingOpen(false)}

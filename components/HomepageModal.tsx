@@ -6,9 +6,10 @@ interface HomepageModalProps {
   onClose: () => void;
   // Added fontSizeStep to resolve TS error in App.tsx and support UI scaling
   fontSizeStep?: number;
+  onStartOnboarding?: () => void;
 }
 
-const HomepageModal: React.FC<HomepageModalProps> = ({ isOpen, onClose, fontSizeStep = 0 }) => {
+const HomepageModal: React.FC<HomepageModalProps> = ({ isOpen, onClose, fontSizeStep = 0, onStartOnboarding }) => {
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   // Scaling arrays for elder-friendly instruction display
   const titleClasses = ['text-3xl', 'text-4xl', 'text-5xl', 'text-6xl', 'text-7xl'];
@@ -57,6 +58,22 @@ const HomepageModal: React.FC<HomepageModalProps> = ({ isOpen, onClose, fontSize
               SeniorSurfin aloitussivu voi toimia selaimen kotisivuna eli sivuna, joka aukeaa automaattisesti, kun avaat internet-selaimen. Voit itse valita, mikä sivu avautuu ensimmäisenä.
             </p>
           </section>
+
+          {onStartOnboarding && (
+            <section className="bg-blue-50 dark:bg-blue-950/20 p-8 rounded-[2rem] border-2 border-blue-200 dark:border-blue-800/50 space-y-5">
+              <h3 className="text-3xl font-black text-slate-900 dark:text-white">Sivuston esittely</h3>
+              <p className="text-xl leading-relaxed text-slate-700 dark:text-slate-200">
+                Voit käynnistää lyhyen esittelyn milloin tahansa uudelleen. Esittely näyttää haun, tekoälyn, sään, paikalliset palvelut, uutiset, huijausvaroitukset, suosikit ja asetukset.
+              </p>
+              <button
+                type="button"
+                onClick={onStartOnboarding}
+                className="rounded-full bg-indigo-600 px-8 py-4 text-xl font-black text-white shadow-md transition-all hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-300 active:scale-95"
+              >
+                Käynnistä esittely
+              </button>
+            </section>
+          )}
 
           <section className="space-y-8">
             <h3 className="text-3xl font-black text-slate-900 dark:text-white underline decoration-indigo-300 dark:decoration-indigo-500 underline-offset-[12px]">Ohjeet selaimellesi</h3>
