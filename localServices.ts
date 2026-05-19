@@ -250,6 +250,11 @@ const getRegionalServiceArea = (municipalityKey: string): RegionalServiceArea | 
   regionalServiceAreas.find((area) => area.municipalities.includes(municipalityKey))
 );
 
+export const getRegionalServiceAreaMunicipalities = (municipalityName: string) => {
+  const municipalityKey = normalizeMunicipality(municipalityName);
+  return getRegionalServiceArea(municipalityKey)?.municipalities ?? [municipalityKey];
+};
+
 const hslPublicTransport: Provider = { name: 'HSL', url: 'https://www.hsl.fi/', group: 'Julkinen liikenne' };
 
 const regionalNewsProvider = (name: string, url: string): Provider => ({
@@ -380,9 +385,19 @@ const regionalProviderRank = (provider: Provider, context: RegionalContext) => {
   const municipalityKey = normalizeMunicipality(context.municipality.name);
   const providerMunicipality = regional.municipality ? normalizeMunicipality(regional.municipality) : '';
   const providerMunicipalities = regional.municipalities?.map(normalizeMunicipality) ?? [];
+  const providerPlaces = [
+    providerMunicipality,
+    ...providerMunicipalities,
+    provider.group ? normalizeMunicipality(provider.group) : '',
+  ].filter(Boolean);
+  const serviceAreaMunicipalities = getRegionalServiceAreaMunicipalities(context.municipality.name);
 
   if (providerMunicipality === municipalityKey || providerMunicipalities.includes(municipalityKey)) {
     return 0;
+  }
+
+  if (providerPlaces.some((place) => serviceAreaMunicipalities.includes(place))) {
+    return 1;
   }
 
   const wellbeingArea = context.municipality.wellbeingAreaName;

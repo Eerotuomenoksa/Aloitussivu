@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import { SHORTCUTS } from './constants';
 import { MUNICIPALITIES } from './municipalRegistry';
-import { getRegionalLibraryProviders, getRegionalNewsProviders, getRegionalProviders, getRegionalPublicTransportProviders, getRegionalRssFeeds } from './localServices';
+import { getRegionalLibraryProviders, getRegionalNewsProviders, getRegionalProviders, getRegionalPublicTransportProviders, getRegionalRssFeeds, getRegionalServiceAreaMunicipalities, normalizeMunicipality } from './localServices';
 import { Provider } from './types';
 
 interface GeneralLinkRow {
@@ -67,8 +67,10 @@ const providerMunicipalityNames = (provider: Provider) => {
   ].filter((value): value is string => Boolean(value));
 };
 
-const providerMatchesMunicipality = (provider: Provider, municipalityName: string) => (
-  providerMunicipalityNames(provider).some((name) => collator.compare(name, municipalityName) === 0)
+const providerMatchesMunicipalityArea = (provider: Provider, municipalityName: string) => (
+  providerMunicipalityNames(provider)
+    .map(normalizeMunicipality)
+    .some((name) => getRegionalServiceAreaMunicipalities(municipalityName).includes(name))
 );
 
 const museumProviders = getShortcutProviders('Museot');
@@ -113,10 +115,10 @@ const municipalityRows: MunicipalityLinkRow[] = MUNICIPALITIES
       providerToRegionalRow(municipality.name, 'Paikalliset palvelut', provider)
     ));
     const museums = museumProviders
-      .filter((provider) => providerMatchesMunicipality(provider, municipality.name))
+      .filter((provider) => providerMatchesMunicipalityArea(provider, municipality.name))
       .map((provider) => providerToRegionalRow(municipality.name, 'Museot', provider));
     const theaters = theaterProviders
-      .filter((provider) => providerMatchesMunicipality(provider, municipality.name))
+      .filter((provider) => providerMatchesMunicipalityArea(provider, municipality.name))
       .map((provider) => providerToRegionalRow(municipality.name, 'Teatterit', provider));
     const regionalNews = getRegionalNewsProviders(context).map((provider) => (
       providerToRegionalRow(municipality.name, 'Alueelliset uutiset', provider)
