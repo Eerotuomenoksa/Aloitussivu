@@ -9,9 +9,11 @@ interface InfoModalProps {
   isOpen: boolean;
   onClose: () => void;
   fontSizeStep?: number;
+  showOnboardingOffer?: boolean;
+  onStartOnboarding?: () => void;
 }
 
-const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, fontSizeStep = 0 }) => {
+const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, fontSizeStep = 0, showOnboardingOffer = false, onStartOnboarding }) => {
   useLinkVisibilityVersion();
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const titleClasses = ['text-3xl', 'text-4xl', 'text-5xl', 'text-6xl', 'text-7xl'];
@@ -72,6 +74,28 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, fontSizeStep = 0
               SeniorSurfin aloitussivu on suunniteltu helpottamaan internetin käyttöä. Olemme koonneet {categoryStats.length} tärkeää kategoriaa ja {totalLinks} näkyvää linkkiä, jotta löydät etsimäsi yhdellä klikkauksella.
             </p>
           </section>
+
+          {showOnboardingOffer && onStartOnboarding && (
+            <section className="rounded-[2rem] border-4 border-[#d09a32]/40 bg-amber-50 p-6 shadow-sm dark:border-[#d09a32]/50 dark:bg-amber-950/20">
+              <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+                <div className="space-y-2">
+                  <h3 className="text-2xl font-black text-amber-950 dark:text-amber-100">
+                    Tutustu sivuun lyhyesti
+                  </h3>
+                  <p className="text-lg font-bold leading-relaxed text-amber-900 dark:text-amber-200">
+                    Esittely näyttää tärkeimmät kohdat: haun, paikalliset palvelut, kategoriat, suosikit ja asetukset.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={onStartOnboarding}
+                  className="shrink-0 rounded-full bg-[#173e5f] px-6 py-4 text-lg font-black text-white shadow-md transition-all hover:bg-[#214f76] focus:outline-none focus:ring-4 focus:ring-[#d09a32]/40 active:scale-95"
+                >
+                  Aloita esittely
+                </button>
+              </div>
+            </section>
+          )}
 
           <section className="bg-blue-50 dark:bg-blue-900/20 p-8 rounded-3xl border-2 border-blue-100 dark:border-blue-800/50 space-y-6">
             <div>

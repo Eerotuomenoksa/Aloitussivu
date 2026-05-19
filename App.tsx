@@ -8,6 +8,7 @@ import ProviderModal from './components/ProviderModal';
 import InfoModal from './components/InfoModal';
 import HomepageModal from './components/HomepageModal';
 import LinkReportModal from './components/LinkReportModal';
+import OnboardingTour from './components/OnboardingTour';
 import SearchBar from './components/SearchBar';
 import RegionalServicesPanel from './components/RegionalServicesPanel';
 import FloatingControls from './components/FloatingControls';
@@ -26,6 +27,7 @@ const DEFAULT_UI_SCALE = 100;
 const UI_SCALE_STEP = 10;
 const BASE_UI_SCALE_MULTIPLIER = 0.792;
 const SAVED_LOCALITY_KEY = 'locality';
+const ONBOARDING_SEEN_KEY = 'onboardingSeen';
 
 interface UiVisibilityState {
   clock: boolean;
@@ -106,6 +108,8 @@ const AppContent: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<Shortcut | null>(null);
   const [isInfoOpen, setIsInfoOpen] = useState(false);
   const [isHomepageOpen, setIsHomepageOpen] = useState(false);
+  const [isOnboardingOpen, setIsOnboardingOpen] = useState(false);
+  const [hasSeenOnboarding, setHasSeenOnboarding] = useState(() => localStorage.getItem(ONBOARDING_SEEN_KEY) === 'true');
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [locality, setLocality] = useState<LocalityInfo | null>(() => {
     try {
@@ -215,6 +219,14 @@ const AppContent: React.FC = () => {
   const updateVisibility = useCallback((key: keyof UiVisibilityState, value: boolean) => {
     setUiVisibility(prev => ({ ...prev, [key]: value }));
   }, []);
+  const startOnboarding = useCallback(() => {
+    setIsInfoOpen(false);
+    setIsOnboardingOpen(true);
+  }, []);
+  const completeOnboarding = useCallback(() => {
+    localStorage.setItem(ONBOARDING_SEEN_KEY, 'true');
+    setHasSeenOnboarding(true);
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#f5f1e8] dark:bg-slate-950 transition-all duration-300 text-base overflow-x-auto">
@@ -236,19 +248,21 @@ const AppContent: React.FC = () => {
           <div className="mx-auto w-full max-w-[1900px] px-6 py-6 md:px-10 md:py-8 lg:px-16">
           <h1 className="sr-only">SeniorSurfin aloitussivu</h1>
           <nav className="relative grid gap-5 xl:grid-cols-[minmax(18rem,28rem)_minmax(0,46rem)_auto] xl:items-center" aria-label="Sivun yläosa">
-            <div className="flex min-w-[18rem] items-center">
+            <div className="flex min-w-[18rem] items-center" data-tour="logo">
               <TimeAwareLogo phase={logoPhase} isDarkMode={isDarkMode} className="h-auto w-full max-w-[28rem] drop-shadow-lg" />
             </div>
 
             {(uiVisibility.assistant || uiVisibility.weather) && (
               <div className="grid gap-4 md:grid-cols-2 md:items-stretch">
                 {uiVisibility.assistant && (
-                  <div className="relative z-50">
+                  <div className="relative z-50" data-tour="assistant">
                     <Assistant variant="header" />
                   </div>
                 )}
                 {uiVisibility.weather && (
-                  <WeatherCard onLocationResolved={updateLocality} variant="compact" />
+                  <div data-tour="weather">
+                    <WeatherCard onLocationResolved={updateLocality} variant="compact" />
+                  </div>
                 )}
               </div>
             )}
@@ -271,6 +285,7 @@ const AppContent: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setIsSettingsOpen(prev => !prev)}
+                data-tour="settings"
                 className="bg-white/95 hover:bg-white text-slate-950 px-5 py-3 rounded-full font-black text-lg transition-all active:scale-95 shadow-md border-b-4 border-black/20 focus:ring-4 focus:ring-white/60 focus:outline-none"
                 aria-label={t('openSettings')}
                 aria-expanded={isSettingsOpen}
@@ -283,7 +298,11 @@ const AppContent: React.FC = () => {
           </nav>
 
           <div className="mt-8 grid gap-6 xl:grid-cols-[minmax(0,1fr)_24rem] xl:items-center">
-            {uiVisibility.googleSearch && <SearchBar fontSizeStep={fontSizeStep} variant="header" />}
+            {uiVisibility.googleSearch && (
+              <div data-tour="google-search">
+                <SearchBar fontSizeStep={fontSizeStep} variant="header" />
+              </div>
+            )}
             {uiVisibility.clock && <Clock fontSizeStep={fontSizeStep} variant="compact" />}
           </div>
           </div>
@@ -344,19 +363,23 @@ const AppContent: React.FC = () => {
         )}
 
         <main id="main-content" className="space-y-10 animate-in [animation-delay:200ms]" tabIndex={-1}>
-          <FavoriteLinks favorites={favorites} onToggleFavorite={toggleFavorite} fontSizeStep={fontSizeStep} />
+          <div data-tour="favorites">
+            <FavoriteLinks favorites={favorites} onToggleFavorite={toggleFavorite} fontSizeStep={fontSizeStep} />
+          </div>
 
           {uiVisibility.regionalServices && (
-            <RegionalServicesPanel
-              locality={locality}
-              fontSizeStep={fontSizeStep}
-              onReportLink={openReportModal}
-              showNews={uiVisibility.regionalNews}
-              showScamAlerts={uiVisibility.scamAlerts}
-            />
+            <div data-tour="regional-services">
+              <RegionalServicesPanel
+                locality={locality}
+                fontSizeStep={fontSizeStep}
+                onReportLink={openReportModal}
+                showNews={uiVisibility.regionalNews}
+                showScamAlerts={uiVisibility.scamAlerts}
+              />
+            </div>
           )}
 
-          <section className="space-y-8">
+          <section className="space-y-8" data-tour="quick-links">
             <h2 className="font-black text-slate-900 dark:text-white tracking-tighter transition-all duration-300 text-4xl md:text-6xl">
               {t('chooseService')}
             </h2>
@@ -454,8 +477,19 @@ const AppContent: React.FC = () => {
           onToggleFavorite={toggleFavorite}
           onReportLink={openReportModal}
         />
-        <InfoModal isOpen={isInfoOpen} onClose={() => setIsInfoOpen(false)} fontSizeStep={fontSizeStep} />
+        <InfoModal
+          isOpen={isInfoOpen}
+          onClose={() => setIsInfoOpen(false)}
+          fontSizeStep={fontSizeStep}
+          showOnboardingOffer={!hasSeenOnboarding}
+          onStartOnboarding={startOnboarding}
+        />
         <HomepageModal isOpen={isHomepageOpen} onClose={() => setIsHomepageOpen(false)} fontSizeStep={fontSizeStep} />
+        <OnboardingTour
+          isOpen={isOnboardingOpen}
+          onClose={() => setIsOnboardingOpen(false)}
+          onComplete={completeOnboarding}
+        />
         <LinkReportModal draft={reportDraft} onClose={closeReportModal} />
       </div>
       <FloatingControls

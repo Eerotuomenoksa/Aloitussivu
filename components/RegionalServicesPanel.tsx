@@ -177,7 +177,7 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
           {(showNews || showScamAlerts) && (
           <div className={`grid gap-6 xl:items-start ${showNews && showScamAlerts ? 'xl:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]' : 'xl:grid-cols-1'}`}>
             {showNews && (
-                <div className="space-y-3">
+                <div className="space-y-3" data-tour="local-news">
                   <div className="flex items-center justify-between gap-4">
                     <h3 className={`font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest ${smallTextClasses[fontSizeStep]}`}>
                       {t('localNews')}
@@ -197,7 +197,7 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
                 </div>
             )}
             {showScamAlerts && (
-              <div>
+              <div data-tour="scam-alerts">
                 <ScamAlertsBanner compact />
               </div>
             )}
