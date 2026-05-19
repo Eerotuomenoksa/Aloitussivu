@@ -25,6 +25,8 @@ interface MunicipalityLinkRow {
   localServices: RegionalLinkRow[];
   libraries: RegionalLinkRow[];
   publicTransport: RegionalLinkRow[];
+  museums: RegionalLinkRow[];
+  theaters: RegionalLinkRow[];
   regionalNews: RegionalLinkRow[];
   rssFeeds: RegionalLinkRow[];
 }
@@ -47,6 +49,30 @@ const providerToRegionalRow = (
   name: provider.name,
   url: provider.url,
 });
+
+const getShortcutProviders = (name: string) => (
+  SHORTCUTS.find((shortcut) => shortcut.name === name)?.providers ?? []
+);
+
+const providerMunicipalityNames = (provider: Provider) => {
+  const regionalProvider = provider as Provider & {
+    municipality?: string;
+    municipalities?: string[];
+  };
+
+  return [
+    regionalProvider.municipality,
+    ...(regionalProvider.municipalities ?? []),
+    provider.group,
+  ].filter((value): value is string => Boolean(value));
+};
+
+const providerMatchesMunicipality = (provider: Provider, municipalityName: string) => (
+  providerMunicipalityNames(provider).some((name) => collator.compare(name, municipalityName) === 0)
+);
+
+const museumProviders = getShortcutProviders('Museot');
+const theaterProviders = getShortcutProviders('Teatterit');
 
 const generalLinks = uniqueByKey(
   SHORTCUTS.flatMap((shortcut) => (shortcut.providers ?? shortcut.url
@@ -86,6 +112,12 @@ const municipalityRows: MunicipalityLinkRow[] = MUNICIPALITIES
       .map((provider) => (
       providerToRegionalRow(municipality.name, 'Paikalliset palvelut', provider)
     ));
+    const museums = museumProviders
+      .filter((provider) => providerMatchesMunicipality(provider, municipality.name))
+      .map((provider) => providerToRegionalRow(municipality.name, 'Museot', provider));
+    const theaters = theaterProviders
+      .filter((provider) => providerMatchesMunicipality(provider, municipality.name))
+      .map((provider) => providerToRegionalRow(municipality.name, 'Teatterit', provider));
     const regionalNews = getRegionalNewsProviders(context).map((provider) => (
       providerToRegionalRow(municipality.name, 'Alueelliset uutiset', provider)
     ));
@@ -101,6 +133,8 @@ const municipalityRows: MunicipalityLinkRow[] = MUNICIPALITIES
       localServices: uniqueByKey(localServices, (row) => `${row.category}|${row.name}|${row.url}`),
       libraries: uniqueByKey(libraries, (row) => `${row.category}|${row.name}|${row.url}`),
       publicTransport: uniqueByKey(publicTransport, (row) => `${row.category}|${row.name}|${row.url}`),
+      museums: uniqueByKey(museums, (row) => `${row.category}|${row.name}|${row.url}`),
+      theaters: uniqueByKey(theaters, (row) => `${row.category}|${row.name}|${row.url}`),
       regionalNews: uniqueByKey(regionalNews, (row) => `${row.category}|${row.name}|${row.url}`),
       rssFeeds: uniqueByKey(rssFeeds, (row) => `${row.category}|${row.name}|${row.url}`),
     };
@@ -162,6 +196,8 @@ function App() {
       ...row.localServices.map((link) => `${link.category} ${link.name} ${link.url}`),
       ...row.libraries.map((link) => `${link.category} ${link.name} ${link.url}`),
       ...row.publicTransport.map((link) => `${link.category} ${link.name} ${link.url}`),
+      ...row.museums.map((link) => `${link.category} ${link.name} ${link.url}`),
+      ...row.theaters.map((link) => `${link.category} ${link.name} ${link.url}`),
       ...row.regionalNews.map((link) => `${link.category} ${link.name} ${link.url}`),
       ...row.rssFeeds.map((link) => `${link.category} ${link.name} ${link.url}`),
     ].join(' ').toLocaleLowerCase('fi-FI').includes(search)
@@ -342,6 +378,8 @@ function App() {
                   <th className="min-w-80 px-4 py-3">Paikalliset palvelut</th>
                   <th className="min-w-80 px-4 py-3">Kirjasto</th>
                   <th className="min-w-80 px-4 py-3">Julkinen liikenne</th>
+                  <th className="min-w-80 px-4 py-3">Museot</th>
+                  <th className="min-w-80 px-4 py-3">Teatterit</th>
                   <th className="min-w-80 px-4 py-3">Alueelliset uutiset</th>
                   <th className="min-w-80 px-4 py-3">Uutisvirrat</th>
                 </tr>
@@ -353,6 +391,8 @@ function App() {
                     <td className="px-4 py-4"><LinkList links={row.localServices} /></td>
                     <td className="px-4 py-4"><LinkList links={row.libraries} /></td>
                     <td className="px-4 py-4"><LinkList links={row.publicTransport} /></td>
+                    <td className="px-4 py-4"><LinkList links={row.museums} /></td>
+                    <td className="px-4 py-4"><LinkList links={row.theaters} /></td>
                     <td className="px-4 py-4"><LinkList links={row.regionalNews} /></td>
                     <td className="px-4 py-4"><LinkList links={row.rssFeeds} /></td>
                   </tr>
