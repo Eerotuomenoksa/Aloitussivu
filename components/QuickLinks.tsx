@@ -19,6 +19,7 @@ interface QuickLinksProps {
 }
 
 type LinkResult = { name: string; url: string; color: string; categoryName: string; categoryIcon: string; phone?: string; phoneUrl?: string };
+type PhoneResult = { name: string; phone: string; phoneUrl?: string; color: string; categoryName: string; categoryIcon: string };
 type CategoryResult = { shortcut: Shortcut; color: string };
 type ShortcutGroup = {
   name: string;
@@ -197,7 +198,10 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
 
   const matchedCategories: CategoryResult[] = [];
   const matchedLinks: LinkResult[] = [];
+  const matchedPhones: PhoneResult[] = [];
   const matchedCategoryNames = new Set<string>();
+  const matchedLinkKeys = new Set<string>();
+  const matchedPhoneKeys = new Set<string>();
 
   if (q) {
     sortedShortcuts.forEach((shortcut, idx) => {
@@ -212,11 +216,36 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
 
       if (shortcut.providers) {
         shortcut.providers.forEach(provider => {
-          const providerSearchText = `${provider.name} ${provider.phone ?? ''}`.toLowerCase();
-          if (providerSearchText.includes(q) && !categoryMatches) {
+          const providerSearchText = `${provider.name} ${provider.url ?? ''} ${provider.phone ?? ''}`.toLowerCase();
+          const phoneDigits = provider.phone?.replace(/\D/g, '') ?? '';
+          const queryDigits = q.replace(/\D/g, '');
+          const providerMatches = providerSearchText.includes(q);
+          const phoneMatches = Boolean(provider.phone) && (
+            providerSearchText.includes(q) ||
+            (queryDigits.length > 0 && phoneDigits.includes(queryDigits))
+          );
+
+          if (providerMatches && !categoryMatches) {
+            const linkKey = `${shortcut.name}:${provider.url}`;
+            if (matchedLinkKeys.has(linkKey)) return;
+            matchedLinkKeys.add(linkKey);
             matchedLinks.push({
               name: provider.name,
               url: provider.url,
+              phone: provider.phone,
+              phoneUrl: provider.phoneUrl,
+              color,
+              categoryName: shortcut.name,
+              categoryIcon: shortcut.icon,
+            });
+          }
+
+          if (phoneMatches && provider.phone && !categoryMatches) {
+            const phoneKey = `${shortcut.name}:${provider.phone}:${provider.name}`;
+            if (matchedPhoneKeys.has(phoneKey)) return;
+            matchedPhoneKeys.add(phoneKey);
+            matchedPhones.push({
+              name: provider.name,
               phone: provider.phone,
               phoneUrl: provider.phoneUrl,
               color,
@@ -243,7 +272,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
     });
   }
 
-  const hasResults = matchedCategories.length + matchedLinks.length > 0;
+  const hasResults = matchedCategories.length + matchedLinks.length + matchedPhones.length > 0;
 
   const baseCardStyles = (color: string) =>
     `${color} p-6 md:p-8 rounded-[2rem] shadow-md hover:shadow-2xl transition-all transform hover:-translate-y-2 active:scale-95 text-white border-4 border-transparent hover:border-white/40 focus:ring-4 focus:ring-blue-400 focus:outline-none flex flex-col items-center justify-center text-center gap-3 h-full min-h-[160px] md:min-h-[220px]`;
@@ -304,8 +333,13 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
       {q ? (
         <>
           {!hasResults && (
-            <p className={`text-center text-slate-500 dark:text-slate-400 font-bold py-12 ${inputClasses[fontSizeStep]}`}>
+            <p aria-live="polite" className={`text-center text-slate-500 dark:text-slate-400 font-bold py-12 ${inputClasses[fontSizeStep]}`}>
               {t('noResults')}
+            </p>
+          )}
+          {hasResults && (
+            <p className="sr-only" aria-live="polite">
+              Hakutuloksia {matchedCategories.length + matchedLinks.length + matchedPhones.length}.
             </p>
           )}
 
@@ -335,7 +369,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
           {matchedLinks.length > 0 && (
             <div className="space-y-3">
               <p className={`font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest ${subTextClasses[fontSizeStep]}`}>
-                {t('links')}
+                Verkkosivut
               </p>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6">
                 {matchedLinks.map((link, idx) => {
@@ -378,7 +412,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
                           category: link.categoryName,
                           source: 'QuickLinks',
                         })}
-                        className="absolute bottom-3 right-3 flex items-center justify-center rounded-full bg-white/30 hover:bg-white/50 text-white shadow-md transition-all focus:ring-4 focus:ring-blue-300 focus:outline-none opacity-0 group-hover/link:opacity-100 w-10 h-10 text-xl"
+                        className="absolute bottom-3 right-3 flex items-center justify-center rounded-full bg-white/30 hover:bg-white/50 text-white shadow-md transition-all focus:ring-4 focus:ring-blue-300 focus:outline-none opacity-0 group-hover/link:opacity-100 focus:opacity-100 w-10 h-10 text-xl"
                         aria-label={`${t('reportLink')}: ${link.name}`}
                       >
                         !
@@ -389,13 +423,45 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
                         className={`absolute top-3 right-3 flex items-center justify-center rounded-full transition-all focus:ring-4 focus:ring-yellow-300 focus:outline-none
                           ${isFav
                             ? 'bg-yellow-400 hover:bg-yellow-500 shadow-md'
-                            : 'bg-white/30 hover:bg-yellow-100/80 opacity-0 group-hover/link:opacity-100'
+                            : 'bg-white/30 hover:bg-yellow-100/80 opacity-0 group-hover/link:opacity-100 focus:opacity-100'
                           } ${starClasses[fontSizeStep]}`}
                         aria-label={isFav ? `${t('removeFavorite')}: ${link.name}` : `${t('addFavorite')}: ${link.name}`}
                       >
                         {isFav ? '⭐' : '☆'}
                       </button>
                     </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {matchedPhones.length > 0 && (
+            <div className="space-y-3">
+              <p className={`font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest ${subTextClasses[fontSizeStep]}`}>
+                Puhelinnumerot
+              </p>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6">
+                {matchedPhones.map((phone, idx) => {
+                  const phoneHref = getPhoneHref(phone.phone, phone.phoneUrl);
+                  return (
+                    <a
+                      key={idx}
+                      href={phoneHref}
+                      className={baseCardStyles(phone.color)}
+                      aria-label={`Soita: ${phone.name}, ${phone.phone}`}
+                    >
+                      <span className={`transition-all duration-300 ${iconClasses[fontSizeStep]}`} aria-hidden="true">☎</span>
+                      <span className={`font-black leading-tight tracking-tight transition-all duration-300 ${textClasses[fontSizeStep]}`}>
+                        {phone.name}
+                      </span>
+                      <span className={`font-black ${subTextClasses[fontSizeStep]}`}>
+                        {phone.phone}
+                      </span>
+                      <span className={`opacity-75 font-semibold ${subTextClasses[fontSizeStep]}`}>
+                        {categoryName(phone.categoryName)}
+                      </span>
+                    </a>
                   );
                 })}
               </div>

@@ -180,6 +180,40 @@ function App() {
     () => reports.filter((report) => report.status !== 'pending'),
     [reports]
   );
+  const ncscAttentionLogs = useMemo(
+    () => ncscLogs.filter((log) => log.structureVersion === 'unknown' || log.alertsCreated === 0),
+    [ncscLogs]
+  );
+  const reviewTasks = useMemo(() => [
+    {
+      label: 'Uudet linkit',
+      count: pendingNewReports.length,
+      href: '#pending-new-links',
+      tone: pendingNewReports.length > 0 ? 'bg-blue-100 text-blue-950 dark:bg-blue-900/40 dark:text-blue-100' : 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200',
+      note: 'Tarkista ehdotukset ja lisää sopivat linkkilistaan.',
+    },
+    {
+      label: 'Muut ilmoitukset',
+      count: issueReports.length,
+      href: '#issue-reports',
+      tone: issueReports.length > 0 ? 'bg-rose-100 text-rose-950 dark:bg-rose-900/40 dark:text-rose-100' : 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200',
+      note: 'Rikkinäiset, väärät tai poistettavat linkit.',
+    },
+    {
+      label: 'Huijausvaroitukset',
+      count: scamAlerts.filter((alert) => alert.active).length,
+      href: '#scam-alerts-admin',
+      tone: ncscAttentionLogs.length > 0 ? 'bg-amber-100 text-amber-950 dark:bg-amber-900/40 dark:text-amber-100' : 'bg-emerald-100 text-emerald-950 dark:bg-emerald-900/40 dark:text-emerald-100',
+      note: ncscAttentionLogs.length > 0 ? `${ncscAttentionLogs.length} hakuajoa vaatii silmäilyn.` : 'Automaation viime ajot näyttävät tavallisilta.',
+    },
+    {
+      label: 'Hyväksytyt linkit',
+      count: approvedLinks.length,
+      href: '#approved-links',
+      tone: 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200',
+      note: 'Täältä voi poistaa aiemmin hyväksyttyjä lisäyksiä.',
+    },
+  ], [approvedLinks.length, issueReports.length, ncscAttentionLogs.length, pendingNewReports.length, scamAlerts]);
 
   useEffect(() => {
     setReportDrafts((current) => {
@@ -357,7 +391,35 @@ function App() {
               </div>
             </div>
 
-            <section className="space-y-4">
+            <section className="space-y-4" aria-labelledby="review-dashboard-heading">
+              <div>
+                <h2 id="review-dashboard-heading" className="text-2xl md:text-3xl font-black">Tarkista nämä ensin</h2>
+                <p className="text-sm font-bold text-slate-500 dark:text-slate-400">
+                  Nopea näkymä avoimiin asioihin ja automaation huomioihin.
+                </p>
+              </div>
+              <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+                {reviewTasks.map((task) => (
+                  <a
+                    key={task.href}
+                    href={task.href}
+                    className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md focus:outline-none focus:ring-4 focus:ring-indigo-300"
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <p className="font-black text-slate-900 dark:text-white">{task.label}</p>
+                      <span className={`rounded-full px-3 py-1 text-sm font-black ${task.tone}`}>
+                        {task.count}
+                      </span>
+                    </div>
+                    <p className="mt-3 text-sm font-bold text-slate-500 dark:text-slate-400">
+                      {task.note}
+                    </p>
+                  </a>
+                ))}
+              </div>
+            </section>
+
+            <section id="scam-alerts-admin" className="space-y-4 scroll-mt-6">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
                   <h2 className="text-2xl md:text-3xl font-black">Huijausvaroitukset</h2>
@@ -464,7 +526,7 @@ function App() {
               </div>
             </section>
 
-            <section className="space-y-4">
+            <section id="pending-new-links" className="space-y-4 scroll-mt-6">
               <h2 className="text-2xl md:text-3xl font-black">Hyväksyttävät uudet linkit</h2>
               {pendingNewReports.length === 0 ? (
                 <p className="text-slate-500 dark:text-slate-400 font-bold">Ei uusia linkkiehdotuksia.</p>
@@ -564,7 +626,7 @@ function App() {
               )}
             </section>
 
-            <section className="space-y-4">
+            <section id="issue-reports" className="space-y-4 scroll-mt-6">
               <h2 className="text-2xl md:text-3xl font-black">Muut ilmoitukset</h2>
               {issueReports.length === 0 ? (
                 <p className="text-slate-500 dark:text-slate-400 font-bold">Ei muita avoimia ilmoituksia.</p>
@@ -605,7 +667,7 @@ function App() {
               )}
             </section>
 
-            <section className="space-y-4">
+            <section id="approved-links" className="space-y-4 scroll-mt-6">
               <h2 className="text-2xl md:text-3xl font-black">Hyväksytyt linkit</h2>
               {approvedLinks.length === 0 ? (
                 <p className="text-slate-500 dark:text-slate-400 font-bold">Ei vielä hyväksyttyjä linkkejä.</p>
@@ -633,7 +695,7 @@ function App() {
             </section>
 
             {reviewedReports.length > 0 && (
-              <section className="space-y-4">
+              <section id="reviewed-reports" className="space-y-4 scroll-mt-6">
                 <h2 className="text-2xl md:text-3xl font-black">Käsitellyt ilmoitukset</h2>
                 <div className="grid gap-3">
                   {reviewedReports.slice(0, 30).map((report) => (

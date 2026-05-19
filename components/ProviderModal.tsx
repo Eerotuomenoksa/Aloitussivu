@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { filterVisibleProviders, useLinkVisibilityVersion } from '../linkVisibility';
 import { Shortcut, Provider, Favorite, LinkReportDraft } from '../types';
 import { useI18n } from '../i18n';
@@ -22,6 +22,7 @@ const getPhoneHref = (provider: Provider) => {
 const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSizeStep = 0, favorites, onToggleFavorite, onReportLink }) => {
   const { t, categoryName } = useI18n();
   useLinkVisibilityVersion();
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
   const titleClasses = [
     'text-3xl md:text-5xl',
     'text-4xl md:text-6xl',
@@ -55,12 +56,15 @@ const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSi
   ];
 
   useEffect(() => {
+    if (shortcut?.providers) {
+      window.requestAnimationFrame(() => closeButtonRef.current?.focus());
+    }
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
     };
     window.addEventListener('keydown', handleEsc);
     return () => window.removeEventListener('keydown', handleEsc);
-  }, [onClose]);
+  }, [onClose, shortcut]);
 
   if (!shortcut || !shortcut.providers) return null;
 
@@ -90,6 +94,7 @@ const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSi
             <h2 id="modal-title" className={`font-black tracking-tighter transition-all duration-300 ${titleClasses[fontSizeStep]}`}>{categoryName(shortcut.name)}</h2>
           </div>
           <button
+            ref={closeButtonRef}
             onClick={onClose}
             className="w-16 h-16 flex items-center justify-center bg-white/20 hover:bg-white/40 rounded-full text-4xl transition-all focus:ring-4 focus:ring-white active:scale-90"
             aria-label={t('close')}
@@ -156,7 +161,7 @@ const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSi
                             category: shortcut.name,
                             source: 'ProviderModal',
                           })}
-                          className="absolute bottom-3 right-3 flex items-center justify-center rounded-full bg-slate-900/80 hover:bg-slate-900 text-white shadow-md transition-all focus:ring-4 focus:ring-blue-300 focus:outline-none opacity-0 group-hover/card:opacity-100 w-10 h-10 text-xl"
+                          className="absolute bottom-3 right-3 flex items-center justify-center rounded-full bg-slate-900/80 hover:bg-slate-900 text-white shadow-md transition-all focus:ring-4 focus:ring-blue-300 focus:outline-none opacity-0 group-hover/card:opacity-100 focus:opacity-100 w-10 h-10 text-xl"
                           aria-label={`${t('reportLink')}: ${provider.name}`}
                         >
                           !
@@ -167,7 +172,7 @@ const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSi
                         className={`absolute top-3 right-3 flex items-center justify-center rounded-full transition-all focus:ring-4 focus:ring-yellow-300 focus:outline-none
                           ${isFav
                             ? 'bg-yellow-400 hover:bg-yellow-500 shadow-md'
-                            : 'bg-slate-100 dark:bg-slate-700 hover:bg-yellow-100 dark:hover:bg-yellow-900/40 opacity-0 group-hover/card:opacity-100'
+                            : 'bg-slate-100 dark:bg-slate-700 hover:bg-yellow-100 dark:hover:bg-yellow-900/40 opacity-0 group-hover/card:opacity-100 focus:opacity-100'
                           } ${starClasses[fontSizeStep]}`}
                         aria-label={isFav ? `${t('removeFavorite')}: ${provider.name}` : `${t('addFavorite')}: ${provider.name}`}
                       >

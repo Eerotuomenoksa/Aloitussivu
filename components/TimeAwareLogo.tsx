@@ -45,7 +45,6 @@ const TimeAwareLogo: React.FC<TimeAwareLogoProps> = ({ className = '', phase: ph
     : (isDawn ? '#431407' : isEvening ? '#12104f' : isNight ? '#05050f' : '#0f2035');
   const titleFill = isNight ? '#f8fafc' : '#ffffff';
   const subtitleFill = isDawn ? '#fed7aa' : isEvening ? '#ddd6fe' : isNight ? '#bfdbfe' : '#a8c8e8';
-  const taglineFill = isDawn ? '#fde68a' : isEvening ? '#c4b5fd' : isNight ? '#93c5fd' : '#7aa8c8';
   const windowOpacity = isNight ? 0.95 : isEvening ? 0.75 : 0;
   const sunTransform = isDawn ? 'translate(0 16)' : isEvening ? 'translate(0 20)' : undefined;
   const sunOpacity = isNight ? 0 : isEvening ? 0.35 : 1;
@@ -57,7 +56,7 @@ const TimeAwareLogo: React.FC<TimeAwareLogoProps> = ({ className = '', phase: ph
     <svg
       viewBox="0 0 360 128"
       role="img"
-      aria-label={`Seniorin Aloitussivu, ${phaseLabels[phase]}`}
+      aria-label={`SeniorSurfin aloitussivu, ${phaseLabels[phase]}`}
       className={className}
       xmlns="http://www.w3.org/2000/svg"
     >
@@ -192,11 +191,10 @@ const TimeAwareLogo: React.FC<TimeAwareLogoProps> = ({ className = '', phase: ph
       <line x1="63.5" y1="71" x2="63.5" y2="79" stroke="white" strokeWidth="0.8" />
       <line x1="59" y1="75" x2="68" y2="75" stroke="white" strokeWidth="0.8" />
 
-      <text x="126" y="47" fontFamily="Georgia, 'Times New Roman', serif" fontSize="25" fontWeight="700" fill={titleFill}>Seniorin</text>
-      <text x="126" y="75" fontFamily="Georgia, 'Times New Roman', serif" fontSize="25" fontWeight="700" fill={titleFill}>Aloitussivu</text>
+      <text x="126" y="47" fontFamily="Georgia, 'Times New Roman', serif" fontSize="23" fontWeight="700" fill={titleFill}>SeniorSurfin</text>
+      <text x="126" y="75" fontFamily="Georgia, 'Times New Roman', serif" fontSize="24" fontWeight="700" fill={titleFill}>aloitussivu</text>
       <rect x="126" y="82" width="176" height="2.5" rx="1.5" fill="#c9963a" opacity="0.9" />
       <text x="127" y="101" fontFamily="Georgia, 'Times New Roman', serif" fontSize="11" fill={subtitleFill}>Helppo ja turvallinen pääsy nettiin</text>
-      <text x="127" y="116" fontFamily="Georgia, 'Times New Roman', serif" fontSize="9.5" fill={taglineFill}>{phaseLabels[phase]}</text>
     </svg>
   );
 };

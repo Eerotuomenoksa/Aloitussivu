@@ -23,6 +23,7 @@ const LinkReportModal: React.FC<LinkReportModalProps> = ({ draft, onClose }) => 
   const [submitError, setSubmitError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const closeTimerRef = useRef<number | null>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     if (!draft) return;
@@ -34,6 +35,7 @@ const LinkReportModal: React.FC<LinkReportModalProps> = ({ draft, onClose }) => 
     setSubmitted(false);
     setSubmitError('');
     setIsSubmitting(false);
+    window.requestAnimationFrame(() => closeButtonRef.current?.focus());
   }, [draft]);
 
   useEffect(() => {
@@ -91,14 +93,20 @@ const LinkReportModal: React.FC<LinkReportModalProps> = ({ draft, onClose }) => 
   };
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-start justify-center overflow-y-auto p-3 sm:p-4 bg-slate-200/90 dark:bg-slate-950/90 backdrop-blur-lg sm:items-center">
+    <div
+      className="fixed inset-0 z-[60] flex items-start justify-center overflow-y-auto p-3 sm:p-4 bg-slate-200/90 dark:bg-slate-950/90 backdrop-blur-lg sm:items-center"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="link-report-title"
+    >
       <div className="flex max-h-[calc(100dvh-1.5rem)] w-full max-w-2xl flex-col overflow-hidden rounded-[2rem] bg-white dark:bg-slate-900 border-4 border-slate-100 dark:border-slate-700 shadow-2xl sm:max-h-[calc(100dvh-2rem)] sm:rounded-[2.5rem]">
         <div className="shrink-0 p-5 md:p-8 bg-slate-900 dark:bg-slate-950 text-white flex items-center justify-between gap-4">
           <div className="space-y-1">
             <p className="text-sm font-black uppercase tracking-widest text-white/70">Linkin ilmoitus</p>
-            <h2 className="text-3xl md:text-5xl font-black leading-tight">Ilmoita linkki</h2>
+            <h2 id="link-report-title" className="text-3xl md:text-5xl font-black leading-tight">Ilmoita linkki</h2>
           </div>
           <button
+            ref={closeButtonRef}
             onClick={onClose}
             className="w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 text-3xl font-black transition-all active:scale-95"
             aria-label="Sulje"
@@ -115,6 +123,7 @@ const LinkReportModal: React.FC<LinkReportModalProps> = ({ draft, onClose }) => 
                   key={option.value}
                   type="button"
                   onClick={() => setType(option.value)}
+                  aria-pressed={type === option.value}
                   className={`text-left rounded-2xl border-4 p-4 transition-all ${type === option.value ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' : 'border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800'}`}
                 >
                   <span className="block font-black text-slate-900 dark:text-white">{option.label}</span>
@@ -168,13 +177,13 @@ const LinkReportModal: React.FC<LinkReportModalProps> = ({ draft, onClose }) => 
             </label>
 
             {submitted ? (
-              <p className="rounded-2xl bg-green-50 dark:bg-green-900/20 border-4 border-green-200 dark:border-green-900 p-4 font-black text-green-800 dark:text-green-200">
+              <p role="status" className="rounded-2xl bg-green-50 dark:bg-green-900/20 border-4 border-green-200 dark:border-green-900 p-4 font-black text-green-800 dark:text-green-200">
                 Ilmoitus tallennettu ylläpitolokiin.
               </p>
             ) : null}
 
             {submitError ? (
-              <p className="rounded-2xl bg-rose-50 dark:bg-rose-900/20 border-4 border-rose-200 dark:border-rose-900 p-4 font-black text-rose-800 dark:text-rose-200">
+              <p role="alert" className="rounded-2xl bg-rose-50 dark:bg-rose-900/20 border-4 border-rose-200 dark:border-rose-900 p-4 font-black text-rose-800 dark:text-rose-200">
                 {submitError}
               </p>
             ) : null}

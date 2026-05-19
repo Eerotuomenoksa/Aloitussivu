@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 
 interface HomepageModalProps {
   isOpen: boolean;
@@ -9,24 +9,42 @@ interface HomepageModalProps {
 }
 
 const HomepageModal: React.FC<HomepageModalProps> = ({ isOpen, onClose, fontSizeStep = 0 }) => {
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
   // Scaling arrays for elder-friendly instruction display
   const titleClasses = ['text-3xl', 'text-4xl', 'text-5xl', 'text-6xl', 'text-7xl'];
   const iconClasses = ['text-5xl', 'text-6xl', 'text-7xl', 'text-8xl', 'text-9xl'];
   const urlClasses = ['text-xl', 'text-2xl', 'text-3xl', 'text-4xl', 'text-5xl'];
 
+  useEffect(() => {
+    if (!isOpen) return;
+    closeButtonRef.current?.focus();
+    const handleEsc = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-md animate-in fade-in duration-200 overflow-y-auto">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-md animate-in fade-in duration-200 overflow-y-auto"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="homepage-modal-title"
+    >
       <div className="bg-white dark:bg-slate-800 rounded-[3rem] shadow-2xl w-full max-w-3xl overflow-hidden border-4 border-white/20 dark:border-slate-700 my-8">
         <div className="bg-indigo-600 dark:bg-indigo-700 p-10 text-white flex items-center justify-between sticky top-0 z-10 shadow-lg">
           <div className="flex items-center gap-6">
             <span className={`drop-shadow-md transition-all duration-300 ${iconClasses[fontSizeStep]}`}>🏠</span>
-            <h2 className={`font-black transition-all duration-300 ${titleClasses[fontSizeStep]}`}>Aseta aloitussivuksi</h2>
+            <h2 id="homepage-modal-title" className={`font-black transition-all duration-300 ${titleClasses[fontSizeStep]}`}>Aseta SeniorSurfin aloitussivuksi</h2>
           </div>
           <button 
+            ref={closeButtonRef}
             onClick={onClose}
             className="w-14 h-14 flex items-center justify-center bg-white/20 hover:bg-white/30 rounded-full text-4xl font-bold transition-all active:scale-90"
+            aria-label="Sulje ohjeet"
           >
             ✕
           </button>
@@ -34,9 +52,9 @@ const HomepageModal: React.FC<HomepageModalProps> = ({ isOpen, onClose, fontSize
         
         <div className="p-10 space-y-12 max-h-[70vh] overflow-y-auto text-slate-800 dark:text-slate-200">
           <section className="space-y-6">
-            <h3 className="text-3xl font-black text-slate-900 dark:text-white">Mikä on aloitussivu?</h3>
+            <h3 className="text-3xl font-black text-slate-900 dark:text-white">Mikä on SeniorSurfin aloitussivu?</h3>
             <p className="text-2xl leading-relaxed">
-              Aloitussivu eli "kotisivu" on verkkosivu, joka aukeaa automaattisesti, kun avaat internet-selaimen. Voit itse valita, mikä sivu avautuu ensimmäisenä.
+              SeniorSurfin aloitussivu voi toimia selaimen kotisivuna eli sivuna, joka aukeaa automaattisesti, kun avaat internet-selaimen. Voit itse valita, mikä sivu avautuu ensimmäisenä.
             </p>
           </section>
 
@@ -92,7 +110,7 @@ const HomepageModal: React.FC<HomepageModalProps> = ({ isOpen, onClose, fontSize
 
           <div className="bg-green-50 dark:bg-green-950/20 p-10 rounded-[2.5rem] text-center border-4 border-green-200 dark:border-green-800/50">
             <p className="text-3xl font-black text-green-700 dark:text-green-400 mb-2">Hienoa! 🎉</p>
-            <p className="text-xl text-green-900 dark:text-green-200 font-bold">Nyt sivusto on valmiina helpottamaan arkeasi.</p>
+            <p className="text-xl text-green-900 dark:text-green-200 font-bold">Nyt SeniorSurfin aloitussivu on valmiina helpottamaan arkeasi.</p>
           </div>
         </div>
         
@@ -100,6 +118,7 @@ const HomepageModal: React.FC<HomepageModalProps> = ({ isOpen, onClose, fontSize
           <button 
             onClick={onClose}
             className="text-2xl font-black text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white px-10 py-2 transition-colors"
+            aria-label="Sulje ohjeet"
           >
             Sulje ohjeet
           </button>

@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { SHORTCUTS } from '../constants';
 import { LINK_STATS } from '../linkStats';
 import { LOCAL_LINK_STATS } from '../localStats';
@@ -13,9 +13,20 @@ interface InfoModalProps {
 
 const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, fontSizeStep = 0 }) => {
   useLinkVisibilityVersion();
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
   const titleClasses = ['text-3xl', 'text-4xl', 'text-5xl', 'text-6xl', 'text-7xl'];
   const headerIconClasses = ['text-5xl', 'text-6xl', 'text-7xl', 'text-8xl', 'text-9xl'];
   const statClasses = ['text-5xl', 'text-6xl', 'text-7xl', 'text-8xl', 'text-9xl'];
+
+  useEffect(() => {
+    if (!isOpen) return;
+    closeButtonRef.current?.focus();
+    const handleEsc = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
@@ -32,16 +43,23 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, fontSizeStep = 0
   const totalLinks = LINK_STATS.visibleLinks;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-200/60 dark:bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200 overflow-y-auto text-slate-800">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-200/60 dark:bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200 overflow-y-auto text-slate-800"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="info-modal-title"
+    >
       <div className="bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-2xl w-full max-w-4xl overflow-hidden border border-slate-200 dark:border-slate-700 my-8">
         <div className="bg-slate-800 dark:bg-slate-950 p-8 text-white flex items-center justify-between sticky top-0 z-10">
           <div className="flex items-center gap-4">
             <span className={`transition-all duration-300 ${headerIconClasses[fontSizeStep]}`}>ℹ️</span>
-            <h2 className={`font-bold transition-all duration-300 ${titleClasses[fontSizeStep]}`}>Tietoa ja Ohjeet</h2>
+            <h2 id="info-modal-title" className={`font-bold transition-all duration-300 ${titleClasses[fontSizeStep]}`}>Tietoa SeniorSurfin aloitussivusta</h2>
           </div>
           <button 
+            ref={closeButtonRef}
             onClick={onClose}
             className="w-12 h-12 flex items-center justify-center bg-white/20 hover:bg-white/30 rounded-full text-3xl font-bold transition-colors"
+            aria-label="Sulje tietoa-ikkuna"
           >
             ✕
           </button>
@@ -51,7 +69,7 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, fontSizeStep = 0
           <section className="space-y-4">
             <h3 className="text-2xl font-black dark:text-white underline decoration-blue-500 underline-offset-8">Mikä tämä on?</h3>
             <p className="text-xl leading-relaxed dark:text-slate-300">
-              Seniorin aloitussivu on suunniteltu helpottamaan internetin käyttöä. Olemme koonneet {categoryStats.length} tärkeää kategoriaa ja {totalLinks} näkyvää linkkiä, jotta löydät etsimäsi yhdellä klikkauksella.
+              SeniorSurfin aloitussivu on suunniteltu helpottamaan internetin käyttöä. Olemme koonneet {categoryStats.length} tärkeää kategoriaa ja {totalLinks} näkyvää linkkiä, jotta löydät etsimäsi yhdellä klikkauksella.
             </p>
           </section>
 
@@ -118,6 +136,7 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, fontSizeStep = 0
           <button 
             onClick={onClose}
             className="text-xl font-bold text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white p-4"
+            aria-label="Sulje tietoa-ikkuna ja palaa takaisin"
           >
             Sulje ja palaa takaisin
           </button>
