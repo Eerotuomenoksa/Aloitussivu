@@ -44,7 +44,9 @@ export const SHORTCUTS: Shortcut[] = [
       { name: 'Suomen ev.lut. kirkko', url: 'https://evl.fi' },
       { name: 'Kirkko ja kaupunki', url: 'https://www.kirkkojakaupunki.fi' },
       { name: 'Radio Dei', url: 'https://deiplus.fi/radiot' },
-      { name: 'Raamattu.fi', url: 'https://raamattu.fi' }
+      { name: 'Raamattu.fi', url: 'https://raamattu.fi' },
+      { name: 'Helsingin juutalainen seurakunta', url: 'https://jchelsinki.fi/', group: 'Uskonnolliset vähemmistöt' },
+      { name: 'Suomen Muslimifoorumi - muslimiyhteisöjä', url: 'https://www.muslimifoorumi.fi/kopio-asiantuntijaverkostomme/', group: 'Uskonnolliset vähemmistöt' }
     ]
   },
   { 
@@ -57,7 +59,11 @@ export const SHORTCUTS: Shortcut[] = [
       { name: 'Traficom', url: 'https://www.traficom.fi', phone: '029 534 5000', phoneUrl: 'tel:0295345000' },
       { name: 'Poliisi', url: 'https://poliisi.fi', phone: '0295 419 800', phoneUrl: 'tel:0295419800' },
       { name: 'Digi- ja väestötietovirasto', url: 'https://dvv.fi', phone: '0295 536 256', phoneUrl: 'tel:0295536256' },
-      { name: 'Tulli', url: 'https://www.tulli.fi/' }
+      { name: 'Tulli', url: 'https://www.tulli.fi/' },
+      { name: 'InfoFinland - tietoa monella kielellä', url: 'https://www.infofinland.fi/fi/about-the-service', group: 'Omakielinen asiointi' },
+      { name: 'Suomi.fi viittomakielellä', url: 'https://www.suomi.fi/muut-kielet/viittomakieli/kansalaiselle/opetus-ja-koulutus', group: 'Omakielinen asiointi' },
+      { name: 'Kela viittomakielellä', url: 'https://www.kela.fi/web/sgn-fi/viittomakieli', group: 'Omakielinen asiointi' },
+      { name: 'Suomen Pakolaisapu - Suomiluotsit', url: 'https://pakolaisapu.fi/suomiluotsit/', group: 'Omakielinen asiointi' }
     ]
   },
   {
@@ -114,7 +120,11 @@ export const SHORTCUTS: Shortcut[] = [
       { name: 'Sanakirja.fi', url: 'https://www.sanakirja.fi' },
       { name: 'DeepL kääntäjä', url: 'https://www.deepl.com' },
       { name: 'Google Kääntäjä', url: 'https://translate.google.fi' },
-      { name: 'Duolingo', url: 'https://www.duolingo.com' }
+      { name: 'Duolingo', url: 'https://www.duolingo.com' },
+      { name: 'Kuurojen Liitto - viittomakieliset', url: 'https://kuurojenliitto.fi/viittomakieliset/', group: 'Viittomakieli' },
+      { name: 'Saamelaiskäräjät', url: 'https://samediggi.fi/', group: 'Saamen kielet' },
+      { name: 'Saamelaiskäräjät - kääntäjät ja tulkit', url: 'https://samediggi.fi/kaantajat-ja-tulkit/', group: 'Saamen kielet' },
+      { name: 'Karjalan Sivistysseura - karjalan kieli', url: 'https://www.karjalansivistysseura.fi/verkkoaineistot/karjalatietoa/karjalan-kieli/', group: 'Karjalan kieli' }
     ]
   },
   { 
@@ -353,7 +363,9 @@ export const SHORTCUTS: Shortcut[] = [
       { name: 'Kuluttajaneuvonta', url: 'https://www.kuluttajaneuvonta.fi' },
       { name: 'Kuluttajaneuvonta', url: 'https://www.kkv.fi/kuluttajaneuvonta/' },
       { name: 'Eduskunnan oikeusasiamies', url: 'https://www.oikeusasiamies.fi' },
-      { name: 'Tietosuojavaltuutettu', url: 'https://tietosuoja.fi' }
+      { name: 'Tietosuojavaltuutettu', url: 'https://tietosuoja.fi' },
+      { name: 'Yhdenvertaisuusvaltuutettu', url: 'https://yhdenvertaisuusvaltuutettu.fi/', group: 'Syrjintä ja yhdenvertaisuus' },
+      { name: 'Tasa-arvovaltuutettu', url: 'https://tasa-arvo.fi/', group: 'Syrjintä ja yhdenvertaisuus' }
     ]
   },
   { 
@@ -469,7 +481,11 @@ export const SHORTCUTS: Shortcut[] = [
       { name: 'Myrkytystietokeskus', url: 'https://www.terveyskyla.fi/paivystystalo/paivystykseen/myrkytystietokeskus', phone: '0800 147 111', phoneUrl: 'tel:0800147111' },
       { name: 'Apteekki.fi', url: 'https://www.apteekki.fi' },
       { name: 'Mehiläinen', url: 'https://www.mehilainen.fi' },
-      { name: 'Terveystalo', url: 'https://www.terveystalo.com' }
+      { name: 'Terveystalo', url: 'https://www.terveystalo.com' },
+      { name: 'Saamenkieliset sote-palvelut', url: 'https://samediggi.fi/vastuualueet/sosiaali-ja-terveys/saamenkieliset-sote-palvelut/', group: 'Omakieliset palvelut' },
+      { name: 'Uvja - saamelainen keskustelu- ja kriisituki', url: 'https://uvja.fi/', group: 'Omakieliset palvelut' },
+      { name: 'SAMS - ruotsinkieliset vammaisjärjestöt', url: 'https://samsnet.fi/fi/', group: 'Ruotsinkieliset palvelut' },
+      { name: 'FDUV - ruotsinkieliset kehitysvammaiset', url: 'https://fduv.fi/fi/lyhyestisuomeksi/', group: 'Ruotsinkieliset palvelut' }
     ]
   },
   {
@@ -531,12 +547,22 @@ export const SHORTCUTS: Shortcut[] = [
       { name: 'Suomen Latu', url: 'https://www.suomenlatu.fi' },
       { name: 'Geokätköily', url: 'https://www.geocache.fi/' },
       { name: 'Vahvike', url: 'https://vahvike.fi/' },
-      { name: 'Suomi.fi harrastushaku', url: 'https://www.suomi.fi/palvelut/harrastushaku' }
+      { name: 'Suomi.fi harrastushaku', url: 'https://www.suomi.fi/palvelut/harrastushaku' },
+      { name: 'Suomen Romanifoorumi', url: 'https://www.romanifoorumi.fi/', group: 'Romanit' },
+      { name: 'Suomen Romanifoorumi - jäsenjärjestöt', url: 'https://www.romanifoorumi.fi/jasenjarjestot/', group: 'Romanit' },
+      { name: 'Moniheli - monikulttuurijärjestöjen verkosto', url: 'https://moniheli.fi/verkosto/', group: 'Monikulttuurinen toiminta' }
     ]
   },
   {
     name: 'Eläkeyhdistykset', icon: '👥', color: 'bg-[#173e5f]',
-    providers: SENIOR_ASSOCIATION_LINKS
+    providers: [
+      ...SENIOR_ASSOCIATION_LINKS,
+      { name: 'Sateenkaariseniorit ry', url: 'https://www.sateenkaariseniorit.fi/', group: 'Sateenkaarisenioreille' },
+      { name: 'Sateenkaariseniorit - ryhmätoiminta', url: 'https://www.sateenkaariseniorit.fi/ryhm%C3%A4toiminta', group: 'Sateenkaarisenioreille' },
+      { name: 'Seta - tietoa sateenkaarisenioreille', url: 'https://seniorit.seta.fi/tietoa-sateenkaarisenioreille/', group: 'Sateenkaarisenioreille' },
+      { name: 'Kuurojen Liitto - senioreille', url: 'https://kuurojenliitto.fi/senioreille/', group: 'Viittomakieliset seniorit' },
+      { name: 'Svenska pensionärsförbundet', url: 'https://www.spfpension.fi/fi/suomi/', group: 'Ruotsinkieliset seniorit' }
+    ]
   },
   {
     name: 'Kotihoito-palvelut', icon: '🤝', color: 'bg-brand-teal',
