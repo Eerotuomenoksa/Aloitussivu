@@ -472,7 +472,6 @@ export const SHORTCUTS: Shortcut[] = [
   { 
     name: 'Terveys', icon: '🏥', color: 'bg-brand-teal',
     providers: [
-      { name: 'OmaKanta', url: 'https://www.kanta.fi' },
       { name: 'Terveyskirjasto', url: 'https://www.terveyskirjasto.fi' },
       { name: 'THL', url: 'https://thl.fi' },
       { name: 'OmaKanta', url: 'https://www.kanta.fi/omakanta' },
