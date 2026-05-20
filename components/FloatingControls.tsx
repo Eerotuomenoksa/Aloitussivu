@@ -12,6 +12,7 @@ interface FloatingControlsProps {
   canIncrease: boolean;
   showReset: boolean;
   uiScale: number;
+  hidden?: boolean;
 }
 
 const SHOW_TOP_AFTER_PX = 500;
@@ -28,6 +29,7 @@ const FloatingControls: React.FC<FloatingControlsProps> = ({
   canIncrease,
   showReset,
   uiScale,
+  hidden = false,
 }) => {
   const [isTopVisible, setIsTopVisible] = useState(false);
 
@@ -51,8 +53,10 @@ const FloatingControls: React.FC<FloatingControlsProps> = ({
 
   const buttonClass = 'flex h-12 w-12 md:h-16 md:w-16 items-center justify-center rounded-full bg-[#173e5f] text-lg md:text-2xl font-black leading-none text-white shadow-2xl border-b-4 border-[#0f2942] transition-all duration-200 hover:bg-[#214f76] focus:outline-none focus:ring-4 focus:ring-[#d09a32]/40 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed';
 
+  if (hidden) return null;
+
   return (
-    <div className="fixed bottom-3 right-3 md:bottom-8 md:right-8 z-40 flex flex-col items-end gap-2 md:gap-3" role="group" aria-label={resetLabel}>
+    <div className="fixed bottom-8 right-8 z-40 hidden flex-col items-end gap-3 md:flex" role="group" aria-label={resetLabel}>
       <button
         type="button"
         onClick={onIncrease}

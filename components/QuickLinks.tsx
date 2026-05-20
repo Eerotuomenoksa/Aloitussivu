@@ -287,10 +287,10 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
           value={search}
           onChange={e => setSearch(e.target.value)}
           placeholder={speechState === 'listening' ? t('listeningPlaceholder') : t('searchPlaceholder')}
-          className={`w-full pl-14 py-4 rounded-2xl border-4 transition-all font-bold bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-4
+          className={`w-full pl-14 py-4 rounded-2xl border-4 transition-all font-bold bg-white dark:bg-slate-950 text-slate-950 dark:text-white placeholder-slate-500 dark:placeholder-slate-200 focus:outline-none focus:ring-4
             ${speechState === 'listening'
               ? 'border-red-400 focus:border-red-500 focus:ring-red-200 dark:focus:ring-red-900 pr-28'
-              : 'border-slate-200 dark:border-slate-700 focus:border-blue-500 focus:ring-blue-200 dark:focus:ring-blue-900 pr-24'
+              : 'border-slate-200 dark:border-white/30 focus:border-blue-500 focus:ring-blue-200 dark:focus:ring-blue-900 pr-24'
             } ${inputClasses[fontSizeStep]}`}
           aria-label={t('searchPlaceholder')}
         />
@@ -309,8 +309,8 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
               onClick={toggleListening}
               className={`flex items-center justify-center rounded-full transition-all focus:ring-4 focus:ring-red-300 focus:outline-none active:scale-95
                 ${speechState === 'listening'
-                  ? 'bg-red-500 text-white animate-pulse w-12 h-12 text-2xl shadow-lg shadow-red-300'
-                  : 'bg-slate-100 dark:bg-slate-700 hover:bg-red-100 dark:hover:bg-red-900/40 text-slate-500 dark:text-slate-400 hover:text-red-600 w-12 h-12 text-2xl'
+                  ? 'bg-red-500 text-white animate-pulse w-14 h-14 md:w-12 md:h-12 text-2xl shadow-lg shadow-red-300'
+                  : 'bg-slate-100 dark:bg-slate-700 hover:bg-red-100 dark:hover:bg-red-900/40 text-slate-500 dark:text-slate-400 hover:text-red-600 w-14 h-14 md:w-12 md:h-12 text-2xl'
                 }`}
               aria-label={speechState === 'listening' ? t('stopListening') : t('startListening')}
             >

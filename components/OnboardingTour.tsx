@@ -79,7 +79,7 @@ const steps: TourStep[] = [
 
 const isVisibleTourTarget = (target: string) => {
   const element = document.querySelector<HTMLElement>(`[data-tour="${target}"]`);
-  if (!element) return true;
+  if (!element) return false;
   const rect = element.getBoundingClientRect();
   return rect.width > 0 && rect.height > 0 && window.getComputedStyle(element).display !== 'none';
 };

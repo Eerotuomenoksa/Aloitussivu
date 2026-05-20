@@ -25,6 +25,12 @@ const SearchBar: React.FC<SearchBarProps> = ({ fontSizeStep = 0, variant = 'defa
   const textClasses = ['text-xl', 'text-2xl', 'text-3xl', 'text-4xl', 'text-5xl'];
   const isHeader = variant === 'header';
   const inputTextClass = isHeader ? 'text-lg md:text-xl' : textClasses[fontSizeStep];
+  const inputColorClass = isHeader
+    ? 'border-white/30 bg-slate-950 text-white placeholder-slate-200'
+    : 'border-slate-200 bg-white text-slate-950 placeholder-slate-500 dark:border-white/30 dark:bg-slate-950 dark:text-white dark:placeholder-slate-200';
+  const inputShapeClass = isHeader
+    ? 'rounded-[1.5rem] py-4 pl-14 pr-4 shadow-xl sm:rounded-[2rem] sm:py-5 sm:pl-16 sm:pr-36'
+    : 'rounded-[2.5rem] py-6 px-10 pl-16 shadow-xl';
 
   return (
     <form onSubmit={handleSearch} className={`relative w-full space-y-3 ${isHeader ? 'max-w-5xl' : 'max-w-4xl mx-auto mb-12'}`}>
@@ -34,7 +40,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ fontSizeStep = 0, variant = 'defa
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder={t('googlePlaceholder')}
-          className={`w-full bg-white dark:bg-slate-800 border-4 ${isHeader ? 'border-slate-200 dark:border-slate-700 rounded-[1.5rem] py-4 pl-14 pr-4 shadow-xl sm:rounded-[2rem] sm:py-5 sm:pl-16 sm:pr-36' : 'border-slate-200 dark:border-slate-700 rounded-[2.5rem] py-6 px-10 pl-16 shadow-xl'} focus:ring-8 focus:ring-brand-indigo/20 focus:border-brand-indigo outline-none transition-all text-slate-950 dark:text-white font-bold ${inputTextClass}`}
+          className={`w-full border-4 ${inputColorClass} ${inputShapeClass} focus:ring-8 focus:ring-brand-indigo/20 focus:border-brand-indigo outline-none transition-all font-bold ${inputTextClass}`}
           aria-label={t('googleSearch')}
         />
         <div className={`absolute left-5 ${isHeader ? 'top-6 sm:left-6 sm:top-1/2' : 'left-6 top-1/2'} -translate-y-1/2 text-3xl opacity-40 sm:text-4xl`} aria-hidden="true">

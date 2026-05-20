@@ -78,7 +78,7 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({ language, setLangua
   const activeLanguage = LANGUAGES.find((item) => item.code === language) ?? LANGUAGES[0];
 
   return (
-    <label className="relative inline-flex h-12 items-center rounded-full border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-sm focus-within:ring-4 focus-within:ring-indigo-300">
+    <label className="relative inline-flex h-14 items-center rounded-full border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-sm focus-within:ring-4 focus-within:ring-indigo-300 md:h-12">
       <span className="sr-only">{label}</span>
       <span className="pointer-events-none flex items-center gap-2 pl-4 pr-10 text-slate-900 dark:text-white">
         <span className="text-xl leading-none" aria-hidden="true">{activeLanguage.flag}</span>
@@ -220,6 +220,7 @@ const AppContent: React.FC = () => {
   const selectedShortcut = selectedCategory ? mergeApprovedLinksIntoShortcuts([selectedCategory])[0] ?? selectedCategory : null;
   const isFinnishLocality = locality?.isInFinland !== false;
   const regionalLocality = isFinnishLocality ? locality : null;
+  const isAnyModalOpen = Boolean(selectedShortcut || isInfoOpen || isHomepageOpen || isOnboardingOpen || reportDraft || isSettingsOpen);
   const updateVisibility = useCallback((key: keyof UiVisibilityState, value: boolean) => {
     setUiVisibility(prev => ({ ...prev, [key]: value }));
   }, []);
@@ -242,7 +243,7 @@ const AppContent: React.FC = () => {
         Siirry sisältöön
       </a>
       <div
-        className="relative p-6 md:p-10 lg:p-16 max-w-[1900px] mx-auto space-y-12 transition-all duration-300"
+        className="relative p-4 md:p-10 lg:p-16 max-w-[1900px] mx-auto space-y-8 md:space-y-12 transition-all duration-300"
         style={{ zoom: uiZoom }}
       >
 
@@ -250,15 +251,15 @@ const AppContent: React.FC = () => {
           className="relative z-20 left-1/2 -mt-6 w-screen -translate-x-1/2 overflow-visible text-white shadow-xl ring-1 ring-white/15 md:-mt-10 lg:-mt-16"
           style={{ background: headerBackgrounds[logoPhase][isDarkMode ? 'dark' : 'light'], width: fullBleedWidth }}
         >
-          <div className="mx-auto w-full max-w-[1900px] px-6 py-6 md:px-10 md:py-8 lg:px-16">
+          <div className="mx-auto w-full max-w-[1900px] px-4 py-4 md:px-10 md:py-8 lg:px-16">
           <h1 className="sr-only">SeniorSurfin aloitussivu</h1>
-          <nav className="relative grid gap-5 xl:grid-cols-[minmax(18rem,28rem)_minmax(0,46rem)_auto] xl:items-center" aria-label="Sivun yläosa">
-            <div className="flex min-w-[18rem] items-center" data-tour="logo">
+          <nav className="relative flex flex-wrap items-start gap-3 md:gap-5 xl:grid xl:grid-cols-[minmax(18rem,28rem)_minmax(0,46rem)_auto] xl:items-center" aria-label="Sivun yläosa">
+            <div className="hidden items-center md:flex md:min-w-[18rem]" data-tour="logo">
               <TimeAwareLogo phase={logoPhase} isDarkMode={isDarkMode} className="h-auto w-full max-w-[28rem] drop-shadow-lg" />
             </div>
 
             {(uiVisibility.assistant || uiVisibility.weather) && (
-              <div className={`${uiVisibility.weather ? 'grid' : 'hidden md:grid'} gap-4 md:grid-cols-2 md:items-stretch`}>
+              <div className={`${uiVisibility.weather ? 'grid' : 'hidden md:grid'} min-w-[9.25rem] flex-1 basis-[9.25rem] gap-3 md:min-w-0 md:basis-auto md:gap-4 md:grid-cols-2 md:items-stretch xl:flex-none`}>
                 {uiVisibility.assistant && (
                   <div className="relative z-50 hidden md:block" data-tour="assistant">
                     <Assistant variant="header" />
@@ -272,7 +273,7 @@ const AppContent: React.FC = () => {
               </div>
             )}
 
-            <div className="flex flex-wrap items-center gap-3 xl:justify-end">
+            <div className="flex min-w-[10rem] flex-[2_1_10rem] flex-wrap items-center justify-end gap-3 xl:flex-none xl:justify-end">
               <span className="rounded-full bg-white/90 px-4 py-2 text-sm font-black uppercase tracking-wide text-amber-800 ring-1 ring-white/50">
                 {t('beta')}
               </span>
@@ -302,13 +303,17 @@ const AppContent: React.FC = () => {
             </div>
           </nav>
 
-          <div className="mt-8 grid gap-6 xl:grid-cols-[minmax(0,1fr)_24rem] xl:items-center">
+          <div className="mt-5 grid gap-5 md:mt-8 md:gap-6 xl:grid-cols-[minmax(0,1fr)_24rem] xl:items-center">
             {uiVisibility.googleSearch && (
               <div data-tour="google-search">
                 <SearchBar fontSizeStep={fontSizeStep} variant="header" />
               </div>
             )}
-            {uiVisibility.clock && <Clock fontSizeStep={fontSizeStep} variant="compact" />}
+            {uiVisibility.clock && (
+              <div className="hidden md:block">
+                <Clock fontSizeStep={fontSizeStep} variant="compact" />
+              </div>
+            )}
           </div>
           </div>
         </header>
@@ -316,7 +321,7 @@ const AppContent: React.FC = () => {
         {isSettingsOpen && (
           <div
             id="settings-menu"
-            className="absolute right-4 md:right-8 lg:right-12 top-[5.5rem] z-30 w-[min(24rem,calc(100vw-2rem))] rounded-3xl border-4 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-2xl p-5"
+              className="absolute right-3 md:right-8 lg:right-12 top-[5.5rem] z-30 w-[min(24rem,calc(100vw-1.5rem))] rounded-3xl border-4 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-2xl p-5"
             role="menu"
             aria-label={t('settings')}
           >
@@ -325,7 +330,7 @@ const AppContent: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setIsSettingsOpen(false)}
-                className="rounded-full px-3 py-2 text-sm font-black bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200"
+                className="min-h-14 rounded-full px-5 py-3 text-sm font-black bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 md:min-h-12 md:px-4 md:py-2"
                 aria-label={t('close')}
               >
                 {t('close')}
@@ -351,7 +356,7 @@ const AppContent: React.FC = () => {
                   type="button"
                   onClick={decreaseFont}
                   disabled={uiScale <= MIN_UI_SCALE}
-                  className="flex h-12 w-12 items-center justify-center rounded-full bg-[#173e5f] text-lg font-black text-white shadow-md transition-all hover:bg-[#214f76] focus:outline-none focus:ring-4 focus:ring-[#d09a32]/40 active:scale-95 disabled:opacity-40"
+                  className="flex h-14 w-14 items-center justify-center rounded-full bg-[#173e5f] text-lg font-black text-white shadow-md transition-all hover:bg-[#214f76] focus:outline-none focus:ring-4 focus:ring-[#d09a32]/40 active:scale-95 disabled:opacity-40 md:h-12 md:w-12"
                   aria-label={`${t('decreaseText')} (${uiScale}%)`}
                 >
                   A-
@@ -363,7 +368,7 @@ const AppContent: React.FC = () => {
                   type="button"
                   onClick={increaseFont}
                   disabled={uiScale >= MAX_UI_SCALE}
-                  className="flex h-12 w-12 items-center justify-center rounded-full bg-[#173e5f] text-lg font-black text-white shadow-md transition-all hover:bg-[#214f76] focus:outline-none focus:ring-4 focus:ring-[#d09a32]/40 active:scale-95 disabled:opacity-40"
+                  className="flex h-14 w-14 items-center justify-center rounded-full bg-[#173e5f] text-lg font-black text-white shadow-md transition-all hover:bg-[#214f76] focus:outline-none focus:ring-4 focus:ring-[#d09a32]/40 active:scale-95 disabled:opacity-40 md:h-12 md:w-12"
                   aria-label={`${t('increaseText')} (${uiScale}%)`}
                 >
                   A+
@@ -397,7 +402,7 @@ const AppContent: React.FC = () => {
                     type="checkbox"
                     checked={uiVisibility[item.key as keyof UiVisibilityState]}
                     onChange={(event) => updateVisibility(item.key as keyof UiVisibilityState, event.target.checked)}
-                    className="h-5 w-5 accent-indigo-600"
+                    className="h-14 w-14 shrink-0 accent-indigo-600 md:h-5 md:w-5"
                     aria-label={item.label}
                   />
                 </label>
@@ -460,7 +465,7 @@ const AppContent: React.FC = () => {
           <nav className="flex flex-wrap justify-center gap-4" aria-label="Alatunnisteen linkit">
             <a
               href="./yllapito.html"
-              className="rounded-full bg-white/95 px-5 py-3 text-sm font-black text-[#173e5f] shadow-sm hover:bg-white hover:underline focus:outline-none focus:ring-4 focus:ring-white/60"
+              className="min-h-14 rounded-full bg-white/95 px-5 py-3 text-sm font-black text-[#173e5f] shadow-sm hover:bg-white hover:underline focus:outline-none focus:ring-4 focus:ring-white/60 md:min-h-12"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -468,7 +473,7 @@ const AppContent: React.FC = () => {
             </a>
             <a
               href="./muutosloki.html"
-              className="rounded-full bg-white/95 px-5 py-3 text-sm font-black text-[#173e5f] shadow-sm hover:bg-white hover:underline focus:outline-none focus:ring-4 focus:ring-white/60"
+              className="min-h-14 rounded-full bg-white/95 px-5 py-3 text-sm font-black text-[#173e5f] shadow-sm hover:bg-white hover:underline focus:outline-none focus:ring-4 focus:ring-white/60 md:min-h-12"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -476,7 +481,7 @@ const AppContent: React.FC = () => {
             </a>
             <a
               href="./linkit.html"
-              className="rounded-full bg-white/95 px-5 py-3 text-sm font-black text-[#173e5f] shadow-sm hover:bg-white hover:underline focus:outline-none focus:ring-4 focus:ring-white/60"
+              className="min-h-14 rounded-full bg-white/95 px-5 py-3 text-sm font-black text-[#173e5f] shadow-sm hover:bg-white hover:underline focus:outline-none focus:ring-4 focus:ring-white/60 md:min-h-12"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -505,7 +510,7 @@ const AppContent: React.FC = () => {
             href="./muutosloki.html"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block rounded-full px-4 py-2 text-sm font-black uppercase tracking-[0.24em] text-white/70 transition-colors hover:bg-white/10 hover:text-white focus:outline-none focus:ring-4 focus:ring-white/60"
+            className="inline-flex min-h-14 items-center rounded-full px-4 py-2 text-sm font-black uppercase tracking-[0.24em] text-white/70 transition-colors hover:bg-white/10 hover:text-white focus:outline-none focus:ring-4 focus:ring-white/60 md:min-h-12"
             aria-label={`${t('changelog')}: ${APP_VERSION_LABEL}`}
           >
             {APP_VERSION_LABEL}
@@ -553,6 +558,7 @@ const AppContent: React.FC = () => {
         canIncrease={uiScale < MAX_UI_SCALE}
         showReset={uiScale !== DEFAULT_UI_SCALE}
         uiScale={uiScale}
+        hidden={isAnyModalOpen}
       />
     </div>
   );

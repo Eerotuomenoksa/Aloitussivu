@@ -1,5 +1,6 @@
 
 import React, { useEffect, useRef } from 'react';
+import ReactDOM from 'react-dom';
 import { filterVisibleProviders, useLinkVisibilityVersion } from '../linkVisibility';
 import { Shortcut, Provider, Favorite, LinkReportDraft } from '../types';
 import { useI18n } from '../i18n';
@@ -32,23 +33,23 @@ const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSi
   ];
 
   const iconClasses = [
-    'text-5xl md:text-7xl',
-    'text-6xl md:text-8xl',
-    'text-7xl md:text-9xl',
-    'text-8xl md:text-[10rem]',
-    'text-9xl md:text-[12rem]',
+    'text-4xl md:text-7xl',
+    'text-5xl md:text-8xl',
+    'text-6xl md:text-9xl',
+    'text-7xl md:text-[10rem]',
+    'text-8xl md:text-[12rem]',
   ];
 
   const itemTextClasses = [
-    'text-xl md:text-2xl',
-    'text-2xl md:text-3xl',
-    'text-3xl md:text-4xl',
-    'text-4xl md:text-5xl',
-    'text-5xl md:text-6xl',
+    'text-lg md:text-2xl',
+    'text-xl md:text-3xl',
+    'text-2xl md:text-4xl',
+    'text-3xl md:text-5xl',
+    'text-4xl md:text-6xl',
   ];
 
   const starClasses = [
-    'text-2xl w-10 h-10',
+    'text-2xl w-12 h-12 sm:w-10 sm:h-10',
     'text-3xl w-12 h-12',
     'text-4xl w-14 h-14',
     'text-5xl w-16 h-16',
@@ -59,11 +60,30 @@ const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSi
     if (shortcut?.providers) {
       window.requestAnimationFrame(() => closeButtonRef.current?.focus());
     }
+    const root = document.getElementById('root');
+    const previousAriaHidden = root?.getAttribute('aria-hidden');
+    const previousDisplay = root?.style.display;
+    const previousPointerEvents = root?.style.pointerEvents;
+    if (root && shortcut?.providers) {
+      root.setAttribute('aria-hidden', 'true');
+      root.style.display = 'none';
+      root.style.pointerEvents = 'none';
+    }
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
     };
     window.addEventListener('keydown', handleEsc);
-    return () => window.removeEventListener('keydown', handleEsc);
+    return () => {
+      window.removeEventListener('keydown', handleEsc);
+      if (!root) return;
+      if (previousAriaHidden === null) {
+        root.removeAttribute('aria-hidden');
+      } else {
+        root.setAttribute('aria-hidden', previousAriaHidden);
+      }
+      root.style.display = previousDisplay ?? '';
+      root.style.pointerEvents = previousPointerEvents ?? '';
+    };
   }, [onClose, shortcut]);
 
   if (!shortcut || !shortcut.providers) return null;
@@ -80,38 +100,38 @@ const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSi
 
   const groupKeys = Object.keys(groupedProviders);
 
-  return (
+  const modal = (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-200/90 dark:bg-slate-950/90 backdrop-blur-lg animate-in fade-in duration-200"
+      className="fixed inset-0 z-[9999] isolate flex items-start justify-center bg-slate-200 dark:bg-slate-950 p-3 opacity-100 animate-in fade-in duration-200 sm:p-4 sm:bg-slate-200/90 sm:dark:bg-slate-950/90 sm:backdrop-blur-lg sm:items-center"
       role="dialog"
       aria-modal="true"
       aria-labelledby="modal-title"
     >
-      <div className="bg-white dark:bg-slate-900 rounded-[3rem] shadow-2xl w-full max-w-6xl overflow-hidden border-4 border-slate-200 dark:border-white/20 my-8 flex flex-col max-h-[95vh]">
-        <div className={`${shortcut.color} p-10 text-white flex items-center justify-between shadow-xl`}>
-          <div className="flex items-center gap-6">
-            <span className={`transition-all duration-300 ${iconClasses[fontSizeStep]}`} aria-hidden="true">{shortcut.icon}</span>
-            <h2 id="modal-title" className={`font-black tracking-tighter transition-all duration-300 ${titleClasses[fontSizeStep]}`}>{categoryName(shortcut.name)}</h2>
+      <div className="relative z-[10000] flex max-h-[calc(100dvh-1.5rem)] w-full max-w-6xl flex-col overflow-hidden rounded-3xl border-2 border-slate-200 bg-white shadow-2xl dark:border-white/20 dark:bg-slate-900 sm:my-8 sm:max-h-[95vh] sm:rounded-[3rem] sm:border-4">
+        <div className={`${shortcut.color} p-4 text-white flex items-center justify-between gap-3 shadow-xl sm:p-6 md:p-10`}>
+          <div className="flex min-w-0 items-center gap-3 sm:gap-4 md:gap-6">
+            <span className={`shrink-0 transition-all duration-300 ${iconClasses[fontSizeStep]}`} aria-hidden="true">{shortcut.icon}</span>
+            <h2 id="modal-title" className={`min-w-0 font-black leading-tight tracking-tight transition-all duration-300 ${titleClasses[fontSizeStep]}`}>{categoryName(shortcut.name)}</h2>
           </div>
           <button
             ref={closeButtonRef}
             onClick={onClose}
-            className="w-16 h-16 flex items-center justify-center bg-white/20 hover:bg-white/40 rounded-full text-4xl transition-all focus:ring-4 focus:ring-white active:scale-90"
+            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white/20 text-3xl transition-all hover:bg-white/40 focus:ring-4 focus:ring-white active:scale-90 sm:h-14 sm:w-14 md:h-16 md:w-16 md:text-4xl"
             aria-label={t('close')}
           >
             ✕
           </button>
         </div>
 
-        <div className="p-10 space-y-12 overflow-y-auto flex-1 bg-slate-50 dark:bg-slate-950">
+        <div className="flex-1 space-y-6 overflow-y-auto bg-slate-50 p-4 dark:bg-slate-950 sm:space-y-8 sm:p-6 md:space-y-12 md:p-10">
           {groupKeys.map((group) => (
-            <div key={group} className="space-y-6">
+            <div key={group} className="space-y-4 md:space-y-6">
               {group !== categoryName(t('services')) && (
-                <h3 className="text-2xl font-black text-slate-400 dark:text-slate-600 uppercase tracking-[0.2em] border-b-4 border-slate-200 dark:border-slate-800 pb-2">
+                <h3 className="border-b-2 border-slate-200 pb-2 text-base font-black uppercase tracking-wide text-slate-500 dark:border-slate-800 dark:text-slate-400 sm:text-lg md:border-b-4 md:text-2xl md:tracking-[0.2em]">
                   {group}
                 </h3>
               )}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 lg:gap-6">
                 {groupedProviders[group].map((provider, idx) => {
                   const isFav = favorites.some(f => f.url === provider.url);
                   const phoneHref = getPhoneHref(provider);
@@ -124,9 +144,9 @@ const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSi
                   };
                   return (
                     <div key={idx} className="relative group/card">
-                      <div className={`flex flex-col justify-between gap-5 p-6 bg-white dark:bg-slate-800 border-4 border-slate-200 dark:border-slate-700 rounded-[2.5rem] shadow-md hover:shadow-2xl hover:border-blue-600 dark:hover:border-blue-500 transition-all text-center ${provider.phone ? 'min-h-[220px]' : 'min-h-[150px]'}`}>
-                        <div className="flex flex-1 items-center justify-center px-8">
-                          <span className={`font-black text-slate-800 dark:text-white leading-tight ${itemTextClasses[fontSizeStep]}`}>
+                      <div className={`flex flex-col justify-between gap-4 rounded-2xl border-2 border-slate-200 bg-white p-4 text-center shadow-md transition-all hover:border-blue-600 hover:shadow-2xl dark:border-slate-700 dark:bg-slate-800 dark:hover:border-blue-500 sm:rounded-[2rem] sm:border-4 sm:p-5 md:gap-5 md:rounded-[2.5rem] md:p-6 ${provider.phone ? 'min-h-[180px] md:min-h-[220px]' : 'min-h-[132px] md:min-h-[150px]'}`}>
+                        <div className="flex flex-1 items-center justify-center px-2 sm:px-4 md:px-8">
+                          <span className={`font-black leading-tight text-slate-800 dark:text-white ${itemTextClasses[fontSizeStep]}`}>
                             {provider.name}
                           </span>
                         </div>
@@ -161,7 +181,7 @@ const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSi
                             category: shortcut.name,
                             source: 'ProviderModal',
                           })}
-                          className="absolute bottom-3 right-3 flex items-center justify-center rounded-full bg-slate-900/80 hover:bg-slate-900 text-white shadow-md transition-all focus:ring-4 focus:ring-blue-300 focus:outline-none opacity-0 group-hover/card:opacity-100 focus:opacity-100 w-10 h-10 text-xl"
+                          className="absolute bottom-3 right-3 flex h-11 w-11 items-center justify-center rounded-full bg-slate-900/80 text-xl text-white shadow-md transition-all hover:bg-slate-900 focus:opacity-100 focus:outline-none focus:ring-4 focus:ring-blue-300 sm:h-10 sm:w-10 sm:opacity-0 sm:group-hover/card:opacity-100"
                           aria-label={`${t('reportLink')}: ${provider.name}`}
                         >
                           !
@@ -172,7 +192,7 @@ const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSi
                         className={`absolute top-3 right-3 flex items-center justify-center rounded-full transition-all focus:ring-4 focus:ring-yellow-300 focus:outline-none
                           ${isFav
                             ? 'bg-yellow-400 hover:bg-yellow-500 shadow-md'
-                            : 'bg-slate-100 dark:bg-slate-700 hover:bg-yellow-100 dark:hover:bg-yellow-900/40 opacity-0 group-hover/card:opacity-100 focus:opacity-100'
+                            : 'bg-slate-100 dark:bg-slate-700 hover:bg-yellow-100 dark:hover:bg-yellow-900/40 sm:opacity-0 sm:group-hover/card:opacity-100 focus:opacity-100'
                           } ${starClasses[fontSizeStep]}`}
                         aria-label={isFav ? `${t('removeFavorite')}: ${provider.name}` : `${t('addFavorite')}: ${provider.name}`}
                       >
@@ -186,10 +206,10 @@ const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSi
           ))}
         </div>
 
-        <div className="p-8 bg-white dark:bg-slate-900 border-t-4 border-slate-100 dark:border-slate-800 text-center">
+        <div className="border-t-2 border-slate-100 bg-white p-4 text-center dark:border-slate-800 dark:bg-slate-900 sm:p-6 md:border-t-4 md:p-8">
           <button
             onClick={onClose}
-            className="px-12 py-4 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-full text-2xl font-black text-slate-600 dark:text-slate-300 transition-all active:scale-95 border-b-4 border-slate-300 dark:border-slate-950"
+            className="min-h-12 rounded-full border-b-4 border-slate-300 bg-slate-100 px-8 py-3 text-lg font-black text-slate-700 transition-all hover:bg-slate-200 active:scale-95 dark:border-slate-950 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700 md:px-12 md:py-4 md:text-2xl"
           >
             {t('back')}
           </button>
@@ -197,6 +217,8 @@ const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSi
       </div>
     </div>
   );
+
+  return ReactDOM.createPortal(modal, document.body);
 };
 
 export default ProviderModal;

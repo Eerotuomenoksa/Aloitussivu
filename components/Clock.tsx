@@ -44,10 +44,10 @@ const Clock: React.FC<ClockProps> = ({ fontSizeStep = 0, variant = 'hero' }) => 
   if (variant === 'compact') {
     return (
       <div className="text-left xl:text-right space-y-2">
-        <p className="font-black text-5xl md:text-6xl leading-none tracking-tight text-[#d09a32] drop-shadow" aria-live="polite">
+        <p className="font-black text-4xl md:text-6xl leading-none tracking-tight text-[#d09a32] drop-shadow" aria-live="polite">
           {timeString}
         </p>
-        <p className="capitalize text-base md:text-lg font-bold text-white">
+        <p className="capitalize text-sm md:text-lg font-bold text-white leading-snug">
           {dateString}
         </p>
         {todayEvents.length > 0 && (

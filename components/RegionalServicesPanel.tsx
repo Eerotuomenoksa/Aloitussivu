@@ -117,7 +117,7 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
                   setIsManualQuery(nextQuery.trim().length > 0);
                 }}
                 placeholder={localizedMunicipalityName ? `${t('localityPrefix')}: ${localizedMunicipalityName}` : t('municipalityPlaceholder')}
-                className={`w-full rounded-xl border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white px-4 py-3 font-bold focus:outline-none focus:border-brand-indigo focus:ring-4 focus:ring-brand-indigo/20 ${smallTextClasses[fontSizeStep]}`}
+                className={`min-h-14 w-full rounded-xl border-2 border-slate-200 dark:border-white/30 bg-white dark:bg-slate-950 px-4 py-3 font-bold text-slate-950 placeholder-slate-500 focus:outline-none focus:border-brand-indigo focus:ring-4 focus:ring-brand-indigo/20 dark:text-white dark:placeholder-slate-200 ${smallTextClasses[fontSizeStep]}`}
                 aria-label={t('municipality')}
               />
             </label>
