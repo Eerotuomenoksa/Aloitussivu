@@ -100,9 +100,11 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ onLocationResolved, variant =
         );
         const geoData = await geoRes.json();
         const address = geoData.address || {};
+        const countryCode = typeof address.country_code === 'string' ? address.country_code.toLowerCase() : undefined;
         const city = address.city || address.town || address.municipality || t('yourLocation');
         const municipality = resolveMunicipality(address, geoData.display_name || '');
         const municipalityInfo = findMunicipality(municipality);
+        const isInFinland = countryCode ? countryCode === 'fi' : !!municipalityInfo;
         const localizedMunicipality = getLocalizedMunicipalityName(municipalityInfo, language) || city;
         const fallbackMunicipality = getLocalizedMunicipalityName(findMunicipality('Helsinki'), language) || 'Helsinki';
 
@@ -111,9 +113,9 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ onLocationResolved, variant =
           condition: getWeatherText(weatherData.current_weather.weathercode),
           icon: getWeatherIcon(weatherData.current_weather.weathercode)
         });
-        setLocationName(shouldLocalizeLinks ? localizedMunicipality : fallbackMunicipality);
+        setLocationName(shouldLocalizeLinks ? (isInFinland ? localizedMunicipality : city) : fallbackMunicipality);
         if (shouldLocalizeLinks) {
-          onLocationResolved?.({ municipality, displayName: city, lat, lon });
+          onLocationResolved?.({ municipality, displayName: city, lat, lon, countryCode, isInFinland });
         }
         setError(null);
       } catch (err) {

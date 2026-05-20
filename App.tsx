@@ -122,6 +122,8 @@ const AppContent: React.FC = () => {
         displayName: parsed.displayName,
         lat: typeof parsed.lat === 'number' ? parsed.lat : undefined,
         lon: typeof parsed.lon === 'number' ? parsed.lon : undefined,
+        countryCode: typeof parsed.countryCode === 'string' ? parsed.countryCode : undefined,
+        isInFinland: typeof parsed.isInFinland === 'boolean' ? parsed.isInFinland : undefined,
       };
     } catch {
       return null;
@@ -216,6 +218,8 @@ const AppContent: React.FC = () => {
   const openReportModal = useCallback((draft: LinkReportDraft) => setReportDraft(draft), []);
   const closeReportModal = useCallback(() => setReportDraft(null), []);
   const selectedShortcut = selectedCategory ? mergeApprovedLinksIntoShortcuts([selectedCategory])[0] ?? selectedCategory : null;
+  const isFinnishLocality = locality?.isInFinland !== false;
+  const regionalLocality = isFinnishLocality ? locality : null;
   const updateVisibility = useCallback((key: keyof UiVisibilityState, value: boolean) => {
     setUiVisibility(prev => ({ ...prev, [key]: value }));
   }, []);
@@ -254,9 +258,9 @@ const AppContent: React.FC = () => {
             </div>
 
             {(uiVisibility.assistant || uiVisibility.weather) && (
-              <div className="grid gap-4 md:grid-cols-2 md:items-stretch">
+              <div className={`${uiVisibility.weather ? 'grid' : 'hidden md:grid'} gap-4 md:grid-cols-2 md:items-stretch`}>
                 {uiVisibility.assistant && (
-                  <div className="relative z-50" data-tour="assistant">
+                  <div className="relative z-50 hidden md:block" data-tour="assistant">
                     <Assistant variant="header" />
                   </div>
                 )}
@@ -384,10 +388,10 @@ const AppContent: React.FC = () => {
                 { key: 'regionalNews', label: t('showNews') },
                 { key: 'scamAlerts', label: t('showScamAlerts') },
                 { key: 'weather', label: t('showWeather') },
-                { key: 'assistant', label: t('showAssistant') },
+                { key: 'assistant', label: t('showAssistant'), className: 'hidden md:flex' },
                 { key: 'googleSearch', label: t('showGoogleSearch') },
               ].map((item) => (
-                <label key={item.key} className="flex items-center justify-between gap-4 rounded-2xl border-2 border-slate-200 dark:border-slate-700 px-4 py-3 cursor-pointer">
+                <label key={item.key} className={`${item.className ?? 'flex'} items-center justify-between gap-4 rounded-2xl border-2 border-slate-200 dark:border-slate-700 px-4 py-3 cursor-pointer`}>
                   <span className="font-bold text-slate-800 dark:text-slate-100">{item.label}</span>
                   <input
                     type="checkbox"
@@ -407,10 +411,10 @@ const AppContent: React.FC = () => {
             <FavoriteLinks favorites={favorites} onToggleFavorite={toggleFavorite} fontSizeStep={fontSizeStep} />
           </div>
 
-          {uiVisibility.regionalServices && (
+          {uiVisibility.regionalServices && isFinnishLocality && (
             <div data-tour="regional-services">
               <RegionalServicesPanel
-                locality={locality}
+                locality={regionalLocality}
                 fontSizeStep={fontSizeStep}
                 onReportLink={openReportModal}
                 showNews={uiVisibility.regionalNews}
@@ -428,7 +432,7 @@ const AppContent: React.FC = () => {
               fontSizeStep={fontSizeStep}
               favorites={favorites}
               onToggleFavorite={toggleFavorite}
-              locality={locality}
+              locality={regionalLocality}
               onReportLink={openReportModal}
             />
           </section>

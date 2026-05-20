@@ -24,6 +24,8 @@ export interface LocalityInfo {
   displayName: string;
   lat?: number;
   lon?: number;
+  countryCode?: string;
+  isInFinland?: boolean;
 }
 
 export interface SeniorSurfGuidanceOrganizer {
