@@ -29,7 +29,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ fontSizeStep = 0, variant = 'defa
     ? 'border-white/30 bg-slate-950 text-white placeholder-slate-200'
     : 'border-slate-200 bg-white text-slate-950 placeholder-slate-500 dark:border-white/30 dark:bg-slate-950 dark:text-white dark:placeholder-slate-200';
   const inputShapeClass = isHeader
-    ? 'rounded-[1.5rem] py-4 pl-14 pr-4 shadow-xl sm:rounded-[2rem] sm:py-5 sm:pl-16 sm:pr-36'
+    ? 'rounded-[1.25rem] py-3 pl-12 pr-28 shadow-xl sm:rounded-[2rem] sm:py-5 sm:pl-16 sm:pr-36'
     : 'rounded-[2.5rem] py-6 px-10 pl-16 shadow-xl';
 
   return (
@@ -43,12 +43,12 @@ const SearchBar: React.FC<SearchBarProps> = ({ fontSizeStep = 0, variant = 'defa
           className={`w-full border-4 ${inputColorClass} ${inputShapeClass} focus:ring-8 focus:ring-brand-indigo/20 focus:border-brand-indigo outline-none transition-all font-bold ${inputTextClass}`}
           aria-label={t('googleSearch')}
         />
-        <div className={`absolute left-5 ${isHeader ? 'top-6 sm:left-6 sm:top-1/2' : 'left-6 top-1/2'} -translate-y-1/2 text-3xl opacity-40 sm:text-4xl`} aria-hidden="true">
+        <div className={`absolute ${isHeader ? 'left-4 top-1/2 text-2xl sm:left-6 sm:text-4xl' : 'left-6 top-1/2 text-3xl sm:text-4xl'} -translate-y-1/2 opacity-40`} aria-hidden="true">
           🔍
         </div>
         <button
           type="submit"
-          className={`${isHeader ? 'mt-3 w-full bg-[#d09a32] hover:bg-[#e0aa43] text-slate-950 border-b-4 border-[#8f651e] px-5 py-3 text-lg focus:ring-amber-200 sm:absolute sm:right-4 sm:top-1/2 sm:mt-0 sm:w-auto sm:-translate-y-1/2 sm:px-7 sm:text-xl' : 'absolute right-4 top-1/2 -translate-y-1/2 bg-[#173e5f] hover:bg-[#214f76] text-white px-8 py-3 text-xl focus:ring-indigo-300'} rounded-full font-black transition-all shadow-lg active:scale-95 focus:outline-none focus:ring-4`}
+          className={`${isHeader ? 'absolute right-3 top-1/2 -translate-y-1/2 bg-[#d09a32] hover:bg-[#e0aa43] text-slate-950 border-b-4 border-[#8f651e] px-4 py-2 text-base focus:ring-amber-200 sm:right-4 sm:px-7 sm:py-3 sm:text-xl' : 'absolute right-4 top-1/2 -translate-y-1/2 bg-[#173e5f] hover:bg-[#214f76] text-white px-8 py-3 text-xl focus:ring-indigo-300'} rounded-full font-black transition-all shadow-lg active:scale-95 focus:outline-none focus:ring-4`}
         >
           {t('searchButton')}
         </button>

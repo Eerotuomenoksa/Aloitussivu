@@ -204,6 +204,10 @@ export const LOCAL_NEWSPAPER_LINKS = [
     "url": "http://www.lapuansanomat.fi/"
   },
   {
+    "name": "Laukaa-Konnevesi",
+    "url": "https://www.laukaa-konnevesi.fi/"
+  },
+  {
     "name": "Lauttakylä-lehti",
     "url": "http://www.lauttakyla.fi/"
   },

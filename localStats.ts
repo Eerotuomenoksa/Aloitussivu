@@ -6,7 +6,7 @@ export const LOCAL_LINK_STATS = {
   municipalityServicePages: 9,
   localTransport: 11,
   localLibraries: 7,
-  localNewspapers: 120,
+  localNewspapers: 121,
   localSportsClubs: 41,
   localExerciseLinks: 152,
 } as const;

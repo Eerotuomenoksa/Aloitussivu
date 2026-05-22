@@ -216,10 +216,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
           const phoneDigits = provider.phone?.replace(/\D/g, '') ?? '';
           const queryDigits = q.replace(/\D/g, '');
           const providerMatches = providerSearchText.includes(q);
-          const phoneMatches = Boolean(provider.phone) && (
-            providerSearchText.includes(q) ||
-            (queryDigits.length > 0 && phoneDigits.includes(queryDigits))
-          );
+          const phoneMatches = Boolean(provider.phone) && queryDigits.length >= 3 && phoneDigits.includes(queryDigits);
 
           if (providerMatches && !categoryMatches) {
             const linkKey = `${shortcut.name}:${provider.url}`;

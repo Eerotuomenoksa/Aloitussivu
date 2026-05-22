@@ -52,19 +52,19 @@ const defaultUiVisibility: UiVisibilityState = {
 const headerBackgrounds: Record<LogoPhase, { light: string; dark: string }> = {
   dawn: {
     light: 'linear-gradient(135deg, #173e5f 0%, #214f76 100%)',
-    dark: 'linear-gradient(135deg, #0f2942 0%, #173e5f 100%)',
+    dark: 'linear-gradient(135deg, #214f76 0%, #2a638f 100%)',
   },
   day: {
     light: 'linear-gradient(135deg, #173e5f 0%, #214f76 100%)',
-    dark: 'linear-gradient(135deg, #0f2942 0%, #173e5f 100%)',
+    dark: 'linear-gradient(135deg, #214f76 0%, #2a638f 100%)',
   },
   evening: {
     light: 'linear-gradient(135deg, #173e5f 0%, #214f76 100%)',
-    dark: 'linear-gradient(135deg, #0f2942 0%, #173e5f 100%)',
+    dark: 'linear-gradient(135deg, #214f76 0%, #2a638f 100%)',
   },
   night: {
     light: 'linear-gradient(135deg, #173e5f 0%, #214f76 100%)',
-    dark: 'linear-gradient(135deg, #0f2942 0%, #173e5f 100%)',
+    dark: 'linear-gradient(135deg, #214f76 0%, #2a638f 100%)',
   },
 };
 
@@ -78,7 +78,7 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({ language, setLangua
   const activeLanguage = LANGUAGES.find((item) => item.code === language) ?? LANGUAGES[0];
 
   return (
-    <label className="relative inline-flex h-14 items-center rounded-full border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-sm focus-within:ring-4 focus-within:ring-indigo-300 md:h-12">
+    <label className="relative inline-flex h-12 items-center rounded-full border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-sm focus-within:ring-4 focus-within:ring-indigo-300 md:h-12">
       <span className="sr-only">{label}</span>
       <span className="pointer-events-none flex items-center gap-2 pl-4 pr-10 text-slate-900 dark:text-white">
         <span className="text-xl leading-none" aria-hidden="true">{activeLanguage.flag}</span>
@@ -235,7 +235,7 @@ const AppContent: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#f5f1e8] dark:bg-slate-950 transition-all duration-300 text-base overflow-x-auto">
+    <div className="min-h-screen bg-[#f5f1e8] dark:bg-slate-900 transition-all duration-300 text-base overflow-x-auto">
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-white focus:px-5 focus:py-3 focus:font-black focus:text-slate-950 focus:shadow-2xl focus:outline-none focus:ring-4 focus:ring-[#d09a32]"
@@ -243,23 +243,23 @@ const AppContent: React.FC = () => {
         Siirry sisältöön
       </a>
       <div
-        className="relative p-4 md:p-10 lg:p-16 max-w-[1900px] mx-auto space-y-8 md:space-y-12 transition-all duration-300"
+        className="relative p-3 md:p-10 lg:p-16 max-w-[1900px] mx-auto space-y-6 md:space-y-12 transition-all duration-300"
         style={{ zoom: uiZoom }}
       >
 
         <header
-          className="relative z-20 left-1/2 -mt-6 w-screen -translate-x-1/2 overflow-visible text-white shadow-xl ring-1 ring-white/15 md:-mt-10 lg:-mt-16"
+          className="relative z-20 left-1/2 -mt-3 w-screen -translate-x-1/2 overflow-visible text-white shadow-xl ring-1 ring-white/15 md:-mt-10 lg:-mt-16"
           style={{ background: headerBackgrounds[logoPhase][isDarkMode ? 'dark' : 'light'], width: fullBleedWidth }}
         >
-          <div className="mx-auto w-full max-w-[1900px] px-4 py-4 md:px-10 md:py-8 lg:px-16">
+          <div className="mx-auto w-full max-w-[1900px] px-3 py-3 md:px-10 md:py-8 lg:px-16">
           <h1 className="sr-only">SeniorSurfin aloitussivu</h1>
-          <nav className="relative flex flex-wrap items-start gap-3 md:gap-5 xl:grid xl:grid-cols-[minmax(18rem,28rem)_minmax(0,46rem)_auto] xl:items-center" aria-label="Sivun yläosa">
+          <nav className="relative flex flex-wrap items-start gap-2 md:gap-5 xl:grid xl:grid-cols-[minmax(18rem,28rem)_minmax(0,46rem)_auto] xl:items-center" aria-label="Sivun yläosa">
             <div className="hidden items-center md:flex md:min-w-[18rem]" data-tour="logo">
               <TimeAwareLogo phase={logoPhase} isDarkMode={isDarkMode} className="h-auto w-full max-w-[28rem] drop-shadow-lg" />
             </div>
 
             {(uiVisibility.assistant || uiVisibility.weather) && (
-              <div className={`${uiVisibility.weather ? 'grid' : 'hidden md:grid'} min-w-[9.25rem] flex-1 basis-[9.25rem] gap-3 md:min-w-0 md:basis-auto md:gap-4 md:grid-cols-2 md:items-stretch xl:flex-none`}>
+              <div className={`${uiVisibility.weather ? 'grid' : 'hidden md:grid'} min-w-[8.5rem] flex-1 basis-[8.5rem] gap-2 md:min-w-0 md:basis-auto md:gap-4 md:grid-cols-2 md:items-stretch xl:flex-none`}>
                 {uiVisibility.assistant && (
                   <div className="relative z-50 hidden md:block" data-tour="assistant">
                     <Assistant variant="header" />
@@ -273,14 +273,14 @@ const AppContent: React.FC = () => {
               </div>
             )}
 
-            <div className="flex min-w-[10rem] flex-[2_1_10rem] flex-wrap items-center justify-end gap-3 xl:flex-none xl:justify-end">
-              <span className="rounded-full bg-white/90 px-4 py-2 text-sm font-black uppercase tracking-wide text-amber-800 ring-1 ring-white/50">
+            <div className="flex min-w-[9rem] flex-[2_1_9rem] flex-wrap items-center justify-end gap-2 md:gap-3 xl:flex-none xl:justify-end">
+              <span className="rounded-full bg-white/90 px-3 py-1.5 text-xs font-black uppercase tracking-wide text-amber-800 ring-1 ring-white/50 md:px-4 md:py-2 md:text-sm">
                 {t('beta')}
               </span>
 
               <button
                 onClick={() => setIsHomepageOpen(true)}
-                className="bg-white/95 hover:bg-white text-slate-950 px-5 py-3 rounded-full font-black text-lg transition-all active:scale-95 shadow-md border-b-4 border-black/20 focus:ring-4 focus:ring-white/60 focus:outline-none"
+                className="bg-white/95 hover:bg-white text-slate-950 px-4 py-2.5 rounded-full font-black text-base transition-all active:scale-95 shadow-md border-b-4 border-black/20 focus:ring-4 focus:ring-white/60 focus:outline-none md:px-5 md:py-3 md:text-lg"
                 aria-label="Avaa ohje aloitussivuksi asettamiseen"
               >
                 🏠 {t('help')}
@@ -292,7 +292,7 @@ const AppContent: React.FC = () => {
                 type="button"
                 onClick={() => setIsSettingsOpen(prev => !prev)}
                 data-tour="settings"
-                className="bg-white/95 hover:bg-white text-slate-950 px-5 py-3 rounded-full font-black text-lg transition-all active:scale-95 shadow-md border-b-4 border-black/20 focus:ring-4 focus:ring-white/60 focus:outline-none"
+                className="bg-white/95 hover:bg-white text-slate-950 px-4 py-2.5 rounded-full font-black text-base transition-all active:scale-95 shadow-md border-b-4 border-black/20 focus:ring-4 focus:ring-white/60 focus:outline-none md:px-5 md:py-3 md:text-lg"
                 aria-label={t('openSettings')}
                 aria-expanded={isSettingsOpen}
                 aria-haspopup="menu"
@@ -303,7 +303,7 @@ const AppContent: React.FC = () => {
             </div>
           </nav>
 
-          <div className="mt-5 grid gap-5 md:mt-8 md:gap-6 xl:grid-cols-[minmax(0,1fr)_24rem] xl:items-center">
+          <div className="mt-3 grid gap-3 md:mt-8 md:gap-6 xl:grid-cols-[minmax(0,1fr)_24rem] xl:items-center">
             {uiVisibility.googleSearch && (
               <div data-tour="google-search">
                 <SearchBar fontSizeStep={fontSizeStep} variant="header" />
