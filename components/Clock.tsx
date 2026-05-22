@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getTodayEvents } from '../services/holidayService';
+import { fetchNameDayToday } from '../services/nameDayService';
 import { useI18n } from '../i18n';
 
 interface ClockProps {
@@ -10,10 +11,22 @@ interface ClockProps {
 const Clock: React.FC<ClockProps> = ({ fontSizeStep = 0, variant = 'hero' }) => {
   const { locale } = useI18n();
   const [time, setTime] = useState(new Date());
+  const [nameDayNames, setNameDayNames] = useState<string[]>([]);
 
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    let isActive = true;
+    fetchNameDayToday().then((result) => {
+      if (!isActive || !result) return;
+      setNameDayNames(result.names);
+    });
+    return () => {
+      isActive = false;
+    };
   }, []);
 
   const timeString = time.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' });
@@ -43,13 +56,18 @@ const Clock: React.FC<ClockProps> = ({ fontSizeStep = 0, variant = 'hero' }) => 
 
   if (variant === 'compact') {
     return (
-      <div className="text-left xl:text-right space-y-2">
+      <div className="text-left space-y-2">
         <p className="font-black text-4xl md:text-6xl leading-none tracking-tight text-[#d09a32] drop-shadow" aria-live="polite">
           {timeString}
         </p>
         <p className="capitalize text-sm md:text-lg font-bold text-white leading-snug">
           {dateString}
         </p>
+        {nameDayNames.length > 0 && (
+          <p className="text-sm md:text-base font-black text-white/90 leading-snug">
+            Nimipäivä: {nameDayNames.join(', ')}
+          </p>
+        )}
         {todayEvents.length > 0 && (
           <div className="flex flex-wrap xl:justify-end gap-2 pt-1">
             {todayEvents.map((event) => (
@@ -76,6 +94,11 @@ const Clock: React.FC<ClockProps> = ({ fontSizeStep = 0, variant = 'hero' }) => 
       <p className={`text-slate-800 dark:text-slate-200 capitalize font-bold tracking-tight transition-all duration-300 ${dateSizes[fontSizeStep]}`}>
         {dateString}
       </p>
+      {nameDayNames.length > 0 && (
+        <p className="text-slate-700 dark:text-slate-300 text-base md:text-2xl font-black">
+          Nimipäivä: {nameDayNames.join(', ')}
+        </p>
+      )}
       {todayEvents.length > 0 && (
         <div className="space-y-2 pt-2">
           {todayEvents.map((event) => (

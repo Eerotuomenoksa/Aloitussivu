@@ -303,15 +303,15 @@ const AppContent: React.FC = () => {
             </div>
           </nav>
 
-          <div className="mt-3 grid gap-3 md:mt-8 md:gap-6 xl:grid-cols-[minmax(0,1fr)_24rem] xl:items-center">
-            {uiVisibility.googleSearch && (
-              <div data-tour="google-search">
-                <SearchBar fontSizeStep={fontSizeStep} variant="header" />
-              </div>
-            )}
+          <div className="mt-3 grid gap-3 md:mt-8 md:gap-6 xl:grid-cols-[24rem_minmax(0,1fr)] xl:items-center">
             {uiVisibility.clock && (
               <div className="hidden md:block">
                 <Clock fontSizeStep={fontSizeStep} variant="compact" />
+              </div>
+            )}
+            {uiVisibility.googleSearch && (
+              <div data-tour="google-search">
+                <SearchBar fontSizeStep={fontSizeStep} variant="header" />
               </div>
             )}
           </div>
