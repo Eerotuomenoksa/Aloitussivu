@@ -350,7 +350,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
                     aria-label={`${t('openCategory')}: ${categoryName(shortcut.name)}`}
                   >
                     <span className={`transition-all duration-300 ${iconClasses[fontSizeStep]}`} aria-hidden="true">{shortcut.icon}</span>
-                    <span className={`font-black leading-tight tracking-tight transition-all duration-300 ${textClasses[fontSizeStep]}`}>
+                    <span className={`min-w-0 max-w-full break-words [overflow-wrap:anywhere] font-black leading-tight tracking-tight transition-all duration-300 ${textClasses[fontSizeStep]}`}>
                       {categoryName(shortcut.name)}
                     </span>
                   </button>
@@ -385,7 +385,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
                         aria-label={`${t('goToSite')}: ${link.name}`}
                       >
                         <span className={`transition-all duration-300 ${iconClasses[fontSizeStep]}`} aria-hidden="true">{link.categoryIcon}</span>
-                        <span className={`font-black leading-tight tracking-tight transition-all duration-300 ${textClasses[fontSizeStep]}`}>
+                        <span className={`min-w-0 max-w-full break-words [overflow-wrap:anywhere] font-black leading-tight tracking-tight transition-all duration-300 ${textClasses[fontSizeStep]}`}>
                           {link.name}
                         </span>
                         <span className={`opacity-75 font-semibold ${subTextClasses[fontSizeStep]}`}>
@@ -445,7 +445,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
                       aria-label={`Soita: ${phone.name}, ${phone.phone}`}
                     >
                       <span className={`transition-all duration-300 ${iconClasses[fontSizeStep]}`} aria-hidden="true">☎</span>
-                      <span className={`font-black leading-tight tracking-tight transition-all duration-300 ${textClasses[fontSizeStep]}`}>
+                      <span className={`min-w-0 max-w-full break-words [overflow-wrap:anywhere] font-black leading-tight tracking-tight transition-all duration-300 ${textClasses[fontSizeStep]}`}>
                         {phone.name}
                       </span>
                       <span className={`font-black ${subTextClasses[fontSizeStep]}`}>
@@ -478,7 +478,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
                     {group.icon}
                   </span>
                   <div className="min-w-0">
-                    <h3 id={`shortcut-group-${idx}`} className={`font-black leading-tight tracking-tight transition-all duration-300 ${textClasses[fontSizeStep]}`}>
+                    <h3 id={`shortcut-group-${idx}`} className={`min-w-0 max-w-full break-words [overflow-wrap:anywhere] font-black leading-tight tracking-tight transition-all duration-300 ${textClasses[fontSizeStep]}`}>
                       {categoryName(group.name)}
                     </h3>
                   </div>
@@ -488,7 +488,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
                   {group.shortcuts.map((shortcut) => {
                     const isCategory = !!shortcut.providers;
                     const label = categoryName(shortcut.name);
-                    const subCategoryClasses = `flex min-h-14 items-center justify-center rounded-2xl border-2 border-white bg-white/95 px-4 py-3 text-center font-black leading-tight text-slate-950 shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_3px_0_rgba(15,23,42,0.16)] transition-all hover:-translate-y-0.5 hover:border-white hover:bg-white focus:outline-none focus:ring-4 focus:ring-white/80 active:translate-y-0 active:shadow-[inset_0_1px_0_rgba(255,255,255,0.76),0_1px_0_rgba(15,23,42,0.18)] dark:border-white/15 dark:bg-white/90 dark:text-slate-950 ${subTextClasses[fontSizeStep]}`;
+                    const subCategoryClasses = `flex min-h-14 min-w-0 items-center justify-center rounded-2xl border-2 border-white bg-white/95 px-4 py-3 text-center font-black leading-tight text-slate-950 break-words [overflow-wrap:anywhere] shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_3px_0_rgba(15,23,42,0.16)] transition-all hover:-translate-y-0.5 hover:border-white hover:bg-white focus:outline-none focus:ring-4 focus:ring-white/80 active:translate-y-0 active:shadow-[inset_0_1px_0_rgba(255,255,255,0.76),0_1px_0_rgba(15,23,42,0.18)] dark:border-white/15 dark:bg-white/90 dark:text-slate-950 ${subTextClasses[fontSizeStep]}`;
 
                     if (isCategory) {
                       return (

@@ -6,3 +6,4 @@ functions/lib/
 *.local
 .vite-dev*.log
 .vite-current*.log
+visual-check-report/
