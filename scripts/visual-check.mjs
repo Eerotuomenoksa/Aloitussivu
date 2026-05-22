@@ -20,8 +20,6 @@ const viewports = [
 
 const pages = [
   { name: 'etusivu', path: '/index.html' },
-  { name: 'yllapito', path: '/ehdotukset.html' },
-  { name: 'linkit', path: '/linkit.html' },
 ];
 
 const uiScales = [100, 125, 150];

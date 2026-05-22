@@ -30,8 +30,18 @@ const smallTextClasses = [
   'text-2xl',
 ];
 
+const getRegionalServiceIcon = (provider: Provider) => {
+  const text = `${provider.group ?? ''} ${provider.name}`.toLocaleLowerCase('fi-FI');
+  if (text.includes('liikenne') || text.includes('reitti') || text.includes('hsl') || text.includes('nysse') || text.includes('föli')) return '🚌';
+  if (text.includes('kirjasto') || text.includes('finna') || text.includes('helmet')) return '📚';
+  if (text.includes('hyvinvointialue') || text.includes('sote') || text.includes('terveys')) return '🏥';
+  if (text.includes('paikalliset palvelut') || text.includes('palvelut') || text.includes('kunta') || text.includes('kaupunki')) return '🏛️';
+  return '📍';
+};
+
 const ServiceLink: React.FC<{ provider: Provider; index: number; fontSizeStep: number; onReportLink?: (draft: LinkReportDraft) => void }> = ({ provider, index, fontSizeStep, onReportLink }) => {
   const { t, categoryName } = useI18n();
+  const icon = getRegionalServiceIcon(provider);
   const colors = [
     'bg-[#dceff4] hover:bg-[#cce7ee] dark:bg-[#173e5f] dark:hover:bg-[#214f76]',
     'bg-[#d8f0ee] hover:bg-[#c8e7e4] dark:bg-[#1d5c62] dark:hover:bg-[#23727a]',
@@ -46,7 +56,10 @@ const ServiceLink: React.FC<{ provider: Provider; index: number; fontSizeStep: n
         rel="noopener noreferrer"
         className={`${colors[index % colors.length]} text-slate-950 dark:text-white rounded-2xl p-5 md:p-6 shadow-md border-4 border-slate-900/10 dark:border-white/10 transition-all active:scale-95 focus:outline-none focus:ring-4 focus:ring-blue-300 min-h-[120px] flex flex-col justify-between gap-4`}
       >
-        <span className={`font-black leading-tight ${textClasses[fontSizeStep]}`}>{provider.name}</span>
+        <span className="flex items-start gap-3">
+          <span className="shrink-0 text-3xl leading-none md:text-4xl" aria-hidden="true">{icon}</span>
+          <span className={`min-w-0 font-black leading-tight ${textClasses[fontSizeStep]}`}>{provider.name}</span>
+        </span>
         {provider.group && <span className={`font-bold opacity-80 ${smallTextClasses[fontSizeStep]}`}>{categoryName(provider.group)}</span>}
       </a>
       {onReportLink && (
