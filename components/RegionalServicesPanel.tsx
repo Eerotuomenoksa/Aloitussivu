@@ -177,18 +177,18 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
                     <h3 className={`font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest ${smallTextClasses[fontSizeStep]}`}>
                       {t('localNews')}
                     </h3>
-                    {fallbackNewsUrl && (
-                      <a
-                        href={fallbackNewsUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={`font-black text-brand-indigo dark:text-blue-300 hover:underline ${smallTextClasses[fontSizeStep]}`}
-                      >
-                        {t('moreNews')}
-                      </a>
-                    )}
                   </div>
                   <LocalNewsHeadlines feeds={rssFeeds} fallbackUrl={fallbackNewsUrl} fontSizeStep={fontSizeStep} compact />
+                  {fallbackNewsUrl && (
+                    <a
+                      href={fallbackNewsUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`inline-flex font-black text-brand-indigo dark:text-blue-300 hover:underline ${smallTextClasses[fontSizeStep]}`}
+                    >
+                      {t('moreNews')}
+                    </a>
+                  )}
                 </div>
             )}
             {showScamAlerts && (

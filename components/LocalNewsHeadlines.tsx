@@ -89,7 +89,7 @@ const LocalNewsHeadlines: React.FC<LocalNewsHeadlinesProps> = ({ feeds, fallback
     return (
       <div className="rounded-2xl border-4 border-dashed border-slate-200 dark:border-slate-700 p-6 text-center">
         <p className={`text-slate-500 dark:text-slate-400 font-bold mb-4 ${smallTextClasses[fontSizeStep]}`}>
-          Paikallista RSS-syötettä ei saatu ladattua.
+          Paikallisia uutisia ei saatu haettua.
         </p>
         {fallbackUrl && isLinkVisible(fallbackUrl) && (
           <a

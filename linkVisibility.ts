@@ -89,6 +89,30 @@ const writeManagedLinkReports = (reports: ManagedLinkReportEntry[]) => {
   }
 };
 
+const updateLocalLinkReportStatus = (
+  id: string,
+  status: LinkReportStatus,
+  reviewedAt: string,
+  reviewerEmail?: string | null,
+  approvedLinkId?: string,
+  reviewReason?: string
+) => {
+  writeManagedLinkReports(getManagedLinkReports().map((report) => (
+    report.id === id
+      ? {
+          ...report,
+          status,
+          reviewedAt,
+          reviewedBy: reviewerEmail ?? '',
+          updatedAt: reviewedAt,
+          ...(approvedLinkId ? { approvedLinkId } : {}),
+          ...(reviewReason ? { reviewReason } : {}),
+        }
+      : report
+  )));
+  emitLinkReportsChange();
+};
+
 export const isLinkVisible = (url?: string | null) => {
   if (!url) return false;
   return !getBlockedUrls().has(normalizeUrl(url));
@@ -188,33 +212,25 @@ export const updateLinkReportStatus = async (
   if (isFirebaseConfigured) {
     const db = getFirebaseDb();
     if (db) {
-      await updateDoc(doc(db, LINK_REPORTS_COLLECTION, id), {
-        status,
-        reviewedAt,
-        reviewedBy: reviewerEmail ?? '',
-        updatedAt: reviewedAt,
-        ...(approvedLinkId ? { approvedLinkId } : {}),
-        ...(reviewReason ? { reviewReason } : {}),
-      });
-      emitLinkReportsChange();
-      return;
-    }
-  }
-
-  writeManagedLinkReports(getManagedLinkReports().map((report) => (
-    report.id === id
-      ? {
-          ...report,
+      try {
+        await updateDoc(doc(db, LINK_REPORTS_COLLECTION, id), {
           status,
           reviewedAt,
           reviewedBy: reviewerEmail ?? '',
           updatedAt: reviewedAt,
           ...(approvedLinkId ? { approvedLinkId } : {}),
           ...(reviewReason ? { reviewReason } : {}),
-        }
-      : report
-  )));
-  emitLinkReportsChange();
+        });
+        emitLinkReportsChange();
+        return;
+      } catch (error) {
+        const hasLocalReport = getManagedLinkReports().some((report) => report.id === id);
+        if (!hasLocalReport) throw error;
+      }
+    }
+  }
+
+  updateLocalLinkReportStatus(id, status, reviewedAt, reviewerEmail, approvedLinkId, reviewReason);
 };
 
 export const addBlockedLink = async (url: string) => {

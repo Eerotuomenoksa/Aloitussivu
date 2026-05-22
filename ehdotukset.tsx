@@ -123,6 +123,8 @@ function App() {
   const [reportDrafts, setReportDrafts] = useState<Record<string, { name: string; url: string; category: string; note: string }>>({});
   const [busyId, setBusyId] = useState<string | null>(null);
   const [scamAlerts, setScamAlerts] = useState<ScamAlertEntry[]>([]);
+  const [scamAlertBusyId, setScamAlertBusyId] = useState<string | null>(null);
+  const [scamAlertMessage, setScamAlertMessage] = useState('');
   const [ncscLogs, setNcscLogs] = useState<NcscScrapeLogEntry[]>([]);
   const [ncscLogError, setNcscLogError] = useState('');
   const [ncscBusy, setNcscBusy] = useState(false);
@@ -193,6 +195,14 @@ function App() {
     () => ncscLogs.filter((log) => log.structureVersion === 'unknown' || log.alertsCreated === 0),
     [ncscLogs]
   );
+  const activeScamAlerts = useMemo(
+    () => scamAlerts.filter((alert) => alert.active),
+    [scamAlerts]
+  );
+  const hiddenScamAlerts = useMemo(
+    () => scamAlerts.filter((alert) => !alert.active),
+    [scamAlerts]
+  );
   const reviewTasks = useMemo(() => [
     {
       label: 'Uudet linkit',
@@ -210,7 +220,7 @@ function App() {
     },
     {
       label: 'Huijausvaroitukset',
-      count: scamAlerts.filter((alert) => alert.active).length,
+      count: activeScamAlerts.length,
       href: '#scam-alerts-admin',
       tone: ncscAttentionLogs.length > 0 ? 'bg-amber-100 text-amber-950 dark:bg-amber-900/40 dark:text-amber-100' : 'bg-emerald-100 text-emerald-950 dark:bg-emerald-900/40 dark:text-emerald-100',
       note: ncscAttentionLogs.length > 0 ? `${ncscAttentionLogs.length} hakuajoa vaatii silmäilyn.` : 'Automaation viime ajot näyttävät tavallisilta.',
@@ -222,7 +232,7 @@ function App() {
       tone: 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200',
       note: 'Täältä voi poistaa aiemmin hyväksyttyjä lisäyksiä.',
     },
-  ], [approvedLinks.length, issueReports.length, ncscAttentionLogs.length, pendingNewReports.length, scamAlerts]);
+  ], [activeScamAlerts.length, approvedLinks.length, issueReports.length, ncscAttentionLogs.length, pendingNewReports.length]);
 
   useEffect(() => {
     setReportDrafts((current) => {
@@ -319,6 +329,25 @@ function App() {
     }
   };
 
+  const toggleScamAlertActiveState = async (alert: ScamAlertEntry) => {
+    setScamAlertBusyId(alert.id);
+    setScamAlertMessage('');
+    try {
+      await updateScamAlertActiveState(alert.id, !alert.active);
+      setScamAlerts((current) => current.map((item) => (
+        item.id === alert.id
+          ? { ...item, active: !alert.active, updatedAt: new Date().toISOString() }
+          : item
+      )));
+    } catch (error) {
+      setScamAlertMessage(error instanceof Error
+        ? `Varoituksen päivitys epäonnistui: ${error.message}`
+        : 'Varoituksen päivitys epäonnistui.');
+    } finally {
+      setScamAlertBusyId(null);
+    }
+  };
+
   return (
     <main className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white">
       <div className="mx-auto max-w-7xl px-4 py-8 md:px-8 md:py-12 space-y-10">
@@ -385,6 +414,12 @@ function App() {
                 </p>
               </div>
               <div className="flex flex-wrap gap-3">
+                <a
+                  href="./index.html"
+                  className="rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white px-5 py-3 font-black shadow-sm transition-all hover:bg-slate-50 dark:hover:bg-slate-700 active:scale-95"
+                >
+                  Palaa etusivulle
+                </a>
                 <button
                   type="button"
                   onClick={copyApprovedJson}
@@ -461,14 +496,20 @@ function App() {
                 </p>
               )}
 
+              {scamAlertMessage && (
+                <p className="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 font-bold text-rose-900 dark:border-rose-900 dark:bg-rose-950/30 dark:text-rose-200">
+                  {scamAlertMessage}
+                </p>
+              )}
+
               <div className="grid gap-4 xl:grid-cols-[1.25fr_1fr]">
-                <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm space-y-4">
+                <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm space-y-5">
                   <h3 className="text-xl font-black">Aktiiviset varoitukset</h3>
-                  {scamAlerts.length === 0 ? (
-                    <p className="text-slate-500 dark:text-slate-400 font-bold">Ei varoituksia.</p>
+                  {activeScamAlerts.length === 0 ? (
+                    <p className="text-slate-500 dark:text-slate-400 font-bold">Ei aktiivisia varoituksia.</p>
                   ) : (
                     <div className="grid gap-3">
-                      {scamAlerts.slice(0, 20).map((alert) => (
+                      {activeScamAlerts.slice(0, 20).map((alert) => (
                         <article key={alert.id} className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/60 p-4 space-y-3">
                           <div className="flex flex-wrap items-center gap-2">
                             <span className="rounded-full bg-slate-200 text-slate-800 dark:bg-slate-800 dark:text-slate-200 px-3 py-1 text-xs font-black uppercase tracking-wide">
@@ -504,16 +545,54 @@ function App() {
                             <span>Luotu {formatDateTime(alert.createdAt)}</span>
                             <button
                               type="button"
-                              onClick={() => updateScamAlertActiveState(alert.id, !alert.active)}
-                              className="rounded-full bg-slate-200 hover:bg-slate-300 text-slate-900 px-4 py-2 font-black transition-all active:scale-95"
+                              disabled={scamAlertBusyId === alert.id}
+                              onClick={() => toggleScamAlertActiveState(alert)}
+                              className="rounded-full bg-slate-200 hover:bg-slate-300 disabled:opacity-50 text-slate-900 px-4 py-2 font-black transition-all active:scale-95"
                             >
-                              {alert.active ? 'Poista näkyvistä' : 'Näytä'}
+                              {scamAlertBusyId === alert.id ? 'Päivitetään...' : 'Poista näkyvistä'}
                             </button>
                           </div>
                         </article>
                       ))}
                     </div>
                   )}
+
+                  <div className="border-t border-slate-200 pt-5 dark:border-slate-800">
+                    <h3 className="text-xl font-black">Pois näkyvistä</h3>
+                    {hiddenScamAlerts.length === 0 ? (
+                      <p className="mt-3 text-slate-500 dark:text-slate-400 font-bold">Ei piilotettuja varoituksia.</p>
+                    ) : (
+                      <div className="mt-3 grid gap-3">
+                        {hiddenScamAlerts.slice(0, 20).map((alert) => (
+                          <article key={alert.id} className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/60 p-4 space-y-3 opacity-90">
+                            <div className="flex flex-wrap items-center gap-2">
+                              <span className="rounded-full bg-slate-200 text-slate-800 dark:bg-slate-800 dark:text-slate-200 px-3 py-1 text-xs font-black uppercase tracking-wide">
+                                {severityLabel[alert.severity]}
+                              </span>
+                              <span className="rounded-full bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-300 px-3 py-1 text-xs font-black uppercase tracking-wide">
+                                Pois päältä
+                              </span>
+                            </div>
+                            <div>
+                              <p className="font-black text-lg">{alert.title}</p>
+                              <p className="mt-1 font-bold text-slate-600 dark:text-slate-300">{alert.body}</p>
+                            </div>
+                            <div className="flex flex-wrap items-center justify-between gap-3 text-xs font-bold text-slate-500 dark:text-slate-400">
+                              <span>Päivitetty {formatDateTime(alert.updatedAt || alert.createdAt)}</span>
+                              <button
+                                type="button"
+                                disabled={scamAlertBusyId === alert.id}
+                                onClick={() => toggleScamAlertActiveState(alert)}
+                                className="rounded-full bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white px-4 py-2 font-black transition-all active:scale-95"
+                              >
+                                {scamAlertBusyId === alert.id ? 'Päivitetään...' : 'Näytä uudelleen'}
+                              </button>
+                            </div>
+                          </article>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm space-y-4">

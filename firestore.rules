@@ -4,7 +4,10 @@ service cloud.firestore {
   match /databases/{database}/documents {
     function isAdmin() {
       return request.auth != null
-        && request.auth.token.email == 'eero.tuomenoksa@gmail.com';
+        && request.auth.token.email in [
+          'eero.tuomenoksa@gmail.com',
+          'seniorsurf.suomi@gmail.com'
+        ];
     }
 
     function isValidReport() {
@@ -33,9 +36,34 @@ service cloud.firestore {
         && request.resource.data.note.size() <= 1000;
     }
 
+    function onlyTogglesVisibility() {
+      return request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+        'active',
+        'updatedAt'
+      ])
+      && request.resource.data.active is bool
+      && request.resource.data.updatedAt is string;
+    }
+
+    function onlyReviewsLinkReport() {
+      return request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+        'status',
+        'reviewedAt',
+        'reviewedBy',
+        'updatedAt',
+        'approvedLinkId',
+        'reviewReason'
+      ])
+      && request.resource.data.status in ['approved', 'rejected']
+      && request.resource.data.reviewedAt is string
+      && request.resource.data.reviewedBy is string
+      && request.resource.data.updatedAt is string;
+    }
+
     match /linkReports/{reportId} {
       allow create: if isValidReport();
-      allow read, update, delete: if isAdmin();
+      allow read, delete: if isAdmin();
+      allow update: if isAdmin() || (request.auth != null && onlyReviewsLinkReport());
     }
 
     match /approvedLinks/{linkId} {
@@ -50,7 +78,8 @@ service cloud.firestore {
 
     match /scamAlerts/{alertId} {
       allow read: if true;
-      allow create, update, delete: if isAdmin();
+      allow create, delete: if isAdmin();
+      allow update: if isAdmin() || (request.auth != null && onlyTogglesVisibility());
     }
 
     match /ncscScrapeLog/{logId} {

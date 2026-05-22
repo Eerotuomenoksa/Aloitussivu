@@ -12,6 +12,10 @@ import {
 import { getFirestore, type Firestore } from 'firebase/firestore';
 
 export const ADMIN_EMAIL = 'eero.tuomenoksa@gmail.com';
+const ADMIN_EMAILS = [
+  ADMIN_EMAIL,
+  'seniorsurf.suomi@gmail.com',
+];
 const ADMIN_EMAIL_STORAGE_KEY = 'seniorSurfGoogleAdminEmail';
 
 const firebaseConfig = {
@@ -95,7 +99,7 @@ export const getUserEmail = (user: User | null) => (
   || ''
 );
 
-export const isAdminUser = (user: User | null) => getUserEmail(user).toLocaleLowerCase('fi-FI') === ADMIN_EMAIL;
+export const isAdminUser = (user: User | null) => ADMIN_EMAILS.includes(getUserEmail(user).toLocaleLowerCase('fi-FI'));
 
 export const getUserAuthDebugInfo = (user: User | null) => {
   if (!user) return '';

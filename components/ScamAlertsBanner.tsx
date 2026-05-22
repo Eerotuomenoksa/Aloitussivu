@@ -8,6 +8,8 @@ const severityStyles = {
   danger: 'border-[#8fcfca] bg-[#d8f0ee] text-slate-950 dark:border-white/15 dark:bg-[#1d5c62] dark:text-white',
 };
 
+const MORE_SCAM_ALERTS_URL = 'https://www.kyberturvallisuuskeskus.fi/fi/varoitukset';
+
 const isVisibleAlert = (alert: ScamAlertEntry) => {
   if (!alert.active) return false;
   if (!alert.expiresAt) return true;
@@ -133,6 +135,15 @@ const ScamAlertsBanner: React.FC<ScamAlertsBannerProps> = ({ compact = false }) 
           </button>
         ))}
       </div>
+
+      <a
+        href={MORE_SCAM_ALERTS_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex font-black text-brand-indigo hover:underline dark:text-blue-300"
+      >
+        Lisää huijausvaroituksia
+      </a>
 
       {alertDialog}
     </section>
