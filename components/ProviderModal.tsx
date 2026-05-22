@@ -2,8 +2,9 @@
 import React, { useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom';
 import { filterVisibleProviders, useLinkVisibilityVersion } from '../linkVisibility';
-import { Shortcut, Provider, Favorite, LinkReportDraft } from '../types';
+import { Shortcut, Provider, Favorite, LinkReportDraft, LocalityInfo } from '../types';
 import { useI18n } from '../i18n';
+import NearbyGuidancePlaces from './NearbyGuidancePlaces';
 
 interface ProviderModalProps {
   shortcut: Shortcut | null;
@@ -12,6 +13,7 @@ interface ProviderModalProps {
   favorites: Favorite[];
   onToggleFavorite: (fav: Favorite) => void;
   onReportLink?: (draft: LinkReportDraft) => void;
+  locality?: LocalityInfo | null;
 }
 
 const getPhoneHref = (provider: Provider) => {
@@ -20,7 +22,7 @@ const getPhoneHref = (provider: Provider) => {
   return `tel:${provider.phone.replace(/[^\d+]/g, '')}`;
 };
 
-const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSizeStep = 0, favorites, onToggleFavorite, onReportLink }) => {
+const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSizeStep = 0, favorites, onToggleFavorite, onReportLink, locality = null }) => {
   const { t, categoryName } = useI18n();
   useLinkVisibilityVersion();
   const closeButtonRef = useRef<HTMLButtonElement>(null);
@@ -99,6 +101,7 @@ const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSi
   }, {} as Record<string, Provider[]>);
 
   const groupKeys = Object.keys(groupedProviders);
+  const showNearbyGuidance = shortcut.name === 'Apua digiin';
 
   const modal = (
     <div
@@ -124,6 +127,14 @@ const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSi
         </div>
 
         <div className="flex-1 space-y-6 overflow-y-auto bg-slate-50 p-4 dark:bg-slate-950 sm:space-y-8 sm:p-6 md:space-y-12 md:p-10">
+          {showNearbyGuidance && (
+            <NearbyGuidancePlaces
+              locality={locality}
+              fontSizeStep={fontSizeStep}
+              className="rounded-2xl border-2 border-slate-200 bg-white p-4 shadow-md dark:border-slate-800 dark:bg-slate-900 sm:rounded-[2rem] sm:border-4 sm:p-6"
+            />
+          )}
+
           {groupKeys.map((group) => (
             <div key={group} className="space-y-4 md:space-y-6">
               {group !== categoryName(t('services')) && (

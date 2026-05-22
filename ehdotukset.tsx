@@ -73,6 +73,13 @@ const ncscBadgeClass = (log: NcscScrapeLogEntry) => {
   return 'bg-amber-100 text-amber-900 dark:bg-amber-900/40 dark:text-amber-200';
 };
 
+const ncscStructureLabel = {
+  '2026': 'Poimittu viikkokatsauksesta',
+  '2025': 'Poimittu varalukijalla',
+  news: 'Poimittu uutisesta',
+  unknown: 'Ei tunnistettavaa sisältöä',
+} satisfies Record<NcscScrapeLogEntry['structureVersion'], string>;
+
 const getErrorCode = (error: unknown) => {
   if (typeof error !== 'object' || error === null || !('code' in error)) return '';
   const code = (error as { code?: unknown }).code;
@@ -117,6 +124,7 @@ function App() {
   const [busyId, setBusyId] = useState<string | null>(null);
   const [scamAlerts, setScamAlerts] = useState<ScamAlertEntry[]>([]);
   const [ncscLogs, setNcscLogs] = useState<NcscScrapeLogEntry[]>([]);
+  const [ncscLogError, setNcscLogError] = useState('');
   const [ncscBusy, setNcscBusy] = useState(false);
   const [ncscMessage, setNcscMessage] = useState('');
 
@@ -146,11 +154,12 @@ function App() {
     if (!hasAdminAccess) {
       setScamAlerts([]);
       setNcscLogs([]);
+      setNcscLogError('');
       return () => {};
     }
 
     const unsubscribeAlerts = subscribeScamAlerts(setScamAlerts);
-    const unsubscribeLogs = subscribeNcscScrapeLogs(setNcscLogs);
+    const unsubscribeLogs = subscribeNcscScrapeLogs(setNcscLogs, setNcscLogError);
     return () => {
       unsubscribeAlerts();
       unsubscribeLogs();
@@ -266,6 +275,15 @@ function App() {
     setBusyId(report.id);
     try {
       await updateLinkReportStatus(report.id, 'rejected', user?.email);
+    } finally {
+      setBusyId(null);
+    }
+  };
+
+  const markDuplicateReport = async (report: ManagedLinkReportEntry) => {
+    setBusyId(report.id);
+    try {
+      await updateLinkReportStatus(report.id, 'rejected', user?.email, undefined, 'Linkki on tuplana');
     } finally {
       setBusyId(null);
     }
@@ -500,7 +518,11 @@ function App() {
 
                 <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm space-y-4">
                   <h3 className="text-xl font-black">Kyberturvallisuuskeskuksen automaatio</h3>
-                  {ncscLogs.length === 0 ? (
+                  {ncscLogError ? (
+                    <p className="rounded-2xl border border-rose-200 bg-rose-50 p-4 font-bold text-rose-900 dark:border-rose-900 dark:bg-rose-950/30 dark:text-rose-200">
+                      {ncscLogError}
+                    </p>
+                  ) : ncscLogs.length === 0 ? (
                     <p className="text-slate-500 dark:text-slate-400 font-bold">Ei ajolokia.</p>
                   ) : (
                     <div className="grid gap-3">
@@ -509,7 +531,7 @@ function App() {
                           <div className="flex flex-wrap items-center justify-between gap-2">
                             <p className="font-black">{log.weekLabel || 'Viikko tuntematon'}</p>
                             <span className={`rounded-full px-3 py-1 text-xs font-black uppercase tracking-wide ${ncscBadgeClass(log)}`}>
-                              {log.structureVersion}
+                              {ncscStructureLabel[log.structureVersion] ?? 'Tulkinta tuntematon'}
                             </span>
                           </div>
                           <p className="mt-2 text-sm font-bold text-slate-500 dark:text-slate-400">
@@ -655,6 +677,14 @@ function App() {
                         <button
                           type="button"
                           disabled={busyId === report.id}
+                          onClick={() => markDuplicateReport(report)}
+                          className="rounded-full bg-amber-500 hover:bg-amber-600 disabled:opacity-50 text-slate-950 px-5 py-3 font-black shadow-md transition-all active:scale-95"
+                        >
+                          Merkitse tuplaksi
+                        </button>
+                        <button
+                          type="button"
+                          disabled={busyId === report.id}
                           onClick={() => hideReportedLink(report)}
                           className="rounded-full bg-rose-600 hover:bg-rose-700 disabled:opacity-50 text-white px-5 py-3 font-black shadow-md transition-all active:scale-95"
                         >
@@ -704,6 +734,11 @@ function App() {
                         <div>
                           <p className="font-black">{report.name}</p>
                           <p className="text-sm font-bold text-slate-500 dark:text-slate-400 break-all">{report.url}</p>
+                          {report.reviewReason && (
+                            <p className="mt-1 text-sm font-black text-amber-700 dark:text-amber-300">
+                              Syy: {report.reviewReason}
+                            </p>
+                          )}
                         </div>
                         <span className="rounded-full bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200 px-3 py-1 text-xs font-black uppercase tracking-wide">
                           {statusLabel[report.status]}

@@ -28,6 +28,7 @@ export interface ManagedLinkReportEntry extends LinkReportEntry {
   reviewedAt?: string;
   reviewedBy?: string;
   approvedLinkId?: string;
+  reviewReason?: string;
 }
 
 const readJsonArray = (key: string) => {
@@ -74,10 +75,19 @@ const getBlockedUrls = () => new Set([
 
 export const getLinkReports = () => readJsonArray(LINK_REPORTS_KEY) as LinkReportEntry[];
 
-const getManagedLinkReports = () => getLinkReports().map((report) => ({
+const getManagedLinkReports = () => (readJsonArray(LINK_REPORTS_KEY) as Partial<ManagedLinkReportEntry>[]).map((report) => ({
   ...report,
-  status: 'pending' as LinkReportStatus,
-}));
+  status: report.status ?? 'pending' as LinkReportStatus,
+})) as ManagedLinkReportEntry[];
+
+const writeManagedLinkReports = (reports: ManagedLinkReportEntry[]) => {
+  try {
+    if (typeof localStorage === 'undefined') return;
+    localStorage.setItem(LINK_REPORTS_KEY, JSON.stringify(reports));
+  } catch {
+    // Ignore storage errors.
+  }
+};
 
 export const isLinkVisible = (url?: string | null) => {
   if (!url) return false;
@@ -170,23 +180,40 @@ export const updateLinkReportStatus = async (
   id: string,
   status: LinkReportStatus,
   reviewerEmail?: string | null,
-  approvedLinkId?: string
+  approvedLinkId?: string,
+  reviewReason?: string
 ) => {
+  const reviewedAt = new Date().toISOString();
+
   if (isFirebaseConfigured) {
     const db = getFirebaseDb();
     if (db) {
       await updateDoc(doc(db, LINK_REPORTS_COLLECTION, id), {
         status,
-        reviewedAt: new Date().toISOString(),
+        reviewedAt,
         reviewedBy: reviewerEmail ?? '',
-        updatedAt: new Date().toISOString(),
+        updatedAt: reviewedAt,
         ...(approvedLinkId ? { approvedLinkId } : {}),
+        ...(reviewReason ? { reviewReason } : {}),
       });
       emitLinkReportsChange();
       return;
     }
   }
 
+  writeManagedLinkReports(getManagedLinkReports().map((report) => (
+    report.id === id
+      ? {
+          ...report,
+          status,
+          reviewedAt,
+          reviewedBy: reviewerEmail ?? '',
+          updatedAt: reviewedAt,
+          ...(approvedLinkId ? { approvedLinkId } : {}),
+          ...(reviewReason ? { reviewReason } : {}),
+        }
+      : report
+  )));
   emitLinkReportsChange();
 };
 

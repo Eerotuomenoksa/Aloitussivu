@@ -23,7 +23,7 @@ export interface ScamAlertEntry {
   sourceUrl?: string;
   sourceWeek?: string;
   originalHeading?: string;
-  structureVersion?: '2026' | '2025' | 'unknown';
+  structureVersion?: '2026' | '2025' | 'news' | 'unknown';
 }
 
 export interface NcscScrapeLogEntry {
@@ -33,7 +33,7 @@ export interface NcscScrapeLogEntry {
   publishedAt?: string;
   processedAt: string;
   alertsCreated: number;
-  structureVersion: '2026' | '2025' | 'unknown';
+  structureVersion: '2026' | '2025' | 'news' | 'unknown';
 }
 
 const SCAM_ALERTS_COLLECTION = 'scamAlerts';
@@ -63,27 +63,36 @@ export const subscribeScamAlerts = (callback: (alerts: ScamAlertEntry[]) => void
   );
 };
 
-export const subscribeNcscScrapeLogs = (callback: (logs: NcscScrapeLogEntry[]) => void) => {
+export const subscribeNcscScrapeLogs = (
+  callback: (logs: NcscScrapeLogEntry[]) => void,
+  onError?: (message: string) => void
+) => {
   if (!isFirebaseConfigured) {
     callback([]);
+    onError?.('Firebase-asetukset puuttuvat, joten ajolokia ei voi lukea.');
     return () => {};
   }
 
   const db = getFirebaseDb();
   if (!db) {
     callback([]);
+    onError?.('Firestore-yhteyttä ei voitu avata.');
     return () => {};
   }
 
   return onSnapshot(
     query(collection(db, NCSC_SCRAPE_LOG_COLLECTION), orderBy('processedAt', 'desc')),
     (snapshot) => {
+      onError?.('');
       callback(snapshot.docs.slice(0, 10).map((document) => ({
         id: document.id,
         ...document.data(),
       })) as NcscScrapeLogEntry[]);
     },
-    () => callback([])
+    (error) => {
+      callback([]);
+      onError?.(`Ajolokin lukeminen epäonnistui: ${error.message}`);
+    }
   );
 };
 

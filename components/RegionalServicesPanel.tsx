@@ -3,7 +3,6 @@ import { getLocalizedMunicipalityName, getRegionalNewsProviders, getRegionalProv
 import { filterVisibleProviders } from '../linkVisibility';
 import { LocalityInfo, Provider, LinkReportDraft } from '../types';
 import LocalNewsHeadlines from './LocalNewsHeadlines';
-import NearbyGuidancePlaces from './NearbyGuidancePlaces';
 import ScamAlertsBanner from './ScamAlertsBanner';
 import { useI18n } from '../i18n';
 
@@ -169,8 +168,6 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-5">
             {services.map((provider, index) => <ServiceLink key={provider.url} provider={provider} index={index} fontSizeStep={fontSizeStep} onReportLink={onReportLink} />)}
           </div>
-
-          <NearbyGuidancePlaces locality={locality} fontSizeStep={fontSizeStep} />
 
           {(showNews || showScamAlerts) && (
           <div className={`grid gap-6 xl:items-start ${showNews && showScamAlerts ? 'xl:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]' : 'xl:grid-cols-1'}`}>

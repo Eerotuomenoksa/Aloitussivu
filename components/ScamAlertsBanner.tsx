@@ -8,12 +8,6 @@ const severityStyles = {
   danger: 'border-[#8fcfca] bg-[#d8f0ee] text-slate-950 dark:border-white/15 dark:bg-[#1d5c62] dark:text-white',
 };
 
-const severityLabel = {
-  info: 'Tieto',
-  warning: 'Varoitus',
-  danger: 'Tärkeä varoitus',
-};
-
 const isVisibleAlert = (alert: ScamAlertEntry) => {
   if (!alert.active) return false;
   if (!alert.expiresAt) return true;
@@ -32,6 +26,17 @@ const formatDateTime = (value?: string) => {
     hour: '2-digit',
     minute: '2-digit',
   }).format(date);
+};
+
+const getSourceLabel = (alert: ScamAlertEntry) => {
+  if (alert.source === 'ncsc-auto') return 'Kyberturvallisuuskeskus';
+  if (alert.source) return alert.source;
+  return 'Huijausvaroitus';
+};
+
+const formatAlertMeta = (alert: ScamAlertEntry) => {
+  const time = formatDateTime(alert.createdAt);
+  return `${getSourceLabel(alert)}${time ? ` · ${time}` : ''}`;
 };
 
 interface ScamAlertsBannerProps {
@@ -75,24 +80,12 @@ const ScamAlertsBanner: React.FC<ScamAlertsBannerProps> = ({ compact = false }) 
         </div>
 
         <article className={`mt-4 md:mt-5 rounded-2xl border-4 p-4 md:p-5 shadow-sm ${severityStyles[selectedAlert.severity]}`}>
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="rounded-full bg-white/80 px-3 py-1 text-xs font-black uppercase tracking-wide text-slate-900 dark:bg-slate-950/60 dark:text-white">
-              {severityLabel[selectedAlert.severity]}
-            </span>
-            {selectedAlert.source === 'ncsc-auto' && (
-              <span className="rounded-full bg-white/80 px-3 py-1 text-xs font-black uppercase tracking-wide text-slate-900 dark:bg-slate-950/60 dark:text-white">
-                Kyberturvallisuuskeskus
-              </span>
-            )}
-          </div>
-          <h3 className="mt-3 text-xl md:text-2xl font-black">
+          <h3 className="text-xl md:text-2xl font-black">
             {selectedAlert.title}
           </h3>
-          {formatDateTime(selectedAlert.createdAt) && (
-            <p className="mt-1 text-sm font-bold opacity-75">
-              {formatDateTime(selectedAlert.createdAt)}
-            </p>
-          )}
+          <p className="mt-1 text-sm font-bold opacity-75">
+            {formatAlertMeta(selectedAlert)}
+          </p>
           <p className="mt-2 text-base md:text-lg font-bold leading-relaxed">
             {selectedAlert.body}
           </p>
@@ -134,20 +127,8 @@ const ScamAlertsBanner: React.FC<ScamAlertsBannerProps> = ({ compact = false }) 
             <span className="font-black text-lg md:text-xl leading-tight">
               {alert.title}
             </span>
-            {formatDateTime(alert.createdAt) && (
-              <span className="text-xs font-bold text-current opacity-75">
-                {formatDateTime(alert.createdAt)}
-              </span>
-            )}
-            <span className="flex flex-wrap items-center gap-2">
-              <span className="rounded-full bg-white/80 px-3 py-1 text-xs font-black uppercase tracking-wide text-slate-900 dark:bg-slate-950/60 dark:text-white">
-                {severityLabel[alert.severity]}
-              </span>
-              {alert.source === 'ncsc-auto' && (
-                <span className="rounded-full bg-white/80 px-3 py-1 text-xs font-black uppercase tracking-wide text-slate-900 dark:bg-slate-950/60 dark:text-white">
-                  Kyberturvallisuuskeskus
-                </span>
-              )}
+            <span className="text-xs font-bold text-current opacity-75">
+              {formatAlertMeta(alert)}
             </span>
           </button>
         ))}

@@ -6,6 +6,7 @@ import { LocalityInfo } from '../types';
 interface NearbyGuidancePlacesProps {
   locality: LocalityInfo | null;
   fontSizeStep: number;
+  className?: string;
 }
 
 const textClasses = [
@@ -29,7 +30,7 @@ const formatDistance = (value: number) => {
   return `${Math.round(value)} km`;
 };
 
-const NearbyGuidancePlaces: React.FC<NearbyGuidancePlacesProps> = ({ locality, fontSizeStep }) => {
+const NearbyGuidancePlaces: React.FC<NearbyGuidancePlacesProps> = ({ locality, fontSizeStep, className = '' }) => {
   useLinkVisibilityVersion();
   const places = useMemo(() => {
     if (typeof locality?.lat !== 'number' || typeof locality?.lon !== 'number') return [];
@@ -37,7 +38,7 @@ const NearbyGuidancePlaces: React.FC<NearbyGuidancePlacesProps> = ({ locality, f
   }, [locality?.lat, locality?.lon]);
 
   return (
-    <section className="space-y-3 md:hidden" aria-labelledby="nearby-guidance-heading">
+    <section className={`space-y-3 ${className}`} aria-labelledby="nearby-guidance-heading">
       <div className="flex items-center justify-between gap-4">
         <h3 id="nearby-guidance-heading" className={`font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest ${smallTextClasses[fontSizeStep]}`}>
           Lähimmät digiopastuspaikat

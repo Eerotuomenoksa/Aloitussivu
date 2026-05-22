@@ -23,6 +23,8 @@ type ScrapeLogEntry = {
 
 const SIX_DAYS_MS = 6 * 24 * 60 * 60 * 1000;
 const ALERT_TTL_MS = 28 * 24 * 60 * 60 * 1000;
+const RSS_EMPTY_URL = 'internal:ncsc-rss-empty';
+const ERROR_LOG_URL = 'internal:ncsc-scrape-error';
 
 const getAdminDb = () => {
   if (getApps().length === 0) {
@@ -35,6 +37,7 @@ const getDocumentId = (url: string) => createHash('md5').update(url).digest('hex
 
 const wasRecentlyProcessed = (log: ScrapeLogEntry | undefined) => {
   if (!log?.processedAt) return false;
+  if (log.structureVersion === 'unknown' || log.alertsCreated === 0) return false;
   const processedAt = Date.parse(log.processedAt);
   return Number.isFinite(processedAt) && Date.now() - processedAt < SIX_DAYS_MS;
 };
@@ -59,6 +62,22 @@ const writeScrapeLog = async (
     processedAt: new Date().toISOString(),
     alertsCreated,
     structureVersion: result.structureVersion,
+  });
+};
+
+const writeRunLog = async (
+  db: Firestore,
+  values: {
+    url: string;
+    weekLabel: string;
+    publishedAt?: string;
+    alertsCreated: number;
+    structureVersion: NcscStructureVersion;
+  }
+) => {
+  await db.collection('ncscScrapeLog').doc(randomUUID()).set({
+    ...values,
+    processedAt: new Date().toISOString(),
   });
 };
 
@@ -95,14 +114,21 @@ const createAlerts = async (
 };
 
 export async function runNcscScrapeJob(): Promise<{ alertsCreated: number; url: string | null }> {
+  const db = getAdminDb();
+
   try {
     const targets = await fetchNcscFeedTargets();
     if (targets.length === 0) {
       console.log('NCSC RSS empty');
+      await writeRunLog(db, {
+        url: RSS_EMPTY_URL,
+        weekLabel: 'RSS-syöte tyhjä',
+        alertsCreated: 0,
+        structureVersion: 'unknown',
+      });
       return { alertsCreated: 0, url: null };
     }
 
-    const db = getAdminDb();
     let totalAlertsCreated = 0;
     let firstProcessedUrl: string | null = null;
 
@@ -114,6 +140,13 @@ export async function runNcscScrapeJob(): Promise<{ alertsCreated: number; url: 
       if (wasRecentlyProcessed(logData)) {
         console.log(`NCSC already processed: ${target.url}`);
         if (!firstProcessedUrl) firstProcessedUrl = target.url;
+        await writeRunLog(db, {
+          url: target.url,
+          weekLabel: logData?.weekLabel ? `${logData.weekLabel} (ohitettu)` : 'Ohitettu',
+          publishedAt: logData?.publishedAt,
+          alertsCreated: 0,
+          structureVersion: logData?.structureVersion ?? 'unknown',
+        });
         continue;
       }
 
@@ -135,6 +168,12 @@ export async function runNcscScrapeJob(): Promise<{ alertsCreated: number; url: 
     return { alertsCreated: totalAlertsCreated, url: firstProcessedUrl };
   } catch (error) {
     console.error('NCSC scrape job failed:', error);
+    await writeRunLog(db, {
+      url: ERROR_LOG_URL,
+      weekLabel: error instanceof Error ? `Virhe: ${error.message}` : 'Virhe ajossa',
+      alertsCreated: 0,
+      structureVersion: 'unknown',
+    });
     return { alertsCreated: 0, url: null };
   }
 }

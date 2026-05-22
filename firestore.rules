@@ -54,7 +54,7 @@ service cloud.firestore {
     }
 
     match /ncscScrapeLog/{logId} {
-      allow read: if isAdmin();
+      allow read: if true;
       allow write: if false;
     }
   }

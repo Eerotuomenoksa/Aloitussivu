@@ -448,20 +448,22 @@ const AppContent: React.FC = () => {
           style={{ background: headerBackgrounds[logoPhase][isDarkMode ? 'dark' : 'light'], width: fullBleedWidth }}
         >
           <div className="mx-auto w-full max-w-[1900px] space-y-8 px-6 py-12 md:px-10 lg:px-16">
-          <button
-            type="button"
-            onClick={() => setIsInfoOpen(true)}
-            className="rounded-full bg-white/95 px-6 py-3 text-base font-black text-slate-950 shadow-md border-b-4 border-black/20 transition-all hover:bg-white active:scale-95 focus:outline-none focus:ring-4 focus:ring-white/60"
-          >
-            ℹ️ {t('info')}
-          </button>
-          <button
-            type="button"
-            onClick={() => openReportModal({ name: '', url: '', category: '', source: 'Footer' })}
-            className="rounded-full bg-[#d09a32] px-6 py-3 text-base font-black text-slate-950 shadow-md border-b-4 border-[#8f651e] transition-all hover:bg-[#e2ad45] active:scale-95 focus:outline-none focus:ring-4 focus:ring-amber-200"
-          >
-            {t('reportNewLink')}
-          </button>
+          <div className="flex flex-wrap justify-center gap-5 md:gap-6">
+            <button
+              type="button"
+              onClick={() => setIsInfoOpen(true)}
+              className="rounded-full bg-white/95 px-6 py-3 text-base font-black text-slate-950 shadow-md border-b-4 border-black/20 transition-all hover:bg-white active:scale-95 focus:outline-none focus:ring-4 focus:ring-white/60"
+            >
+              ℹ️ {t('info')}
+            </button>
+            <button
+              type="button"
+              onClick={() => openReportModal({ name: '', url: '', category: '', source: 'Footer' })}
+              className="rounded-full bg-[#d09a32] px-6 py-3 text-base font-black text-slate-950 shadow-md border-b-4 border-[#8f651e] transition-all hover:bg-[#e2ad45] active:scale-95 focus:outline-none focus:ring-4 focus:ring-amber-200"
+            >
+              {t('reportNewLink')}
+            </button>
+          </div>
           <nav className="flex flex-wrap justify-center gap-4" aria-label="Alatunnisteen linkit">
             <a
               href="./yllapito.html"
@@ -525,6 +527,7 @@ const AppContent: React.FC = () => {
           favorites={favorites}
           onToggleFavorite={toggleFavorite}
           onReportLink={openReportModal}
+          locality={regionalLocality}
         />
         <InfoModal
           isOpen={isInfoOpen}
