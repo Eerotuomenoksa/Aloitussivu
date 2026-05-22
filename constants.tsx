@@ -289,6 +289,7 @@ export const SHORTCUTS: Shortcut[] = [
       { name: 'Suomen Latu', url: 'https://www.suomenlatu.fi' },
       { name: 'Muuttolintujen kevät', url: 'https://www.jyu.fi/fi/tutkimus/muuttolintujen-kevat' },
       { name: 'Retkipaikka', url: 'https://retkipaikka.fi' },
+      { name: 'Luontosivusto.fi', url: 'https://luontosivusto.fi' },
       { name: 'Luontoportti', url: 'https://www.luontoportti.com' },
       { name: 'Metsähallitus', url: 'https://www.metsa.fi' }
     ]
