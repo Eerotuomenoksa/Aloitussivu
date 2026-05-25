@@ -1,10 +1,10 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import { SHORTCUTS } from './constants';
 import { MUNICIPALITIES } from './municipalRegistry';
 import { getRegionalLibraryProviders, getRegionalNewsProviders, getRegionalProviders, getRegionalPublicTransportProviders, getRegionalRssFeeds, getRegionalServiceAreaMunicipalities, normalizeMunicipality } from './localServices';
-import { Provider } from './types';
+import { Municipality, Provider } from './types';
 
 interface GeneralLinkRow {
   name: string;
@@ -22,11 +22,14 @@ interface RegionalLinkRow {
 
 interface MunicipalityLinkRow {
   municipality: string;
-  localServices: RegionalLinkRow[];
+  municipalityWebsites: RegionalLinkRow[];
+  wellbeingAreas: RegionalLinkRow[];
   libraries: RegionalLinkRow[];
   publicTransport: RegionalLinkRow[];
   museums: RegionalLinkRow[];
   theaters: RegionalLinkRow[];
+  patientAssociations: RegionalLinkRow[];
+  seniorAssociations: RegionalLinkRow[];
   regionalNews: RegionalLinkRow[];
   rssFeeds: RegionalLinkRow[];
 }
@@ -34,6 +37,10 @@ interface MunicipalityLinkRow {
 type ActiveView = 'general' | 'regional' | 'municipalities';
 
 const collator = new Intl.Collator('fi-FI');
+const municipalityNameColumnWidth = 176;
+const municipalityLinkColumnWidth = 320;
+const municipalityLinkColumnCount = 10;
+const municipalityTableMinWidth = municipalityNameColumnWidth + (municipalityLinkColumnWidth * municipalityLinkColumnCount);
 
 const uniqueByKey = <T,>(items: T[], getKey: (item: T) => string) => [
   ...new Map(items.map((item) => [getKey(item), item])).values(),
@@ -45,7 +52,7 @@ const providerToRegionalRow = (
   provider: Provider
 ): RegionalLinkRow => ({
   municipality,
-  category: provider.group || category,
+  category,
   name: provider.name,
   url: provider.url,
 });
@@ -67,14 +74,37 @@ const providerMunicipalityNames = (provider: Provider) => {
   ].filter((value): value is string => Boolean(value));
 };
 
-const providerMatchesMunicipalityArea = (provider: Provider, municipalityName: string) => (
+const normalizeArea = (value: string) => normalizeMunicipality(value)
+  .replace(/\bhyvinvointialue\b/g, '')
+  .replace(/\bmaakunta\b/g, '')
+  .replace(/\s+/g, ' ')
+  .trim()
+  .split(' ')
+  .map((word) => word.length > 4 ? word.replace(/n$/u, '') : word)
+  .join(' ');
+
+const providerMatchesWellbeingArea = (provider: Provider, municipality: Municipality) => {
+  const regionalProvider = provider as Provider & { area?: string };
+  if (!regionalProvider.area || !municipality.wellbeingAreaName) return false;
+
+  const providerArea = normalizeArea(regionalProvider.area);
+  const municipalityArea = normalizeArea(municipality.wellbeingAreaName);
+  if (!providerArea || providerArea === 'koko suomi' || !municipalityArea) return false;
+
+  return providerArea.includes(municipalityArea) || municipalityArea.includes(providerArea);
+};
+
+const providerMatchesMunicipalityArea = (provider: Provider, municipality: Municipality) => (
   providerMunicipalityNames(provider)
     .map(normalizeMunicipality)
-    .some((name) => getRegionalServiceAreaMunicipalities(municipalityName).includes(name))
+    .some((name) => getRegionalServiceAreaMunicipalities(municipality.name).includes(name))
+  || providerMatchesWellbeingArea(provider, municipality)
 );
 
 const museumProviders = getShortcutProviders('Museot');
 const theaterProviders = getShortcutProviders('Teatterit');
+const patientAssociationProviders = getShortcutProviders('Potilasyhdistykset');
+const seniorAssociationProviders = getShortcutProviders('Eläkeyhdistykset');
 
 const generalLinks = uniqueByKey(
   SHORTCUTS.flatMap((shortcut) => (shortcut.providers ?? shortcut.url
@@ -109,17 +139,40 @@ const municipalityRows: MunicipalityLinkRow[] = MUNICIPALITIES
       providerToRegionalRow(municipality.name, 'Kirjastot', provider)
     ));
     const separatedUrls = new Set([...publicTransport, ...libraries].map((row) => row.url));
-    const localServices = getRegionalProviders(context)
-      .filter((provider) => !separatedUrls.has(provider.url))
+    const regionalProviders = getRegionalProviders(context)
+      .filter((provider) => !separatedUrls.has(provider.url));
+    const municipalityWebsiteUrls = new Set(
+      regionalProviders
+        .filter((provider, index) => index === 0 && provider.group === 'Paikalliset palvelut')
+        .map((provider) => provider.url)
+    );
+    const wellbeingAreaUrls = new Set(
+      regionalProviders
+        .filter((provider) => provider.group === 'Hyvinvointialue')
+        .map((provider) => provider.url)
+    );
+    const municipalityWebsites = regionalProviders
+      .filter((provider) => municipalityWebsiteUrls.has(provider.url))
       .map((provider) => (
-      providerToRegionalRow(municipality.name, 'Paikalliset palvelut', provider)
-    ));
+        providerToRegionalRow(municipality.name, 'Kunnan nettisivut', provider)
+      ));
+    const wellbeingAreas = regionalProviders
+      .filter((provider) => wellbeingAreaUrls.has(provider.url))
+      .map((provider) => (
+        providerToRegionalRow(municipality.name, 'Hyvinvointialue', provider)
+      ));
     const museums = museumProviders
-      .filter((provider) => providerMatchesMunicipalityArea(provider, municipality.name))
+      .filter((provider) => providerMatchesMunicipalityArea(provider, municipality))
       .map((provider) => providerToRegionalRow(municipality.name, 'Museot', provider));
     const theaters = theaterProviders
-      .filter((provider) => providerMatchesMunicipalityArea(provider, municipality.name))
+      .filter((provider) => providerMatchesMunicipalityArea(provider, municipality))
       .map((provider) => providerToRegionalRow(municipality.name, 'Teatterit', provider));
+    const patientAssociations = patientAssociationProviders
+      .filter((provider) => providerMatchesMunicipalityArea(provider, municipality))
+      .map((provider) => providerToRegionalRow(municipality.name, 'Potilasyhdistykset', provider));
+    const seniorAssociations = seniorAssociationProviders
+      .filter((provider) => providerMatchesMunicipalityArea(provider, municipality))
+      .map((provider) => providerToRegionalRow(municipality.name, 'Eläkeyhdistykset', provider));
     const regionalNews = getRegionalNewsProviders(context).map((provider) => (
       providerToRegionalRow(municipality.name, 'Alueelliset uutiset', provider)
     ));
@@ -132,11 +185,14 @@ const municipalityRows: MunicipalityLinkRow[] = MUNICIPALITIES
 
     return {
       municipality: municipality.name,
-      localServices: uniqueByKey(localServices, (row) => `${row.category}|${row.name}|${row.url}`),
+      municipalityWebsites: uniqueByKey(municipalityWebsites, (row) => `${row.category}|${row.name}|${row.url}`),
+      wellbeingAreas: uniqueByKey(wellbeingAreas, (row) => `${row.category}|${row.name}|${row.url}`),
       libraries: uniqueByKey(libraries, (row) => `${row.category}|${row.name}|${row.url}`),
       publicTransport: uniqueByKey(publicTransport, (row) => `${row.category}|${row.name}|${row.url}`),
       museums: uniqueByKey(museums, (row) => `${row.category}|${row.name}|${row.url}`),
       theaters: uniqueByKey(theaters, (row) => `${row.category}|${row.name}|${row.url}`),
+      patientAssociations: uniqueByKey(patientAssociations, (row) => `${row.category}|${row.name}|${row.url}`),
+      seniorAssociations: uniqueByKey(seniorAssociations, (row) => `${row.category}|${row.name}|${row.url}`),
       regionalNews: uniqueByKey(regionalNews, (row) => `${row.category}|${row.name}|${row.url}`),
       rssFeeds: uniqueByKey(rssFeeds, (row) => `${row.category}|${row.name}|${row.url}`),
     };
@@ -144,9 +200,11 @@ const municipalityRows: MunicipalityLinkRow[] = MUNICIPALITIES
   .sort((a, b) => collator.compare(a.municipality, b.municipality));
 
 const regionalLinks = uniqueByKey(
-  municipalityRows.flatMap((row) => [...row.localServices, ...row.libraries, ...row.publicTransport, ...row.regionalNews, ...row.rssFeeds]),
+  municipalityRows.flatMap((row) => [...row.municipalityWebsites, ...row.wellbeingAreas, ...row.libraries, ...row.publicTransport, ...row.museums, ...row.theaters, ...row.patientAssociations, ...row.seniorAssociations, ...row.regionalNews, ...row.rssFeeds]),
   (row) => `${row.municipality}|${row.category}|${row.name}|${row.url}`
 ).sort((a, b) => collator.compare(`${a.municipality} ${a.category} ${a.name}`, `${b.municipality} ${b.category} ${b.name}`));
+
+const allLinkCount = generalLinks.length + regionalLinks.length;
 
 const csvEscape = (value: string | number) => `"${String(value).replace(/"/g, '""')}"`;
 
@@ -182,6 +240,8 @@ const LinkList = ({ links }: { links: RegionalLinkRow[] }) => (
 function App() {
   const [query, setQuery] = useState('');
   const [activeView, setActiveView] = useState<ActiveView>('regional');
+  const municipalityTopScrollRef = useRef<HTMLDivElement>(null);
+  const municipalityTableScrollRef = useRef<HTMLDivElement>(null);
   const search = normalizeSearch(query);
 
   const filteredGeneralLinks = useMemo(() => generalLinks.filter((row) => (
@@ -195,21 +255,47 @@ function App() {
   const filteredMunicipalityRows = useMemo(() => municipalityRows.filter((row) => (
     !search || [
       row.municipality,
-      ...row.localServices.map((link) => `${link.category} ${link.name} ${link.url}`),
+      ...row.municipalityWebsites.map((link) => `${link.category} ${link.name} ${link.url}`),
+      ...row.wellbeingAreas.map((link) => `${link.category} ${link.name} ${link.url}`),
       ...row.libraries.map((link) => `${link.category} ${link.name} ${link.url}`),
       ...row.publicTransport.map((link) => `${link.category} ${link.name} ${link.url}`),
       ...row.museums.map((link) => `${link.category} ${link.name} ${link.url}`),
       ...row.theaters.map((link) => `${link.category} ${link.name} ${link.url}`),
+      ...row.patientAssociations.map((link) => `${link.category} ${link.name} ${link.url}`),
+      ...row.seniorAssociations.map((link) => `${link.category} ${link.name} ${link.url}`),
       ...row.regionalNews.map((link) => `${link.category} ${link.name} ${link.url}`),
       ...row.rssFeeds.map((link) => `${link.category} ${link.name} ${link.url}`),
     ].join(' ').toLocaleLowerCase('fi-FI').includes(search)
   )), [search]);
+
+  const municipalityColumnCounts = useMemo(() => ({
+    municipalityWebsites: filteredMunicipalityRows.reduce((sum, row) => sum + row.municipalityWebsites.length, 0),
+    wellbeingAreas: filteredMunicipalityRows.reduce((sum, row) => sum + row.wellbeingAreas.length, 0),
+    libraries: filteredMunicipalityRows.reduce((sum, row) => sum + row.libraries.length, 0),
+    publicTransport: filteredMunicipalityRows.reduce((sum, row) => sum + row.publicTransport.length, 0),
+    museums: filteredMunicipalityRows.reduce((sum, row) => sum + row.museums.length, 0),
+    theaters: filteredMunicipalityRows.reduce((sum, row) => sum + row.theaters.length, 0),
+    patientAssociations: filteredMunicipalityRows.reduce((sum, row) => sum + row.patientAssociations.length, 0),
+    seniorAssociations: filteredMunicipalityRows.reduce((sum, row) => sum + row.seniorAssociations.length, 0),
+    regionalNews: filteredMunicipalityRows.reduce((sum, row) => sum + row.regionalNews.length, 0),
+    rssFeeds: filteredMunicipalityRows.reduce((sum, row) => sum + row.rssFeeds.length, 0),
+  }), [filteredMunicipalityRows]);
 
   const tabs: { id: ActiveView; label: string; count: number }[] = [
     { id: 'regional', label: 'Alueelliset linkit', count: filteredRegionalLinks.length },
     { id: 'municipalities', label: 'Paikkakunnittain', count: filteredMunicipalityRows.length },
     { id: 'general', label: 'Yleiset linkit', count: filteredGeneralLinks.length },
   ];
+
+  const syncMunicipalityTopScroll = () => {
+    if (!municipalityTopScrollRef.current || !municipalityTableScrollRef.current) return;
+    municipalityTableScrollRef.current.scrollLeft = municipalityTopScrollRef.current.scrollLeft;
+  };
+
+  const syncMunicipalityTableScroll = () => {
+    if (!municipalityTopScrollRef.current || !municipalityTableScrollRef.current) return;
+    municipalityTopScrollRef.current.scrollLeft = municipalityTableScrollRef.current.scrollLeft;
+  };
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
@@ -221,6 +307,9 @@ function App() {
             </a>
             <a href="./muutosloki.html" className="text-sm font-black text-indigo-700 hover:underline">
               Muutosloki
+            </a>
+            <a href="./sivua-tukemassa.html" className="text-sm font-black text-indigo-700 hover:underline">
+              Sivua tukemassa
             </a>
           </div>
           <div className="space-y-3">
@@ -267,7 +356,12 @@ function App() {
               </button>
             </div>
           </div>
-          <dl className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <dl className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+            <div className="rounded-lg border border-indigo-200 bg-indigo-50 p-4">
+              <dt className="text-sm font-black uppercase tracking-wide text-indigo-700">Kaikki linkit</dt>
+              <dd className="text-3xl font-black text-indigo-950">{allLinkCount}</dd>
+              <dd className="mt-1 text-xs font-bold text-indigo-700">Yleiset + alueelliset</dd>
+            </div>
             <div className="rounded-lg border border-slate-200 bg-white p-4">
               <dt className="text-sm font-black uppercase tracking-wide text-slate-500">Yleiset linkit</dt>
               <dd className="text-3xl font-black">{generalLinks.length}</dd>
@@ -340,7 +434,7 @@ function App() {
         <section className="space-y-4">
           <h2 className="text-2xl md:text-3xl font-black">Alueelliset linkit</h2>
           <p className="max-w-4xl text-sm font-bold text-slate-600">
-            Tässä näkymässä ovat vain paikkakuntiin liittyvät linkit: paikalliset palvelut, hyvinvointialueet, alueelliset uutiset ja uutisvirrat.
+            Tässä näkymässä ovat vain paikkakuntiin liittyvät linkit: kunnan sivut, hyvinvointialueet, kirjastot, kulttuuri- ja yhdistyslinkit, alueelliset uutiset ja uutisvirrat.
           </p>
           <div className="overflow-x-auto rounded-lg border border-slate-200 bg-white shadow-sm">
             <table className="min-w-full divide-y divide-slate-200 text-sm">
@@ -372,29 +466,49 @@ function App() {
         {activeView === 'municipalities' && (
         <section className="space-y-4">
           <h2 className="text-2xl md:text-3xl font-black">Paikkakunnat aakkosjärjestyksessä</h2>
-          <div className="overflow-x-auto rounded-lg border border-slate-200 bg-white shadow-sm">
-            <table className="min-w-full divide-y divide-slate-200 text-sm align-top">
+          <div className="sticky top-0 z-30 rounded-lg border border-slate-200 bg-white p-2 shadow-sm">
+            <div
+              ref={municipalityTopScrollRef}
+              onScroll={syncMunicipalityTopScroll}
+              className="overflow-x-auto"
+              aria-hidden="true"
+            >
+              <div className="h-3" style={{ width: municipalityTableMinWidth }} />
+            </div>
+          </div>
+          <div
+            ref={municipalityTableScrollRef}
+            onScroll={syncMunicipalityTableScroll}
+            className="overflow-x-auto rounded-lg border border-slate-200 bg-white shadow-sm"
+          >
+            <table className="min-w-full divide-y divide-slate-200 text-sm align-top" style={{ minWidth: municipalityTableMinWidth }}>
               <thead className="bg-slate-100 text-left text-xs font-black uppercase tracking-wide text-slate-600">
                 <tr>
-                  <th className="w-44 px-4 py-3">Paikkakunta</th>
-                  <th className="min-w-80 px-4 py-3">Paikalliset palvelut</th>
-                  <th className="min-w-80 px-4 py-3">Kirjasto</th>
-                  <th className="min-w-80 px-4 py-3">Julkinen liikenne</th>
-                  <th className="min-w-80 px-4 py-3">Museot</th>
-                  <th className="min-w-80 px-4 py-3">Teatterit</th>
-                  <th className="min-w-80 px-4 py-3">Alueelliset uutiset</th>
-                  <th className="min-w-80 px-4 py-3">Uutisvirrat</th>
+                  <th className="sticky left-0 z-20 w-44 bg-slate-100 px-4 py-3 shadow-[6px_0_12px_rgba(15,23,42,0.08)]">Paikkakunta</th>
+                  <th className="min-w-80 px-4 py-3">Kunnan nettisivut ({municipalityColumnCounts.municipalityWebsites})</th>
+                  <th className="min-w-80 px-4 py-3">Hyvinvointialue ({municipalityColumnCounts.wellbeingAreas})</th>
+                  <th className="min-w-80 px-4 py-3">Kirjasto ({municipalityColumnCounts.libraries})</th>
+                  <th className="min-w-80 px-4 py-3">Julkinen liikenne ({municipalityColumnCounts.publicTransport})</th>
+                  <th className="min-w-80 px-4 py-3">Museot ({municipalityColumnCounts.museums})</th>
+                  <th className="min-w-80 px-4 py-3">Teatterit ({municipalityColumnCounts.theaters})</th>
+                  <th className="min-w-80 px-4 py-3">Potilasyhdistykset ({municipalityColumnCounts.patientAssociations})</th>
+                  <th className="min-w-80 px-4 py-3">Eläkeyhdistykset ({municipalityColumnCounts.seniorAssociations})</th>
+                  <th className="min-w-80 px-4 py-3">Alueelliset uutiset ({municipalityColumnCounts.regionalNews})</th>
+                  <th className="min-w-80 px-4 py-3">Uutisvirrat ({municipalityColumnCounts.rssFeeds})</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {filteredMunicipalityRows.map((row) => (
                   <tr key={row.municipality}>
-                    <td className="px-4 py-4 text-base font-black">{row.municipality}</td>
-                    <td className="px-4 py-4"><LinkList links={row.localServices} /></td>
+                    <td className="sticky left-0 z-10 bg-white px-4 py-4 text-base font-black shadow-[6px_0_12px_rgba(15,23,42,0.06)]">{row.municipality}</td>
+                    <td className="px-4 py-4"><LinkList links={row.municipalityWebsites} /></td>
+                    <td className="px-4 py-4"><LinkList links={row.wellbeingAreas} /></td>
                     <td className="px-4 py-4"><LinkList links={row.libraries} /></td>
                     <td className="px-4 py-4"><LinkList links={row.publicTransport} /></td>
                     <td className="px-4 py-4"><LinkList links={row.museums} /></td>
                     <td className="px-4 py-4"><LinkList links={row.theaters} /></td>
+                    <td className="px-4 py-4"><LinkList links={row.patientAssociations} /></td>
+                    <td className="px-4 py-4"><LinkList links={row.seniorAssociations} /></td>
                     <td className="px-4 py-4"><LinkList links={row.regionalNews} /></td>
                     <td className="px-4 py-4"><LinkList links={row.rssFeeds} /></td>
                   </tr>

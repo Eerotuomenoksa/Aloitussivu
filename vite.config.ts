@@ -13,6 +13,7 @@ export default defineConfig({
         suggestions: 'ehdotukset.html',
         links: 'linkit.html',
         admin: 'yllapito.html',
+        supporters: 'sivua-tukemassa.html',
       },
     },
   },

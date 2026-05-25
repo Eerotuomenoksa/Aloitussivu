@@ -489,6 +489,14 @@ const AppContent: React.FC = () => {
             >
               {t('linkList')}
             </a>
+            <a
+              href="./sivua-tukemassa.html"
+              className="min-h-14 rounded-full bg-white/95 px-5 py-3 text-sm font-black text-[#173e5f] shadow-sm hover:bg-white hover:underline focus:outline-none focus:ring-4 focus:ring-white/60 md:min-h-12"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Sivua tukemassa
+            </a>
           </nav>
           {isLinkVisible('https://seniorsurf.fi/') && isLinkVisible('https://seniorsurf.fi/wp-content/uploads/SeniorSurf_White-320-x-102-px.svg') && (
             <a

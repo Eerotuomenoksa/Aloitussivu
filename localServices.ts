@@ -26,6 +26,12 @@ interface RegionalServiceArea {
   services: Pick<LocalServiceConfig, 'publicTransport'>;
 }
 
+interface RegionalLibraryArea {
+  id: string;
+  municipalities: string[];
+  provider: Provider;
+}
+
 const municipalityAliases: Record<string, string> = {
   esbo: 'espoo',
   grankulla: 'kauniainen',
@@ -255,6 +261,188 @@ export const getRegionalServiceAreaMunicipalities = (municipalityName: string) =
   return getRegionalServiceArea(municipalityKey)?.municipalities ?? [municipalityKey];
 };
 
+const regionalLibraryAreas: RegionalLibraryArea[] = [
+  {
+    id: 'anders',
+    municipalities: ['halsua', 'kannus', 'kaustinen', 'kokkola', 'lestijärvi', 'toholampi'],
+    provider: { name: 'Anders', url: 'https://anders.finna.fi', group: 'Kirjastot' },
+  },
+  {
+    id: 'bibliotek-ax',
+    municipalities: ['brändö', 'eckerö', 'finström', 'föglö', 'geta', 'hammarland', 'jomala', 'kumlinge', 'kökar', 'lemland', 'lumparland', 'maarianhamina', 'saltvik', 'sottunga', 'sund', 'vårdö'],
+    provider: { name: 'Bibliotek.ax', url: 'https://www.bibliotek.ax', group: 'Kirjastot' },
+  },
+  {
+    id: 'blanka',
+    municipalities: ['kemiönsaari', 'parainen'],
+    provider: { name: 'Blanka', url: 'https://blanka.finna.fi/', group: 'Kirjastot' },
+  },
+  {
+    id: 'eepos',
+    municipalities: ['alajärvi', 'alavus', 'evijärvi', 'ilmajoki', 'isojoki', 'isokyrö', 'karijoki', 'kaskinen', 'kauhajoki', 'kauhava', 'kuortane', 'kurikka', 'laihia', 'lappajärvi', 'lapua', 'perho', 'seinäjoki', 'soini', 'teuva', 'veteli', 'vimpeli', 'ähtäri'],
+    provider: { name: 'Eepos-kirjastot', url: 'http://eepos.finna.fi/', group: 'Kirjastot' },
+  },
+  {
+    id: 'fredrika',
+    municipalities: ['korsnäs', 'kristiinankaupunki', 'kruunupyy', 'luoto', 'maalahti', 'mustasaari', 'närpiö', 'pedersören', 'pietarsaari', 'uusikaarlepyy', 'vöyri'],
+    provider: { name: 'Fredrikabiblioteken', url: 'http://fredrika.finna.fi', group: 'Kirjastot' },
+  },
+  {
+    id: 'heili',
+    municipalities: ['imatra', 'lappeenranta', 'lemi', 'luumäki', 'parikkala', 'rautjärvi', 'ruokolahti', 'savitaipale', 'taipalsaari'],
+    provider: { name: 'Heili-kirjastot', url: 'https://heilikirjastot.fi/', group: 'Kirjastot' },
+  },
+  {
+    id: 'helle',
+    municipalities: ['askola', 'hanko', 'inkoo', 'lapinjärvi', 'loviisa', 'myrskylä', 'pornainen', 'porvoo', 'pukkila', 'raasepori', 'sipoo', 'siuntio'],
+    provider: { name: 'Helle-kirjastot', url: 'https://helle.finna.fi', group: 'Kirjastot' },
+  },
+  {
+    id: 'helmet',
+    municipalities: ['espoo', 'helsinki', 'kauniainen', 'vantaa'],
+    provider: { name: 'Helmet-kirjastot', url: 'https://www.helmet.fi/', group: 'Kirjastot' },
+  },
+  {
+    id: 'joki',
+    municipalities: ['alavieska', 'haapajärvi', 'haapavesi', 'kalajoki', 'kärsämäki', 'merijärvi', 'nivala', 'oulainen', 'pyhäjärvi', 'pyhäntä', 'reisjärvi', 'sievi', 'siikalatva', 'ylivieska'],
+    provider: { name: 'Joki-kirjastot', url: 'https://joki.finna.fi', group: 'Kirjastot' },
+  },
+  {
+    id: 'kangasniemi',
+    municipalities: ['kangasniemi'],
+    provider: { name: 'Kangasniemen kirjasto', url: 'https://kangasniemi.verkkokirjasto.fi/', group: 'Kirjastot' },
+  },
+  {
+    id: 'kainet',
+    municipalities: ['hyrynsalmi', 'kajaani', 'kuhmo', 'paltamo', 'puolanka', 'ristijärvi', 'sotkamo', 'suomussalmi'],
+    provider: { name: 'Kainet-kirjastot', url: 'https://kainet.finna.fi', group: 'Kirjastot' },
+  },
+  {
+    id: 'keski',
+    municipalities: ['hankasalmi', 'joutsa', 'jyväskylä', 'jämsä', 'kannonkoski', 'karstula', 'keuruu', 'kinnula', 'kivijärvi', 'konnevesi', 'kuhmoinen', 'kyyjärvi', 'laukaa', 'luhanka', 'multia', 'muurame', 'petäjävesi', 'pihtipudas', 'saarijärvi', 'toivakka', 'uurainen', 'viitasaari', 'äänekoski'],
+    provider: { name: 'Keski-kirjastot', url: 'https://keski.finna.fi/', group: 'Kirjastot' },
+  },
+  {
+    id: 'kirkes',
+    municipalities: ['järvenpää', 'kerava', 'mäntsälä', 'tuusula'],
+    provider: { name: 'Kirkes-kirjastot', url: 'https://kirkes.finna.fi/', group: 'Kirjastot' },
+  },
+  {
+    id: 'kirkkonummi',
+    municipalities: ['kirkkonummi'],
+    provider: { name: 'Kirkkonummen kirjasto', url: 'https://www.kirkkonummi.verkkokirjasto.fi', group: 'Kirjastot' },
+  },
+  {
+    id: 'kuopio',
+    municipalities: ['kaavi', 'kuopio', 'tuusniemi'],
+    provider: { name: 'Kuopion kaupunginkirjasto', url: 'https://kuopio.finna.fi/', group: 'Kirjastot' },
+  },
+  {
+    id: 'kyyti',
+    municipalities: ['hamina', 'iitti', 'kotka', 'kouvola', 'miehikkälä', 'pyhtää', 'virolahti'],
+    provider: { name: 'Kyyti-kirjastot', url: 'https://kyyti.finna.fi/', group: 'Kirjastot' },
+  },
+  {
+    id: 'lapin-kirjasto',
+    municipalities: ['enontekiö', 'inari', 'kemi', 'kemijärvi', 'keminmaa', 'kittilä', 'kolari', 'muonio', 'pelkosenniemi', 'pello', 'posio', 'ranua', 'rovaniemi', 'salla', 'savukoski', 'simo', 'sodankylä', 'tervola', 'tornio', 'utsjoki', 'ylitornio'],
+    provider: { name: 'Lapin kirjasto', url: 'http://lapinkirjasto.finna.fi/', group: 'Kirjastot' },
+  },
+  {
+    id: 'lastu',
+    municipalities: ['asikkala', 'hartola', 'heinola', 'hollola', 'kärkölä', 'lahti', 'orimattila', 'padasjoki', 'sysmä'],
+    provider: { name: 'Lastu-kirjastot', url: 'https://lastu.finna.fi/', group: 'Kirjastot' },
+  },
+  {
+    id: 'leppavirta',
+    municipalities: ['leppävirta'],
+    provider: { name: 'Leppävirran kirjasto', url: 'https://leppavirta.finna.fi', group: 'Kirjastot' },
+  },
+  {
+    id: 'loisto',
+    municipalities: ['aura', 'koski tl', 'loimaa', 'marttila', 'oripää', 'pöytyä'],
+    provider: { name: 'Loisto-kirjastot', url: 'https://loisto.verkkokirjasto.fi/web/arena', group: 'Kirjastot' },
+  },
+  {
+    id: 'louna',
+    municipalities: ['forssa', 'humppila', 'jokioinen', 'tammela', 'ypäjä'],
+    provider: { name: 'Louna-kirjastot', url: 'https://louna.finna.fi/', group: 'Kirjastot' },
+  },
+  {
+    id: 'lukki',
+    municipalities: ['karkkila', 'lohja', 'vihti'],
+    provider: { name: 'Lukki-kirjastot', url: 'https://lukki.finna.fi/', group: 'Kirjastot' },
+  },
+  {
+    id: 'lumme',
+    municipalities: ['enonkoski', 'hirvensalmi', 'joroinen', 'juva', 'mikkeli', 'mäntyharju', 'pieksämäki', 'puumala', 'rantasalmi', 'savonlinna', 'varkaus'],
+    provider: { name: 'Lumme-kirjastot', url: 'https://lumme.finna.fi', group: 'Kirjastot' },
+  },
+  {
+    id: 'outi',
+    municipalities: ['hailuoto', 'ii', 'kempele', 'kuusamo', 'liminka', 'lumijoki', 'muhos', 'oulu', 'pudasjärvi', 'pyhäjoki', 'raahe', 'siikajoki', 'taivalkoski', 'tyrnävä', 'utajärvi', 'vaala'],
+    provider: { name: 'OUTI-kirjastot', url: 'https://outi.finna.fi/', group: 'Kirjastot' },
+  },
+  {
+    id: 'piki',
+    municipalities: ['akaa', 'hämeenkyrö', 'ikaalinen', 'juupajoki', 'kangasala', 'kihniö', 'lempäälä', 'mänttä-vilppula', 'nokia', 'orivesi', 'parkano', 'pirkkala', 'punkalaidun', 'pälkäne', 'ruovesi', 'sastamala', 'tampere', 'urjala', 'valkeakoski', 'vesilahti', 'virrat', 'ylöjärvi'],
+    provider: { name: 'PIKI-kirjastot', url: 'https://piki.fi', group: 'Kirjastot' },
+  },
+  {
+    id: 'ratamo',
+    municipalities: ['hausjärvi', 'hyvinkää', 'loppi', 'nurmijärvi', 'riihimäki'],
+    provider: { name: 'RATAMO-kirjastot', url: 'https://ratamo.finna.fi/', group: 'Kirjastot' },
+  },
+  {
+    id: 'rutakko',
+    municipalities: ['iisalmi', 'keitele', 'kiuruvesi', 'lapinlahti', 'pielavesi', 'rautalampi', 'rautavaara', 'sonkajärvi', 'suonenjoki', 'tervo', 'vesanto', 'vieremä'],
+    provider: { name: 'Rutakko-kirjastot', url: 'https://rutakko.verkkokirjasto.fi/', group: 'Kirjastot' },
+  },
+  {
+    id: 'satakirjastot',
+    municipalities: ['eura', 'eurajoki', 'harjavalta', 'huittinen', 'jämijärvi', 'kankaanpää', 'karvia', 'kokemäki', 'merikarvia', 'nakkila', 'pomarkku', 'pori', 'rauma', 'siikainen', 'säkylä', 'ulvila'],
+    provider: { name: 'Satakirjastot', url: 'https://satakirjastot.finna.fi/', group: 'Kirjastot' },
+  },
+  {
+    id: 'siilinjarvi',
+    municipalities: ['siilinjärvi'],
+    provider: { name: 'Siilinjärven kirjasto', url: 'https://siilinjarvenkirjasto.finna.fi/', group: 'Kirjastot' },
+  },
+  {
+    id: 'somero',
+    municipalities: ['somero'],
+    provider: { name: 'Someron kirjasto', url: 'https://somero.finna.fi/', group: 'Kirjastot' },
+  },
+  {
+    id: 'sulkava',
+    municipalities: ['sulkava'],
+    provider: { name: 'Sulkavan kirjasto', url: 'https://sulkava.verkkokirjasto.fi/web/arena', group: 'Kirjastot' },
+  },
+  {
+    id: 'vaara',
+    municipalities: ['heinävesi', 'ilomantsi', 'joensuu', 'juuka', 'kitee', 'kontiolahti', 'lieksa', 'liperi', 'nurmes', 'outokumpu', 'polvijärvi', 'rääkkylä', 'tohmajärvi'],
+    provider: { name: 'Vaara-kirjastot', url: 'https://vaara.finna.fi/', group: 'Kirjastot' },
+  },
+  {
+    id: 'vaasa',
+    municipalities: ['vaasa'],
+    provider: { name: 'Vaasan kirjasto', url: 'https://vaasankirjasto.finna.fi/', group: 'Kirjastot' },
+  },
+  {
+    id: 'vanamo',
+    municipalities: ['hattula', 'hämeenlinna', 'janakkala'],
+    provider: { name: 'Vanamo-kirjastot', url: 'https://vanamo.finna.fi', group: 'Kirjastot' },
+  },
+  {
+    id: 'vaski',
+    municipalities: ['kaarina', 'kustavi', 'laitila', 'lieto', 'masku', 'mynämäki', 'naantali', 'nousiainen', 'paimio', 'pyhäranta', 'raisio', 'rusko', 'salo', 'sauvo', 'taivassalo', 'turku', 'uusikaupunki', 'vehmaa'],
+    provider: { name: 'Vaski-kirjastot', url: 'https://vaski.finna.fi/', group: 'Kirjastot' },
+  },
+];
+
+const getRegionalLibraryArea = (municipalityKey: string): RegionalLibraryArea | undefined => (
+  regionalLibraryAreas.find((area) => area.municipalities.includes(municipalityKey))
+);
+
 const hslPublicTransport: Provider = { name: 'HSL', url: 'https://www.hsl.fi/', group: 'Julkinen liikenne' };
 
 const regionalNewsProvider = (name: string, url: string): Provider => ({
@@ -338,6 +526,9 @@ const localServiceMap: Record<string, LocalServiceConfig> = {
   },
   lahti: {
     regionalNews: [regionalNewsProvider('Etelä-Suomen Sanomat', 'https://www.ess.fi/')],
+  },
+  loviisa: {
+    publicTransport: { name: 'Loviisan joukkoliikenne', url: 'https://www.loviisa.fi/asuminen-ja-ymparisto/liikenne/joukkoliikenne/', group: 'Julkinen liikenne' },
   },
   hämeenlinna: {
     regionalNews: [regionalNewsProvider('Hämeen Sanomat', 'https://www.hameensanomat.fi/')],
@@ -576,9 +767,11 @@ export const getRegionalPublicTransportProviders = (context: RegionalContext): P
 export const getRegionalLibraryProviders = (context: RegionalContext): Provider[] => {
   const key = normalizeMunicipality(context.municipality.name);
   const exact = localServiceMap[key];
+  const libraryArea = getRegionalLibraryArea(key);
 
   return filterVisibleProviders(uniqueProviders([
     exact?.library,
+    libraryArea?.provider,
   ].filter((provider): provider is Provider => Boolean(provider)))) ?? [];
 };
 

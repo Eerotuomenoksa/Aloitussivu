@@ -143,6 +143,8 @@ function summarizeWorktree(changes) {
   }
 
   if (paths.some((pathName) => ['localServices.ts'].includes(pathName))) {
+    notes.push('Loviisan joukkoliikenteen linkki lisättiin alueellisiin palveluihin.');
+    notes.push('Paikallisia kirjastolinkkejä täydennettiin Kirkanta/Kirjastot.fi-dataan pohjautuvilla kirjastokimpoilla.');
     notes.push('Alueellisiin palveluihin lisättiin ja laajennettiin palvelualue-mallia, jotta joukkoliikennejärjestäjät, kuten HSL, Nysse, Föli, Linkki ja Vilkku, voidaan jakaa usealle kunnalle yhdestä paikasta.');
     notes.push('Alueellisista linkeistä poistettiin tuplana näkynyt kunnan verkkosivut -linkki, kun kunnan palvelut näyttää saman asian käyttäjälle selkeämmin.');
   }
@@ -165,6 +167,7 @@ function summarizeWorktree(changes) {
   }
 
   if (paths.some((pathName) => ['components/RegionalServicesPanel.tsx'].includes(pathName))) {
+    notes.push('Etusivun alueellisiin palveluihin nostettiin myös paikalliset kirjastokimpat, jotta esimerkiksi Loviisalle näkyy Helle-kirjastot.');
     notes.push('Alueellisten palvelujen kunnan valintaa selkeytettiin: rajausviesti päivitettiin, turha kuntalaatikko poistettiin ja Vaihda kunta -painike siirrettiin työpöytänäkymässä kunnan kentän rinnalle.');
   }
 
@@ -175,6 +178,16 @@ function summarizeWorktree(changes) {
 
   if (paths.some((pathName) => ['components/OnboardingTour.tsx', 'components/InfoModal.tsx'].includes(pathName))) {
     notes.push('Sivuston esittelyyn lisättiin tieto, että robottia, Google-hakua ja palveluhakua voi käyttää myös omalla äänellä.');
+  }
+
+  if (paths.some((pathName) => ['linkit.tsx'].includes(pathName))) {
+    notes.push('Linkkiluettelon Paikkakunnittain-taulukon vaakavieritystä helpotettiin yläreunan vierityspalkilla ja lukitulla paikkakuntasarakkeella.');
+    notes.push('Linkkiluettelon Paikkakunnittain-välilehdeltä poistettiin tyhjä paikallisten palvelujen sarake ja siihen lisättiin omat sarakkeet potilas- ja eläkeyhdistyksille.');
+    notes.push('Alueellisten linkkien listaan lisättiin kirjastojen lisäksi museot, teatterit, potilasyhdistykset ja eläkeyhdistykset.');
+  }
+
+  if (paths.some((pathName) => ['sivua-tukemassa.html', 'sivuaTukemassa.tsx', 'App.tsx', 'vite.config.ts'].includes(pathName) || pathName.startsWith('assets/'))) {
+    notes.push('Sivustolle lisättiin kokeiluna Sivua tukemassa -sivu, jossa kerrotaan tukijaperiaatteet ja näytetään ensimmäisenä tukijana Vanhustyön keskusliitto ry.');
   }
 
   if (notes.length === 0) {

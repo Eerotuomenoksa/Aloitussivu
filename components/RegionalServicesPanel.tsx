@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { getLocalizedMunicipalityName, getRegionalNewsProviders, getRegionalProviders, getRegionalRssFeeds, resolveRegionalContext } from '../localServices';
+import { getLocalizedMunicipalityName, getRegionalLibraryProviders, getRegionalNewsProviders, getRegionalProviders, getRegionalRssFeeds, resolveRegionalContext } from '../localServices';
 import { filterVisibleProviders } from '../linkVisibility';
 import { LocalityInfo, Provider, LinkReportDraft } from '../types';
 import LocalNewsHeadlines from './LocalNewsHeadlines';
@@ -38,6 +38,10 @@ const getRegionalServiceIcon = (provider: Provider) => {
   if (text.includes('paikalliset palvelut') || text.includes('palvelut') || text.includes('kunta') || text.includes('kaupunki')) return '🏛️';
   return '📍';
 };
+
+const uniqueProvidersByUrl = (providers: Provider[]) => providers.filter(
+  (provider, index, all) => all.findIndex((item) => item.url === provider.url) === index
+);
 
 const ServiceLink: React.FC<{ provider: Provider; index: number; fontSizeStep: number; onReportLink?: (draft: LinkReportDraft) => void }> = ({ provider, index, fontSizeStep, onReportLink }) => {
   const { t, categoryName } = useI18n();
@@ -92,7 +96,10 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
   }, [isManualQuery, locality?.municipality]);
 
   const context = useMemo(() => resolveRegionalContext(query, locality), [query, locality]);
-  const services = useMemo(() => context ? filterVisibleProviders(getRegionalProviders(context, language)) ?? [] : [], [context, language]);
+  const services = useMemo(() => context ? filterVisibleProviders(uniqueProvidersByUrl([
+    ...getRegionalProviders(context, language),
+    ...getRegionalLibraryProviders(context),
+  ])) ?? [] : [], [context, language]);
   const newsFallbacks = useMemo(() => context ? filterVisibleProviders(getRegionalNewsProviders(context)) ?? [] : [], [context]);
   const rssFeeds = useMemo(() => context ? getRegionalRssFeeds(context) : [], [context]);
   const fallbackNewsUrl = newsFallbacks[0]?.url ?? '';
