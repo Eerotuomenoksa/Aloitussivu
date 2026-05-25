@@ -134,28 +134,20 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
               />
             </label>
             {context && (
-              <div className="rounded-xl bg-[#dceff4] dark:bg-[#173e5f] border-2 border-[#9fcbd6] dark:border-white/15 px-4 py-3 shadow-sm md:min-w-[14rem]">
-                <p className="text-xs font-black uppercase tracking-wide text-[#173e5f] dark:text-blue-100">
-                  Näytetään kuntaa
-                </p>
-                <p className={`font-black text-slate-900 dark:text-white leading-tight ${smallTextClasses[fontSizeStep]}`}>
-                  {localizedMunicipalityName}
-                </p>
-              </div>
+              <button
+                type="button"
+                onClick={focusMunicipalityInput}
+                className="min-h-14 rounded-full bg-slate-200 hover:bg-slate-300 text-slate-900 px-4 py-2 font-black transition-all active:scale-95 md:self-end"
+              >
+                Vaihda kunta
+              </button>
             )}
           </div>
           {context && (
             <div className="mt-3 flex flex-wrap items-center gap-3 rounded-2xl border-2 border-[#9fcbd6] dark:border-white/15 bg-[#f3fbfc] dark:bg-[#102d45] px-4 py-3 shadow-sm">
               <p className={`font-bold text-slate-700 dark:text-slate-200 ${smallTextClasses[fontSizeStep]}`}>
-                Paikalliset linkit rajataan nyt tähän paikkakuntaan.
+                Alueelliset palvelut rajataan tähän paikkakuntaan.
               </p>
-              <button
-                type="button"
-                onClick={focusMunicipalityInput}
-                className="rounded-full bg-slate-200 hover:bg-slate-300 text-slate-900 px-4 py-2 font-black transition-all active:scale-95"
-              >
-                Vaihda kunta
-              </button>
               {locality?.municipality && isManualQuery && (
                 <button
                   type="button"

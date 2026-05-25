@@ -1,20 +1,28 @@
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useCallback, useState, useRef, useEffect } from 'react';
 import { getGeminiAssistant } from '../services/geminiService';
 import { ChatMessage } from '../types';
 import { useI18n } from '../i18n';
+import { useSpeechInput } from '../hooks/useSpeechInput';
 
 interface AssistantProps {
   variant?: 'default' | 'header';
 }
 
 const Assistant: React.FC<AssistantProps> = ({ variant = 'default' }) => {
-  const { t } = useI18n();
+  const { t, speechLocale } = useI18n();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isMinimized, setIsMinimized] = useState(true);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const setSpokenInput = useCallback((text: string) => setInput(text), []);
+  const clearInputBeforeListen = useCallback(() => setInput(''), []);
+  const { speechState, canListen, toggleListening } = useSpeechInput({
+    locale: speechLocale,
+    onResult: setSpokenInput,
+    clearBeforeListen: clearInputBeforeListen,
+  });
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -129,10 +137,20 @@ const Assistant: React.FC<AssistantProps> = ({ variant = 'default' }) => {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-          placeholder={t('assistantPlaceholder')}
+          placeholder={speechState === 'listening' ? t('listeningPlaceholder') : t('assistantPlaceholder')}
           className="min-w-0 flex-1 border-2 border-slate-400 dark:border-slate-600 rounded-xl px-3 py-2 md:px-4 md:py-3 text-base md:text-lg focus:ring-4 focus:ring-blue-200 outline-none bg-white dark:bg-slate-700 text-slate-950 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 transition-colors font-bold"
           aria-label={t('assistantInput')}
         />
+        {canListen && (
+          <button
+            type="button"
+            onClick={toggleListening}
+            className={`${speechState === 'listening' ? 'bg-red-500 text-white animate-pulse' : 'bg-slate-200 hover:bg-red-100 text-slate-900 dark:bg-slate-700 dark:text-white dark:hover:bg-red-900/40'} flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-xl font-black shadow-md transition-all active:scale-95 focus:outline-none focus:ring-4 focus:ring-red-300`}
+            aria-label={speechState === 'listening' ? t('stopListening') : t('startListening')}
+          >
+            🎤
+          </button>
+        )}
         <button 
           onClick={handleSend}
           disabled={isLoading || !input.trim()}

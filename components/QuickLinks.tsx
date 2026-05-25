@@ -1,13 +1,12 @@
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useCallback, useState } from 'react';
 import { SHORTCUTS } from '../constants';
 import { getLocalizedShortcuts } from '../localServices';
 import { filterVisibleShortcuts, useLinkVisibilityVersion } from '../linkVisibility';
 import { Shortcut, Favorite, LocalityInfo, LinkReportDraft } from '../types';
 import { mergeApprovedLinksIntoShortcuts, useApprovedLinkSuggestionsVersion } from '../approvedLinks';
 import { useI18n } from '../i18n';
-
-type SpeechState = 'idle' | 'listening' | 'unsupported';
+import { useSpeechInput } from '../hooks/useSpeechInput';
 
 interface QuickLinksProps {
   onSelectCategory: (shortcut: Shortcut) => void;
@@ -90,39 +89,13 @@ const shortcutGroups: ShortcutGroup[] = [
 const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep = 0, favorites, onToggleFavorite, locality, onReportLink }) => {
   const { t, categoryName, language, speechLocale } = useI18n();
   const [search, setSearch] = useState('');
-  const [speechState, setSpeechState] = useState<SpeechState>('idle');
-  const recognitionRef = useRef<any>(null);
-
-  useEffect(() => {
-    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-    if (!SpeechRecognition) {
-      setSpeechState('unsupported');
-      return;
-    }
-    const r = new SpeechRecognition();
-    r.lang = speechLocale;
-    r.continuous = false;
-    r.interimResults = false;
-    r.onresult = (e: any) => {
-      const text = e.results[0][0].transcript;
-      setSearch(text);
-      setSpeechState('idle');
-    };
-    r.onerror = () => setSpeechState('idle');
-    r.onend = () => setSpeechState('idle');
-    recognitionRef.current = r;
-  }, [speechLocale]);
-
-  const toggleListening = () => {
-    if (speechState === 'listening') {
-      recognitionRef.current?.stop();
-      setSpeechState('idle');
-    } else {
-      setSearch('');
-      recognitionRef.current?.start();
-      setSpeechState('listening');
-    }
-  };
+  const setSpokenSearch = useCallback((text: string) => setSearch(text), []);
+  const clearSearchBeforeListen = useCallback(() => setSearch(''), []);
+  const { speechState, toggleListening } = useSpeechInput({
+    locale: speechLocale,
+    onResult: setSpokenSearch,
+    clearBeforeListen: clearSearchBeforeListen,
+  });
 
   const shortcuts = filterVisibleShortcuts(getLocalizedShortcuts(SHORTCUTS, locality, language));
   useLinkVisibilityVersion();

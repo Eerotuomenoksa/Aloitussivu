@@ -24,14 +24,14 @@ const steps: TourStep[] = [
   {
     target: 'google-search',
     title: 'Google-haku',
-    body: 'Kirjoita hakusana ja paina Hae.',
-    contains: 'Hakukenttä ja hakupainike internetistä etsimistä varten.',
+    body: 'Kirjoita hakusana tai paina mikrofonia ja sano hakusana ääneen. Paina lopuksi Hae.',
+    contains: 'Hakukenttä, mikrofonipainike ja hakupainike internetistä etsimistä varten.',
   },
   {
     target: 'assistant',
     title: 'Tekoälyavustaja',
-    body: 'Voit kysyä apua tavallisella suomen kielellä.',
-    contains: 'Painike, josta avautuu keskusteluavustaja kysymyksiä varten.',
+    body: 'Voit kysyä apua kirjoittamalla tai painamalla mikrofonia ja puhumalla kysymyksen ääneen.',
+    contains: 'Painike, josta avautuu keskusteluavustaja kysymyksiä varten. Avustajalle voi myös puhua.',
   },
   {
     target: 'weather',
@@ -66,8 +66,8 @@ const steps: TourStep[] = [
   {
     target: 'quick-links',
     title: 'Kategoriat',
-    body: 'Avaa aihealue ja valitse tarvitsemasi palvelu.',
-    contains: 'Pääkategoriat ja niiden alakategoriat, joista palvelulinkit avautuvat.',
+    body: 'Avaa aihealue ja valitse tarvitsemasi palvelu. Palveluhaussa voit myös painaa mikrofonia ja sanoa hakusanan ääneen.',
+    contains: 'Pääkategoriat, palveluhaku ja alakategoriat, joista palvelulinkit avautuvat.',
   },
   {
     target: 'settings',

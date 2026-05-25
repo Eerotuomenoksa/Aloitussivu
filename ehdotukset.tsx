@@ -32,6 +32,10 @@ import {
   subscribeScamAlerts,
   updateScamAlertActiveState,
 } from './scamAlerts';
+import {
+  NameDayApiUsageStats,
+  subscribeNameDayApiUsageStats,
+} from './adminStats';
 
 const normalizeUrl = (url: string) => url.trim().replace(/\/+$/, '');
 
@@ -56,6 +60,17 @@ const severityLabel = {
   warning: 'Varoitus',
   danger: 'Vakava',
 };
+
+function HomeLink() {
+  return (
+    <a
+      href="./index.html"
+      className="inline-flex items-center justify-center rounded-full bg-indigo-600 px-5 py-3 text-base font-black text-white shadow-sm transition-all hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-300"
+    >
+      ← Palaa etusivulle
+    </a>
+  );
+}
 
 const formatDateTime = (value?: string) => {
   if (!value) return '-';
@@ -129,6 +144,8 @@ function App() {
   const [ncscLogError, setNcscLogError] = useState('');
   const [ncscBusy, setNcscBusy] = useState(false);
   const [ncscMessage, setNcscMessage] = useState('');
+  const [nameDayApiUsage, setNameDayApiUsage] = useState<NameDayApiUsageStats | null>(null);
+  const [nameDayApiUsageError, setNameDayApiUsageError] = useState('');
 
   const hasAdminAccess = isAdminUser(user);
   const userEmail = getUserEmail(user);
@@ -157,14 +174,18 @@ function App() {
       setScamAlerts([]);
       setNcscLogs([]);
       setNcscLogError('');
+      setNameDayApiUsage(null);
+      setNameDayApiUsageError('');
       return () => {};
     }
 
     const unsubscribeAlerts = subscribeScamAlerts(setScamAlerts);
     const unsubscribeLogs = subscribeNcscScrapeLogs(setNcscLogs, setNcscLogError);
+    const unsubscribeNameDayUsage = subscribeNameDayApiUsageStats(setNameDayApiUsage, setNameDayApiUsageError);
     return () => {
       unsubscribeAlerts();
       unsubscribeLogs();
+      unsubscribeNameDayUsage();
     };
   }, [hasAdminAccess]);
 
@@ -232,7 +253,16 @@ function App() {
       tone: 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200',
       note: 'Täältä voi poistaa aiemmin hyväksyttyjä lisäyksiä.',
     },
-  ], [activeScamAlerts.length, approvedLinks.length, issueReports.length, ncscAttentionLogs.length, pendingNewReports.length]);
+    {
+      label: 'Nimipäivärajapinta',
+      count: nameDayApiUsage?.totalRequests ?? 0,
+      href: '#nameday-api-usage',
+      tone: nameDayApiUsageError ? 'bg-rose-100 text-rose-950 dark:bg-rose-900/40 dark:text-rose-100' : 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200',
+      note: nameDayApiUsage
+        ? `Viimeksi käytetty ${formatDateTime(nameDayApiUsage.lastUsedAt)}.`
+        : (nameDayApiUsageError || 'Käyttöä ei ole vielä kirjattu.'),
+    },
+  ], [activeScamAlerts.length, approvedLinks.length, issueReports.length, nameDayApiUsage, nameDayApiUsageError, ncscAttentionLogs.length, pendingNewReports.length]);
 
   useEffect(() => {
     setReportDrafts((current) => {
@@ -352,9 +382,12 @@ function App() {
     <main className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white">
       <div className="mx-auto max-w-7xl px-4 py-8 md:px-8 md:py-12 space-y-10">
         <header className="space-y-4">
-          <span className="inline-flex rounded-full bg-amber-100 text-amber-900 dark:bg-amber-900/40 dark:text-amber-200 px-3 py-1 text-xs font-black uppercase tracking-wide">
-            Ylläpito
-          </span>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <span className="inline-flex rounded-full bg-amber-100 text-amber-900 dark:bg-amber-900/40 dark:text-amber-200 px-3 py-1 text-xs font-black uppercase tracking-wide">
+              Ylläpito
+            </span>
+            <HomeLink />
+          </div>
           <h1 className="text-4xl md:text-6xl font-black tracking-tighter">Linkkiehdotukset</h1>
           <p className="max-w-3xl text-base md:text-lg text-slate-600 dark:text-slate-300">
             Ilmoitetut muutokset tallentuvat yhteiseen ylläpitojonoon. Hyväksyntä on rajattu ylläpitäjän Google-tunnukselle.
@@ -451,7 +484,7 @@ function App() {
                   Nopea näkymä avoimiin asioihin ja automaation huomioihin.
                 </p>
               </div>
-              <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+              <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
                 {reviewTasks.map((task) => (
                   <a
                     key={task.href}
@@ -470,6 +503,40 @@ function App() {
                   </a>
                 ))}
               </div>
+            </section>
+
+            <section id="nameday-api-usage" className="scroll-mt-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm">
+              <div className="flex flex-wrap items-start justify-between gap-4">
+                <div>
+                  <h2 className="text-2xl md:text-3xl font-black">Nimipäivärajapinta</h2>
+                  <p className="mt-1 text-sm font-bold text-slate-500 dark:text-slate-400">
+                    Kertoo, kuinka monta kertaa Cloud Function on kutsunut Nimipäivärajapintaa.
+                  </p>
+                </div>
+                <span className="rounded-full bg-slate-100 px-4 py-2 text-lg font-black text-slate-900 dark:bg-slate-800 dark:text-white">
+                  {nameDayApiUsage?.totalRequests ?? 0} kertaa
+                </span>
+              </div>
+              {nameDayApiUsageError ? (
+                <p className="mt-4 rounded-2xl border border-rose-200 bg-rose-50 p-4 font-bold text-rose-900 dark:border-rose-900 dark:bg-rose-950/30 dark:text-rose-200">
+                  {nameDayApiUsageError}
+                </p>
+              ) : (
+                <div className="mt-4 grid gap-3 md:grid-cols-3">
+                  <div className="rounded-2xl bg-slate-50 p-4 dark:bg-slate-950/60">
+                    <p className="text-sm font-black uppercase tracking-wide text-slate-500 dark:text-slate-400">Onnistuneet</p>
+                    <p className="mt-1 text-2xl font-black">{nameDayApiUsage?.successfulRequests ?? 0}</p>
+                  </div>
+                  <div className="rounded-2xl bg-slate-50 p-4 dark:bg-slate-950/60">
+                    <p className="text-sm font-black uppercase tracking-wide text-slate-500 dark:text-slate-400">Epäonnistuneet</p>
+                    <p className="mt-1 text-2xl font-black">{nameDayApiUsage?.failedRequests ?? 0}</p>
+                  </div>
+                  <div className="rounded-2xl bg-slate-50 p-4 dark:bg-slate-950/60">
+                    <p className="text-sm font-black uppercase tracking-wide text-slate-500 dark:text-slate-400">Viimeksi</p>
+                    <p className="mt-1 text-lg font-black">{formatDateTime(nameDayApiUsage?.lastUsedAt)}</p>
+                  </div>
+                </div>
+              )}
             </section>
 
             <section id="scam-alerts-admin" className="space-y-4 scroll-mt-6">

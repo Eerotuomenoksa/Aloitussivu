@@ -83,7 +83,7 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, fontSizeStep = 0
                     Tutustu sivuun lyhyesti
                   </h3>
                   <p className="text-lg font-bold leading-relaxed text-amber-900 dark:text-amber-200">
-                    Esittely näyttää tärkeimmät kohdat: haun, paikalliset palvelut, kategoriat, suosikit ja asetukset.
+                    Esittely näyttää tärkeimmät kohdat: robottia, Google-hakua ja palveluhakua voi käyttää myös omalla äänellä.
                   </p>
                 </div>
                 <button

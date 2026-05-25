@@ -1,4 +1,6 @@
 import { onRequest } from 'firebase-functions/v2/https';
+import { getApps, initializeApp } from 'firebase-admin/app';
+import { FieldValue, getFirestore } from 'firebase-admin/firestore';
 
 type NameDayItem = {
   name?: string;
@@ -16,6 +18,13 @@ type NameDayResponse = {
 
 const NAMEDAY_API_URL = 'https://nimipaivarajapinta.fi/api/namedays/today';
 
+const getAdminDb = () => {
+  if (getApps().length === 0) {
+    initializeApp();
+  }
+  return getFirestore();
+};
+
 const pickFinnishNames = (data: NameDayResponse) => {
   const finnishNames = data.name_days_by_type?.suomi ?? data.name_days?.filter((item) => item.type === 'suomi') ?? [];
   const names = finnishNames
@@ -23,6 +32,19 @@ const pickFinnishNames = (data: NameDayResponse) => {
     .filter((name): name is string => Boolean(name));
 
   return [...new Set(names)];
+};
+
+const recordNameDayApiUse = async (success: boolean) => {
+  try {
+    await getAdminDb().collection('adminStats').doc('namedayApi').set({
+      totalRequests: FieldValue.increment(1),
+      successfulRequests: FieldValue.increment(success ? 1 : 0),
+      failedRequests: FieldValue.increment(success ? 0 : 1),
+      lastUsedAt: new Date().toISOString(),
+    }, { merge: true });
+  } catch (error) {
+    console.error('Name day usage counter update failed:', error);
+  }
 };
 
 export const namedayToday = onRequest(
@@ -46,6 +68,7 @@ export const namedayToday = onRequest(
           Authorization: `Bearer ${token}`,
         },
       });
+      await recordNameDayApiUse(response.ok);
 
       if (!response.ok) {
         res.status(response.status).json({ error: 'Name day API request failed.' });

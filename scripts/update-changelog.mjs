@@ -137,7 +137,7 @@ function summarizeWorktree(changes) {
   const paths = changes.map((change) => change.path);
   const notes = [];
 
-  if (paths.some((pathName) => ['appVersion.ts', 'package.json', 'package-lock.json', 'muutosloki.tsx', 'App.tsx', 'scripts/update-changelog.mjs'].includes(pathName))) {
+  if (paths.some((pathName) => ['appVersion.ts', 'package.json', 'package-lock.json', 'muutosloki.tsx', 'App.tsx'].includes(pathName))) {
     notes.push('Versionumerointi otettiin käyttöön: nykyinen versio näkyy footerissa ja muutoslokin yläosassa.');
     notes.push('Muutoshistoria näyttää versionumeron jokaisen muutoksen yhteydessä.');
   }
@@ -158,6 +158,23 @@ function summarizeWorktree(changes) {
 
   if (paths.some((pathName) => ['linkHealth.ts', 'linkStats.ts', 'docs/linkit.csv', 'docs/linkit.md', 'docs/yllapito-linkkiloki.csv', 'scripts/update-links.mjs'].includes(pathName))) {
     notes.push('Linkkien tarkistusdata ja ylläpitoloki päivitettiin uusimman buildin yhteydessä.');
+  }
+
+  if (paths.some((pathName) => ['components/SearchBar.tsx', 'components/Assistant.tsx', 'components/QuickLinks.tsx', 'hooks/useSpeechInput.ts'].includes(pathName))) {
+    notes.push('Google-haku, palveluhaku ja tekoälyavustaja toimivat nyt myös omalla äänellä mikrofonipainikkeen kautta.');
+  }
+
+  if (paths.some((pathName) => ['components/RegionalServicesPanel.tsx'].includes(pathName))) {
+    notes.push('Alueellisten palvelujen kunnan valintaa selkeytettiin: rajausviesti päivitettiin, turha kuntalaatikko poistettiin ja Vaihda kunta -painike siirrettiin työpöytänäkymässä kunnan kentän rinnalle.');
+  }
+
+  if (paths.some((pathName) => ['ehdotukset.tsx', 'adminStats.ts', 'functions/nameday.ts', 'firestore.rules'].includes(pathName))) {
+    notes.push('Ylläpitoon lisättiin nimipäivärajapinnan käyttölaskuri, joka näyttää kutsujen kokonaismäärän, onnistuneet ja epäonnistuneet haut sekä viimeisimmän käyttöajan.');
+    notes.push('Kirjautuminen ja huijausvaroitukset -sivulle lisättiin näkyvä Palaa etusivulle -linkki.');
+  }
+
+  if (paths.some((pathName) => ['components/OnboardingTour.tsx', 'components/InfoModal.tsx'].includes(pathName))) {
+    notes.push('Sivuston esittelyyn lisättiin tieto, että robottia, Google-hakua ja palveluhakua voi käyttää myös omalla äänellä.');
   }
 
   if (notes.length === 0) {
