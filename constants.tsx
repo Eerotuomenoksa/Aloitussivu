@@ -24,6 +24,7 @@ export const SHORTCUTS: Shortcut[] = [
     name: 'Apua digiin', icon: '💻', color: 'bg-[#173e5f]',
     providers: [
       { name: 'Yle Digitreenit', url: 'https://yle.fi/aihe/digitreenit' },
+      { name: 'DigiUp Toolbox', url: 'https://www.digiuptoolbox.com/' },
       { name: 'Suomi.fi ohjeet', url: 'https://www.suomi.fi/ohjeet-ja-tuki' },
       { name: 'Savonetti', url: 'https://www.savonetti.fi' },
       { name: 'Joen Severi', url: 'https://www.joenseveri.fi' },

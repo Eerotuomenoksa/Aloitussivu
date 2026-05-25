@@ -4,7 +4,7 @@ export const LOCAL_LINK_STATS = {
   municipalityLanguageVersions: 235,
   wellbeingAreas: 44,
   municipalityServicePages: 9,
-  localTransport: 11,
+  localTransport: 12,
   localLibraries: 7,
   localNewspapers: 121,
   localSportsClubs: 41,
