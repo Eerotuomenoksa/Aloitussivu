@@ -1,5 +1,7 @@
-import { onRequest } from 'firebase-functions/v2/https';
+import { onRequest, type Request } from 'firebase-functions/v2/https';
 import { GoogleGenAI } from '@google/genai';
+import { getApps, initializeApp } from 'firebase-admin/app';
+import { getAppCheck } from 'firebase-admin/app-check';
 import { getAllowedOrigins } from './cors';
 
 type ChatMessage = {
@@ -9,6 +11,10 @@ type ChatMessage = {
 
 const ASSISTANT_INSTRUCTION = 'Olet ystävällinen ja avulias suomenkielinen tekoälyavustaja, joka on suunniteltu auttamaan ikäihmisiä. Käytä selkeää suomen kieltä, vältä vaikeita teknisiä termejä ja vastaa rauhallisesti ja kannustavasti. Jos et tiedä vastausta, sano se rehellisesti ja ohjaa tarvittaessa SeniorSurf-palveluun.';
 const NEWS_INSTRUCTION = 'Olet avulias uutisten tiivistäjä. Käytä erittäin selkeää suomen kieltä.';
+const ALLOWED_TASKS = new Set(['assistant', 'summarizeNews']);
+const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
+const RATE_LIMIT_MAX_REQUESTS = 20;
+const rateLimitBuckets = new Map<string, { count: number; resetAt: number }>();
 
 const isValidHistory = (history: unknown): history is ChatMessage[] => (
   Array.isArray(history)
@@ -22,6 +28,47 @@ const isValidHistory = (history: unknown): history is ChatMessage[] => (
   ))
 );
 
+const getAdminAppCheck = () => {
+  if (getApps().length === 0) {
+    initializeApp();
+  }
+  return getAppCheck();
+};
+
+const getClientKey = (req: Request) => {
+  const forwardedFor = req.headers['x-forwarded-for'];
+  const firstForwarded = Array.isArray(forwardedFor) ? forwardedFor[0] : forwardedFor;
+  return firstForwarded?.split(',')[0]?.trim() || req.ip || 'unknown';
+};
+
+const isRateLimited = (clientKey: string) => {
+  const now = Date.now();
+  const current = rateLimitBuckets.get(clientKey);
+
+  if (!current || current.resetAt <= now) {
+    rateLimitBuckets.set(clientKey, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+    return false;
+  }
+
+  current.count += 1;
+  return current.count > RATE_LIMIT_MAX_REQUESTS;
+};
+
+const verifyAppCheckIfRequired = async (req: Request) => {
+  if (process.env.GEMINI_REQUIRE_APP_CHECK !== 'true') return true;
+
+  const token = req.header('X-Firebase-AppCheck');
+  if (!token) return false;
+
+  try {
+    await getAdminAppCheck().verifyToken(token);
+    return true;
+  } catch (error) {
+    console.warn('Gemini App Check verification failed:', error);
+    return false;
+  }
+};
+
 export const geminiChat = onRequest(
   {
     region: 'europe-west1',
@@ -33,6 +80,16 @@ export const geminiChat = onRequest(
   async (req, res) => {
     if (req.method !== 'POST') {
       res.status(405).send('Method Not Allowed');
+      return;
+    }
+
+    if (isRateLimited(getClientKey(req))) {
+      res.status(429).json({ error: 'Too many requests' });
+      return;
+    }
+
+    if (!await verifyAppCheckIfRequired(req)) {
+      res.status(401).json({ error: 'Invalid App Check token' });
       return;
     }
 
@@ -49,6 +106,11 @@ export const geminiChat = onRequest(
 
     if (!isValidHistory(history)) {
       res.status(400).json({ error: 'Invalid history' });
+      return;
+    }
+
+    if (typeof task !== 'string' || !ALLOWED_TASKS.has(task)) {
+      res.status(400).json({ error: 'Invalid task' });
       return;
     }
 

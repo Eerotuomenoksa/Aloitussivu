@@ -58,12 +58,17 @@ service cloud.firestore {
     }
 
     match /ncscScrapeLog/{logId} {
-      allow read: if true;
+      allow read: if isAdmin();
       allow write: if false;
     }
 
     match /adminStats/{statId} {
-      allow read: if true;
+      allow read: if isAdmin();
+      allow write: if false;
+    }
+
+    match /usageStats/{dateId} {
+      allow read: if isAdmin();
       allow write: if false;
     }
   }

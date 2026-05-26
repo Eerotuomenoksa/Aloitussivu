@@ -108,6 +108,13 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, fontSizeStep = 0
             </div>
           </section>
 
+          <section className="space-y-4">
+            <h3 className="text-2xl font-black dark:text-white underline decoration-blue-500 underline-offset-8">Käyttötilasto</h3>
+            <p className="text-xl leading-relaxed dark:text-slate-300">
+              Sivustolla kerätään karkeaa käyttötilastoa palvelun kehittämiseksi: sivulatausten määrää ja linkkien klikkauksia päiväkohtaisesti. Tilasto ei käytä evästeitä, käyttäjätunnisteita, selaimen sormenjälkeä eikä IP-osoitteen tallennusta.
+            </p>
+          </section>
+
           <section className="space-y-6">
             <h3 className="text-2xl font-black border-b-2 border-slate-100 dark:border-slate-700 pb-2 dark:text-white">
               Paikalliset linkit

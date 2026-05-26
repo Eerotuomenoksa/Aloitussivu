@@ -36,6 +36,12 @@ import {
   NameDayApiUsageStats,
   subscribeNameDayApiUsageStats,
 } from './adminStats';
+import {
+  UsageDailyStats,
+  fetchUsageStats,
+  formatDateKey,
+  shiftDate,
+} from './usageStats';
 
 const normalizeUrl = (url: string) => url.trim().replace(/\/+$/, '');
 
@@ -59,6 +65,58 @@ const severityLabel = {
   info: 'Tieto',
   warning: 'Varoitus',
   danger: 'Vakava',
+};
+
+type UsageRangeMode = 'day' | 'week' | 'month' | 'quarter' | 'year' | 'custom';
+
+const usageRangeLabels: Record<UsageRangeMode, string> = {
+  day: 'Päivä',
+  week: 'Viikko',
+  month: 'Kuukausi',
+  quarter: 'Kvartaali',
+  year: 'Vuosi',
+  custom: 'Oma väli',
+};
+
+const getUsagePresetRange = (mode: UsageRangeMode) => {
+  const today = new Date();
+  const end = formatDateKey(today);
+
+  if (mode === 'day') return { start: end, end };
+  if (mode === 'week') return { start: formatDateKey(shiftDate(today, -6)), end };
+  if (mode === 'month') return { start: formatDateKey(shiftDate(today, -29)), end };
+  if (mode === 'quarter') return { start: formatDateKey(shiftDate(today, -89)), end };
+  if (mode === 'year') return { start: formatDateKey(shiftDate(today, -364)), end };
+  return { start: end, end };
+};
+
+const sumUsageStats = (stats: UsageDailyStats[]) => {
+  const links = new Map<string, { count: number; url: string; label: string; category: string; page: string }>();
+  let totalPageviews = 0;
+  let totalLinkClicks = 0;
+
+  stats.forEach((day) => {
+    totalPageviews += day.totalPageviews;
+    totalLinkClicks += day.totalLinkClicks;
+
+    Object.entries(day.linkClicks).forEach(([id, link]) => {
+      const current = links.get(id) ?? {
+        count: 0,
+        url: link.url,
+        label: link.label || link.url,
+        category: link.category,
+        page: link.page,
+      };
+      current.count += link.count;
+      links.set(id, current);
+    });
+  });
+
+  return {
+    totalPageviews,
+    totalLinkClicks,
+    topLinks: [...links.values()].sort((a, b) => b.count - a.count).slice(0, 12),
+  };
 };
 
 function HomeLink() {
@@ -146,6 +204,11 @@ function App() {
   const [ncscMessage, setNcscMessage] = useState('');
   const [nameDayApiUsage, setNameDayApiUsage] = useState<NameDayApiUsageStats | null>(null);
   const [nameDayApiUsageError, setNameDayApiUsageError] = useState('');
+  const [usageRangeMode, setUsageRangeMode] = useState<UsageRangeMode>('week');
+  const [usageRange, setUsageRange] = useState(() => getUsagePresetRange('week'));
+  const [usageStats, setUsageStats] = useState<UsageDailyStats[]>([]);
+  const [usageStatsBusy, setUsageStatsBusy] = useState(false);
+  const [usageStatsError, setUsageStatsError] = useState('');
 
   const hasAdminAccess = isAdminUser(user);
   const userEmail = getUserEmail(user);
@@ -176,6 +239,8 @@ function App() {
       setNcscLogError('');
       setNameDayApiUsage(null);
       setNameDayApiUsageError('');
+      setUsageStats([]);
+      setUsageStatsError('');
       return () => {};
     }
 
@@ -188,6 +253,36 @@ function App() {
       unsubscribeNameDayUsage();
     };
   }, [hasAdminAccess]);
+
+  useEffect(() => {
+    if (usageRangeMode === 'custom') return;
+    setUsageRange(getUsagePresetRange(usageRangeMode));
+  }, [usageRangeMode]);
+
+  useEffect(() => {
+    if (!hasAdminAccess) return;
+    let isCurrent = true;
+    setUsageStatsBusy(true);
+    setUsageStatsError('');
+
+    fetchUsageStats(usageRange.start, usageRange.end)
+      .then((stats) => {
+        if (isCurrent) setUsageStats(stats);
+      })
+      .catch((error) => {
+        if (isCurrent) {
+          setUsageStats([]);
+          setUsageStatsError(error instanceof Error ? error.message : 'Käyttötilastojen haku epäonnistui.');
+        }
+      })
+      .finally(() => {
+        if (isCurrent) setUsageStatsBusy(false);
+      });
+
+    return () => {
+      isCurrent = false;
+    };
+  }, [hasAdminAccess, usageRange.end, usageRange.start]);
 
   const signIn = async () => {
     setAuthError('');
@@ -224,6 +319,7 @@ function App() {
     () => scamAlerts.filter((alert) => !alert.active),
     [scamAlerts]
   );
+  const usageTotals = useMemo(() => sumUsageStats(usageStats), [usageStats]);
   const reviewTasks = useMemo(() => [
     {
       label: 'Uudet linkit',
@@ -254,6 +350,13 @@ function App() {
       note: 'Täältä voi poistaa aiemmin hyväksyttyjä lisäyksiä.',
     },
     {
+      label: 'Käyttötilastot',
+      count: usageTotals.totalPageviews,
+      href: '#usage-stats',
+      tone: usageStatsError ? 'bg-rose-100 text-rose-950 dark:bg-rose-900/40 dark:text-rose-100' : 'bg-cyan-100 text-cyan-950 dark:bg-cyan-900/40 dark:text-cyan-100',
+      note: usageStatsError || `${usageRange.start} - ${usageRange.end}`,
+    },
+    {
       label: 'Nimipäivärajapinta',
       count: nameDayApiUsage?.totalRequests ?? 0,
       href: '#nameday-api-usage',
@@ -262,7 +365,7 @@ function App() {
         ? `Viimeksi käytetty ${formatDateTime(nameDayApiUsage.lastUsedAt)}.`
         : (nameDayApiUsageError || 'Käyttöä ei ole vielä kirjattu.'),
     },
-  ], [activeScamAlerts.length, approvedLinks.length, issueReports.length, nameDayApiUsage, nameDayApiUsageError, ncscAttentionLogs.length, pendingNewReports.length]);
+  ], [activeScamAlerts.length, approvedLinks.length, issueReports.length, nameDayApiUsage, nameDayApiUsageError, ncscAttentionLogs.length, pendingNewReports.length, usageRange.end, usageRange.start, usageStatsError, usageTotals.totalPageviews]);
 
   useEffect(() => {
     setReportDrafts((current) => {
@@ -484,7 +587,7 @@ function App() {
                   Nopea näkymä avoimiin asioihin ja automaation huomioihin.
                 </p>
               </div>
-              <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
+              <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-6">
                 {reviewTasks.map((task) => (
                   <a
                     key={task.href}
@@ -503,6 +606,132 @@ function App() {
                   </a>
                 ))}
               </div>
+            </section>
+
+            <section id="usage-stats" className="scroll-mt-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm space-y-5">
+              <div className="flex flex-wrap items-start justify-between gap-4">
+                <div>
+                  <h2 className="text-2xl md:text-3xl font-black">Käyttötilastot</h2>
+                  <p className="mt-1 text-sm font-bold text-slate-500 dark:text-slate-400">
+                    Karkea laskuri ilman evästeitä, käyttäjätunnisteita, IP-tallennusta tai maantieteellistä tarkkuutta.
+                  </p>
+                </div>
+                <span className="rounded-full bg-cyan-100 px-4 py-2 text-lg font-black text-cyan-950 dark:bg-cyan-900/40 dark:text-cyan-100">
+                  {usageTotals.totalPageviews} latausta
+                </span>
+              </div>
+
+              <div className="flex flex-wrap gap-2" aria-label="Käyttötilaston aikaväli">
+                {(Object.keys(usageRangeLabels) as UsageRangeMode[]).map((mode) => (
+                  <button
+                    key={mode}
+                    type="button"
+                    onClick={() => setUsageRangeMode(mode)}
+                    className={`${usageRangeMode === mode ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-800 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700'} rounded-full px-4 py-2 text-sm font-black transition-colors`}
+                  >
+                    {usageRangeLabels[mode]}
+                  </button>
+                ))}
+              </div>
+
+              <div className="grid gap-4 md:grid-cols-2">
+                <label className="space-y-2">
+                  <span className="block text-sm font-black text-slate-600 dark:text-slate-300">Alkupäivä</span>
+                  <input
+                    type="date"
+                    value={usageRange.start}
+                    onChange={(event) => {
+                      setUsageRangeMode('custom');
+                      setUsageRange((current) => ({ ...current, start: event.target.value }));
+                    }}
+                    className="w-full rounded-xl border-2 border-slate-200 bg-white px-4 py-3 font-bold text-slate-900 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+                  />
+                </label>
+                <label className="space-y-2">
+                  <span className="block text-sm font-black text-slate-600 dark:text-slate-300">Loppupäivä</span>
+                  <input
+                    type="date"
+                    value={usageRange.end}
+                    onChange={(event) => {
+                      setUsageRangeMode('custom');
+                      setUsageRange((current) => ({ ...current, end: event.target.value }));
+                    }}
+                    className="w-full rounded-xl border-2 border-slate-200 bg-white px-4 py-3 font-bold text-slate-900 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+                  />
+                </label>
+              </div>
+
+              {usageStatsError ? (
+                <p className="rounded-2xl border border-rose-200 bg-rose-50 p-4 font-bold text-rose-900 dark:border-rose-900 dark:bg-rose-950/30 dark:text-rose-200">
+                  {usageStatsError}
+                </p>
+              ) : (
+                <>
+                  <div className="grid gap-4 md:grid-cols-3">
+                    <div className="rounded-2xl bg-slate-50 p-4 dark:bg-slate-950/60">
+                      <p className="text-sm font-black uppercase tracking-wide text-slate-500 dark:text-slate-400">Sivulataukset</p>
+                      <p className="mt-2 text-3xl font-black">{usageStatsBusy ? '...' : usageTotals.totalPageviews}</p>
+                    </div>
+                    <div className="rounded-2xl bg-slate-50 p-4 dark:bg-slate-950/60">
+                      <p className="text-sm font-black uppercase tracking-wide text-slate-500 dark:text-slate-400">Linkkiklikkaukset</p>
+                      <p className="mt-2 text-3xl font-black">{usageStatsBusy ? '...' : usageTotals.totalLinkClicks}</p>
+                    </div>
+                    <div className="rounded-2xl bg-slate-50 p-4 dark:bg-slate-950/60">
+                      <p className="text-sm font-black uppercase tracking-wide text-slate-500 dark:text-slate-400">Päiviä valinnassa</p>
+                      <p className="mt-2 text-3xl font-black">{usageStats.length}</p>
+                    </div>
+                  </div>
+
+                  <div className="grid gap-5 xl:grid-cols-2">
+                    <div className="space-y-3">
+                      <h3 className="text-xl font-black">Päivittäin</h3>
+                      <div className="max-h-80 overflow-auto rounded-2xl border border-slate-200 dark:border-slate-800">
+                        <table className="w-full text-left text-sm">
+                          <thead className="sticky top-0 bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200">
+                            <tr>
+                              <th className="px-4 py-3 font-black">Päivä</th>
+                              <th className="px-4 py-3 font-black">Lataukset</th>
+                              <th className="px-4 py-3 font-black">Klikit</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {usageStats.map((day) => (
+                              <tr key={day.date} className="border-t border-slate-200 dark:border-slate-800">
+                                <td className="px-4 py-3 font-bold">{day.date}</td>
+                                <td className="px-4 py-3 font-bold">{day.totalPageviews}</td>
+                                <td className="px-4 py-3 font-bold">{day.totalLinkClicks}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+
+                    <div className="space-y-3">
+                      <h3 className="text-xl font-black">Klikatuimmat linkit</h3>
+                      {usageTotals.topLinks.length === 0 ? (
+                        <p className="font-bold text-slate-500 dark:text-slate-400">Ei linkkiklikkauksia valitulla aikavälillä.</p>
+                      ) : (
+                        <div className="grid gap-3">
+                          {usageTotals.topLinks.map((link) => (
+                            <article key={link.url} className="rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-950/60">
+                              <div className="flex items-start justify-between gap-3">
+                                <div className="min-w-0">
+                                  <p className="font-black break-words">{link.label || link.url}</p>
+                                  <p className="mt-1 text-xs font-bold text-slate-500 break-all dark:text-slate-400">{link.url}</p>
+                                </div>
+                                <span className="shrink-0 rounded-full bg-cyan-100 px-3 py-1 text-sm font-black text-cyan-950 dark:bg-cyan-900/40 dark:text-cyan-100">
+                                  {link.count}
+                                </span>
+                              </div>
+                            </article>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </>
+              )}
             </section>
 
             <section id="nameday-api-usage" className="scroll-mt-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm">

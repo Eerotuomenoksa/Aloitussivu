@@ -10,6 +10,7 @@ import {
   type User,
 } from 'firebase/auth';
 import { getFirestore, type Firestore } from 'firebase/firestore';
+import type { AppCheck } from 'firebase/app-check';
 
 export const ADMIN_EMAIL = 'eero.tuomenoksa@gmail.com';
 const ADMIN_EMAILS = [
@@ -26,6 +27,7 @@ const firebaseConfig = {
   messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID?.trim(),
   appId: import.meta.env.VITE_FIREBASE_APP_ID?.trim(),
 };
+const appCheckSiteKey = import.meta.env.VITE_FIREBASE_APPCHECK_SITE_KEY?.trim();
 
 export const isFirebaseConfigured = Boolean(
   firebaseConfig.apiKey
@@ -37,6 +39,7 @@ export const isFirebaseConfigured = Boolean(
 let app: FirebaseApp | null = null;
 let auth: Auth | null = null;
 let db: Firestore | null = null;
+let appCheck: AppCheck | null = null;
 
 type StoredAdminEmail = {
   uid: string;
@@ -90,6 +93,23 @@ export const getFirebaseDb = () => {
     db = getFirestore(initializedApp);
   }
   return db;
+};
+
+export const getFirebaseAppCheckToken = async () => {
+  const initializedApp = getApp();
+  if (!initializedApp || !appCheckSiteKey || typeof window === 'undefined') return '';
+
+  if (!appCheck) {
+    const { initializeAppCheck, ReCaptchaV3Provider } = await import('firebase/app-check');
+    appCheck = initializeAppCheck(initializedApp, {
+      provider: new ReCaptchaV3Provider(appCheckSiteKey),
+      isTokenAutoRefreshEnabled: true,
+    });
+  }
+
+  const { getToken } = await import('firebase/app-check');
+  const token = await getToken(appCheck, false);
+  return token.token;
 };
 
 export const getUserEmail = (user: User | null) => (

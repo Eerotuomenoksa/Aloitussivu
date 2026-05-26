@@ -25,10 +25,19 @@ const EXCLUDED_DIRECTORIES = new Set([
   '.git',
   'dist',
   'docs',
-  'functions',
   'node_modules',
   'visual-check-report',
 ]);
+
+const EXCLUDED_PATHS = new Set([
+  'functions/.env',
+  'functions/.env.local',
+]);
+
+const EXCLUDED_PATH_PREFIXES = [
+  'functions/lib/',
+  'functions/node_modules/',
+];
 
 const findings = [];
 
@@ -43,6 +52,10 @@ const scanDirectory = async (directory) => {
       if (!EXCLUDED_DIRECTORIES.has(entry.name)) {
         await scanDirectory(fullPath);
       }
+      continue;
+    }
+
+    if (EXCLUDED_PATHS.has(relativePath) || EXCLUDED_PATH_PREFIXES.some((prefix) => relativePath.startsWith(prefix))) {
       continue;
     }
 

@@ -1,5 +1,6 @@
 
 import { NewsItem } from "../types";
+import { getFirebaseAppCheckToken } from "../firebaseClient";
 
 /**
  * Palvelu, joka hoitaa keskustelun tekoälyavustajan kanssa.
@@ -22,10 +23,15 @@ const requestGemini = async (
 ) => {
   const url = getGeminiFunctionUrl();
   if (!url) throw new Error('Gemini Cloud Function URL puuttuu.');
+  const appCheckToken = await getFirebaseAppCheckToken();
+  const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+  if (appCheckToken) {
+    headers['X-Firebase-AppCheck'] = appCheckToken;
+  }
 
   const response = await fetch(url, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers,
     body: JSON.stringify({ prompt, history, task }),
   });
 

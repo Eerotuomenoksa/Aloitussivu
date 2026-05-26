@@ -25,7 +25,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ fontSizeStep = 0, variant = 'defa
 
     if (trimmedQuery) {
       const targetUrl = `https://www.google.com/search?q=${encodeURIComponent(trimmedQuery)}`;
-      window.open(targetUrl, '_blank');
+      window.open(targetUrl, '_blank', 'noopener,noreferrer');
       setQuery('');
     }
   };

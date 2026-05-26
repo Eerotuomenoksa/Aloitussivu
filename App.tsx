@@ -20,6 +20,7 @@ import { mergeApprovedLinksIntoShortcuts } from './approvedLinks';
 import { useApprovedLinkSuggestionsVersion } from './approvedLinks';
 import { LanguageCode, LanguageProvider, LANGUAGES, useI18n } from './i18n';
 import { APP_VERSION_LABEL } from './appVersion';
+import { installUsageTracking } from './usageTracking';
 
 const MIN_UI_SCALE = 50;
 const MAX_UI_SCALE = 200;
@@ -215,6 +216,7 @@ const AppContent: React.FC = () => {
   const fullBleedWidth = `calc(100vw / ${uiZoom})`;
   useLinkVisibilityVersion();
   useApprovedLinkSuggestionsVersion();
+  useEffect(() => installUsageTracking('index'), []);
   const openReportModal = useCallback((draft: LinkReportDraft) => setReportDraft(draft), []);
   const closeReportModal = useCallback(() => setReportDraft(null), []);
   const selectedShortcut = selectedCategory ? mergeApprovedLinksIntoShortcuts([selectedCategory])[0] ?? selectedCategory : null;
