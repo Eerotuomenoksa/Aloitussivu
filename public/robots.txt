@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /yllapito.html
+Disallow: /ehdotukset.html
+Disallow: /linkit.html
+Disallow: /muutosloki.html
+
+Sitemap: https://eerotuomenoksa.github.io/Aloitussivu/sitemap.xml

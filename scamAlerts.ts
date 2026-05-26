@@ -6,7 +6,7 @@ import {
   updateDoc,
   doc,
 } from 'firebase/firestore';
-import { getFirebaseDb, isFirebaseConfigured } from './firebaseClient';
+import { getFirebaseAuth, getFirebaseDb, isFirebaseConfigured } from './firebaseClient';
 
 export type ScamAlertSeverity = 'info' | 'warning' | 'danger';
 
@@ -115,22 +115,23 @@ export const getNcscScrapeNowUrl = () => {
 };
 
 export const runNcscScrapeNow = async () => {
-  const secret = import.meta.env.VITE_ADMIN_TRIGGER_SECRET?.trim();
   const url = getNcscScrapeNowUrl();
+  const user = getFirebaseAuth()?.currentUser;
 
-  if (!secret) {
-    throw new Error('VITE_ADMIN_TRIGGER_SECRET puuttuu.');
+  if (!user) {
+    throw new Error('Kirjaudu ylläpitäjänä ennen Kyberturvallisuuskeskuksen ajon käynnistämistä.');
   }
   if (!url) {
     throw new Error('Cloud Function -osoitetta ei voitu muodostaa.');
   }
 
+  const idToken = await user.getIdToken();
   let response: Response;
   try {
     response = await fetch(url, {
       method: 'POST',
       headers: {
-        'x-admin-secret': secret,
+        Authorization: `Bearer ${idToken}`,
       },
     });
   } catch {
@@ -142,8 +143,12 @@ export const runNcscScrapeNow = async () => {
       throw new Error('Kyberturvallisuuskeskuksen ajon Cloud Functionia ei löydy. Deployaa ncscScrapeNow Firebaseen.');
     }
 
+    if (response.status === 401) {
+      throw new Error('Kirjautuminen ei kelpaa Kyberturvallisuuskeskuksen ajon käynnistämiseen. Kirjaudu uudelleen ylläpitäjänä.');
+    }
+
     if (response.status === 403) {
-      throw new Error('Kyberturvallisuuskeskuksen ajon salainen avain ei täsmää. Tarkista ADMIN_TRIGGER_SECRET ja VITE_ADMIN_TRIGGER_SECRET.');
+      throw new Error('Käyttäjällä ei ole oikeutta käynnistää Kyberturvallisuuskeskuksen ajoa.');
     }
 
     throw new Error(`Kyberturvallisuuskeskuksen ajon käynnistys epäonnistui (${response.status}).`);

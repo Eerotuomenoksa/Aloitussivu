@@ -13,6 +13,7 @@
     "newspapers": "node scripts/update-newspapers.mjs",
     "newspaper-feeds": "node scripts/update-newspaper-feeds.mjs",
     "changelog": "node scripts/update-changelog.mjs",
+    "check:secrets": "node scripts/check-no-hardcoded-secrets.mjs",
     "preview": "vite preview"
   },
   "dependencies": {

@@ -36,34 +36,10 @@ service cloud.firestore {
         && request.resource.data.note.size() <= 1000;
     }
 
-    function onlyTogglesVisibility() {
-      return request.resource.data.diff(resource.data).affectedKeys().hasOnly([
-        'active',
-        'updatedAt'
-      ])
-      && request.resource.data.active is bool
-      && request.resource.data.updatedAt is string;
-    }
-
-    function onlyReviewsLinkReport() {
-      return request.resource.data.diff(resource.data).affectedKeys().hasOnly([
-        'status',
-        'reviewedAt',
-        'reviewedBy',
-        'updatedAt',
-        'approvedLinkId',
-        'reviewReason'
-      ])
-      && request.resource.data.status in ['approved', 'rejected']
-      && request.resource.data.reviewedAt is string
-      && request.resource.data.reviewedBy is string
-      && request.resource.data.updatedAt is string;
-    }
-
     match /linkReports/{reportId} {
       allow create: if isValidReport();
       allow read, delete: if isAdmin();
-      allow update: if isAdmin() || (request.auth != null && onlyReviewsLinkReport());
+      allow update: if isAdmin();
     }
 
     match /approvedLinks/{linkId} {
@@ -78,8 +54,7 @@ service cloud.firestore {
 
     match /scamAlerts/{alertId} {
       allow read: if true;
-      allow create, delete: if isAdmin();
-      allow update: if isAdmin() || (request.auth != null && onlyTogglesVisibility());
+      allow create, update, delete: if isAdmin();
     }
 
     match /ncscScrapeLog/{logId} {

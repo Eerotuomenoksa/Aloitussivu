@@ -2,8 +2,15 @@ node_modules/
 dist/
 functions/lib/
 .env
+functions/.env
+functions/.env.local
 .env.local
 *.local
+*.log
+*.err.log
+*.out.log
+dev-server.*
+devserver.*
 .vite-dev*.log
 .vite-current*.log
 visual-check-report/

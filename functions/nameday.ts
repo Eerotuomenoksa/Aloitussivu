@@ -1,6 +1,7 @@
 import { onRequest } from 'firebase-functions/v2/https';
 import { getApps, initializeApp } from 'firebase-admin/app';
 import { FieldValue, getFirestore } from 'firebase-admin/firestore';
+import { getAllowedOrigins } from './cors';
 
 type NameDayItem = {
   name?: string;
@@ -52,7 +53,7 @@ export const namedayToday = onRequest(
     region: 'europe-west1',
     memory: '256MiB',
     timeoutSeconds: 30,
-    cors: true,
+    cors: getAllowedOrigins(),
     invoker: 'public',
   },
   async (_req, res) => {
