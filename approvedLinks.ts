@@ -26,7 +26,18 @@ const APPROVED_LINKS_CHANGE_EVENT = 'approvedlinkchange';
 const APPROVED_LINKS_COLLECTION = 'approvedLinks';
 
 const normalizeText = (value: string) => value.trim().toLocaleLowerCase('fi-FI').replace(/\s+/g, ' ');
-const normalizeUrl = (url: string) => url.trim().replace(/\/+$/, '');
+const normalizeUrl = (url: string) => {
+  try {
+    const parsed = new URL(url.trim());
+    parsed.protocol = 'https:';
+    parsed.hostname = parsed.hostname.replace(/^www\./, '');
+    parsed.hash = '';
+    parsed.pathname = parsed.pathname.replace(/\/+$/, '') || '/';
+    return parsed.toString().replace(/\/+$/, '');
+  } catch {
+    return url.trim().replace(/^https?:\/\//i, '').replace(/^www\./i, '').replace(/\/+$/, '').toLocaleLowerCase('fi-FI');
+  }
+};
 
 const readJsonArray = <T,>(key: string): T[] => {
   try {
@@ -173,11 +184,12 @@ export const mergeApprovedLinksIntoShortcuts = (shortcuts: Shortcut[]) => {
     const approved = byCategory.get(normalizeText(shortcut.name)) ?? [];
     if (approved.length === 0) return shortcut;
 
-    const existingUrls = new Set(shortcut.providers.map((provider) => provider.url.replace(/\/+$/, '')));
+    const existingUrls = new Set(shortcut.providers.map((provider) => normalizeUrl(provider.url)));
+    const existingNames = new Set(shortcut.providers.map((provider) => normalizeText(provider.name)));
     const mergedProviders = [
       ...shortcut.providers,
       ...approved
-        .filter((link) => !existingUrls.has(link.url.replace(/\/+$/, '')))
+        .filter((link) => !existingUrls.has(normalizeUrl(link.url)) && !existingNames.has(normalizeText(link.name)))
         .map((link) => ({
           name: link.name,
           url: link.url,

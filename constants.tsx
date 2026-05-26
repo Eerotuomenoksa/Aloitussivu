@@ -427,6 +427,7 @@ export const SHORTCUTS: Shortcut[] = [
     providers: [
       { name: 'Geni', url: 'https://www.geni.com' },
       { name: 'MyHeritage', url: 'https://www.myheritage.fi' },
+      { name: 'Sukujutut', url: 'https://www.sukujutut.fi/' },
       { name: 'Sukuhaku', url: 'https://www.genealogia.fi' },
       { name: 'Kansallisarkisto', url: 'https://arkisto.fi' }
     ]

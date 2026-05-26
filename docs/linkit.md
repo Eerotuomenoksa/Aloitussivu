@@ -14,10 +14,10 @@ Tämä tiedosto summaa sovelluksessa olevat linkit. Varsinainen avattava taulukk
 | Paikallinen ohjattu liikunta | 152 |
 | Paikalliset erikoislinkit | 25 |
 | Paikalliset urheiluseurat | 41 |
-| Palvelukategoriat | 377 |
+| Palvelukategoriat | 378 |
 | Sovelluksen omat linkit | 6 |
 
-Yhteensä: 1252 linkkiä.
+Yhteensä: 1253 linkkiä.
 Puhelinnumeroita linkkikorteissa: 46.
 
 Tarkistusvirheitä: 5.
