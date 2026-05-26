@@ -242,7 +242,7 @@ const AppContent: React.FC = () => {
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-white focus:px-5 focus:py-3 focus:font-black focus:text-slate-950 focus:shadow-2xl focus:outline-none focus:ring-4 focus:ring-[#d09a32]"
       >
-        Siirry sisältöön
+        {t('skipToContent')}
       </a>
       <div
         className="relative p-3 md:p-10 lg:p-16 max-w-[1900px] mx-auto space-y-6 md:space-y-12 transition-all duration-300"
@@ -254,8 +254,8 @@ const AppContent: React.FC = () => {
           style={{ background: headerBackgrounds[logoPhase][isDarkMode ? 'dark' : 'light'], width: fullBleedWidth }}
         >
           <div className="mx-auto w-full max-w-[1900px] px-3 py-3 md:px-10 md:py-8 lg:px-16">
-          <h1 className="sr-only">SeniorSurfin aloitussivu</h1>
-          <nav className="relative flex flex-wrap items-start gap-2 md:gap-5 xl:grid xl:grid-cols-[minmax(18rem,28rem)_minmax(0,46rem)_auto] xl:items-center" aria-label="Sivun yläosa">
+          <h1 className="sr-only">{t('pageTitle')}</h1>
+          <nav className="relative flex flex-wrap items-start gap-2 md:gap-5 xl:grid xl:grid-cols-[minmax(18rem,28rem)_minmax(0,46rem)_auto] xl:items-center" aria-label={t('topArea')}>
             <div className="hidden items-center md:flex md:min-w-[18rem]" data-tour="logo">
               <TimeAwareLogo phase={logoPhase} isDarkMode={isDarkMode} className="h-auto w-full max-w-[28rem] drop-shadow-lg" />
             </div>
@@ -269,7 +269,7 @@ const AppContent: React.FC = () => {
                 )}
                 {uiVisibility.weather && (
                   <div data-tour="weather">
-                    <WeatherCard onLocationResolved={updateLocality} variant="compact" />
+                    <WeatherCard locality={regionalLocality} onLocationResolved={updateLocality} variant="compact" />
                   </div>
                 )}
               </div>
@@ -283,7 +283,7 @@ const AppContent: React.FC = () => {
               <button
                 onClick={() => setIsHomepageOpen(true)}
                 className="bg-white/95 hover:bg-white text-slate-950 px-4 py-2.5 rounded-full font-black text-base transition-all active:scale-95 shadow-md border-b-4 border-black/20 focus:ring-4 focus:ring-white/60 focus:outline-none md:px-5 md:py-3 md:text-lg"
-                aria-label="Avaa ohje aloitussivuksi asettamiseen"
+                aria-label={t('openHomepageHelp')}
               >
                 🏠 {t('help')}
               </button>
@@ -351,7 +351,7 @@ const AppContent: React.FC = () => {
 
             <div className="mb-4 rounded-2xl border-2 border-slate-200 dark:border-slate-700 p-4">
               <p className="mb-3 font-black text-slate-900 dark:text-white">
-                Tekstin koko
+                {t('textSize')}
               </p>
               <div className="flex flex-wrap items-center gap-3">
                 <button
@@ -423,6 +423,7 @@ const AppContent: React.FC = () => {
               <RegionalServicesPanel
                 locality={regionalLocality}
                 fontSizeStep={fontSizeStep}
+                onLocalitySelected={updateLocality}
                 onReportLink={openReportModal}
                 showNews={uiVisibility.regionalNews}
                 showScamAlerts={uiVisibility.scamAlerts}
@@ -466,14 +467,14 @@ const AppContent: React.FC = () => {
               {t('reportNewLink')}
             </button>
           </div>
-          <nav className="flex flex-wrap justify-center gap-4" aria-label="Alatunnisteen linkit">
+          <nav className="flex flex-wrap justify-center gap-4" aria-label={t('footerLinks')}>
             <a
               href="./yllapito.html"
               className="min-h-14 rounded-full bg-white/95 px-5 py-3 text-sm font-black text-[#173e5f] shadow-sm hover:bg-white hover:underline focus:outline-none focus:ring-4 focus:ring-white/60 md:min-h-12"
               target="_blank"
               rel="noopener noreferrer"
             >
-              Ylläpito
+              {t('admin')}
             </a>
             <a
               href="./muutosloki.html"
@@ -497,7 +498,7 @@ const AppContent: React.FC = () => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              Sivua tukemassa
+              {t('supporters')}
             </a>
           </nav>
           {isLinkVisible('https://seniorsurf.fi/') && isLinkVisible('https://seniorsurf.fi/wp-content/uploads/SeniorSurf_White-320-x-102-px.svg') && (
@@ -509,7 +510,7 @@ const AppContent: React.FC = () => {
             >
               <img
                 src="https://seniorsurf.fi/wp-content/uploads/SeniorSurf_White-320-x-102-px.svg"
-                alt="SeniorSurf logo"
+                alt={t('seniorSurfLogoAlt')}
                 className="h-16 w-auto brightness-0 dark:brightness-100"
                 loading="lazy"
               />

@@ -12,6 +12,7 @@ interface WeatherData {
 }
 
 interface WeatherCardProps {
+  locality?: LocalityInfo | null;
   onLocationResolved?: (location: LocalityInfo) => void;
   variant?: 'default' | 'compact';
 }
@@ -28,7 +29,7 @@ const vantaaDistricts = new Set([
   'tikkurila',
 ]);
 
-const WeatherCard: React.FC<WeatherCardProps> = ({ onLocationResolved, variant = 'default' }) => {
+const WeatherCard: React.FC<WeatherCardProps> = ({ locality, onLocationResolved, variant = 'default' }) => {
   const { language, t } = useI18n();
   useLinkVisibilityVersion();
   const [locationName, setLocationName] = useState<string>(t('location'));
@@ -87,13 +88,34 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ onLocationResolved, variant =
   };
 
   useEffect(() => {
+    let isActive = true;
+
+    const fetchCurrentWeather = async (lat: number, lon: number): Promise<WeatherData> => {
+      const weatherRes = await fetch(
+        `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`,
+        { cache: 'no-cache' }
+      );
+      if (!weatherRes.ok) {
+        throw new Error(`Weather request failed: ${weatherRes.status}`);
+      }
+      const weatherData = await weatherRes.json();
+      if (!weatherData.current_weather) {
+        throw new Error('Weather response missing current weather');
+      }
+
+      return {
+        temp: Math.round(weatherData.current_weather.temperature),
+        condition: getWeatherText(weatherData.current_weather.weathercode),
+        icon: getWeatherIcon(weatherData.current_weather.weathercode),
+      };
+    };
+
     const fetchWeather = async (lat: number, lon: number, shouldLocalizeLinks = true) => {
       try {
-        const weatherRes = await fetch(
-          `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`,
-          { cache: 'no-cache' }
-        );
-        const weatherData = await weatherRes.json();
+        if (isActive) {
+          setLoading(true);
+        }
+        const currentWeather = await fetchCurrentWeather(lat, lon);
         
         const geoRes = await fetch(
           `https://nominatim.openstreetmap.org/reverse?format=json&addressdetails=1&accept-language=fi&lat=${lat}&lon=${lon}&zoom=12`
@@ -108,10 +130,12 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ onLocationResolved, variant =
         const localizedMunicipality = getLocalizedMunicipalityName(municipalityInfo, language) || city;
         const fallbackMunicipality = getLocalizedMunicipalityName(findMunicipality('Helsinki'), language) || 'Helsinki';
 
+        if (!isActive) return;
+
         setWeather({
-          temp: Math.round(weatherData.current_weather.temperature),
-          condition: getWeatherText(weatherData.current_weather.weathercode),
-          icon: getWeatherIcon(weatherData.current_weather.weathercode)
+          temp: currentWeather.temp,
+          condition: currentWeather.condition,
+          icon: currentWeather.icon,
         });
         setLocationName(shouldLocalizeLinks ? (isInFinland ? localizedMunicipality : city) : fallbackMunicipality);
         if (shouldLocalizeLinks) {
@@ -119,11 +143,76 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ onLocationResolved, variant =
         }
         setError(null);
       } catch (err) {
-        setError(t('weatherUnavailable'));
+        if (isActive) {
+          setError(t('weatherUnavailable'));
+        }
       } finally {
-        setLoading(false);
+        if (isActive) {
+          setLoading(false);
+        }
       }
     };
+
+    const fetchWeatherForMunicipality = async (nextLocality: LocalityInfo) => {
+      try {
+        setLoading(true);
+        setError(null);
+        const municipalityInfo = findMunicipality(nextLocality.municipality);
+        const displayName = getLocalizedMunicipalityName(municipalityInfo, language) || nextLocality.displayName || nextLocality.municipality;
+        setLocationName(displayName);
+
+        if (typeof nextLocality.lat === 'number' && typeof nextLocality.lon === 'number') {
+          const currentWeather = await fetchCurrentWeather(nextLocality.lat, nextLocality.lon);
+          if (!isActive) return;
+          setWeather(currentWeather);
+          setError(null);
+          setLoading(false);
+          return;
+        }
+
+        const geoRes = await fetch(
+          `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(nextLocality.municipality)}&count=1&language=fi&format=json&countryCode=FI`,
+          { cache: 'no-cache' }
+        );
+        const geoData = await geoRes.json();
+        const match = Array.isArray(geoData.results) ? geoData.results[0] : null;
+        const lat = match ? Number(match.latitude) : Number.NaN;
+        const lon = match ? Number(match.longitude) : Number.NaN;
+        if (!Number.isFinite(lat) || !Number.isFinite(lon)) {
+          throw new Error('Municipality coordinates not found');
+        }
+
+        if (!isActive) return;
+        onLocationResolved?.({
+          ...nextLocality,
+          municipality: municipalityInfo?.name ?? nextLocality.municipality,
+          displayName,
+          lat,
+          lon,
+          countryCode: 'fi',
+          isInFinland: true,
+        });
+
+        const currentWeather = await fetchCurrentWeather(lat, lon);
+        if (!isActive) return;
+
+        setWeather(currentWeather);
+        setError(null);
+        setLoading(false);
+      } catch (err) {
+        if (isActive) {
+          setError(t('weatherUnavailable'));
+          setLoading(false);
+        }
+      }
+    };
+
+    if (locality?.municipality) {
+      fetchWeatherForMunicipality(locality);
+      return () => {
+        isActive = false;
+      };
+    }
 
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -133,7 +222,11 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ onLocationResolved, variant =
     } else {
       fetchWeather(60.1695, 24.9354, false);
     }
-  }, [language, onLocationResolved, t]);
+
+    return () => {
+      isActive = false;
+    };
+  }, [language, locality, onLocationResolved, t]);
 
   const isCompact = variant === 'compact';
 
@@ -146,7 +239,7 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ onLocationResolved, variant =
         <h3 className={`${isCompact ? 'text-sm leading-tight md:text-xl' : 'text-2xl'} font-black opacity-90 tracking-tight`}>{locationName}</h3>
         {loading ? (
           <p className="mt-1 rounded-xl bg-white/15 px-2 py-1.5 text-xs font-black text-white md:mt-2 md:px-3 md:py-2 md:text-base" role="status" aria-live="polite">
-            Haetaan säätä...
+            {t('weatherLoading')}
           </p>
         ) : error ? (
           <p className="text-xl font-bold">{error}</p>

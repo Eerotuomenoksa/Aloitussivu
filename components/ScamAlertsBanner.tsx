@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { ScamAlertEntry, subscribeScamAlerts } from '../scamAlerts';
+import { useI18n } from '../i18n';
 
 const severityStyles = {
   info: 'border-[#9fcbd6] bg-[#dceff4] text-slate-950 dark:border-white/15 dark:bg-[#173e5f] dark:text-white',
@@ -17,11 +18,11 @@ const isVisibleAlert = (alert: ScamAlertEntry) => {
   return !Number.isFinite(expiresAt) || expiresAt > Date.now();
 };
 
-const formatDateTime = (value?: string) => {
+const formatDateTime = (value: string | undefined, locale: string) => {
   if (!value) return '';
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return '';
-  return new Intl.DateTimeFormat('fi-FI', {
+  return new Intl.DateTimeFormat(locale, {
     day: 'numeric',
     month: 'numeric',
     year: 'numeric',
@@ -30,15 +31,15 @@ const formatDateTime = (value?: string) => {
   }).format(date);
 };
 
-const getSourceLabel = (alert: ScamAlertEntry) => {
-  if (alert.source === 'ncsc-auto') return 'Kyberturvallisuuskeskus';
+const getSourceLabel = (alert: ScamAlertEntry, ncscSource: string, fallback: string) => {
+  if (alert.source === 'ncsc-auto') return ncscSource;
   if (alert.source) return alert.source;
-  return 'Huijausvaroitus';
+  return fallback;
 };
 
-const formatAlertMeta = (alert: ScamAlertEntry) => {
-  const time = formatDateTime(alert.createdAt);
-  return `${getSourceLabel(alert)}${time ? ` · ${time}` : ''}`;
+const formatAlertMeta = (alert: ScamAlertEntry, locale: string, ncscSource: string, fallback: string) => {
+  const time = formatDateTime(alert.createdAt, locale);
+  return `${getSourceLabel(alert, ncscSource, fallback)}${time ? ` · ${time}` : ''}`;
 };
 
 interface ScamAlertsBannerProps {
@@ -46,6 +47,7 @@ interface ScamAlertsBannerProps {
 }
 
 const ScamAlertsBanner: React.FC<ScamAlertsBannerProps> = ({ compact = false }) => {
+  const { locale, t } = useI18n();
   const [alerts, setAlerts] = useState<ScamAlertEntry[]>([]);
   const [selectedAlert, setSelectedAlert] = useState<ScamAlertEntry | null>(null);
 
@@ -69,7 +71,7 @@ const ScamAlertsBanner: React.FC<ScamAlertsBannerProps> = ({ compact = false }) 
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
             <h2 id="scam-alerts-dialog-heading" className="text-2xl md:text-4xl font-black text-slate-950 dark:text-white">
-              Huijausvaroitukset
+              {t('scamAlertsTitle')}
             </h2>
           </div>
           <button
@@ -77,7 +79,7 @@ const ScamAlertsBanner: React.FC<ScamAlertsBannerProps> = ({ compact = false }) 
             onClick={() => setSelectedAlert(null)}
             className="rounded-full bg-slate-200 hover:bg-slate-300 text-slate-900 px-5 py-3 font-black transition-all focus:outline-none focus:ring-4 focus:ring-slate-300 dark:bg-slate-800 dark:text-white dark:hover:bg-slate-700"
           >
-            Sulje
+            {t('close')}
           </button>
         </div>
 
@@ -86,7 +88,7 @@ const ScamAlertsBanner: React.FC<ScamAlertsBannerProps> = ({ compact = false }) 
             {selectedAlert.title}
           </h3>
           <p className="mt-1 text-sm font-bold opacity-75">
-            {formatAlertMeta(selectedAlert)}
+            {formatAlertMeta(selectedAlert, locale, t('ncscSource'), t('scamAlertsTitle'))}
           </p>
           <p className="mt-2 text-base md:text-lg font-bold leading-relaxed">
             {selectedAlert.body}
@@ -98,7 +100,7 @@ const ScamAlertsBanner: React.FC<ScamAlertsBannerProps> = ({ compact = false }) 
               rel="noopener noreferrer"
               className="mt-3 inline-flex text-sm font-black underline decoration-2 underline-offset-4"
             >
-              Lähde
+              {t('scamAlertSource')}
             </a>
           )}
         </article>
@@ -112,12 +114,12 @@ const ScamAlertsBanner: React.FC<ScamAlertsBannerProps> = ({ compact = false }) 
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h3 id="scam-alerts-heading" className="text-xl md:text-2xl font-black text-slate-950 dark:text-white">
-            Huijausvaroitukset
+            {t('scamAlertsTitle')}
           </h3>
         </div>
       </div>
 
-      <div className={compact ? 'space-y-3' : 'grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4'} aria-label="Huijausvaroitusten otsikot">
+      <div className={compact ? 'space-y-3' : 'grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4'} aria-label={t('scamAlertsHeadings')}>
         {visibleAlerts.map((alert) => (
           <button
             key={alert.id}
@@ -130,7 +132,7 @@ const ScamAlertsBanner: React.FC<ScamAlertsBannerProps> = ({ compact = false }) 
               {alert.title}
             </span>
             <span className="text-xs font-bold text-current opacity-75">
-              {formatAlertMeta(alert)}
+              {formatAlertMeta(alert, locale, t('ncscSource'), t('scamAlertsTitle'))}
             </span>
           </button>
         ))}
@@ -142,7 +144,7 @@ const ScamAlertsBanner: React.FC<ScamAlertsBannerProps> = ({ compact = false }) 
         rel="noopener noreferrer"
         className="inline-flex font-black text-brand-indigo hover:underline dark:text-blue-300"
       >
-        Lisää huijausvaroituksia
+        {t('moreScamAlerts')}
       </a>
 
       {alertDialog}

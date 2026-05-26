@@ -4,6 +4,7 @@ import { SHORTCUTS } from '../constants';
 import { LINK_STATS } from '../linkStats';
 import { LOCAL_LINK_STATS } from '../localStats';
 import { filterVisibleShortcuts, useLinkVisibilityVersion } from '../linkVisibility';
+import { useI18n } from '../i18n';
 
 interface InfoModalProps {
   isOpen: boolean;
@@ -14,6 +15,7 @@ interface InfoModalProps {
 }
 
 const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, fontSizeStep = 0, showOnboardingOffer = false, onStartOnboarding }) => {
+  const { t } = useI18n();
   useLinkVisibilityVersion();
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const titleClasses = ['text-3xl', 'text-4xl', 'text-5xl', 'text-6xl', 'text-7xl'];
@@ -55,13 +57,13 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, fontSizeStep = 0
         <div className="bg-slate-800 dark:bg-slate-950 p-8 text-white flex items-center justify-between sticky top-0 z-10">
           <div className="flex items-center gap-4">
             <span className={`transition-all duration-300 ${headerIconClasses[fontSizeStep]}`}>ℹ️</span>
-            <h2 id="info-modal-title" className={`font-bold transition-all duration-300 ${titleClasses[fontSizeStep]}`}>Tietoa SeniorSurfin aloitussivusta</h2>
+            <h2 id="info-modal-title" className={`font-bold transition-all duration-300 ${titleClasses[fontSizeStep]}`}>{t('infoTitle')}</h2>
           </div>
           <button 
             ref={closeButtonRef}
             onClick={onClose}
             className="w-12 h-12 flex items-center justify-center bg-white/20 hover:bg-white/30 rounded-full text-3xl font-bold transition-colors"
-            aria-label="Sulje tietoa-ikkuna"
+            aria-label={t('close')}
           >
             ✕
           </button>
@@ -69,9 +71,9 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, fontSizeStep = 0
         
         <div className="p-8 md:p-12 space-y-10 max-h-[75vh] overflow-y-auto">
           <section className="space-y-4">
-            <h3 className="text-2xl font-black dark:text-white underline decoration-blue-500 underline-offset-8">Mikä tämä on?</h3>
+            <h3 className="text-2xl font-black dark:text-white underline decoration-blue-500 underline-offset-8">{t('infoWhatTitle')}</h3>
             <p className="text-xl leading-relaxed dark:text-slate-300">
-              SeniorSurfin aloitussivu on suunniteltu helpottamaan internetin käyttöä. Olemme koonneet {categoryStats.length} tärkeää kategoriaa ja {totalLinks} näkyvää linkkiä, jotta löydät etsimäsi yhdellä klikkauksella.
+              {t('infoWhatBody')} {categoryStats.length} {t('categories').toLocaleLowerCase('fi-FI')} ja {totalLinks} {t('links').toLocaleLowerCase('fi-FI')}.
             </p>
           </section>
 
@@ -80,10 +82,10 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, fontSizeStep = 0
               <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
                 <div className="space-y-2">
                   <h3 className="text-2xl font-black text-amber-950 dark:text-amber-100">
-                    Tutustu sivuun lyhyesti
+                    {t('onboardingOfferTitle')}
                   </h3>
                   <p className="text-lg font-bold leading-relaxed text-amber-900 dark:text-amber-200">
-                    Esittely näyttää tärkeimmät kohdat: robottia, Google-hakua ja palveluhakua voi käyttää myös omalla äänellä.
+                    {t('onboardingOfferBody')}
                   </p>
                 </div>
                 <button
@@ -91,7 +93,7 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, fontSizeStep = 0
                   onClick={onStartOnboarding}
                   className="shrink-0 rounded-full bg-[#173e5f] px-6 py-4 text-lg font-black text-white shadow-md transition-all hover:bg-[#214f76] focus:outline-none focus:ring-4 focus:ring-[#d09a32]/40 active:scale-95"
                 >
-                  Aloita esittely
+                  {t('onboardingStart')}
                 </button>
               </div>
             </section>
@@ -109,9 +111,9 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, fontSizeStep = 0
           </section>
 
           <section className="space-y-4">
-            <h3 className="text-2xl font-black dark:text-white underline decoration-blue-500 underline-offset-8">Käyttötilasto</h3>
+            <h3 className="text-2xl font-black dark:text-white underline decoration-blue-500 underline-offset-8">{t('usageStatsTitle')}</h3>
             <p className="text-xl leading-relaxed dark:text-slate-300">
-              Sivustolla kerätään karkeaa käyttötilastoa palvelun kehittämiseksi: sivulatausten määrää ja linkkien klikkauksia päiväkohtaisesti. Tilasto ei käytä evästeitä, käyttäjätunnisteita, selaimen sormenjälkeä eikä IP-osoitteen tallennusta.
+              {t('usageStatsBody')}
             </p>
           </section>
 
@@ -167,9 +169,9 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, fontSizeStep = 0
           <button 
             onClick={onClose}
             className="text-xl font-bold text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white p-4"
-            aria-label="Sulje tietoa-ikkuna ja palaa takaisin"
+            aria-label={t('close')}
           >
-            Sulje ja palaa takaisin
+            {t('close')}
           </button>
         </div>
       </div>

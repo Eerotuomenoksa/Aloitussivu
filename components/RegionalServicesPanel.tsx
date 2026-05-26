@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { getLocalizedMunicipalityName, getRegionalLibraryProviders, getRegionalNewsProviders, getRegionalProviders, getRegionalRssFeeds, resolveRegionalContext } from '../localServices';
+import { getLocalizedMunicipalityName, getRegionalLibraryProviders, getRegionalNewsProviders, getRegionalProviders, getRegionalRssFeeds, normalizeMunicipality, resolveRegionalContext } from '../localServices';
 import { filterVisibleProviders } from '../linkVisibility';
 import { LocalityInfo, Provider, LinkReportDraft } from '../types';
 import LocalNewsHeadlines from './LocalNewsHeadlines';
@@ -9,6 +9,7 @@ import { useI18n } from '../i18n';
 interface RegionalServicesPanelProps {
   locality: LocalityInfo | null;
   fontSizeStep?: number;
+  onLocalitySelected?: (locality: LocalityInfo) => void;
   onReportLink?: (draft: LinkReportDraft) => void;
   showNews?: boolean;
   showScamAlerts?: boolean;
@@ -84,7 +85,7 @@ const ServiceLink: React.FC<{ provider: Provider; index: number; fontSizeStep: n
   );
 };
 
-const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality, fontSizeStep = 0, onReportLink, showNews = true, showScamAlerts = true }) => {
+const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality, fontSizeStep = 0, onLocalitySelected, onReportLink, showNews = true, showScamAlerts = true }) => {
   const { language, t } = useI18n();
   const [query, setQuery] = useState('');
   const [isManualQuery, setIsManualQuery] = useState(false);
@@ -106,6 +107,19 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
   const localizedMunicipalityName = context ? getLocalizedMunicipalityName(context.municipality, language) : '';
   const detectedMunicipalityName = locality?.municipality ? getLocalizedMunicipalityName(locality.municipality, language) : '';
   const displayedQuery = !isManualQuery && localizedMunicipalityName ? localizedMunicipalityName : query;
+
+  useEffect(() => {
+    if (!isManualQuery || !context) return;
+    if (locality?.municipality && normalizeMunicipality(locality.municipality) === normalizeMunicipality(context.municipality.name)) return;
+
+    onLocalitySelected?.({
+      municipality: context.municipality.name,
+      displayName: localizedMunicipalityName || context.displayName,
+      countryCode: 'fi',
+      isInFinland: true,
+    });
+  }, [context, isManualQuery, locality?.municipality, localizedMunicipalityName, onLocalitySelected]);
+
   const focusMunicipalityInput = () => {
     setIsManualQuery(true);
     window.requestAnimationFrame(() => {
