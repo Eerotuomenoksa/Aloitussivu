@@ -1,6 +1,8 @@
 import React from 'react';
+import { useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
+import { installUsageTracking } from './usageTracking';
 
 const adminLinks = [
   {
@@ -9,8 +11,8 @@ const adminLinks = [
     href: './muutosloki.html',
   },
   {
-    title: 'Kirjautuminen ja huijausvaroitukset',
-    description: 'Kirjaudu ylläpitoon, käsittele linkkiehdotukset ja aja Kyberturvallisuuskeskuksen huijausvaroitusten haku.',
+    title: 'Kirjautuminen, käyttötilastot ja huijausvaroitukset',
+    description: 'Kirjaudu ylläpitoon, tarkastele karkeita käyttötilastoja, käsittele linkkiehdotukset ja aja Kyberturvallisuuskeskuksen haku.',
     href: './ehdotukset.html',
   },
   {
@@ -32,6 +34,8 @@ function HomeLink({ className = '' }: { className?: string }) {
 }
 
 function App() {
+  useEffect(() => installUsageTracking('yllapito'), []);
+
   return (
     <main className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white">
       <div className="mx-auto max-w-6xl px-4 py-8 md:px-8 md:py-12 space-y-10">

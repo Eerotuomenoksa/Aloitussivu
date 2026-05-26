@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import vtklLogo from './assets/vtkl_logo_vaaka_FI_SE_RGB.png';
+import { installUsageTracking } from './usageTracking';
 
 const principles = [
   'Tukijana oleminen ei vaikuta sivuston linkkien valintaan, järjestykseen, hakutuloksiin tai sanamuotoihin.',
@@ -12,6 +13,8 @@ const principles = [
 ];
 
 function App() {
+  useEffect(() => installUsageTracking('sivua-tukemassa'), []);
+
   return (
     <main className="min-h-screen bg-slate-50 text-slate-950">
       <div className="mx-auto max-w-6xl px-4 py-8 md:px-8 md:py-12">

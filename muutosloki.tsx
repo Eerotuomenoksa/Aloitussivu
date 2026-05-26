@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import {
@@ -9,6 +9,7 @@ import {
   type ChangelogCommit,
 } from './changelogData';
 import { APP_VERSION_BASIS } from './appVersion';
+import { installUsageTracking } from './usageTracking';
 
 function formatCommitHash(hash: string) {
   return hash.slice(0, 7);
@@ -45,6 +46,8 @@ function HomeLink() {
 }
 
 function App() {
+  useEffect(() => installUsageTracking('muutosloki'), []);
+
   const latestSummary = CHANGELOG_WORKTREE_SUMMARY[0] || CHANGELOG_RECENT_COMMITS[0]?.subject || '';
 
   return (

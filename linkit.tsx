@@ -1,10 +1,11 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import { SHORTCUTS } from './constants';
 import { MUNICIPALITIES } from './municipalRegistry';
 import { getRegionalLibraryProviders, getRegionalNewsProviders, getRegionalProviders, getRegionalPublicTransportProviders, getRegionalRssFeeds, getRegionalServiceAreaMunicipalities, normalizeMunicipality } from './localServices';
 import { Municipality, Provider } from './types';
+import { installUsageTracking } from './usageTracking';
 
 interface GeneralLinkRow {
   name: string;
@@ -238,6 +239,8 @@ const LinkList = ({ links }: { links: RegionalLinkRow[] }) => (
 );
 
 function App() {
+  useEffect(() => installUsageTracking('linkit'), []);
+
   const [query, setQuery] = useState('');
   const [activeView, setActiveView] = useState<ActiveView>('regional');
   const municipalityTopScrollRef = useRef<HTMLDivElement>(null);

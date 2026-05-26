@@ -42,6 +42,7 @@ import {
   formatDateKey,
   shiftDate,
 } from './usageStats';
+import { installUsageTracking } from './usageTracking';
 
 const normalizeUrl = (url: string) => url.trim().replace(/\/+$/, '');
 
@@ -213,6 +214,8 @@ function App() {
   const hasAdminAccess = isAdminUser(user);
   const userEmail = getUserEmail(user);
   const authDebugInfo = getUserAuthDebugInfo(user);
+
+  useEffect(() => installUsageTracking('ehdotukset'), []);
 
   useEffect(() => {
     const unsubscribe = subscribeToAuth((nextUser) => {
