@@ -54,9 +54,7 @@ const isRateLimited = (clientKey: string) => {
   return current.count > RATE_LIMIT_MAX_REQUESTS;
 };
 
-const verifyAppCheckIfRequired = async (req: Request) => {
-  if (process.env.GEMINI_REQUIRE_APP_CHECK !== 'true') return true;
-
+const verifyAppCheck = async (req: Request) => {
   const token = req.header('X-Firebase-AppCheck');
   if (!token) return false;
 
@@ -88,7 +86,7 @@ export const geminiChat = onRequest(
       return;
     }
 
-    if (!await verifyAppCheckIfRequired(req)) {
+    if (!await verifyAppCheck(req)) {
       res.status(401).json({ error: 'Invalid App Check token' });
       return;
     }
