@@ -1,6 +1,7 @@
 import { createHash } from 'node:crypto';
 import { onRequest, type Request } from 'firebase-functions/v2/https';
 import { getApps, initializeApp } from 'firebase-admin/app';
+import { getAppCheck } from 'firebase-admin/app-check';
 import { FieldValue, getFirestore } from 'firebase-admin/firestore';
 import { getAllowedOrigins } from './cors';
 
@@ -23,6 +24,25 @@ const getAdminDb = () => {
     initializeApp();
   }
   return getFirestore();
+};
+
+const getAdminAppCheck = () => {
+  if (getApps().length === 0) {
+    initializeApp();
+  }
+  return getAppCheck();
+};
+
+const verifyAppCheck = async (req: Request) => {
+  const token = req.header('X-Firebase-AppCheck');
+  if (!token) return false;
+
+  try {
+    await getAdminAppCheck().verifyToken(token);
+    return true;
+  } catch {
+    return false;
+  }
 };
 
 const getDateKey = () => new Intl.DateTimeFormat('sv-SE', {
@@ -129,6 +149,11 @@ export const trackUsage = onRequest(
   async (req, res) => {
     if (req.method !== 'POST') {
       res.status(405).send('Method Not Allowed');
+      return;
+    }
+
+    if (!await verifyAppCheck(req)) {
+      res.status(204).send();
       return;
     }
 

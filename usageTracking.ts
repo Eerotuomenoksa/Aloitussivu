@@ -1,3 +1,5 @@
+import { getFirebaseAppCheckToken } from './firebaseClient';
+
 type UsageEvent = {
   type: 'pageview' | 'linkClick';
   page: string;
@@ -21,17 +23,20 @@ const getPageName = () => {
   return path.replace(/\.html$/i, '') || 'index';
 };
 
-const sendUsageEvent = (event: UsageEvent) => {
+const sendUsageEvent = async (event: UsageEvent) => {
   const url = getUsageTrackUrl();
   if (!url || typeof navigator === 'undefined') return;
 
   const body = JSON.stringify(event);
-  const blob = new Blob([body], { type: 'application/json' });
-  if (navigator.sendBeacon?.(url, blob)) return;
+  const appCheckToken = await getFirebaseAppCheckToken();
+  if (!appCheckToken) return;
 
   fetch(url, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Firebase-AppCheck': appCheckToken,
+    },
     body,
     keepalive: true,
   }).catch(() => {
@@ -40,11 +45,11 @@ const sendUsageEvent = (event: UsageEvent) => {
 };
 
 export const trackPageView = (page = getPageName()) => {
-  sendUsageEvent({ type: 'pageview', page });
+  void sendUsageEvent({ type: 'pageview', page });
 };
 
 export const trackLinkClick = (values: { url: string; label?: string; category?: string; page?: string }) => {
-  sendUsageEvent({
+  void sendUsageEvent({
     type: 'linkClick',
     page: values.page || getPageName(),
     url: values.url,
