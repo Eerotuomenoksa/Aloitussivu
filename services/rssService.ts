@@ -15,10 +15,22 @@ interface Rss2JsonResponse {
   items?: Rss2JsonItem[];
 }
 
+const HTML_ENTITIES: Record<string, string> = {
+  '&amp;': '&',
+  '&lt;': '<',
+  '&gt;': '>',
+  '&quot;': '"',
+  '&#39;': "'",
+  '&apos;': "'",
+  '&nbsp;': ' ',
+};
+
 const decodeText = (value: string) => {
-  const textarea = document.createElement('textarea');
-  textarea.innerHTML = value;
-  return textarea.value.trim();
+  const decoded = value
+    .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(Number(code)))
+    .replace(/&#x([0-9a-fA-F]+);/g, (_, code) => String.fromCharCode(parseInt(code, 16)))
+    .replace(/&(amp|lt|gt|quot|#39|apos|nbsp);/g, (entity) => HTML_ENTITIES[entity] ?? entity);
+  return decoded.trim();
 };
 
 const fetchDirectFeed = async (feed: RssFeedConfig) => {
