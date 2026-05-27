@@ -92,3 +92,20 @@ Varmistus:
 
 1. Molemmat admin-tilit vaativat kirjautumisessa kaksivaiheisen vahvistuksen.
 2. Vahvistus toimii ennen kuin Firestore/admin-oikeuksien Custom Claims -muutos julkaistaan.
+
+## SEC-011: Aseta budjettihalytys Firebase/Google Cloud -projektille
+
+Priority: P2
+Status: Odottaa ihmisen toimenpiteita
+
+Luo kustannushalytykset projektille `aloitussivu-5d50c`:
+
+1. Avaa `https://console.cloud.google.com/billing/budgets?project=aloitussivu-5d50c`.
+2. Luo projektibudjetti: `10 EUR / kk`.
+3. Lisaa halytysrajat: 50 %, 90 % ja 100 %.
+4. Luo erillinen Gemini API -kustannushalytys: `5 EUR / kk`, jos laskutusnakyma sallii palvelukohtaisen rajauksen.
+
+Varmistus:
+
+1. Budjettihalytykset lahettavat ilmoitukset oikeaan yllapitosahkopostiin.
+2. Firebase/Google Cloud -projektissa nakyy aktiivinen budjetti.
