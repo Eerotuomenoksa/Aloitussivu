@@ -73,3 +73,22 @@ Varmistus:
 
 1. Avaimen kaytto ilman sallittua referreria ei onnistu.
 2. Sivuston kirjautuminen, Firestore-luku ja App Check toimivat edelleen sallituilta domaineilta.
+
+## SEC-010: Pakota 2FA admin-tileille
+
+Priority: P2
+Status: Odottaa ihmisen toimenpiteita
+
+Ota kaksivaiheinen tunnistautuminen kayttoon kaikille admin-tileille ennen Custom Claims -muutoksen julkaisua.
+
+Tee molemmille admin-tileille:
+
+1. Avaa `https://myaccount.google.com/signinoptions/two-step-verification`.
+2. Ota kaksivaiheinen tunnistautuminen kayttoon.
+3. Kayta ensisijaisesti Authenticator-sovellusta tai turvallisuusavainta.
+4. Valta SMS-pohjaista vahvistusta, jos vahvempi vaihtoehto on saatavilla.
+
+Varmistus:
+
+1. Molemmat admin-tilit vaativat kirjautumisessa kaksivaiheisen vahvistuksen.
+2. Vahvistus toimii ennen kuin Firestore/admin-oikeuksien Custom Claims -muutos julkaistaan.
