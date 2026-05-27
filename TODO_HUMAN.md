@@ -46,3 +46,30 @@ Varmistus:
 
 1. `C:\dev\Aloitussivu\.git` loytyy, jos repo siirrettiin.
 2. OneDrive ei synkronoi `dist`-, `node_modules`- tai `.env`-sisaltoja.
+
+## SEC-003: Lisaa HTTP-referrer-rajoitus VITE_FIREBASE_API_KEY:lle
+
+Priority: P0
+Status: Odottaa ihmisen toimenpiteita
+
+Tee Google Cloud Consolessa projektissa `aloitussivu-5d50c`:
+
+1. Avaa API credentials: `https://console.cloud.google.com/apis/credentials?project=aloitussivu-5d50c`.
+2. Muokkaa selainpuolen Firebase API -avainta.
+3. Aseta Application restrictions -kohdaksi `HTTP referrers (web sites)`.
+4. Lisaa sallitut referrerit:
+   - `https://eerotuomenoksa.github.io/*`
+   - `https://aloitussivu-5d50c.web.app/*`
+   - `https://aloitussivu-5d50c.firebaseapp.com/*`
+   - `http://localhost:5173/*`
+5. Rajaa API restrictions -kohdassa avaimelle vain tarpeelliset rajapinnat:
+   - Identity Toolkit API
+   - Cloud Firestore API
+   - Firebase Installations API
+   - Token Service API
+   - Firebase App Check API
+
+Varmistus:
+
+1. Avaimen kaytto ilman sallittua referreria ei onnistu.
+2. Sivuston kirjautuminen, Firestore-luku ja App Check toimivat edelleen sallituilta domaineilta.
