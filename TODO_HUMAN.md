@@ -21,3 +21,28 @@ Varmistus:
 1. `functions/.env` on tyhja tai poistettu.
 2. `rg "AIzaSy" functions` ei loyda kovakoodattuja avaimia.
 3. `npm run check:secrets` menee lapi.
+
+## SEC-002: Siirra tyohakemisto OneDriven ulkopuolelle tai poista synkronointi alikansioilta
+
+Priority: P0
+Status: Odottaa ihmisen toimenpiteita
+
+Nykyinen tyohakemisto on OneDrive-polussa:
+
+`C:\Users\eero.tuomenoksa\OneDrive - Vanhustyön keskusliitto ry\Tiedostot\GitHub\Aloitussivu`
+
+Suositeltu korjaus:
+
+1. Kloonaa repo uuteen paikalliseen polkuun, esimerkiksi `C:\dev\Aloitussivu`.
+2. Tee jatkokehitys uudessa kansiossa.
+3. Varmista, ettei `node_modules`, `dist`, `.env` tai `functions/.env` synkronoidu pilveen.
+
+Vaihtoehtoinen korjaus, jos repo jaa OneDriveen:
+
+1. Sulje synkronointi pois kansioilta `node_modules`, `dist` ja salaisuuksia sisaltavilta `.env`-tiedostoilta.
+2. Varmista OneDriven asetuksista, ettei `functions/.env` paady pilveen.
+
+Varmistus:
+
+1. `C:\dev\Aloitussivu\.git` loytyy, jos repo siirrettiin.
+2. OneDrive ei synkronoi `dist`-, `node_modules`- tai `.env`-sisaltoja.
