@@ -110,7 +110,7 @@ export const subscribeApprovedLinkSuggestions = (callback: (links: ApprovedLinkS
 
 export const approveLinkSuggestion = async (suggestion: Omit<ApprovedLinkSuggestion, 'id' | 'createdAt'> & Partial<Pick<ApprovedLinkSuggestion, 'id' | 'createdAt'>>) => {
   const next: ApprovedLinkSuggestion = {
-    id: suggestion.id ?? `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+    id: suggestion.id ?? crypto.randomUUID(),
     createdAt: suggestion.createdAt ?? new Date().toISOString(),
     name: suggestion.name.trim(),
     url: suggestion.url.trim(),

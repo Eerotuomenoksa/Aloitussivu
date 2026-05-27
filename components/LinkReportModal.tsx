@@ -68,7 +68,7 @@ const LinkReportModal: React.FC<LinkReportModalProps> = ({ draft, onClose }) => 
     setIsSubmitting(true);
 
     const entry: LinkReportEntry = {
-      id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+      id: crypto.randomUUID(),
       type,
       name: trimmedName,
       url: trimmedUrl,
