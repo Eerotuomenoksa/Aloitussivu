@@ -29,9 +29,9 @@ messagingSenderId
 appId
 ```
 
-## 3. Lisää asetukset `.env`-tiedostoon
+## 3. Lisää julkiset selainasetukset paikalliseen `.env.local`-tiedostoon
 
-Projektin juuressa on `.env.example`. Tee sen rinnalle tiedosto `.env` ja täytä arvot Firebase Consolesta:
+Projektin juuressa on `.env.example`. Tee sen rinnalle tiedosto `.env.local` ja täytä vain julkiset Firebase Web SDK -arvot Firebase Consolesta:
 
 ```env
 VITE_FIREBASE_API_KEY=oma_api_key
@@ -42,7 +42,11 @@ VITE_FIREBASE_MESSAGING_SENDER_ID=oma_sender_id
 VITE_FIREBASE_APP_ID=oma_app_id
 ```
 
-Käynnistä kehityspalvelin uudelleen `.env`-muutosten jälkeen:
+Nämä `VITE_FIREBASE_*`-arvot päätyvät selaimen JavaScriptiin, joten ne eivät ole salaisuuksia. Älä lisää `.env.local`-, `.env`- tai `.env.example`-tiedostoihin salaisia API-avaimia tai tokeneita kuten `GEMINI_API_KEY`, `NAMEDAY_API_TOKEN` tai admin-secretiä. Cloud Functions -salaisuudet asetetaan Firebase Secret Manageriin.
+
+GitHub Pages -julkaisussa samat julkiset `VITE_FIREBASE_*`-arvot asetetaan GitHub Actionsin repository variables -arvoiksi, ei commitoituun `.env`-tiedostoon.
+
+Käynnistä kehityspalvelin uudelleen `.env.local`-muutosten jälkeen:
 
 ```bash
 npm run dev -- --host 127.0.0.1
@@ -126,7 +130,7 @@ http://127.0.0.1:5173/yllapito.html
 
 Jos sovellus sanoo edelleen, että Firebase ei ole määritetty:
 
-- varmista, että `.env` on projektin juuressa
+- varmista, että `.env.local` on projektin juuressa
 - varmista, että kaikki pakolliset `VITE_FIREBASE_*`-arvot on täytetty
 - käynnistä dev-palvelin uudelleen
 - varmista, ettei arvojen ympärillä ole lainausmerkkejä tai ylimääräisiä välilyöntejä
@@ -135,7 +139,7 @@ Jos kirjautuminen ei onnistu:
 
 - varmista, että Google-kirjautuminen on päällä Firebase Authenticationissa
 - varmista, että kirjaudut ylläpitäjän sähköpostilla
-- varmista, että Firebase-projektin `authDomain` on oikein `.env`-tiedostossa
+- varmista, että Firebase-projektin `authDomain` on oikein `.env.local`-tiedostossa
 
 Jos ylläpito avautuu mutta Firestore-tiedot eivät näy:
 

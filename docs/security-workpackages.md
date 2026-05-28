@@ -66,7 +66,7 @@ Kuka tahansa voi lukea sen selaimen DevTools → Network tai Sources -näkymäst
    - `services/geminiService.ts` — poista kaikki `import.meta.env.VITE_API_KEY` -viittaukset
    - `deploy.yml` — varmista ettei `VITE_API_KEY` ole env-lohkossa
 
-5. Varmista että `functions/.env` sisältää `GEMINI_API_KEY=<arvo>` (ei muuteta tähän).
+5. Varmista että `GEMINI_API_KEY` on asetettu Firebase Secret Manageriin, ei frontendin `.env`-tiedostoihin.
 
 **Testaustapa:**
 ```bash
@@ -181,7 +181,7 @@ aina kun ne ovat paljastuneet edes paikallisesti.
 1. **Gemini API-avain** (`AIzaSyCq...`):
    - Avaa https://aistudio.google.com/apikey
    - Poista vanha avain, luo uusi
-   - Päivitä `functions/.env` → `GEMINI_API_KEY=<uusi>`
+   - Aseta uusi arvo Firebase Secret Manageriin: `firebase functions:secrets:set GEMINI_API_KEY`
 
 2. **Firebase API-avain** (`AIzaSyBS...`):
    - Firebase Console → Project Settings → Web app → API key
@@ -189,8 +189,9 @@ aina kun ne ovat paljastuneet edes paikallisesti.
    - Lisää HTTP referrer -rajoitus: `https://tuotantodomain.fi/*`
 
 3. **Nimipäivä-API token** (`ndt_f3ee...`):
-   - Kirjaudu nimipaiva.fi-palveluun ja generoi uusi token
-   - Päivitä `functions/.env` → `NAMEDAY_API_TOKEN=<uusi>`
+   - Älä lisää uutta tokenia frontendin `.env`-tiedostoihin.
+   - Testikäytössä token voi olla vain paikallisessa, gitistä ohitetussa Cloud Functions -kehitysympäristössä.
+   - Tuotantosuositus on poistaa token kokonaan ja siirtyä SEC-015:n tiedostopohjaiseen nimipäiväratkaisuun.
 
 4. **ADMIN_TRIGGER_SECRET** — voidaan poistaa SEC-02 jälkeen kokonaan.
 
@@ -267,7 +268,7 @@ Lisää `deploy.yml` build-stepin jälkeen:
 
 2. Muuta vastaavasti `gemini.ts` (luodaan SEC-01:ssä).
 
-3. Lisää `functions/.env`-tiedostoon (ja `functions/index.ts` -lukemaan):
+3. Lisää Cloud Functions -ympäristöön, mieluiten Secret Manageriin tai ei-salaisten arvojen tapauksessa runtime-konfiguraatioon:
    ```
    ALLOWED_ORIGIN=https://seniorsurfin.fi
    ```

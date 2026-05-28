@@ -97,7 +97,10 @@ const getCurrentMonthKey = () => new Intl.DateTimeFormat('sv-SE', {
   month: '2-digit',
 }).format(new Date());
 
+const normalizeUsagePage = (page: string) => (page === 'index' ? 'etusivu' : page);
+
 const sumUsageStats = (stats: UsageDailyStats[]) => {
+  const pages = new Map<string, { count: number; page: string }>();
   const links = new Map<string, { count: number; url: string; label: string; category: string; page: string }>();
   let totalPageviews = 0;
   let totalLinkClicks = 0;
@@ -105,6 +108,13 @@ const sumUsageStats = (stats: UsageDailyStats[]) => {
   stats.forEach((day) => {
     totalPageviews += day.totalPageviews;
     totalLinkClicks += day.totalLinkClicks;
+
+    Object.values(day.pageviews).forEach((pageview) => {
+      const page = normalizeUsagePage(pageview.page);
+      const current = pages.get(page) ?? { count: 0, page };
+      current.count += pageview.count;
+      pages.set(page, current);
+    });
 
     Object.entries(day.linkClicks).forEach(([id, link]) => {
       const current = links.get(id) ?? {
@@ -122,9 +132,16 @@ const sumUsageStats = (stats: UsageDailyStats[]) => {
   return {
     totalPageviews,
     totalLinkClicks,
+    frontPageViews: pages.get('etusivu')?.count ?? 0,
     topLinks: [...links.values()].sort((a, b) => b.count - a.count).slice(0, 12),
   };
 };
+
+const getFrontPageViews = (day: UsageDailyStats) => (
+  Object.values(day.pageviews).reduce((total, pageview) => (
+    normalizeUsagePage(pageview.page) === 'etusivu' ? total + pageview.count : total
+  ), 0)
+);
 
 function HomeLink() {
   return (
@@ -377,7 +394,7 @@ function App() {
     },
     {
       label: 'Käyttötilastot',
-      count: usageTotals.totalPageviews,
+      count: usageTotals.frontPageViews,
       href: '#usage-stats',
       tone: usageStatsError ? 'bg-rose-100 text-rose-950 dark:bg-rose-900/40 dark:text-rose-100' : 'bg-cyan-100 text-cyan-950 dark:bg-cyan-900/40 dark:text-cyan-100',
       note: usageStatsError || `${usageRange.start} - ${usageRange.end}`,
@@ -391,7 +408,7 @@ function App() {
         ? `${currentNameDayMonth}: ${currentNameDayRequests}/${nameDayMonthlyLimit}. Viimeksi käytetty ${formatDateTime(nameDayApiUsage.lastUsedAt)}.`
         : (nameDayApiUsageError || 'Käyttöä ei ole vielä kirjattu.'),
     },
-  ], [activeScamAlerts.length, approvedLinks.length, currentNameDayMonth, currentNameDayRequests, issueReports.length, nameDayApiUsage, nameDayApiUsageError, nameDayMonthlyLimit, ncscAttentionLogs.length, pendingNewReports.length, usageRange.end, usageRange.start, usageStatsError, usageTotals.totalPageviews]);
+  ], [activeScamAlerts.length, approvedLinks.length, currentNameDayMonth, currentNameDayRequests, issueReports.length, nameDayApiUsage, nameDayApiUsageError, nameDayMonthlyLimit, ncscAttentionLogs.length, pendingNewReports.length, usageRange.end, usageRange.start, usageStatsError, usageTotals.frontPageViews]);
 
   useEffect(() => {
     setReportDrafts((current) => {
@@ -648,7 +665,7 @@ function App() {
                   </p>
                 </div>
                 <span className="rounded-full bg-cyan-100 px-4 py-2 text-lg font-black text-cyan-950 dark:bg-cyan-900/40 dark:text-cyan-100">
-                  {usageTotals.totalPageviews} latausta
+                  Etusivu {usageTotals.frontPageViews}
                 </span>
               </div>
 
@@ -700,8 +717,8 @@ function App() {
                 <>
                   <div className="grid gap-4 md:grid-cols-3">
                     <div className="rounded-2xl bg-slate-50 p-4 dark:bg-slate-950/60">
-                      <p className="text-sm font-black uppercase tracking-wide text-slate-500 dark:text-slate-400">Sivulataukset</p>
-                      <p className="mt-2 text-3xl font-black">{usageStatsBusy ? '...' : usageTotals.totalPageviews}</p>
+                      <p className="text-sm font-black uppercase tracking-wide text-slate-500 dark:text-slate-400">Etusivu</p>
+                      <p className="mt-2 text-3xl font-black">{usageStatsBusy ? '...' : usageTotals.frontPageViews}</p>
                     </div>
                     <div className="rounded-2xl bg-slate-50 p-4 dark:bg-slate-950/60">
                       <p className="text-sm font-black uppercase tracking-wide text-slate-500 dark:text-slate-400">Linkkiklikkaukset</p>
@@ -721,7 +738,7 @@ function App() {
                           <thead className="sticky top-0 bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200">
                             <tr>
                               <th className="px-4 py-3 font-black">Päivä</th>
-                              <th className="px-4 py-3 font-black">Lataukset</th>
+                              <th className="px-4 py-3 font-black">Etusivu</th>
                               <th className="px-4 py-3 font-black">Klikit</th>
                             </tr>
                           </thead>
@@ -729,7 +746,7 @@ function App() {
                             {usageStats.map((day) => (
                               <tr key={day.date} className="border-t border-slate-200 dark:border-slate-800">
                                 <td className="px-4 py-3 font-bold">{day.date}</td>
-                                <td className="px-4 py-3 font-bold">{day.totalPageviews}</td>
+                                <td className="px-4 py-3 font-bold">{getFrontPageViews(day)}</td>
                                 <td className="px-4 py-3 font-bold">{day.totalLinkClicks}</td>
                               </tr>
                             ))}

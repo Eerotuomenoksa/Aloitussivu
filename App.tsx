@@ -216,7 +216,7 @@ const AppContent: React.FC = () => {
   const fullBleedWidth = `calc(100vw / ${uiZoom})`;
   useLinkVisibilityVersion();
   useApprovedLinkSuggestionsVersion();
-  useEffect(() => installUsageTracking('index'), []);
+  useEffect(() => installUsageTracking('etusivu'), []);
   const openReportModal = useCallback((draft: LinkReportDraft) => setReportDraft(draft), []);
   const closeReportModal = useCallback(() => setReportDraft(null), []);
   const selectedShortcut = selectedCategory ? mergeApprovedLinksIntoShortcuts([selectedCategory])[0] ?? selectedCategory : null;
