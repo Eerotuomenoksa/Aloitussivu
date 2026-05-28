@@ -5,6 +5,8 @@ export type NameDayApiUsageStats = {
   totalRequests: number;
   successfulRequests: number;
   failedRequests: number;
+  monthlyRequests: Record<string, number>;
+  monthlyLimit: number;
   lastUsedAt: string;
 };
 
@@ -12,10 +14,23 @@ const ADMIN_STATS_COLLECTION = 'adminStats';
 const NAMEDAY_API_STATS_DOCUMENT = 'namedayApi';
 
 const toNumber = (value: unknown) => (typeof value === 'number' && Number.isFinite(value) ? value : 0);
+const toMonthlyRequests = (value: unknown) => {
+  if (!value || typeof value !== 'object') return {};
+  return Object.fromEntries(
+    Object.entries(value as Record<string, unknown>)
+      .map(([month, count]) => [month, toNumber(count)])
+      .filter(([, count]) => count > 0)
+  );
+};
+const getFirestoreReadErrorMessage = (error: { code?: string; message: string }) => (
+  error.code === 'permission-denied'
+    ? 'Nimipäivärajapinnan käyttölaskurin lukeminen epäonnistui: kirjaudu ylläpitäjän Google-tunnuksella, jolla on oikeus Firestore-sääntöihin.'
+    : `Nimipäivärajapinnan käyttölaskurin lukeminen epäonnistui: ${error.message}`
+);
 
 export const subscribeNameDayApiUsageStats = (
   callback: (stats: NameDayApiUsageStats | null) => void,
-  onError?: (message: string) => void
+  onError?: (message: string, error?: { code?: string; message: string }) => void
 ) => {
   if (!isFirebaseConfigured) {
     callback(null);
@@ -44,12 +59,14 @@ export const subscribeNameDayApiUsageStats = (
         totalRequests: toNumber(data.totalRequests),
         successfulRequests: toNumber(data.successfulRequests),
         failedRequests: toNumber(data.failedRequests),
+        monthlyRequests: toMonthlyRequests(data.monthlyRequests),
+        monthlyLimit: toNumber(data.monthlyLimit),
         lastUsedAt: typeof data.lastUsedAt === 'string' ? data.lastUsedAt : '',
       });
     },
     (error) => {
       callback(null);
-      onError?.(`Nimipäivärajapinnan käyttölaskurin lukeminen epäonnistui: ${error.message}`);
+      onError?.(getFirestoreReadErrorMessage(error), error);
     }
   );
 };

@@ -39,6 +39,12 @@ export interface NcscScrapeLogEntry {
 const SCAM_ALERTS_COLLECTION = 'scamAlerts';
 const NCSC_SCRAPE_LOG_COLLECTION = 'ncscScrapeLog';
 
+const getScrapeLogReadErrorMessage = (error: { code?: string; message: string }) => (
+  error.code === 'permission-denied'
+    ? 'Ajolokin lukeminen epäonnistui: kirjaudu ylläpitäjän Google-tunnuksella, jolla on oikeus Firestore-sääntöihin.'
+    : `Ajolokin lukeminen epäonnistui: ${error.message}`
+);
+
 export const subscribeScamAlerts = (callback: (alerts: ScamAlertEntry[]) => void) => {
   if (!isFirebaseConfigured) {
     callback([]);
@@ -65,7 +71,7 @@ export const subscribeScamAlerts = (callback: (alerts: ScamAlertEntry[]) => void
 
 export const subscribeNcscScrapeLogs = (
   callback: (logs: NcscScrapeLogEntry[]) => void,
-  onError?: (message: string) => void
+  onError?: (message: string, error?: { code?: string; message: string }) => void
 ) => {
   if (!isFirebaseConfigured) {
     callback([]);
@@ -91,7 +97,7 @@ export const subscribeNcscScrapeLogs = (
     },
     (error) => {
       callback([]);
-      onError?.(`Ajolokin lukeminen epäonnistui: ${error.message}`);
+      onError?.(getScrapeLogReadErrorMessage(error), error);
     }
   );
 };

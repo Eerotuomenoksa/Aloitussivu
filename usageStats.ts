@@ -21,6 +21,12 @@ const USAGE_STATS_COLLECTION = 'usageStats';
 
 const toNumber = (value: unknown) => (typeof value === 'number' && Number.isFinite(value) ? value : 0);
 const toString = (value: unknown) => (typeof value === 'string' ? value : '');
+export const getUsageStatsErrorMessage = (error: unknown) => {
+  if (typeof error === 'object' && error !== null && 'code' in error && (error as { code?: unknown }).code === 'permission-denied') {
+    return 'Käyttötilastojen lukeminen epäonnistui: kirjaudu ylläpitäjän Google-tunnuksella, jolla on oikeus Firestore-sääntöihin.';
+  }
+  return error instanceof Error ? error.message : 'Käyttötilastojen haku epäonnistui.';
+};
 
 const parseDate = (value: string) => {
   const date = new Date(`${value}T00:00:00`);

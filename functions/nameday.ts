@@ -18,6 +18,7 @@ type NameDayResponse = {
 };
 
 const NAMEDAY_API_URL = 'https://nimipaivarajapinta.fi/api/namedays/today';
+const NAMEDAY_MONTHLY_REQUEST_LIMIT = 100;
 
 const getAdminDb = () => {
   if (getApps().length === 0) {
@@ -35,12 +36,37 @@ const pickFinnishNames = (data: NameDayResponse) => {
   return [...new Set(names)];
 };
 
+const getMonthKey = () => new Intl.DateTimeFormat('sv-SE', {
+  timeZone: 'Europe/Helsinki',
+  year: 'numeric',
+  month: '2-digit',
+}).format(new Date());
+
+const readMonthlyUsage = async () => {
+  const monthKey = getMonthKey();
+  const snapshot = await getAdminDb().collection('adminStats').doc('namedayApi').get();
+  const monthlyRequests = snapshot.data()?.monthlyRequests;
+  const currentMonthRequests = monthlyRequests && typeof monthlyRequests === 'object'
+    ? Number((monthlyRequests as Record<string, unknown>)[monthKey] ?? 0)
+    : 0;
+
+  return {
+    monthKey,
+    requests: Number.isFinite(currentMonthRequests) ? currentMonthRequests : 0,
+  };
+};
+
 const recordNameDayApiUse = async (success: boolean) => {
+  const monthKey = getMonthKey();
   try {
     await getAdminDb().collection('adminStats').doc('namedayApi').set({
       totalRequests: FieldValue.increment(1),
       successfulRequests: FieldValue.increment(success ? 1 : 0),
       failedRequests: FieldValue.increment(success ? 0 : 1),
+      monthlyRequests: {
+        [monthKey]: FieldValue.increment(1),
+      },
+      monthlyLimit: NAMEDAY_MONTHLY_REQUEST_LIMIT,
       lastUsedAt: new Date().toISOString(),
     }, { merge: true });
   } catch (error) {
@@ -64,6 +90,19 @@ export const namedayToday = onRequest(
     }
 
     try {
+      const monthlyUsage = await readMonthlyUsage();
+      if (monthlyUsage.requests >= NAMEDAY_MONTHLY_REQUEST_LIMIT) {
+        res.set('Cache-Control', 'public, max-age=1800, s-maxage=3600');
+        res.status(429).json({
+          error: 'Name day API monthly test limit reached.',
+          hidden: true,
+          month: monthlyUsage.monthKey,
+          monthlyRequests: monthlyUsage.requests,
+          monthlyLimit: NAMEDAY_MONTHLY_REQUEST_LIMIT,
+        });
+        return;
+      }
+
       const response = await fetch(NAMEDAY_API_URL, {
         headers: {
           Authorization: `Bearer ${token}`,

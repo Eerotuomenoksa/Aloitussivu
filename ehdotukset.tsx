@@ -40,6 +40,7 @@ import {
   UsageDailyStats,
   fetchUsageStats,
   formatDateKey,
+  getUsageStatsErrorMessage,
   shiftDate,
 } from './usageStats';
 import { installUsageTracking } from './usageTracking';
@@ -90,6 +91,11 @@ const getUsagePresetRange = (mode: UsageRangeMode) => {
   if (mode === 'year') return { start: formatDateKey(shiftDate(today, -364)), end };
   return { start: end, end };
 };
+
+const getCurrentMonthKey = () => new Intl.DateTimeFormat('sv-SE', {
+  year: 'numeric',
+  month: '2-digit',
+}).format(new Date());
 
 const sumUsageStats = (stats: UsageDailyStats[]) => {
   const links = new Map<string, { count: number; url: string; label: string; category: string; page: string }>();
@@ -214,6 +220,9 @@ function App() {
   const hasAdminAccess = isAdminUser(user);
   const userEmail = getUserEmail(user);
   const authDebugInfo = getUserAuthDebugInfo(user);
+  const adminPermissionHint = user
+    ? `Nykyinen Firebase UID: ${user.uid}. Lisää tämä UID Firestore-sääntöjen admin-listaan, jos sähköposticlaim ei riitä.`
+    : '';
 
   useEffect(() => installUsageTracking('ehdotukset'), []);
 
@@ -248,14 +257,25 @@ function App() {
     }
 
     const unsubscribeAlerts = subscribeScamAlerts(setScamAlerts);
-    const unsubscribeLogs = subscribeNcscScrapeLogs(setNcscLogs, setNcscLogError);
-    const unsubscribeNameDayUsage = subscribeNameDayApiUsageStats(setNameDayApiUsage, setNameDayApiUsageError);
+    const addPermissionHint = (message: string, error?: { code?: string }) => (
+      error?.code === 'permission-denied' && adminPermissionHint
+        ? `${message} ${adminPermissionHint}`
+        : message
+    );
+    const unsubscribeLogs = subscribeNcscScrapeLogs(
+      setNcscLogs,
+      (message, error) => setNcscLogError(addPermissionHint(message, error))
+    );
+    const unsubscribeNameDayUsage = subscribeNameDayApiUsageStats(
+      setNameDayApiUsage,
+      (message, error) => setNameDayApiUsageError(addPermissionHint(message, error))
+    );
     return () => {
       unsubscribeAlerts();
       unsubscribeLogs();
       unsubscribeNameDayUsage();
     };
-  }, [hasAdminAccess]);
+  }, [adminPermissionHint, hasAdminAccess]);
 
   useEffect(() => {
     if (usageRangeMode === 'custom') return;
@@ -275,7 +295,7 @@ function App() {
       .catch((error) => {
         if (isCurrent) {
           setUsageStats([]);
-          setUsageStatsError(error instanceof Error ? error.message : 'Käyttötilastojen haku epäonnistui.');
+          setUsageStatsError(`${getUsageStatsErrorMessage(error)} ${adminPermissionHint}`.trim());
         }
       })
       .finally(() => {
@@ -285,7 +305,7 @@ function App() {
     return () => {
       isCurrent = false;
     };
-  }, [hasAdminAccess, usageRange.end, usageRange.start]);
+  }, [adminPermissionHint, hasAdminAccess, usageRange.end, usageRange.start]);
 
   const signIn = async () => {
     setAuthError('');
@@ -323,6 +343,9 @@ function App() {
     [scamAlerts]
   );
   const usageTotals = useMemo(() => sumUsageStats(usageStats), [usageStats]);
+  const currentNameDayMonth = getCurrentMonthKey();
+  const currentNameDayRequests = nameDayApiUsage?.monthlyRequests[currentNameDayMonth] ?? 0;
+  const nameDayMonthlyLimit = nameDayApiUsage?.monthlyLimit || 100;
   const reviewTasks = useMemo(() => [
     {
       label: 'Uudet linkit',
@@ -363,12 +386,12 @@ function App() {
       label: 'Nimipäivärajapinta',
       count: nameDayApiUsage?.totalRequests ?? 0,
       href: '#nameday-api-usage',
-      tone: nameDayApiUsageError ? 'bg-rose-100 text-rose-950 dark:bg-rose-900/40 dark:text-rose-100' : 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200',
+      tone: nameDayApiUsageError || currentNameDayRequests >= nameDayMonthlyLimit ? 'bg-rose-100 text-rose-950 dark:bg-rose-900/40 dark:text-rose-100' : 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200',
       note: nameDayApiUsage
-        ? `Viimeksi käytetty ${formatDateTime(nameDayApiUsage.lastUsedAt)}.`
+        ? `${currentNameDayMonth}: ${currentNameDayRequests}/${nameDayMonthlyLimit}. Viimeksi käytetty ${formatDateTime(nameDayApiUsage.lastUsedAt)}.`
         : (nameDayApiUsageError || 'Käyttöä ei ole vielä kirjattu.'),
     },
-  ], [activeScamAlerts.length, approvedLinks.length, issueReports.length, nameDayApiUsage, nameDayApiUsageError, ncscAttentionLogs.length, pendingNewReports.length, usageRange.end, usageRange.start, usageStatsError, usageTotals.totalPageviews]);
+  ], [activeScamAlerts.length, approvedLinks.length, currentNameDayMonth, currentNameDayRequests, issueReports.length, nameDayApiUsage, nameDayApiUsageError, nameDayMonthlyLimit, ncscAttentionLogs.length, pendingNewReports.length, usageRange.end, usageRange.start, usageStatsError, usageTotals.totalPageviews]);
 
   useEffect(() => {
     setReportDrafts((current) => {
@@ -551,6 +574,11 @@ function App() {
                 <p className="text-sm font-bold text-slate-500 dark:text-slate-400">
                   Odottaa: {pendingReports.length} · Hyväksyttyjä linkkejä: {approvedLinks.length}
                 </p>
+                {authDebugInfo && (
+                  <p className="mt-2 max-w-3xl text-xs font-bold text-slate-500 dark:text-slate-400">
+                    {authDebugInfo}
+                  </p>
+                )}
               </div>
               <div className="flex flex-wrap gap-3">
                 <a
@@ -754,20 +782,31 @@ function App() {
                   {nameDayApiUsageError}
                 </p>
               ) : (
-                <div className="mt-4 grid gap-3 md:grid-cols-3">
-                  <div className="rounded-2xl bg-slate-50 p-4 dark:bg-slate-950/60">
-                    <p className="text-sm font-black uppercase tracking-wide text-slate-500 dark:text-slate-400">Onnistuneet</p>
-                    <p className="mt-1 text-2xl font-black">{nameDayApiUsage?.successfulRequests ?? 0}</p>
+                <>
+                  {currentNameDayRequests >= nameDayMonthlyLimit && (
+                    <p className="mt-4 rounded-2xl border border-rose-200 bg-rose-50 p-4 font-bold text-rose-900 dark:border-rose-900 dark:bg-rose-950/30 dark:text-rose-200">
+                      Kuukauden testiraja on täynnä. Nimipäivät piilotetaan käyttäjiltä, kunnes uusi kuukausi alkaa tai raja nostetaan.
+                    </p>
+                  )}
+                  <div className="mt-4 grid gap-3 md:grid-cols-4">
+                    <div className="rounded-2xl bg-slate-50 p-4 dark:bg-slate-950/60">
+                      <p className="text-sm font-black uppercase tracking-wide text-slate-500 dark:text-slate-400">Tämä kuukausi</p>
+                      <p className="mt-1 text-2xl font-black">{currentNameDayRequests}/{nameDayMonthlyLimit}</p>
+                    </div>
+                    <div className="rounded-2xl bg-slate-50 p-4 dark:bg-slate-950/60">
+                      <p className="text-sm font-black uppercase tracking-wide text-slate-500 dark:text-slate-400">Onnistuneet</p>
+                      <p className="mt-1 text-2xl font-black">{nameDayApiUsage?.successfulRequests ?? 0}</p>
+                    </div>
+                    <div className="rounded-2xl bg-slate-50 p-4 dark:bg-slate-950/60">
+                      <p className="text-sm font-black uppercase tracking-wide text-slate-500 dark:text-slate-400">Epäonnistuneet</p>
+                      <p className="mt-1 text-2xl font-black">{nameDayApiUsage?.failedRequests ?? 0}</p>
+                    </div>
+                    <div className="rounded-2xl bg-slate-50 p-4 dark:bg-slate-950/60">
+                      <p className="text-sm font-black uppercase tracking-wide text-slate-500 dark:text-slate-400">Viimeksi</p>
+                      <p className="mt-1 text-lg font-black">{formatDateTime(nameDayApiUsage?.lastUsedAt)}</p>
+                    </div>
                   </div>
-                  <div className="rounded-2xl bg-slate-50 p-4 dark:bg-slate-950/60">
-                    <p className="text-sm font-black uppercase tracking-wide text-slate-500 dark:text-slate-400">Epäonnistuneet</p>
-                    <p className="mt-1 text-2xl font-black">{nameDayApiUsage?.failedRequests ?? 0}</p>
-                  </div>
-                  <div className="rounded-2xl bg-slate-50 p-4 dark:bg-slate-950/60">
-                    <p className="text-sm font-black uppercase tracking-wide text-slate-500 dark:text-slate-400">Viimeksi</p>
-                    <p className="mt-1 text-lg font-black">{formatDateTime(nameDayApiUsage?.lastUsedAt)}</p>
-                  </div>
-                </div>
+                </>
               )}
             </section>
 

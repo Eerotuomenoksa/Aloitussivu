@@ -4,7 +4,27 @@ export type NameDayToday = {
 };
 
 const CACHE_KEY = 'nameDayToday';
+const HIDDEN_CACHE_KEY = 'nameDayHiddenUntil';
 const CACHE_TTL_MS = 6 * 60 * 60 * 1000;
+const HIDDEN_CACHE_TTL_MS = 6 * 60 * 60 * 1000;
+
+const isNameDayHidden = () => {
+  try {
+    const value = localStorage.getItem(HIDDEN_CACHE_KEY);
+    if (!value) return false;
+    return Date.now() < Date.parse(value);
+  } catch {
+    return false;
+  }
+};
+
+const cacheHiddenNameDay = () => {
+  try {
+    localStorage.setItem(HIDDEN_CACHE_KEY, new Date(Date.now() + HIDDEN_CACHE_TTL_MS).toISOString());
+  } catch {
+    // Cache is optional.
+  }
+};
 
 const readCachedNameDay = (): NameDayToday | null => {
   try {
@@ -43,6 +63,8 @@ export const getNameDayTodayUrl = () => {
 };
 
 export const fetchNameDayToday = async (): Promise<NameDayToday | null> => {
+  if (isNameDayHidden()) return null;
+
   const cached = readCachedNameDay();
   if (cached) return cached;
 
@@ -51,9 +73,17 @@ export const fetchNameDayToday = async (): Promise<NameDayToday | null> => {
 
   try {
     const response = await fetch(url);
+    if (response.status === 429) {
+      cacheHiddenNameDay();
+      return null;
+    }
     if (!response.ok) return null;
 
     const data = await response.json() as Partial<NameDayToday>;
+    if (data && typeof data === 'object' && 'hidden' in data) {
+      cacheHiddenNameDay();
+      return null;
+    }
     if (!Array.isArray(data.names)) return null;
 
     const result = {
