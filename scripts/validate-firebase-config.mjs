@@ -2,7 +2,6 @@ const requiredEnvNames = [
   'VITE_FIREBASE_API_KEY',
   'VITE_FIREBASE_AUTH_DOMAIN',
   'VITE_FIREBASE_PROJECT_ID',
-  'VITE_FIREBASE_APP_ID',
 ];
 
 const missing = requiredEnvNames.filter((name) => !process.env[name]?.trim());
@@ -13,11 +12,15 @@ if (missing.length > 0) {
 }
 
 const apiKey = process.env.VITE_FIREBASE_API_KEY.trim();
+const validateReferer = process.env.VITE_FIREBASE_VALIDATE_REFERER?.trim();
 
 try {
   const response = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${encodeURIComponent(apiKey)}`, {
     method: 'POST',
-    headers: { 'content-type': 'application/json' },
+    headers: {
+      'content-type': 'application/json',
+      ...(validateReferer ? { referer: validateReferer } : {}),
+    },
     body: '{}',
   });
   const payload = await response.json().catch(() => ({}));
