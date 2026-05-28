@@ -42,12 +42,17 @@ const shortcutGroups: ShortcutGroup[] = [
   {
     name: 'Asiointi ja viranomaiset',
     icon: '🏛️',
-    categories: ['Julkiset palvelut', 'Oikeus', 'Pankit', 'Talous', 'Puhelinnumerot'],
+    categories: ['Julkiset palvelut', 'Oikeus', 'Puhelinnumerot', 'Turvallisuus'],
   },
   {
-    name: 'Terveys ja apu',
+    name: 'Raha ja ostaminen',
+    icon: '🏦',
+    categories: ['Pankit', 'Talous', 'Verkkokaupat', 'Ruoka'],
+  },
+  {
+    name: 'Terveys ja hoiva',
     icon: '🏥',
-    categories: ['Terveys', 'Potilasyhdistykset', 'Kotihoito-palvelut', 'Turvallisuus'],
+    categories: ['Terveys', 'Potilasyhdistykset', 'Kotihoito-palvelut', 'Koti'],
   },
   {
     name: 'Digi ja yhteydenpito',
@@ -60,29 +65,24 @@ const shortcutGroups: ShortcutGroup[] = [
     categories: ['Uutiset & Media', 'Lehdet', 'Sää', 'Tiede'],
   },
   {
-    name: 'Kulttuuri',
+    name: 'Kulttuuri ja taide',
     icon: '🎭',
-    categories: ['Kulttuuri', 'Museot', 'Teatterit', 'Musiikki', 'Taiteet', 'Kirjallisuus', 'Kirjastot'],
+    categories: ['Kulttuuri', 'Museot', 'Teatterit', 'Musiikki', 'Taiteet'],
   },
   {
-    name: 'Liikkuminen ja matkailu',
+    name: 'Lukeminen, kielet ja historia',
+    icon: '📚',
+    categories: ['Kirjallisuus', 'Kirjastot', 'Kielet', 'Sukututkimus'],
+  },
+  {
+    name: 'Liikkuminen ja ulkoilu',
     icon: '🚌',
-    categories: ['Liikenne', 'Matkailu', 'Kielet'],
+    categories: ['Liikenne', 'Matkailu', 'Liikunta', 'Luonto', 'Urheilu'],
   },
   {
-    name: 'Liikunta ja ulkoilu',
-    icon: '🚶',
-    categories: ['Liikunta', 'Luonto', 'Urheilu'],
-  },
-  {
-    name: 'Koti ja arki',
-    icon: '🏠',
-    categories: ['Koti', 'Ruoka', 'Verkkokaupat', 'Viihde'],
-  },
-  {
-    name: 'Harrastukset ja yhteisöt',
+    name: 'Vapaa-aika ja yhteisöt',
     icon: '🎈',
-    categories: ['Vapaa-aika', 'Eläkeyhdistykset', 'Sukututkimus', 'Hengellisyys'],
+    categories: ['Vapaa-aika', 'Eläkeyhdistykset', 'Hengellisyys', 'Viihde'],
   },
 ];
 
