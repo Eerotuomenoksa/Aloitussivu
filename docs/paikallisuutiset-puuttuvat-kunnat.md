@@ -1,6 +1,6 @@
 # Paikallisuutiset ilman RSS-syötettä
 
-Löydettyjä paikallislehtien RSS-/feed-linkkejä: 67
+Löydettyjä paikallislehtien RSS-/feed-linkkejä: 68
 Kuntia ilman paikallislehtien RSS-/feed-löydöstä: 295
 
 ## Kunnat

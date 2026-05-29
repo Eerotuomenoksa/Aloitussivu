@@ -265,7 +265,7 @@ export const LOCAL_NEWSPAPER_LINKS = [
   },
   {
     "name": "Oriveden Sanomat",
-    "url": "https://www.orivedensanomat.fi/"
+    "url": "https://orivedensanomat.fi"
   },
   {
     "name": "Outokummun Seutu",
@@ -397,7 +397,7 @@ export const LOCAL_NEWSPAPER_LINKS = [
   },
   {
     "name": "Sydän-Hämeen Lehti",
-    "url": "https://shl.fi/"
+    "url": "https://shl.fi"
   },
   {
     "name": "Sydän-Satakunta",
@@ -477,7 +477,7 @@ export const LOCAL_NEWSPAPER_LINKS = [
   },
   {
     "name": "Ylöjärven Uutiset",
-    "url": "http://ylojarvenuutiset.fi/"
+    "url": "https://ylojarvenuutiset.fi"
   },
   {
     "name": "Ähtärinjärven Uutisnuotta",
