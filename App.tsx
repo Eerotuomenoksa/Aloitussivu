@@ -29,9 +29,40 @@ const UI_SCALE_STEP = 10;
 const BASE_UI_SCALE_MULTIPLIER = 0.9;
 const SAVED_LOCALITY_KEY = 'locality';
 const ONBOARDING_SEEN_KEY = 'onboardingSeen';
+const SECONDARY_TIME_ZONE_KEY = 'secondaryTimeZone';
+
+const SECONDARY_TIME_ZONE_OPTIONS = [
+  { value: 'America/Los_Angeles', label: 'Los Angeles' },
+  { value: 'America/New_York', label: 'New York' },
+  { value: 'America/Toronto', label: 'Ottawa' },
+  { value: 'Atlantic/Canary', label: 'Kanariansaaret' },
+  { value: 'Europe/London', label: 'Iso-Britannia' },
+  { value: 'Europe/Stockholm', label: 'Ruotsi' },
+  { value: 'Europe/Kyiv', label: 'Ukraina' },
+  { value: 'Asia/Dubai', label: 'Dubai' },
+  { value: 'Asia/Bangkok', label: 'Thaimaa' },
+  { value: 'Australia/Sydney', label: 'Sydney' },
+];
+
+const getUtcOffsetLabel = (timeZone: string, date = new Date()) => {
+  const offset = new Intl.DateTimeFormat('en-US', {
+    timeZone,
+    timeZoneName: 'shortOffset',
+  }).formatToParts(date).find((part) => part.type === 'timeZoneName')?.value ?? '';
+
+  return offset.replace('GMT', 'UTC');
+};
+
+const formatTimeZoneLabel = (label: string, timeZone: string) => {
+  const offset = getUtcOffsetLabel(timeZone);
+  const winterOffset = getUtcOffsetLabel(timeZone, new Date('2026-01-15T12:00:00Z'));
+  if (!offset) return label;
+  return `${label} (${offset} nyt, talvella ${winterOffset || offset})`;
+};
 
 interface UiVisibilityState {
   clock: boolean;
+  secondaryClock: boolean;
   regionalServices: boolean;
   regionalNews: boolean;
   scamAlerts: boolean;
@@ -42,6 +73,7 @@ interface UiVisibilityState {
 
 const defaultUiVisibility: UiVisibilityState = {
   clock: true,
+  secondaryClock: false,
   regionalServices: true,
   regionalNews: true,
   scamAlerts: true,
@@ -156,6 +188,12 @@ const AppContent: React.FC = () => {
     const legacyScale = [100, 125, 150, 175, 200][legacyStep] ?? DEFAULT_UI_SCALE;
     return legacyScale;
   });
+  const [secondaryTimeZone, setSecondaryTimeZone] = useState(() => {
+    const saved = localStorage.getItem(SECONDARY_TIME_ZONE_KEY);
+    return SECONDARY_TIME_ZONE_OPTIONS.some((option) => option.value === saved)
+      ? saved
+      : SECONDARY_TIME_ZONE_OPTIONS[0].value;
+  });
   const [logoPhase, setLogoPhase] = useState<LogoPhase>(() => getLogoPhase(new Date()));
 
   const [favorites, setFavorites] = useState<Favorite[]>(() => {
@@ -190,6 +228,10 @@ const AppContent: React.FC = () => {
   }, [uiVisibility]);
 
   useEffect(() => {
+    localStorage.setItem(SECONDARY_TIME_ZONE_KEY, secondaryTimeZone);
+  }, [secondaryTimeZone]);
+
+  useEffect(() => {
     const interval = window.setInterval(() => setLogoPhase(getLogoPhase(new Date())), 60 * 1000);
     return () => window.clearInterval(interval);
   }, []);
@@ -222,6 +264,7 @@ const AppContent: React.FC = () => {
   const selectedShortcut = selectedCategory ? mergeApprovedLinksIntoShortcuts([selectedCategory])[0] ?? selectedCategory : null;
   const isFinnishLocality = locality?.isInFinland !== false;
   const regionalLocality = isFinnishLocality ? locality : null;
+  const selectedSecondaryTimeZone = SECONDARY_TIME_ZONE_OPTIONS.find((option) => option.value === secondaryTimeZone) ?? SECONDARY_TIME_ZONE_OPTIONS[0];
   const isAnyModalOpen = Boolean(selectedShortcut || isInfoOpen || isHomepageOpen || isOnboardingOpen || reportDraft || isSettingsOpen);
   const updateVisibility = useCallback((key: keyof UiVisibilityState, value: boolean) => {
     setUiVisibility(prev => ({ ...prev, [key]: value }));
@@ -307,8 +350,15 @@ const AppContent: React.FC = () => {
 
           <div className="mt-3 grid gap-3 md:mt-8 md:gap-6 xl:grid-cols-[24rem_minmax(0,1fr)] xl:items-center">
             {uiVisibility.clock && (
-              <div className="hidden md:block">
-                <Clock fontSizeStep={fontSizeStep} variant="compact" />
+              <div className={uiVisibility.secondaryClock ? 'block' : 'hidden md:block'}>
+                <Clock
+                  fontSizeStep={fontSizeStep}
+                  variant="compact"
+                  secondaryClock={uiVisibility.secondaryClock ? {
+                    label: selectedSecondaryTimeZone.label,
+                    timeZone: selectedSecondaryTimeZone.value,
+                  } : undefined}
+                />
               </div>
             )}
             {uiVisibility.googleSearch && (
@@ -391,6 +441,7 @@ const AppContent: React.FC = () => {
             <div className="space-y-3">
               {[
                 { key: 'clock', label: t('showClock') },
+                { key: 'secondaryClock', label: t('showSecondaryClock') },
                 { key: 'regionalServices', label: t('showRegionalServices') },
                 { key: 'regionalNews', label: t('showNews') },
                 { key: 'scamAlerts', label: t('showScamAlerts') },
@@ -410,6 +461,23 @@ const AppContent: React.FC = () => {
                 </label>
               ))}
             </div>
+
+            {uiVisibility.secondaryClock && (
+              <label className="mt-4 block rounded-2xl border-2 border-slate-200 dark:border-slate-700 px-4 py-3">
+                <span className="mb-2 block font-black text-slate-900 dark:text-white">{t('secondaryClockTimezone')}</span>
+                <select
+                  value={secondaryTimeZone}
+                  onChange={(event) => setSecondaryTimeZone(event.target.value)}
+                  className="min-h-14 w-full rounded-2xl border-2 border-slate-200 bg-white px-4 py-3 text-base font-bold text-slate-900 focus:outline-none focus:ring-4 focus:ring-indigo-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white md:min-h-12"
+                >
+                  {SECONDARY_TIME_ZONE_OPTIONS.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {formatTimeZoneLabel(option.label, option.value)}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            )}
           </div>
         )}
 
