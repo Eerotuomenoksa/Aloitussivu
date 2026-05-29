@@ -33,7 +33,6 @@ export const isFirebaseConfigured = Boolean(
   firebaseConfig.apiKey
   && firebaseConfig.authDomain
   && firebaseConfig.projectId
-  && firebaseConfig.appId
 );
 
 let app: FirebaseApp | null = null;
@@ -119,7 +118,13 @@ export const getUserEmail = (user: User | null) => (
   || ''
 );
 
-export const isAdminUser = (user: User | null) => ADMIN_EMAILS.includes(getUserEmail(user).toLocaleLowerCase('fi-FI'));
+const getTrustedUserEmail = (user: User | null) => (
+  user?.email
+  || user?.providerData.find((provider) => provider.email)?.email
+  || ''
+);
+
+export const isAdminUser = (user: User | null) => ADMIN_EMAILS.includes(getTrustedUserEmail(user).toLocaleLowerCase('fi-FI'));
 
 export const getUserAuthDebugInfo = (user: User | null) => {
   if (!user) return '';

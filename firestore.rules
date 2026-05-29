@@ -4,10 +4,15 @@ service cloud.firestore {
   match /databases/{database}/documents {
     function isAdmin() {
       return request.auth != null
-        && request.auth.token.email in [
-          'eero.tuomenoksa@gmail.com',
-          'seniorsurf.suomi@gmail.com'
-        ];
+        && (
+          request.auth.uid in [
+            'hZU1Fhi7EncUZm7UDzKMDaHFzaV2'
+          ]
+          || request.auth.token.email in [
+            'eero.tuomenoksa@gmail.com',
+            'seniorsurf.suomi@gmail.com'
+          ]
+        );
     }
 
     function isValidReport() {

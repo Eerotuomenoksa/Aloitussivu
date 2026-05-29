@@ -22,7 +22,8 @@ const getAdminAuth = () => {
 
 export const ncscWeeklyScrape = onSchedule(
   {
-    schedule: 'every friday 11:00',
+    // NCSC publishes most RSS items during Finnish office hours; run after the morning and afternoon peaks.
+    schedule: '30 11,15 * * 1-5',
     timeZone: 'Europe/Helsinki',
     region: 'europe-west1',
     memory: '256MiB',
