@@ -1,10 +1,12 @@
 import { execFileSync } from 'node:child_process';
 import { readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
+import { bumpVersion, classifyChange, normalizeVersion } from './versioning.mjs';
 
 const repoRoot = process.cwd();
 const outputPath = path.join(repoRoot, 'changelogData.ts');
 const versionPath = path.join(repoRoot, 'appVersion.ts');
+const historyBaseVersion = '0.1.0';
 const apiToken = process.env.GITHUB_TOKEN ?? process.env.GH_TOKEN ?? '';
 
 function runGit(args) {
@@ -85,34 +87,48 @@ function readRecentCommits() {
   return output.split(/\r?\n/).filter(Boolean).flatMap(line => {
     if (!line.startsWith('@@@')) return [];
     const [hash, date, subject] = line.slice(3).split('|');
-    return [{ hash, date, subject }];
+    return [{ hash, date, subject, paths: readCommitPaths(hash) }];
   });
+}
+
+function readCommitPaths(hash) {
+  try {
+    const output = runGit(['show', '--name-only', '--format=', hash]);
+    return output.split(/\r?\n/).filter(Boolean);
+  } catch {
+    return [];
+  }
 }
 
 function readAppVersion() {
   try {
     const source = readFileSync(versionPath, 'utf8');
-    return source.match(/APP_VERSION\s*=\s*['"]([^'"]+)['"]/)?.[1] ?? '0.0';
+    return normalizeVersion(source.match(/APP_VERSION\s*=\s*['"]([^'"]+)['"]/)?.[1] ?? '0.0.0');
   } catch {
-    return '0.0';
+    return '0.0.0';
   }
 }
 
-function readVersionMinor(version) {
-  const minor = Number(version.split('.')[1] ?? 0);
-  return Number.isFinite(minor) ? minor : 0;
-}
-
-function formatHistoryVersion(currentVersion, index) {
-  const minor = Math.max(0, readVersionMinor(currentVersion) - index);
-  return `0.${String(minor).padStart(2, '0')}`;
-}
-
 function addVersionsToCommits(commits, currentVersion) {
-  return commits.map((commit, index) => ({
-    ...commit,
-    version: formatHistoryVersion(currentVersion, index),
-  }));
+  const oldestFirst = [...commits].reverse();
+  let cursor = normalizeVersion(historyBaseVersion);
+  const versionedOldestFirst = oldestFirst.map((commit) => {
+    const classification = classifyChange({
+      subject: commit.subject,
+      paths: commit.paths,
+    });
+    cursor = bumpVersion(cursor, classification.bump);
+
+    return {
+      hash: commit.hash,
+      date: commit.date,
+      version: cursor,
+      changeType: classification.bump,
+      subject: commit.subject,
+    };
+  });
+
+  return versionedOldestFirst.reverse();
 }
 
 function readCommitSubject(hash) {
@@ -233,14 +249,11 @@ function summarizeToday(recentCommits, worktreeChanges) {
   const commitNotes = recentCommits
     .filter((commit) => commit.date === today)
     .flatMap((commit) => summarizeCommit(commit));
-
-  if (commitNotes.length > 0) {
-    return uniqueBy(commitNotes, (item) => item);
-  }
+  const worktreeNotes = worktreeChanges.length > 0 ? summarizeWorktree(worktreeChanges) : [];
 
   return uniqueBy([
+    ...worktreeNotes,
     ...commitNotes,
-    ...summarizeWorktree(worktreeChanges),
   ], (item) => item);
 }
 
@@ -303,6 +316,7 @@ export type ChangelogCommit = {
   hash: string;
   date: string;
   version: string;
+  changeType: 'major' | 'minor' | 'patch' | 'none';
   subject: string;
 };
 

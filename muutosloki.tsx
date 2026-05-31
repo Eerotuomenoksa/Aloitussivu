@@ -15,6 +15,13 @@ function formatCommitHash(hash: string) {
   return hash.slice(0, 7);
 }
 
+function formatChangeType(changeType: ChangelogCommit['changeType']) {
+  if (changeType === 'major') return 'Iso muutos';
+  if (changeType === 'minor') return 'Ominaisuus';
+  if (changeType === 'patch') return 'Korjaus';
+  return 'Ylläpito';
+}
+
 function CommitCard({ commit }: { commit: ChangelogCommit }) {
   return (
     <article className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm">
@@ -26,6 +33,9 @@ function CommitCard({ commit }: { commit: ChangelogCommit }) {
           {formatCommitHash(commit.hash)}
         </span>
         <span className="text-sm font-bold text-slate-500 dark:text-slate-400">{commit.date}</span>
+        <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-black text-slate-700 dark:bg-slate-800 dark:text-slate-200">
+          {formatChangeType(commit.changeType)}
+        </span>
       </div>
       <p className="mt-3 text-base md:text-lg font-bold text-slate-800 dark:text-slate-200">
         {commit.subject}
