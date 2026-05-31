@@ -14,6 +14,8 @@ export default defineConfig({
         links: 'linkit.html',
         admin: 'yllapito.html',
         supporters: 'sivua-tukemassa.html',
+        privacy: 'tietosuoja.html',
+        accessibility: 'saavutettavuus.html',
       },
     },
   },

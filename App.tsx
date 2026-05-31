@@ -569,6 +569,22 @@ const AppContent: React.FC = () => {
               {t('linkList')}
             </a>
             <a
+              href="./tietosuoja.html"
+              className="min-h-14 rounded-full bg-white/95 px-5 py-3 text-sm font-black text-[#173e5f] shadow-sm hover:bg-white hover:underline focus:outline-none focus:ring-4 focus:ring-white/60 md:min-h-12"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t('privacyNotice')}
+            </a>
+            <a
+              href="./saavutettavuus.html"
+              className="min-h-14 rounded-full bg-white/95 px-5 py-3 text-sm font-black text-[#173e5f] shadow-sm hover:bg-white hover:underline focus:outline-none focus:ring-4 focus:ring-white/60 md:min-h-12"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t('accessibilityStatement')}
+            </a>
+            <a
               href="./sivua-tukemassa.html"
               className="min-h-14 rounded-full bg-white/95 px-5 py-3 text-sm font-black text-[#173e5f] shadow-sm hover:bg-white hover:underline focus:outline-none focus:ring-4 focus:ring-white/60 md:min-h-12"
               target="_blank"

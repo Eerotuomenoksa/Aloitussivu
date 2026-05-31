@@ -24,6 +24,12 @@ function App() {
             <a href="./index.html" className={pageNavLinkClass}>
               Takaisin aloitussivulle
             </a>
+            <a href="./tietosuoja.html" className={pageNavLinkClass}>
+              Tietosuoja
+            </a>
+            <a href="./saavutettavuus.html" className={pageNavLinkClass}>
+              Saavutettavuus
+            </a>
             <a href="./muutosloki.html" className={pageNavLinkClass}>
               Muutosloki
             </a>

@@ -156,6 +156,31 @@ const HomepageModal: React.FC<HomepageModalProps> = ({ isOpen, onClose, fontSize
             </div>
           </section>
 
+          <section className="space-y-4 rounded-2xl border-2 border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-950 md:rounded-[2rem] md:p-8">
+            <h3 className="text-2xl font-black text-slate-900 dark:text-white md:text-3xl">{t('legalInfoTitle')}</h3>
+            <p className="text-base font-bold leading-relaxed text-slate-700 dark:text-slate-200 md:text-xl">
+              {t('legalInfoBody')}
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <a
+                href="./tietosuoja.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex min-h-12 items-center rounded-full bg-white px-5 py-3 text-base font-black text-indigo-700 shadow-sm ring-1 ring-indigo-100 hover:bg-indigo-50 hover:underline focus:outline-none focus:ring-4 focus:ring-indigo-200 dark:bg-slate-800 dark:text-indigo-200 dark:ring-slate-700 dark:hover:bg-slate-700"
+              >
+                {t('privacyNotice')}
+              </a>
+              <a
+                href="./saavutettavuus.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex min-h-12 items-center rounded-full bg-white px-5 py-3 text-base font-black text-indigo-700 shadow-sm ring-1 ring-indigo-100 hover:bg-indigo-50 hover:underline focus:outline-none focus:ring-4 focus:ring-indigo-200 dark:bg-slate-800 dark:text-indigo-200 dark:ring-slate-700 dark:hover:bg-slate-700"
+              >
+                {t('accessibilityStatement')}
+              </a>
+            </div>
+          </section>
+
           <section className="space-y-4 rounded-2xl border-2 border-amber-200 bg-amber-50 p-4 dark:border-amber-800/50 dark:bg-amber-950/20 md:rounded-[2.5rem] md:p-10 md:space-y-6">
             <h3 className="flex items-center gap-3 text-xl font-black text-amber-800 dark:text-amber-300 md:gap-4 md:text-2xl">
               <span>💡</span> {t('helpTipTitle')}

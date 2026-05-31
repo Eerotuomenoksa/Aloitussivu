@@ -117,6 +117,31 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, fontSizeStep = 0
             </p>
           </section>
 
+          <section className="space-y-4 rounded-3xl border-2 border-slate-200 bg-slate-50 p-6 dark:border-slate-700 dark:bg-slate-900/50">
+            <h3 className="text-2xl font-black dark:text-white">{t('legalInfoTitle')}</h3>
+            <p className="text-lg font-bold leading-relaxed text-slate-700 dark:text-slate-300">
+              {t('legalInfoBody')}
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <a
+                href="./tietosuoja.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex min-h-12 items-center rounded-full bg-white px-5 py-3 text-base font-black text-indigo-700 shadow-sm ring-1 ring-indigo-100 hover:bg-indigo-50 hover:underline focus:outline-none focus:ring-4 focus:ring-indigo-200 dark:bg-slate-800 dark:text-indigo-200 dark:ring-slate-700 dark:hover:bg-slate-700"
+              >
+                {t('privacyNotice')}
+              </a>
+              <a
+                href="./saavutettavuus.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex min-h-12 items-center rounded-full bg-white px-5 py-3 text-base font-black text-indigo-700 shadow-sm ring-1 ring-indigo-100 hover:bg-indigo-50 hover:underline focus:outline-none focus:ring-4 focus:ring-indigo-200 dark:bg-slate-800 dark:text-indigo-200 dark:ring-slate-700 dark:hover:bg-slate-700"
+              >
+                {t('accessibilityStatement')}
+              </a>
+            </div>
+          </section>
+
           <section className="space-y-6">
             <h3 className="text-2xl font-black border-b-2 border-slate-100 dark:border-slate-700 pb-2 dark:text-white">
               Paikalliset linkit
