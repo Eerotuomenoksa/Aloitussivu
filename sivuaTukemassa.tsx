@@ -11,6 +11,7 @@ const principles = [
   'Sivustolle ei oteta mukaan harhaanjohtavaa, aggressiivista tai käyttäjien luottamusta heikentävää mainontaa.',
   'Tukijalogoihin ei liitetä käyttäjien profilointiin perustuvaa mainontaa tai erillisiä seurantapikseleitä.',
 ];
+const pageNavLinkClass = 'inline-flex min-h-12 items-center rounded-full bg-white px-4 py-2 text-sm font-black text-indigo-700 shadow-sm ring-1 ring-indigo-100 hover:bg-indigo-50 hover:underline focus:outline-none focus:ring-4 focus:ring-indigo-200';
 
 function App() {
   useEffect(() => installUsageTracking('sivua-tukemassa'), []);
@@ -20,10 +21,10 @@ function App() {
       <div className="mx-auto max-w-6xl px-4 py-8 md:px-8 md:py-12">
         <header className="space-y-7">
           <nav className="flex flex-wrap items-center justify-between gap-4" aria-label="Sivun linkit">
-            <a href="./index.html" className="text-sm font-black text-indigo-700 hover:underline">
+            <a href="./index.html" className={pageNavLinkClass}>
               Takaisin aloitussivulle
             </a>
-            <a href="./muutosloki.html" className="text-sm font-black text-indigo-700 hover:underline">
+            <a href="./muutosloki.html" className={pageNavLinkClass}>
               Muutosloki
             </a>
           </nav>
@@ -77,7 +78,7 @@ function App() {
 
           <article className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
             <div className="grid gap-6 md:grid-cols-[minmax(220px,360px)_1fr] md:items-center">
-              <a href="https://vtkl.fi/" target="_blank" rel="noopener noreferrer" className="block rounded-lg border border-slate-200 bg-white p-4">
+              <a href="https://vtkl.fi/" target="_blank" rel="noopener noreferrer" className="block rounded-lg border border-slate-200 bg-white p-4 focus:outline-none focus:ring-4 focus:ring-indigo-200" aria-label="Siirry Vanhustyön keskusliitto ry:n sivustolle">
                 <img
                   src={vtklLogo}
                   alt="Vanhustyön keskusliitto ry"

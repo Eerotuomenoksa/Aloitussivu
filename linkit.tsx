@@ -206,6 +206,7 @@ const regionalLinks = uniqueByKey(
 ).sort((a, b) => collator.compare(`${a.municipality} ${a.category} ${a.name}`, `${b.municipality} ${b.category} ${b.name}`));
 
 const allLinkCount = generalLinks.length + regionalLinks.length;
+const pageNavLinkClass = 'inline-flex min-h-12 items-center rounded-full bg-white px-4 py-2 text-sm font-black text-indigo-700 shadow-sm ring-1 ring-indigo-100 hover:bg-indigo-50 hover:underline focus:outline-none focus:ring-4 focus:ring-indigo-200';
 
 const csvEscape = (value: string | number) => `"${String(value).replace(/"/g, '""')}"`;
 
@@ -229,7 +230,7 @@ const LinkList = ({ links }: { links: RegionalLinkRow[] }) => (
   <ul className="space-y-2">
     {links.map((link) => (
       <li key={`${link.category}|${link.name}|${link.url}`} className="leading-snug">
-        <a className="font-black text-indigo-700 hover:underline break-words" href={link.url} target="_blank" rel="noopener noreferrer">
+        <a className="inline-flex min-h-8 items-center font-black text-indigo-700 hover:underline break-words focus:outline-none focus:ring-4 focus:ring-indigo-200" href={link.url} target="_blank" rel="noopener noreferrer">
           {link.name}
         </a>
         <span className="block text-xs font-bold text-slate-500 break-all">{link.url}</span>
@@ -305,13 +306,13 @@ function App() {
       <div className="mx-auto max-w-[1800px] px-4 py-8 md:px-8 md:py-12 space-y-10">
         <header className="space-y-5">
           <div className="flex flex-wrap items-center justify-between gap-4">
-            <a href="./index.html" className="text-sm font-black text-indigo-700 hover:underline">
+            <a href="./index.html" className={pageNavLinkClass}>
               Takaisin aloitussivulle
             </a>
-            <a href="./muutosloki.html" className="text-sm font-black text-indigo-700 hover:underline">
+            <a href="./muutosloki.html" className={pageNavLinkClass}>
               Muutosloki
             </a>
-            <a href="./sivua-tukemassa.html" className="text-sm font-black text-indigo-700 hover:underline">
+            <a href="./sivua-tukemassa.html" className={pageNavLinkClass}>
               Sivua tukemassa
             </a>
           </div>
@@ -401,11 +402,17 @@ function App() {
               );
             })}
           </nav>
+          <a
+            href="#link-list-after"
+            className="inline-flex min-h-12 items-center rounded-full bg-slate-900 px-4 py-2 text-sm font-black text-white shadow-sm hover:bg-slate-800 focus:outline-none focus:ring-4 focus:ring-slate-300"
+          >
+            Ohita valittu linkkilista
+          </a>
         </header>
 
         {activeView === 'general' && (
-        <section className="space-y-4">
-          <h2 className="text-2xl md:text-3xl font-black">Yleiset linkit</h2>
+        <section id="general-links" className="space-y-4" aria-labelledby="general-links-heading">
+          <h2 id="general-links-heading" className="text-2xl md:text-3xl font-black">Yleiset linkit</h2>
           <div className="overflow-x-auto rounded-lg border border-slate-200 bg-white shadow-sm">
             <table className="min-w-full divide-y divide-slate-200 text-sm">
               <thead className="bg-slate-100 text-left text-xs font-black uppercase tracking-wide text-slate-600">
@@ -421,7 +428,7 @@ function App() {
                   <tr key={`${row.category}|${row.group}|${row.name}|${row.url}`}>
                     <td className="px-4 py-3 font-black">{row.name}</td>
                     <td className="px-4 py-3">
-                      <a className="text-indigo-700 hover:underline break-all" href={row.url} target="_blank" rel="noopener noreferrer">{row.url}</a>
+                      <a className="inline-flex min-h-8 items-center text-indigo-700 hover:underline break-all focus:outline-none focus:ring-4 focus:ring-indigo-200" href={row.url} target="_blank" rel="noopener noreferrer">{row.url}</a>
                     </td>
                     <td className="px-4 py-3 font-bold">{row.category}</td>
                     <td className="px-4 py-3 text-slate-600">{row.group || '-'}</td>
@@ -434,8 +441,8 @@ function App() {
         )}
 
         {activeView === 'regional' && (
-        <section className="space-y-4">
-          <h2 className="text-2xl md:text-3xl font-black">Alueelliset linkit</h2>
+        <section id="regional-links" className="space-y-4" aria-labelledby="regional-links-heading">
+          <h2 id="regional-links-heading" className="text-2xl md:text-3xl font-black">Alueelliset linkit</h2>
           <p className="max-w-4xl text-sm font-bold text-slate-600">
             Tässä näkymässä ovat vain paikkakuntiin liittyvät linkit: kunnan sivut, hyvinvointialueet, kirjastot, kulttuuri- ja yhdistyslinkit, alueelliset uutiset ja uutisvirrat.
           </p>
@@ -456,7 +463,7 @@ function App() {
                     <td className="px-4 py-3 font-bold">{row.category}</td>
                     <td className="px-4 py-3">{row.name}</td>
                     <td className="px-4 py-3">
-                      <a className="text-indigo-700 hover:underline break-all" href={row.url} target="_blank" rel="noopener noreferrer">{row.url}</a>
+                      <a className="inline-flex min-h-8 items-center text-indigo-700 hover:underline break-all focus:outline-none focus:ring-4 focus:ring-indigo-200" href={row.url} target="_blank" rel="noopener noreferrer">{row.url}</a>
                     </td>
                   </tr>
                 ))}
@@ -467,8 +474,8 @@ function App() {
         )}
 
         {activeView === 'municipalities' && (
-        <section className="space-y-4">
-          <h2 className="text-2xl md:text-3xl font-black">Paikkakunnat aakkosjärjestyksessä</h2>
+        <section id="municipality-links" className="space-y-4" aria-labelledby="municipality-links-heading">
+          <h2 id="municipality-links-heading" className="text-2xl md:text-3xl font-black">Paikkakunnat aakkosjärjestyksessä</h2>
           <div className="sticky top-0 z-30 rounded-lg border border-slate-200 bg-white p-2 shadow-sm">
             <div
               ref={municipalityTopScrollRef}
@@ -521,6 +528,9 @@ function App() {
           </div>
         </section>
         )}
+        <div id="link-list-after" tabIndex={-1} className="rounded-lg border border-slate-200 bg-white p-4 text-sm font-bold text-slate-600">
+          Linkkilistan loppu.
+        </div>
       </div>
     </main>
   );

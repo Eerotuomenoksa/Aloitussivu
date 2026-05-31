@@ -138,6 +138,7 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({ language, setLangua
 
 const AppContent: React.FC = () => {
   const { language, setLanguage, t } = useI18n();
+  const settingsButtonRef = React.useRef<HTMLButtonElement>(null);
   const [selectedCategory, setSelectedCategory] = useState<Shortcut | null>(null);
   const [isInfoOpen, setIsInfoOpen] = useState(false);
   const [isHomepageOpen, setIsHomepageOpen] = useState(false);
@@ -239,7 +240,10 @@ const AppContent: React.FC = () => {
   useEffect(() => {
     if (!isSettingsOpen) return;
     const handleEsc = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setIsSettingsOpen(false);
+      if (event.key === 'Escape') {
+        setIsSettingsOpen(false);
+        window.requestAnimationFrame(() => settingsButtonRef.current?.focus());
+      }
     };
     window.addEventListener('keydown', handleEsc);
     return () => window.removeEventListener('keydown', handleEsc);
@@ -334,14 +338,15 @@ const AppContent: React.FC = () => {
               <LanguageSelector language={language} setLanguage={setLanguage} label={t('language')} />
 
               <button
+                ref={settingsButtonRef}
                 type="button"
                 onClick={() => setIsSettingsOpen(prev => !prev)}
                 data-tour="settings"
                 className="bg-white/95 hover:bg-white text-slate-950 px-4 py-2.5 rounded-full font-black text-base transition-all active:scale-95 shadow-md border-b-4 border-black/20 focus:ring-4 focus:ring-white/60 focus:outline-none md:px-5 md:py-3 md:text-lg"
                 aria-label={t('openSettings')}
                 aria-expanded={isSettingsOpen}
-                aria-haspopup="menu"
-                aria-controls="settings-menu"
+                aria-haspopup="dialog"
+                aria-controls={isSettingsOpen ? 'settings-panel' : undefined}
               >
                 ⚙️
               </button>
@@ -372,16 +377,19 @@ const AppContent: React.FC = () => {
 
         {isSettingsOpen && (
           <div
-            id="settings-menu"
+            id="settings-panel"
               className="absolute right-3 md:right-8 lg:right-12 top-[5.5rem] z-30 w-[min(24rem,calc(100vw-1.5rem))] rounded-3xl border-4 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-2xl p-5"
-            role="menu"
-            aria-label={t('settings')}
+            role="dialog"
+            aria-labelledby="settings-panel-title"
           >
             <div className="flex items-center justify-between gap-4 mb-4">
-              <h2 className="font-black text-slate-900 dark:text-white text-xl">{t('settings')}</h2>
+              <h2 id="settings-panel-title" className="font-black text-slate-900 dark:text-white text-xl">{t('settings')}</h2>
               <button
                 type="button"
-                onClick={() => setIsSettingsOpen(false)}
+                onClick={() => {
+                  setIsSettingsOpen(false);
+                  window.requestAnimationFrame(() => settingsButtonRef.current?.focus());
+                }}
                 className="min-h-14 rounded-full px-5 py-3 text-sm font-black bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 md:min-h-12 md:px-4 md:py-2"
                 aria-label={t('close')}
               >
@@ -575,6 +583,7 @@ const AppContent: React.FC = () => {
               target="_blank"
               rel="noopener noreferrer"
               className="inline-block p-4 rounded-3xl transition-transform hover:scale-105"
+              aria-label={t('seniorSurfLogoAlt')}
             >
               <img
                 src="https://seniorsurf.fi/wp-content/uploads/SeniorSurf_White-320-x-102-px.svg"

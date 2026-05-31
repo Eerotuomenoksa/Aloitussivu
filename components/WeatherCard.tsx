@@ -236,7 +236,7 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ locality, onLocationResolved,
       aria-label={t('showWeather')}
     >
       <div className="space-y-1">
-        <h3 className={`${isCompact ? 'text-sm leading-tight md:text-xl' : 'text-2xl'} font-black opacity-90 tracking-tight`}>{locationName}</h3>
+        <p className={`${isCompact ? 'text-sm leading-tight md:text-xl' : 'text-2xl'} font-black opacity-90 tracking-tight`}>{locationName}</p>
         {loading ? (
           <p className="mt-1 rounded-xl bg-white/15 px-2 py-1.5 text-xs font-black text-white md:mt-2 md:px-3 md:py-2 md:text-base" role="status" aria-live="polite">
             {t('weatherLoading')}
