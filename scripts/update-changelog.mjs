@@ -213,6 +213,18 @@ function summarizeCommit(commit) {
     notes.push('Pirkkalan uutisiin lisättiin Pirkkalainen-lehden RSS-syöte.');
   }
 
+  if (subject.includes('toinen kello')) {
+    notes.push('Asetuksiin lisättiin toinen kello, jonka aikavyöhykkeen käyttäjä voi valita itse.');
+  }
+
+  if (subject.includes('saavutettavuus muutoksia')) {
+    notes.push('Saavutettavuustarkistuksen havaintoja korjattiin: otsikkorakennetta, asetuspaneelin rooleja, linkkien nimiä ja kosketusalueita parannettiin.');
+  }
+
+  if (subject.includes('tietosuoja-selosteeseen') || subject.includes('saavutettavuusselosteeseen')) {
+    notes.push('Tietosuojaselosteen ja saavutettavuusselosteen luonnokset lisättiin sivustolle sekä linkitettiin footeriin, Ohjeeseen ja Tietoa-osioon.');
+  }
+
   return notes;
 }
 
@@ -221,6 +233,10 @@ function summarizeToday(recentCommits, worktreeChanges) {
   const commitNotes = recentCommits
     .filter((commit) => commit.date === today)
     .flatMap((commit) => summarizeCommit(commit));
+
+  if (commitNotes.length > 0) {
+    return uniqueBy(commitNotes, (item) => item);
+  }
 
   return uniqueBy([
     ...commitNotes,

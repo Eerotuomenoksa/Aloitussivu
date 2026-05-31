@@ -22,399 +22,421 @@ export type ChangelogCommit = {
   subject: string;
 };
 
-export const CHANGELOG_GENERATED_AT = "29.5.2026 klo 11.11";
+export const CHANGELOG_GENERATED_AT = "31.5.2026 klo 14.29";
 export const CHANGELOG_VERSION = "0.64";
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
-  "Versionumerointi otettiin käyttöön: nykyinen versio näkyy footerissa ja muutoslokin yläosassa.",
-  "Muutoshistoria näyttää versionumeron jokaisen muutoksen yhteydessä.",
-  "Pirkkalan uutisiin lisättiin Pirkkalainen-lehden RSS-syöte.",
-  "Linkkien tarkistusdata ja ylläpitoloki päivitettiin uusimman buildin yhteydessä."
+  "Tietosuojaselosteen ja saavutettavuusselosteen luonnokset lisättiin sivustolle sekä linkitettiin footeriin, Ohjeeseen ja Tietoa-osioon.",
+  "Saavutettavuustarkistuksen havaintoja korjattiin: otsikkorakennetta, asetuspaneelin rooleja, linkkien nimiä ja kosketusalueita parannettiin."
 ];
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
   {
+    "hash": "bcd8f3bfbebddafee65473f453ff23a125fae2ae",
+    "date": "2026-05-31",
+    "subject": "lisätty luonnokset tietosuoja-selosteeseen ja saavutettavuusselosteeseen",
+    "version": "0.64"
+  },
+  {
+    "hash": "bce6efa1be66086a44341549ed408513ba9a1058",
+    "date": "2026-05-31",
+    "subject": "Saavutettavuus muutoksia",
+    "version": "0.63"
+  },
+  {
+    "hash": "d8602a5be238d0096881b825fce6f310316a0189",
+    "date": "2026-05-29",
+    "subject": "toinen kello",
+    "version": "0.62"
+  },
+  {
+    "hash": "315d1ccb512ffe8c36be273625dd2bb7bdf8b62d",
+    "date": "2026-05-29",
+    "subject": "päivitä linkki- ja paikallisuutistiedot",
+    "version": "0.61"
+  },
+  {
     "hash": "d51fb607b0534852e3ca78bafccf9118ab642be2",
     "date": "2026-05-29",
     "subject": "päivitä linkkien tarkistus",
-    "version": "0.64"
+    "version": "0.60"
   },
   {
     "hash": "5fcacdc0df66efe3e566abae564a9036a7046ee7",
     "date": "2026-05-29",
     "subject": "päivitä ylläpidon turvallisuuskorjaukset",
-    "version": "0.63"
+    "version": "0.59"
   },
   {
     "hash": "28f84d36c3ae7e4cd6c969592fe6916cb9a6a906",
     "date": "2026-05-28",
     "subject": "käyttölaskuri päivitys",
-    "version": "0.62"
+    "version": "0.58"
   },
   {
     "hash": "cb424a403fc2d7cdedad791f45287fcab782b217",
     "date": "2026-05-28",
     "subject": "limit nameday test usage",
-    "version": "0.61"
+    "version": "0.57"
   },
   {
     "hash": "a7cdeb6c94e3d0a4350be984c5de83564e570b4f",
     "date": "2026-05-28",
     "subject": "avoid live crawls in pages deploy",
-    "version": "0.60"
+    "version": "0.56"
   },
   {
     "hash": "aa19828197c588757b15977a2abc6d5dffa7f581",
     "date": "2026-05-28",
     "subject": "fix pages firebase validation",
-    "version": "0.59"
+    "version": "0.55"
   },
   {
     "hash": "e88ce72a06448f3ecb729f0d585354d5b16b09ae",
     "date": "2026-05-28",
     "subject": "chore: update security cleanup and homepage groups",
-    "version": "0.58"
+    "version": "0.54"
   },
   {
     "hash": "9af577252e9c8a4b0415b4c818616bb123f1ce8b",
     "date": "2026-05-27",
     "subject": "security(P0-SEC-001): Tarkenna ihmistehtavien ohjeet",
-    "version": "0.57"
+    "version": "0.53"
   },
   {
     "hash": "7ffe8c6ba3496546ed390f9e30d6c6c4014fb8e9",
     "date": "2026-05-27",
     "subject": "security(P3-SEC-014): Kayta vakaata Gemini mallia",
-    "version": "0.56"
+    "version": "0.52"
   },
   {
     "hash": "82f54014b5de189f4f8980d0b1e38f8536a77857",
     "date": "2026-05-27",
     "subject": "security(P3-SEC-013): Valta innerHTML RSS tekstipurussa",
-    "version": "0.55"
+    "version": "0.51"
   },
   {
     "hash": "b9a46f740e8cff8c5b1ab278512bd38e732addfd",
     "date": "2026-05-27",
     "subject": "security(P3-SEC-012): Kayta crypto UUID tunnisteissa",
-    "version": "0.54"
+    "version": "0.50"
   },
   {
     "hash": "ad1d8918fed21282afed961ab45469504d9c5d23",
     "date": "2026-05-27",
     "subject": "security(P2-SEC-011): Lisaa budjettihalytys",
-    "version": "0.53"
+    "version": "0.49"
   },
   {
     "hash": "a484c07f982796a4ded2093e3422214154dac23f",
     "date": "2026-05-27",
     "subject": "security(P2-SEC-010): Pakota admin tilien 2FA",
-    "version": "0.52"
+    "version": "0.48"
   },
   {
     "hash": "520bf1e27348481190d7d4116aed4ba5383d604d",
     "date": "2026-05-27",
     "subject": "security(P1-SEC-006): Tiukenna hosting CSP",
-    "version": "0.51"
+    "version": "0.47"
   },
   {
     "hash": "6e86159a040dd30064099cc0633505c8806ff440",
     "date": "2026-05-27",
     "subject": "security(P1-SEC-005): Vaadi App Check kayttotilastoille",
-    "version": "0.50"
+    "version": "0.46"
   },
   {
     "hash": "e738a694fe3455664a659056b80ed308130a7d9d",
     "date": "2026-05-27",
     "subject": "security(P1-SEC-004): Pakota App Check geminiChatissa",
-    "version": "0.49"
+    "version": "0.45"
   },
   {
     "hash": "852c092c6a01e858ffb74dd05bc9ea3ad322c44b",
     "date": "2026-05-27",
     "subject": "security(P0-SEC-003): Rajaa Firebase API avain",
-    "version": "0.48"
+    "version": "0.44"
   },
   {
     "hash": "e89ea594b1c80dbb1f9fad87ff051ce76159446a",
     "date": "2026-05-27",
     "subject": "security(P0-SEC-002): Siirra tyohakemisto pois OneDrivesta",
-    "version": "0.47"
+    "version": "0.43"
   },
   {
     "hash": "dcfe1c45cd2186cfb3bdbf285f846a0bf4d5bb41",
     "date": "2026-05-27",
     "subject": "security(P0-SEC-001): Pyorayta functions salaisuudet",
-    "version": "0.46"
+    "version": "0.42"
   },
   {
     "hash": "7bb4ebcf68ac11aa1e5d354ca5c8c788908af9b0",
     "date": "2026-05-26",
     "subject": "sää vaihtuu paikkakunnan mukaan ja muut kunta tarkistukset manuaaliseen kunnan vaihtoon",
-    "version": "0.45"
+    "version": "0.41"
   },
   {
     "hash": "47c4a3e76780f378046e949a2da1d23b598c3066",
     "date": "2026-05-26",
     "subject": "laajennettu käyttötilastot sivuille",
-    "version": "0.44"
+    "version": "0.40"
   },
   {
     "hash": "493907344c4e87b46b5e807f1efc6f60b09f46a3",
     "date": "2026-05-26",
     "subject": "lisätty tilastointi sivu",
-    "version": "0.43"
+    "version": "0.39"
   },
   {
     "hash": "0f0766d0ba33814c35788de8b5d2c53f55ac9313",
     "date": "2026-05-26",
     "subject": "tietoturva parannuksia",
-    "version": "0.42"
+    "version": "0.38"
   },
   {
     "hash": "643bb47e6ab0a22045a645d512755dda952d2702",
     "date": "2026-05-26",
     "subject": "lisätty sukujutut ja poistettu tuplia",
-    "version": "0.41"
+    "version": "0.37"
   },
   {
     "hash": "f6853c7eafbb3303646289d1cf15e8fff925be00",
     "date": "2026-05-25",
     "subject": "digiup tool lisätty",
-    "version": "0.40"
+    "version": "0.36"
   },
   {
     "hash": "14f3cd6f6d2743765b8c22d2572fae449633971b",
     "date": "2026-05-25",
     "subject": "Lisätty alueellisia kirjastoja ja tukemassa sivu",
-    "version": "0.39"
+    "version": "0.35"
   },
   {
     "hash": "d44c3c6c7854307ab63f00471a4fc5fa2633230b",
     "date": "2026-05-25",
     "subject": "Lisätty äänen tunnistus Google hakuun ja Avustajaan, muokattu näkyvän kunnan toimintoja",
-    "version": "0.38"
+    "version": "0.34"
   },
   {
     "hash": "82e9c3103692ab593cdaf4a313cf049db8f6864a",
     "date": "2026-05-22",
     "subject": "Nimipäivät lisätty testaukseen",
-    "version": "0.37"
+    "version": "0.33"
   },
   {
     "hash": "e97f3855810aae4cbd13653927eb2f00096ea00d",
     "date": "2026-05-22",
     "subject": "lisätty symbolit alueellisiin palveluihin",
-    "version": "0.36"
+    "version": "0.32"
   },
   {
     "hash": "35863b5f04184202813182f1a406844b21bacd94",
     "date": "2026-05-22",
     "subject": "Luontosivusto.fi lisätty",
-    "version": "0.35"
+    "version": "0.31"
   },
   {
     "hash": "97c4d8b150b437ff2d86b933ee732c085d18c21a",
     "date": "2026-05-22",
     "subject": "Visuaalinen tarkistus",
-    "version": "0.34"
+    "version": "0.30"
   },
   {
     "hash": "6cd99ae858e21f01d3bc7c24e27ecaa459d17b85",
     "date": "2026-05-22",
     "subject": "ylläpidon varoitusten ja ilmoitusten käsittelyn korjaukset",
-    "version": "0.33"
+    "version": "0.29"
   },
   {
     "hash": "c97a8449cf0e62d91dc964c8161fd1449dd5765a",
     "date": "2026-05-22",
     "subject": "huijausvaroitusten ylläpidon toiminta ja tuplalinkkien käsittely",
-    "version": "0.32"
+    "version": "0.28"
   },
   {
     "hash": "5c93fddcef2f3562feeba22e4b04276b6defd1e6",
     "date": "2026-05-22",
     "subject": "Testaus palautetteen korjauksia",
-    "version": "0.31"
+    "version": "0.27"
   },
   {
     "hash": "eef722e41e039b4500ba59b0e42ee22cb64aeb46",
     "date": "2026-05-20",
     "subject": "poistettu tupla omakanta",
-    "version": "0.30"
+    "version": "0.26"
   },
   {
     "hash": "9377458d2b3c129f7dcc14f7d22e3464b2c85482",
     "date": "2026-05-20",
     "subject": "lisää käytettävyyttä mobiiliin",
-    "version": "0.29"
+    "version": "0.25"
   },
   {
     "hash": "32123c5a2e3aeb178d6d885fcd360892c74949ad",
     "date": "2026-05-20",
     "subject": "lisätty vähemmistöihin liittyviä linkkejä",
-    "version": "0.28"
+    "version": "0.24"
   },
   {
     "hash": "b019f1dc54735d1b14acbe6d4e785e97f174718b",
     "date": "2026-05-20",
     "subject": "mobiililiittymän tarkennuksia ja ulkomaiden käsittely",
-    "version": "0.27"
+    "version": "0.23"
   },
   {
     "hash": "f78da66d316b4dd8523c7cd282113446a0848d5a",
     "date": "2026-05-19",
     "subject": "värimaailmaa uusiksi ja esittelykierros",
-    "version": "0.26"
+    "version": "0.22"
   },
   {
     "hash": "3647f916469b8469d5a2a397e16f174a9539ae2f",
     "date": "2026-05-19",
     "subject": "sivuston esittely",
-    "version": "0.25"
+    "version": "0.21"
   },
   {
     "hash": "b6951f7de6ad82564f4b31022982156eff031a38",
     "date": "2026-05-19",
     "subject": "Saavutettavuuden parannuksia ja nimen muutos",
-    "version": "0.24"
+    "version": "0.20"
   },
   {
     "hash": "79db8e4a6461267e27616fddfcfe829fe6e76465",
     "date": "2026-05-19",
     "subject": "laajennettaan paikallisten teatterien ja museoiden näkyvyyttä paikallisliikenteen alueen mukaisiin kuntiin",
-    "version": "0.23"
+    "version": "0.19"
   },
   {
     "hash": "8a49ccef1e4aa6d562bd12d4149716df8902a025",
     "date": "2026-05-19",
     "subject": "linkkilistaan museo ja teatteri sarake",
-    "version": "0.22"
+    "version": "0.18"
   },
   {
     "hash": "5c2cc751895792d356c39aa715097df19ae5aed6",
     "date": "2026-05-18",
     "subject": "Korjattu ilmoitetun linkin piilotus",
-    "version": "0.21"
+    "version": "0.17"
   },
   {
     "hash": "b097239bbf0dc7d99169edcf067a3048f66179b7",
     "date": "2026-05-18",
     "subject": "korjattu huijausvaroitusten hakua",
-    "version": "0.20"
+    "version": "0.16"
   },
   {
     "hash": "f263effbe6db46c258e1f13fe87c895f58038685",
     "date": "2026-05-18",
     "subject": "Alakategoriat lisätty, lisätty huijausvaroitukset ja korjattu tekoälyn näkyminen laatikoiden päällä",
-    "version": "0.19"
+    "version": "0.15"
   },
   {
     "hash": "751584bc50782a26ac3193dc9f897d80aac2c8a4",
     "date": "2026-05-12",
     "subject": "Selkeytetty puhelinnumeron ja linkin eroa kategoria näkymässä",
-    "version": "0.18"
+    "version": "0.14"
   },
   {
     "hash": "2896f483d513fbb0de259fc2fe037c3844f1e117",
     "date": "2026-05-12",
     "subject": "Lisää versiot muutoslokiin",
-    "version": "0.17"
+    "version": "0.13"
   },
   {
     "hash": "c6ee191d0a187c51b9ff992970b372efb5fe455e",
     "date": "2026-05-12",
     "subject": "Puhelinnumerot lisätty 35  ja versionumerointi",
-    "version": "0.16"
+    "version": "0.12"
   },
   {
     "hash": "b03bd630df085f5b3724916aa02fd3afa46ed4dc",
     "date": "2026-05-12",
     "subject": "lisätty 152 alueellista liikuntapaikka linkkiä",
-    "version": "0.15"
+    "version": "0.11"
   },
   {
     "hash": "84a8861b6688f3f8ed3b97c3e7a0701668856cb9",
     "date": "2026-05-12",
     "subject": "Päivitä muutosloki",
-    "version": "0.14"
+    "version": "0.10"
   },
   {
     "hash": "899318babdf949f10bfea7189db6637a345ed293",
     "date": "2026-05-12",
     "subject": "väri muutoksia",
-    "version": "0.13"
+    "version": "0.09"
   },
   {
     "hash": "b995b0538ce132d9b6559b2ad7b5dd293af184c1",
     "date": "2026-05-11",
     "subject": "sään paikkaa vaihdettu takaisin headeriin ja huijausvaroitusten määrä max 2kpl",
-    "version": "0.12"
+    "version": "0.08"
   },
   {
     "hash": "2eeea59d71d758ab420b0454746aff1818468eb0",
     "date": "2026-05-11",
     "subject": "Muutokset",
-    "version": "0.11"
+    "version": "0.07"
   },
   {
     "hash": "0d557441cc41361cf4078dff093e84e38c4e54de",
     "date": "2026-05-11",
     "subject": "Tupla linkkien poistoja ja alueellisten linkkien näkyvyys, lisätty myös paikallisia urheiluseuroja",
-    "version": "0.10"
+    "version": "0.06"
   },
   {
     "hash": "bb547c7ebb9331b5a5f947b50d8aba0d756cb068",
     "date": "2026-05-08",
     "subject": "Paikalliset linkit ja hakupäivitykset",
-    "version": "0.09"
+    "version": "0.05"
   },
   {
     "hash": "e2fe1b4c2593e9f1db47710070c000b1a7c03909",
     "date": "2026-05-08",
     "subject": "ilmoita linkki lähetä-nappulan korjaus ja alueellisten linkkien näkyvyys",
-    "version": "0.08"
+    "version": "0.04"
   },
   {
     "hash": "4578fb7091e7ebb23cf5214e9c59474b8087942d",
     "date": "2026-05-08",
     "subject": "Huijausvaroitusten tarkennukset",
-    "version": "0.07"
+    "version": "0.03"
   },
   {
     "hash": "b75d9b8c630ea216c1e1e5e5cc8c7247cb8a74e2",
     "date": "2026-05-08",
     "subject": "muutosloki tarkennus",
-    "version": "0.06"
+    "version": "0.02"
   },
   {
     "hash": "360ea3d3dd76c6a4612efdaa9257db3c5827eeb6",
     "date": "2026-05-08",
     "subject": "käyttöliittymän siivousta",
-    "version": "0.05"
+    "version": "0.01"
   },
   {
     "hash": "e0b8a689187e142e03c2103e0511bbeb41c44abd",
     "date": "2026-05-08",
     "subject": "koodi tarkistus",
-    "version": "0.04"
+    "version": "0.00"
   },
   {
     "hash": "39d2d6c53df90afbadb0bf0ec704d0ab802cc001",
     "date": "2026-05-07",
     "subject": "Lehtilinkit",
-    "version": "0.03"
+    "version": "0.00"
   },
   {
     "hash": "59898548a2d2ce91bb20eb60fecac320cc68b9bb",
     "date": "2026-05-07",
     "subject": "Huijausvaroitukset",
-    "version": "0.02"
+    "version": "0.00"
   },
   {
     "hash": "73c16755f3cdc9e7ccfa80339ef9363484da81e7",
     "date": "2026-05-07",
     "subject": "secrets",
-    "version": "0.01"
+    "version": "0.00"
   },
   {
     "hash": "2222e5e511815ba3928dd5653e77296b6123d556",
