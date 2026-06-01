@@ -168,9 +168,9 @@
   <line x1="51" y1="70.5" x2="59" y2="70.5" stroke="white" stroke-width="0.8"/>
 
   <!-- TEXT -->
-  <text id="logoTitle" x="118" y="46" font-size="26" font-weight="bold" fill="white" letter-spacing="0.5">SeniorSurf</text>
+  <text id="logoTitle" x="118" y="46" font-size="24" font-weight="bold" fill="white" letter-spacing="0.5">Aloitussivu</text>
   <rect id="logoLine" x="118" y="52" width="170" height="2.5" rx="1.5" fill="#c9963a" opacity="0.9"/>
-  <text id="logoSub" x="119" y="70" font-size="12.5" fill="#a8c8e8" letter-spacing="1.5" font-style="italic">Aloitussivu</text>
+  <text id="logoSub" x="119" y="70" font-size="16" fill="#a8c8e8" letter-spacing="1.2" font-style="italic">seniorille</text>
   <text id="logoTagline" x="119" y="90" font-size="10" fill="#7aa8c8" letter-spacing="0.8">Helppo ja turvallinen pääsy nettiin</text>
   <!-- Time label (pieni) -->
   <text id="timeLabel" x="119" y="108" font-size="9" fill="#4a7a9a" letter-spacing="0.5" opacity="0.7"></text>

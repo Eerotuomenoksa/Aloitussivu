@@ -97,7 +97,7 @@ function App() {
                   <h3 className="mt-1 text-2xl font-black">Vanhustyön keskusliitto ry</h3>
                 </div>
                 <p className="text-base font-bold leading-relaxed text-slate-700">
-                  Vanhustyön keskusliitto ry omistaa ja mahdollistaa SeniorSurfin aloitussivun kokeilun. Omistajuus merkitään näkyvästi, mutta se ei muuta linkkien puolueetonta käsittelyä.
+                  Vanhustyön keskusliitto ry omistaa ja mahdollistaa Aloitussivu seniorille -kokeilun. Omistajuus merkitään näkyvästi, mutta se ei muuta linkkien puolueetonta käsittelyä.
                 </p>
                 <a href="https://vtkl.fi/" target="_blank" rel="noopener noreferrer" className="inline-flex rounded-full bg-[#173e5f] px-5 py-3 text-sm font-black text-white shadow-sm hover:bg-[#214f76]">
                   Siirry sivustolle
