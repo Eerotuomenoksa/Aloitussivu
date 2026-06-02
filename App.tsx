@@ -407,7 +407,7 @@ const AppContent: React.FC = () => {
                 )}
                 <div className="glass-chip-row mt-3 flex flex-wrap gap-3.5" role="region" aria-label={t('currentInfo')}>
                   {uiVisibility.weather && (
-                    <div className="flex min-w-[180px] flex-1 items-center gap-3 rounded-[28px] border border-white/[.18] px-5 py-3.5 text-white/90" style={{ background: 'rgba(255,255,255,.1)', backdropFilter: 'blur(16px)' }}>
+                    <div className="glass-chip flex min-w-[180px] flex-1 items-center gap-3 rounded-[28px] border border-white/[.18] px-5 py-3.5 text-white/90" style={{ background: 'rgba(255,255,255,.1)', backdropFilter: 'blur(16px)' }}>
                       <WeatherCard locality={regionalLocality} onLocationResolved={updateLocality} variant="chip" />
                     </div>
                   )}

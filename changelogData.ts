@@ -23,17 +23,24 @@ export type ChangelogCommit = {
   subject: string;
 };
 
-export const CHANGELOG_GENERATED_AT = "31.5.2026 klo 14.52";
-export const CHANGELOG_VERSION = "0.70.0";
+export const CHANGELOG_GENERATED_AT = "2.6.2026 klo 21.31";
+export const CHANGELOG_VERSION = "0.71.0";
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
-  "Versionumerointi otettiin käyttöön: nykyinen versio näkyy footerissa ja muutoslokin yläosassa.",
-  "Muutoshistoria näyttää versionumeron jokaisen muutoksen yhteydessä.",
-  "Linkkien tarkistusdata ja ylläpitoloki päivitettiin uusimman buildin yhteydessä.",
-  "Tietosuojaselosteen ja saavutettavuusselosteen luonnokset lisättiin sivustolle sekä linkitettiin footeriin, Ohjeeseen ja Tietoa-osioon.",
-  "Saavutettavuustarkistuksen havaintoja korjattiin: otsikkorakennetta, asetuspaneelin rooleja, linkkien nimiä ja kosketusalueita parannettiin."
+  "Etusivulle lisättiin Aurora-visuaalinen ilme: tumma kaareva hero, uudet fontit, lasimaiset haku- ja tietosirut sekä bento-tyylinen palveluruudukko.",
+  "Asetuksiin lisättiin värimaailman valinta: vihreä, violetti, sininen ja oranssi teema.",
+  "Tummien teemojen väripaletit tarkennettiin omiksi yöpaleteikseen, jotta taustat, kortit, reunukset ja korostusvärit pysyvät luettavina.",
+  "Bento-kortteihin ja alueellisten palveluiden paneeliin lisättiin tummassa tilassa hienovarainen pintasyvyys.",
+  "AI-avustajan ja sääsirun näkyvyyttä headerissa parannettiin."
 ];
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
+  {
+    "hash": "44bec77",
+    "date": "2026-06-02",
+    "version": "0.71.0",
+    "changeType": "minor",
+    "subject": "Uusi visuaalinen ilme Aurora ja mahdollisuus valita asetuksista värimaailma"
+  },
   {
     "hash": "ab84a59578e9ec6fe2fe1a34c728664bdf0396ce",
     "date": "2026-05-31",
