@@ -206,7 +206,7 @@ const regionalLinks = uniqueByKey(
 ).sort((a, b) => collator.compare(`${a.municipality} ${a.category} ${a.name}`, `${b.municipality} ${b.category} ${b.name}`));
 
 const allLinkCount = generalLinks.length + regionalLinks.length;
-const pageNavLinkClass = 'inline-flex min-h-12 items-center rounded-full bg-white px-4 py-2 text-sm font-black text-indigo-700 shadow-sm ring-1 ring-indigo-100 hover:bg-indigo-50 hover:underline focus:outline-none focus:ring-4 focus:ring-indigo-200';
+const pageNavLinkClass = 'aurora-nav-link px-4 py-2 text-sm';
 
 const csvEscape = (value: string | number) => `"${String(value).replace(/"/g, '""')}"`;
 
@@ -230,10 +230,10 @@ const LinkList = ({ links }: { links: RegionalLinkRow[] }) => (
   <ul className="space-y-2">
     {links.map((link) => (
       <li key={`${link.category}|${link.name}|${link.url}`} className="leading-snug">
-        <a className="inline-flex min-h-8 items-center font-black text-indigo-700 hover:underline break-words focus:outline-none focus:ring-4 focus:ring-indigo-200" href={link.url} target="_blank" rel="noopener noreferrer">
+        <a className="inline-flex min-h-8 items-center break-words font-black text-[var(--theme-primary)] hover:underline focus:outline-none focus:ring-4 focus:ring-[var(--theme-focus)]/40" href={link.url} target="_blank" rel="noopener noreferrer">
           {link.name}
         </a>
-        <span className="block text-xs font-bold text-slate-500 break-all">{link.url}</span>
+        <span className="block break-all text-xs font-bold text-[var(--theme-text-3)]">{link.url}</span>
       </li>
     ))}
   </ul>
@@ -302,9 +302,9 @@ function App() {
   };
 
   return (
-    <main className="min-h-screen bg-slate-50 text-slate-900">
+    <main className="aurora-page">
       <div className="mx-auto max-w-[1800px] px-4 py-8 md:px-8 md:py-12 space-y-10">
-        <header className="space-y-5">
+        <header className="aurora-subpage-hero space-y-5">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <a href="./index.html" className={pageNavLinkClass}>
               Takaisin aloitussivulle
@@ -317,11 +317,11 @@ function App() {
             </a>
           </div>
           <div className="space-y-3">
-            <span className="inline-flex rounded-full bg-amber-100 text-amber-900 px-3 py-1 text-xs font-black uppercase tracking-wide">
+            <span className="aurora-kicker">
               Ammattilaisille
             </span>
-            <h1 className="text-4xl md:text-6xl font-black tracking-tighter">Linkkiluettelo</h1>
-            <p className="max-w-4xl text-base md:text-lg text-slate-600">
+            <h1 className="font-display text-4xl font-bold tracking-tight md:text-6xl">Linkkiluettelo</h1>
+            <p className="max-w-4xl text-base font-semibold text-white/75 md:text-lg">
               Koonti sivuston yleisistä linkeistä sekä jokaiselle kunnalle muodostuvista alueellisista palvelu-, uutis- ja RSS-linkeistä.
             </p>
           </div>
@@ -332,7 +332,7 @@ function App() {
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
                 placeholder="Hae nimellä, URLilla, kategorialla tai paikkakunnalla"
-                className="w-full rounded-xl border-2 border-slate-300 bg-white px-4 py-3 font-bold text-slate-900 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-4 focus:ring-indigo-100"
+                className="aurora-input w-full rounded-xl px-4 py-3 font-bold shadow-sm"
               />
             </label>
             <div className="flex flex-wrap gap-2">
@@ -343,7 +343,7 @@ function App() {
                   ['Sivun nimi', 'URL', 'Kategoria', 'Ryhmä'],
                   generalLinks.map((row) => [row.name, row.url, row.category, row.group])
                 )}
-                className="rounded-xl bg-indigo-600 px-4 py-3 font-black text-white shadow-sm hover:bg-indigo-700"
+                className="rounded-xl bg-[var(--theme-gold)] px-4 py-3 font-black text-[var(--theme-cta-label)] shadow-sm hover:bg-[var(--theme-gold-light)]"
               >
                 Lataa yleiset CSV
               </button>
@@ -354,36 +354,36 @@ function App() {
                   ['Paikkakunta', 'Kategoria', 'Sivun nimi', 'URL'],
                   regionalLinks.map((row) => [row.municipality, row.category, row.name, row.url])
                 )}
-                className="rounded-xl bg-slate-900 px-4 py-3 font-black text-white shadow-sm hover:bg-slate-800"
+                className="rounded-xl bg-[var(--theme-primary)] px-4 py-3 font-black text-white shadow-sm hover:bg-[var(--theme-primary-mid)]"
               >
                 Lataa alueelliset CSV
               </button>
             </div>
           </div>
           <dl className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
-            <div className="rounded-lg border border-indigo-200 bg-indigo-50 p-4">
-              <dt className="text-sm font-black uppercase tracking-wide text-indigo-700">Kaikki linkit</dt>
-              <dd className="text-3xl font-black text-indigo-950">{allLinkCount}</dd>
-              <dd className="mt-1 text-xs font-bold text-indigo-700">Yleiset + alueelliset</dd>
+            <div className="rounded-lg border border-white/15 bg-white/10 p-4">
+              <dt className="text-sm font-black uppercase tracking-wide text-white/65">Kaikki linkit</dt>
+              <dd className="text-3xl font-black text-white">{allLinkCount}</dd>
+              <dd className="mt-1 text-xs font-bold text-white/55">Yleiset + alueelliset</dd>
             </div>
-            <div className="rounded-lg border border-slate-200 bg-white p-4">
-              <dt className="text-sm font-black uppercase tracking-wide text-slate-500">Yleiset linkit</dt>
-              <dd className="text-3xl font-black">{generalLinks.length}</dd>
+            <div className="rounded-lg border border-white/15 bg-white/10 p-4">
+              <dt className="text-sm font-black uppercase tracking-wide text-white/65">Yleiset linkit</dt>
+              <dd className="text-3xl font-black text-white">{generalLinks.length}</dd>
             </div>
-            <div className="rounded-lg border border-slate-200 bg-white p-4">
-              <dt className="text-sm font-black uppercase tracking-wide text-slate-500">Alueelliset linkit</dt>
-              <dd className="text-3xl font-black">{regionalLinks.length}</dd>
+            <div className="rounded-lg border border-white/15 bg-white/10 p-4">
+              <dt className="text-sm font-black uppercase tracking-wide text-white/65">Alueelliset linkit</dt>
+              <dd className="text-3xl font-black text-white">{regionalLinks.length}</dd>
             </div>
-            <div className="rounded-lg border border-slate-200 bg-white p-4">
-              <dt className="text-sm font-black uppercase tracking-wide text-slate-500">Paikkakunnat</dt>
-              <dd className="text-3xl font-black">{municipalityRows.length}</dd>
+            <div className="rounded-lg border border-white/15 bg-white/10 p-4">
+              <dt className="text-sm font-black uppercase tracking-wide text-white/65">Paikkakunnat</dt>
+              <dd className="text-3xl font-black text-white">{municipalityRows.length}</dd>
             </div>
-            <div className="rounded-lg border border-slate-200 bg-white p-4">
-              <dt className="text-sm font-black uppercase tracking-wide text-slate-500">Puhelinnumeroita</dt>
-              <dd className="text-3xl font-black">{phoneLinkCount}</dd>
+            <div className="rounded-lg border border-white/15 bg-white/10 p-4">
+              <dt className="text-sm font-black uppercase tracking-wide text-white/65">Puhelinnumeroita</dt>
+              <dd className="text-3xl font-black text-white">{phoneLinkCount}</dd>
             </div>
           </dl>
-          <nav className="flex flex-wrap gap-2 rounded-xl border border-slate-200 bg-white p-2 shadow-sm" aria-label="Linkkiluettelon näkymät">
+          <nav className="flex flex-wrap gap-2 rounded-xl border border-white/15 bg-white/10 p-2 shadow-sm" aria-label="Linkkiluettelon näkymät">
             {tabs.map((tab) => {
               const isActive = activeView === tab.id;
               return (
@@ -391,11 +391,11 @@ function App() {
                   key={tab.id}
                   type="button"
                   onClick={() => setActiveView(tab.id)}
-                  className={`${isActive ? 'bg-indigo-600 text-white shadow-sm' : 'bg-slate-100 text-slate-800 hover:bg-slate-200'} rounded-lg px-4 py-3 text-sm font-black transition-colors`}
+                  className={`${isActive ? 'bg-[var(--theme-gold)] text-[var(--theme-header-bg)] shadow-sm' : 'bg-white/10 text-white hover:bg-white/20'} rounded-lg px-4 py-3 text-sm font-black transition-colors`}
                   aria-current={isActive ? 'page' : undefined}
                 >
                   {tab.label}
-                  <span className={`${isActive ? 'bg-white/20 text-white' : 'bg-white text-slate-600'} ml-2 rounded-full px-2 py-0.5 text-xs`}>
+                  <span className={`${isActive ? 'bg-black/10 text-[var(--theme-header-bg)]' : 'bg-white/15 text-white'} ml-2 rounded-full px-2 py-0.5 text-xs`}>
                     {tab.count}
                   </span>
                 </button>
@@ -404,7 +404,7 @@ function App() {
           </nav>
           <a
             href="#link-list-after"
-            className="inline-flex min-h-12 items-center rounded-full bg-slate-900 px-4 py-2 text-sm font-black text-white shadow-sm hover:bg-slate-800 focus:outline-none focus:ring-4 focus:ring-slate-300"
+            className="inline-flex min-h-12 items-center rounded-full bg-white/10 px-4 py-2 text-sm font-black text-white shadow-sm hover:bg-white/20 focus:outline-none focus:ring-4 focus:ring-white/30"
           >
             Ohita valittu linkkilista
           </a>
@@ -412,8 +412,8 @@ function App() {
 
         {activeView === 'general' && (
         <section id="general-links" className="space-y-4" aria-labelledby="general-links-heading">
-          <h2 id="general-links-heading" className="text-2xl md:text-3xl font-black">Yleiset linkit</h2>
-          <div className="overflow-x-auto rounded-lg border border-slate-200 bg-white shadow-sm">
+          <h2 id="general-links-heading" className="aurora-section-title text-2xl md:text-3xl">Yleiset linkit</h2>
+          <div className="overflow-x-auto rounded-lg border border-[var(--theme-border)] bg-[var(--theme-surface)] shadow-sm">
             <table className="min-w-full divide-y divide-slate-200 text-sm">
               <thead className="bg-slate-100 text-left text-xs font-black uppercase tracking-wide text-slate-600">
                 <tr>

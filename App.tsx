@@ -34,11 +34,11 @@ const THEME_KEY = 'colorTheme';
 
 type ColorTheme = 'vihrea' | 'violetti' | 'sininen' | 'oranssi';
 
-const THEMES: { id: ColorTheme; labelKey: 'themeGreen' | 'themeViolet' | 'themeBlue' | 'themeOrange'; swatch: string; accent: string }[] = [
-  { id: 'vihrea', labelKey: 'themeGreen', swatch: '#0f2318', accent: '#d4940a' },
-  { id: 'violetti', labelKey: 'themeViolet', swatch: '#2a0a52', accent: '#f49638' },
-  { id: 'sininen', labelKey: 'themeBlue', swatch: '#0e1f3b', accent: '#c8922a' },
-  { id: 'oranssi', labelKey: 'themeOrange', swatch: '#4a1808', accent: '#28aa58' },
+const THEMES: { id: ColorTheme; labelKey: 'themeGreen' | 'themeViolet' | 'themeBlue' | 'themeOrange'; shortLabel: string; swatch: string; accent: string }[] = [
+  { id: 'vihrea', labelKey: 'themeGreen', shortLabel: 'Metsä', swatch: '#0f2318', accent: '#d4940a' },
+  { id: 'violetti', labelKey: 'themeViolet', shortLabel: 'VTKL', swatch: '#2a0a52', accent: '#f49638' },
+  { id: 'sininen', labelKey: 'themeBlue', shortLabel: 'Talvi', swatch: '#0e1f3b', accent: '#c8922a' },
+  { id: 'oranssi', labelKey: 'themeOrange', shortLabel: 'Aurinko', swatch: '#4a1808', accent: '#28aa58' },
 ];
 
 const SECONDARY_TIME_ZONE_OPTIONS = [
@@ -365,7 +365,7 @@ const AppContent: React.FC = () => {
               <LanguageSelector language={language} setLanguage={setLanguage} label={t('language')} />
               <button
                 onClick={() => setIsHomepageOpen(true)}
-                className="inline-flex min-h-[2.75rem] items-center gap-1.5 rounded-full border border-white/20 bg-[var(--theme-gold)] px-[1.1rem] py-[.55rem] text-[.95rem] font-extrabold text-[var(--theme-header-bg)] transition-all hover:bg-[var(--theme-gold-light)] active:scale-[.97]"
+                className="inline-flex min-h-[2.75rem] items-center gap-1.5 rounded-full border border-white/20 bg-[var(--theme-gold)] px-[1.1rem] py-[.55rem] text-[.95rem] font-extrabold text-[var(--theme-cta-label)] transition-all hover:bg-[var(--theme-gold-light)] active:scale-[.97]"
                 aria-label={t('openHomepageHelp')}
               >
                 🏠 {t('help')}
@@ -407,8 +407,8 @@ const AppContent: React.FC = () => {
                 )}
                 <div className="glass-chip-row mt-3 flex flex-wrap gap-3.5" role="region" aria-label={t('currentInfo')}>
                   {uiVisibility.weather && (
-                    <div className="glass-chip flex min-w-[180px] flex-1 items-center gap-3 rounded-[28px] border border-white/[.18] px-5 py-3.5 text-white/90" style={{ background: 'rgba(255,255,255,.1)', backdropFilter: 'blur(16px)' }}>
-                      <WeatherCard locality={regionalLocality} onLocationResolved={updateLocality} variant="chip" />
+                    <div className="min-w-[260px] flex-1">
+                      <WeatherCard locality={regionalLocality} onLocationResolved={updateLocality} variant="aurora" />
                     </div>
                   )}
                   {uiVisibility.assistant && (
@@ -463,20 +463,27 @@ const AppContent: React.FC = () => {
                     onClick={() => setColorTheme(theme.id)}
                     aria-label={t(theme.labelKey)}
                     aria-pressed={colorTheme === theme.id}
-                    className="relative h-12 w-12 overflow-hidden rounded-[14px] transition-all focus-visible:outline-[2.5px] focus-visible:outline-[var(--theme-gold-light)] focus-visible:outline-offset-3"
-                    style={{
-                      background: `linear-gradient(135deg, ${theme.swatch} 0%, ${theme.accent} 100%)`,
-                      boxShadow: colorTheme === theme.id
-                        ? `0 0 0 3px var(--theme-bg), 0 0 0 5px ${theme.swatch}`
-                        : '0 2px 8px rgba(0,0,0,.2)',
-                      transform: colorTheme === theme.id ? 'scale(1.1)' : 'scale(1)',
-                    }}
+                    className="relative flex min-h-[4.25rem] min-w-[4.25rem] flex-col items-center gap-1.5 rounded-[16px] p-1.5 text-center transition-all focus-visible:outline-[2.5px] focus-visible:outline-[var(--theme-gold-light)] focus-visible:outline-offset-3"
                   >
-                    {colorTheme === theme.id && (
-                      <span className="absolute inset-0 flex items-center justify-center text-lg font-black text-white" aria-hidden="true">
-                        ✓
-                      </span>
-                    )}
+                    <span
+                      className="relative block h-10 w-10 overflow-hidden rounded-[12px]"
+                      style={{
+                        background: `linear-gradient(135deg, ${theme.swatch} 0%, ${theme.accent} 100%)`,
+                        boxShadow: colorTheme === theme.id
+                          ? `0 0 0 3px var(--theme-bg), 0 0 0 5px ${theme.swatch}`
+                          : '0 2px 8px rgba(0,0,0,.2)',
+                      }}
+                      aria-hidden="true"
+                    >
+                      {colorTheme === theme.id && (
+                        <span className="absolute inset-0 flex items-center justify-center text-lg font-black text-white">
+                          ✓
+                        </span>
+                      )}
+                    </span>
+                    <span className="max-w-[3.6rem] text-[.65rem] font-bold leading-none text-[var(--theme-text-3)]">
+                      {theme.shortLabel}
+                    </span>
                   </button>
                 ))}
               </div>
@@ -522,7 +529,7 @@ const AppContent: React.FC = () => {
                   <button
                     type="button"
                     onClick={resetFont}
-                    className="rounded-full bg-[var(--theme-gold)] px-4 py-3 text-sm font-black text-[var(--theme-header-bg)] shadow-md transition-all hover:bg-[var(--theme-gold-light)] focus-visible:ring-4 focus-visible:ring-[var(--theme-focus)]/40 active:scale-95"
+                    className="rounded-full bg-[var(--theme-gold)] px-4 py-3 text-sm font-black text-[var(--theme-cta-label)] shadow-md transition-all hover:bg-[var(--theme-gold-light)] focus-visible:ring-4 focus-visible:ring-[var(--theme-focus)]/40 active:scale-95"
                     aria-label={t('resetText')}
                   >
                     100%
@@ -657,7 +664,7 @@ const AppContent: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => openReportModal({ name: '', url: '', category: '', source: 'Footer' })}
-                  className="mt-5 inline-flex items-center gap-2 rounded-full bg-[var(--theme-gold)] px-5 py-2.5 text-sm font-black text-[var(--theme-header-bg)] shadow-[0_3px_0_rgba(0,0,0,.28)] hover:bg-[var(--theme-gold-light)] focus-visible:ring-2 focus-visible:ring-white active:translate-y-[2px] active:shadow-none"
+                  className="mt-5 inline-flex items-center gap-2 rounded-full bg-[var(--theme-gold)] px-5 py-2.5 text-sm font-black text-[var(--theme-cta-label)] shadow-[0_3px_0_rgba(0,0,0,.28)] hover:bg-[var(--theme-gold-light)] focus-visible:ring-2 focus-visible:ring-white active:translate-y-[2px] active:shadow-none"
                 >
                   {t('reportNewLink')}
                 </button>

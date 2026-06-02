@@ -9,13 +9,96 @@ interface WeatherData {
   temp: number;
   condition: string;
   icon: string;
+  windspeed?: number;
+  feelsLike?: number;
+  humidity?: number;
+  code?: number;
+  hour?: number;
 }
 
 interface WeatherCardProps {
   locality?: LocalityInfo | null;
   onLocationResolved?: (location: LocalityInfo) => void;
-  variant?: 'default' | 'compact' | 'chip';
+  variant?: 'default' | 'compact' | 'chip' | 'aurora';
 }
+
+type WeatherState = 'sunny' | 'cloudy' | 'rainy' | 'night';
+
+const getWeatherState = (code: number | undefined, hour: number | undefined): WeatherState => {
+  const h = hour ?? 12;
+  if (h < 5 || h >= 22) return 'night';
+  if (code === undefined) return 'sunny';
+  if (code === 0) return 'sunny';
+  if (code >= 1 && code <= 48) return 'cloudy';
+  if (code >= 51) return 'rainy';
+  return 'sunny';
+};
+
+const RainLayer: React.FC = () => {
+  const drops = React.useMemo(() =>
+    Array.from({ length: 28 }, () => ({
+      left: `${Math.random() * 110 - 5}%`,
+      height: `${18 + Math.random() * 28}px`,
+      delay: `${Math.random() * 2}s`,
+      duration: `${0.7 + Math.random() * 0.6}s`,
+      opacity: 0.2 + Math.random() * 0.5,
+    })),
+  []);
+
+  return (
+    <div className="wcard-rain-wrap" aria-hidden="true">
+      {drops.map((drop, index) => (
+        <div
+          key={index}
+          className="wcard-raindrop"
+          style={{
+            left: drop.left,
+            height: drop.height,
+            animationDelay: drop.delay,
+            animationDuration: drop.duration,
+            opacity: drop.opacity,
+          }}
+        />
+      ))}
+    </div>
+  );
+};
+
+const StarField: React.FC = () => {
+  const stars = React.useMemo(() =>
+    Array.from({ length: 32 }, () => {
+      const size = 1 + Math.random() * 2.5;
+      return {
+        left: `${Math.random() * 100}%`,
+        top: `${Math.random() * 75}%`,
+        width: `${size}px`,
+        height: `${size}px`,
+        duration: `${2 + Math.random() * 3}s`,
+        delay: `${Math.random() * 3}s`,
+      };
+    }),
+  []);
+
+  return (
+    <>
+      {stars.map((star, index) => (
+        <div
+          key={index}
+          className="wcard-star"
+          aria-hidden="true"
+          style={{
+            left: star.left,
+            top: star.top,
+            width: star.width,
+            height: star.height,
+            animationDuration: star.duration,
+            animationDelay: star.delay,
+          }}
+        />
+      ))}
+    </>
+  );
+};
 
 const vantaaDistricts = new Set([
   'aviapolis',
@@ -92,21 +175,31 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ locality, onLocationResolved,
 
     const fetchCurrentWeather = async (lat: number, lon: number): Promise<WeatherData> => {
       const weatherRes = await fetch(
-        `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`,
+        `https://api.open-meteo.com/v1/forecast` +
+        `?latitude=${lat}&longitude=${lon}` +
+        `&current=temperature_2m,apparent_temperature,relative_humidity_2m,windspeed_10m,weathercode` +
+        `&timezone=auto`,
         { cache: 'no-cache' }
       );
       if (!weatherRes.ok) {
         throw new Error(`Weather request failed: ${weatherRes.status}`);
       }
       const weatherData = await weatherRes.json();
-      if (!weatherData.current_weather) {
-        throw new Error('Weather response missing current weather');
-      }
+      const cur = weatherData.current;
+      if (!cur) throw new Error('Weather response missing current data');
+
+      const code: number = cur.weathercode ?? 0;
+      const hour: number = cur.time ? new Date(cur.time).getHours() : new Date().getHours();
 
       return {
-        temp: Math.round(weatherData.current_weather.temperature),
-        condition: getWeatherText(weatherData.current_weather.weathercode),
-        icon: getWeatherIcon(weatherData.current_weather.weathercode),
+        temp: Math.round(cur.temperature_2m ?? 0),
+        condition: getWeatherText(code),
+        icon: getWeatherIcon(code),
+        windspeed: cur.windspeed_10m !== undefined ? Math.round(cur.windspeed_10m * 10) / 10 : undefined,
+        feelsLike: cur.apparent_temperature !== undefined ? Math.round(cur.apparent_temperature) : undefined,
+        humidity: cur.relative_humidity_2m !== undefined ? Math.round(cur.relative_humidity_2m) : undefined,
+        code,
+        hour,
       };
     };
 
@@ -132,11 +225,7 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ locality, onLocationResolved,
 
         if (!isActive) return;
 
-        setWeather({
-          temp: currentWeather.temp,
-          condition: currentWeather.condition,
-          icon: currentWeather.icon,
-        });
+        setWeather(currentWeather);
         setLocationName(shouldLocalizeLinks ? (isInFinland ? localizedMunicipality : city) : fallbackMunicipality);
         if (shouldLocalizeLinks) {
           onLocationResolved?.({ municipality, displayName: city, lat, lon, countryCode, isInFinland });
@@ -229,6 +318,113 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ locality, onLocationResolved,
   }, [language, locality, onLocationResolved, t]);
 
   const isCompact = variant === 'compact';
+
+  if (variant === 'aurora') {
+    const state: WeatherState = getWeatherState(weather?.code, weather?.hour);
+    const stateClass = `wcard-${state}` as const;
+    const now = new Date();
+    const timeLabel = now.toLocaleTimeString('fi-FI', { hour: '2-digit', minute: '2-digit' });
+    const ariaLabel = loading
+      ? t('weatherLoading')
+      : error
+        ? error
+        : `${t('weather')}: ${weather?.temp}°C, ${weather?.condition}, ${locationName}`;
+
+    return (
+      <div
+        className={`wcard-base ${stateClass}`}
+        role="region"
+        aria-label={ariaLabel}
+        aria-live={loading ? 'polite' : undefined}
+      >
+        {state === 'sunny' && (
+          <div className="wcard-sun-orb" aria-hidden="true" />
+        )}
+
+        {state === 'cloudy' && (
+          <>
+            <div className="wcard-cloud-blob" aria-hidden="true" style={{ width: 100, height: 50, background: 'rgba(180,210,240,.07)', top: 20, left: -20, animationDuration: '22s' }} />
+            <div className="wcard-cloud-blob" aria-hidden="true" style={{ width: 140, height: 60, background: 'rgba(160,200,230,.05)', top: 40, left: -40, animationDuration: '30s', animationDelay: '-8s' }} />
+            <div className="wcard-cloud-blob" aria-hidden="true" style={{ width: 80, height: 40, background: 'rgba(200,220,250,.06)', top: 10, right: 20, animationDuration: '18s', animationDelay: '-4s', animationDirection: 'reverse' }} />
+          </>
+        )}
+
+        {state === 'rainy' && <RainLayer />}
+
+        {state === 'night' && (
+          <>
+            <StarField />
+            <div className="wcard-moon" aria-hidden="true" />
+          </>
+        )}
+
+        <div className="wcard-top">
+          <div className="wcard-location">
+            <span className="wcard-dot" aria-hidden="true" />
+            <span>{locationName}</span>
+          </div>
+          <span className="wcard-time">{timeLabel}</span>
+        </div>
+
+        <div className="wcard-temp-row">
+          {loading ? (
+            <span className="wcard-temp" style={{ opacity: .4 }} role="status" aria-live="polite">-</span>
+          ) : error ? (
+            <span className="wcard-temp" style={{ fontSize: '1.5rem', opacity: .6 }}>{error}</span>
+          ) : (
+            <>
+              <span className="wcard-temp" aria-label={`${weather!.temp} ${t('degreeCelsius')}`}>
+                {weather!.temp}
+              </span>
+              <span className="wcard-unit" aria-hidden="true">°C</span>
+            </>
+          )}
+        </div>
+
+        {!loading && !error && weather && (
+          <>
+            <div className="wcard-cond">
+              <span aria-hidden="true">{weather.icon}</span>
+              <span>{weather.condition}</span>
+            </div>
+
+            <div className="wcard-meta">
+              {weather.feelsLike !== undefined && (
+                <div className="wcard-meta-item">
+                  <span className="wcard-meta-label">{t('weatherFeelsLike')}</span>
+                  <span className="wcard-meta-val">{weather.feelsLike} °C</span>
+                </div>
+              )}
+              {weather.windspeed !== undefined && (
+                <div className="wcard-meta-item">
+                  <span className="wcard-meta-label">{t('weatherWind')}</span>
+                  <span className="wcard-meta-val">{weather.windspeed} m/s</span>
+                </div>
+              )}
+              {weather.humidity !== undefined && (
+                <div className="wcard-meta-item">
+                  <span className="wcard-meta-label">{t('weatherHumidity')}</span>
+                  <span className="wcard-meta-val">{weather.humidity} %</span>
+                </div>
+              )}
+            </div>
+          </>
+        )}
+
+        {isLinkVisible('https://www.ilmatieteenlaitos.fi/') && (
+          <a
+            href="https://www.ilmatieteenlaitos.fi/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="absolute bottom-3 right-4 z-10 rounded text-[.6rem] font-bold uppercase tracking-[.1em] text-white/20 transition-colors hover:text-white/45 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#f0c040]"
+            aria-label={t('weatherDetails')}
+          >
+            ilmatieteenlaitos.fi ↗
+          </a>
+        )}
+      </div>
+    );
+  }
 
   if (variant === 'chip') {
     return (

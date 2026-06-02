@@ -105,40 +105,40 @@ const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSi
 
   const modal = (
     <div
-      className="fixed inset-0 z-[9999] isolate flex items-start justify-center bg-slate-200 dark:bg-slate-950 p-3 opacity-100 animate-in fade-in duration-200 sm:p-4 sm:bg-slate-200/90 sm:dark:bg-slate-950/90 sm:backdrop-blur-lg sm:items-center"
+      className="fixed inset-0 z-[9999] isolate flex items-start justify-center bg-black/50 p-3 opacity-100 animate-in fade-in duration-200 backdrop-blur-sm sm:items-center sm:p-4"
       role="dialog"
       aria-modal="true"
       aria-labelledby="modal-title"
     >
-      <div className="relative z-[10000] flex max-h-[calc(100dvh-1.5rem)] w-full max-w-6xl flex-col overflow-hidden rounded-3xl border-2 border-slate-200 bg-white shadow-2xl dark:border-white/20 dark:bg-slate-900 sm:my-8 sm:max-h-[95vh] sm:rounded-[3rem] sm:border-4">
-        <div className={`${shortcut.color} p-4 text-white flex items-center justify-between gap-3 shadow-xl sm:p-6 md:p-10`}>
+      <div className="aurora-modal-shell relative z-[10000] flex max-h-[calc(100dvh-1.5rem)] w-full max-w-6xl flex-col overflow-hidden sm:my-8 sm:max-h-[95vh]">
+        <div className="aurora-modal-header p-4 text-white flex items-center justify-between gap-3 shadow-xl sm:p-6 md:p-10">
           <div className="flex min-w-0 items-center gap-3 sm:gap-4 md:gap-6">
-            <span className={`shrink-0 transition-all duration-300 ${iconClasses[fontSizeStep]}`} aria-hidden="true">{shortcut.icon}</span>
-            <h2 id="modal-title" className={`min-w-0 font-black leading-tight tracking-tight transition-all duration-300 ${titleClasses[fontSizeStep]}`}>{categoryName(shortcut.name)}</h2>
+            <span className={`flex shrink-0 items-center justify-center rounded-[1.5rem] bg-white/10 p-3 transition-all duration-300 ${iconClasses[fontSizeStep]}`} aria-hidden="true">{shortcut.icon}</span>
+            <h2 id="modal-title" className={`font-display min-w-0 font-bold leading-tight tracking-tight transition-all duration-300 ${titleClasses[fontSizeStep]}`}>{categoryName(shortcut.name)}</h2>
           </div>
           <button
             ref={closeButtonRef}
             onClick={onClose}
-            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white/20 text-3xl transition-all hover:bg-white/40 focus:ring-4 focus:ring-white active:scale-90 sm:h-14 sm:w-14 md:h-16 md:w-16 md:text-4xl"
+            className="aurora-close-button h-12 w-12 shrink-0 text-3xl focus-visible:ring-4 focus-visible:ring-[var(--theme-focus)]/40 sm:h-14 sm:w-14 md:h-16 md:w-16 md:text-4xl"
             aria-label={t('close')}
           >
             ✕
           </button>
         </div>
 
-        <div className="flex-1 space-y-6 overflow-y-auto bg-slate-50 p-4 dark:bg-slate-950 sm:space-y-8 sm:p-6 md:space-y-12 md:p-10">
+        <div className="aurora-modal-body flex-1 space-y-6 overflow-y-auto p-4 sm:space-y-8 sm:p-6 md:space-y-12 md:p-10">
           {showNearbyGuidance && (
             <NearbyGuidancePlaces
               locality={locality}
               fontSizeStep={fontSizeStep}
-              className="rounded-2xl border-2 border-slate-200 bg-white p-4 shadow-md dark:border-slate-800 dark:bg-slate-900 sm:rounded-[2rem] sm:border-4 sm:p-6"
+              className="aurora-panel sm:rounded-[2rem] sm:p-6"
             />
           )}
 
           {groupKeys.map((group) => (
             <div key={group} className="space-y-4 md:space-y-6">
               {group !== categoryName(t('services')) && (
-                <h3 className="border-b-2 border-slate-200 pb-2 text-base font-black uppercase tracking-wide text-slate-500 dark:border-slate-800 dark:text-slate-400 sm:text-lg md:border-b-4 md:text-2xl md:tracking-[0.2em]">
+                <h3 className="border-b-2 border-[var(--theme-border)] pb-2 text-base font-black uppercase tracking-wide text-[var(--theme-text-3)] sm:text-lg md:text-2xl md:tracking-[0.2em]">
                   {group}
                 </h3>
               )}
@@ -155,9 +155,9 @@ const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSi
                   };
                   return (
                     <div key={idx} className="relative group/card">
-                      <div className={`flex flex-col justify-between gap-4 rounded-2xl border-2 border-slate-200 bg-white p-4 text-center shadow-md transition-all hover:border-blue-600 hover:shadow-2xl dark:border-slate-700 dark:bg-slate-800 dark:hover:border-blue-500 sm:rounded-[2rem] sm:border-4 sm:p-5 md:gap-5 md:rounded-[2.5rem] md:p-6 ${provider.phone ? 'min-h-[180px] md:min-h-[220px]' : 'min-h-[132px] md:min-h-[150px]'}`}>
+                      <div className={`aurora-card flex flex-col justify-between gap-4 text-center transition-all hover:-translate-y-0.5 hover:border-[var(--theme-primary-mid)] hover:shadow-md sm:p-5 md:gap-5 md:p-6 ${provider.phone ? 'min-h-[180px] md:min-h-[220px]' : 'min-h-[132px] md:min-h-[150px]'}`}>
                         <div className="flex flex-1 items-center justify-center px-2 sm:px-4 md:px-8">
-                          <span className={`font-black leading-tight text-slate-800 dark:text-white ${itemTextClasses[fontSizeStep]}`}>
+                          <span className={`font-black leading-tight text-[var(--theme-text)] ${itemTextClasses[fontSizeStep]}`}>
                             {provider.name}
                           </span>
                         </div>
@@ -166,7 +166,7 @@ const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSi
                             href={provider.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex min-h-14 items-center justify-center gap-3 rounded-2xl bg-blue-600 px-5 py-3 text-base md:text-lg font-black text-white shadow-sm transition-all hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 focus:outline-none active:scale-95"
+                            className="inline-flex min-h-14 items-center justify-center gap-3 rounded-full bg-[var(--theme-primary)] px-5 py-3 text-base font-black text-white shadow-sm transition-all hover:bg-[var(--theme-primary-mid)] focus-visible:ring-4 focus-visible:ring-[var(--theme-focus)]/40 active:scale-95 md:text-lg"
                             aria-label={`Avaa verkkosivu: ${provider.name}`}
                           >
                             <span aria-hidden="true">↗</span>
@@ -175,7 +175,7 @@ const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSi
                           {provider.phone && phoneHref && (
                             <a
                               href={phoneHref}
-                              className="inline-flex min-h-16 items-center justify-center gap-3 rounded-2xl bg-[#d09a32] px-5 py-3 text-xl md:text-2xl font-black text-slate-950 shadow-sm transition-all hover:bg-[#e2ad45] focus:ring-4 focus:ring-amber-200 focus:outline-none active:scale-95"
+                              className="inline-flex min-h-16 items-center justify-center gap-3 rounded-full bg-[var(--theme-gold)] px-5 py-3 text-xl font-black text-[var(--theme-cta-label)] shadow-sm transition-all hover:bg-[var(--theme-gold-light)] focus-visible:ring-4 focus-visible:ring-[var(--theme-focus)]/40 active:scale-95 md:text-2xl"
                               aria-label={`Soita: ${provider.name}, ${provider.phone}`}
                             >
                               <span aria-hidden="true">☎</span>
@@ -217,10 +217,10 @@ const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSi
           ))}
         </div>
 
-        <div className="border-t-2 border-slate-100 bg-white p-4 text-center dark:border-slate-800 dark:bg-slate-900 sm:p-6 md:border-t-4 md:p-8">
+        <div className="border-t-2 border-[var(--theme-border)] bg-[var(--theme-surface)] p-4 text-center sm:p-6 md:p-8">
           <button
             onClick={onClose}
-            className="min-h-12 rounded-full border-b-4 border-slate-300 bg-slate-100 px-8 py-3 text-lg font-black text-slate-700 transition-all hover:bg-slate-200 active:scale-95 dark:border-slate-950 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700 md:px-12 md:py-4 md:text-2xl"
+            className="aurora-secondary-button min-h-12 px-8 py-3 text-lg md:px-12 md:py-4 md:text-2xl"
           >
             {t('back')}
           </button>
