@@ -11,7 +11,9 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
+        display: ["'Cormorant Garamond'", 'Georgia', 'serif'],
+        body: ["'Atkinson Hyperlegible'", 'system-ui', 'sans-serif'],
+        sans: ["'Atkinson Hyperlegible'", 'system-ui', 'sans-serif'],
       },
       colors: {
         brand: {

@@ -33,9 +33,9 @@ const getPhoneHref = (phone?: string, phoneUrl?: string) => {
 };
 
 const rowColors = [
-  'bg-[#dceff4] dark:bg-[#173e5f]',
-  'bg-[#d8f0ee] dark:bg-[#1d5c62]',
-  'bg-[#f8e2af] dark:bg-[#73501e]',
+  'bg-white dark:bg-[#182b1e]',
+  'bg-white dark:bg-[#182b1e]',
+  'bg-white dark:bg-[#182b1e]',
 ];
 
 const shortcutGroups: ShortcutGroup[] = [
@@ -122,6 +122,17 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
         shortcuts: [shortcut],
       })),
   ];
+  const bentoGroups = [...groupedShortcuts].sort((a, b) => {
+    const countDifference = b.shortcuts.length - a.shortcuts.length;
+    if (countDifference !== 0) return countDifference;
+    return categoryName(a.name).localeCompare(categoryName(b.name), 'fi');
+  });
+  const communityIndex = bentoGroups.findIndex((group) => group.name === 'Vapaa-aika ja yhteisöt');
+  const publicServicesIndex = bentoGroups.findIndex((group) => group.name === 'Asiointi ja viranomaiset');
+  if (communityIndex > -1 && publicServicesIndex > -1 && communityIndex > publicServicesIndex) {
+    const [communityGroup] = bentoGroups.splice(communityIndex, 1);
+    bentoGroups.splice(publicServicesIndex, 0, communityGroup);
+  }
 
   const iconClasses = [
     'text-[2.25rem] md:text-[2.7rem]',
@@ -241,26 +252,26 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
   const hasResults = matchedCategories.length + matchedLinks.length + matchedPhones.length > 0;
 
   const baseCardStyles = (color: string) =>
-    `${color} p-6 md:p-8 rounded-[2rem] shadow-md hover:shadow-2xl transition-all transform hover:-translate-y-2 active:scale-95 text-slate-950 dark:text-white border-4 border-slate-900/10 dark:border-white/10 hover:border-slate-900/25 dark:hover:border-white/30 focus:ring-4 focus:ring-blue-400 focus:outline-none flex flex-col items-center justify-center text-center gap-3 h-full min-h-[160px] md:min-h-[220px]`;
+    `${color} group bento-stripe bento-shimmer relative overflow-hidden flex flex-col gap-2.5 rounded-[44px] border-[1.5px] border-[var(--theme-border)] bg-[var(--theme-surface)] p-7 text-left text-[var(--theme-text)] shadow-[0_1px_4px_rgba(10,26,14,.06)] transition-all duration-200 hover:-translate-y-1 hover:scale-[1.004] hover:border-[var(--border-strong)] hover:shadow-[0_6px_24px_rgba(10,26,14,.12)] focus-visible:outline-[2.5px] focus-visible:outline-[var(--theme-focus)] focus-visible:outline-offset-3 active:-translate-y-0.5 active:scale-100 min-h-[220px]`;
 
-  const groupCardStyles = (color: string) =>
-    `${color} rounded-[2rem] shadow-md text-slate-950 dark:text-white border-4 border-slate-900/10 dark:border-white/10 flex h-full min-h-[250px] flex-col gap-5 p-6 md:min-h-[310px] md:p-8`;
+  const groupCardStyles = (color: string, idx: number) =>
+    `${color} group bento-stripe bento-shimmer relative overflow-hidden flex h-full min-h-[220px] flex-col gap-5 rounded-[44px] border-[1.5px] border-[var(--theme-border)] bg-[var(--theme-surface)] p-7 text-left text-[var(--theme-text)] shadow-[0_1px_4px_rgba(10,26,14,.06)] transition-all duration-200 hover:-translate-y-1 hover:scale-[1.004] hover:border-[var(--border-strong)] hover:shadow-[0_6px_24px_rgba(10,26,14,.12)] focus-within:outline-[2.5px] focus-within:outline-[var(--theme-focus)] focus-within:outline-offset-3 ${idx < 3 ? 'bento-wide col-span-2' : ''}`;
 
   return (
     <div className="space-y-8 animate-in">
 
       {/* Hakukenttä */}
       <div className="relative">
-        <span className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-2xl">🔎</span>
+        <span className="absolute left-5 top-1/2 -translate-y-1/2 text-[#6b8c72] pointer-events-none text-2xl">🔎</span>
         <input
           type="search"
           value={search}
           onChange={e => setSearch(e.target.value)}
           placeholder={speechState === 'listening' ? t('listeningPlaceholder') : t('searchPlaceholder')}
-          className={`w-full pl-14 py-4 rounded-2xl border-4 transition-all font-bold bg-white dark:bg-slate-950 text-slate-950 dark:text-white placeholder-slate-500 dark:placeholder-slate-200 focus:outline-none focus:ring-4
+          className={`w-full pl-14 py-4 rounded-full border-2 transition-all font-bold bg-white dark:bg-[#182b1e] text-[#1a2e1e] dark:text-[#e8f5ed] placeholder-[#7a9a82] focus:outline-none focus:ring-4
             ${speechState === 'listening'
               ? 'border-red-400 focus:border-red-500 focus:ring-red-200 dark:focus:ring-red-900 pr-28'
-              : 'border-slate-200 dark:border-white/30 focus:border-blue-500 focus:ring-blue-200 dark:focus:ring-blue-900 pr-24'
+              : 'border-[#c8dece] dark:border-[#2a4733] focus:border-[#e8a020] focus:ring-amber-300/30 pr-24'
             } ${inputClasses[fontSizeStep]}`}
           aria-label={t('searchPlaceholder')}
         />
@@ -322,7 +333,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
                     className={baseCardStyles(color)}
                     aria-label={`${t('openCategory')}: ${categoryName(shortcut.name)}`}
                   >
-                    <span className={`transition-all duration-300 ${iconClasses[fontSizeStep]}`} aria-hidden="true">{shortcut.icon}</span>
+                  <span className={`flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-2xl bg-[#e8f5ed] text-3xl transition-all duration-300 dark:bg-[#1a3322] ${iconClasses[fontSizeStep]}`} aria-hidden="true">{shortcut.icon}</span>
                     <span className={`min-w-0 max-w-full break-words [overflow-wrap:anywhere] font-black leading-tight tracking-tight transition-all duration-300 ${textClasses[fontSizeStep]}`}>
                       {categoryName(shortcut.name)}
                     </span>
@@ -357,7 +368,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
                         className={baseCardStyles(link.color)}
                         aria-label={`${t('goToSite')}: ${link.name}`}
                       >
-                        <span className={`transition-all duration-300 ${iconClasses[fontSizeStep]}`} aria-hidden="true">{link.categoryIcon}</span>
+                        <span className={`flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-2xl bg-[#e8f5ed] text-3xl transition-all duration-300 dark:bg-[#1a3322] ${iconClasses[fontSizeStep]}`} aria-hidden="true">{link.categoryIcon}</span>
                         <span className={`min-w-0 max-w-full break-words [overflow-wrap:anywhere] font-black leading-tight tracking-tight transition-all duration-300 ${textClasses[fontSizeStep]}`}>
                           {link.name}
                         </span>
@@ -417,7 +428,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
                       className={baseCardStyles(phone.color)}
                       aria-label={`Soita: ${phone.name}, ${phone.phone}`}
                     >
-                      <span className={`transition-all duration-300 ${iconClasses[fontSizeStep]}`} aria-hidden="true">☎</span>
+                      <span className={`flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-2xl bg-[#e8f5ed] text-3xl transition-all duration-300 dark:bg-[#1a3322] ${iconClasses[fontSizeStep]}`} aria-hidden="true">☎</span>
                       <span className={`min-w-0 max-w-full break-words [overflow-wrap:anywhere] font-black leading-tight tracking-tight transition-all duration-300 ${textClasses[fontSizeStep]}`}>
                         {phone.name}
                       </span>
@@ -436,32 +447,42 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
         </>
       ) : (
         /* Normaali kategoriaruudukko */
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3 md:gap-7">
-          {groupedShortcuts.map((group, idx) => {
+        <div className="bento-grid grid grid-cols-4 gap-4">
+          {bentoGroups.map((group, idx) => {
             const color = rowColors[idx % rowColors.length];
 
             return (
               <section
                 key={group.name}
-                className={groupCardStyles(color)}
+                className={groupCardStyles(color, idx)}
                 aria-labelledby={`shortcut-group-${idx}`}
               >
                 <div className="flex items-start gap-4">
-                  <span className={`shrink-0 transition-all duration-300 ${iconClasses[fontSizeStep]}`} aria-hidden="true">
+                  <span className="flex h-[3.25rem] w-[3.25rem] flex-shrink-0 items-center justify-center rounded-[18px] bg-[var(--theme-pale)] text-[1.6rem] transition-transform duration-200 group-hover:scale-[1.08] group-hover:rotate-[-2deg]" aria-hidden="true">
                     {group.icon}
                   </span>
                   <div className="min-w-0">
-                    <h3 id={`shortcut-group-${idx}`} className={`min-w-0 max-w-full break-words [overflow-wrap:anywhere] font-black leading-tight tracking-tight transition-all duration-300 ${textClasses[fontSizeStep]}`}>
+                    <h3 id={`shortcut-group-${idx}`} className="font-display mt-auto min-w-0 max-w-full break-words text-[clamp(1.15rem,1.5vw,1.4rem)] font-semibold leading-[1.15] tracking-tight [overflow-wrap:anywhere]">
                       {categoryName(group.name)}
                     </h3>
                   </div>
                 </div>
 
-                <div className="grid flex-1 content-start gap-3 sm:grid-cols-2">
+                <div className={`grid flex-1 content-start gap-3 ${idx < 3 ? 'sm:grid-cols-2' : 'grid-cols-1'}`}>
                   {group.shortcuts.map((shortcut) => {
                     const isCategory = !!shortcut.providers;
                     const label = categoryName(shortcut.name);
-                    const subCategoryClasses = `flex min-h-14 min-w-0 items-center justify-center rounded-2xl border-2 border-white bg-white/95 px-4 py-3 text-center font-black leading-tight text-slate-950 break-words [overflow-wrap:anywhere] shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_3px_0_rgba(15,23,42,0.16)] transition-all hover:-translate-y-0.5 hover:border-white hover:bg-white focus:outline-none focus:ring-4 focus:ring-white/80 active:translate-y-0 active:shadow-[inset_0_1px_0_rgba(255,255,255,0.76),0_1px_0_rgba(15,23,42,0.18)] dark:border-white/15 dark:bg-white/90 dark:text-slate-950 ${subTextClasses[fontSizeStep]}`;
+                    const subCategoryClasses = `flex min-h-14 min-w-0 items-center gap-2.5 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-bg)] px-4 py-3 text-left font-black leading-tight text-[var(--theme-text)] break-words [overflow-wrap:anywhere] transition-all hover:-translate-y-0.5 hover:bg-[var(--theme-pale)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--theme-focus)] active:translate-y-0 ${subTextClasses[fontSizeStep]}`;
+                    const content = (
+                      <>
+                        <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-[var(--theme-pale)] text-xl leading-none" aria-hidden="true">
+                          {shortcut.icon || '🔗'}
+                        </span>
+                        <span className="min-w-0 flex-1 break-words [overflow-wrap:anywhere]">
+                          {label}
+                        </span>
+                      </>
+                    );
 
                     if (isCategory) {
                       return (
@@ -472,7 +493,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
                           className={subCategoryClasses}
                           aria-label={`${t('openCategory')}: ${label}`}
                         >
-                          {label}
+                          {content}
                         </button>
                       );
                     }
@@ -486,7 +507,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
                         className={subCategoryClasses}
                         aria-label={`${t('goToSite')}: ${label}`}
                       >
-                        {label}
+                        {content}
                       </a>
                     );
                   })}

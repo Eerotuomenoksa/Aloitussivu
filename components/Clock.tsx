@@ -7,7 +7,7 @@ const WORLD_CLOCK_URL = 'https://fi.thetimenow.com/worldclock.php';
 
 interface ClockProps {
   fontSizeStep?: number;
-  variant?: 'hero' | 'compact';
+  variant?: 'hero' | 'compact' | 'aurora';
   secondaryClock?: {
     label: string;
     timeZone: string;
@@ -50,6 +50,53 @@ const Clock: React.FC<ClockProps> = ({ fontSizeStep = 0, variant = 'hero', secon
     year: 'numeric' 
   });
 
+  if (variant === 'aurora') {
+    return (
+      <div className="text-left">
+        <time
+          dateTime={time.toISOString()}
+          aria-live="polite"
+          className="block font-display font-light text-white"
+          style={{
+            fontSize: 'clamp(5rem, 13vw, 10rem)',
+            letterSpacing: '-.04em',
+            lineHeight: '.9',
+            textShadow: '0 2px 60px rgba(61,184,112,.2)',
+          }}
+        >
+          {timeString}
+        </time>
+        <div className="mt-2 flex items-center gap-4">
+          <span
+            aria-hidden="true"
+            className="h-[6px] w-[6px] rounded-full"
+            style={{
+              background: 'var(--theme-primary-glow)',
+              boxShadow: '0 0 8px var(--theme-primary-glow)',
+              animation: 'aurora-pulse 2s ease-in-out infinite',
+            }}
+          />
+          <p className="font-body text-[clamp(.9rem,1.2vw,1rem)] font-bold uppercase tracking-[.06em] text-white/55">
+            {dateString}
+          </p>
+        </div>
+        {secondaryClock && (
+          <a
+            href={WORLD_CLOCK_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-4 inline-flex max-w-full flex-wrap items-baseline gap-x-2 gap-y-1 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-white backdrop-blur transition-colors hover:bg-white/20"
+            aria-label={`${secondaryClock.label} ${secondaryTimeString}. Avaa maailmankello`}
+          >
+            <span className="text-xs font-black uppercase tracking-wide text-white/65">{secondaryClock.label}</span>
+            <span className="font-display text-2xl font-semibold leading-none text-white">{secondaryTimeString}</span>
+            <span className="text-xs font-bold text-white/60">{secondaryDateString}</span>
+          </a>
+        )}
+      </div>
+    );
+  }
+
   const timeSizes = [
     'text-8xl sm:text-9xl lg:text-[10rem]',
     'text-9xl sm:text-[10rem] lg:text-[12rem]',
@@ -69,10 +116,10 @@ const Clock: React.FC<ClockProps> = ({ fontSizeStep = 0, variant = 'hero', secon
   if (variant === 'compact') {
     return (
       <div className="text-left space-y-2">
-        <p className="font-black text-4xl md:text-6xl leading-none tracking-tight text-[#d09a32] drop-shadow" aria-live="polite">
+        <p className="font-display text-4xl md:text-6xl leading-none tracking-tight text-white drop-shadow" aria-live="polite">
           {timeString}
         </p>
-        <p className="capitalize text-sm md:text-lg font-bold text-white leading-snug">
+        <p className="capitalize text-sm md:text-lg font-bold text-white/70 leading-snug">
           {dateString}
         </p>
         {secondaryClock && (
@@ -84,7 +131,7 @@ const Clock: React.FC<ClockProps> = ({ fontSizeStep = 0, variant = 'hero', secon
             aria-label={`${secondaryClock.label} ${secondaryTimeString}. Avaa maailmankello`}
           >
             <span className="text-xs font-black uppercase tracking-wide text-white/75">{secondaryClock.label}</span>
-            <span className="text-2xl font-black leading-none text-white">{secondaryTimeString}</span>
+            <span className="font-display text-2xl font-bold leading-none text-white">{secondaryTimeString}</span>
             <span className="text-xs font-bold text-white/75">{secondaryDateString}</span>
           </a>
         )}
@@ -112,11 +159,11 @@ const Clock: React.FC<ClockProps> = ({ fontSizeStep = 0, variant = 'hero', secon
   return (
     <div className="text-center lg:text-left space-y-2">
       <div className="flex flex-col">
-        <h1 className={`font-black text-slate-950 dark:text-white tracking-tighter leading-none transition-all duration-300 ${timeSizes[fontSizeStep]}`}>
+        <h1 className={`font-display font-bold text-[#1a2e1e] dark:text-[#e8f5ed] tracking-tighter leading-none transition-all duration-300 ${timeSizes[fontSizeStep]}`}>
           {timeString}
         </h1>
       </div>
-      <p className={`text-slate-800 dark:text-slate-200 capitalize font-bold tracking-tight transition-all duration-300 ${dateSizes[fontSizeStep]}`}>
+      <p className={`text-[#3d5a44] dark:text-[#9ec4a8] capitalize font-bold tracking-tight transition-all duration-300 ${dateSizes[fontSizeStep]}`}>
         {dateString}
       </p>
       {secondaryClock && (

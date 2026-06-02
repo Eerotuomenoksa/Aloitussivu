@@ -53,13 +53,21 @@ const Assistant: React.FC<AssistantProps> = ({ variant = 'default' }) => {
     return (
       <button
         onClick={() => setIsMinimized(false)}
-        className="w-full rounded-2xl md:rounded-3xl bg-[#d09a32] p-4 md:p-5 text-slate-950 shadow-xl transition-all hover:bg-[#e0aa43] active:scale-95 focus:outline-none focus:ring-4 focus:ring-amber-200 border-4 border-white/20 min-h-[92px] md:min-h-[150px] flex items-center justify-center gap-3 md:gap-4"
+        className="assistant-card relative flex min-h-[92px] w-full items-center justify-center gap-3 overflow-hidden rounded-[22px] border border-white/10 p-4 text-white shadow-[0_8px_32px_rgba(10,26,14,.3)] transition-all hover:-translate-y-0.5 active:scale-95 md:min-h-[150px] md:p-5"
+        style={{
+          background: 'linear-gradient(135deg, #0c1829 0%, #0f2318 60%, #1a3428 100%)',
+          animation: 'assistant-glow 4s ease-in-out infinite alternate',
+        }}
         aria-label={t('assistantOpen')}
       >
-        <span className="flex h-12 w-12 md:h-16 md:w-16 items-center justify-center rounded-full bg-white/30 text-3xl md:text-5xl" aria-hidden="true">🤖</span>
-        <span className="text-left">
+        <span className="flex h-12 w-12 md:h-16 md:w-16 items-center justify-center rounded-full bg-white/10 text-3xl md:text-5xl" aria-hidden="true">✦</span>
+        <span className="text-left text-white/85">
+          <span className="mb-1 flex items-center gap-2 text-[.65rem] font-black uppercase tracking-[.2em] text-[rgba(240,192,64,.75)]">
+            AI-avustaja
+            <span className="ml-auto h-[6px] w-[6px] rounded-full bg-[#3db870] shadow-[0_0_6px_#3db870]" style={{ animation: 'aurora-pulse 2.5s ease-in-out infinite' }} aria-hidden="true" />
+          </span>
           <span className="block text-base md:text-xl font-black leading-tight">{t('assistantNeedHelp')}</span>
-          <span className="block text-sm md:text-base font-bold text-slate-800">{t('assistantAskAnything')}</span>
+          <span className="block text-sm md:text-base font-bold text-white/55">{t('assistantAskAnything')}</span>
         </span>
       </button>
     );
@@ -83,13 +91,20 @@ const Assistant: React.FC<AssistantProps> = ({ variant = 'default' }) => {
 
   return (
     <section 
-      className={`bg-white dark:bg-slate-800 rounded-3xl md:rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col border-4 border-brand-indigo dark:border-[#173e5f] animate-in slide-in-from-bottom-4 duration-300 ${variant === 'header' ? 'h-[min(68dvh,390px)] min-h-[300px] xl:absolute xl:right-0 xl:top-full xl:z-[80] xl:mt-4 xl:h-[440px] xl:w-[28rem]' : 'min-h-[420px] md:min-h-[500px]'}`}
+      className={`assistant-card overflow-hidden rounded-[22px] border border-white/10 text-white shadow-[0_16px_64px_rgba(10,26,14,.38)] flex flex-col animate-in slide-in-from-bottom-4 duration-300 ${variant === 'header' ? 'fixed right-6 top-24 z-[9998] h-[min(78dvh,560px)] w-[min(28rem,calc(100vw-3rem))]' : 'relative min-h-[420px] md:min-h-[500px]'}`}
+      style={{
+        background: 'linear-gradient(135deg, #0c1829 0%, #0f2318 60%, #1a3428 100%)',
+        animation: 'assistant-glow 4s ease-in-out infinite alternate',
+      }}
       aria-label={t('assistantChat')}
     >
-      <div className="bg-[#173e5f] p-4 md:p-6 text-white flex items-center justify-between gap-3">
+      <div className="p-4 md:p-6 text-white flex items-center justify-between gap-3 border-b border-white/10">
         <div className="flex min-w-0 items-center gap-3 md:gap-4">
-          <div className="w-9 h-9 md:w-10 md:h-10 bg-white/20 rounded-full flex items-center justify-center text-xl md:text-2xl" aria-hidden="true">🤖</div>
-          <h2 className="text-lg md:text-xl font-black uppercase tracking-tight">{t('assistantTitle')}</h2>
+          <div className="w-9 h-9 md:w-10 md:h-10 bg-white/10 rounded-full flex items-center justify-center text-xl md:text-2xl" aria-hidden="true">✦</div>
+          <div>
+            <p className="text-[.65rem] font-black tracking-[.2em] uppercase text-[rgba(240,192,64,.75)]">AI-avustaja</p>
+            <h2 className="text-lg md:text-xl font-black uppercase tracking-tight">{t('assistantTitle')}</h2>
+          </div>
         </div>
         <button 
           onClick={() => setIsMinimized(true)}
@@ -101,20 +116,20 @@ const Assistant: React.FC<AssistantProps> = ({ variant = 'default' }) => {
 
       <div 
         ref={scrollRef}
-        className="min-h-0 flex-1 p-4 md:p-6 overflow-y-auto space-y-3 md:space-y-4 bg-slate-100 dark:bg-slate-900 transition-colors duration-300"
+        className="min-h-0 flex-1 p-4 md:p-6 overflow-y-auto space-y-3 md:space-y-4 bg-black/10 transition-colors duration-300"
         aria-live="polite"
       >
         {messages.length === 0 && (
           <div className="text-center py-10">
-            <p className="text-xl font-bold text-slate-500 dark:text-slate-400">{t('assistantGreeting')}</p>
+            <p className="text-xl font-bold text-white/60">{t('assistantGreeting')}</p>
           </div>
         )}
         {messages.map((msg, i) => (
           <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
             <div className={`max-w-[88%] p-3 md:p-4 rounded-2xl text-base md:text-lg font-bold shadow-sm transition-colors duration-200 ${
               msg.role === 'user' 
-                ? 'bg-brand-indigo text-white rounded-tr-none' 
-                : 'bg-white dark:bg-slate-700 text-slate-950 dark:text-white rounded-tl-none border border-slate-300 dark:border-slate-600'
+                ? 'bg-[rgba(212,148,10,.15)] text-white rounded-br-none border border-[rgba(212,148,10,.2)]' 
+                : 'bg-white/[.07] text-white/85 rounded-bl-none border border-white/10'
             }`}>
               {msg.content}
             </div>
@@ -122,23 +137,23 @@ const Assistant: React.FC<AssistantProps> = ({ variant = 'default' }) => {
         ))}
         {isLoading && (
           <div className="flex justify-start">
-            <div className="bg-white dark:bg-slate-700 p-4 rounded-2xl flex gap-1 items-center border border-slate-200 dark:border-slate-600" aria-label={t('assistantLoading')}>
-              <span className="w-2 h-2 bg-brand-indigo dark:bg-brand-cyan rounded-full animate-bounce"></span>
-              <span className="w-2 h-2 bg-brand-indigo dark:bg-brand-cyan rounded-full animate-bounce [animation-delay:0.2s]"></span>
-              <span className="w-2 h-2 bg-brand-indigo dark:bg-brand-cyan rounded-full animate-bounce [animation-delay:0.4s]"></span>
+            <div className="bg-white/[.07] p-4 rounded-2xl flex gap-1 items-center border border-white/10" aria-label={t('assistantLoading')}>
+              <span className="w-2 h-2 bg-[#3db870] rounded-full animate-bounce"></span>
+              <span className="w-2 h-2 bg-[#3db870] rounded-full animate-bounce [animation-delay:0.2s]"></span>
+              <span className="w-2 h-2 bg-[#3db870] rounded-full animate-bounce [animation-delay:0.4s]"></span>
             </div>
           </div>
         )}
       </div>
 
-      <div className="p-3 md:p-4 bg-white dark:bg-slate-800 border-t-2 border-slate-200 dark:border-slate-700 flex gap-2">
+      <div className="p-3 md:p-4 bg-black/10 border-t border-white/10 flex gap-2">
         <input 
           type="text" 
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && handleSend()}
           placeholder={speechState === 'listening' ? t('listeningPlaceholder') : t('assistantPlaceholder')}
-          className="min-w-0 flex-1 border-2 border-slate-400 dark:border-slate-600 rounded-xl px-3 py-2 md:px-4 md:py-3 text-base md:text-lg focus:ring-4 focus:ring-blue-200 outline-none bg-white dark:bg-slate-700 text-slate-950 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 transition-colors font-bold"
+          className="min-w-0 flex-1 rounded-xl border border-white/15 bg-white/[.08] px-3 py-2 text-base font-bold text-white/90 placeholder-white/35 outline-none transition-colors focus:border-[rgba(240,192,64,.5)] focus:shadow-[0_0_0_3px_rgba(240,192,64,.12)] md:px-4 md:py-3 md:text-lg"
           aria-label={t('assistantInput')}
         />
         {canListen && (
@@ -154,7 +169,7 @@ const Assistant: React.FC<AssistantProps> = ({ variant = 'default' }) => {
         <button 
           onClick={handleSend}
           disabled={isLoading || !input.trim()}
-          className="bg-[#173e5f] text-white px-4 py-2 md:px-6 md:py-3 rounded-xl font-black hover:bg-[#214f76] disabled:opacity-50 transition-all focus:ring-4 focus:ring-blue-300 shadow-md active:scale-95"
+          className="rounded-[10px] bg-[rgba(212,148,10,.9)] px-4 py-2 font-black text-[#0f2318] shadow-md transition-all hover:bg-[rgba(240,192,64,.95)] focus-visible:ring-4 focus-visible:ring-[#f0c040]/30 active:scale-95 disabled:opacity-50 md:px-6 md:py-3"
         >
           {t('assistantSend')}
         </button>

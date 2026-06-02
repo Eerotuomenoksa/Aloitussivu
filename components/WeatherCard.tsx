@@ -14,7 +14,7 @@ interface WeatherData {
 interface WeatherCardProps {
   locality?: LocalityInfo | null;
   onLocationResolved?: (location: LocalityInfo) => void;
-  variant?: 'default' | 'compact';
+  variant?: 'default' | 'compact' | 'chip';
 }
 
 const vantaaDistricts = new Set([
@@ -230,9 +230,29 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ locality, onLocationResolved,
 
   const isCompact = variant === 'compact';
 
+  if (variant === 'chip') {
+    return (
+      <div className="flex w-full items-center gap-4 text-white" aria-label={t('showWeather')}>
+        <span className="flex-shrink-0 text-[2rem] leading-none md:text-[2.35rem]" aria-hidden="true">
+          {loading ? '⏳' : weather?.icon || '🌤️'}
+        </span>
+        <div className="min-w-0 flex-1 leading-tight">
+          <strong className="block text-[1.05rem] font-black leading-tight text-white md:text-[1.2rem]">
+            {loading ? t('weatherLoading') : error ? error : `${weather?.temp}°C · ${locationName}`}
+          </strong>
+          {!loading && !error && (
+            <span className="mt-1 block text-[.9rem] font-bold leading-tight text-white/65 md:text-[1rem]">
+              {weather?.condition}
+            </span>
+          )}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div 
-      className={`bg-gradient-to-br ${isCompact ? 'from-[#214f76] to-[#173e5f] rounded-[1.25rem] p-2 min-h-[82px] border-2 md:rounded-[2rem] md:p-6 md:min-h-[160px] md:border-4' : 'from-[#214f76] to-[#173e5f] rounded-[2.5rem] p-10 min-h-[220px] border-4'} text-white shadow-xl flex items-center justify-between w-full h-full border-white/20`}
+      className={`bg-[#1a4d2e] ${isCompact ? 'rounded-[1.25rem] p-2 min-h-[82px] border-2 md:rounded-[2rem] md:p-6 md:min-h-[160px]' : 'rounded-[2.5rem] p-10 min-h-[220px] border-2'} text-white shadow-xl flex items-center justify-between w-full h-full border-white/20`}
       aria-label={t('showWeather')}
     >
       <div className="space-y-1">
@@ -245,7 +265,7 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ locality, onLocationResolved,
           <p className="text-xl font-bold">{error}</p>
         ) : (
           <>
-            <p className={`${isCompact ? 'text-xl md:text-4xl text-[#d09a32]' : 'text-6xl'} font-black my-0.5 tracking-tighter md:my-1`}>{weather?.temp}°C</p>
+            <p className={`${isCompact ? 'text-xl md:text-4xl text-[#e8a020]' : 'text-6xl'} font-black my-0.5 tracking-tighter md:my-1`}>{weather?.temp}°C</p>
             <p className={`${isCompact ? 'text-xs md:text-lg' : 'text-xl'} font-bold opacity-80 uppercase leading-tight`}>{weather?.condition}</p>
           </>
         )}

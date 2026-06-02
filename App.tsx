@@ -30,6 +30,16 @@ const BASE_UI_SCALE_MULTIPLIER = 0.9;
 const SAVED_LOCALITY_KEY = 'locality';
 const ONBOARDING_SEEN_KEY = 'onboardingSeen';
 const SECONDARY_TIME_ZONE_KEY = 'secondaryTimeZone';
+const THEME_KEY = 'colorTheme';
+
+type ColorTheme = 'vihrea' | 'violetti' | 'sininen' | 'oranssi';
+
+const THEMES: { id: ColorTheme; labelKey: 'themeGreen' | 'themeViolet' | 'themeBlue' | 'themeOrange'; swatch: string; accent: string }[] = [
+  { id: 'vihrea', labelKey: 'themeGreen', swatch: '#0f2318', accent: '#d4940a' },
+  { id: 'violetti', labelKey: 'themeViolet', swatch: '#2a0a52', accent: '#f49638' },
+  { id: 'sininen', labelKey: 'themeBlue', swatch: '#0e1f3b', accent: '#c8922a' },
+  { id: 'oranssi', labelKey: 'themeOrange', swatch: '#4a1808', accent: '#28aa58' },
+];
 
 const SECONDARY_TIME_ZONE_OPTIONS = [
   { value: 'America/Los_Angeles', label: 'Los Angeles' },
@@ -111,9 +121,9 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({ language, setLangua
   const activeLanguage = LANGUAGES.find((item) => item.code === language) ?? LANGUAGES[0];
 
   return (
-    <label className="relative inline-flex h-12 items-center rounded-full border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-sm focus-within:ring-4 focus-within:ring-indigo-300 md:h-12">
+    <label className="relative inline-flex h-12 items-center rounded-full border border-white/20 bg-white/10 text-white shadow-sm focus-within:ring-2 focus-within:ring-[#e8a020] md:h-12">
       <span className="sr-only">{label}</span>
-      <span className="pointer-events-none flex items-center gap-2 pl-4 pr-10 text-slate-900 dark:text-white">
+      <span className="pointer-events-none flex items-center gap-2 pl-4 pr-10 text-white">
         <span className="text-xl leading-none" aria-hidden="true">{activeLanguage.flag}</span>
         <span className="hidden sm:inline text-sm font-black">{activeLanguage.nativeName}</span>
       </span>
@@ -129,7 +139,7 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({ language, setLangua
           </option>
         ))}
       </select>
-      <span className="pointer-events-none absolute right-4 text-sm font-black text-slate-500 dark:text-slate-300" aria-hidden="true">
+      <span className="pointer-events-none absolute right-4 text-sm font-black text-white/70" aria-hidden="true">
         ▾
       </span>
     </label>
@@ -178,6 +188,12 @@ const AppContent: React.FC = () => {
   const [isDarkMode, setIsDarkMode] = useState(() => {
     return localStorage.getItem('isDarkMode') === 'true';
   });
+  const [colorTheme, setColorTheme] = useState<ColorTheme>(() => {
+    const saved = localStorage.getItem(THEME_KEY);
+    return ['vihrea', 'violetti', 'sininen', 'oranssi'].includes(saved ?? '')
+      ? saved as ColorTheme
+      : 'vihrea';
+  });
 
   const [uiScale, setUiScale] = useState(() => {
     const savedScale = parseInt(localStorage.getItem('uiScale') ?? '', 10);
@@ -215,9 +231,13 @@ const AppContent: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    document.documentElement.classList.toggle('dark', isDarkMode);
+    const root = document.documentElement;
+    root.classList.remove('theme-vihrea', 'theme-violetti', 'theme-sininen', 'theme-oranssi');
+    root.classList.toggle('dark', isDarkMode);
+    root.classList.add(`theme-${colorTheme}`);
+    localStorage.setItem(THEME_KEY, colorTheme);
     localStorage.setItem('isDarkMode', String(isDarkMode));
-  }, [isDarkMode]);
+  }, [isDarkMode, colorTheme]);
 
   useEffect(() => {
     document.documentElement.style.fontSize = '100%';
@@ -284,7 +304,7 @@ const AppContent: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#f5f1e8] dark:bg-slate-900 transition-all duration-300 text-base overflow-x-auto">
+    <div className="min-h-screen bg-[var(--theme-bg)] text-[var(--theme-text)] transition-all duration-300 text-base overflow-x-auto">
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-white focus:px-5 focus:py-3 focus:font-black focus:text-slate-950 focus:shadow-2xl focus:outline-none focus:ring-4 focus:ring-[#d09a32]"
@@ -297,52 +317,65 @@ const AppContent: React.FC = () => {
       >
 
         <header
-          className="relative z-20 left-1/2 -mt-3 w-screen -translate-x-1/2 overflow-visible text-white shadow-xl ring-1 ring-white/15 md:-mt-10 lg:-mt-16"
-          style={{ background: headerBackgrounds[logoPhase][isDarkMode ? 'dark' : 'light'], width: fullBleedWidth }}
+          className="aurora-grain relative left-1/2 -mt-3 w-screen -translate-x-1/2 overflow-visible text-white md:-mt-10 lg:-mt-16"
+          style={{ background: 'var(--theme-header-bg)', paddingBottom: '5rem', width: fullBleedWidth }}
+          role="banner"
         >
-          <div className="mx-auto w-full max-w-[1900px] px-3 py-3 md:px-10 md:py-8 lg:px-16">
-          <h1 className="sr-only">{t('pageTitle')}</h1>
-          <nav className="relative flex flex-wrap items-start gap-2 md:gap-5 xl:grid xl:grid-cols-[minmax(18rem,28rem)_minmax(0,46rem)_auto] xl:items-center" aria-label={t('topArea')}>
-            <div className="hidden items-center md:flex md:min-w-[18rem]" data-tour="logo">
-              <TimeAwareLogo phase={logoPhase} isDarkMode={isDarkMode} className="h-auto w-full max-w-[28rem] drop-shadow-lg" />
-            </div>
-
-            {(uiVisibility.assistant || uiVisibility.weather) && (
-              <div className={`${uiVisibility.weather ? 'grid' : 'hidden md:grid'} min-w-[8.5rem] flex-1 basis-[8.5rem] gap-2 md:min-w-0 md:basis-auto md:gap-4 md:grid-cols-2 md:items-stretch xl:flex-none`}>
-                {uiVisibility.assistant && (
-                  <div className="relative z-50 hidden md:block" data-tour="assistant">
-                    <Assistant variant="header" />
-                  </div>
-                )}
-                {uiVisibility.weather && (
-                  <div data-tour="weather">
-                    <WeatherCard locality={regionalLocality} onLocationResolved={updateLocality} variant="compact" />
-                  </div>
-                )}
+          <div
+            aria-hidden="true"
+            className="absolute inset-0"
+            style={{
+              background: [
+                'radial-gradient(ellipse 90% 120% at 0% 40%, var(--theme-header-from) 0%, transparent 55%)',
+                'radial-gradient(ellipse 70% 100% at 100% 20%, var(--theme-header-mid) 0%, transparent 55%)',
+                'radial-gradient(ellipse 60% 80% at 50% 100%, var(--theme-header-to) 0%, transparent 60%)',
+                'radial-gradient(ellipse 50% 70% at 80% 60%, var(--theme-header-mid) 0%, transparent 50%)',
+                'radial-gradient(ellipse 40% 60% at 25% 10%, rgba(212,148,10,.08) 0%, transparent 55%)',
+                'radial-gradient(ellipse 30% 40% at 70% 5%, rgba(255,255,255,.05) 0%, transparent 50%)',
+              ].join(', '),
+              animation: 'aurora-shift 18s ease-in-out infinite alternate',
+            }}
+          />
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 z-[1]"
+            style={{
+              backgroundImage: [
+                'radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,.18) 0%, transparent 100%)',
+                'radial-gradient(1px 1px at 65% 15%, rgba(255,255,255,.12) 0%, transparent 100%)',
+                'radial-gradient(1.5px 1.5px at 80% 50%, rgba(255,255,255,.15) 0%, transparent 100%)',
+                'radial-gradient(1px 1px at 40% 70%, rgba(255,255,255,.10) 0%, transparent 100%)',
+                'radial-gradient(1px 1px at 90% 80%, rgba(255,255,255,.14) 0%, transparent 100%)',
+              ].join(', '),
+            }}
+          />
+          <div className="relative z-[5] mx-auto max-w-[1380px] px-5 pt-6 md:px-8">
+            <nav className="mb-8 flex flex-wrap items-center gap-4 border-b border-white/[.08] pb-5" aria-label={t('topArea')}>
+              <div className="mr-auto flex flex-col gap-0.5">
+                <p className="text-[.7rem] font-bold uppercase tracking-[.22em] text-[var(--theme-gold)] opacity-85">
+                  Vanhustyön keskusliitto · SeniorSurf
+                </p>
+                <h1 className="font-display text-[clamp(1.5rem,3vw,2.2rem)] font-semibold leading-none tracking-tight text-white">
+                  {t('pageTitle')}
+                </h1>
               </div>
-            )}
-
-            <div className="flex min-w-[9rem] flex-[2_1_9rem] flex-wrap items-center justify-end gap-2 md:gap-3 xl:flex-none xl:justify-end">
-              <span className="rounded-full bg-white/90 px-3 py-1.5 text-xs font-black uppercase tracking-wide text-amber-800 ring-1 ring-white/50 md:px-4 md:py-2 md:text-sm">
+              <span className="rounded-full border border-white/[.18] bg-white/10 px-3 py-1.5 text-[.7rem] font-bold uppercase tracking-[.12em] text-white/65">
                 {t('beta')}
               </span>
-
+              <LanguageSelector language={language} setLanguage={setLanguage} label={t('language')} />
               <button
                 onClick={() => setIsHomepageOpen(true)}
-                className="bg-white/95 hover:bg-white text-slate-950 px-4 py-2.5 rounded-full font-black text-base transition-all active:scale-95 shadow-md border-b-4 border-black/20 focus:ring-4 focus:ring-white/60 focus:outline-none md:px-5 md:py-3 md:text-lg"
+                className="inline-flex min-h-[2.75rem] items-center gap-1.5 rounded-full border border-white/20 bg-[var(--theme-gold)] px-[1.1rem] py-[.55rem] text-[.95rem] font-extrabold text-[var(--theme-header-bg)] transition-all hover:bg-[var(--theme-gold-light)] active:scale-[.97]"
                 aria-label={t('openHomepageHelp')}
               >
                 🏠 {t('help')}
               </button>
-
-              <LanguageSelector language={language} setLanguage={setLanguage} label={t('language')} />
-
               <button
                 ref={settingsButtonRef}
                 type="button"
                 onClick={() => setIsSettingsOpen(prev => !prev)}
                 data-tour="settings"
-                className="bg-white/95 hover:bg-white text-slate-950 px-4 py-2.5 rounded-full font-black text-base transition-all active:scale-95 shadow-md border-b-4 border-black/20 focus:ring-4 focus:ring-white/60 focus:outline-none md:px-5 md:py-3 md:text-lg"
+                className="inline-flex min-h-[2.75rem] items-center gap-1.5 rounded-full border border-white/[.16] bg-white/[.09] px-[1.1rem] py-[.55rem] text-[.95rem] font-bold text-white/85 transition-all hover:bg-white/[.18] hover:text-white"
                 aria-label={t('openSettings')}
                 aria-expanded={isSettingsOpen}
                 aria-haspopup="dialog"
@@ -350,65 +383,117 @@ const AppContent: React.FC = () => {
               >
                 ⚙️
               </button>
-            </div>
-          </nav>
+            </nav>
 
-          <div className="mt-3 grid gap-3 md:mt-8 md:gap-6 xl:grid-cols-[24rem_minmax(0,1fr)] xl:items-center">
-            {uiVisibility.clock && (
-              <div className={uiVisibility.secondaryClock ? 'block' : 'hidden md:block'}>
-                <Clock
-                  fontSizeStep={fontSizeStep}
-                  variant="compact"
-                  secondaryClock={uiVisibility.secondaryClock ? {
-                    label: selectedSecondaryTimeZone.label,
-                    timeZone: selectedSecondaryTimeZone.value,
-                  } : undefined}
-                />
+            <div className="hero-body-grid grid gap-8 pb-10" style={{ gridTemplateColumns: '1fr 1.4fr', alignItems: 'end' }}>
+              {uiVisibility.clock && (
+                <div className="flex flex-col gap-2 animate-rise" data-tour="clock">
+                  <Clock
+                    fontSizeStep={fontSizeStep}
+                    variant="aurora"
+                    secondaryClock={uiVisibility.secondaryClock ? {
+                      label: selectedSecondaryTimeZone.label,
+                      timeZone: selectedSecondaryTimeZone.value,
+                    } : undefined}
+                  />
+                </div>
+              )}
+              <div className="flex flex-col gap-4 animate-rise" style={{ animationDelay: '120ms' }} data-tour="google-search">
+                <p className="text-[.75rem] font-bold uppercase tracking-[.18em] text-white/35">
+                  {t('searchLabel')}
+                </p>
+                {uiVisibility.googleSearch && (
+                  <SearchBar fontSizeStep={fontSizeStep} variant="aurora" />
+                )}
+                <div className="glass-chip-row mt-3 flex flex-wrap gap-3.5" role="region" aria-label={t('currentInfo')}>
+                  {uiVisibility.weather && (
+                    <div className="flex min-w-[180px] flex-1 items-center gap-3 rounded-[28px] border border-white/[.18] px-5 py-3.5 text-white/90" style={{ background: 'rgba(255,255,255,.1)', backdropFilter: 'blur(16px)' }}>
+                      <WeatherCard locality={regionalLocality} onLocationResolved={updateLocality} variant="chip" />
+                    </div>
+                  )}
+                  {uiVisibility.assistant && (
+                    <div className="relative z-50 hidden min-w-[220px] flex-1 md:block" data-tour="assistant">
+                      <Assistant variant="header" />
+                    </div>
+                  )}
+                </div>
               </div>
-            )}
-            {uiVisibility.googleSearch && (
-              <div data-tour="google-search">
-                <SearchBar fontSizeStep={fontSizeStep} variant="header" />
-              </div>
-            )}
+            </div>
           </div>
-          </div>
+          <div
+            aria-hidden="true"
+            className="absolute bottom-0 left-0 right-0 z-[4]"
+            style={{
+              height: '5rem',
+              background: 'var(--theme-bg)',
+              clipPath: 'ellipse(60% 100% at 50% 100%)',
+            }}
+          />
         </header>
 
         {isSettingsOpen && (
           <div
             id="settings-panel"
-              className="absolute right-3 md:right-8 lg:right-12 top-[5.5rem] z-30 w-[min(24rem,calc(100vw-1.5rem))] rounded-3xl border-4 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-2xl p-5"
+              className="absolute right-3 md:right-8 lg:right-12 top-[5.5rem] z-30 w-[min(24rem,calc(100vw-1.5rem))] rounded-[2rem] border-2 border-[rgba(28,82,53,.18)] bg-[var(--theme-surface)] p-5 shadow-[0_16px_64px_rgba(10,26,14,.18)]"
             role="dialog"
             aria-labelledby="settings-panel-title"
           >
             <div className="flex items-center justify-between gap-4 mb-4">
-              <h2 id="settings-panel-title" className="font-black text-slate-900 dark:text-white text-xl">{t('settings')}</h2>
+              <h2 id="settings-panel-title" className="font-display font-bold text-[var(--theme-text)] text-xl">{t('settings')}</h2>
               <button
                 type="button"
                 onClick={() => {
                   setIsSettingsOpen(false);
                   window.requestAnimationFrame(() => settingsButtonRef.current?.focus());
                 }}
-                className="min-h-14 rounded-full px-5 py-3 text-sm font-black bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 md:min-h-12 md:px-4 md:py-2"
+                className="min-h-14 rounded-full bg-[var(--theme-pale)] px-5 py-3 text-sm font-black text-[var(--theme-primary)] hover:bg-[var(--theme-gold-pale)] md:min-h-12 md:px-4 md:py-2"
                 aria-label={t('close')}
               >
                 {t('close')}
               </button>
             </div>
 
+            <div className="mb-4">
+              <p className="mb-3 font-bold text-[var(--theme-text)]">{t('colorTheme')}</p>
+              <div className="flex flex-wrap gap-2">
+                {THEMES.map((theme) => (
+                  <button
+                    key={theme.id}
+                    type="button"
+                    onClick={() => setColorTheme(theme.id)}
+                    aria-label={t(theme.labelKey)}
+                    aria-pressed={colorTheme === theme.id}
+                    className="relative h-12 w-12 overflow-hidden rounded-[14px] transition-all focus-visible:outline-[2.5px] focus-visible:outline-[var(--theme-gold-light)] focus-visible:outline-offset-3"
+                    style={{
+                      background: `linear-gradient(135deg, ${theme.swatch} 0%, ${theme.accent} 100%)`,
+                      boxShadow: colorTheme === theme.id
+                        ? `0 0 0 3px var(--theme-bg), 0 0 0 5px ${theme.swatch}`
+                        : '0 2px 8px rgba(0,0,0,.2)',
+                      transform: colorTheme === theme.id ? 'scale(1.1)' : 'scale(1)',
+                    }}
+                  >
+                    {colorTheme === theme.id && (
+                      <span className="absolute inset-0 flex items-center justify-center text-lg font-black text-white" aria-hidden="true">
+                        ✓
+                      </span>
+                    )}
+                  </button>
+                ))}
+              </div>
+            </div>
+
             <button
               type="button"
               onClick={toggleDarkMode}
-              className="mb-4 flex w-full items-center justify-between gap-4 rounded-2xl border-2 border-slate-200 dark:border-slate-700 px-4 py-3 text-left font-black text-slate-800 dark:text-slate-100 hover:bg-slate-50 dark:hover:bg-slate-800 focus:outline-none focus:ring-4 focus:ring-indigo-300"
+              className="mb-4 flex w-full items-center justify-between gap-4 rounded-2xl border-2 border-[var(--theme-border)] px-4 py-3 text-left font-bold text-[var(--theme-text)] hover:bg-[var(--theme-pale)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--theme-focus)]/40"
               aria-label={isDarkMode ? t('lightTheme') : t('darkTheme')}
             >
               <span>{isDarkMode ? t('lightTheme') : t('darkTheme')}</span>
               <span aria-hidden="true">{isDarkMode ? '☀️' : '🌙'}</span>
             </button>
 
-            <div className="mb-4 rounded-2xl border-2 border-slate-200 dark:border-slate-700 p-4">
-              <p className="mb-3 font-black text-slate-900 dark:text-white">
+            <div className="mb-4 rounded-2xl border-2 border-[var(--theme-border)] p-4">
+              <p className="mb-3 font-black text-[var(--theme-text)]">
                 {t('textSize')}
               </p>
               <div className="flex flex-wrap items-center gap-3">
@@ -416,19 +501,19 @@ const AppContent: React.FC = () => {
                   type="button"
                   onClick={decreaseFont}
                   disabled={uiScale <= MIN_UI_SCALE}
-                  className="flex h-14 w-14 items-center justify-center rounded-full bg-[#173e5f] text-lg font-black text-white shadow-md transition-all hover:bg-[#214f76] focus:outline-none focus:ring-4 focus:ring-[#d09a32]/40 active:scale-95 disabled:opacity-40 md:h-12 md:w-12"
+                  className="flex h-14 w-14 items-center justify-center rounded-full bg-[var(--theme-header-bg)] text-lg font-black text-white shadow-md transition-all hover:bg-[var(--theme-primary)] focus-visible:ring-4 focus-visible:ring-[var(--theme-focus)]/40 active:scale-95 disabled:opacity-40 md:h-12 md:w-12"
                   aria-label={`${t('decreaseText')} (${uiScale}%)`}
                 >
                   A-
                 </button>
-                <span className="min-w-16 text-center text-lg font-black text-slate-800 dark:text-slate-100" aria-live="polite">
+                <span className="min-w-16 text-center text-lg font-black text-[var(--theme-text)]" aria-live="polite">
                   {uiScale}%
                 </span>
                 <button
                   type="button"
                   onClick={increaseFont}
                   disabled={uiScale >= MAX_UI_SCALE}
-                  className="flex h-14 w-14 items-center justify-center rounded-full bg-[#173e5f] text-lg font-black text-white shadow-md transition-all hover:bg-[#214f76] focus:outline-none focus:ring-4 focus:ring-[#d09a32]/40 active:scale-95 disabled:opacity-40 md:h-12 md:w-12"
+                  className="flex h-14 w-14 items-center justify-center rounded-full bg-[var(--theme-header-bg)] text-lg font-black text-white shadow-md transition-all hover:bg-[var(--theme-primary)] focus-visible:ring-4 focus-visible:ring-[var(--theme-focus)]/40 active:scale-95 disabled:opacity-40 md:h-12 md:w-12"
                   aria-label={`${t('increaseText')} (${uiScale}%)`}
                 >
                   A+
@@ -437,7 +522,7 @@ const AppContent: React.FC = () => {
                   <button
                     type="button"
                     onClick={resetFont}
-                    className="rounded-full bg-[#d09a32] px-4 py-3 text-sm font-black text-slate-950 shadow-md transition-all hover:bg-[#e0aa43] focus:outline-none focus:ring-4 focus:ring-amber-200 active:scale-95"
+                    className="rounded-full bg-[var(--theme-gold)] px-4 py-3 text-sm font-black text-[var(--theme-header-bg)] shadow-md transition-all hover:bg-[var(--theme-gold-light)] focus-visible:ring-4 focus-visible:ring-[var(--theme-focus)]/40 active:scale-95"
                     aria-label={t('resetText')}
                   >
                     100%
@@ -457,13 +542,13 @@ const AppContent: React.FC = () => {
                 { key: 'assistant', label: t('showAssistant'), className: 'hidden md:flex' },
                 { key: 'googleSearch', label: t('showGoogleSearch') },
               ].map((item) => (
-                <label key={item.key} className={`${item.className ?? 'flex'} items-center justify-between gap-4 rounded-2xl border-2 border-slate-200 dark:border-slate-700 px-4 py-3 cursor-pointer`}>
-                  <span className="font-bold text-slate-800 dark:text-slate-100">{item.label}</span>
+                <label key={item.key} className={`${item.className ?? 'flex'} items-center justify-between gap-4 rounded-2xl border-2 border-[var(--theme-border)] px-4 py-3 cursor-pointer`}>
+                  <span className="font-bold text-[var(--theme-text)]">{item.label}</span>
                   <input
                     type="checkbox"
                     checked={uiVisibility[item.key as keyof UiVisibilityState]}
                     onChange={(event) => updateVisibility(item.key as keyof UiVisibilityState, event.target.checked)}
-                    className="h-14 w-14 shrink-0 accent-indigo-600 md:h-5 md:w-5"
+                    className="h-14 w-14 shrink-0 accent-[var(--theme-primary)] md:h-5 md:w-5"
                     aria-label={item.label}
                   />
                 </label>
@@ -471,12 +556,12 @@ const AppContent: React.FC = () => {
             </div>
 
             {uiVisibility.secondaryClock && (
-              <label className="mt-4 block rounded-2xl border-2 border-slate-200 dark:border-slate-700 px-4 py-3">
-                <span className="mb-2 block font-black text-slate-900 dark:text-white">{t('secondaryClockTimezone')}</span>
+              <label className="mt-4 block rounded-2xl border-2 border-[var(--theme-border)] px-4 py-3">
+                <span className="mb-2 block font-black text-[var(--theme-text)]">{t('secondaryClockTimezone')}</span>
                 <select
                   value={secondaryTimeZone}
                   onChange={(event) => setSecondaryTimeZone(event.target.value)}
-                  className="min-h-14 w-full rounded-2xl border-2 border-slate-200 bg-white px-4 py-3 text-base font-bold text-slate-900 focus:outline-none focus:ring-4 focus:ring-indigo-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white md:min-h-12"
+                  className="min-h-14 w-full rounded-2xl border-2 border-[var(--theme-border)] bg-[var(--theme-surface)] px-4 py-3 text-base font-bold text-[var(--theme-text)] focus-visible:ring-4 focus-visible:ring-[var(--theme-focus)]/40 md:min-h-12"
                 >
                   {SECONDARY_TIME_ZONE_OPTIONS.map((option) => (
                     <option key={option.value} value={option.value}>
@@ -489,7 +574,7 @@ const AppContent: React.FC = () => {
           </div>
         )}
 
-        <main id="main-content" className="space-y-10 animate-in [animation-delay:200ms]" tabIndex={-1}>
+        <main id="main-content" className="space-y-10 animate-fade-up" style={{ animationDelay: '300ms' }} tabIndex={-1}>
           <div data-tour="favorites">
             <FavoriteLinks favorites={favorites} onToggleFavorite={toggleFavorite} fontSizeStep={fontSizeStep} />
           </div>
@@ -508,7 +593,10 @@ const AppContent: React.FC = () => {
           )}
 
           <section className="space-y-8" data-tour="quick-links">
-            <h2 className="font-black text-slate-900 dark:text-white tracking-tighter transition-all duration-300 text-4xl md:text-6xl">
+            <h2 className="font-display mb-5 flex items-center gap-3 text-4xl font-semibold tracking-tight text-[var(--theme-text)] md:text-5xl">
+              <span className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-2xl bg-[var(--theme-pale)] text-xl" aria-hidden="true">
+                🌿
+              </span>
               {t('chooseService')}
             </h2>
             <QuickLinks
@@ -523,104 +611,112 @@ const AppContent: React.FC = () => {
         </main>
 
         <footer
-          className="relative left-1/2 w-screen -translate-x-1/2 text-center text-white shadow-inner"
-          style={{ background: headerBackgrounds[logoPhase][isDarkMode ? 'dark' : 'light'], width: fullBleedWidth }}
+          className="relative left-1/2 w-screen -translate-x-1/2 overflow-hidden text-white"
+          style={{ width: fullBleedWidth, background: 'var(--theme-footer-bg)' }}
         >
-          <div className="mx-auto w-full max-w-[1900px] space-y-8 px-6 py-12 md:px-10 lg:px-16">
-          <div className="flex flex-wrap justify-center gap-5 md:gap-6">
-            <button
-              type="button"
-              onClick={() => setIsInfoOpen(true)}
-              className="rounded-full bg-white/95 px-6 py-3 text-base font-black text-slate-950 shadow-md border-b-4 border-black/20 transition-all hover:bg-white active:scale-95 focus:outline-none focus:ring-4 focus:ring-white/60"
-            >
-              ℹ️ {t('info')}
-            </button>
-            <button
-              type="button"
-              onClick={() => openReportModal({ name: '', url: '', category: '', source: 'Footer' })}
-              className="rounded-full bg-[#d09a32] px-6 py-3 text-base font-black text-slate-950 shadow-md border-b-4 border-[#8f651e] transition-all hover:bg-[#e2ad45] active:scale-95 focus:outline-none focus:ring-4 focus:ring-amber-200"
-            >
-              {t('reportNewLink')}
-            </button>
+          <div
+            aria-hidden="true"
+            className="absolute inset-0"
+            style={{
+              background: [
+                'radial-gradient(ellipse 60% 80% at 15% 120%, var(--theme-primary) 0%, transparent 55%)',
+                'radial-gradient(ellipse 40% 60% at 85% -20%, rgba(212,148,10,.12) 0%, transparent 50%)',
+              ].join(', '),
+            }}
+          />
+          <div
+            aria-hidden="true"
+            className="relative block h-10 w-full bg-[var(--theme-bg)]"
+            style={{ clipPath: 'ellipse(55% 100% at 50% 0%)' }}
+          />
+          <div className="footer-inner-grid relative mx-auto grid w-full max-w-[1400px] grid-cols-3 gap-10 px-6 pb-10 pt-8">
+            <div>
+              <p className="font-display text-2xl text-white">
+                SeniorSurf <span className="italic text-[var(--theme-gold-light)]">aloitussivu</span>
+              </p>
+              <p className="mt-3 max-w-[36ch] text-sm font-semibold leading-relaxed text-white/55">
+                {t('footer')}
+              </p>
+              {isLinkVisible('https://seniorsurf.fi/') && isLinkVisible('https://seniorsurf.fi/wp-content/uploads/SeniorSurf_White-320-x-102-px.svg') && (
+                <a
+                  href="https://seniorsurf.fi/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-5 inline-block"
+                  aria-label={t('seniorSurfLogoAlt')}
+                >
+                  <img
+                    src="https://seniorsurf.fi/wp-content/uploads/SeniorSurf_White-320-x-102-px.svg"
+                    alt={t('seniorSurfLogoAlt')}
+                    className="h-9 w-auto brightness-0 invert opacity-60 transition-opacity hover:opacity-90"
+                    loading="lazy"
+                  />
+                </a>
+              )}
+              <div className="flex flex-wrap gap-3">
+                <button
+                  type="button"
+                  onClick={() => openReportModal({ name: '', url: '', category: '', source: 'Footer' })}
+                  className="mt-5 inline-flex items-center gap-2 rounded-full bg-[var(--theme-gold)] px-5 py-2.5 text-sm font-black text-[var(--theme-header-bg)] shadow-[0_3px_0_rgba(0,0,0,.28)] hover:bg-[var(--theme-gold-light)] focus-visible:ring-2 focus-visible:ring-white active:translate-y-[2px] active:shadow-none"
+                >
+                  {t('reportNewLink')}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setIsInfoOpen(true)}
+                  className="mt-5 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-5 py-2.5 text-sm font-black text-white hover:bg-white/20 focus-visible:ring-2 focus-visible:ring-white"
+                >
+                  ℹ️ {t('info')}
+                </button>
+              </div>
+            </div>
+
+            <nav className="grid content-start gap-3" aria-label={t('footerLinks')}>
+              <p className="text-[.7rem] font-black uppercase tracking-[.2em] text-white/35 sm:col-span-2">
+                {t('footerNavSite')}
+              </p>
+              {[
+                { href: './yllapito.html', label: t('admin') },
+                { href: './muutosloki.html', label: t('changelog') },
+                { href: './linkit.html', label: t('linkList') },
+                { href: './tietosuoja.html', label: t('privacyNotice') },
+                { href: './saavutettavuus.html', label: t('accessibilityStatement') },
+                { href: './sivua-tukemassa.html', label: t('supporters') },
+              ].map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="footer-link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {link.label}
+                </a>
+              ))}
+            </nav>
+            <div className="content-start">
+              <p className="mb-3 text-[.7rem] font-black uppercase tracking-[.2em] text-white/35">
+                {t('footerNavLegal')}
+              </p>
+              <div className="grid gap-3">
+                <a href="./tietosuoja.html" className="footer-link" target="_blank" rel="noopener noreferrer">{t('privacyNotice')}</a>
+                <a href="./saavutettavuus.html" className="footer-link" target="_blank" rel="noopener noreferrer">{t('accessibilityStatement')}</a>
+              </div>
+            </div>
           </div>
-          <nav className="flex flex-wrap justify-center gap-4" aria-label={t('footerLinks')}>
-            <a
-              href="./yllapito.html"
-              className="min-h-14 rounded-full bg-white/95 px-5 py-3 text-sm font-black text-[#173e5f] shadow-sm hover:bg-white hover:underline focus:outline-none focus:ring-4 focus:ring-white/60 md:min-h-12"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {t('admin')}
-            </a>
+          <div className="relative mx-auto flex max-w-[1400px] flex-wrap items-center justify-between gap-2 border-t border-white/10 px-6 py-3">
+            <p className="text-xs font-semibold text-white/25">
+              © SeniorSurf
+            </p>
             <a
               href="./muutosloki.html"
-              className="min-h-14 rounded-full bg-white/95 px-5 py-3 text-sm font-black text-[#173e5f] shadow-sm hover:bg-white hover:underline focus:outline-none focus:ring-4 focus:ring-white/60 md:min-h-12"
               target="_blank"
               rel="noopener noreferrer"
+              className="text-xs font-black uppercase tracking-[.15em] text-white/25 no-underline hover:text-white/50"
+              aria-label={`${t('changelog')}: ${APP_VERSION_LABEL}`}
             >
-              {t('changelog')}
+              {APP_VERSION_LABEL}
             </a>
-            <a
-              href="./linkit.html"
-              className="min-h-14 rounded-full bg-white/95 px-5 py-3 text-sm font-black text-[#173e5f] shadow-sm hover:bg-white hover:underline focus:outline-none focus:ring-4 focus:ring-white/60 md:min-h-12"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {t('linkList')}
-            </a>
-            <a
-              href="./tietosuoja.html"
-              className="min-h-14 rounded-full bg-white/95 px-5 py-3 text-sm font-black text-[#173e5f] shadow-sm hover:bg-white hover:underline focus:outline-none focus:ring-4 focus:ring-white/60 md:min-h-12"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {t('privacyNotice')}
-            </a>
-            <a
-              href="./saavutettavuus.html"
-              className="min-h-14 rounded-full bg-white/95 px-5 py-3 text-sm font-black text-[#173e5f] shadow-sm hover:bg-white hover:underline focus:outline-none focus:ring-4 focus:ring-white/60 md:min-h-12"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {t('accessibilityStatement')}
-            </a>
-            <a
-              href="./sivua-tukemassa.html"
-              className="min-h-14 rounded-full bg-white/95 px-5 py-3 text-sm font-black text-[#173e5f] shadow-sm hover:bg-white hover:underline focus:outline-none focus:ring-4 focus:ring-white/60 md:min-h-12"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {t('supporters')}
-            </a>
-          </nav>
-          {isLinkVisible('https://seniorsurf.fi/') && isLinkVisible('https://seniorsurf.fi/wp-content/uploads/SeniorSurf_White-320-x-102-px.svg') && (
-            <a
-              href="https://seniorsurf.fi/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block p-4 rounded-3xl transition-transform hover:scale-105"
-              aria-label={t('seniorSurfLogoAlt')}
-            >
-              <img
-                src="https://seniorsurf.fi/wp-content/uploads/SeniorSurf_White-320-x-102-px.svg"
-                alt={t('seniorSurfLogoAlt')}
-                className="h-16 w-auto brightness-0 dark:brightness-100"
-                loading="lazy"
-              />
-            </a>
-          )}
-          <p className="font-bold text-white/80">
-            {t('footer')}
-          </p>
-          <a
-            href="./muutosloki.html"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex min-h-14 items-center rounded-full px-4 py-2 text-sm font-black uppercase tracking-[0.24em] text-white/70 transition-colors hover:bg-white/10 hover:text-white focus:outline-none focus:ring-4 focus:ring-white/60 md:min-h-12"
-            aria-label={`${t('changelog')}: ${APP_VERSION_LABEL}`}
-          >
-            {APP_VERSION_LABEL}
-          </a>
           </div>
         </footer>
 
