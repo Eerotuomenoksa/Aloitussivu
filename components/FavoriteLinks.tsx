@@ -9,36 +9,18 @@ interface FavoriteLinksProps {
   fontSizeStep?: number;
 }
 
-const rowColors = [
-  'bg-[#214f76]',
-  'bg-[#2a6387]',
-  'bg-[#4fb8c3]',
-  'bg-[#3aa9b5]',
-  'bg-[#d09a32]',
-  'bg-[#dcae55]',
-  'bg-[#6bc7cf]',
-];
-
 const FavoriteLinks: React.FC<FavoriteLinksProps> = ({ favorites, onToggleFavorite, fontSizeStep = 0 }) => {
   const { t, categoryName } = useI18n();
   const visibleFavorites = favorites.filter((fav) => isLinkVisible(fav.url));
 
   if (visibleFavorites.length === 0) return null;
 
-  const iconClasses = [
-    'text-[2.25rem] md:text-[2.7rem]',
-    'text-[2.7rem] md:text-[3.375rem]',
-    'text-[3.375rem] md:text-[4.05rem]',
-    'text-[4.05rem] md:text-[5.4rem]',
-    'text-[5.4rem] md:text-[7.2rem]',
-  ];
-
   const textClasses = [
-    'text-lg md:text-xl',
-    'text-xl md:text-2xl',
-    'text-2xl md:text-3xl',
-    'text-3xl md:text-4xl',
-    'text-4xl md:text-5xl',
+    'text-base',
+    'text-lg',
+    'text-xl',
+    'text-2xl',
+    'text-3xl',
   ];
 
   const subTextClasses = [
@@ -49,45 +31,36 @@ const FavoriteLinks: React.FC<FavoriteLinksProps> = ({ favorites, onToggleFavori
     'text-2xl',
   ];
 
-  const starClasses = [
-    'text-xl w-9 h-9',
-    'text-2xl w-11 h-11',
-    'text-3xl w-13 h-13',
-    'text-4xl w-14 h-14',
-    'text-5xl w-16 h-16',
-  ];
-
-  const baseCardStyles = (color: string) =>
-    `${color} p-6 md:p-8 rounded-[2rem] shadow-md hover:shadow-2xl transition-all transform hover:-translate-y-2 active:scale-95 text-white border-4 border-transparent hover:border-white/40 focus:ring-4 focus:ring-blue-400 focus:outline-none flex flex-col items-center justify-center text-center gap-3 h-full min-h-[160px] md:min-h-[220px]`;
+  const basePillStyles =
+    'inline-flex items-center gap-2 rounded-full border-2 border-[#e8a020] bg-[#fff8e8] px-5 py-2.5 font-black text-[#1a2e1e] shadow-[0_3px_0_#c27e10] transition-all duration-100 hover:-translate-y-0.5 hover:bg-[#fff0c0] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1a4d2e] active:translate-y-0 active:shadow-none dark:bg-[#2a2010] dark:text-[#e8f5ed]';
 
   return (
     <section className="space-y-4" aria-labelledby="favorites-heading">
       <h2 id="favorites-heading" className={`font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest flex items-center gap-2 ${subTextClasses[fontSizeStep]}`}>
         <span aria-hidden="true">⭐</span> {t('favorites')}
       </h2>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6">
-        {visibleFavorites.map((fav, idx) => {
-          const color = fav.color || rowColors[idx % rowColors.length];
+      <div className="flex flex-wrap gap-3 md:gap-4">
+        {visibleFavorites.map((fav) => {
           return (
-            <div key={fav.url} className="relative group/fav">
+            <div key={fav.url} className="group/fav inline-flex items-center gap-2">
               <a
                 href={fav.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={baseCardStyles(color)}
+                className={`${basePillStyles} ${textClasses[fontSizeStep]}`}
                 aria-label={`${t('goToSite')}: ${fav.name}`}
               >
-                <span className={`transition-all duration-300 ${iconClasses[fontSizeStep]}`} aria-hidden="true">{fav.categoryIcon}</span>
-                <span className={`font-black leading-tight tracking-tight transition-all duration-300 ${textClasses[fontSizeStep]}`}>
+                <span aria-hidden="true">{fav.categoryIcon}</span>
+                <span className="leading-tight">
                   {fav.name}
                 </span>
-                <span className={`opacity-75 font-semibold ${subTextClasses[fontSizeStep]}`}>
+                <span className={`opacity-65 font-semibold ${subTextClasses[fontSizeStep]}`}>
                   {categoryName(fav.categoryName)}
                 </span>
               </a>
               <button
                 onClick={() => onToggleFavorite(fav)}
-                className={`absolute top-3 right-3 flex items-center justify-center rounded-full bg-yellow-400 hover:bg-yellow-500 shadow-md transition-all focus:ring-4 focus:ring-yellow-300 focus:outline-none ${starClasses[fontSizeStep]}`}
+                className="inline-flex h-11 w-11 items-center justify-center rounded-full border-2 border-dashed border-[#c8dece] bg-transparent text-xl font-black text-[#6b8c72] transition-all hover:border-[#e8a020] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1a4d2e]"
                 aria-label={`${t('removeFavorite')}: ${fav.name}`}
               >
                 ⭐

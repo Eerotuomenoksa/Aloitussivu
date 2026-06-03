@@ -31,8 +31,10 @@ const SAVED_LOCALITY_KEY = 'locality';
 const ONBOARDING_SEEN_KEY = 'onboardingSeen';
 const SECONDARY_TIME_ZONE_KEY = 'secondaryTimeZone';
 const THEME_KEY = 'colorTheme';
+const CLOCK_MODE_KEY = 'clockMode';
 
 type ColorTheme = 'vihrea' | 'violetti' | 'sininen' | 'oranssi';
+type ClockMode = 'digital' | 'analog';
 
 const THEMES: { id: ColorTheme; labelKey: 'themeGreen' | 'themeViolet' | 'themeBlue' | 'themeOrange'; shortLabel: string; swatch: string; accent: string }[] = [
   { id: 'vihrea', labelKey: 'themeGreen', shortLabel: 'Metsä', swatch: '#0f2318', accent: '#d4940a' },
@@ -211,6 +213,10 @@ const AppContent: React.FC = () => {
       ? saved
       : SECONDARY_TIME_ZONE_OPTIONS[0].value;
   });
+  const [clockMode, setClockMode] = useState<ClockMode>(() => {
+    const saved = localStorage.getItem(CLOCK_MODE_KEY);
+    return saved === 'analog' ? 'analog' : 'digital';
+  });
   const [logoPhase, setLogoPhase] = useState<LogoPhase>(() => getLogoPhase(new Date()));
 
   const [favorites, setFavorites] = useState<Favorite[]>(() => {
@@ -251,6 +257,10 @@ const AppContent: React.FC = () => {
   useEffect(() => {
     localStorage.setItem(SECONDARY_TIME_ZONE_KEY, secondaryTimeZone);
   }, [secondaryTimeZone]);
+
+  useEffect(() => {
+    localStorage.setItem(CLOCK_MODE_KEY, clockMode);
+  }, [clockMode]);
 
   useEffect(() => {
     const interval = window.setInterval(() => setLogoPhase(getLogoPhase(new Date())), 60 * 1000);
@@ -391,6 +401,7 @@ const AppContent: React.FC = () => {
                   <Clock
                     fontSizeStep={fontSizeStep}
                     variant="aurora"
+                    mode={clockMode}
                     secondaryClock={uiVisibility.secondaryClock ? {
                       label: selectedSecondaryTimeZone.label,
                       timeZone: selectedSecondaryTimeZone.value,
@@ -399,9 +410,6 @@ const AppContent: React.FC = () => {
                 </div>
               )}
               <div className="flex flex-col gap-4 animate-rise" style={{ animationDelay: '120ms' }} data-tour="google-search">
-                <p className="text-[.75rem] font-bold uppercase tracking-[.18em] text-white/35">
-                  {t('searchLabel')}
-                </p>
                 {uiVisibility.googleSearch && (
                   <SearchBar fontSizeStep={fontSizeStep} variant="aurora" />
                 )}
@@ -498,6 +506,26 @@ const AppContent: React.FC = () => {
               <span>{isDarkMode ? t('lightTheme') : t('darkTheme')}</span>
               <span aria-hidden="true">{isDarkMode ? '☀️' : '🌙'}</span>
             </button>
+
+            <fieldset className="mb-4 rounded-2xl border-2 border-[var(--theme-border)] p-4">
+              <legend className="px-1 font-black text-[var(--theme-text)]">{t('clockStyle')}</legend>
+              <div className="mt-3 grid grid-cols-2 gap-2">
+                {[
+                  { value: 'digital' as ClockMode, label: t('clockDigital') },
+                  { value: 'analog' as ClockMode, label: t('clockAnalog') },
+                ].map((option) => (
+                  <button
+                    key={option.value}
+                    type="button"
+                    onClick={() => setClockMode(option.value)}
+                    aria-pressed={clockMode === option.value}
+                    className={`${clockMode === option.value ? 'bg-[var(--theme-primary)] text-white' : 'bg-[var(--theme-surface)] text-[var(--theme-text)] hover:bg-[var(--theme-pale)]'} min-h-12 rounded-2xl border-2 border-[var(--theme-border)] px-3 py-2 text-sm font-black transition-all`}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+            </fieldset>
 
             <div className="mb-4 rounded-2xl border-2 border-[var(--theme-border)] p-4">
               <p className="mb-3 font-black text-[var(--theme-text)]">

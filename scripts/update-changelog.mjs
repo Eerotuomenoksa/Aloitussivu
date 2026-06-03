@@ -182,9 +182,20 @@ function summarizeWorktree(changes) {
     notes.push('Google-haku, palveluhaku ja tekoälyavustaja toimivat nyt myös omalla äänellä mikrofonipainikkeen kautta.');
   }
 
+  if (paths.some((pathName) => ['App.tsx', 'components/Clock.tsx', 'i18n.tsx', 'index.css'].includes(pathName))) {
+    notes.push('Asetuksiin lisättiin mahdollisuus vaihtaa etusivun digitaalinen kello vanhan ajan analogiseen kelloon.');
+    notes.push('Digitaalisen kellon päivämäärän välistystä parannettiin ja analogisen kellon numerot sijoitettiin selvästi kellotaulun ulkokehälle.');
+  }
+
+  if (paths.some((pathName) => ['components/QuickLinks.tsx', 'index.css'].includes(pathName))) {
+    notes.push('Mobiilissa palveluruudukko muutettiin yksipalstaiseksi listaksi ja alakategorioiden symbolit piilotettiin.');
+    notes.push('Palveluruudukon ja palveluhaun visuaalinen ilme yhtenäistettiin Aurora-teemaan.');
+  }
+
   if (paths.some((pathName) => ['components/RegionalServicesPanel.tsx'].includes(pathName))) {
     notes.push('Etusivun alueellisiin palveluihin nostettiin myös paikalliset kirjastokimpat, jotta esimerkiksi Loviisalle näkyy Helle-kirjastot.');
     notes.push('Alueellisten palvelujen kunnan valintaa selkeytettiin: rajausviesti päivitettiin, turha kuntalaatikko poistettiin ja Vaihda kunta -painike siirrettiin työpöytänäkymässä kunnan kentän rinnalle.');
+    notes.push('Alueellisten palveluiden paneelin kortit, kuntahaku ja paikalliset uutiset päivitettiin uuteen Aurora-pintakieleen.');
   }
 
   if (paths.some((pathName) => ['ehdotukset.tsx', 'adminStats.ts', 'functions/nameday.ts', 'firestore.rules'].includes(pathName))) {
@@ -194,12 +205,14 @@ function summarizeWorktree(changes) {
 
   if (paths.some((pathName) => ['components/OnboardingTour.tsx', 'components/InfoModal.tsx'].includes(pathName))) {
     notes.push('Sivuston esittelyyn lisättiin tieto, että robottia, Google-hakua ja palveluhakua voi käyttää myös omalla äänellä.');
+    notes.push('Ohje- ja esittelyikkunoiden visuaalinen ilme yhtenäistettiin muun Aurora-ulkoasun kanssa.');
   }
 
   if (paths.some((pathName) => ['linkit.tsx'].includes(pathName))) {
     notes.push('Linkkiluettelon Paikkakunnittain-taulukon vaakavieritystä helpotettiin yläreunan vierityspalkilla ja lukitulla paikkakuntasarakkeella.');
     notes.push('Linkkiluettelon Paikkakunnittain-välilehdeltä poistettiin tyhjä paikallisten palvelujen sarake ja siihen lisättiin omat sarakkeet potilas- ja eläkeyhdistyksille.');
     notes.push('Alueellisten linkkien listaan lisättiin kirjastojen lisäksi museot, teatterit, potilasyhdistykset ja eläkeyhdistykset.');
+    notes.push('Linkkiluettelon taulukot ja apupalkit päivitettiin käyttämään Aurora-teeman pintoja ja värejä.');
   }
 
   if (paths.some((pathName) => ['sivua-tukemassa.html', 'sivuaTukemassa.tsx', 'App.tsx', 'vite.config.ts'].includes(pathName) || pathName.startsWith('assets/'))) {

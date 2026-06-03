@@ -4,9 +4,9 @@ import { ScamAlertEntry, subscribeScamAlerts } from '../scamAlerts';
 import { useI18n } from '../i18n';
 
 const severityStyles = {
-  info: 'border-[#9fcbd6] bg-[#dceff4] text-slate-950 dark:border-white/15 dark:bg-[#173e5f] dark:text-white',
-  warning: 'border-[#d7b565] bg-[#f8e2af] text-slate-950 dark:border-white/15 dark:bg-[#73501e] dark:text-white',
-  danger: 'border-[#8fcfca] bg-[#d8f0ee] text-slate-950 dark:border-white/15 dark:bg-[#1d5c62] dark:text-white',
+  info: 'border-[var(--theme-gold)] bg-[var(--theme-gold-pale)] text-[var(--theme-text)]',
+  warning: 'border-[var(--theme-gold)] bg-[var(--theme-gold-pale)] text-[var(--theme-text)]',
+  danger: 'border-[var(--theme-gold)] bg-[var(--theme-gold-pale)] text-[var(--theme-text)]',
 };
 
 const MORE_SCAM_ALERTS_URL = 'https://www.kyberturvallisuuskeskus.fi/fi/varoitukset';
@@ -61,33 +61,33 @@ const ScamAlertsBanner: React.FC<ScamAlertsBannerProps> = ({ compact = false }) 
   if (visibleAlerts.length === 0) return null;
 
   const alertDialog = selectedAlert ? ReactDOM.createPortal(
-    <div className="fixed inset-0 z-[90] flex items-end justify-center bg-slate-950/70 p-3 sm:items-center sm:p-4" role="presentation">
+    <div className="fixed inset-0 z-[90] flex items-end justify-center bg-black/70 p-3 backdrop-blur-sm sm:items-center sm:p-4" role="presentation">
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby="scam-alerts-dialog-heading"
-        className="max-h-[calc(100dvh-1.5rem)] w-full max-w-3xl overflow-y-auto rounded-[2rem] bg-white p-4 shadow-2xl dark:bg-slate-900 sm:max-h-[90vh] sm:p-6 md:p-7"
+        className="aurora-modal-shell max-h-[calc(100dvh-1.5rem)] w-full max-w-3xl overflow-y-auto rounded-[2rem] bg-[var(--theme-surface)] p-4 shadow-2xl sm:max-h-[90vh] sm:p-6 md:p-7"
       >
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
-            <h2 id="scam-alerts-dialog-heading" className="text-2xl md:text-4xl font-black text-slate-950 dark:text-white">
+            <h2 id="scam-alerts-dialog-heading" className="text-2xl font-black text-[var(--theme-text)] md:text-4xl">
               {t('scamAlertsTitle')}
             </h2>
           </div>
           <button
             type="button"
             onClick={() => setSelectedAlert(null)}
-            className="rounded-full bg-slate-200 hover:bg-slate-300 text-slate-900 px-5 py-3 font-black transition-all focus:outline-none focus:ring-4 focus:ring-slate-300 dark:bg-slate-800 dark:text-white dark:hover:bg-slate-700"
+            className="rounded-full bg-[var(--theme-pale)] px-5 py-3 font-black text-[var(--theme-text)] transition-all hover:bg-[var(--theme-gold-pale)] focus:outline-none focus:ring-4 focus:ring-[var(--theme-focus)]/30"
           >
             {t('close')}
           </button>
         </div>
 
-        <article className={`mt-4 md:mt-5 rounded-2xl border-4 p-4 md:p-5 shadow-sm ${severityStyles[selectedAlert.severity]}`}>
+        <article className={`mt-4 rounded-2xl border-2 p-4 shadow-sm md:mt-5 md:p-5 ${severityStyles[selectedAlert.severity]}`}>
           <h3 className="text-xl md:text-2xl font-black">
             {selectedAlert.title}
           </h3>
-          <p className="mt-1 text-sm font-bold opacity-75">
+          <p className="mt-1 text-sm font-bold text-[var(--theme-muted)]">
             {formatAlertMeta(selectedAlert, locale, t('ncscSource'), t('scamAlertsTitle'))}
           </p>
           <p className="mt-2 text-base md:text-lg font-bold leading-relaxed">
@@ -113,7 +113,7 @@ const ScamAlertsBanner: React.FC<ScamAlertsBannerProps> = ({ compact = false }) 
     <section className="space-y-3" aria-labelledby="scam-alerts-heading">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h3 id="scam-alerts-heading" className="text-xl md:text-2xl font-black text-slate-950 dark:text-white">
+          <h3 id="scam-alerts-heading" className="text-xl font-black text-[var(--theme-text)] md:text-2xl">
             {t('scamAlertsTitle')}
           </h3>
         </div>
@@ -125,13 +125,13 @@ const ScamAlertsBanner: React.FC<ScamAlertsBannerProps> = ({ compact = false }) 
             key={alert.id}
             type="button"
             onClick={() => setSelectedAlert(alert)}
-            className={`${severityStyles[alert.severity]} rounded-2xl border-4 p-5 text-left shadow-md transition-all hover:shadow-xl active:scale-95 focus:outline-none focus:ring-4 focus:ring-[#d09a32]/40 ${compact ? 'min-h-[72px]' : 'min-h-[130px]'} flex flex-col justify-between gap-4`}
+            className={`${severityStyles[alert.severity]} flex flex-col justify-between gap-3 rounded-2xl border-2 p-4 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md active:scale-[.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--theme-focus)] ${compact ? 'min-h-[72px]' : 'min-h-[130px]'}`}
             aria-haspopup="dialog"
           >
-            <span className="font-black text-lg md:text-xl leading-tight">
+            <span className="font-black text-base md:text-xl leading-tight">
               {alert.title}
             </span>
-            <span className="text-xs font-bold text-current opacity-75">
+            <span className="text-xs font-bold text-[var(--theme-muted)]">
               {formatAlertMeta(alert, locale, t('ncscSource'), t('scamAlertsTitle'))}
             </span>
           </button>
@@ -142,7 +142,7 @@ const ScamAlertsBanner: React.FC<ScamAlertsBannerProps> = ({ compact = false }) 
         href={MORE_SCAM_ALERTS_URL}
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex font-black text-brand-indigo hover:underline dark:text-blue-300"
+        className="inline-flex font-black text-[var(--theme-primary)] hover:underline"
       >
         {t('moreScamAlerts')}
       </a>

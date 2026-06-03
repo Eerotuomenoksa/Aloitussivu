@@ -280,6 +280,8 @@ Tärkeimmät seuraavat parannukset:
 - Dialogien näppäimistöfokuksen viimeistely.
 - Firestore-kyselyiden optimointi, jos datamäärä kasvaa.
 - Cloud Functions runtimepäivitys Node 22:een.
+- Saavutettavuustutkimus ja saavutettavuusselosteen viimeistely ennen laajempaa julkaisua.
+- Tietosuojaselosteen viimeistely lopullisella yhteystiedolla ja rekisterinpitäjätiedolla.
 
 ### Dia 8: Kenelle palvelua kannattaa tarjota
 
@@ -311,10 +313,12 @@ Kanavat:
 1. Korjataan katselmuksen korkean prioriteetin suojausasia.
 2. Varmistetaan GitHub Pages -tuotantodeploy Firebase-secreteillä.
 3. Kerätään testipalautetta 2-4 viikkoa.
-4. Tehdään lyhyt esittelyvideo tai kuvallinen ohje.
-5. Sovitaan ylläpitovastuu ja julkaisurytmi.
+4. Tehdään saavutettavuustutkimus ja viimeistellään saavutettavuusseloste.
+5. Viimeistellään tietosuojaseloste.
+6. Tehdään lyhyt esittelyvideo tai kuvallinen ohje.
+7. Sovitaan ylläpitovastuu ja julkaisurytmi.
 
 ## 7. Tiivistelmä päätöksentekijälle
 
-Palvelu on jo käyttökelpoinen pilotti. Sen arvo syntyy selkeydestä, paikallisuudesta ja turvallisuudesta. Ylläpitotarve on kohtuullinen, mutta edellyttää omistajuutta. Ennen laajempaa markkinointia kannattaa korjata manuaaliajon suojaus ja viimeistellä saavutettavuusdialogit.
+Palvelu on jo käyttökelpoinen pilotti. Sen arvo syntyy selkeydestä, paikallisuudesta ja turvallisuudesta. Ylläpitotarve on kohtuullinen, mutta edellyttää omistajuutta. Ennen laajempaa markkinointia kannattaa korjata manuaaliajon suojaus, tehdä saavutettavuustutkimus sekä viimeistellä saavutettavuus- ja tietosuojaselosteet.
 

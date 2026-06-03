@@ -51,7 +51,7 @@ const FloatingControls: React.FC<FloatingControlsProps> = ({
     });
   };
 
-  const buttonClass = 'flex h-12 w-12 md:h-16 md:w-16 items-center justify-center rounded-full bg-[#173e5f] text-lg md:text-2xl font-black leading-none text-white shadow-2xl border-b-4 border-[#0f2942] transition-all duration-200 hover:bg-[#214f76] focus:outline-none focus:ring-4 focus:ring-[#d09a32]/40 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed';
+  const buttonClass = 'flex h-[3.25rem] w-[3.25rem] md:h-16 md:w-16 items-center justify-center rounded-full bg-[#1a4d2e] text-lg md:text-2xl font-black leading-none text-white border-2 border-white/20 shadow-[0_4px_20px_rgba(26,77,46,.3)] transition-all hover:scale-105 hover:bg-[#2e7d50] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e8a020] active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed';
 
   if (hidden) return null;
 
@@ -61,7 +61,7 @@ const FloatingControls: React.FC<FloatingControlsProps> = ({
         type="button"
         onClick={onIncrease}
         disabled={!canIncrease}
-        className={buttonClass}
+        className={`${buttonClass} bg-[#e8a020] text-[#1a2e1e] border-[#c27e10]`}
         aria-label={`${increaseLabel} (${uiScale}%)`}
       >
         A+
@@ -79,7 +79,7 @@ const FloatingControls: React.FC<FloatingControlsProps> = ({
         <button
           type="button"
           onClick={onReset}
-          className="rounded-full bg-[#d09a32] px-3 py-2 md:px-4 md:py-3 text-sm md:text-base font-black text-slate-950 shadow-xl border-b-4 border-[#8f651e] transition-all hover:bg-[#e0aa43] focus:outline-none focus:ring-4 focus:ring-amber-200 active:scale-95"
+          className="rounded-full bg-[#e8a020] px-3 py-2 md:px-4 md:py-3 text-sm md:text-base font-black text-[#1a2e1e] shadow-[0_4px_20px_rgba(26,77,46,.3)] border-2 border-[#c27e10] transition-all hover:bg-[#f0b030] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e8a020] active:scale-95"
           aria-label={resetLabel}
         >
           100%

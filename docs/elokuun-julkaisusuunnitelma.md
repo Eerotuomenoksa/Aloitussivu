@@ -79,6 +79,9 @@ Ensimmäinen työpaketti:
 - päätetään, mitkä korjataan ennen julkaisua ja mitkä jätetään myöhemmäksi
 - tarkistetaan linkki-ilmoitukset ja käyttäjien ehdotukset
 - arvioidaan, onko sivuston rakenne riittävän selkeä julkaisua varten
+- tehdään saavutettavuustutkimus ja kirjataan sen perusteella julkaisuun tarvittavat korjaukset
+- viimeistellään saavutettavuusseloste
+- viimeistellään tietosuojaseloste
 
 Toinen työpaketti:
 
@@ -467,6 +470,8 @@ Ensisijaisesti `seniorsurf.fi/aloitussivu`, ellei löydy erittäin selkeää oma
 - linkkilista on ajan tasalla
 - muutosloki on ajan tasalla
 - ohje- ja tietotekstit vastaavat lopullista domainia
+- saavutettavuusseloste on viimeistelty saavutettavuustutkimuksen havaintojen perusteella
+- tietosuojaseloste on viimeistelty lopullisella yhteystiedolla ja rekisterinpitäjätiedolla
 
 ### Tekninen
 
@@ -483,6 +488,7 @@ Ensisijaisesti `seniorsurf.fi/aloitussivu`, ellei löydy erittäin selkeää oma
 
 - ylläpitäjä pääsee kirjautumaan
 - linkki-ilmoitukset näkyvät
+- ylläpidolle voidaan lähettää sähköposti uusista todo-asioista tai vähintään päivittäinen kooste
 - ilmoitukset voi hyväksyä, hylätä ja piilottaa
 - huijausvaroituksia voi näyttää ja piilottaa
 - automaation ajoloki on luettavissa
@@ -498,6 +504,19 @@ Tulokset:
 - palautekooste
 - päätös korjattavista asioista
 - priorisoitu tehtävälista
+
+### Työpaketti 1B: saavutettavuus ja tietosuoja
+
+Kestoarvio: 1-3 päivää
+
+Tulokset:
+
+- saavutettavuustutkimus tai vähintään käsin tehty saavutettavuustarkistus ruudunlukija-, näppäimistö-, mobiili- ja kontrastinäkökulmista
+- päätös saavutettavuuskorjauksista ennen julkaisua
+- viimeistelty saavutettavuusseloste
+- viimeistelty tietosuojaseloste
+- lopullinen yhteydenottotapa saavutettavuus- ja tietosuojapalautteelle
+- lopullinen rekisterinpitäjätieto
 
 ### Työpaketti 2: tekninen välikerros
 
@@ -521,6 +540,7 @@ Selvitettävät asiat:
 - cron-ajojen mahdollisuus
 - SSH-tunnelin käyttö
 - ympäristömuuttujien tai salaisuuksien hallinta
+- sähköpostilähetysten tuki ylläpidon ilmoituksille, esimerkiksi Cloudcityn sähköposti, Microsoft 365 SMTP tai erillinen lähetyspalvelu
 - staging-ympäristön mahdollisuus
 - lokitus ja varmuuskopiot
 

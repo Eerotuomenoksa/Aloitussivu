@@ -33,9 +33,9 @@ const getPhoneHref = (phone?: string, phoneUrl?: string) => {
 };
 
 const rowColors = [
-  'bg-white dark:bg-[#182b1e]',
-  'bg-white dark:bg-[#182b1e]',
-  'bg-white dark:bg-[#182b1e]',
+  'bg-[var(--theme-surface)]',
+  'bg-[var(--theme-surface)]',
+  'bg-[var(--theme-surface)]',
 ];
 
 const shortcutGroups: ShortcutGroup[] = [
@@ -255,23 +255,23 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
     `${color} group bento-card-surface bento-stripe bento-shimmer relative overflow-hidden flex flex-col gap-2.5 rounded-[44px] border-[1.5px] border-[var(--theme-border)] bg-[var(--theme-surface)] p-7 text-left text-[var(--theme-text)] shadow-[0_1px_4px_rgba(10,26,14,.06)] transition-all duration-200 hover:-translate-y-1 hover:scale-[1.004] hover:border-[var(--border-strong)] hover:shadow-[0_6px_24px_rgba(10,26,14,.12)] focus-visible:outline-[2.5px] focus-visible:outline-[var(--theme-focus)] focus-visible:outline-offset-3 active:-translate-y-0.5 active:scale-100 min-h-[220px]`;
 
   const groupCardStyles = (color: string, idx: number) =>
-    `${color} group bento-card-surface bento-stripe bento-shimmer relative overflow-hidden flex h-full min-h-[220px] flex-col gap-5 rounded-[44px] border-[1.5px] border-[var(--theme-border)] bg-[var(--theme-surface)] p-7 text-left text-[var(--theme-text)] shadow-[0_1px_4px_rgba(10,26,14,.06)] transition-all duration-200 hover:-translate-y-1 hover:scale-[1.004] hover:border-[var(--border-strong)] hover:shadow-[0_6px_24px_rgba(10,26,14,.12)] focus-within:outline-[2.5px] focus-within:outline-[var(--theme-focus)] focus-within:outline-offset-3 ${idx < 3 ? 'bento-wide col-span-2' : ''}`;
+    `${color} bento-group-card group bento-card-surface bento-stripe bento-shimmer relative overflow-hidden flex h-full min-h-[220px] flex-col gap-5 rounded-[44px] border-[1.5px] border-[var(--theme-border)] bg-[var(--theme-surface)] p-7 text-left text-[var(--theme-text)] shadow-[0_1px_4px_rgba(10,26,14,.06)] transition-all duration-200 hover:-translate-y-1 hover:scale-[1.004] hover:border-[var(--border-strong)] hover:shadow-[0_6px_24px_rgba(10,26,14,.12)] focus-within:outline-[2.5px] focus-within:outline-[var(--theme-focus)] focus-within:outline-offset-3 ${idx < 3 ? 'bento-wide col-span-2' : ''}`;
 
   return (
     <div className="space-y-8 animate-in">
 
       {/* Hakukenttä */}
       <div className="relative">
-        <span className="absolute left-5 top-1/2 -translate-y-1/2 text-[#6b8c72] pointer-events-none text-2xl">🔎</span>
+        <span className="pointer-events-none absolute left-5 top-1/2 -translate-y-1/2 text-2xl text-[var(--theme-muted)]">🔎</span>
         <input
           type="search"
           value={search}
           onChange={e => setSearch(e.target.value)}
           placeholder={speechState === 'listening' ? t('listeningPlaceholder') : t('searchPlaceholder')}
-          className={`w-full pl-14 py-4 rounded-full border-2 transition-all font-bold bg-white dark:bg-[#182b1e] text-[#1a2e1e] dark:text-[#e8f5ed] placeholder-[#7a9a82] focus:outline-none focus:ring-4
+          className={`w-full rounded-full border-2 bg-[var(--theme-surface)] py-4 pl-14 font-bold text-[var(--theme-text)] placeholder:text-[var(--theme-muted)] transition-all focus:outline-none focus:ring-4
             ${speechState === 'listening'
-              ? 'border-red-400 focus:border-red-500 focus:ring-red-200 dark:focus:ring-red-900 pr-28'
-              : 'border-[#c8dece] dark:border-[#2a4733] focus:border-[#e8a020] focus:ring-amber-300/30 pr-24'
+              ? 'border-red-400 pr-28 focus:border-red-500 focus:ring-red-200'
+              : 'border-[var(--theme-border)] pr-24 focus:border-[var(--theme-gold)] focus:ring-[var(--theme-focus)]/30'
             } ${inputClasses[fontSizeStep]}`}
           aria-label={t('searchPlaceholder')}
         />
@@ -279,7 +279,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
           {search && (
             <button
               onClick={() => setSearch('')}
-              className="text-slate-400 hover:text-slate-700 dark:hover:text-white text-2xl font-black transition-colors"
+              className="text-2xl font-black text-[var(--theme-muted)] transition-colors hover:text-[var(--theme-text)]"
               aria-label={t('clearSearch')}
             >
               ✕
@@ -291,7 +291,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
               className={`flex items-center justify-center rounded-full transition-all focus:ring-4 focus:ring-red-300 focus:outline-none active:scale-95
                 ${speechState === 'listening'
                   ? 'bg-red-500 text-white animate-pulse w-14 h-14 md:w-12 md:h-12 text-2xl shadow-lg shadow-red-300'
-                  : 'bg-slate-100 dark:bg-slate-700 hover:bg-red-100 dark:hover:bg-red-900/40 text-slate-500 dark:text-slate-400 hover:text-red-600 w-14 h-14 md:w-12 md:h-12 text-2xl'
+                  : 'bg-[var(--theme-pale)] hover:bg-red-100 text-[var(--theme-muted)] hover:text-red-600 w-14 h-14 md:w-12 md:h-12 text-2xl'
                 }`}
               aria-label={speechState === 'listening' ? t('stopListening') : t('startListening')}
             >
@@ -310,7 +310,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
       {q ? (
         <>
           {!hasResults && (
-            <p aria-live="polite" className={`text-center text-slate-500 dark:text-slate-400 font-bold py-12 ${inputClasses[fontSizeStep]}`}>
+            <p aria-live="polite" className={`py-12 text-center font-bold text-[var(--theme-muted)] ${inputClasses[fontSizeStep]}`}>
               {t('noResults')}
             </p>
           )}
@@ -322,7 +322,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
 
           {matchedCategories.length > 0 && (
             <div className="space-y-3">
-              <p className={`font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest ${subTextClasses[fontSizeStep]}`}>
+              <p className={`font-black uppercase tracking-widest text-[var(--theme-muted)] ${subTextClasses[fontSizeStep]}`}>
                 {t('categories')}
               </p>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6">
@@ -333,7 +333,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
                     className={baseCardStyles(color)}
                     aria-label={`${t('openCategory')}: ${categoryName(shortcut.name)}`}
                   >
-                  <span className={`flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-2xl bg-[#e8f5ed] text-3xl transition-all duration-300 dark:bg-[#1a3322] ${iconClasses[fontSizeStep]}`} aria-hidden="true">{shortcut.icon}</span>
+                  <span className={`flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-2xl bg-[var(--theme-pale)] text-3xl transition-all duration-300 ${iconClasses[fontSizeStep]}`} aria-hidden="true">{shortcut.icon}</span>
                     <span className={`min-w-0 max-w-full break-words [overflow-wrap:anywhere] font-black leading-tight tracking-tight transition-all duration-300 ${textClasses[fontSizeStep]}`}>
                       {categoryName(shortcut.name)}
                     </span>
@@ -345,7 +345,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
 
           {matchedLinks.length > 0 && (
             <div className="space-y-3">
-              <p className={`font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest ${subTextClasses[fontSizeStep]}`}>
+              <p className={`font-black uppercase tracking-widest text-[var(--theme-muted)] ${subTextClasses[fontSizeStep]}`}>
                 Verkkosivut
               </p>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6">
@@ -368,7 +368,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
                         className={baseCardStyles(link.color)}
                         aria-label={`${t('goToSite')}: ${link.name}`}
                       >
-                        <span className={`flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-2xl bg-[#e8f5ed] text-3xl transition-all duration-300 dark:bg-[#1a3322] ${iconClasses[fontSizeStep]}`} aria-hidden="true">{link.categoryIcon}</span>
+                        <span className={`flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-2xl bg-[var(--theme-pale)] text-3xl transition-all duration-300 ${iconClasses[fontSizeStep]}`} aria-hidden="true">{link.categoryIcon}</span>
                         <span className={`min-w-0 max-w-full break-words [overflow-wrap:anywhere] font-black leading-tight tracking-tight transition-all duration-300 ${textClasses[fontSizeStep]}`}>
                           {link.name}
                         </span>
@@ -389,7 +389,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
                           category: link.categoryName,
                           source: 'QuickLinks',
                         })}
-                        className="absolute bottom-3 right-3 flex items-center justify-center rounded-full bg-white/70 hover:bg-white text-slate-950 shadow-md transition-all focus:ring-4 focus:ring-blue-300 focus:outline-none opacity-0 group-hover/link:opacity-100 focus:opacity-100 w-10 h-10 text-xl"
+                        className="absolute bottom-3 right-3 flex h-10 w-10 items-center justify-center rounded-full bg-[var(--theme-surface)] text-xl text-[var(--theme-text)] opacity-0 shadow-md transition-all hover:bg-[var(--theme-pale)] focus:opacity-100 focus:outline-none focus:ring-4 focus:ring-[var(--theme-focus)]/30 group-hover/link:opacity-100"
                         aria-label={`${t('reportLink')}: ${link.name}`}
                       >
                         !
@@ -400,7 +400,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
                         className={`absolute top-3 right-3 flex items-center justify-center rounded-full transition-all focus:ring-4 focus:ring-yellow-300 focus:outline-none
                           ${isFav
                             ? 'bg-yellow-400 hover:bg-yellow-500 shadow-md'
-                            : 'bg-white/70 hover:bg-yellow-100/90 opacity-0 group-hover/link:opacity-100 focus:opacity-100'
+                            : 'bg-[var(--theme-surface)] hover:bg-[var(--theme-gold-pale)] opacity-0 group-hover/link:opacity-100 focus:opacity-100'
                           } ${starClasses[fontSizeStep]}`}
                         aria-label={isFav ? `${t('removeFavorite')}: ${link.name}` : `${t('addFavorite')}: ${link.name}`}
                       >
@@ -415,7 +415,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
 
           {matchedPhones.length > 0 && (
             <div className="space-y-3">
-              <p className={`font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest ${subTextClasses[fontSizeStep]}`}>
+              <p className={`font-black uppercase tracking-widest text-[var(--theme-muted)] ${subTextClasses[fontSizeStep]}`}>
                 Puhelinnumerot
               </p>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6">
@@ -428,7 +428,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
                       className={baseCardStyles(phone.color)}
                       aria-label={`Soita: ${phone.name}, ${phone.phone}`}
                     >
-                      <span className={`flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-2xl bg-[#e8f5ed] text-3xl transition-all duration-300 dark:bg-[#1a3322] ${iconClasses[fontSizeStep]}`} aria-hidden="true">☎</span>
+                      <span className={`flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-2xl bg-[var(--theme-pale)] text-3xl transition-all duration-300 ${iconClasses[fontSizeStep]}`} aria-hidden="true">☎</span>
                       <span className={`min-w-0 max-w-full break-words [overflow-wrap:anywhere] font-black leading-tight tracking-tight transition-all duration-300 ${textClasses[fontSizeStep]}`}>
                         {phone.name}
                       </span>
@@ -472,10 +472,10 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
                   {group.shortcuts.map((shortcut) => {
                     const isCategory = !!shortcut.providers;
                     const label = categoryName(shortcut.name);
-                    const subCategoryClasses = `flex min-h-14 min-w-0 items-center gap-2.5 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-bg)] px-4 py-3 text-left font-black leading-tight text-[var(--theme-text)] break-words [overflow-wrap:anywhere] transition-all hover:-translate-y-0.5 hover:bg-[var(--theme-pale)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--theme-focus)] active:translate-y-0 ${subTextClasses[fontSizeStep]}`;
+                    const subCategoryClasses = `mobile-subcategory flex min-h-14 min-w-0 items-center gap-2.5 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-bg)] px-4 py-3 text-left font-black leading-tight text-[var(--theme-text)] break-words [overflow-wrap:anywhere] transition-all hover:-translate-y-0.5 hover:bg-[var(--theme-pale)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--theme-focus)] active:translate-y-0 ${subTextClasses[fontSizeStep]}`;
                     const content = (
                       <>
-                        <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-[var(--theme-pale)] text-xl leading-none" aria-hidden="true">
+                        <span className="subcategory-icon flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-[var(--theme-pale)] text-xl leading-none" aria-hidden="true">
                           {shortcut.icon || '🔗'}
                         </span>
                         <span className="min-w-0 flex-1 break-words [overflow-wrap:anywhere]">

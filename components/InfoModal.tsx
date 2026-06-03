@@ -48,50 +48,50 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, fontSizeStep = 0
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-200/60 dark:bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200 overflow-y-auto text-slate-800"
+      className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/50 p-4 text-[var(--theme-text)] backdrop-blur-sm animate-in fade-in duration-200"
       role="dialog"
       aria-modal="true"
       aria-labelledby="info-modal-title"
     >
-      <div className="bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-2xl w-full max-w-4xl overflow-hidden border border-slate-200 dark:border-slate-700 my-8">
-        <div className="bg-slate-800 dark:bg-slate-950 p-8 text-white flex items-center justify-between sticky top-0 z-10">
+      <div className="aurora-modal-shell my-8 w-full max-w-4xl overflow-hidden">
+        <div className="aurora-modal-header sticky top-0 z-10 flex items-center justify-between p-8 text-white">
           <div className="flex items-center gap-4">
-            <span className={`transition-all duration-300 ${headerIconClasses[fontSizeStep]}`}>ℹ️</span>
-            <h2 id="info-modal-title" className={`font-bold transition-all duration-300 ${titleClasses[fontSizeStep]}`}>{t('infoTitle')}</h2>
+            <span className={`rounded-[1.5rem] bg-white/10 p-3 transition-all duration-300 ${headerIconClasses[fontSizeStep]}`}>ℹ️</span>
+            <h2 id="info-modal-title" className={`font-display font-bold transition-all duration-300 ${titleClasses[fontSizeStep]}`}>{t('infoTitle')}</h2>
           </div>
           <button 
             ref={closeButtonRef}
             onClick={onClose}
-            className="w-12 h-12 flex items-center justify-center bg-white/20 hover:bg-white/30 rounded-full text-3xl font-bold transition-colors"
+            className="aurora-close-button flex h-12 w-12 text-3xl"
             aria-label={t('close')}
           >
             ✕
           </button>
         </div>
         
-        <div className="p-8 md:p-12 space-y-10 max-h-[75vh] overflow-y-auto">
+        <div className="aurora-modal-body max-h-[75vh] space-y-10 overflow-y-auto p-8 md:p-12">
           <section className="space-y-4">
-            <h3 className="text-2xl font-black dark:text-white underline decoration-blue-500 underline-offset-8">{t('infoWhatTitle')}</h3>
-            <p className="text-xl leading-relaxed dark:text-slate-300">
+            <h3 className="aurora-section-title text-2xl underline decoration-[var(--theme-gold)] underline-offset-8">{t('infoWhatTitle')}</h3>
+            <p className="text-xl leading-relaxed text-[var(--theme-text-2)]">
               {t('infoWhatBody')} {categoryStats.length} {t('categories').toLocaleLowerCase('fi-FI')} ja {totalLinks} {t('links').toLocaleLowerCase('fi-FI')}.
             </p>
           </section>
 
           {showOnboardingOffer && onStartOnboarding && (
-            <section className="rounded-[2rem] border-4 border-[#d09a32]/40 bg-amber-50 p-6 shadow-sm dark:border-[#d09a32]/50 dark:bg-amber-950/20">
+            <section className="aurora-soft-panel rounded-[2rem] p-6 shadow-sm">
               <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
                 <div className="space-y-2">
-                  <h3 className="text-2xl font-black text-amber-950 dark:text-amber-100">
+                  <h3 className="aurora-section-title text-2xl">
                     {t('onboardingOfferTitle')}
                   </h3>
-                  <p className="text-lg font-bold leading-relaxed text-amber-900 dark:text-amber-200">
+                  <p className="text-lg font-bold leading-relaxed text-[var(--theme-text-2)]">
                     {t('onboardingOfferBody')}
                   </p>
                 </div>
                 <button
                   type="button"
                   onClick={onStartOnboarding}
-                  className="shrink-0 rounded-full bg-[#173e5f] px-6 py-4 text-lg font-black text-white shadow-md transition-all hover:bg-[#214f76] focus:outline-none focus:ring-4 focus:ring-[#d09a32]/40 active:scale-95"
+                  className="shrink-0 rounded-full bg-[var(--theme-primary)] px-6 py-4 text-lg font-black text-white shadow-md transition-all hover:bg-[var(--theme-primary-mid)] focus:outline-none focus:ring-4 focus:ring-[var(--theme-focus)]/40 active:scale-95"
                 >
                   {t('onboardingStart')}
                 </button>
@@ -99,27 +99,27 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, fontSizeStep = 0
             </section>
           )}
 
-          <section className="bg-blue-50 dark:bg-blue-900/20 p-8 rounded-3xl border-2 border-blue-100 dark:border-blue-800/50 space-y-6">
+          <section className="aurora-soft-panel space-y-6 p-8">
             <div>
-              <h3 className="text-xl font-bold text-blue-800 dark:text-blue-300 flex items-center gap-2 mb-2">
+              <h3 className="mb-2 flex items-center gap-2 text-xl font-bold text-[var(--theme-primary)]">
                 <span>📊</span> Sivuston laajuus
               </h3>
-              <p className="text-2xl font-medium text-blue-900 dark:text-blue-100 leading-tight">
-                Sivustolta löytyy yhteensä <span className={`font-black text-blue-600 dark:text-blue-400 inline-block px-2 transition-all duration-300 ${statClasses[fontSizeStep]}`}>{totalLinks}</span> näkyvää linkkiä.
+              <p className="text-2xl font-medium leading-tight text-[var(--theme-text)]">
+                Sivustolta löytyy yhteensä <span className={`inline-block px-2 font-black text-[var(--theme-primary)] transition-all duration-300 ${statClasses[fontSizeStep]}`}>{totalLinks}</span> näkyvää linkkiä.
               </p>
             </div>
           </section>
 
           <section className="space-y-4">
-            <h3 className="text-2xl font-black dark:text-white underline decoration-blue-500 underline-offset-8">{t('usageStatsTitle')}</h3>
-            <p className="text-xl leading-relaxed dark:text-slate-300">
+            <h3 className="aurora-section-title text-2xl underline decoration-[var(--theme-gold)] underline-offset-8">{t('usageStatsTitle')}</h3>
+            <p className="text-xl leading-relaxed text-[var(--theme-text-2)]">
               {t('usageStatsBody')}
             </p>
           </section>
 
-          <section className="space-y-4 rounded-3xl border-2 border-slate-200 bg-slate-50 p-6 dark:border-slate-700 dark:bg-slate-900/50">
-            <h3 className="text-2xl font-black dark:text-white">{t('legalInfoTitle')}</h3>
-            <p className="text-lg font-bold leading-relaxed text-slate-700 dark:text-slate-300">
+          <section className="aurora-panel space-y-4 rounded-3xl p-6">
+            <h3 className="aurora-section-title text-2xl">{t('legalInfoTitle')}</h3>
+            <p className="text-lg font-bold leading-relaxed text-[var(--theme-text-2)]">
               {t('legalInfoBody')}
             </p>
             <div className="flex flex-wrap gap-3">
@@ -127,7 +127,7 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, fontSizeStep = 0
                 href="./tietosuoja.html"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex min-h-12 items-center rounded-full bg-white px-5 py-3 text-base font-black text-indigo-700 shadow-sm ring-1 ring-indigo-100 hover:bg-indigo-50 hover:underline focus:outline-none focus:ring-4 focus:ring-indigo-200 dark:bg-slate-800 dark:text-indigo-200 dark:ring-slate-700 dark:hover:bg-slate-700"
+                className="aurora-nav-link px-5 py-3 text-base"
               >
                 {t('privacyNotice')}
               </a>
@@ -135,7 +135,7 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, fontSizeStep = 0
                 href="./saavutettavuus.html"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex min-h-12 items-center rounded-full bg-white px-5 py-3 text-base font-black text-indigo-700 shadow-sm ring-1 ring-indigo-100 hover:bg-indigo-50 hover:underline focus:outline-none focus:ring-4 focus:ring-indigo-200 dark:bg-slate-800 dark:text-indigo-200 dark:ring-slate-700 dark:hover:bg-slate-700"
+                className="aurora-nav-link px-5 py-3 text-base"
               >
                 {t('accessibilityStatement')}
               </a>
@@ -143,7 +143,7 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, fontSizeStep = 0
           </section>
 
           <section className="space-y-6">
-            <h3 className="text-2xl font-black border-b-2 border-slate-100 dark:border-slate-700 pb-2 dark:text-white">
+            <h3 className="aurora-section-title border-b-2 border-[var(--theme-border)] pb-2 text-2xl">
               Paikalliset linkit
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -156,32 +156,32 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, fontSizeStep = 0
                 { name: 'Lehdet', count: LOCAL_LINK_STATS.localNewspapers, note: 'suomalaiset paikallislehdet' },
                 { name: 'Urheiluseurat', count: LOCAL_LINK_STATS.localSportsClubs, note: 'paikkakunnan omat seurat' },
               ].map((item) => (
-                <div key={item.name} className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-700/50 rounded-2xl border border-slate-200/60 dark:border-slate-600">
+                <div key={item.name} className="aurora-card flex items-center justify-between p-4">
                   <div className="space-y-1">
-                    <span className="block text-lg font-bold text-slate-700 dark:text-slate-200">{item.name}</span>
-                    <span className="block text-sm font-bold text-slate-500 dark:text-slate-400">{item.note}</span>
+                    <span className="block text-lg font-bold text-[var(--theme-text)]">{item.name}</span>
+                    <span className="block text-sm font-bold text-[var(--theme-text-3)]">{item.note}</span>
                   </div>
-                  <span className="bg-white dark:bg-slate-800 px-3 py-1 rounded-full border border-slate-200 dark:border-slate-600 font-bold text-blue-600 dark:text-blue-400">
+                  <span className="rounded-full border border-[var(--theme-border)] bg-[var(--theme-surface)] px-3 py-1 font-bold text-[var(--theme-primary)]">
                     {item.count}
                   </span>
                 </div>
               ))}
             </div>
-            <p className="text-sm font-bold text-slate-500 dark:text-slate-400">
+            <p className="text-sm font-bold text-[var(--theme-text-3)]">
               Paikalliset uutiset haetaan sijainnin perusteella eikä niitä lasketa tähän määrään. Lehdet-kategoria sisältää paikallislehtien kotisivut.
             </p>
           </section>
 
           <section className="space-y-6">
-            <h3 className="text-2xl font-black border-b-2 border-slate-100 dark:border-slate-700 pb-2 dark:text-white">Kaikki 30 kategoriaa</h3>
+            <h3 className="aurora-section-title border-b-2 border-[var(--theme-border)] pb-2 text-2xl">Kaikki 30 kategoriaa</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {categoryStats.sort((a,b) => a.name.localeCompare(b.name)).map((stat, idx) => (
-                <div key={idx} className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-700/50 rounded-2xl border border-slate-200/60 dark:border-slate-600">
+                <div key={idx} className="aurora-card flex items-center justify-between p-4">
                   <div className="flex items-center gap-3">
                     <span className="text-2xl">{stat.icon}</span>
-                    <span className="text-lg font-bold text-slate-700 dark:text-slate-200">{stat.name}</span>
+                    <span className="text-lg font-bold text-[var(--theme-text)]">{stat.name}</span>
                   </div>
-                  <span className="bg-white dark:bg-slate-800 px-3 py-1 rounded-full border border-slate-200 dark:border-slate-600 font-bold text-blue-600 dark:text-blue-400">
+                  <span className="rounded-full border border-[var(--theme-border)] bg-[var(--theme-surface)] px-3 py-1 font-bold text-[var(--theme-primary)]">
                     {stat.count}
                   </span>
                 </div>
@@ -190,10 +190,10 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, fontSizeStep = 0
           </section>
         </div>
         
-        <div className="p-6 bg-slate-50 dark:bg-slate-900 border-t border-slate-100 dark:border-slate-700 text-center sticky bottom-0 z-10">
+        <div className="sticky bottom-0 z-10 border-t border-[var(--theme-border)] bg-[var(--theme-surface)] p-6 text-center">
           <button 
             onClick={onClose}
-            className="text-xl font-bold text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white p-4"
+            className="aurora-secondary-button px-5 py-2.5 text-xl"
             aria-label={t('close')}
           >
             {t('close')}

@@ -76,9 +76,9 @@ const LocalNewsHeadlines: React.FC<LocalNewsHeadlinesProps> = ({ feeds, fallback
     return (
       <div className={compact ? 'space-y-3' : 'grid grid-cols-1 md:grid-cols-3 gap-4'} aria-label="Ladataan paikallisia uutisia">
         {[0, 1, 2].map((item) => (
-          <div key={item} className={`rounded-2xl bg-white dark:bg-slate-800 border-4 border-slate-100 dark:border-slate-700 p-5 animate-pulse ${compact ? 'min-h-[72px]' : 'min-h-[130px]'}`}>
-            <div className="h-5 bg-slate-100 dark:bg-slate-700 rounded w-3/4 mb-4" />
-            <div className="h-5 bg-slate-100 dark:bg-slate-700 rounded w-full" />
+          <div key={item} className={`rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-surface)] p-5 shadow-sm animate-pulse ${compact ? 'min-h-[72px]' : 'min-h-[130px]'}`}>
+            <div className="mb-4 h-5 w-3/4 rounded bg-[var(--theme-pale)]" />
+            <div className="h-5 w-full rounded bg-[var(--theme-pale)]" />
           </div>
         ))}
       </div>
@@ -87,8 +87,8 @@ const LocalNewsHeadlines: React.FC<LocalNewsHeadlinesProps> = ({ feeds, fallback
 
   if (failed) {
     return (
-      <div className="rounded-2xl border-4 border-dashed border-slate-200 dark:border-slate-700 p-6 text-center">
-        <p className={`text-slate-500 dark:text-slate-400 font-bold mb-4 ${smallTextClasses[fontSizeStep]}`}>
+      <div className="rounded-2xl border-2 border-dashed border-[var(--theme-border)] bg-[var(--theme-surface)] p-6 text-center">
+        <p className={`mb-4 font-bold text-[var(--theme-muted)] ${smallTextClasses[fontSizeStep]}`}>
           Paikallisia uutisia ei saatu haettua.
         </p>
         {fallbackUrl && isLinkVisible(fallbackUrl) && (
@@ -96,7 +96,7 @@ const LocalNewsHeadlines: React.FC<LocalNewsHeadlinesProps> = ({ feeds, fallback
             href={fallbackUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className={`inline-flex items-center justify-center rounded-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-6 py-3 font-black transition-all active:scale-95 ${smallTextClasses[fontSizeStep]}`}
+            className={`inline-flex items-center justify-center rounded-full bg-[var(--theme-primary)] px-6 py-3 font-black text-white transition-all hover:bg-[var(--theme-primary-mid)] active:scale-95 ${smallTextClasses[fontSizeStep]}`}
           >
             Avaa uutishaku
           </a>
@@ -113,12 +113,12 @@ const LocalNewsHeadlines: React.FC<LocalNewsHeadlinesProps> = ({ feeds, fallback
           href={headline.link}
           target="_blank"
           rel="noopener noreferrer"
-          className={`rounded-2xl bg-white dark:bg-slate-800 border-4 border-slate-100 dark:border-slate-700 p-5 shadow-md hover:shadow-xl transition-all active:scale-95 flex flex-col justify-between gap-4 ${compact ? 'min-h-[72px]' : 'min-h-[130px]'}`}
+          className={`flex flex-col justify-between gap-4 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-surface)] p-5 text-[var(--theme-text)] shadow-sm transition-all hover:-translate-y-0.5 hover:border-[var(--border-strong)] hover:bg-[var(--theme-pale)] hover:shadow-md active:scale-[.99] ${compact ? 'min-h-[72px]' : 'min-h-[130px]'}`}
         >
-          <span className={`font-black text-slate-900 dark:text-white leading-tight ${textClasses[fontSizeStep]}`}>
+          <span className={`font-black leading-tight ${textClasses[fontSizeStep]}`}>
             {headline.title}
           </span>
-          <span className={`font-bold text-slate-500 dark:text-slate-400 ${compact ? 'text-xs' : smallTextClasses[fontSizeStep]}`}>
+          <span className={`font-bold text-[var(--theme-muted)] ${compact ? 'text-xs' : smallTextClasses[fontSizeStep]}`}>
             {headline.source}{formatDateTime(headline.publishedAt) ? ` · ${formatDateTime(headline.publishedAt)}` : ''}
           </span>
         </a>

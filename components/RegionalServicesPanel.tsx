@@ -53,12 +53,12 @@ const ServiceLink: React.FC<{ provider: Provider; index: number; fontSizeStep: n
         href={provider.url}
         target="_blank"
         rel="noopener noreferrer"
-        className="flex min-h-[120px] flex-1 items-start gap-2.5 rounded-2xl border border-[#c8dece] bg-[#faf9f6] p-4 text-sm font-bold text-[#1a2e1e] no-underline transition-colors duration-150 hover:border-[#4caf78] hover:bg-[#e8f5ed] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e8a020] dark:border-[#2a4733] dark:bg-[#111d14] dark:text-[#e8f5ed] dark:hover:bg-[#1a3322] md:min-w-[200px]"
+        className="flex min-h-[120px] flex-1 items-start gap-2.5 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-surface)] p-4 text-sm font-bold text-[var(--theme-text)] no-underline shadow-sm transition-all duration-150 hover:-translate-y-0.5 hover:border-[var(--border-strong)] hover:bg-[var(--theme-pale)] hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--theme-focus)] md:min-w-[200px]"
       >
-        <span className="shrink-0 text-2xl leading-none" aria-hidden="true">{icon}</span>
+        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[var(--theme-pale)] text-2xl leading-none" aria-hidden="true">{icon}</span>
         <span className="flex min-w-0 flex-col gap-1">
           <span className={`min-w-0 font-black leading-tight ${textClasses[fontSizeStep]}`}>{provider.name}</span>
-          {provider.group && <span className={`font-semibold text-[#6b8c72] dark:text-[#6b9a75] ${smallTextClasses[fontSizeStep]}`}>{categoryName(provider.group)}</span>}
+          {provider.group && <span className={`font-semibold text-[var(--theme-muted)] ${smallTextClasses[fontSizeStep]}`}>{categoryName(provider.group)}</span>}
         </span>
       </a>
       {onReportLink && (
@@ -69,7 +69,7 @@ const ServiceLink: React.FC<{ provider: Provider; index: number; fontSizeStep: n
             category: provider.group,
             source: 'RegionalServicesPanel',
           })}
-          className="absolute bottom-3 right-3 flex items-center justify-center rounded-full bg-white/70 hover:bg-white text-slate-950 shadow-md transition-all focus:ring-4 focus:ring-blue-300 focus:outline-none opacity-0 group-hover/service:opacity-100 focus:opacity-100 w-10 h-10 text-xl"
+          className="absolute bottom-3 right-3 flex h-10 w-10 items-center justify-center rounded-full bg-[var(--theme-surface)] text-xl text-[var(--theme-text)] opacity-0 shadow-md transition-all hover:bg-[var(--theme-pale)] focus:opacity-100 focus:outline-none focus:ring-4 focus:ring-[var(--theme-focus)]/30 group-hover/service:opacity-100"
           aria-label={`${t('reportLink')}: ${provider.name}`}
         >
           !
@@ -123,18 +123,18 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
   };
 
   return (
-    <section className="regional-panel-surface overflow-hidden rounded-[32px] border border-[#c8dece] bg-white shadow-sm dark:border-[#2a4733] dark:bg-[#182b1e]" aria-labelledby="regional-services-heading">
-      <div className="flex flex-col gap-5 border-b border-[#c8dece] bg-[#e8f5ed] px-6 py-4 dark:border-[#2a4733] dark:bg-[#1a3322] xl:flex-row xl:items-center xl:justify-between">
+    <section className="regional-panel-surface overflow-hidden rounded-[32px] border border-[var(--theme-border)] bg-[var(--theme-surface)] shadow-sm" aria-labelledby="regional-services-heading">
+      <div className="flex flex-col gap-5 border-b border-[var(--theme-border)] bg-[var(--theme-pale)] px-6 py-4 xl:flex-row xl:items-center xl:justify-between">
         <div>
-          <h2 id="regional-services-heading" className="font-display flex items-center gap-3 text-3xl font-bold leading-tight text-[#1a2e1e] dark:text-[#e8f5ed] md:text-5xl">
-            <span className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-2xl bg-white text-xl dark:bg-[#182b1e]" aria-hidden="true">📍</span>
+          <h2 id="regional-services-heading" className="font-display flex items-center gap-3 text-3xl font-bold leading-tight text-[var(--theme-text)] md:text-5xl">
+            <span className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-2xl bg-[var(--theme-surface)] text-xl shadow-sm" aria-hidden="true">📍</span>
             {t('regionalServicesTitle')}
           </h2>
         </div>
         <div className="w-full xl:max-w-2xl">
           <div className="flex flex-col md:flex-row md:items-center gap-3">
             <label className="flex-1">
-              <span className={`block font-black text-[#3d5a44] dark:text-[#9ec4a8] mb-1 ${smallTextClasses[fontSizeStep]}`}>{t('municipality')}</span>
+              <span className={`mb-1 block font-black text-[var(--theme-muted)] ${smallTextClasses[fontSizeStep]}`}>{t('municipality')}</span>
               <input
                 ref={municipalityInputRef}
                 type="search"
@@ -145,7 +145,7 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
                   setIsManualQuery(nextQuery.trim().length > 0);
                 }}
                 placeholder={localizedMunicipalityName ? `${t('localityPrefix')}: ${localizedMunicipalityName}` : t('municipalityPlaceholder')}
-                className={`min-h-14 w-full rounded-full border-2 border-[#c8dece] bg-white px-4 py-3 font-bold text-[#1a2e1e] placeholder-[#7a9a82] focus:border-[#e8a020] focus:outline-none focus:ring-4 focus:ring-amber-300/30 dark:border-[#2a4733] dark:bg-[#182b1e] dark:text-[#e8f5ed] ${smallTextClasses[fontSizeStep]}`}
+                className={`min-h-14 w-full rounded-full border-2 border-[var(--theme-border)] bg-[var(--theme-surface)] px-4 py-3 font-bold text-[var(--theme-text)] placeholder:text-[var(--theme-muted)] focus:border-[var(--theme-gold)] focus:outline-none focus:ring-4 focus:ring-[var(--theme-focus)]/30 ${smallTextClasses[fontSizeStep]}`}
                 aria-label={t('municipality')}
               />
             </label>
@@ -153,15 +153,15 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
               <button
                 type="button"
                 onClick={focusMunicipalityInput}
-                className="min-h-14 rounded-full border border-[#c8dece] bg-white px-4 py-2 font-bold text-[#2e7d50] transition-all hover:border-[#2e7d50] active:scale-95 dark:border-[#2a4733] dark:bg-[#182b1e] dark:text-[#4caf78] md:self-end"
+                className="min-h-14 rounded-full border border-[var(--theme-border)] bg-[var(--theme-surface)] px-4 py-2 font-bold text-[var(--theme-primary)] transition-all hover:border-[var(--border-strong)] hover:bg-[var(--theme-pale)] active:scale-95 md:self-end"
               >
                 Vaihda kunta
               </button>
             )}
           </div>
           {context && (
-            <div className="mt-3 flex flex-wrap items-center gap-3 rounded-2xl border-2 border-[#e8a020] bg-[#fff8e8] px-4 py-3 shadow-sm dark:bg-[#2a2010]">
-              <p className={`font-semibold text-[#3d5a44] dark:text-[#9ec4a8] ${smallTextClasses[fontSizeStep]}`}>
+            <div className="mt-3 flex flex-wrap items-center gap-3 rounded-2xl border-2 border-[var(--theme-gold)] bg-[var(--theme-gold-pale)] px-4 py-3 shadow-sm">
+              <p className={`font-semibold text-[var(--theme-muted)] ${smallTextClasses[fontSizeStep]}`}>
                 Alueelliset palvelut rajataan tähän paikkakuntaan.
               </p>
               {locality?.municipality && isManualQuery && (
@@ -171,7 +171,7 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
                     setIsManualQuery(false);
                     setQuery(locality.municipality);
                   }}
-                  className="rounded-full bg-[#1a4d2e] px-4 py-2 font-black text-white transition-all hover:bg-[#2e7d50] active:scale-95"
+                  className="rounded-full bg-[var(--theme-primary)] px-4 py-2 font-black text-white transition-all hover:bg-[var(--theme-primary-mid)] active:scale-95"
                 >
                   Käytä sijaintia {detectedMunicipalityName}
                 </button>
@@ -195,7 +195,7 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
             {showNews && (
                 <div className="space-y-3" data-tour="local-news">
                   <div className="flex items-center justify-between gap-4">
-                    <h3 className={`font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest ${smallTextClasses[fontSizeStep]}`}>
+                    <h3 className={`font-black uppercase tracking-widest text-[var(--theme-muted)] ${smallTextClasses[fontSizeStep]}`}>
                       {t('localNews')}
                     </h3>
                   </div>
@@ -205,7 +205,7 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
                       href={fallbackNewsUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={`inline-flex font-black text-[#2e7d50] hover:underline dark:text-[#4caf78] ${smallTextClasses[fontSizeStep]}`}
+                      className={`inline-flex font-black text-[var(--theme-primary)] hover:underline ${smallTextClasses[fontSizeStep]}`}
                     >
                       {t('moreNews')}
                     </a>
@@ -221,8 +221,8 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
           )}
         </div>
       ) : (
-        <div className="m-6 rounded-2xl border-2 border-dashed border-[#c8dece] p-8 text-center dark:border-[#2a4733]">
-          <p className={`font-black text-[#6b8c72] dark:text-[#6b9a75] ${textClasses[fontSizeStep]}`}>
+        <div className="m-6 rounded-2xl border-2 border-dashed border-[var(--theme-border)] bg-[var(--theme-surface)] p-8 text-center">
+          <p className={`font-black text-[var(--theme-muted)] ${textClasses[fontSizeStep]}`}>
             {t('typeMunicipalityPrompt')}
           </p>
         </div>

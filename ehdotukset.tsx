@@ -147,7 +147,7 @@ function HomeLink() {
   return (
     <a
       href="./index.html"
-      className="inline-flex items-center justify-center rounded-full bg-indigo-600 px-5 py-3 text-base font-black text-white shadow-sm transition-all hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-300"
+      className="aurora-primary-link text-base"
     >
       ← Palaa etusivulle
     </a>
@@ -525,74 +525,74 @@ function App() {
   };
 
   return (
-    <main className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white">
+    <main className="aurora-page">
       <div className="mx-auto max-w-7xl px-4 py-8 md:px-8 md:py-12 space-y-10">
-        <header className="space-y-4">
+        <header className="aurora-subpage-hero space-y-4">
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <span className="inline-flex rounded-full bg-amber-100 text-amber-900 dark:bg-amber-900/40 dark:text-amber-200 px-3 py-1 text-xs font-black uppercase tracking-wide">
+            <span className="aurora-kicker">
               Ylläpito
             </span>
             <HomeLink />
           </div>
-          <h1 className="text-4xl md:text-6xl font-black tracking-tighter">Linkkiehdotukset</h1>
-          <p className="max-w-3xl text-base md:text-lg text-slate-600 dark:text-slate-300">
+          <h1 className="font-display text-4xl font-bold tracking-tight md:text-6xl">Linkkiehdotukset</h1>
+          <p className="max-w-3xl text-base font-semibold text-white/75 md:text-lg">
             Ilmoitetut muutokset tallentuvat yhteiseen ylläpitojonoon. Hyväksyntä on rajattu ylläpitäjän Google-tunnukselle.
           </p>
         </header>
 
         {!isFirebaseConfigured ? (
-          <section className="max-w-3xl rounded-2xl border border-amber-200 dark:border-amber-900 bg-amber-50 dark:bg-amber-950/30 p-6 shadow-sm space-y-3">
-            <h2 className="text-2xl font-black text-amber-950 dark:text-amber-100">Firebase-asetukset puuttuvat</h2>
-            <p className="font-bold text-amber-900 dark:text-amber-200">
+          <section className="aurora-soft-panel max-w-3xl space-y-3 p-6 shadow-sm">
+            <h2 className="aurora-section-title text-2xl">Firebase-asetukset puuttuvat</h2>
+            <p className="font-bold text-[var(--theme-text-2)]">
               Lisää GitHub Pages -julkaisuun Firebase-ympäristömuuttujat ja ota Google-kirjautuminen sekä Firestore käyttöön. Ilman niitä sivu voi toimia vain paikallisella selaintallennuksella.
             </p>
           </section>
         ) : !authReady ? (
-          <p className="font-black text-slate-500 dark:text-slate-400">Tarkistetaan kirjautumista...</p>
+          <p className="font-black text-[var(--theme-text-3)]">Tarkistetaan kirjautumista...</p>
         ) : !user ? (
-          <section className="mx-auto max-w-xl rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-8 shadow-sm space-y-6">
-            <h2 className="text-3xl font-black">Kirjaudu ylläpitoon</h2>
-            <p className="font-bold text-slate-600 dark:text-slate-300">
+          <section className="aurora-panel mx-auto max-w-xl space-y-6 p-8">
+            <h2 className="aurora-section-title text-3xl">Kirjaudu ylläpitoon</h2>
+            <p className="font-bold text-[var(--theme-text-2)]">
               Käytä ylläpitäjän Google-tunnusta.
             </p>
             {authError && <p className="font-bold text-rose-600">{authError}</p>}
             <button
               type="button"
               onClick={signIn}
-              className="rounded-full bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-3 font-black shadow-md transition-all active:scale-95"
+              className="rounded-full bg-[var(--theme-primary)] px-5 py-3 font-black text-white shadow-md transition-all hover:bg-[var(--theme-primary-mid)] active:scale-95"
             >
               Kirjaudu Googlella
             </button>
           </section>
         ) : !hasAdminAccess ? (
-          <section className="max-w-2xl rounded-2xl border border-rose-200 dark:border-rose-900 bg-white dark:bg-slate-900 p-8 shadow-sm space-y-4">
-            <h2 className="text-3xl font-black">Ei käyttöoikeutta</h2>
-            <p className="font-bold text-slate-600 dark:text-slate-300">
+          <section className="aurora-panel max-w-2xl space-y-4 p-8">
+            <h2 className="aurora-section-title text-3xl">Ei käyttöoikeutta</h2>
+            <p className="font-bold text-[var(--theme-text-2)]">
               Olet kirjautunut osoitteella {userEmail || 'tuntematon sähköposti'}. Ylläpitoon pääsee vain ylläpitäjän tunnuksella.
             </p>
             {authDebugInfo && (
-              <p className="rounded-xl bg-slate-100 dark:bg-slate-950 p-3 text-sm font-bold text-slate-600 dark:text-slate-300">
+              <p className="rounded-xl bg-[var(--theme-pale)] p-3 text-sm font-bold text-[var(--theme-text-2)]">
                 {authDebugInfo}
               </p>
             )}
             <button
               type="button"
               onClick={signOutAdmin}
-              className="rounded-full bg-slate-200 hover:bg-slate-300 text-slate-900 px-5 py-3 font-black shadow-md transition-all active:scale-95"
+              className="aurora-secondary-button px-5 py-3 shadow-md"
             >
               Kirjaudu ulos
             </button>
           </section>
         ) : (
           <>
-            <div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm">
+            <div className="aurora-panel flex flex-wrap items-center justify-between gap-4 p-5">
               <div>
                 <p className="font-black">Kirjautunut: {userEmail}</p>
-                <p className="text-sm font-bold text-slate-500 dark:text-slate-400">
+                <p className="text-sm font-bold text-[var(--theme-text-3)]">
                   Odottaa: {pendingReports.length} · Hyväksyttyjä linkkejä: {approvedLinks.length}
                 </p>
                 {authDebugInfo && (
-                  <p className="mt-2 max-w-3xl text-xs font-bold text-slate-500 dark:text-slate-400">
+                  <p className="mt-2 max-w-3xl text-xs font-bold text-[var(--theme-text-3)]">
                     {authDebugInfo}
                   </p>
                 )}
@@ -600,28 +600,28 @@ function App() {
               <div className="flex flex-wrap gap-3">
                 <a
                   href="./index.html"
-                  className="rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white px-5 py-3 font-black shadow-sm transition-all hover:bg-slate-50 dark:hover:bg-slate-700 active:scale-95"
+                  className="aurora-secondary-button border border-[var(--theme-border)] px-5 py-3 shadow-sm"
                 >
                   Palaa etusivulle
                 </a>
                 <button
                   type="button"
                   onClick={copyApprovedJson}
-                  className="rounded-full bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-3 font-black shadow-md transition-all active:scale-95"
+                  className="rounded-full bg-[var(--theme-primary)] px-5 py-3 font-black text-white shadow-md transition-all hover:bg-[var(--theme-primary-mid)] active:scale-95"
                 >
                   Kopioi hyväksytyt JSONina
                 </button>
                 <button
                   type="button"
                   onClick={() => exportJson('hyvaksytyt-linkit.json', approvedLinks)}
-                  className="rounded-full bg-slate-200 hover:bg-slate-300 text-slate-900 px-5 py-3 font-black shadow-md transition-all active:scale-95"
+                  className="aurora-secondary-button px-5 py-3 shadow-md"
                 >
                   Lataa JSON
                 </button>
                 <button
                   type="button"
                   onClick={signOutAdmin}
-                  className="rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white px-5 py-3 font-black shadow-sm transition-all active:scale-95"
+                  className="aurora-secondary-button border border-[var(--theme-border)] px-5 py-3 shadow-sm"
                 >
                   Kirjaudu ulos
                 </button>
@@ -630,8 +630,8 @@ function App() {
 
             <section className="space-y-4" aria-labelledby="review-dashboard-heading">
               <div>
-                <h2 id="review-dashboard-heading" className="text-2xl md:text-3xl font-black">Tarkista nämä ensin</h2>
-                <p className="text-sm font-bold text-slate-500 dark:text-slate-400">
+                <h2 id="review-dashboard-heading" className="aurora-section-title text-2xl md:text-3xl">Tarkista nämä ensin</h2>
+                <p className="text-sm font-bold text-[var(--theme-text-3)]">
                   Nopea näkymä avoimiin asioihin ja automaation huomioihin.
                 </p>
               </div>
@@ -640,15 +640,15 @@ function App() {
                   <a
                     key={task.href}
                     href={task.href}
-                    className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md focus:outline-none focus:ring-4 focus:ring-indigo-300"
+                    className="aurora-card transition-all hover:-translate-y-0.5 hover:shadow-md focus:outline-none focus:ring-4 focus:ring-[var(--theme-focus)]/40"
                   >
                     <div className="flex items-start justify-between gap-3">
-                      <p className="font-black text-slate-900 dark:text-white">{task.label}</p>
+                      <p className="font-black text-[var(--theme-text)]">{task.label}</p>
                       <span className={`rounded-full px-3 py-1 text-sm font-black ${task.tone}`}>
                         {task.count}
                       </span>
                     </div>
-                    <p className="mt-3 text-sm font-bold text-slate-500 dark:text-slate-400">
+                    <p className="mt-3 text-sm font-bold text-[var(--theme-text-3)]">
                       {task.note}
                     </p>
                   </a>

@@ -190,22 +190,22 @@ const OnboardingTour: React.FC<OnboardingTourProps> = ({ isOpen, onClose, onComp
         aria-labelledby="onboarding-title"
         aria-describedby="onboarding-description"
         tabIndex={-1}
-        className="fixed inset-x-4 bottom-4 mx-auto max-h-[42dvh] overflow-y-auto rounded-2xl border-2 border-white/20 bg-white p-4 text-slate-900 shadow-2xl outline-none dark:bg-slate-900 dark:text-white sm:bottom-6 md:inset-x-1/2 md:bottom-auto md:top-1/2 md:max-h-[80dvh] md:w-[min(44rem,calc(100vw-3rem))] md:max-w-none md:-translate-x-1/2 md:-translate-y-1/2 md:rounded-[2rem] md:border-4 md:p-6"
+        className="aurora-modal-shell fixed inset-x-4 bottom-4 mx-auto max-h-[42dvh] overflow-y-auto rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-surface)] p-4 text-[var(--theme-text)] shadow-2xl outline-none sm:bottom-6 md:inset-x-1/2 md:bottom-auto md:top-1/2 md:max-h-[80dvh] md:w-[min(44rem,calc(100vw-3rem))] md:max-w-none md:-translate-x-1/2 md:-translate-y-1/2 md:rounded-[2rem] md:p-6"
       >
-        <p className="text-xs font-black uppercase tracking-widest text-[#173e5f] dark:text-blue-200 md:text-sm">
+        <p className="text-xs font-black uppercase tracking-widest text-[var(--theme-primary)] md:text-sm">
           Vaihe {visibleStepNumber}/{availableSteps.length}
         </p>
         <h2 id="onboarding-title" className="mt-1 text-xl font-black md:mt-2 md:text-3xl">
           {step.title}
         </h2>
-        <p id="onboarding-description" className="mt-2 text-base font-bold leading-snug text-slate-600 dark:text-slate-300 md:mt-3 md:text-lg md:leading-relaxed">
+        <p id="onboarding-description" className="mt-2 text-base font-bold leading-snug text-[var(--theme-muted)] md:mt-3 md:text-lg md:leading-relaxed">
           {step.body}
         </p>
-        <div className="mt-4 hidden rounded-2xl border-2 border-[#d09a32]/40 bg-amber-50 p-4 dark:border-[#d09a32]/50 dark:bg-amber-950/30 md:block">
-          <p className="text-sm font-black uppercase tracking-widest text-amber-900 dark:text-amber-200">
+        <div className="mt-4 hidden rounded-2xl border-2 border-[var(--theme-gold)] bg-[var(--theme-gold-pale)] p-4 md:block">
+          <p className="text-sm font-black uppercase tracking-widest text-[var(--theme-primary)]">
             Korostettu kohta sisältää
           </p>
-          <p className="mt-1 text-base font-black leading-relaxed text-slate-900 dark:text-white">
+          <p className="mt-1 text-base font-black leading-relaxed text-[var(--theme-text)]">
             {step.contains}
           </p>
         </div>
@@ -214,7 +214,7 @@ const OnboardingTour: React.FC<OnboardingTourProps> = ({ isOpen, onClose, onComp
           <button
             type="button"
             onClick={onClose}
-            className="rounded-full bg-slate-100 px-4 py-2 text-sm font-black text-slate-700 transition-all hover:bg-slate-200 focus:outline-none focus:ring-4 focus:ring-indigo-300 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700 md:px-5 md:py-3 md:text-base"
+            className="rounded-full bg-[var(--theme-pale)] px-4 py-2 text-sm font-black text-[var(--theme-text)] transition-all hover:bg-[var(--theme-gold-pale)] focus:outline-none focus:ring-4 focus:ring-[var(--theme-focus)]/30 md:px-5 md:py-3 md:text-base"
           >
             Lopeta
           </button>
@@ -223,14 +223,14 @@ const OnboardingTour: React.FC<OnboardingTourProps> = ({ isOpen, onClose, onComp
               type="button"
               onClick={() => setStepIndex((current) => Math.max(0, current - 1))}
               disabled={stepIndex === 0}
-              className="rounded-full bg-slate-100 px-4 py-2 text-sm font-black text-slate-700 transition-all hover:bg-slate-200 focus:outline-none focus:ring-4 focus:ring-indigo-300 disabled:opacity-40 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700 md:px-5 md:py-3 md:text-base"
+              className="rounded-full bg-[var(--theme-pale)] px-4 py-2 text-sm font-black text-[var(--theme-text)] transition-all hover:bg-[var(--theme-gold-pale)] focus:outline-none focus:ring-4 focus:ring-[var(--theme-focus)]/30 disabled:opacity-40 md:px-5 md:py-3 md:text-base"
             >
               Edellinen
             </button>
             <button
               type="button"
               onClick={isLastStep ? finish : () => setStepIndex((current) => Math.min(availableSteps.length - 1, current + 1))}
-              className="rounded-full bg-indigo-600 px-5 py-2 text-sm font-black text-white shadow-md transition-all hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-300 active:scale-95 md:px-6 md:py-3 md:text-base"
+              className="rounded-full bg-[var(--theme-primary)] px-5 py-2 text-sm font-black text-white shadow-md transition-all hover:bg-[var(--theme-primary-mid)] focus:outline-none focus:ring-4 focus:ring-[var(--theme-focus)]/30 active:scale-95 md:px-6 md:py-3 md:text-base"
             >
               {isLastStep ? 'Valmis' : 'Seuraava'}
             </button>

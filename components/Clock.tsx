@@ -8,13 +8,14 @@ const WORLD_CLOCK_URL = 'https://fi.thetimenow.com/worldclock.php';
 interface ClockProps {
   fontSizeStep?: number;
   variant?: 'hero' | 'compact' | 'aurora';
+  mode?: 'digital' | 'analog';
   secondaryClock?: {
     label: string;
     timeZone: string;
   };
 }
 
-const Clock: React.FC<ClockProps> = ({ fontSizeStep = 0, variant = 'hero', secondaryClock }) => {
+const Clock: React.FC<ClockProps> = ({ fontSizeStep = 0, variant = 'hero', mode = 'digital', secondaryClock }) => {
   const { locale } = useI18n();
   const [time, setTime] = useState(new Date());
   const [nameDayNames, setNameDayNames] = useState<string[]>([]);
@@ -49,8 +50,76 @@ const Clock: React.FC<ClockProps> = ({ fontSizeStep = 0, variant = 'hero', secon
     month: 'long', 
     year: 'numeric' 
   });
+  const hours = time.getHours();
+  const minutes = time.getMinutes();
+  const seconds = time.getSeconds();
+  const hourAngle = ((hours % 12) + minutes / 60) * 30;
+  const minuteAngle = (minutes + seconds / 60) * 6;
+  const secondAngle = seconds * 6;
 
   if (variant === 'aurora') {
+    if (mode === 'analog') {
+      return (
+        <div className="text-left">
+          <div className="aurora-analog-clock" aria-label={`${timeString}, ${dateString}`} role="img">
+            <div className="aurora-analog-face" aria-hidden="true">
+              {Array.from({ length: 12 }, (_, index) => {
+                const hour = index + 1;
+                const angle = hour * 30;
+                return (
+                  <span
+                    key={hour}
+                    className="aurora-analog-hour"
+                    style={{ transform: `rotate(${angle}deg) translateY(calc(-1 * var(--analog-number-radius))) rotate(-${angle}deg)` }}
+                  >
+                    {hour}
+                  </span>
+                );
+              })}
+              {Array.from({ length: 60 }, (_, index) => (
+                <span
+                  key={index}
+                  className={index % 5 === 0 ? 'aurora-analog-tick aurora-analog-tick-hour' : 'aurora-analog-tick'}
+                  style={{ transform: `rotate(${index * 6}deg) translateY(calc(-1 * var(--analog-tick-radius)))` }}
+                />
+              ))}
+              <span className="aurora-analog-hand aurora-analog-hour-hand" style={{ transform: `rotate(${hourAngle}deg)` }} />
+              <span className="aurora-analog-hand aurora-analog-minute-hand" style={{ transform: `rotate(${minuteAngle}deg)` }} />
+              <span className="aurora-analog-hand aurora-analog-second-hand" style={{ transform: `rotate(${secondAngle}deg)` }} />
+              <span className="aurora-analog-pin" />
+            </div>
+          </div>
+          <div className="mt-6 flex items-center gap-4">
+            <span
+              aria-hidden="true"
+              className="h-[6px] w-[6px] rounded-full"
+              style={{
+                background: 'var(--theme-primary-glow)',
+                boxShadow: '0 0 8px var(--theme-primary-glow)',
+                animation: 'aurora-pulse 2s ease-in-out infinite',
+              }}
+            />
+            <p className="font-body text-[clamp(.9rem,1.2vw,1rem)] font-bold uppercase tracking-[.06em] text-white/55">
+              {dateString}
+            </p>
+          </div>
+          {secondaryClock && (
+            <a
+              href={WORLD_CLOCK_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 inline-flex max-w-full flex-wrap items-baseline gap-x-2 gap-y-1 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-white backdrop-blur transition-colors hover:bg-white/20"
+              aria-label={`${secondaryClock.label} ${secondaryTimeString}. Avaa maailmankello`}
+            >
+              <span className="text-xs font-black uppercase tracking-wide text-white/65">{secondaryClock.label}</span>
+              <span className="font-display text-2xl font-semibold leading-none text-white">{secondaryTimeString}</span>
+              <span className="text-xs font-bold text-white/60">{secondaryDateString}</span>
+            </a>
+          )}
+        </div>
+      );
+    }
+
     return (
       <div className="text-left">
         <time
@@ -66,7 +135,7 @@ const Clock: React.FC<ClockProps> = ({ fontSizeStep = 0, variant = 'hero', secon
         >
           {timeString}
         </time>
-        <div className="mt-2 flex items-center gap-4">
+        <div className="mt-7 flex items-center gap-4">
           <span
             aria-hidden="true"
             className="h-[6px] w-[6px] rounded-full"

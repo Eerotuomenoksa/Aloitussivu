@@ -40,7 +40,7 @@ const NearbyGuidancePlaces: React.FC<NearbyGuidancePlacesProps> = ({ locality, f
   return (
     <section className={`space-y-3 ${className}`} aria-labelledby="nearby-guidance-heading">
       <div className="flex items-center justify-between gap-4">
-        <h3 id="nearby-guidance-heading" className={`font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest ${smallTextClasses[fontSizeStep]}`}>
+        <h3 id="nearby-guidance-heading" className={`font-black uppercase tracking-widest text-[var(--theme-muted)] ${smallTextClasses[fontSizeStep]}`}>
           Lähimmät digiopastuspaikat
         </h3>
         {isLinkVisible('https://seniorsurf.fi/seniorit/opastuspaikat/') && (
@@ -48,7 +48,7 @@ const NearbyGuidancePlaces: React.FC<NearbyGuidancePlacesProps> = ({ locality, f
             href="https://seniorsurf.fi/seniorit/opastuspaikat/"
             target="_blank"
             rel="noopener noreferrer"
-            className={`font-black text-brand-indigo dark:text-blue-300 hover:underline ${smallTextClasses[fontSizeStep]}`}
+            className={`font-black text-[var(--theme-primary)] hover:underline ${smallTextClasses[fontSizeStep]}`}
           >
             Avaa kartta
           </a>
@@ -66,13 +66,13 @@ const NearbyGuidancePlaces: React.FC<NearbyGuidancePlacesProps> = ({ locality, f
 
             const content = (
               <>
-                <span className={`font-black text-slate-900 dark:text-white leading-tight ${textClasses[fontSizeStep]}`}>
+                <span className={`font-black leading-tight text-[var(--theme-text)] ${textClasses[fontSizeStep]}`}>
                   {place.name}
                 </span>
-                <span className={`font-bold text-slate-600 dark:text-slate-300 ${smallTextClasses[fontSizeStep]}`}>
+                <span className={`font-bold text-[var(--theme-muted)] ${smallTextClasses[fontSizeStep]}`}>
                   {place.address}, {place.postoffice}
                 </span>
-                <span className={`font-black text-brand-indigo dark:text-blue-300 ${smallTextClasses[fontSizeStep]}`}>
+                <span className={`font-black text-[var(--theme-primary)] ${smallTextClasses[fontSizeStep]}`}>
                   {formatDistance(place.distanceKm)}
                 </span>
               </>
@@ -84,14 +84,14 @@ const NearbyGuidancePlaces: React.FC<NearbyGuidancePlacesProps> = ({ locality, f
                 href={visibleHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="rounded-2xl bg-white dark:bg-slate-800 border-4 border-slate-100 dark:border-slate-700 p-5 shadow-md hover:shadow-xl transition-all active:scale-95 min-h-[150px] flex flex-col justify-between gap-4"
+                className="flex min-h-[150px] flex-col justify-between gap-4 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-surface)] p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:border-[var(--border-strong)] hover:bg-[var(--theme-pale)] hover:shadow-md active:scale-[.99]"
               >
                 {content}
               </a>
             ) : (
               <div
                 key={place.id}
-                className="rounded-2xl bg-white dark:bg-slate-800 border-4 border-slate-100 dark:border-slate-700 p-5 shadow-md min-h-[150px] flex flex-col justify-between gap-4"
+                className="flex min-h-[150px] flex-col justify-between gap-4 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-surface)] p-5 shadow-sm"
               >
                 {content}
               </div>
@@ -99,8 +99,8 @@ const NearbyGuidancePlaces: React.FC<NearbyGuidancePlacesProps> = ({ locality, f
           })}
         </div>
       ) : (
-        <div className="rounded-2xl border-4 border-dashed border-slate-200 dark:border-slate-700 p-6 text-center">
-          <p className={`text-slate-500 dark:text-slate-400 font-bold ${smallTextClasses[fontSizeStep]}`}>
+        <div className="rounded-2xl border-2 border-dashed border-[var(--theme-border)] bg-[var(--theme-surface)] p-6 text-center">
+          <p className={`font-bold text-[var(--theme-muted)] ${smallTextClasses[fontSizeStep]}`}>
             Salli sijainnin käyttö, niin näet lähimmät SeniorSurf-opastuspaikat.
           </p>
         </div>

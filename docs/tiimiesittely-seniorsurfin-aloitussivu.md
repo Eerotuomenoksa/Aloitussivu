@@ -244,6 +244,7 @@ Testauksessa kannattaa seurata:
 - toimiiko sivu mobiilissa
 - onko tekstikoko sopiva
 - ovatko värit ja kontrastit riittävät
+- nouseeko saavutettavuustutkimuksessa esiin ruudunlukija-, näppäimistö- tai kontrastipuutteita
 - käytetäänkö tekoälyavustajaa
 - käytetäänkö äänihakua ja koetaanko se hyödylliseksi
 - huomaavatko käyttäjät huijausvaroitukset
@@ -256,7 +257,10 @@ Palautteet käydään läpi elokuussa, koska heinäkuu on lomakuukausi.
 Elokuussa on tarkoitus:
 
 - analysoida testipalautteet
+- tehdä saavutettavuustutkimus ja päättää sen perusteella tarvittavat korjaukset
 - päättää tärkeimmät korjaukset
+- viimeistellä saavutettavuusseloste
+- viimeistellä tietosuojaseloste
 - viimeistellä julkaisu
 - päättää lopullinen domain tai polku
 - päättää julkaisualustan jatkosta
@@ -393,7 +397,8 @@ Ennen pysyvää julkaisua teknisessä jatkotyössä voidaan arvioida:
 
 - testipalautteen pohjalta tehtävät korjaukset
 - mobiilikäytön viimeistely
-- saavutettavuuden tarkistus
+- saavutettavuustutkimus ja saavutettavuusselosteen viimeistely
+- tietosuojaselosteen viimeistely lopullisella yhteystiedolla ja rekisterinpitäjätiedolla
 - Cloudcity-siirron suunnittelu
 - mahdollinen tekninen välikerros
 - mahdollinen oma backend/API

@@ -736,6 +736,124 @@ html.dark .aurora-modal-shell {
   color: rgba(255,255,255,.82);
 }
 
+.aurora-analog-clock {
+  width: clamp(13rem, 26vw, 21rem);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  padding: clamp(.7rem, 1.2vw, 1rem);
+  background:
+    radial-gradient(circle at 35% 25%, rgba(255,255,255,.18), transparent 38%),
+    linear-gradient(145deg, rgba(255,255,255,.16), rgba(255,255,255,.04));
+  border: 1px solid rgba(255,255,255,.20);
+  box-shadow:
+    0 22px 80px rgba(0,0,0,.28),
+    inset 0 1px 0 rgba(255,255,255,.16);
+}
+
+.aurora-analog-face {
+  --analog-number-radius: clamp(4.35rem, 10.4vw, 8.05rem);
+  --analog-tick-radius: clamp(4.95rem, 11.6vw, 9rem);
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 52%, #fbf6e7 0%, #f0e4c9 58%, #d6bb82 100%);
+  border: clamp(.35rem, .7vw, .55rem) solid color-mix(in srgb, var(--theme-gold) 72%, #8c5c18 28%);
+  box-shadow:
+    inset 0 0 0 2px rgba(70,44,12,.24),
+    inset 0 10px 28px rgba(255,255,255,.42),
+    inset 0 -18px 34px rgba(67,39,8,.14);
+}
+
+.aurora-analog-hour,
+.aurora-analog-tick,
+.aurora-analog-hand,
+.aurora-analog-pin {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+}
+
+.aurora-analog-hour {
+  width: 2.1rem;
+  height: 2.1rem;
+  margin-left: -1.05rem;
+  margin-top: -1.05rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1f1608;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(.95rem, 1.8vw, 1.35rem);
+  font-weight: 800;
+  line-height: 1;
+  text-shadow: 0 1px 0 rgba(255,255,255,.7);
+  z-index: 4;
+}
+
+.aurora-analog-tick {
+  width: 1.5px;
+  height: 7px;
+  margin-left: -.75px;
+  margin-top: -3.5px;
+  background: rgba(31,22,8,.42);
+  transform-origin: center 47%;
+  border-radius: 999px;
+}
+
+.aurora-analog-tick-hour {
+  width: 3px;
+  height: 15px;
+  margin-left: -1.5px;
+  margin-top: -7.5px;
+  background: rgba(31,22,8,.78);
+}
+
+.aurora-analog-hand {
+  transform-origin: 50% 100%;
+  border-radius: 999px;
+  z-index: 5;
+}
+
+.aurora-analog-hour-hand {
+  width: 8px;
+  height: 28%;
+  margin-left: -4px;
+  margin-top: -28%;
+  background: #1f1608;
+  box-shadow: 0 1px 4px rgba(0,0,0,.22);
+}
+
+.aurora-analog-minute-hand {
+  width: 5px;
+  height: 38%;
+  margin-left: -2.5px;
+  margin-top: -38%;
+  background: #1f1608;
+  box-shadow: 0 1px 4px rgba(0,0,0,.2);
+}
+
+.aurora-analog-second-hand {
+  width: 2px;
+  height: 40%;
+  margin-left: -1px;
+  margin-top: -40%;
+  background: #b13622;
+}
+
+.aurora-analog-pin {
+  width: 18px;
+  height: 18px;
+  margin-left: -9px;
+  margin-top: -9px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--theme-gold) 70%, #4a2c08 30%);
+  border: 3px solid #f8edcf;
+  box-shadow: 0 2px 8px rgba(0,0,0,.25);
+  z-index: 6;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .wcard-base::before { animation: wcard-border 6s linear infinite; }
   .wcard-sun-orb { animation: wcard-sun 4s ease-in-out infinite; }
@@ -788,7 +906,43 @@ html.dark .aurora-modal-shell {
   .footer-inner-grid { grid-template-columns: 1fr 1fr !important; }
 }
 @media (max-width: 560px) {
-  .bento-grid { grid-template-columns: 1fr 1fr !important; }
+  .bento-grid {
+    grid-template-columns: 1fr !important;
+    gap: .75rem !important;
+  }
+  .bento-wide,
+  .bento-featured {
+    grid-column: span 1 !important;
+  }
+  .bento-group-card {
+    min-height: 0 !important;
+    border-radius: 1.25rem !important;
+    padding: 1rem !important;
+    gap: .85rem !important;
+    box-shadow: var(--sh-xs) !important;
+    transform: none !important;
+  }
+  .bento-group-card::before,
+  .bento-group-card::after {
+    display: none !important;
+  }
+  .bento-group-card > div:first-child {
+    gap: .75rem !important;
+  }
+  .bento-group-card > div:first-child > span {
+    height: 2.5rem !important;
+    width: 2.5rem !important;
+    border-radius: .875rem !important;
+    font-size: 1.15rem !important;
+  }
+  .mobile-subcategory {
+    min-height: 3rem !important;
+    border-radius: 1rem !important;
+    padding: .8rem 1rem !important;
+  }
+  .mobile-subcategory .subcategory-icon {
+    display: none !important;
+  }
   .glass-chip-row { flex-direction: column; }
   .footer-inner-grid { grid-template-columns: 1fr !important; gap: 2rem !important; }
 }

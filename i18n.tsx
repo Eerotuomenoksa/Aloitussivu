@@ -761,6 +761,9 @@ const extraTranslations = {
     weatherWind: 'Tuuli',
     weatherHumidity: 'Kosteus',
     degreeCelsius: 'astetta Celsius',
+    clockStyle: 'Kellon tyyli',
+    clockDigital: 'Digitaalinen',
+    clockAnalog: 'Analoginen',
   },
   sv: {
     skipToContent: 'Gå till innehållet',
@@ -837,6 +840,9 @@ const extraTranslations = {
     weatherWind: 'Vind',
     weatherHumidity: 'Luftfuktighet',
     degreeCelsius: 'grader Celsius',
+    clockStyle: 'Klockstil',
+    clockDigital: 'Digital',
+    clockAnalog: 'Analog',
   },
   en: {
     skipToContent: 'Skip to content',
@@ -913,6 +919,9 @@ const extraTranslations = {
     weatherWind: 'Wind',
     weatherHumidity: 'Humidity',
     degreeCelsius: 'degrees Celsius',
+    clockStyle: 'Clock style',
+    clockDigital: 'Digital',
+    clockAnalog: 'Analog',
   },
 } as const;
 

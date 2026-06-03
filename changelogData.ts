@@ -23,23 +23,66 @@ export type ChangelogCommit = {
   subject: string;
 };
 
-export const CHANGELOG_GENERATED_AT = "2.6.2026 klo 21.31";
+export const CHANGELOG_GENERATED_AT = "3.6.2026 klo 06.31";
 export const CHANGELOG_VERSION = "0.71.0";
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
-  "Etusivulle lisättiin Aurora-visuaalinen ilme: tumma kaareva hero, uudet fontit, lasimaiset haku- ja tietosirut sekä bento-tyylinen palveluruudukko.",
-  "Asetuksiin lisättiin värimaailman valinta: vihreä, violetti, sininen ja oranssi teema.",
-  "Tummien teemojen väripaletit tarkennettiin omiksi yöpaleteikseen, jotta taustat, kortit, reunukset ja korostusvärit pysyvät luettavina.",
-  "Bento-kortteihin ja alueellisten palveluiden paneeliin lisättiin tummassa tilassa hienovarainen pintasyvyys.",
-  "AI-avustajan ja sääsirun näkyvyyttä headerissa parannettiin."
+  "Versionumerointi otettiin käyttöön: nykyinen versio näkyy footerissa ja muutoslokin yläosassa.",
+  "Muutoshistoria näyttää versionumeron jokaisen muutoksen yhteydessä.",
+  "Linkkien tarkistusdata ja ylläpitoloki päivitettiin uusimman buildin yhteydessä.",
+  "Google-haku, palveluhaku ja tekoälyavustaja toimivat nyt myös omalla äänellä mikrofonipainikkeen kautta.",
+  "Asetuksiin lisättiin mahdollisuus vaihtaa etusivun digitaalinen kello vanhan ajan analogiseen kelloon.",
+  "Digitaalisen kellon päivämäärän välistystä parannettiin ja analogisen kellon numerot sijoitettiin selvästi kellotaulun ulkokehälle.",
+  "Mobiilissa palveluruudukko muutettiin yksipalstaiseksi listaksi ja alakategorioiden symbolit piilotettiin.",
+  "Palveluruudukon ja palveluhaun visuaalinen ilme yhtenäistettiin Aurora-teemaan.",
+  "Etusivun alueellisiin palveluihin nostettiin myös paikalliset kirjastokimpat, jotta esimerkiksi Loviisalle näkyy Helle-kirjastot.",
+  "Alueellisten palvelujen kunnan valintaa selkeytettiin: rajausviesti päivitettiin, turha kuntalaatikko poistettiin ja Vaihda kunta -painike siirrettiin työpöytänäkymässä kunnan kentän rinnalle.",
+  "Alueellisten palveluiden paneelin kortit, kuntahaku ja paikalliset uutiset päivitettiin uuteen Aurora-pintakieleen.",
+  "Ylläpitoon lisättiin nimipäivärajapinnan käyttölaskuri, joka näyttää kutsujen kokonaismäärän, onnistuneet ja epäonnistuneet haut sekä viimeisimmän käyttöajan.",
+  "Kirjautuminen ja huijausvaroitukset -sivulle lisättiin näkyvä Palaa etusivulle -linkki.",
+  "Sivuston esittelyyn lisättiin tieto, että robottia, Google-hakua ja palveluhakua voi käyttää myös omalla äänellä.",
+  "Ohje- ja esittelyikkunoiden visuaalinen ilme yhtenäistettiin muun Aurora-ulkoasun kanssa.",
+  "Linkkiluettelon Paikkakunnittain-taulukon vaakavieritystä helpotettiin yläreunan vierityspalkilla ja lukitulla paikkakuntasarakkeella.",
+  "Linkkiluettelon Paikkakunnittain-välilehdeltä poistettiin tyhjä paikallisten palvelujen sarake ja siihen lisättiin omat sarakkeet potilas- ja eläkeyhdistyksille.",
+  "Alueellisten linkkien listaan lisättiin kirjastojen lisäksi museot, teatterit, potilasyhdistykset ja eläkeyhdistykset.",
+  "Linkkiluettelon taulukot ja apupalkit päivitettiin käyttämään Aurora-teeman pintoja ja värejä.",
+  "Sivustolle lisättiin kokeiluna Sivua tukemassa -sivu, jossa kerrotaan tukijaperiaatteet ja näytetään ensimmäisenä tukijana Vanhustyön keskusliitto ry."
 ];
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
   {
-    "hash": "44bec77",
+    "hash": "b4be06f2aa5936820d454ce24b6e2a3b8f1f8168",
     "date": "2026-06-02",
-    "version": "0.71.0",
+    "version": "0.74.0",
+    "changeType": "minor",
+    "subject": "uusi sääkortti ja saavutettavuus tarkistukset"
+  },
+  {
+    "hash": "af4298174475ff9c55934093ba4476ca49c4451b",
+    "date": "2026-06-02",
+    "version": "0.73.0",
+    "changeType": "minor",
+    "subject": "Muutokset sivu päivitys ja tummien teemojen uudet värit"
+  },
+  {
+    "hash": "44bec77a5def0672defc7cb014224036036c89cc",
+    "date": "2026-06-02",
+    "version": "0.72.0",
     "changeType": "minor",
     "subject": "Uusi visuaalinen ilme Aurora ja mahdollisuus valita asetuksista värimaailma"
+  },
+  {
+    "hash": "65826beca2ed722ef53c68282de73db26f551004",
+    "date": "2026-06-01",
+    "version": "0.71.0",
+    "changeType": "minor",
+    "subject": "Sivun työnimi on vaihdettu"
+  },
+  {
+    "hash": "f224f36ffd055d08cd13b2046168ffd713f0cbc5",
+    "date": "2026-05-31",
+    "version": "0.70.0",
+    "changeType": "minor",
+    "subject": "Versio numeroinnin korjaus"
   },
   {
     "hash": "ab84a59578e9ec6fe2fe1a34c728664bdf0396ce",

@@ -414,8 +414,8 @@ function App() {
         <section id="general-links" className="space-y-4" aria-labelledby="general-links-heading">
           <h2 id="general-links-heading" className="aurora-section-title text-2xl md:text-3xl">Yleiset linkit</h2>
           <div className="overflow-x-auto rounded-lg border border-[var(--theme-border)] bg-[var(--theme-surface)] shadow-sm">
-            <table className="min-w-full divide-y divide-slate-200 text-sm">
-              <thead className="bg-slate-100 text-left text-xs font-black uppercase tracking-wide text-slate-600">
+            <table className="min-w-full divide-y divide-[var(--theme-border)] text-sm text-[var(--theme-text)]">
+              <thead className="bg-[var(--theme-pale)] text-left text-xs font-black uppercase tracking-wide text-[var(--theme-muted)]">
                 <tr>
                   <th className="px-4 py-3">Sivun nimi</th>
                   <th className="px-4 py-3">URL</th>
@@ -423,15 +423,15 @@ function App() {
                   <th className="px-4 py-3">Ryhmä</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-[var(--theme-border)]">
                 {filteredGeneralLinks.map((row) => (
                   <tr key={`${row.category}|${row.group}|${row.name}|${row.url}`}>
                     <td className="px-4 py-3 font-black">{row.name}</td>
                     <td className="px-4 py-3">
-                      <a className="inline-flex min-h-8 items-center text-indigo-700 hover:underline break-all focus:outline-none focus:ring-4 focus:ring-indigo-200" href={row.url} target="_blank" rel="noopener noreferrer">{row.url}</a>
+                      <a className="inline-flex min-h-8 items-center break-all text-[var(--theme-primary)] hover:underline focus:outline-none focus:ring-4 focus:ring-[var(--theme-focus)]/40" href={row.url} target="_blank" rel="noopener noreferrer">{row.url}</a>
                     </td>
                     <td className="px-4 py-3 font-bold">{row.category}</td>
-                    <td className="px-4 py-3 text-slate-600">{row.group || '-'}</td>
+                    <td className="px-4 py-3 text-[var(--theme-muted)]">{row.group || '-'}</td>
                   </tr>
                 ))}
               </tbody>
@@ -442,13 +442,13 @@ function App() {
 
         {activeView === 'regional' && (
         <section id="regional-links" className="space-y-4" aria-labelledby="regional-links-heading">
-          <h2 id="regional-links-heading" className="text-2xl md:text-3xl font-black">Alueelliset linkit</h2>
-          <p className="max-w-4xl text-sm font-bold text-slate-600">
+          <h2 id="regional-links-heading" className="aurora-section-title text-2xl md:text-3xl">Alueelliset linkit</h2>
+          <p className="max-w-4xl text-sm font-bold text-[var(--theme-text-2)]">
             Tässä näkymässä ovat vain paikkakuntiin liittyvät linkit: kunnan sivut, hyvinvointialueet, kirjastot, kulttuuri- ja yhdistyslinkit, alueelliset uutiset ja uutisvirrat.
           </p>
-          <div className="overflow-x-auto rounded-lg border border-slate-200 bg-white shadow-sm">
-            <table className="min-w-full divide-y divide-slate-200 text-sm">
-              <thead className="bg-slate-100 text-left text-xs font-black uppercase tracking-wide text-slate-600">
+          <div className="overflow-x-auto rounded-lg border border-[var(--theme-border)] bg-[var(--theme-surface)] shadow-sm">
+            <table className="min-w-full divide-y divide-[var(--theme-border)] text-sm text-[var(--theme-text)]">
+              <thead className="bg-[var(--theme-pale)] text-left text-xs font-black uppercase tracking-wide text-[var(--theme-muted)]">
                 <tr>
                   <th className="px-4 py-3">Paikkakunta</th>
                   <th className="px-4 py-3">Kategoria</th>
@@ -456,14 +456,14 @@ function App() {
                   <th className="px-4 py-3">URL</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-[var(--theme-border)]">
                 {filteredRegionalLinks.map((row) => (
                   <tr key={`${row.municipality}|${row.category}|${row.name}|${row.url}`}>
                     <td className="px-4 py-3 font-black">{row.municipality}</td>
                     <td className="px-4 py-3 font-bold">{row.category}</td>
                     <td className="px-4 py-3">{row.name}</td>
                     <td className="px-4 py-3">
-                      <a className="inline-flex min-h-8 items-center text-indigo-700 hover:underline break-all focus:outline-none focus:ring-4 focus:ring-indigo-200" href={row.url} target="_blank" rel="noopener noreferrer">{row.url}</a>
+                      <a className="inline-flex min-h-8 items-center break-all text-[var(--theme-primary)] hover:underline focus:outline-none focus:ring-4 focus:ring-[var(--theme-focus)]/40" href={row.url} target="_blank" rel="noopener noreferrer">{row.url}</a>
                     </td>
                   </tr>
                 ))}
@@ -475,8 +475,8 @@ function App() {
 
         {activeView === 'municipalities' && (
         <section id="municipality-links" className="space-y-4" aria-labelledby="municipality-links-heading">
-          <h2 id="municipality-links-heading" className="text-2xl md:text-3xl font-black">Paikkakunnat aakkosjärjestyksessä</h2>
-          <div className="sticky top-0 z-30 rounded-lg border border-slate-200 bg-white p-2 shadow-sm">
+          <h2 id="municipality-links-heading" className="aurora-section-title text-2xl md:text-3xl">Paikkakunnat aakkosjärjestyksessä</h2>
+          <div className="sticky top-0 z-30 rounded-lg border border-[var(--theme-border)] bg-[var(--theme-surface)] p-2 shadow-sm">
             <div
               ref={municipalityTopScrollRef}
               onScroll={syncMunicipalityTopScroll}
@@ -489,12 +489,12 @@ function App() {
           <div
             ref={municipalityTableScrollRef}
             onScroll={syncMunicipalityTableScroll}
-            className="overflow-x-auto rounded-lg border border-slate-200 bg-white shadow-sm"
+            className="overflow-x-auto rounded-lg border border-[var(--theme-border)] bg-[var(--theme-surface)] shadow-sm"
           >
-            <table className="min-w-full divide-y divide-slate-200 text-sm align-top" style={{ minWidth: municipalityTableMinWidth }}>
-              <thead className="bg-slate-100 text-left text-xs font-black uppercase tracking-wide text-slate-600">
+            <table className="min-w-full divide-y divide-[var(--theme-border)] text-sm align-top text-[var(--theme-text)]" style={{ minWidth: municipalityTableMinWidth }}>
+              <thead className="bg-[var(--theme-pale)] text-left text-xs font-black uppercase tracking-wide text-[var(--theme-muted)]">
                 <tr>
-                  <th className="sticky left-0 z-20 w-44 bg-slate-100 px-4 py-3 shadow-[6px_0_12px_rgba(15,23,42,0.08)]">Paikkakunta</th>
+                  <th className="sticky left-0 z-20 w-44 bg-[var(--theme-pale)] px-4 py-3 shadow-[6px_0_12px_rgba(15,23,42,0.08)]">Paikkakunta</th>
                   <th className="min-w-80 px-4 py-3">Kunnan nettisivut ({municipalityColumnCounts.municipalityWebsites})</th>
                   <th className="min-w-80 px-4 py-3">Hyvinvointialue ({municipalityColumnCounts.wellbeingAreas})</th>
                   <th className="min-w-80 px-4 py-3">Kirjasto ({municipalityColumnCounts.libraries})</th>
@@ -507,10 +507,10 @@ function App() {
                   <th className="min-w-80 px-4 py-3">Uutisvirrat ({municipalityColumnCounts.rssFeeds})</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-[var(--theme-border)]">
                 {filteredMunicipalityRows.map((row) => (
                   <tr key={row.municipality}>
-                    <td className="sticky left-0 z-10 bg-white px-4 py-4 text-base font-black shadow-[6px_0_12px_rgba(15,23,42,0.06)]">{row.municipality}</td>
+                    <td className="sticky left-0 z-10 bg-[var(--theme-surface)] px-4 py-4 text-base font-black shadow-[6px_0_12px_rgba(15,23,42,0.06)]">{row.municipality}</td>
                     <td className="px-4 py-4"><LinkList links={row.municipalityWebsites} /></td>
                     <td className="px-4 py-4"><LinkList links={row.wellbeingAreas} /></td>
                     <td className="px-4 py-4"><LinkList links={row.libraries} /></td>
@@ -528,7 +528,7 @@ function App() {
           </div>
         </section>
         )}
-        <div id="link-list-after" tabIndex={-1} className="rounded-lg border border-slate-200 bg-white p-4 text-sm font-bold text-slate-600">
+        <div id="link-list-after" tabIndex={-1} className="rounded-lg border border-[var(--theme-border)] bg-[var(--theme-surface)] p-4 text-sm font-bold text-[var(--theme-muted)]">
           Linkkilistan loppu.
         </div>
       </div>

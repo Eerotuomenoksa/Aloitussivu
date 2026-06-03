@@ -38,6 +38,21 @@ Elokuussa 2026 tai myöhemmin:
 6. Poista Firestoresta `adminStats/namedayApi`, jos sitä ei enää päivitetä.
 7. Lisää muistutus joulukuulle 2026: päivitä `assets/namedays-2026.json` -> `assets/namedays-2027.json`.
 
+## Elokuu 2026: ylläpidon sähköposti-ilmoitukset
+
+Tila: Lisätty elokuun todo-listalle
+
+Selvitä Cloudcityn Pro-tilin sähköpostimahdollisuudet ja päätä, millä tavalla ylläpito saa viestin uusista todo-asioista.
+
+Toteutuksessa huomioitavaa:
+
+1. Lähetys tehdään vain palvelinpuolelta, esimerkiksi Cloud Functionista tai Cloudcityn backendistä.
+2. SMTP-tunnuksia tai API-avaimia ei lisätä frontendin `.env`-tiedostoihin tai versionhallintaan.
+3. Mahdolliset salaisuudet tallennetaan Secret Manageriin, Cloudcityn ympäristömuuttujiin tai muuhun palvelinpuolen salaisuuksien hallintaan.
+4. Ensimmäinen ilmoitustyyppi voi olla uusi linkki-ilmoitus ylläpitoon.
+5. Myöhemmin mukaan voi lisätä huijausvaroitusten automaation nollatulokset, nimipäivärajapinnan käyttörajan lähestymisen ja käyttötilastojen päivittymättömyyden.
+6. Jos ilmoituksia tulee paljon, käytä päivittäistä koontia yksittäisten sähköpostien sijaan.
+
 ## Nyt tehtävä siivous ennen siirtymistä C:\dev-kansioon
 
 ### 1. Vie vanhan OneDrive-kansion paikallinen työ GitHubiin
