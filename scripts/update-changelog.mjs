@@ -125,10 +125,25 @@ function addVersionsToCommits(commits, currentVersion) {
       version: cursor,
       changeType: classification.bump,
       subject: commit.subject,
+      tags: getCommitTags(commit),
     };
   });
 
   return versionedOldestFirst.reverse();
+}
+
+function getCommitTags(commit) {
+  const subject = commit.subject.toLocaleLowerCase('fi-FI');
+  const paths = commit.paths ?? [];
+  const tags = [];
+  const visualSubjectPattern = /(aurora|visuaal|ulkoasu|ilme|teema|väri|vari|värimaailma|varimaailma|sääkortti|saakortti|bento|mobiili|modal|ikkuna)/iu;
+  const visualPathPattern = /^index\.css$/iu;
+
+  if (visualSubjectPattern.test(subject) || paths.some((pathName) => visualPathPattern.test(pathName))) {
+    tags.push('Visuaalisuus');
+  }
+
+  return tags;
 }
 
 function readCommitSubject(hash) {
@@ -331,6 +346,7 @@ export type ChangelogCommit = {
   version: string;
   changeType: 'major' | 'minor' | 'patch' | 'none';
   subject: string;
+  tags: string[];
 };
 
 export const CHANGELOG_GENERATED_AT = ${JSON.stringify(generatedAt)};
