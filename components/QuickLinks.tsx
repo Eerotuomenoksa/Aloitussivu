@@ -201,8 +201,9 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
           const queryDigits = q.replace(/\D/g, '');
           const providerMatches = providerSearchText.includes(q);
           const phoneMatches = Boolean(provider.phone) && queryDigits.length >= 3 && phoneDigits.includes(queryDigits);
+          const shouldShowAsPhone = Boolean(provider.phone) && (phoneMatches || (providerMatches && shortcut.name === 'Puhelinnumerot'));
 
-          if (providerMatches && !categoryMatches) {
+          if (providerMatches && !categoryMatches && !shouldShowAsPhone) {
             const linkKey = `${shortcut.name}:${provider.url}`;
             if (matchedLinkKeys.has(linkKey)) return;
             matchedLinkKeys.add(linkKey);
@@ -217,7 +218,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
             });
           }
 
-          if (phoneMatches && provider.phone && !categoryMatches) {
+          if (shouldShowAsPhone && provider.phone && !categoryMatches) {
             const phoneKey = `${shortcut.name}:${provider.phone}:${provider.name}`;
             if (matchedPhoneKeys.has(phoneKey)) return;
             matchedPhoneKeys.add(phoneKey);

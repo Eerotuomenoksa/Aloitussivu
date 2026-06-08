@@ -5,6 +5,7 @@ import { MUNICIPALITY_SWEDISH_NAMES_BY_CODE } from './municipalityNames';
 import { LOCAL_NEWSPAPER_FEEDS } from './localNewspaperFeeds';
 import { LOCAL_NEWSPAPER_LINKS } from './localNewspaperLinks';
 import { LOCAL_SPORTS_CLUBS } from './localSportsClubs';
+import { KELA_TAXI_PROVIDERS } from './localKelaTaxiNumbers';
 import type { RegionalProvider } from './communityLinks';
 import { filterVisibleProviders } from './linkVisibility';
 import { LocalityInfo, Municipality, Provider, RegionalContext, RssFeedConfig, Shortcut } from './types';
@@ -775,6 +776,11 @@ export const getRegionalLibraryProviders = (context: RegionalContext): Provider[
   ].filter((provider): provider is Provider => Boolean(provider)))) ?? [];
 };
 
+export const getRegionalKelaTaxiProviders = (context: RegionalContext, language: LanguageCode = 'fi'): Provider[] => {
+  const providers = KELA_TAXI_PROVIDERS.filter((provider) => provider.specialty !== 'sv' || language === 'sv');
+  return filterVisibleProviders(sortProvidersByLocality(filterRegionalProviders(providers, context), context)) ?? [];
+};
+
 export const getRegionalNewsProviders = (context: RegionalContext): Provider[] => {
   const municipality = context.municipality.name;
   const key = normalizeMunicipality(municipality);
@@ -849,6 +855,7 @@ export const getLocalizedShortcuts = (shortcuts: Shortcut[], locality: LocalityI
         ...shortcut,
         providers: uniqueProviders([
           ...getRegionalPublicTransportProviders(context),
+          ...getRegionalKelaTaxiProviders(context, language),
           ...alwaysVisibleTransportProviders,
         ]),
       };
@@ -872,6 +879,16 @@ export const getLocalizedShortcuts = (shortcuts: Shortcut[], locality: LocalityI
           services.wellbeingArea,
           ...(filterVisibleProviders(shortcut.providers) ?? []),
         ].filter((provider): provider is Provider => Boolean(provider))),
+      };
+    }
+
+    if (shortcut.name === 'Puhelinnumerot') {
+      return {
+        ...shortcut,
+        providers: uniqueProviders([
+          ...getRegionalKelaTaxiProviders(context, language),
+          ...shortcut.providers,
+        ]),
       };
     }
 

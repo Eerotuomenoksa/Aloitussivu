@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { getLocalizedMunicipalityName, getRegionalLibraryProviders, getRegionalNewsProviders, getRegionalProviders, getRegionalRssFeeds, normalizeMunicipality, resolveRegionalContext } from '../localServices';
+import { getLocalizedMunicipalityName, getRegionalKelaTaxiProviders, getRegionalLibraryProviders, getRegionalNewsProviders, getRegionalProviders, getRegionalRssFeeds, normalizeMunicipality, resolveRegionalContext } from '../localServices';
 import { filterVisibleProviders } from '../linkVisibility';
 import { LocalityInfo, Provider, LinkReportDraft } from '../types';
 import LocalNewsHeadlines from './LocalNewsHeadlines';
@@ -33,11 +33,18 @@ const smallTextClasses = [
 
 const getRegionalServiceIcon = (provider: Provider) => {
   const text = `${provider.group ?? ''} ${provider.name}`.toLocaleLowerCase('fi-FI');
+  if (text.includes('kela-taksi') || text.includes('taksi')) return '🚕';
   if (text.includes('liikenne') || text.includes('reitti') || text.includes('hsl') || text.includes('nysse') || text.includes('föli')) return '🚌';
   if (text.includes('kirjasto') || text.includes('finna') || text.includes('helmet')) return '📚';
   if (text.includes('hyvinvointialue') || text.includes('sote') || text.includes('terveys')) return '🏥';
   if (text.includes('paikalliset palvelut') || text.includes('palvelut') || text.includes('kunta') || text.includes('kaupunki')) return '🏛️';
   return '📍';
+};
+
+const getPhoneHref = (provider: Provider) => {
+  if (provider.phoneUrl) return provider.phoneUrl;
+  if (!provider.phone) return undefined;
+  return `tel:${provider.phone.replace(/[^\d+]/g, '')}`;
 };
 
 const uniqueProvidersByUrl = (providers: Provider[]) => providers.filter(
@@ -47,17 +54,22 @@ const uniqueProvidersByUrl = (providers: Provider[]) => providers.filter(
 const ServiceLink: React.FC<{ provider: Provider; index: number; fontSizeStep: number; onReportLink?: (draft: LinkReportDraft) => void }> = ({ provider, index, fontSizeStep, onReportLink }) => {
   const { t, categoryName } = useI18n();
   const icon = getRegionalServiceIcon(provider);
+  const phoneHref = getPhoneHref(provider);
+  const href = phoneHref ?? provider.url;
+  const isPhoneLink = Boolean(phoneHref);
   return (
     <div className="relative group/service">
       <a
-        href={provider.url}
-        target="_blank"
-        rel="noopener noreferrer"
+        href={href}
+        target={isPhoneLink ? undefined : '_blank'}
+        rel={isPhoneLink ? undefined : 'noopener noreferrer'}
         className="flex min-h-[120px] flex-1 items-start gap-2.5 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-surface)] p-4 text-sm font-bold text-[var(--theme-text)] no-underline shadow-sm transition-all duration-150 hover:-translate-y-0.5 hover:border-[var(--border-strong)] hover:bg-[var(--theme-pale)] hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--theme-focus)] md:min-w-[200px]"
+        aria-label={provider.phone ? `Soita: ${provider.name}, ${provider.phone}` : undefined}
       >
         <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[var(--theme-pale)] text-2xl leading-none" aria-hidden="true">{icon}</span>
         <span className="flex min-w-0 flex-col gap-1">
           <span className={`min-w-0 font-black leading-tight ${textClasses[fontSizeStep]}`}>{provider.name}</span>
+          {provider.phone && <span className={`font-black text-[var(--theme-primary)] ${smallTextClasses[fontSizeStep]}`}>☎ {provider.phone}</span>}
           {provider.group && <span className={`font-semibold text-[var(--theme-muted)] ${smallTextClasses[fontSizeStep]}`}>{categoryName(provider.group)}</span>}
         </span>
       </a>
@@ -94,6 +106,7 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
   const services = useMemo(() => context ? filterVisibleProviders(uniqueProvidersByUrl([
     ...getRegionalProviders(context, language),
     ...getRegionalLibraryProviders(context),
+    ...getRegionalKelaTaxiProviders(context, language),
   ])) ?? [] : [], [context, language]);
   const newsFallbacks = useMemo(() => context ? filterVisibleProviders(getRegionalNewsProviders(context)) ?? [] : [], [context]);
   const rssFeeds = useMemo(() => context ? getRegionalRssFeeds(context) : [], [context]);
