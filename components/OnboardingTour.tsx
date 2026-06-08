@@ -17,9 +17,9 @@ type TourStep = {
 const steps: TourStep[] = [
   {
     target: 'logo',
-    title: 'Aloitussivu seniorille',
+    title: 'aloitussivu',
     body: 'Täältä löytyvät arjen tärkeät verkkopalvelut.',
-    contains: 'Sivun nimi ja tunnus. Tästä tunnistaa, että olet Aloitussivu seniorille -sivulla.',
+    contains: 'Sivun nimi ja tunnus. Tästä tunnistaa, että olet aloitussivu-sivulla.',
   },
   {
     target: 'google-search',

@@ -667,7 +667,7 @@ const AppContent: React.FC = () => {
           <div className="footer-inner-grid relative mx-auto grid w-full max-w-[1400px] grid-cols-3 gap-10 px-6 pb-10 pt-8">
             <div>
               <p className="font-display text-2xl text-white">
-                SeniorSurf <span className="italic text-[var(--theme-gold-light)]">aloitussivu</span>
+                aloitussivu
               </p>
               <p className="mt-3 max-w-[36ch] text-sm font-semibold leading-relaxed text-white/55">
                 {t('footer')}
@@ -741,7 +741,7 @@ const AppContent: React.FC = () => {
           </div>
           <div className="relative mx-auto flex max-w-[1400px] flex-wrap items-center justify-between gap-2 border-t border-white/10 px-6 py-3">
             <p className="text-xs font-semibold text-white/25">
-              © SeniorSurf
+              © aloitussivu
             </p>
             <a
               href="./muutosloki.html"

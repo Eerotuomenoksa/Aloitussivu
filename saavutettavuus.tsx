@@ -66,7 +66,7 @@ function App() {
             </span>
             <h1 className="font-display text-4xl font-bold tracking-tight md:text-6xl">Saavutettavuusseloste</h1>
             <p className="max-w-3xl text-lg font-bold leading-relaxed text-white/75">
-              Aloitussivu seniorille on suunniteltu ikääntyneille käyttäjille. Selkeä rakenne, isot painikkeet, tekstikoon säätö ja rauhallinen näkymä ovat palvelun peruslähtökohtia.
+              aloitussivu on suunniteltu ikääntyneille käyttäjille. Selkeä rakenne, isot painikkeet, tekstikoon säätö ja rauhallinen näkymä ovat palvelun peruslähtökohtia.
             </p>
           </div>
         </header>
@@ -74,7 +74,7 @@ function App() {
         <section className="aurora-soft-panel mt-10" aria-labelledby="accessibility-summary-heading">
           <h2 id="accessibility-summary-heading" className="aurora-section-title text-2xl">Lyhyesti</h2>
           <p className="mt-4 text-base font-bold leading-relaxed text-[var(--theme-text-2)]">
-            Aloitussivu seniorille täyttää saavutettavuuden tavoitteet osittain. Sivustolla on jo paljon saavutettavuutta tukevia ratkaisuja, mutta ruudunlukija-, näppäimistö-, kontrasti- ja käyttäjätestausta täydennetään ennen laajempaa julkaisua.
+            aloitussivu täyttää saavutettavuuden tavoitteet osittain. Sivustolla on jo paljon saavutettavuutta tukevia ratkaisuja, mutta ruudunlukija-, näppäimistö-, kontrasti- ja käyttäjätestausta täydennetään ennen laajempaa julkaisua.
           </p>
         </section>
 
@@ -94,7 +94,7 @@ function App() {
         <div className="mt-8 space-y-6">
           <AccessibilitySection id="tarkoitus" title="Saavutettavuusselosteen tarkoitus">
             <p className={paragraphClass}>
-              Tämä saavutettavuusseloste koskee Aloitussivu seniorille -sivua. Seloste kertoo, miten saavutettavuus on huomioitu, mitä puutteita on tunnistettu ja miten käyttäjä voi antaa palautetta.
+              Tämä saavutettavuusseloste koskee aloitussivu-sivua. Seloste kertoo, miten saavutettavuus on huomioitu, mitä puutteita on tunnistettu ja miten käyttäjä voi antaa palautetta.
             </p>
             <p className={paragraphClass}>
               Seloste on laadittu kehitysvaiheen tarkistuksen perusteella. Sitä päivitetään ennen laajempaa julkaisua, kun näppäimistö-, kontrasti- ja ruudunlukijatestausta on täydennetty.
@@ -103,7 +103,7 @@ function App() {
 
           <AccessibilitySection id="tila" title="Palvelun saavutettavuuden tila">
             <p className={paragraphClass}>
-              Aloitussivu seniorille täyttää saavutettavuuden tavoitteet osittain.
+              aloitussivu täyttää saavutettavuuden tavoitteet osittain.
             </p>
             <p className={paragraphClass}>
               Sivustolla on jo paljon saavutettavuutta tukevia ratkaisuja, kuten suuret painikkeet, selkeä rakenne, tekstikoon säätö, pääsisältöön hyppäämisen linkki ja kuvaavat nimet painikkeille. Kaikkia kohtia ei ole kuitenkaan vielä testattu riittävän kattavasti ruudunlukijalla ja pelkällä näppäimistöllä.
@@ -112,7 +112,7 @@ function App() {
 
           <AccessibilitySection id="tavoite" title="Saavutettavuuden tavoite">
             <p className={paragraphClass}>
-              Aloitussivu seniorille -sivun tavoitteena on olla mahdollisimman helppo käyttää myös silloin, kun näkö, motoriikka, muisti tai digitaidot aiheuttavat haasteita.
+              aloitussivu-sivun tavoitteena on olla mahdollisimman helppo käyttää myös silloin, kun näkö, motoriikka, muisti tai digitaidot aiheuttavat haasteita.
             </p>
             <ul className={listClass}>
               <li>suurta ja selkeää tekstiä</li>
