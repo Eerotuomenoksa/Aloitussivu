@@ -53,21 +53,21 @@ const Assistant: React.FC<AssistantProps> = ({ variant = 'default' }) => {
     return (
       <button
         onClick={() => setIsMinimized(false)}
-        className="assistant-card relative flex min-h-[92px] w-full items-center justify-center gap-3 overflow-hidden rounded-[22px] border border-white/10 p-4 text-white shadow-[0_8px_32px_rgba(10,26,14,.3)] transition-all hover:-translate-y-0.5 active:scale-95 md:min-h-[150px] md:p-5"
+        className="assistant-card relative flex h-full min-h-[116px] w-full items-center justify-center gap-3 overflow-hidden rounded-[20px] border border-white/10 p-4 text-white shadow-[0_8px_32px_rgba(10,26,14,.3)] transition-all hover:-translate-y-0.5 active:scale-95 md:min-h-[128px] md:p-4"
         style={{
           background: 'linear-gradient(135deg, #0c1829 0%, #0f2318 60%, #1a3428 100%)',
           animation: 'assistant-glow 4s ease-in-out infinite alternate',
         }}
         aria-label={t('assistantOpen')}
       >
-        <span className="flex h-12 w-12 md:h-16 md:w-16 items-center justify-center rounded-full bg-white/10 text-3xl md:text-5xl" aria-hidden="true">✦</span>
+        <span className="flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-3xl md:h-12 md:w-12 md:text-4xl" aria-hidden="true">✦</span>
         <span className="text-left text-white/85">
           <span className="mb-1 flex items-center gap-2 text-[.65rem] font-black uppercase tracking-[.2em] text-[rgba(240,192,64,.75)]">
             AI-avustaja
             <span className="ml-auto h-[6px] w-[6px] rounded-full bg-[#3db870] shadow-[0_0_6px_#3db870]" style={{ animation: 'aurora-pulse 2.5s ease-in-out infinite' }} aria-hidden="true" />
           </span>
-          <span className="block text-base md:text-xl font-black leading-tight">{t('assistantNeedHelp')}</span>
-          <span className="block text-sm md:text-base font-bold text-white/55">{t('assistantAskAnything')}</span>
+          <span className="block text-base font-black leading-tight md:text-lg">{t('assistantNeedHelp')}</span>
+          <span className="block text-sm font-bold leading-snug text-white/55">{t('assistantAskAnything')}</span>
         </span>
       </button>
     );

@@ -395,9 +395,9 @@ const AppContent: React.FC = () => {
               </button>
             </nav>
 
-            <div className="hero-body-grid grid gap-8 pb-10" style={{ gridTemplateColumns: '1fr 1.4fr', alignItems: 'end' }}>
+            <div className="hero-body-grid grid gap-5 pb-7 md:gap-6" style={{ gridTemplateColumns: 'minmax(18rem, .9fr) minmax(0, 1.55fr)', alignItems: 'center' }}>
               {uiVisibility.clock && (
-                <div className="flex flex-col gap-2 animate-rise" data-tour="clock">
+                <div className="flex flex-col gap-2 animate-rise hero-clock-panel" data-tour="clock">
                   <Clock
                     fontSizeStep={fontSizeStep}
                     variant="aurora"
@@ -409,18 +409,18 @@ const AppContent: React.FC = () => {
                   />
                 </div>
               )}
-              <div className="flex flex-col gap-4 animate-rise" style={{ animationDelay: '120ms' }} data-tour="google-search">
+              <div className="flex flex-col gap-3 animate-rise hero-tool-stack" style={{ animationDelay: '120ms' }} data-tour="google-search">
                 {uiVisibility.googleSearch && (
                   <SearchBar fontSizeStep={fontSizeStep} variant="aurora" />
                 )}
-                <div className="glass-chip-row mt-3 flex flex-wrap gap-3.5" role="region" aria-label={t('currentInfo')}>
+                <div className="glass-chip-row hero-widget-row flex flex-wrap gap-3" role="region" aria-label={t('currentInfo')}>
                   {uiVisibility.weather && (
-                    <div className="min-w-[260px] flex-1">
+                    <div className="hero-widget min-w-[240px] flex-1">
                       <WeatherCard locality={regionalLocality} onLocationResolved={updateLocality} variant="aurora" />
                     </div>
                   )}
                   {uiVisibility.assistant && (
-                    <div className="relative z-50 hidden min-w-[220px] flex-1 md:block" data-tour="assistant">
+                    <div className="hero-widget relative z-50 hidden min-w-[220px] flex-1 md:block" data-tour="assistant">
                       <Assistant variant="header" />
                     </div>
                   )}
@@ -667,7 +667,7 @@ const AppContent: React.FC = () => {
           <div className="footer-inner-grid relative mx-auto grid w-full max-w-[1400px] grid-cols-3 gap-10 px-6 pb-10 pt-8">
             <div>
               <p className="font-display text-2xl text-white">
-                aloitussivu
+                Aloitussivu
               </p>
               <p className="mt-3 max-w-[36ch] text-sm font-semibold leading-relaxed text-white/55">
                 {t('footer')}
@@ -741,7 +741,7 @@ const AppContent: React.FC = () => {
           </div>
           <div className="relative mx-auto flex max-w-[1400px] flex-wrap items-center justify-between gap-2 border-t border-white/10 px-6 py-3">
             <p className="text-xs font-semibold text-white/25">
-              © aloitussivu
+              © Aloitussivu
             </p>
             <a
               href="./muutosloki.html"

@@ -466,6 +466,32 @@ html.dark .glass-chip {
   color: var(--theme-text-3);
 }
 
+.hero-clock-panel {
+  max-width: 34rem;
+}
+
+.hero-tool-stack {
+  max-width: 54rem;
+  margin-left: auto;
+  width: 100%;
+}
+
+.hero-search input {
+  min-height: 3.75rem;
+}
+
+.hero-widget-row {
+  align-items: stretch;
+}
+
+.hero-widget {
+  display: flex;
+}
+
+.hero-widget > * {
+  width: 100%;
+}
+
 .aurora-modal-shell {
   border: 1px solid var(--theme-border);
   border-radius: 2rem;
@@ -556,13 +582,14 @@ html.dark .aurora-modal-shell {
 
 .wcard-base {
   position: relative;
-  min-height: 10.5rem;
-  border-radius: 28px;
+  min-height: 7.25rem;
+  height: 100%;
+  border-radius: 20px;
   overflow: hidden;
-  padding: 1.1rem 1.25rem 1rem;
+  padding: .9rem 1rem;
   display: flex;
   flex-direction: column;
-  gap: 0;
+  justify-content: center;
   transition: transform .25s cubic-bezier(.34,1.2,.64,1), box-shadow .25s;
 }
 .wcard-base:hover { transform: translateY(-3px) scale(1.008); }
@@ -570,7 +597,7 @@ html.dark .aurora-modal-shell {
   content: '';
   position: absolute;
   inset: 0;
-  border-radius: 28px;
+  border-radius: 20px;
   padding: 1.5px;
   background: conic-gradient(
     from var(--wangle, 0deg),
@@ -606,10 +633,10 @@ html.dark .aurora-modal-shell {
 }
 .wcard-sun-orb {
   position: absolute;
-  top: -24px;
-  right: -16px;
-  width: 110px;
-  height: 110px;
+  top: -30px;
+  right: -20px;
+  width: 88px;
+  height: 88px;
   border-radius: 50%;
   background: radial-gradient(circle, rgba(240,192,64,.3) 0%, rgba(212,148,10,.1) 45%, transparent 70%);
   pointer-events: none;
@@ -624,7 +651,7 @@ html.dark .aurora-modal-shell {
   position: absolute;
   inset: 0;
   overflow: hidden;
-  border-radius: 28px;
+  border-radius: 20px;
   pointer-events: none;
 }
 .wcard-raindrop {
@@ -641,32 +668,43 @@ html.dark .aurora-modal-shell {
 }
 .wcard-moon {
   position: absolute;
-  top: 16px;
-  right: 20px;
-  width: 52px;
-  height: 52px;
+  top: 12px;
+  right: 16px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   background: radial-gradient(circle at 35% 35%, rgba(240,230,200,.9), rgba(200,190,160,.6));
   box-shadow: 0 0 18px rgba(240,220,160,.2), 0 0 50px rgba(220,200,120,.07), inset -8px -4px 0 rgba(30,40,60,.3);
   pointer-events: none;
 }
-.wcard-top {
+.wcard-main {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
   position: relative;
   z-index: 2;
-  margin-bottom: .3rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: .85rem;
+}
+.wcard-side {
+  position: relative;
+  z-index: 2;
+  min-width: 8.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: .35rem;
 }
 .wcard-location {
-  font-size: .65rem;
+  max-width: 100%;
+  font-size: .72rem;
   font-weight: 700;
-  letter-spacing: .2em;
+  letter-spacing: .08em;
   text-transform: uppercase;
-  color: rgba(255,255,255,.45);
+  color: rgba(255,255,255,.66);
   display: flex;
   align-items: center;
   gap: .3rem;
+  line-height: 1.1;
 }
 .wcard-dot {
   width: 5px;
@@ -676,68 +714,88 @@ html.dark .aurora-modal-shell {
   flex-shrink: 0;
   box-shadow: 0 0 6px #d4940a;
 }
-.wcard-time { font-size: .65rem; color: rgba(255,255,255,.28); font-style: italic; }
 .wcard-temp-row {
   position: relative;
   z-index: 2;
   display: flex;
   align-items: flex-start;
   gap: .15rem;
-  margin: .2rem 0 .1rem;
+  margin: 0;
   line-height: 1;
+  flex: 0 0 auto;
 }
 .wcard-temp {
   font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: clamp(3.5rem, 6vw, 4.8rem);
-  font-weight: 300;
+  font-size: clamp(4.1rem, 6.8vw, 5.8rem);
+  font-weight: 700;
   color: #fff;
-  letter-spacing: -.04em;
-  line-height: .9;
+  letter-spacing: 0;
+  line-height: .78;
   text-shadow: 0 2px 30px rgba(61,184,112,.2);
 }
 .wcard-unit {
   font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 1.4rem;
-  font-weight: 300;
-  color: rgba(255,255,255,.45);
-  margin-top: .3rem;
+  font-size: clamp(1.3rem, 2vw, 1.7rem);
+  font-weight: 700;
+  color: rgba(255,255,255,.72);
+  margin-top: .15rem;
 }
 .wcard-cond {
   position: relative;
   z-index: 2;
-  font-size: .82rem;
-  color: rgba(255,255,255,.65);
-  display: flex;
+  width: fit-content;
+  font-size: .98rem;
+  color: rgba(255,255,255,.94);
+  display: inline-flex;
   align-items: center;
-  gap: .4rem;
-  margin-bottom: .65rem;
+  gap: .35rem;
+  border-radius: 999px;
+  padding: .32rem .62rem;
+  font-weight: 900;
+  line-height: 1;
+}
+.wcard-cond-dry {
+  background: rgba(255,255,255,.12);
+}
+.wcard-cond-wet {
+  background: rgba(96,165,250,.2);
 }
 .wcard-meta {
   position: relative;
   z-index: 2;
-  display: flex;
-  gap: .875rem;
-  flex-wrap: wrap;
-  border-top: 1px solid rgba(255,255,255,.08);
-  padding-top: .6rem;
-  margin-top: auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: .3rem;
+  width: 100%;
+  border-top: 0;
+  padding-top: 0;
+  margin-top: 0;
 }
-.wcard-meta-item { display: flex; flex-direction: column; gap: .1rem; }
+.wcard-meta-item {
+  display: grid;
+  grid-template-columns: minmax(4.2rem, auto) 1fr;
+  align-items: baseline;
+  gap: .45rem;
+  border-radius: 12px;
+  background: rgba(255,255,255,.1);
+  padding: .32rem .5rem;
+}
 .wcard-meta-label {
-  font-size: .58rem;
+  font-size: .62rem;
   font-weight: 700;
-  letter-spacing: .16em;
+  letter-spacing: .08em;
   text-transform: uppercase;
-  color: rgba(255,255,255,.28);
+  color: rgba(255,255,255,.62);
 }
 .wcard-meta-val {
-  font-size: .82rem;
-  font-weight: 700;
-  color: rgba(255,255,255,.82);
+  font-size: .98rem;
+  font-weight: 900;
+  color: rgba(255,255,255,.96);
+  line-height: 1;
 }
 
 .aurora-analog-clock {
-  width: clamp(13rem, 26vw, 21rem);
+  width: clamp(9.5rem, 18vw, 14rem);
   aspect-ratio: 1;
   border-radius: 50%;
   padding: clamp(.7rem, 1.2vw, 1rem);
@@ -751,8 +809,8 @@ html.dark .aurora-modal-shell {
 }
 
 .aurora-analog-face {
-  --analog-number-radius: clamp(4.35rem, 10.4vw, 8.05rem);
-  --analog-tick-radius: clamp(4.95rem, 11.6vw, 9rem);
+  --analog-number-radius: clamp(3.05rem, 7.2vw, 5.25rem);
+  --analog-tick-radius: clamp(3.45rem, 8vw, 5.85rem);
   position: relative;
   width: 100%;
   height: 100%;
@@ -903,6 +961,15 @@ html.dark .aurora-modal-shell {
   .bento-wide { grid-column: span 2 !important; }
   .bento-tall { grid-row: span 1 !important; }
   .hero-body-grid { grid-template-columns: 1fr !important; }
+  .hero-clock-panel,
+  .hero-tool-stack {
+    max-width: none;
+    margin-left: 0;
+  }
+  .hero-widget-row {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
   .footer-inner-grid { grid-template-columns: 1fr 1fr !important; }
 }
 @media (max-width: 560px) {
@@ -943,6 +1010,38 @@ html.dark .aurora-modal-shell {
   .mobile-subcategory .subcategory-icon {
     display: none !important;
   }
-  .glass-chip-row { flex-direction: column; }
+  .hero-search input {
+    min-height: 3.35rem;
+    padding-right: 7.75rem !important;
+  }
+  .hero-search button[type="submit"] {
+    padding-inline: .85rem !important;
+  }
+  .hero-widget-row,
+  .glass-chip-row {
+    display: flex !important;
+    flex-direction: column;
+  }
+  .wcard-base {
+    min-height: 7.25rem;
+    padding: .75rem .85rem;
+  }
+  .wcard-main {
+    gap: .6rem;
+  }
+  .wcard-temp {
+    font-size: clamp(3.35rem, 16vw, 4.45rem);
+  }
+  .wcard-side {
+    min-width: 7.5rem;
+  }
+  .wcard-location {
+    font-size: .66rem;
+  }
+  .wcard-meta-item {
+    grid-template-columns: minmax(3.9rem, auto) 1fr;
+    gap: .35rem;
+    padding-block: .25rem;
+  }
   .footer-inner-grid { grid-template-columns: 1fr !important; gap: 2rem !important; }
 }

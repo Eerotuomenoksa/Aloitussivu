@@ -142,6 +142,10 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ locality, onLocationResolved,
     return t('weatherVariable');
   };
 
+  const isPrecipitation = (code: number | undefined) => (
+    code !== undefined && code >= 51
+  );
+
   const resolveMunicipality = (address: Record<string, string | undefined>, displayName: string) => {
     const candidates = [
       address.municipality,
@@ -322,13 +326,11 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ locality, onLocationResolved,
   if (variant === 'aurora') {
     const state: WeatherState = getWeatherState(weather?.code, weather?.hour);
     const stateClass = `wcard-${state}` as const;
-    const now = new Date();
-    const timeLabel = now.toLocaleTimeString('fi-FI', { hour: '2-digit', minute: '2-digit' });
     const ariaLabel = loading
       ? t('weatherLoading')
       : error
         ? error
-        : `${t('weather')}: ${weather?.temp}°C, ${weather?.condition}, ${locationName}`;
+        : `${t('weather')}: ${weather?.temp}°C, ${weather?.condition}, ${weather?.feelsLike !== undefined ? `${t('weatherFeelsLike')} ${weather.feelsLike}°C, ` : ''}${locationName}`;
 
     return (
       <div
@@ -358,37 +360,33 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ locality, onLocationResolved,
           </>
         )}
 
-        <div className="wcard-top">
-          <div className="wcard-location">
-            <span className="wcard-dot" aria-hidden="true" />
-            <span>{locationName}</span>
+        <div className="wcard-main">
+          <div className="wcard-temp-row">
+            {loading ? (
+              <span className="wcard-temp" style={{ opacity: .4 }} role="status" aria-live="polite">-</span>
+            ) : error ? (
+              <span className="wcard-temp" style={{ fontSize: '1.5rem', opacity: .6 }}>{error}</span>
+            ) : (
+              <>
+                <span className="wcard-temp" aria-label={`${weather!.temp} ${t('degreeCelsius')}`}>
+                  {weather!.temp}
+                </span>
+                <span className="wcard-unit" aria-hidden="true">°C</span>
+              </>
+            )}
           </div>
-          <span className="wcard-time">{timeLabel}</span>
-        </div>
 
-        <div className="wcard-temp-row">
-          {loading ? (
-            <span className="wcard-temp" style={{ opacity: .4 }} role="status" aria-live="polite">-</span>
-          ) : error ? (
-            <span className="wcard-temp" style={{ fontSize: '1.5rem', opacity: .6 }}>{error}</span>
-          ) : (
-            <>
-              <span className="wcard-temp" aria-label={`${weather!.temp} ${t('degreeCelsius')}`}>
-                {weather!.temp}
-              </span>
-              <span className="wcard-unit" aria-hidden="true">°C</span>
-            </>
-          )}
-        </div>
-
-        {!loading && !error && weather && (
-          <>
-            <div className="wcard-cond">
-              <span aria-hidden="true">{weather.icon}</span>
-              <span>{weather.condition}</span>
-            </div>
-
-            <div className="wcard-meta">
+          {!loading && !error && weather && (
+            <div className="wcard-side">
+              <div className="wcard-location">
+                <span className="wcard-dot" aria-hidden="true" />
+                <span>{locationName}</span>
+              </div>
+              <div className={`wcard-cond ${isPrecipitation(weather.code) ? 'wcard-cond-wet' : 'wcard-cond-dry'}`}>
+                <span aria-hidden="true">{weather.icon}</span>
+                <span>{isPrecipitation(weather.code) ? t('weatherWet') : t('weatherDry')}</span>
+              </div>
+              <div className="wcard-meta">
               {weather.feelsLike !== undefined && (
                 <div className="wcard-meta-item">
                   <span className="wcard-meta-label">{t('weatherFeelsLike')}</span>
@@ -401,27 +399,10 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ locality, onLocationResolved,
                   <span className="wcard-meta-val">{weather.windspeed} m/s</span>
                 </div>
               )}
-              {weather.humidity !== undefined && (
-                <div className="wcard-meta-item">
-                  <span className="wcard-meta-label">{t('weatherHumidity')}</span>
-                  <span className="wcard-meta-val">{weather.humidity} %</span>
-                </div>
-              )}
+              </div>
             </div>
-          </>
-        )}
-
-        {isLinkVisible('https://www.ilmatieteenlaitos.fi/') && (
-          <a
-            href="https://www.ilmatieteenlaitos.fi/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="absolute bottom-3 right-4 z-10 rounded text-[.6rem] font-bold uppercase tracking-[.1em] text-white/20 transition-colors hover:text-white/45 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#f0c040]"
-            aria-label={t('weatherDetails')}
-          >
-            ilmatieteenlaitos.fi ↗
-          </a>
-        )}
+          )}
+        </div>
       </div>
     );
   }

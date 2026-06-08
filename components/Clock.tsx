@@ -127,7 +127,7 @@ const Clock: React.FC<ClockProps> = ({ fontSizeStep = 0, variant = 'hero', mode 
           aria-live="polite"
           className="block font-display font-light text-white"
           style={{
-            fontSize: 'clamp(5rem, 13vw, 10rem)',
+            fontSize: 'clamp(4.25rem, 8vw, 6.8rem)',
             letterSpacing: '-.04em',
             lineHeight: '.9',
             textShadow: '0 2px 60px rgba(61,184,112,.2)',
@@ -135,7 +135,7 @@ const Clock: React.FC<ClockProps> = ({ fontSizeStep = 0, variant = 'hero', mode 
         >
           {timeString}
         </time>
-        <div className="mt-7 flex items-center gap-4">
+        <div className="mt-4 flex items-center gap-3">
           <span
             aria-hidden="true"
             className="h-[6px] w-[6px] rounded-full"

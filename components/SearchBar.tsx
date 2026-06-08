@@ -36,23 +36,23 @@ const SearchBar: React.FC<SearchBarProps> = ({ fontSizeStep = 0, variant = 'defa
   const inputTextClass = isHeader ? 'text-lg md:text-xl' : textClasses[fontSizeStep];
   if (isAurora) {
     return (
-      <form onSubmit={handleSearch} className="relative w-full">
+      <form onSubmit={handleSearch} className="hero-search relative w-full">
         <div className="relative">
           <input
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder={speechState === 'listening' ? t('listeningPlaceholder') : t('googlePlaceholder')}
-            className="w-full rounded-[44px] border-[1.5px] border-white/50 bg-white/70 py-[1.1rem] pl-14 pr-40 font-body text-[clamp(1rem,1.3vw,1.15rem)] font-bold text-[#0a1a0e] shadow-[0_8px_32px_rgba(10,26,14,.18),0_1px_0_rgba(255,255,255,.6)_inset] outline-none backdrop-blur-[20px] transition-all placeholder:text-[#7a9882] focus:border-[var(--theme-gold)] focus:shadow-[0_0_0_4px_rgba(212,148,10,.2),0_8px_32px_rgba(10,26,14,.18),0_1px_0_rgba(255,255,255,.6)_inset]"
+            className="w-full rounded-[28px] border-[1.5px] border-white/50 bg-white/70 py-[.9rem] pl-12 pr-36 font-body text-[1rem] font-bold text-[#0a1a0e] shadow-[0_8px_32px_rgba(10,26,14,.18),0_1px_0_rgba(255,255,255,.6)_inset] outline-none backdrop-blur-[20px] transition-all placeholder:text-[#7a9882] focus:border-[var(--theme-gold)] focus:shadow-[0_0_0_4px_rgba(212,148,10,.2),0_8px_32px_rgba(10,26,14,.18),0_1px_0_rgba(255,255,255,.6)_inset]"
             aria-label={t('googleSearch')}
           />
-          <span className="absolute left-6 top-1/2 -translate-y-1/2 text-2xl opacity-45" aria-hidden="true">🔍</span>
+          <span className="absolute left-5 top-1/2 -translate-y-1/2 text-xl opacity-45" aria-hidden="true">🔍</span>
           <div className="absolute right-[.45rem] top-1/2 flex -translate-y-1/2 items-center gap-2">
             {canListen && (
               <button
                 type="button"
                 onClick={toggleListening}
-                className={`${speechState === 'listening' ? 'bg-red-500 text-white animate-pulse' : 'bg-white/80 text-[#0a1a0e] hover:bg-red-100 hover:text-red-700'} flex h-10 w-10 items-center justify-center rounded-full text-lg shadow-md transition-all active:scale-95 focus-visible:outline-none`}
+                className={`${speechState === 'listening' ? 'bg-red-500 text-white animate-pulse' : 'bg-white/80 text-[#0a1a0e] hover:bg-red-100 hover:text-red-700'} flex h-9 w-9 items-center justify-center rounded-full text-base shadow-md transition-all active:scale-95 focus-visible:outline-none`}
                 aria-label={speechState === 'listening' ? t('stopListening') : t('startListening')}
               >
                 🎤
@@ -60,7 +60,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ fontSizeStep = 0, variant = 'defa
             )}
             <button
               type="submit"
-              className="rounded-[44px] bg-[var(--theme-primary)] px-[1.4rem] py-[.6rem] text-sm font-bold text-white shadow-[0_2px_12px_rgba(28,82,53,.35)] transition-all hover:bg-[var(--theme-primary-mid)] hover:shadow-[0_4px_20px_rgba(28,82,53,.4)] active:scale-95"
+              className="rounded-[24px] bg-[var(--theme-primary)] px-[1.1rem] py-[.55rem] text-sm font-bold text-white shadow-[0_2px_12px_rgba(28,82,53,.35)] transition-all hover:bg-[var(--theme-primary-mid)] hover:shadow-[0_4px_20px_rgba(28,82,53,.4)] active:scale-95"
             >
               {t('searchButton')}
             </button>
