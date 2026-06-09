@@ -204,6 +204,7 @@ const collectLinks = async () => {
   }
 
   const localServices = await readText('localServices.ts');
+  const localKelaTaxiNumbers = await readText('localKelaTaxiNumbers.ts');
   const localTransportCount = [...localServices.matchAll(/publicTransport:\s*\{/g)].length;
   const localLibraryCount = [...localServices.matchAll(/library:\s*\{/g)].length;
   const localMunicipalityServiceCount = [...localServices.matchAll(/municipality:\s*\{/g)].length;
@@ -215,6 +216,15 @@ const collectLinks = async () => {
 
   for (const match of localServices.matchAll(/regionalNewsProvider\('([^']+)',\s*'([^']+)'\)/g)) {
     addRow('Alueelliset uutislähteet', 'Alueelliset uutiset', match[1], match[2], 'localServices.ts');
+  }
+
+  for (const match of localKelaTaxiNumbers.matchAll(/name:\s*"([^"]+)",\s*url:\s*"([^"]+)".*?group:\s*'Kela-taksi'.*?phone:\s*"([^"]+)"/gs)) {
+    addRow('Alueelliset puhelinnumerot', 'Kela-taksi', match[1], match[2], 'localKelaTaxiNumbers.ts');
+    phoneLinks.set(`${match[1]}|${match[2]}|${match[3]}`, {
+      name: match[1],
+      url: match[2],
+      phone: match[3],
+    });
   }
 
   for (const match of localServices.matchAll(/'([0-9]{2})':\s*'([^']+)'/g)) {
@@ -273,6 +283,7 @@ const collectLinks = async () => {
     localNewspaperCount: [...localNewspapers.matchAll(/\{\s*"name":\s*"([^"]+)",\s*"url":\s*"([^"]+)"\s*\}/g)].length,
     localSportsClubCount: [...localSportsClubs.matchAll(/\{\s*name:\s*'([^']+)',\s*url:\s*'([^']+)',\s*group:\s*'([^']+)'/g)].length,
     localExerciseLinkCount: [...localExerciseLinks.matchAll(/\{\s*"name":\s*"([^"]+)",\s*"url":\s*"([^"]+)",\s*"group":\s*"([^"]+)"\s*\}/g)].length,
+    localKelaTaxiPhoneCount: [...localKelaTaxiNumbers.matchAll(/group:\s*'Kela-taksi'.*?phone:\s*"([^"]+)"/gs)].length,
     phoneLinkCount: phoneLinks.size,
   };
 };
@@ -289,6 +300,7 @@ const main = async () => {
     localNewspaperCount,
     localSportsClubCount,
     localExerciseLinkCount,
+    localKelaTaxiPhoneCount,
     phoneLinkCount,
   } = await collectLinks();
 
@@ -375,6 +387,7 @@ const main = async () => {
     `  localNewspapers: ${localNewspaperCount},`,
     `  localSportsClubs: ${localSportsClubCount},`,
     `  localExerciseLinks: ${localExerciseLinkCount},`,
+    `  localKelaTaxiPhones: ${localKelaTaxiPhoneCount},`,
     '} as const;',
     '',
   ];
@@ -441,7 +454,8 @@ const main = async () => {
     ...[...countsBySection.entries()].sort(([a], [b]) => a.localeCompare(b, 'fi-FI')).map(([section, count]) => `| ${section} | ${count} |`),
     '',
     `Yhteensä: ${checkedRows.length} linkkiä.`,
-    `Puhelinnumeroita linkkikorteissa: ${phoneLinkCount}.`,
+    `Puhelinnumeroita yhteensä: ${phoneLinkCount}.`,
+    `Näistä alueellisia Kela-taksien tilausnumeroita: ${localKelaTaxiPhoneCount}.`,
     '',
     `Tarkistusvirheitä: ${failed.length}.`,
     `Huomioita: ${warnings.length}.`,

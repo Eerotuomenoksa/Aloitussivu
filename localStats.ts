@@ -9,4 +9,5 @@ export const LOCAL_LINK_STATS = {
   localNewspapers: 121,
   localSportsClubs: 41,
   localExerciseLinks: 152,
+  localKelaTaxiPhones: 42,
 } as const;
