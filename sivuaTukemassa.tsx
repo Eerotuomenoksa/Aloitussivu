@@ -97,7 +97,7 @@ function App() {
                   <h3 className="aurora-section-title mt-1 text-2xl">Vanhustyön keskusliitto ry</h3>
                 </div>
                 <p className="text-base font-bold leading-relaxed text-[var(--theme-text-2)]">
-                  Vanhustyön keskusliitto ry omistaa ja mahdollistaa aloitussivu-kokeilun. Omistajuus merkitään näkyvästi, mutta se ei muuta linkkien puolueetonta käsittelyä.
+                  Vanhustyön keskusliitto ry omistaa ja mahdollistaa Aloitussivu-kokeilun. Omistajuus merkitään näkyvästi, mutta se ei muuta linkkien puolueetonta käsittelyä.
                 </p>
                 <a href="https://vtkl.fi/" target="_blank" rel="noopener noreferrer" className="aurora-primary-link text-sm">
                   Siirry sivustolle

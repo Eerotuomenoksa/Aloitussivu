@@ -68,7 +68,7 @@ function App() {
             </span>
             <h1 className="font-display text-4xl font-bold tracking-tight md:text-6xl">Tietosuoja</h1>
             <p className="max-w-3xl text-lg font-bold leading-relaxed text-white/75">
-              aloitussivu-sivua voi käyttää ilman kirjautumista ja ilman evästeisiin perustuvaa seurantaa. Sivusto tallentaa käyttäjän omia asetuksia pääosin käyttäjän omaan selaimeen.
+              Aloitussivu-sivua voi käyttää ilman kirjautumista ja ilman evästeisiin perustuvaa seurantaa. Sivusto tallentaa käyttäjän omia asetuksia pääosin käyttäjän omaan selaimeen.
             </p>
           </div>
         </header>
@@ -99,7 +99,7 @@ function App() {
         <div className="mt-8 space-y-6">
           <PrivacySection id="mita-sivu-kertoo" title="Mitä tämä sivu kertoo">
             <p className={paragraphClass}>
-              Tämä tietosuojasivu kertoo, mitä tietoja aloitussivu käsittelee ja mihin tarkoitukseen. Sivun tarkoitus on olla selkeä myös käyttäjälle, joka ei tunne tietosuojatermejä.
+              Tämä tietosuojasivu kertoo, mitä tietoja Aloitussivu käsittelee ja mihin tarkoitukseen. Sivun tarkoitus on olla selkeä myös käyttäjälle, joka ei tunne tietosuojatermejä.
             </p>
           </PrivacySection>
 

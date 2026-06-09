@@ -56,7 +56,7 @@ const TimeAwareLogo: React.FC<TimeAwareLogoProps> = ({ className = '', phase: ph
     <svg
       viewBox="0 0 360 128"
       role="img"
-      aria-label={`aloitussivu, ${phaseLabels[phase]}`}
+      aria-label={`Aloitussivu, ${phaseLabels[phase]}`}
       className={className}
       xmlns="http://www.w3.org/2000/svg"
     >
@@ -191,7 +191,7 @@ const TimeAwareLogo: React.FC<TimeAwareLogoProps> = ({ className = '', phase: ph
       <line x1="63.5" y1="71" x2="63.5" y2="79" stroke="white" strokeWidth="0.8" />
       <line x1="59" y1="75" x2="68" y2="75" stroke="white" strokeWidth="0.8" />
 
-      <text x="126" y="47" fontFamily="Georgia, 'Times New Roman', serif" fontSize="24" fontWeight="700" fill={titleFill}>aloitussivu</text>
+      <text x="126" y="47" fontFamily="Georgia, 'Times New Roman', serif" fontSize="24" fontWeight="700" fill={titleFill}>Aloitussivu</text>
       <text x="126" y="75" fontFamily="Georgia, 'Times New Roman', serif" fontSize="24" fontWeight="700" fill={titleFill}>seniorille</text>
       <rect x="126" y="82" width="176" height="2.5" rx="1.5" fill="#c9963a" opacity="0.9" />
       <text x="127" y="101" fontFamily="Georgia, 'Times New Roman', serif" fontSize="11" fill={subtitleFill}>Helppo ja turvallinen pääsy nettiin</text>
