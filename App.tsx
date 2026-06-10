@@ -8,6 +8,7 @@ import ProviderModal from './components/ProviderModal';
 import InfoModal from './components/InfoModal';
 import HomepageModal from './components/HomepageModal';
 import LinkReportModal from './components/LinkReportModal';
+import FeedbackModal from './components/FeedbackModal';
 import OnboardingTour from './components/OnboardingTour';
 import SearchBar from './components/SearchBar';
 import RegionalServicesPanel from './components/RegionalServicesPanel';
@@ -155,6 +156,7 @@ const AppContent: React.FC = () => {
   const [isInfoOpen, setIsInfoOpen] = useState(false);
   const [isHomepageOpen, setIsHomepageOpen] = useState(false);
   const [isOnboardingOpen, setIsOnboardingOpen] = useState(false);
+  const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
   const [hasSeenOnboarding, setHasSeenOnboarding] = useState(() => localStorage.getItem(ONBOARDING_SEEN_KEY) === 'true');
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [locality, setLocality] = useState<LocalityInfo | null>(() => {
@@ -293,13 +295,23 @@ const AppContent: React.FC = () => {
   useLinkVisibilityVersion();
   useApprovedLinkSuggestionsVersion();
   useEffect(() => installUsageTracking('etusivu'), []);
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('feedback') !== '1') return;
+    setIsFeedbackOpen(true);
+    params.delete('feedback');
+    const nextSearch = params.toString();
+    const nextUrl = `${window.location.pathname}${nextSearch ? `?${nextSearch}` : ''}${window.location.hash}`;
+    window.history.replaceState(null, '', nextUrl);
+  }, []);
   const openReportModal = useCallback((draft: LinkReportDraft) => setReportDraft(draft), []);
   const closeReportModal = useCallback(() => setReportDraft(null), []);
   const selectedShortcut = selectedCategory ? mergeApprovedLinksIntoShortcuts([selectedCategory])[0] ?? selectedCategory : null;
   const isFinnishLocality = locality?.isInFinland !== false;
   const regionalLocality = isFinnishLocality ? locality : null;
   const selectedSecondaryTimeZone = SECONDARY_TIME_ZONE_OPTIONS.find((option) => option.value === secondaryTimeZone) ?? SECONDARY_TIME_ZONE_OPTIONS[0];
-  const isAnyModalOpen = Boolean(selectedShortcut || isInfoOpen || isHomepageOpen || isOnboardingOpen || reportDraft || isSettingsOpen);
+  const isAnyModalOpen = Boolean(selectedShortcut || isInfoOpen || isHomepageOpen || isOnboardingOpen || isFeedbackOpen || reportDraft || isSettingsOpen);
   const updateVisibility = useCallback((key: keyof UiVisibilityState, value: boolean) => {
     setUiVisibility(prev => ({ ...prev, [key]: value }));
   }, []);
@@ -369,9 +381,19 @@ const AppContent: React.FC = () => {
                   {t('pageTitle')}
                 </h1>
               </div>
-              <span className="rounded-full border border-white/[.18] bg-white/10 px-3 py-1.5 text-[.7rem] font-bold uppercase tracking-[.12em] text-white/65">
-                {t('beta')}
-              </span>
+              <div className="inline-flex min-h-[2.75rem] items-center gap-2 rounded-full border border-white/[.18] bg-white/10 px-3 py-1.5 text-white/70">
+                <span className="text-[.7rem] font-bold uppercase tracking-[.12em]">
+                  {t('beta')}
+                </span>
+                <span className="h-4 w-px bg-white/20" aria-hidden="true" />
+                <button
+                  type="button"
+                  onClick={() => setIsFeedbackOpen(true)}
+                  className="rounded-full bg-white/10 px-3 py-1 text-xs font-black text-white transition-colors hover:bg-white/20 focus-visible:ring-2 focus-visible:ring-white"
+                >
+                  Palaute
+                </button>
+              </div>
               <LanguageSelector language={language} setLanguage={setLanguage} label={t('language')} />
               <button
                 onClick={() => setIsHomepageOpen(true)}
@@ -691,6 +713,13 @@ const AppContent: React.FC = () => {
               <div className="flex flex-wrap gap-3">
                 <button
                   type="button"
+                  onClick={() => setIsFeedbackOpen(true)}
+                  className="mt-5 inline-flex items-center gap-2 rounded-full bg-[var(--theme-primary)] px-5 py-2.5 text-sm font-black text-white shadow-[0_3px_0_rgba(0,0,0,.28)] hover:bg-[var(--theme-primary-mid)] focus-visible:ring-2 focus-visible:ring-white active:translate-y-[2px] active:shadow-none"
+                >
+                  Anna palautetta
+                </button>
+                <button
+                  type="button"
                   onClick={() => openReportModal({ name: '', url: '', category: '', source: 'Footer' })}
                   className="mt-5 inline-flex items-center gap-2 rounded-full bg-[var(--theme-gold)] px-5 py-2.5 text-sm font-black text-[var(--theme-cta-label)] shadow-[0_3px_0_rgba(0,0,0,.28)] hover:bg-[var(--theme-gold-light)] focus-visible:ring-2 focus-visible:ring-white active:translate-y-[2px] active:shadow-none"
                 >
@@ -712,6 +741,7 @@ const AppContent: React.FC = () => {
               </p>
               {[
                 { href: './yllapito.html', label: t('admin') },
+                { href: './kehitysjono.html', label: 'Kehitysjono' },
                 { href: './muutosloki.html', label: t('changelog') },
                 { href: './linkit.html', label: t('linkList') },
                 { href: './tietosuoja.html', label: t('privacyNotice') },
@@ -783,6 +813,7 @@ const AppContent: React.FC = () => {
           onComplete={completeOnboarding}
         />
         <LinkReportModal draft={reportDraft} onClose={closeReportModal} />
+        <FeedbackModal isOpen={isFeedbackOpen} onClose={() => setIsFeedbackOpen(false)} />
       </div>
       <FloatingControls
         decreaseLabel={t('decreaseText')}
