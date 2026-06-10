@@ -161,6 +161,11 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
                 className={`min-h-14 w-full rounded-full border-2 border-[var(--theme-border)] bg-[var(--theme-surface)] px-4 py-3 font-bold text-[var(--theme-text)] placeholder:text-[var(--theme-muted)] focus:border-[var(--theme-gold)] focus:outline-none focus:ring-4 focus:ring-[var(--theme-focus)]/30 ${smallTextClasses[fontSizeStep]}`}
                 aria-label={t('municipality')}
               />
+              {context && (
+                <span className={`mt-1 block font-semibold text-[var(--theme-muted)] ${smallTextClasses[fontSizeStep]}`}>
+                  Näytetään alueelliset palvelut: {localizedMunicipalityName || context.displayName}.
+                </span>
+              )}
             </label>
             {context && (
               <button
@@ -172,23 +177,18 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
               </button>
             )}
           </div>
-          {context && (
-            <div className="mt-3 flex flex-wrap items-center gap-3 rounded-2xl border-2 border-[var(--theme-gold)] bg-[var(--theme-gold-pale)] px-4 py-3 shadow-sm">
-              <p className={`font-semibold text-[var(--theme-muted)] ${smallTextClasses[fontSizeStep]}`}>
-                Alueelliset palvelut rajataan tähän paikkakuntaan.
-              </p>
-              {locality?.municipality && isManualQuery && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    setIsManualQuery(false);
-                    setQuery(locality.municipality);
-                  }}
-                  className="rounded-full bg-[var(--theme-primary)] px-4 py-2 font-black text-white transition-all hover:bg-[var(--theme-primary-mid)] active:scale-95"
-                >
-                  Käytä sijaintia {detectedMunicipalityName}
-                </button>
-              )}
+          {context && locality?.municipality && isManualQuery && (
+            <div className="mt-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setIsManualQuery(false);
+                  setQuery(locality.municipality);
+                }}
+                className="rounded-full bg-[var(--theme-primary)] px-4 py-2 font-black text-white transition-all hover:bg-[var(--theme-primary-mid)] active:scale-95"
+              >
+                Käytä sijaintia {detectedMunicipalityName}
+              </button>
             </div>
           )}
           <p className="sr-only">

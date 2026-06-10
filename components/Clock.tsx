@@ -50,6 +50,7 @@ const Clock: React.FC<ClockProps> = ({ fontSizeStep = 0, variant = 'hero', mode 
     month: 'long', 
     year: 'numeric' 
   });
+  const nameDayLabel = nameDayNames.length > 0 ? `Nimipäivä: ${nameDayNames.join(', ')}` : '';
   const hours = time.getHours();
   const minutes = time.getMinutes();
   const seconds = time.getSeconds();
@@ -89,19 +90,26 @@ const Clock: React.FC<ClockProps> = ({ fontSizeStep = 0, variant = 'hero', mode 
               <span className="aurora-analog-pin" />
             </div>
           </div>
-          <div className="mt-6 flex items-center gap-4">
+          <div className="mt-6 flex items-start gap-4">
             <span
               aria-hidden="true"
-              className="h-[6px] w-[6px] rounded-full"
+              className="mt-2 h-[6px] w-[6px] rounded-full"
               style={{
                 background: 'var(--theme-primary-glow)',
                 boxShadow: '0 0 8px var(--theme-primary-glow)',
                 animation: 'aurora-pulse 2s ease-in-out infinite',
               }}
             />
-            <p className="font-body text-[clamp(.9rem,1.2vw,1rem)] font-bold uppercase tracking-[.06em] text-white/55">
-              {dateString}
-            </p>
+            <div>
+              <p className="font-body text-[clamp(.9rem,1.2vw,1rem)] font-bold uppercase tracking-[.06em] text-white/55">
+                {dateString}
+              </p>
+              {nameDayLabel && (
+                <p className="mt-1 font-body text-[clamp(.88rem,1.05vw,.98rem)] font-bold text-white/72">
+                  {nameDayLabel}
+                </p>
+              )}
+            </div>
           </div>
           {secondaryClock && (
             <a
@@ -135,19 +143,26 @@ const Clock: React.FC<ClockProps> = ({ fontSizeStep = 0, variant = 'hero', mode 
         >
           {timeString}
         </time>
-        <div className="mt-4 flex items-center gap-3">
+        <div className="mt-4 flex items-start gap-3">
           <span
             aria-hidden="true"
-            className="h-[6px] w-[6px] rounded-full"
+            className="mt-2 h-[6px] w-[6px] rounded-full"
             style={{
               background: 'var(--theme-primary-glow)',
               boxShadow: '0 0 8px var(--theme-primary-glow)',
               animation: 'aurora-pulse 2s ease-in-out infinite',
             }}
           />
-          <p className="font-body text-[clamp(.9rem,1.2vw,1rem)] font-bold uppercase tracking-[.06em] text-white/55">
-            {dateString}
-          </p>
+          <div>
+            <p className="font-body text-[clamp(.9rem,1.2vw,1rem)] font-bold uppercase tracking-[.06em] text-white/55">
+              {dateString}
+            </p>
+            {nameDayLabel && (
+              <p className="mt-1 font-body text-[clamp(.88rem,1.05vw,.98rem)] font-bold text-white/72">
+                {nameDayLabel}
+              </p>
+            )}
+          </div>
         </div>
         {secondaryClock && (
           <a
