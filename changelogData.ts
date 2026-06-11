@@ -24,14 +24,92 @@ export type ChangelogCommit = {
   tags: string[];
 };
 
-export const CHANGELOG_GENERATED_AT = "3.6.2026 klo 06.40";
+export const CHANGELOG_GENERATED_AT = "11.6.2026 klo 07.39";
 export const CHANGELOG_VERSION = "0.71.0";
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
-  "Versionumerointi otettiin käyttöön: nykyinen versio näkyy footerissa ja muutoslokin yläosassa.",
-  "Muutoshistoria näyttää versionumeron jokaisen muutoksen yhteydessä."
+  "Linkkien tarkistusdata ja ylläpitoloki päivitettiin uusimman buildin yhteydessä.",
+  "Linkkitarkistukseen lisättiin RSS- ja uutisvirtalinkit sekä http-osoitteet, jotta muuttuneet alasivut ja ei-suojatut linkit jäävät heti pois näkyvistä.",
+  "Kaikki linkkilähteet tarkistettiin uudelleen ja katkenneet tai epäilyttävät linkit piilotettiin loppukäyttäjiltä.",
+  "Alueelliset Kela-taksit poistettiin etusivun nostolinkeistä, mutta ne löytyvät edelleen Liikenne-kategorian taksilinkkien kärjestä."
 ];
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
+  {
+    "hash": "a27821476e5c9c7f91e42fdd6782efae19aa25ca",
+    "date": "2026-06-11",
+    "version": "0.80.1",
+    "changeType": "patch",
+    "subject": "linkkien täysi tarkistus ja kela taksit pois nostolinkeistä",
+    "tags": []
+  },
+  {
+    "hash": "d8d745de7862723e110570573c0cfa09c47b9f68",
+    "date": "2026-06-10",
+    "version": "0.80.0",
+    "changeType": "minor",
+    "subject": "kehitysjono lisätty",
+    "tags": []
+  },
+  {
+    "hash": "ee6e2e5853a2b668d0c17eeb4dddfc71a91223c2",
+    "date": "2026-06-10",
+    "version": "0.79.0",
+    "changeType": "minor",
+    "subject": "nimipäivä takaisin näkyviin",
+    "tags": []
+  },
+  {
+    "hash": "a72ec905ec647768bafdf97e8e95c798cf01d798",
+    "date": "2026-06-09",
+    "version": "0.78.0",
+    "changeType": "minor",
+    "subject": "sivuston muutokset",
+    "tags": []
+  },
+  {
+    "hash": "dfd7d8060e3480beb9a8c025ea2510293fe64ea4",
+    "date": "2026-06-09",
+    "version": "0.77.1",
+    "changeType": "patch",
+    "subject": "tarkistuksia",
+    "tags": []
+  },
+  {
+    "hash": "3df08bf75ab05e8bac6c1a791d70c9d2e8d91e0e",
+    "date": "2026-06-08",
+    "version": "0.77.0",
+    "changeType": "minor",
+    "subject": "Kela-taksien puhelinnumerot",
+    "tags": []
+  },
+  {
+    "hash": "1ce08b19a2763252d0f3dc110d6854457606fead",
+    "date": "2026-06-08",
+    "version": "0.76.0",
+    "changeType": "minor",
+    "subject": "yläsivun tiivistys",
+    "tags": [
+      "Visuaalisuus"
+    ]
+  },
+  {
+    "hash": "4f62db19534ca55967c1a500bceb8c11575c2dfc",
+    "date": "2026-06-08",
+    "version": "0.75.0",
+    "changeType": "minor",
+    "subject": "työnimen muutos",
+    "tags": []
+  },
+  {
+    "hash": "f47fe0f50da88b338e69b9a93e7c1a716dfb6c40",
+    "date": "2026-06-03",
+    "version": "0.74.2",
+    "changeType": "patch",
+    "subject": "Lisää muutoslokin visuaalisuustagi",
+    "tags": [
+      "Visuaalisuus"
+    ]
+  },
   {
     "hash": "3c9946a4168d7c05eb5ddedc282feb085f1ad6be",
     "date": "2026-06-03",

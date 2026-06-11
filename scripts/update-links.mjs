@@ -40,7 +40,7 @@ const rows = [];
 const readText = (filePath) => readFile(path.join(ROOT, filePath), 'utf8');
 
 const addRow = (section, category, name, url, source) => {
-  if (!url || !/^https:\/\//i.test(url)) return;
+  if (!url || !/^https?:\/\//i.test(url)) return;
   rows.push({ section, category, name, url, source });
 };
 
@@ -205,6 +205,7 @@ const collectLinks = async () => {
 
   const localServices = await readText('localServices.ts');
   const localKelaTaxiNumbers = await readText('localKelaTaxiNumbers.ts');
+  const localNewspaperFeeds = await readText('localNewspaperFeeds.ts');
   const localTransportCount = [...localServices.matchAll(/publicTransport:\s*\{/g)].length;
   const localLibraryCount = [...localServices.matchAll(/library:\s*\{/g)].length;
   const localMunicipalityServiceCount = [...localServices.matchAll(/municipality:\s*\{/g)].length;
@@ -216,6 +217,16 @@ const collectLinks = async () => {
 
   for (const match of localServices.matchAll(/regionalNewsProvider\('([^']+)',\s*'([^']+)'\)/g)) {
     addRow('Alueelliset uutislähteet', 'Alueelliset uutiset', match[1], match[2], 'localServices.ts');
+  }
+
+  for (const block of localServices.matchAll(/rssFeeds:\s*\[([\s\S]*?)\]/g)) {
+    for (const match of block[1].matchAll(/\{\s*name:\s*'([^']+)',\s*url:\s*'([^']+)'\s*\}/g)) {
+      addRow('Uutisvirrat', 'RSS', match[1], match[2], 'localServices.ts');
+    }
+  }
+
+  for (const match of localNewspaperFeeds.matchAll(/\{\s*"municipality":\s*"([^"]+)",\s*"name":\s*"([^"]+)",\s*"url":\s*"([^"]+)"\s*\}/g)) {
+    addRow('Uutisvirrat', match[1], match[2], match[3], 'localNewspaperFeeds.ts');
   }
 
   for (const match of localKelaTaxiNumbers.matchAll(/name:\s*"([^"]+)",\s*url:\s*"([^"]+)".*?group:\s*'Kela-taksi'.*?phone:\s*"([^"]+)"/gs)) {
@@ -281,6 +292,10 @@ const collectLinks = async () => {
     municipalityWebsiteCount: [...municipalityWebsites.matchAll(/'([^']+)':\s*'([^']+)'/g)].length,
     municipalityWebsiteLocaleCount: [...municipalityWebsiteLocales.matchAll(/^\s*(sv|en|uk|et|ru|se):\s*"([^"]+)"/gm)].length,
     localNewspaperCount: [...localNewspapers.matchAll(/\{\s*"name":\s*"([^"]+)",\s*"url":\s*"([^"]+)"\s*\}/g)].length,
+    localNewsFeedCount: [...localNewspaperFeeds.matchAll(/\{\s*"municipality":\s*"([^"]+)",\s*"name":\s*"([^"]+)",\s*"url":\s*"([^"]+)"\s*\}/g)].length
+      + [...localServices.matchAll(/rssFeeds:\s*\[[\s\S]*?\]/g)].reduce((sum, block) => (
+        sum + [...block[0].matchAll(/\{\s*name:\s*'([^']+)',\s*url:\s*'([^']+)'\s*\}/g)].length
+      ), 0),
     localSportsClubCount: [...localSportsClubs.matchAll(/\{\s*name:\s*'([^']+)',\s*url:\s*'([^']+)',\s*group:\s*'([^']+)'/g)].length,
     localExerciseLinkCount: [...localExerciseLinks.matchAll(/\{\s*"name":\s*"([^"]+)",\s*"url":\s*"([^"]+)",\s*"group":\s*"([^"]+)"\s*\}/g)].length,
     localKelaTaxiPhoneCount: [...localKelaTaxiNumbers.matchAll(/group:\s*'Kela-taksi'.*?phone:\s*"([^"]+)"/gs)].length,
@@ -298,6 +313,7 @@ const main = async () => {
     municipalityWebsiteCount,
     municipalityWebsiteLocaleCount,
     localNewspaperCount,
+    localNewsFeedCount,
     localSportsClubCount,
     localExerciseLinkCount,
     localKelaTaxiPhoneCount,
@@ -386,6 +402,7 @@ const main = async () => {
     `  localTransport: ${localTransportCount},`,
     `  localLibraries: ${localLibraryCount},`,
     `  localNewspapers: ${localNewspaperCount},`,
+    `  localNewsFeeds: ${localNewsFeedCount},`,
     `  localSportsClubs: ${localSportsClubCount},`,
     `  localExerciseLinks: ${localExerciseLinkCount},`,
     `  localKelaTaxiPhones: ${localKelaTaxiPhoneCount},`,
@@ -457,6 +474,7 @@ const main = async () => {
     `Yhteensä: ${checkedRows.length} linkkiä.`,
     `Puhelinnumeroita yhteensä: ${phoneLinkCount}.`,
     `Näistä alueellisia Kela-taksien tilausnumeroita: ${localKelaTaxiPhoneCount}.`,
+    `Uutisvirtoja ja RSS-syötteitä tarkistuksessa: ${localNewsFeedCount}.`,
     '',
     `Tarkistusvirheitä: ${failed.length}.`,
     `Huomioita: ${warnings.length}.`,

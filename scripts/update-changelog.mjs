@@ -191,6 +191,7 @@ function summarizeWorktree(changes) {
 
   if (paths.some((pathName) => ['linkHealth.ts', 'linkStats.ts', 'docs/linkit.csv', 'docs/linkit.md', 'docs/yllapito-linkkiloki.csv', 'scripts/update-links.mjs'].includes(pathName))) {
     notes.push('Linkkien tarkistusdata ja ylläpitoloki päivitettiin uusimman buildin yhteydessä.');
+    notes.push('Linkkitarkistukseen lisättiin RSS- ja uutisvirtalinkit sekä http-osoitteet, jotta muuttuneet alasivut ja ei-suojatut linkit jäävät heti pois näkyvistä.');
   }
 
   if (paths.some((pathName) => ['components/SearchBar.tsx', 'components/Assistant.tsx', 'components/QuickLinks.tsx', 'hooks/useSpeechInput.ts'].includes(pathName))) {
@@ -208,6 +209,7 @@ function summarizeWorktree(changes) {
   }
 
   if (paths.some((pathName) => ['components/RegionalServicesPanel.tsx'].includes(pathName))) {
+    notes.push('Alueelliset Kela-taksit poistettiin etusivun aluepalveluiden nostokorteista ja jätettiin näkyviin Liikenne-kategorian taksilinkkien kärkeen.');
     notes.push('Etusivun alueellisiin palveluihin nostettiin myös paikalliset kirjastokimpat, jotta esimerkiksi Loviisalle näkyy Helle-kirjastot.');
     notes.push('Alueellisten palvelujen kunnan valintaa selkeytettiin: rajausviesti päivitettiin, turha kuntalaatikko poistettiin ja Vaihda kunta -painike siirrettiin työpöytänäkymässä kunnan kentän rinnalle.');
     notes.push('Alueellisten palveluiden paneelin kortit, kuntahaku ja paikalliset uutiset päivitettiin uuteen Aurora-pintakieleen.');
@@ -267,6 +269,11 @@ function summarizeCommit(commit) {
 
   if (subject.includes('tietosuoja-selosteeseen') || subject.includes('saavutettavuusselosteeseen')) {
     notes.push('Tietosuojaselosteen ja saavutettavuusselosteen luonnokset lisättiin sivustolle sekä linkitettiin footeriin, Ohjeeseen ja Tietoa-osioon.');
+  }
+
+  if (subject.includes('linkkien täysi tarkistus')) {
+    notes.push('Kaikki linkkilähteet tarkistettiin uudelleen ja katkenneet tai epäilyttävät linkit piilotettiin loppukäyttäjiltä.');
+    notes.push('Alueelliset Kela-taksit poistettiin etusivun nostolinkeistä, mutta ne löytyvät edelleen Liikenne-kategorian taksilinkkien kärjestä.');
   }
 
   return notes;
