@@ -354,10 +354,11 @@ const main = async () => {
     countsBySection.set(row.section, (countsBySection.get(row.section) ?? 0) + 1);
   }
 
-  const failed = checkedRows.filter((row) => !isManuallyVerified(row.url) && (row.check === 'virhe' || row.safety === 'virhe'));
+  const failed = checkedRows.filter((row) => row.check === 'virhe' || row.safety === 'virhe');
   const warnings = checkedRows.filter((row) => row.check === 'huomio' || row.safety === 'huomio');
   const adminRows = checkedRows.filter((row) => row.check !== 'ok' || row.safety !== 'ok');
-  const blockedUrls = [...new Set(failed.map((row) => row.url))].sort((a, b) => a.localeCompare(b, 'fi-FI'));
+  const blockedRows = checkedRows.filter((row) => row.check !== 'ok' || row.safety !== 'ok');
+  const blockedUrls = [...new Set(blockedRows.map((row) => row.url))].sort((a, b) => a.localeCompare(b, 'fi-FI'));
   const generatedAt = new Intl.DateTimeFormat('fi-FI', {
     dateStyle: 'short',
     timeStyle: 'short',

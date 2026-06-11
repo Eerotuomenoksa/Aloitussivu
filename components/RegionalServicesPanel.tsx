@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { getLocalizedMunicipalityName, getRegionalKelaTaxiProviders, getRegionalLibraryProviders, getRegionalNewsProviders, getRegionalProviders, getRegionalRssFeeds, normalizeMunicipality, resolveRegionalContext } from '../localServices';
+import { getLocalizedMunicipalityName, getRegionalLibraryProviders, getRegionalNewsProviders, getRegionalProviders, getRegionalRssFeeds, normalizeMunicipality, resolveRegionalContext } from '../localServices';
 import { filterVisibleProviders } from '../linkVisibility';
 import { LocalityInfo, Provider, LinkReportDraft } from '../types';
 import LocalNewsHeadlines from './LocalNewsHeadlines';
@@ -106,7 +106,6 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
   const services = useMemo(() => context ? filterVisibleProviders(uniqueProvidersByUrl([
     ...getRegionalProviders(context, language),
     ...getRegionalLibraryProviders(context),
-    ...getRegionalKelaTaxiProviders(context, language),
   ])) ?? [] : [], [context, language]);
   const newsFallbacks = useMemo(() => context ? filterVisibleProviders(getRegionalNewsProviders(context)) ?? [] : [], [context]);
   const rssFeeds = useMemo(() => context ? getRegionalRssFeeds(context) : [], [context]);

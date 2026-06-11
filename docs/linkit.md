@@ -1,6 +1,6 @@
 # Palvelun linkit
 
-Päivitetty: 9.6.2026 klo 10.42
+Päivitetty: 11.6.2026 klo 6.58
 
 Tämä tiedosto summaa sovelluksessa olevat linkit. Varsinainen avattava taulukko on tiedostossa `docs/linkit.csv`.
 
@@ -22,9 +22,9 @@ Yhteensä: 1296 linkkiä.
 Puhelinnumeroita yhteensä: 88.
 Näistä alueellisia Kela-taksien tilausnumeroita: 42.
 
-Tarkistusvirheitä: 39.
-Huomioita: 36.
-Piilotettu loppukäyttäjiltä: 39 linkkiä.
+Tarkistusvirheitä: 5.
+Huomioita: 40.
+Piilotettu loppukäyttäjiltä: 41 linkkiä.
 
 Turvallisuustarkistus on perustarkistus: URL-muoto, sallittu protokolla, HTTPS, kirjautumistietojen puuttuminen sekä paikallisten/sisäverkon osoitteiden esto. Se ei korvaa haittasivustojen erillistä mainearviota.
 
