@@ -59,7 +59,7 @@ const Assistant: React.FC<AssistantProps> = ({ variant = 'default' }) => {
         <span className="flex-shrink-0 text-[2rem] leading-none md:text-[2.35rem]" aria-hidden="true">💬</span>
         <span className="min-w-0 flex-1 leading-tight">
           <strong className="block text-[1.05rem] font-black leading-tight text-white md:text-[1.2rem]">{t('assistantNeedHelp')}</strong>
-          <span className="mt-1 block text-[.9rem] font-bold leading-tight text-white/65 md:text-[1rem]">{t('assistantAskAnything')}</span>
+          <span className="mt-1 block text-[.9rem] font-bold leading-tight text-white/80 md:text-[1rem]">{t('assistantAskAnything')}</span>
         </span>
       </button>
     );
@@ -113,7 +113,7 @@ const Assistant: React.FC<AssistantProps> = ({ variant = 'default' }) => {
       >
         {messages.length === 0 && (
           <div className="text-center py-10">
-            <p className="text-xl font-bold text-white/60">{t('assistantGreeting')}</p>
+            <p className="text-xl font-bold text-white/75">{t('assistantGreeting')}</p>
           </div>
         )}
         {messages.map((msg, i) => (
@@ -145,7 +145,7 @@ const Assistant: React.FC<AssistantProps> = ({ variant = 'default' }) => {
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && handleSend()}
           placeholder={speechState === 'listening' ? t('listeningPlaceholder') : t('assistantPlaceholder')}
-          className="min-w-0 flex-1 rounded-xl border border-white/15 bg-white/[.08] px-3 py-2 text-base font-bold text-white/90 placeholder-white/35 outline-none transition-colors focus:border-[rgba(240,192,64,.5)] focus:shadow-[0_0_0_3px_rgba(240,192,64,.12)] md:px-4 md:py-3 md:text-lg"
+          className="min-w-0 flex-1 rounded-xl border border-white/15 bg-white/[.08] px-3 py-2 text-base font-bold text-white/90 placeholder-white/60 outline-none transition-colors focus:border-[rgba(240,192,64,.5)] focus:shadow-[0_0_0_3px_rgba(240,192,64,.12)] md:px-4 md:py-3 md:text-lg"
           aria-label={t('assistantInput')}
         />
         {canListen && (

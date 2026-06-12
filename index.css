@@ -36,6 +36,7 @@
   --theme-text: #0a1a0e;
   --theme-text-2: #3a5442;
   --theme-text-3: #4a6e58;
+  --theme-muted: #3a5442;
   --theme-primary: #1c5235;
   --theme-primary-mid: #2a7a4e;
   --theme-primary-glow: #3db870;
@@ -58,6 +59,7 @@ html.theme-violetti {
   --theme-text: #1a0a2e;
   --theme-text-2: #4a3570;
   --theme-text-3: #5a4880;
+  --theme-muted: #4a3570;
   --theme-primary: #5c1a9e;
   --theme-primary-mid: #7a3abf;
   --theme-primary-glow: #a060e0;
@@ -80,6 +82,7 @@ html.theme-sininen {
   --theme-text: #0a1428;
   --theme-text-2: #2a3a5a;
   --theme-text-3: #445878;
+  --theme-muted: #2a3a5a;
   --theme-primary: #1a3a6a;
   --theme-primary-mid: #2a5a9e;
   --theme-primary-glow: #4a80d0;
@@ -102,6 +105,7 @@ html.theme-oranssi {
   --theme-text: #1e0e04;
   --theme-text-2: #5a3020;
   --theme-text-3: #6a4838;
+  --theme-muted: #5a3020;
   --theme-primary: #8a3010;
   --theme-primary-mid: #b84818;
   --theme-primary-glow: #e07040;
@@ -119,8 +123,9 @@ html.dark.theme-vihrea {
   --theme-bg: #060e08;
   --theme-surface: #0d1a10;
   --theme-text: #e8f5eb;
-  --theme-text-2: #90c8a0;
-  --theme-text-3: #78b890;
+  --theme-text-2: #b8dec2;
+  --theme-text-3: #a4d0b0;
+  --theme-muted: #b8dec2;
   --theme-primary: #2a9060;
   --theme-primary-mid: #38b878;
   --theme-primary-glow: #50d890;
@@ -139,8 +144,9 @@ html.dark.theme-violetti {
   --theme-bg: #07030f;
   --theme-surface: #100820;
   --theme-text: #f2ecff;
-  --theme-text-2: #b090e0;
-  --theme-text-3: #9878c8;
+  --theme-text-2: #d0b8f2;
+  --theme-text-3: #c2a4e8;
+  --theme-muted: #d0b8f2;
   --theme-primary: #7a38c8;
   --theme-primary-mid: #9850e8;
   --theme-primary-glow: #b870ff;
@@ -159,8 +165,9 @@ html.dark.theme-sininen {
   --theme-bg: #040810;
   --theme-surface: #091220;
   --theme-text: #e8f0fa;
-  --theme-text-2: #80a8d8;
-  --theme-text-3: #7898c8;
+  --theme-text-2: #b6d0ee;
+  --theme-text-3: #a6c2e4;
+  --theme-muted: #b6d0ee;
   --theme-primary: #2060b0;
   --theme-primary-mid: #3080d8;
   --theme-primary-glow: #50a0f8;
@@ -179,8 +186,9 @@ html.dark.theme-oranssi {
   --theme-bg: #0e0604;
   --theme-surface: #1c0e06;
   --theme-text: #faeee8;
-  --theme-text-2: #c89070;
-  --theme-text-3: #b08868;
+  --theme-text-2: #e0b098;
+  --theme-text-3: #d4a088;
+  --theme-muted: #e0b098;
   --theme-primary: #c04810;
   --theme-primary-mid: #e06020;
   --theme-primary-glow: #ff8040;

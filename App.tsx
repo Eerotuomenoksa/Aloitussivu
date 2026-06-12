@@ -377,12 +377,15 @@ const AppContent: React.FC = () => {
           />
           <div className="relative z-[5] mx-auto max-w-[1380px] px-5 pt-6 md:px-8">
             <nav className="mb-8 flex flex-wrap items-center gap-4 border-b border-white/[.08] pb-5" aria-label={t('topArea')}>
-              <div className="mr-auto flex flex-col gap-0.5">
+              <div className="mr-auto flex flex-col gap-1">
                 <h1 className="font-display text-[clamp(1.5rem,3vw,2.2rem)] font-semibold leading-none tracking-tight text-white">
                   {t('pageTitle')}
                 </h1>
+                <p className="text-[.95rem] font-bold text-white/80">
+                  {t('pageTagline')}
+                </p>
               </div>
-              <div className="inline-flex min-h-[2.75rem] items-center gap-2 rounded-full border border-white/[.18] bg-white/10 px-3 py-1.5 text-white/70">
+              <div className="inline-flex min-h-[2.75rem] items-center gap-2 rounded-full border border-white/[.18] bg-white/10 px-3 py-1.5 text-white/80">
                 <span className="text-[.7rem] font-bold uppercase tracking-[.12em]">
                   {t('beta')}
                 </span>
@@ -694,10 +697,22 @@ const AppContent: React.FC = () => {
               <p className="font-display text-2xl text-white">
                 Aloitussivu
               </p>
-              <p className="mt-1 text-[.7rem] font-bold uppercase tracking-[.22em] text-white/45">
+              <p className="mt-1 text-[.7rem] font-bold uppercase tracking-[.22em] text-white/70">
                 Vanhustyön keskusliitto · SeniorSurf
               </p>
-              <p className="mt-3 max-w-[36ch] text-sm font-semibold leading-relaxed text-white/55">
+              <p className="mt-2 text-sm font-semibold text-white/80">
+                {t('siteCreatedBy')}{' '}
+                <a
+                  href="https://seniorsurf.fi/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title="Avaa SeniorSurfin verkkosivut"
+                  className="font-black text-white underline decoration-white/55 underline-offset-4 hover:text-white"
+                >
+                  SeniorSurf
+                </a>.
+              </p>
+              <p className="mt-3 max-w-[36ch] text-sm font-semibold leading-relaxed text-white/80">
                 {t('footer')}
               </p>
               {isLinkVisible('https://seniorsurf.fi/') && isLinkVisible('https://seniorsurf.fi/wp-content/uploads/SeniorSurf_White-320-x-102-px.svg') && (
@@ -711,7 +726,7 @@ const AppContent: React.FC = () => {
                   <img
                     src="https://seniorsurf.fi/wp-content/uploads/SeniorSurf_White-320-x-102-px.svg"
                     alt={t('seniorSurfLogoAlt')}
-                    className="h-9 w-auto brightness-0 invert opacity-60 transition-opacity hover:opacity-90"
+                    className="h-9 w-auto brightness-0 invert opacity-80 transition-opacity hover:opacity-100"
                     loading="lazy"
                   />
                 </a>
@@ -742,7 +757,7 @@ const AppContent: React.FC = () => {
             </div>
 
             <nav className="grid content-start gap-3" aria-label={t('footerLinks')}>
-              <p className="text-[.7rem] font-black uppercase tracking-[.2em] text-white/35 sm:col-span-2">
+              <p className="text-[.7rem] font-black uppercase tracking-[.2em] text-white/70 sm:col-span-2">
                 {t('footerNavSite')}
               </p>
               {[
@@ -766,7 +781,7 @@ const AppContent: React.FC = () => {
               ))}
             </nav>
             <div className="content-start">
-              <p className="mb-3 text-[.7rem] font-black uppercase tracking-[.2em] text-white/35">
+              <p className="mb-3 text-[.7rem] font-black uppercase tracking-[.2em] text-white/70">
                 {t('footerNavLegal')}
               </p>
               <div className="grid gap-3">
@@ -776,14 +791,14 @@ const AppContent: React.FC = () => {
             </div>
           </div>
           <div className="relative mx-auto flex max-w-[1400px] flex-wrap items-center justify-between gap-2 border-t border-white/10 px-6 py-3">
-            <p className="text-xs font-semibold text-white/25">
+            <p className="text-xs font-semibold text-white/65">
               © Aloitussivu
             </p>
             <a
               href="./muutosloki.html"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs font-black uppercase tracking-[.15em] text-white/25 no-underline hover:text-white/50"
+              className="text-xs font-black uppercase tracking-[.15em] text-white/70 no-underline hover:text-white"
               aria-label={`${t('changelog')}: ${APP_VERSION_LABEL}`}
             >
               {APP_VERSION_LABEL}

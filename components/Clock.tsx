@@ -108,9 +108,9 @@ const Clock: React.FC<ClockProps> = ({ fontSizeStep = 0, variant = 'hero', mode 
               className="mt-4 inline-flex max-w-full flex-wrap items-baseline gap-x-2 gap-y-1 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-white backdrop-blur transition-colors hover:bg-white/20"
               aria-label={`${secondaryClock.label} ${secondaryTimeString}. Avaa maailmankello`}
             >
-              <span className="text-xs font-black uppercase tracking-wide text-white/65">{secondaryClock.label}</span>
+              <span className="text-xs font-black uppercase tracking-wide text-white/80">{secondaryClock.label}</span>
               <span className="font-display text-2xl font-semibold leading-none text-white">{secondaryTimeString}</span>
-              <span className="text-xs font-bold text-white/60">{secondaryDateString}</span>
+              <span className="text-xs font-bold text-white/75">{secondaryDateString}</span>
             </a>
           )}
         </div>
@@ -151,9 +151,9 @@ const Clock: React.FC<ClockProps> = ({ fontSizeStep = 0, variant = 'hero', mode 
             className="mt-4 inline-flex max-w-full flex-wrap items-baseline gap-x-2 gap-y-1 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-white backdrop-blur transition-colors hover:bg-white/20"
             aria-label={`${secondaryClock.label} ${secondaryTimeString}. Avaa maailmankello`}
           >
-            <span className="text-xs font-black uppercase tracking-wide text-white/65">{secondaryClock.label}</span>
+            <span className="text-xs font-black uppercase tracking-wide text-white/80">{secondaryClock.label}</span>
             <span className="font-display text-2xl font-semibold leading-none text-white">{secondaryTimeString}</span>
-            <span className="text-xs font-bold text-white/60">{secondaryDateString}</span>
+            <span className="text-xs font-bold text-white/75">{secondaryDateString}</span>
           </a>
         )}
       </div>

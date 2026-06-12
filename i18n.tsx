@@ -796,6 +796,8 @@ const extraTranslations = {
     groupDescLukeminen: 'Kirjat ja kirjastot, kielten opiskelu sekä oman suvun historian tutkiminen.',
     groupDescLiikkuminen: 'Bussien ja junien aikataulut, matkustaminen, liikunta ja luonnossa ulkoilu.',
     groupDescVapaa: 'Harrastukset, eläkeyhdistykset, hengelliset yhteisöt ja mukavaa ajanvietettä.',
+    siteCreatedBy: 'Tämän sivuston on laatinut',
+    pageTagline: 'Linkkihakemisto arjen verkkopalveluihin',
   },
   sv: {
     skipToContent: 'Gå till innehållet',
@@ -893,6 +895,8 @@ const extraTranslations = {
     groupDescLukeminen: 'Böcker och bibliotek, språkstudier och din släkts historia.',
     groupDescLiikkuminen: 'Buss- och tågtidtabeller, resor, motion och friluftsliv.',
     groupDescVapaa: 'Hobbyer, pensionärsföreningar, andliga gemenskaper och trevliga tidsfördriv.',
+    siteCreatedBy: 'Webbplatsen har skapats av',
+    pageTagline: 'Länkkatalog för vardagens webbtjänster',
   },
   en: {
     skipToContent: 'Skip to content',
@@ -990,6 +994,8 @@ const extraTranslations = {
     groupDescLukeminen: 'Books and libraries, language learning and exploring your family history.',
     groupDescLiikkuminen: 'Bus and train timetables, travel, exercise and the outdoors.',
     groupDescVapaa: 'Hobbies, pensioners’ associations, spiritual communities and pleasant pastimes.',
+    siteCreatedBy: 'This site was created by',
+    pageTagline: 'A link directory for everyday online services',
   },
   uk: {
     pageTitle: 'Aloitussivu',

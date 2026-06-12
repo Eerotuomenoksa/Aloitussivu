@@ -418,7 +418,7 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ locality, onLocationResolved,
             {loading ? t('weatherLoading') : error ? error : `${weather?.temp}°C · ${locationName}`}
           </strong>
           {!loading && !error && (
-            <span className="mt-1 block text-[.9rem] font-bold leading-tight text-white/65 md:text-[1rem]">
+            <span className="mt-1 block text-[.9rem] font-bold leading-tight text-white/80 md:text-[1rem]">
               {weather?.condition}
             </span>
           )}
