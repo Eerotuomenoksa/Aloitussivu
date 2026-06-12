@@ -10,7 +10,12 @@ import {
   type User,
 } from 'firebase/auth';
 import { getFirestore, type Firestore } from 'firebase/firestore';
-import type { AppCheck } from 'firebase/app-check';
+import {
+  getToken,
+  initializeAppCheck,
+  ReCaptchaV3Provider,
+  type AppCheck,
+} from 'firebase/app-check';
 
 export const ADMIN_EMAIL = 'eero.tuomenoksa@gmail.com';
 const ADMIN_EMAILS = [
@@ -76,6 +81,21 @@ const getApp = () => {
   return app;
 };
 
+const ensureAppCheck = (initializedApp: FirebaseApp) => {
+  if (!appCheckSiteKey || typeof window === 'undefined') return null;
+  if (!appCheck) {
+    try {
+      appCheck = initializeAppCheck(initializedApp, {
+        provider: new ReCaptchaV3Provider(appCheckSiteKey),
+        isTokenAutoRefreshEnabled: true,
+      });
+    } catch {
+      return null;
+    }
+  }
+  return appCheck;
+};
+
 export const getFirebaseAuth = () => {
   const initializedApp = getApp();
   if (!initializedApp) return null;
@@ -88,6 +108,7 @@ export const getFirebaseAuth = () => {
 export const getFirebaseDb = () => {
   const initializedApp = getApp();
   if (!initializedApp) return null;
+  ensureAppCheck(initializedApp);
   if (!db) {
     db = getFirestore(initializedApp);
   }
@@ -98,16 +119,10 @@ export const getFirebaseAppCheckToken = async () => {
   const initializedApp = getApp();
   if (!initializedApp || !appCheckSiteKey || typeof window === 'undefined') return '';
 
-  if (!appCheck) {
-    const { initializeAppCheck, ReCaptchaV3Provider } = await import('firebase/app-check');
-    appCheck = initializeAppCheck(initializedApp, {
-      provider: new ReCaptchaV3Provider(appCheckSiteKey),
-      isTokenAutoRefreshEnabled: true,
-    });
-  }
+  const initializedAppCheck = ensureAppCheck(initializedApp);
+  if (!initializedAppCheck) return '';
 
-  const { getToken } = await import('firebase/app-check');
-  const token = await getToken(appCheck, false);
+  const token = await getToken(initializedAppCheck, false);
   return token.token;
 };
 

@@ -28,6 +28,7 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose }) => {
   const [description, setDescription] = useState('');
   const [page, setPage] = useState(getCurrentPageLabel);
   const [submitted, setSubmitted] = useState(false);
+  const [submitNotice, setSubmitNotice] = useState('');
   const [submitError, setSubmitError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const closeTimerRef = useRef<number | null>(null);
@@ -40,6 +41,7 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose }) => {
     setDescription('');
     setPage(getCurrentPageLabel());
     setSubmitted(false);
+    setSubmitNotice('');
     setSubmitError('');
     setIsSubmitting(false);
     window.requestAnimationFrame(() => closeButtonRef.current?.focus());
@@ -70,21 +72,33 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose }) => {
     const trimmedDescription = description.trim();
     const trimmedPage = page.trim() || getCurrentPageLabel();
 
-    if (!trimmedTitle || !trimmedDescription) return;
+    if (trimmedTitle.length < 3) {
+      setSubmitError('Kirjoita otsikkoon vähintään 3 merkkiä.');
+      return;
+    }
+
+    if (trimmedDescription.length < 5) {
+      setSubmitError('Kirjoita palautteeseen vähintään 5 merkkiä.');
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
-      await submitFeedback({
+      const result = await submitFeedback({
         type,
         title: trimmedTitle,
         description: trimmedDescription,
         page: trimmedPage,
       });
       setSubmitted(true);
+      setSubmitNotice(result.storage === 'cloud'
+        ? 'Kiitos. Palaute lisättiin kehitysjonoon.'
+        : 'Kiitos. Palaute tallennettiin tähän selaimeen, mutta julkiseen kehitysjonoon ei juuri nyt saatu yhteyttä.');
       if (closeTimerRef.current !== null) {
         window.clearTimeout(closeTimerRef.current);
       }
-      closeTimerRef.current = window.setTimeout(onClose, 1100);
+      closeTimerRef.current = window.setTimeout(onClose, result.storage === 'cloud' ? 1100 : 3500);
     } catch {
       setSubmitError('Palautteen tallennus ei onnistunut. Yritä hetken päästä uudelleen.');
     } finally {
@@ -144,6 +158,7 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose }) => {
                   onChange={(event) => setTitle(event.target.value)}
                   className="aurora-input w-full rounded-2xl px-4 py-3 font-bold"
                   placeholder="Esim. Nimipäivä ei näy kellon alla"
+                  minLength={3}
                   maxLength={140}
                   required
                 />
@@ -167,6 +182,7 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose }) => {
                 onChange={(event) => setDescription(event.target.value)}
                 className="aurora-input min-h-[150px] w-full resize-y rounded-2xl px-4 py-3 font-bold"
                 placeholder="Kerro mitä huomasit. Voit mainita laitteen tai selaimen, jos se auttaa asian selvittämisessä."
+                minLength={5}
                 maxLength={1600}
                 required
               />
@@ -174,7 +190,7 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose }) => {
 
             {submitted ? (
               <p role="status" className="rounded-2xl border-4 border-green-200 bg-green-50 p-4 font-black text-green-800 dark:border-green-900 dark:bg-green-900/20 dark:text-green-200">
-                Kiitos. Palaute lisättiin kehitysjonoon.
+                {submitNotice}
               </p>
             ) : null}
 

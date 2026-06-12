@@ -37,6 +37,11 @@ export interface FeedbackDraft {
   page: string;
 }
 
+export type FeedbackSubmitResult = {
+  item: FeedbackItem;
+  storage: 'cloud' | 'local';
+};
+
 const readLocalFeedback = () => {
   try {
     if (typeof localStorage === 'undefined') return [];
@@ -69,7 +74,7 @@ const emitFeedbackChange = () => {
   }
 };
 
-export const submitFeedback = async (draft: FeedbackDraft) => {
+export const submitFeedback = async (draft: FeedbackDraft): Promise<FeedbackSubmitResult> => {
   const now = new Date().toISOString();
   const item: FeedbackItem = {
     id: crypto.randomUUID(),
@@ -89,17 +94,16 @@ export const submitFeedback = async (draft: FeedbackDraft) => {
       try {
         await setDoc(doc(db, FEEDBACK_COLLECTION, item.id), item);
         emitFeedbackChange();
-        return item;
+        return { item, storage: 'cloud' };
       } catch (error) {
-        if (!import.meta.env.DEV) throw error;
         saveLocalFeedback(item);
-        return item;
+        return { item, storage: 'local' };
       }
     }
   }
 
   saveLocalFeedback(item);
-  return item;
+  return { item, storage: 'local' };
 };
 
 export const subscribeFeedbackItems = (callback: (items: FeedbackItem[]) => void) => {
