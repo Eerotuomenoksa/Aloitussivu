@@ -13,8 +13,6 @@ const FavoriteLinks: React.FC<FavoriteLinksProps> = ({ favorites, onToggleFavori
   const { t, categoryName } = useI18n();
   const visibleFavorites = favorites.filter((fav) => isLinkVisible(fav.url));
 
-  if (visibleFavorites.length === 0) return null;
-
   const textClasses = [
     'text-base',
     'text-lg',
@@ -35,10 +33,13 @@ const FavoriteLinks: React.FC<FavoriteLinksProps> = ({ favorites, onToggleFavori
     'inline-flex items-center gap-2 rounded-full border-2 border-[#e8a020] bg-[#fff8e8] px-5 py-2.5 font-black text-[#1a2e1e] shadow-[0_3px_0_#c27e10] transition-all duration-100 hover:-translate-y-0.5 hover:bg-[#fff0c0] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1a4d2e] active:translate-y-0 active:shadow-none dark:bg-[#2a2010] dark:text-[#e8f5ed]';
 
   return (
-    <section className="space-y-4" aria-labelledby="favorites-heading">
-      <h2 id="favorites-heading" className={`font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest flex items-center gap-2 ${subTextClasses[fontSizeStep]}`}>
-        <span aria-hidden="true">⭐</span> {t('favorites')}
+    <section className="zone zone-suosikit" aria-labelledby="favorites-heading">
+      <h2 id="favorites-heading" className="font-display mb-1 flex items-center gap-3 text-2xl font-bold text-[var(--theme-text)] md:text-3xl">
+        <span aria-hidden="true">⭐</span> {t('favoritesOwn')}
       </h2>
+      <p className={`mb-4 text-[var(--theme-text-2)] ${subTextClasses[fontSizeStep]}`}>
+        {visibleFavorites.length === 0 ? t('favoritesEmpty') : t('favoritesHint')}
+      </p>
       <div className="flex flex-wrap gap-3 md:gap-4">
         {visibleFavorites.map((fav) => {
           return (
@@ -48,6 +49,7 @@ const FavoriteLinks: React.FC<FavoriteLinksProps> = ({ favorites, onToggleFavori
                 target="_blank"
                 rel="noopener noreferrer"
                 className={`${basePillStyles} ${textClasses[fontSizeStep]}`}
+                title={`Avaa suosikki: ${fav.name}`}
                 aria-label={`${t('goToSite')}: ${fav.name}`}
               >
                 <span aria-hidden="true">{fav.categoryIcon}</span>
@@ -60,6 +62,7 @@ const FavoriteLinks: React.FC<FavoriteLinksProps> = ({ favorites, onToggleFavori
               </a>
               <button
                 onClick={() => onToggleFavorite(fav)}
+                title={`Poista suosikeista: ${fav.name}`}
                 className="inline-flex h-11 w-11 items-center justify-center rounded-full border-2 border-dashed border-[#c8dece] bg-transparent text-xl font-black text-[#6b8c72] transition-all hover:border-[#e8a020] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1a4d2e]"
                 aria-label={`${t('removeFavorite')}: ${fav.name}`}
               >

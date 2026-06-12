@@ -3,11 +3,15 @@ import ReactDOM from 'react-dom/client';
 import type { User } from 'firebase/auth';
 import './index.css';
 import {
+  getFeedbackAttachment,
+  subscribeFeedbackItems,
+  updateFeedbackItem,
+} from './feedback';
+import type {
+  FeedbackAttachment,
   FeedbackItem,
   FeedbackStatus,
   FeedbackType,
-  subscribeFeedbackItems,
-  updateFeedbackItem,
 } from './feedback';
 import {
   getUserEmail,
@@ -143,6 +147,28 @@ function FeedbackCard({
   canEdit: boolean;
   userEmail: string;
 }) {
+  const [attachment, setAttachment] = useState<FeedbackAttachment | null>(null);
+  const [attachmentError, setAttachmentError] = useState('');
+
+  useEffect(() => {
+    let isActive = true;
+    setAttachment(null);
+    setAttachmentError('');
+    if (!canEdit || !item.hasScreenshot) return () => { isActive = false; };
+
+    getFeedbackAttachment(item.id)
+      .then((nextAttachment) => {
+        if (isActive) setAttachment(nextAttachment);
+      })
+      .catch(() => {
+        if (isActive) setAttachmentError('Kuvakaappausta ei voitu ladata.');
+      });
+
+    return () => {
+      isActive = false;
+    };
+  }, [canEdit, item.hasScreenshot, item.id]);
+
   return (
     <article className="rounded-[28px] border border-[var(--theme-border)] bg-[var(--theme-surface)] p-5 shadow-sm md:p-6">
       <div className="flex flex-wrap items-start justify-between gap-3">
@@ -172,6 +198,48 @@ function FeedbackCard({
       <p className="mt-4 whitespace-pre-wrap text-base font-semibold leading-relaxed text-[var(--theme-text-2)]">
         {item.description}
       </p>
+
+      {canEdit && (item.client || item.hasScreenshot) ? (
+        <div className="mt-5 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-pale)] p-4">
+          <p className="text-sm font-black uppercase tracking-wide text-[var(--theme-muted)]">Tekniset tiedot</p>
+          {item.client ? (
+            <div className="mt-3 grid gap-2 text-sm font-bold text-[var(--theme-text-2)] md:grid-cols-2">
+              <p>Selain: {item.client.browserName}{item.client.browserVersion ? ` ${item.client.browserVersion}` : ''}</p>
+              <p>Käyttöjärjestelmä: {item.client.osName}</p>
+              <p>Laite: {item.client.deviceType}</p>
+              <p>Kieli: {item.client.language || '-'}</p>
+              <p>Näkymä: {item.client.viewport}</p>
+              <p>Näyttö: {item.client.screen}</p>
+              <p>Aikavyöhyke: {item.client.timezone || '-'}</p>
+              <p>Kosketusnäyttö: {item.client.touch ? 'kyllä' : 'ei'}</p>
+              <p className="md:col-span-2 break-all">User agent: {item.client.userAgent}</p>
+            </div>
+          ) : null}
+          {item.hasScreenshot ? (
+            <div className="mt-4">
+              <p className="text-sm font-black text-[var(--theme-muted)]">Kuvakaappaus</p>
+              {attachment?.screenshot ? (
+                <a
+                  href={attachment.screenshot.dataUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-2 inline-block"
+                >
+                  <img
+                    src={attachment.screenshot.dataUrl}
+                    alt={`Palautteen kuvakaappaus: ${attachment.screenshot.name}`}
+                    className="max-h-80 rounded-2xl border border-[var(--theme-border)] object-contain"
+                  />
+                </a>
+              ) : (
+                <p className="mt-2 text-sm font-bold text-[var(--theme-muted)]">
+                  {attachmentError || 'Kuvakaappausta ladataan...'}
+                </p>
+              )}
+            </div>
+          ) : null}
+        </div>
+      ) : null}
 
       {item.publicNote ? (
         <div className="mt-5 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-pale)] p-4">

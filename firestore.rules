@@ -51,7 +51,9 @@ service cloud.firestore {
           'status',
           'publicNote',
           'createdAt',
-          'updatedAt'
+          'updatedAt',
+          'client',
+          'hasScreenshot'
         ])
         && request.resource.data.id is string
         && request.resource.data.type in ['bug', 'content', 'link', 'accessibility', 'idea', 'other']
@@ -66,7 +68,66 @@ service cloud.firestore {
         && request.resource.data.title.size() <= 140
         && request.resource.data.description.size() >= 5
         && request.resource.data.description.size() <= 1600
-        && request.resource.data.page.size() <= 120;
+        && request.resource.data.page.size() <= 120
+        && (!('hasScreenshot' in request.resource.data) || request.resource.data.hasScreenshot is bool)
+        && (!('client' in request.resource.data)
+          || (
+            request.resource.data.client is map
+            && request.resource.data.client.keys().hasOnly([
+              'browserName',
+              'browserVersion',
+              'osName',
+              'deviceType',
+              'userAgent',
+              'platform',
+              'language',
+              'viewport',
+              'screen',
+              'timezone',
+              'touch'
+            ])
+            && request.resource.data.client.browserName is string
+            && request.resource.data.client.browserName.size() <= 80
+            && (!('browserVersion' in request.resource.data.client) || (request.resource.data.client.browserVersion is string && request.resource.data.client.browserVersion.size() <= 80))
+            && request.resource.data.client.osName is string
+            && request.resource.data.client.osName.size() <= 80
+            && request.resource.data.client.deviceType in ['desktop', 'tablet', 'mobile', 'unknown']
+            && request.resource.data.client.userAgent is string
+            && request.resource.data.client.userAgent.size() <= 500
+            && request.resource.data.client.platform is string
+            && request.resource.data.client.platform.size() <= 120
+            && request.resource.data.client.language is string
+            && request.resource.data.client.language.size() <= 40
+            && request.resource.data.client.viewport is string
+            && request.resource.data.client.viewport.size() <= 40
+            && request.resource.data.client.screen is string
+            && request.resource.data.client.screen.size() <= 40
+            && request.resource.data.client.timezone is string
+            && request.resource.data.client.timezone.size() <= 80
+            && request.resource.data.client.touch is bool
+          ));
+    }
+
+    function isValidFeedbackAttachmentCreate(feedbackId) {
+      return request.resource.data.keys().hasOnly([
+          'id',
+          'feedbackId',
+          'screenshot',
+          'createdAt'
+        ])
+        && request.resource.data.id == feedbackId
+        && request.resource.data.feedbackId == feedbackId
+        && request.resource.data.createdAt is string
+        && request.resource.data.screenshot is map
+        && request.resource.data.screenshot.keys().hasOnly(['name', 'type', 'size', 'dataUrl'])
+        && request.resource.data.screenshot.name is string
+        && request.resource.data.screenshot.name.size() <= 180
+        && request.resource.data.screenshot.type in ['image/png', 'image/jpeg', 'image/webp', 'image/gif']
+        && request.resource.data.screenshot.size is int
+        && request.resource.data.screenshot.size > 0
+        && request.resource.data.screenshot.size <= 460800
+        && request.resource.data.screenshot.dataUrl is string
+        && request.resource.data.screenshot.dataUrl.size() <= 700000;
     }
 
     match /linkReports/{reportId} {
@@ -79,6 +140,11 @@ service cloud.firestore {
       allow read: if true;
       allow create: if isValidFeedbackCreate();
       allow update, delete: if isAdmin();
+    }
+
+    match /feedbackAttachments/{feedbackId} {
+      allow read, update, delete: if isAdmin();
+      allow create: if isValidFeedbackAttachmentCreate(feedbackId);
     }
 
     match /approvedLinks/{linkId} {

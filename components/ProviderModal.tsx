@@ -167,6 +167,7 @@ const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSi
                             target="_blank"
                             rel="noopener noreferrer"
                             className="inline-flex min-h-14 items-center justify-center gap-3 rounded-full bg-[var(--theme-primary)] px-5 py-3 text-base font-black text-white shadow-sm transition-all hover:bg-[var(--theme-primary-mid)] focus-visible:ring-4 focus-visible:ring-[var(--theme-focus)]/40 active:scale-95 md:text-lg"
+                            title={`Avaa verkkosivu: ${provider.name}`}
                             aria-label={`Avaa verkkosivu: ${provider.name}`}
                           >
                             <span aria-hidden="true">↗</span>
@@ -176,6 +177,7 @@ const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSi
                             <a
                               href={phoneHref}
                               className="inline-flex min-h-16 items-center justify-center gap-3 rounded-full bg-[var(--theme-gold)] px-5 py-3 text-xl font-black text-[var(--theme-cta-label)] shadow-sm transition-all hover:bg-[var(--theme-gold-light)] focus-visible:ring-4 focus-visible:ring-[var(--theme-focus)]/40 active:scale-95 md:text-2xl"
+                              title={`Soita: ${provider.name}`}
                               aria-label={`Soita: ${provider.name}, ${provider.phone}`}
                             >
                               <span aria-hidden="true">☎</span>
@@ -192,6 +194,7 @@ const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSi
                             category: shortcut.name,
                             source: 'ProviderModal',
                           })}
+                          title={`Ilmoita ongelma linkissä: ${provider.name}`}
                           className="absolute bottom-3 right-3 flex h-11 w-11 items-center justify-center rounded-full bg-slate-900/80 text-xl text-white shadow-md transition-all hover:bg-slate-900 focus:opacity-100 focus:outline-none focus:ring-4 focus:ring-blue-300 sm:h-10 sm:w-10 sm:opacity-0 sm:group-hover/card:opacity-100"
                           aria-label={`${t('reportLink')}: ${provider.name}`}
                         >
@@ -200,6 +203,7 @@ const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSi
                       )}
                       <button
                         onClick={() => onToggleFavorite(fav)}
+                        title={isFav ? `Poista suosikeista: ${provider.name}` : `Lisää suosikkeihin: ${provider.name}`}
                         className={`absolute top-3 right-3 flex items-center justify-center rounded-full transition-all focus:ring-4 focus:ring-yellow-300 focus:outline-none
                           ${isFav
                             ? 'bg-yellow-400 hover:bg-yellow-500 shadow-md'

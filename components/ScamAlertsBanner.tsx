@@ -44,9 +44,10 @@ const formatAlertMeta = (alert: ScamAlertEntry, locale: string, ncscSource: stri
 
 interface ScamAlertsBannerProps {
   compact?: boolean;
+  framed?: boolean;
 }
 
-const ScamAlertsBanner: React.FC<ScamAlertsBannerProps> = ({ compact = false }) => {
+const ScamAlertsBanner: React.FC<ScamAlertsBannerProps> = ({ compact = false, framed = false }) => {
   const { locale, t } = useI18n();
   const [alerts, setAlerts] = useState<ScamAlertEntry[]>([]);
   const [selectedAlert, setSelectedAlert] = useState<ScamAlertEntry | null>(null);
@@ -110,10 +111,15 @@ const ScamAlertsBanner: React.FC<ScamAlertsBannerProps> = ({ compact = false }) 
   ) : null;
 
   return (
-    <section className="space-y-3" aria-labelledby="scam-alerts-heading">
+    <section
+      className={framed ? 'zone zone-suosikit space-y-3 !border-[3px] !border-[var(--theme-gold)] !py-5' : 'space-y-3'}
+      data-tour={framed ? 'scam-alerts' : undefined}
+      aria-labelledby="scam-alerts-heading"
+    >
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h3 id="scam-alerts-heading" className="text-xl font-black text-[var(--theme-text)] md:text-2xl">
+          <h3 id="scam-alerts-heading" className="flex items-center gap-2 text-xl font-black text-[var(--theme-text)] md:text-2xl">
+            <span aria-hidden="true">⚠️</span>
             {t('scamAlertsTitle')}
           </h3>
         </div>

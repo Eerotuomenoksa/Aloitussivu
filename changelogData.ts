@@ -24,9 +24,14 @@ export type ChangelogCommit = {
   tags: string[];
 };
 
-export const CHANGELOG_GENERATED_AT = "12.6.2026 klo 16.49";
-export const CHANGELOG_VERSION = "0.71.0";
+export const CHANGELOG_GENERATED_AT = "12.6.2026 klo 17.35";
+export const CHANGELOG_VERSION = "0.72.0";
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
+  "Liikenne-osioon lisättiin suorien reittioppaiden linkkejä kaupunkiliikenteisiin ja valtakunnallisiin reittioppaisiin.",
+  "Headeriin lisättiin Tietoa-linkki Ohjeen viereen ja tietolaatikon sisältö päivitettiin vastaamaan nykyisiä kategorioita, paikallisuutta, palveluliikennettä ja palautekanavia.",
+  "Keskeisiin painikkeisiin, linkkeihin ja hallintatoimintoihin lisättiin tooltip-ohjeita.",
+  "Palautelomakkeelle lisättiin automaattiset laite- ja selaintiedot, mahdollisuus liittää kuvakaappaus sekä ohje lähettää yksi palautekokonaisuus kerrallaan.",
+  "Etusivun ulkoasu uudistettiin värivyöhykkeiksi: jokaisella aihealueella on oma tunnistettava väri, iso kuvake ja kuvausteksti. Sivun alkuun lisättiin Mitä etsit tänään? -valikko, huijausvaroitusbanneri, suosikkien kultavyöhyke ja Lähelläsi-alue paikallisuutisineen.",
   "Alueellisiin palveluihin lisättiin uusi Palveluliikenne-kategoria ja 137 kuntien palvelu-, asiointi- ja kutsuliikenteeseen viittaavaa linkkiä.",
   "Akaan, Valkeakosken ja Urjalan VAU-liikenne lisättiin alueelliseksi julkisen liikenteen linkiksi.",
   "Akaan Toijalan Näyttämö lisättiin Teatterit-kategoriaan.",

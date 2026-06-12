@@ -45,6 +45,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ fontSizeStep = 0, variant = 'defa
             placeholder={speechState === 'listening' ? t('listeningPlaceholder') : t('googlePlaceholder')}
             className="w-full rounded-[28px] border-[1.5px] border-white/50 bg-white/70 py-[.9rem] pl-12 pr-36 font-body text-[1rem] font-bold text-[#0a1a0e] shadow-[0_8px_32px_rgba(10,26,14,.18),0_1px_0_rgba(255,255,255,.6)_inset] outline-none backdrop-blur-[20px] transition-all placeholder:text-[#7a9882] focus:border-[var(--theme-gold)] focus:shadow-[0_0_0_4px_rgba(212,148,10,.2),0_8px_32px_rgba(10,26,14,.18),0_1px_0_rgba(255,255,255,.6)_inset]"
             aria-label={t('googleSearch')}
+            title="Kirjoita hakusana ja hae Googlesta"
           />
           <span className="absolute left-5 top-1/2 -translate-y-1/2 text-xl opacity-45" aria-hidden="true">🔍</span>
           <div className="absolute right-[.45rem] top-1/2 flex -translate-y-1/2 items-center gap-2">
@@ -52,6 +53,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ fontSizeStep = 0, variant = 'defa
               <button
                 type="button"
                 onClick={toggleListening}
+                title={speechState === 'listening' ? 'Lopeta puheentunnistus' : 'Hae puhumalla'}
                 className={`${speechState === 'listening' ? 'bg-red-500 text-white animate-pulse' : 'bg-white/80 text-[#0a1a0e] hover:bg-red-100 hover:text-red-700'} flex h-9 w-9 items-center justify-center rounded-full text-base shadow-md transition-all active:scale-95 focus-visible:outline-none`}
                 aria-label={speechState === 'listening' ? t('stopListening') : t('startListening')}
               >
@@ -60,6 +62,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ fontSizeStep = 0, variant = 'defa
             )}
             <button
               type="submit"
+              title="Avaa hakutulos Googlessa"
               className="rounded-[24px] bg-[var(--theme-primary)] px-[1.1rem] py-[.55rem] text-sm font-bold text-white shadow-[0_2px_12px_rgba(28,82,53,.35)] transition-all hover:bg-[var(--theme-primary-mid)] hover:shadow-[0_4px_20px_rgba(28,82,53,.4)] active:scale-95"
             >
               {t('searchButton')}
@@ -91,6 +94,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ fontSizeStep = 0, variant = 'defa
           placeholder={speechState === 'listening' ? t('listeningPlaceholder') : t('googlePlaceholder')}
           className={`w-full border-2 ${inputColorClass} ${inputShapeClass} focus:border-[#e8a020] focus:ring-4 focus:ring-amber-300/30 outline-none transition-all font-semibold shadow-md ${inputTextClass}`}
           aria-label={t('googleSearch')}
+          title="Kirjoita hakusana ja hae Googlesta"
         />
         <div className={`absolute ${isHeader ? 'left-4 top-1/2 text-2xl sm:left-6 sm:text-4xl' : 'left-6 top-1/2 text-3xl sm:text-4xl'} -translate-y-1/2 opacity-40`} aria-hidden="true">
           🔍
@@ -100,6 +104,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ fontSizeStep = 0, variant = 'defa
             <button
               type="button"
               onClick={toggleListening}
+              title={speechState === 'listening' ? 'Lopeta puheentunnistus' : 'Hae puhumalla'}
               className={`${speechState === 'listening' ? 'bg-red-500 text-white animate-pulse' : 'bg-white/90 text-slate-700 hover:bg-red-100 hover:text-red-700 dark:bg-slate-800 dark:text-white dark:hover:bg-red-900/40'} flex h-11 w-11 items-center justify-center rounded-full text-xl shadow-md transition-all active:scale-95 focus:outline-none focus:ring-4 focus:ring-red-300 sm:h-12 sm:w-12`}
               aria-label={speechState === 'listening' ? t('stopListening') : t('startListening')}
             >
@@ -108,6 +113,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ fontSizeStep = 0, variant = 'defa
           )}
           <button
             type="submit"
+            title="Avaa hakutulos Googlessa"
             className={`${isHeader ? 'bg-[#1a4d2e] hover:bg-[#2e7d50] text-white px-4 py-2 text-base focus:ring-[#e8a020]/40 sm:px-7 sm:py-3 sm:text-xl' : 'bg-[#1a4d2e] hover:bg-[#2e7d50] text-white px-8 py-3 text-xl focus:ring-[#e8a020]/40'} rounded-full font-black transition-all shadow-lg active:scale-95 focus:outline-none focus:ring-4`}
           >
             {t('searchButton')}

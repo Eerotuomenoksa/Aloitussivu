@@ -3,7 +3,6 @@ import { getLocalizedMunicipalityName, getRegionalLibraryProviders, getRegionalN
 import { filterVisibleProviders } from '../linkVisibility';
 import { LocalityInfo, Provider, LinkReportDraft } from '../types';
 import LocalNewsHeadlines from './LocalNewsHeadlines';
-import ScamAlertsBanner from './ScamAlertsBanner';
 import { useI18n } from '../i18n';
 
 interface RegionalServicesPanelProps {
@@ -12,7 +11,6 @@ interface RegionalServicesPanelProps {
   onLocalitySelected?: (locality: LocalityInfo) => void;
   onReportLink?: (draft: LinkReportDraft) => void;
   showNews?: boolean;
-  showScamAlerts?: boolean;
 }
 
 const textClasses = [
@@ -63,15 +61,17 @@ const ServiceLink: React.FC<{ provider: Provider; index: number; fontSizeStep: n
         href={href}
         target={isPhoneLink ? undefined : '_blank'}
         rel={isPhoneLink ? undefined : 'noopener noreferrer'}
-        className="flex min-h-[120px] flex-1 items-start gap-2.5 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-surface)] p-4 text-sm font-bold text-[var(--theme-text)] no-underline shadow-sm transition-all duration-150 hover:-translate-y-0.5 hover:border-[var(--border-strong)] hover:bg-[var(--theme-pale)] hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--theme-focus)] md:min-w-[200px]"
+        className="zone-link"
+        title={isPhoneLink ? `Soita: ${provider.name}` : `Avaa alueellinen palvelu: ${provider.name}`}
         aria-label={provider.phone ? `Soita: ${provider.name}, ${provider.phone}` : undefined}
       >
-        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[var(--theme-pale)] text-2xl leading-none" aria-hidden="true">{icon}</span>
-        <span className="flex min-w-0 flex-col gap-1">
-          <span className={`min-w-0 font-black leading-tight ${textClasses[fontSizeStep]}`}>{provider.name}</span>
-          {provider.phone && <span className={`font-black text-[var(--theme-primary)] ${smallTextClasses[fontSizeStep]}`}>☎ {provider.phone}</span>}
-          {provider.group && <span className={`font-semibold text-[var(--theme-muted)] ${smallTextClasses[fontSizeStep]}`}>{categoryName(provider.group)}</span>}
+        <span className="zone-link-icon" aria-hidden="true">{icon}</span>
+        <span className="zone-link-label flex min-w-0 flex-col gap-0.5">
+          <span className={`min-w-0 leading-tight ${textClasses[fontSizeStep]}`}>{provider.name}</span>
+          {provider.phone && <span className={`font-black text-[var(--zone-strong)] ${smallTextClasses[fontSizeStep]}`}>☎ {provider.phone}</span>}
+          {provider.group && <span className={`font-semibold text-[var(--theme-text-3)] ${smallTextClasses[fontSizeStep]}`}>{categoryName(provider.group)}</span>}
         </span>
+        <span className="zone-link-arrow" aria-hidden="true">→</span>
       </a>
       {onReportLink && (
         <button
@@ -81,6 +81,7 @@ const ServiceLink: React.FC<{ provider: Provider; index: number; fontSizeStep: n
             category: provider.group,
             source: 'RegionalServicesPanel',
           })}
+          title={`Ilmoita ongelma alueellisessa linkissä: ${provider.name}`}
           className="absolute bottom-3 right-3 flex h-10 w-10 items-center justify-center rounded-full bg-[var(--theme-surface)] text-xl text-[var(--theme-text)] opacity-0 shadow-md transition-all hover:bg-[var(--theme-pale)] focus:opacity-100 focus:outline-none focus:ring-4 focus:ring-[var(--theme-focus)]/30 group-hover/service:opacity-100"
           aria-label={`${t('reportLink')}: ${provider.name}`}
         >
@@ -91,7 +92,7 @@ const ServiceLink: React.FC<{ provider: Provider; index: number; fontSizeStep: n
   );
 };
 
-const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality, fontSizeStep = 0, onLocalitySelected, onReportLink, showNews = true, showScamAlerts = true }) => {
+const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality, fontSizeStep = 0, onLocalitySelected, onReportLink, showNews = true }) => {
   const { language, t } = useI18n();
   const [query, setQuery] = useState('');
   const [isManualQuery, setIsManualQuery] = useState(false);
@@ -135,14 +136,17 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
   };
 
   return (
-    <section className="regional-panel-surface overflow-hidden rounded-[32px] border border-[var(--theme-border)] bg-[var(--theme-surface)] shadow-sm" aria-labelledby="regional-services-heading">
-      <div className="flex flex-col gap-5 border-b border-[var(--theme-border)] bg-[var(--theme-pale)] px-6 py-4 xl:flex-row xl:items-center xl:justify-between">
-        <div>
-          <h2 id="regional-services-heading" className="font-display flex items-center gap-3 text-3xl font-bold leading-tight text-[var(--theme-text)] md:text-5xl">
-            <span className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-2xl bg-[var(--theme-surface)] text-xl shadow-sm" aria-hidden="true">📍</span>
-            {t('regionalServicesTitle')}
+    <section className="zone zone-local" id="lahellasi" aria-labelledby="regional-services-heading">
+      <div className="zone-head">
+        <span className="zone-icon" aria-hidden="true">📍</span>
+        <div className="min-w-0">
+          <h2 id="regional-services-heading" className="font-display zone-title break-words [overflow-wrap:anywhere]">
+            {localizedMunicipalityName ? `${t('nearYou')} · ${localizedMunicipalityName}` : t('nearYou')}
           </h2>
+          <p className="zone-info">{t('localZoneInfo')}</p>
         </div>
+      </div>
+      <div className="mb-5">
         <div className="w-full xl:max-w-2xl">
           <div className="flex flex-col md:flex-row md:items-center gap-3">
             <label className="flex-1">
@@ -197,43 +201,33 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
       </div>
 
       {context ? (
-        <div className="space-y-6 p-6">
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4 md:gap-5">
+        <div className={showNews ? 'local-grid' : ''}>
+          <div className="zone-links-grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(15rem, 1fr))', alignContent: 'start' }}>
             {services.map((provider, index) => <ServiceLink key={provider.url} provider={provider} index={index} fontSizeStep={fontSizeStep} onReportLink={onReportLink} />)}
           </div>
 
-          {(showNews || showScamAlerts) && (
-          <div className={`grid gap-6 xl:items-start ${showNews && showScamAlerts ? 'xl:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]' : 'xl:grid-cols-1'}`}>
-            {showNews && (
-                <div className="space-y-3" data-tour="local-news">
-                  <div className="flex items-center justify-between gap-4">
-                    <h3 className={`font-black uppercase tracking-widest text-[var(--theme-muted)] ${smallTextClasses[fontSizeStep]}`}>
-                      {t('localNews')}
-                    </h3>
-                  </div>
-                  <LocalNewsHeadlines feeds={rssFeeds} fallbackUrl={fallbackNewsUrl} fontSizeStep={fontSizeStep} compact />
-                  {fallbackNewsUrl && (
-                    <a
-                      href={fallbackNewsUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={`inline-flex font-black text-[var(--theme-primary)] hover:underline ${smallTextClasses[fontSizeStep]}`}
-                    >
-                      {t('moreNews')}
-                    </a>
-                  )}
-                </div>
-            )}
-            {showScamAlerts && (
-              <div data-tour="scam-alerts">
-                <ScamAlertsBanner compact />
-              </div>
-            )}
-          </div>
+          {showNews && (
+            <div className="local-news-card space-y-3" data-tour="local-news">
+              <h3 className="font-display flex items-center gap-2 text-xl font-bold text-[var(--theme-text)] md:text-2xl">
+                <span aria-hidden="true">📰</span>
+                {t('localNews')}
+              </h3>
+              <LocalNewsHeadlines feeds={rssFeeds} fallbackUrl={fallbackNewsUrl} fontSizeStep={fontSizeStep} compact />
+              {fallbackNewsUrl && (
+                <a
+                  href={fallbackNewsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`inline-flex font-black text-[var(--zone-strong)] hover:underline ${smallTextClasses[fontSizeStep]}`}
+                >
+                  {t('moreNews')} →
+                </a>
+              )}
+            </div>
           )}
         </div>
       ) : (
-        <div className="m-6 rounded-2xl border-2 border-dashed border-[var(--theme-border)] bg-[var(--theme-surface)] p-8 text-center">
+        <div className="rounded-2xl border-2 border-dashed border-[var(--zone-border)] bg-[var(--theme-surface)] p-8 text-center">
           <p className={`font-black text-[var(--theme-muted)] ${textClasses[fontSizeStep]}`}>
             {t('typeMunicipalityPrompt')}
           </p>

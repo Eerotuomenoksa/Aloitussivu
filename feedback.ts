@@ -1,6 +1,7 @@
 import {
   collection,
   doc,
+  getDoc,
   onSnapshot,
   orderBy,
   query,
@@ -10,7 +11,9 @@ import {
 import { getFirebaseDb, isFirebaseConfigured } from './firebaseClient';
 
 const FEEDBACK_COLLECTION = 'feedbackItems';
+const FEEDBACK_ATTACHMENT_COLLECTION = 'feedbackAttachments';
 const FEEDBACK_STORAGE_KEY = 'feedbackItems';
+const FEEDBACK_ATTACHMENT_STORAGE_KEY = 'feedbackAttachments';
 const FEEDBACK_CHANGE_EVENT = 'feedbackitemschange';
 
 export type FeedbackType = 'bug' | 'content' | 'link' | 'accessibility' | 'idea' | 'other';
@@ -28,6 +31,8 @@ export interface FeedbackItem {
   updatedAt: string;
   handledAt?: string;
   handledBy?: string;
+  client?: FeedbackClientInfo;
+  hasScreenshot?: boolean;
 }
 
 export interface FeedbackDraft {
@@ -35,6 +40,36 @@ export interface FeedbackDraft {
   title: string;
   description: string;
   page: string;
+  client?: FeedbackClientInfo;
+  screenshot?: FeedbackScreenshotDraft | null;
+}
+
+export interface FeedbackClientInfo {
+  browserName: string;
+  browserVersion?: string;
+  osName: string;
+  deviceType: 'desktop' | 'tablet' | 'mobile' | 'unknown';
+  userAgent: string;
+  platform: string;
+  language: string;
+  viewport: string;
+  screen: string;
+  timezone: string;
+  touch: boolean;
+}
+
+export interface FeedbackScreenshotDraft {
+  name: string;
+  type: string;
+  size: number;
+  dataUrl: string;
+}
+
+export interface FeedbackAttachment {
+  id: string;
+  feedbackId: string;
+  screenshot?: FeedbackScreenshotDraft;
+  createdAt: string;
 }
 
 export type FeedbackSubmitResult = {
@@ -68,6 +103,30 @@ const saveLocalFeedback = (item: FeedbackItem) => {
   emitFeedbackChange();
 };
 
+const readLocalAttachments = () => {
+  try {
+    if (typeof localStorage === 'undefined') return [];
+    const raw = localStorage.getItem(FEEDBACK_ATTACHMENT_STORAGE_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed as FeedbackAttachment[] : [];
+  } catch {
+    return [];
+  }
+};
+
+const saveLocalAttachment = (attachment: FeedbackAttachment) => {
+  try {
+    if (typeof localStorage === 'undefined') return;
+    localStorage.setItem(
+      FEEDBACK_ATTACHMENT_STORAGE_KEY,
+      JSON.stringify([attachment, ...readLocalAttachments()].slice(0, 100))
+    );
+  } catch {
+    // Ignore storage errors.
+  }
+};
+
 const emitFeedbackChange = () => {
   if (typeof window !== 'undefined') {
     window.dispatchEvent(new Event(FEEDBACK_CHANGE_EVENT));
@@ -86,24 +145,49 @@ export const submitFeedback = async (draft: FeedbackDraft): Promise<FeedbackSubm
     publicNote: '',
     createdAt: now,
     updatedAt: now,
+    ...(draft.client ? { client: draft.client } : {}),
+    ...(draft.screenshot ? { hasScreenshot: true } : {}),
   };
+  const attachment: FeedbackAttachment | null = draft.screenshot ? {
+    id: item.id,
+    feedbackId: item.id,
+    screenshot: draft.screenshot,
+    createdAt: now,
+  } : null;
 
   if (isFirebaseConfigured) {
     const db = getFirebaseDb();
     if (db) {
       try {
         await setDoc(doc(db, FEEDBACK_COLLECTION, item.id), item);
+        if (attachment) {
+          await setDoc(doc(db, FEEDBACK_ATTACHMENT_COLLECTION, item.id), attachment);
+        }
         emitFeedbackChange();
         return { item, storage: 'cloud' };
       } catch (error) {
         saveLocalFeedback(item);
+        if (attachment) saveLocalAttachment(attachment);
         return { item, storage: 'local' };
       }
     }
   }
 
   saveLocalFeedback(item);
+  if (attachment) saveLocalAttachment(attachment);
   return { item, storage: 'local' };
+};
+
+export const getFeedbackAttachment = async (feedbackId: string): Promise<FeedbackAttachment | null> => {
+  if (isFirebaseConfigured) {
+    const db = getFirebaseDb();
+    if (db) {
+      const snapshot = await getDoc(doc(db, FEEDBACK_ATTACHMENT_COLLECTION, feedbackId));
+      return snapshot.exists() ? snapshot.data() as FeedbackAttachment : null;
+    }
+  }
+
+  return readLocalAttachments().find((attachment) => attachment.feedbackId === feedbackId) ?? null;
 };
 
 export const subscribeFeedbackItems = (callback: (items: FeedbackItem[]) => void) => {

@@ -281,7 +281,16 @@ export const SHORTCUTS: Shortcut[] = [
       { name: 'Menevä Taksi', url: 'https://meneva.fi', group: 'Taksit' },
       { name: '02 Taksi', url: 'https://02taksi.fi', group: 'Taksit' },
       { name: 'OnniBus', url: 'https://www.onnibus.com', group: 'Matkustus' },
-      { name: 'HSL Reittiopas', url: 'https://www.reittiopas.fi', group: 'Reittioppaat' }
+      { name: 'Matkahuollon reittiopas', url: 'https://reittiopas.matkahuolto.fi/', group: 'Reittioppaat' },
+      { name: 'Nysse reittiopas', url: 'https://reittiopas.tampere.fi/', group: 'Reittioppaat' },
+      { name: 'Föli reittiopas', url: 'https://www.foli.fi/fi/aikataulut-ja-reitit', group: 'Reittioppaat' },
+      { name: 'Oulun reittiopas', url: 'https://www.osl.fi/aikataulut-ja-linjat/', group: 'Reittioppaat' },
+      { name: 'Linkki reittiopas', url: 'https://jyvaskyla.digitransit.fi/', group: 'Reittioppaat' },
+      { name: 'Vilkku reittiopas', url: 'https://vilkku.kuopio.fi/aikataulut-ja-reitit', group: 'Reittioppaat' },
+      { name: 'JOJO reittiopas', url: 'https://jojo.joensuu.fi/aikataulut-ja-reitit', group: 'Reittioppaat' },
+      { name: 'Koutsi reittiopas', url: 'https://kouvola.digitransit.fi/', group: 'Reittioppaat' },
+      { name: 'Jouko reittiopas', url: 'https://lappeenranta.fi/fi/liikenne-ja-kaupunkiymparisto/joukkoliikenne-ja-muut-liikkumispalvelut/lappeenrannan-seudun-joukkoliikenne/reitit-ja-aikataulut', group: 'Reittioppaat' },
+      { name: 'Porin reittiopas', url: 'https://pori.digitransit.fi/', group: 'Reittioppaat' }
     ]
   },
   { 

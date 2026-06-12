@@ -24,6 +24,9 @@ type ShortcutGroup = {
   name: string;
   icon: string;
   categories: string[];
+  zone: string;
+  anchor: string;
+  descriptionKey: 'groupDescAsiointi' | 'groupDescRaha' | 'groupDescTerveys' | 'groupDescDigi' | 'groupDescUutiset' | 'groupDescKulttuuri' | 'groupDescLukeminen' | 'groupDescLiikkuminen' | 'groupDescVapaa';
 };
 
 const getPhoneHref = (phone?: string, phoneUrl?: string) => {
@@ -43,46 +46,73 @@ const shortcutGroups: ShortcutGroup[] = [
     name: 'Asiointi ja viranomaiset',
     icon: '🏛️',
     categories: ['Julkiset palvelut', 'Oikeus', 'Puhelinnumerot', 'Turvallisuus'],
+    zone: 'zone-asiointi',
+    anchor: 'asiointi',
+    descriptionKey: 'groupDescAsiointi',
   },
   {
     name: 'Raha ja ostaminen',
     icon: '🏦',
     categories: ['Pankit', 'Talous', 'Verkkokaupat', 'Ruoka'],
+    zone: 'zone-raha',
+    anchor: 'raha',
+    descriptionKey: 'groupDescRaha',
   },
   {
     name: 'Terveys ja hoiva',
     icon: '🏥',
     categories: ['Terveys', 'Potilasyhdistykset', 'Kotihoito-palvelut', 'Koti'],
+    zone: 'zone-terveys',
+    anchor: 'terveys',
+    descriptionKey: 'groupDescTerveys',
   },
   {
     name: 'Digi ja yhteydenpito',
     icon: '💻',
     categories: ['Apua digiin', 'Hakukoneet', 'Sähköposti', 'Sosiaalinen media', 'Sovellukset', 'Tekniikka'],
+    zone: 'zone-digi',
+    anchor: 'digi',
+    descriptionKey: 'groupDescDigi',
   },
   {
     name: 'Uutiset ja tieto',
     icon: '📰',
     categories: ['Uutiset & Media', 'Lehdet', 'Sää', 'Tiede'],
+    zone: 'zone-uutiset',
+    anchor: 'uutiset',
+    descriptionKey: 'groupDescUutiset',
   },
   {
     name: 'Kulttuuri ja taide',
     icon: '🎭',
     categories: ['Kulttuuri', 'Museot', 'Teatterit', 'Musiikki', 'Taiteet'],
+    zone: 'zone-kulttuuri',
+    anchor: 'kulttuuri',
+    descriptionKey: 'groupDescKulttuuri',
   },
   {
     name: 'Lukeminen, kielet ja historia',
     icon: '📚',
     categories: ['Kirjallisuus', 'Kirjastot', 'Kielet', 'Sukututkimus'],
+    zone: 'zone-lukeminen',
+    anchor: 'lukeminen',
+    descriptionKey: 'groupDescLukeminen',
   },
   {
     name: 'Liikkuminen ja ulkoilu',
     icon: '🚌',
     categories: ['Liikenne', 'Matkailu', 'Liikunta', 'Luonto', 'Urheilu'],
+    zone: 'zone-liikkuminen',
+    anchor: 'liikkuminen',
+    descriptionKey: 'groupDescLiikkuminen',
   },
   {
     name: 'Vapaa-aika ja yhteisöt',
     icon: '🎈',
     categories: ['Vapaa-aika', 'Eläkeyhdistykset', 'Hengellisyys', 'Viihde'],
+    zone: 'zone-vapaa',
+    anchor: 'vapaa-aika',
+    descriptionKey: 'groupDescVapaa',
   },
 ];
 
@@ -104,35 +134,15 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
   const sortedShortcuts = [...approvedShortcuts].sort((a, b) => categoryName(a.name).localeCompare(categoryName(b.name), 'fi'));
   const shortcutsByName = new Map(sortedShortcuts.map((shortcut) => [shortcut.name, shortcut]));
   const groupedShortcutNames = new Set(shortcutGroups.flatMap((group) => group.categories));
-  const groupedShortcuts = [
-    ...shortcutGroups
-      .map((group) => ({
-        ...group,
-        shortcuts: group.categories
-          .map((name) => shortcutsByName.get(name))
-          .filter((shortcut): shortcut is Shortcut => Boolean(shortcut)),
-      }))
-      .filter((group) => group.shortcuts.length > 0),
-    ...sortedShortcuts
-      .filter((shortcut) => !groupedShortcutNames.has(shortcut.name))
-      .map((shortcut) => ({
-        name: shortcut.name,
-        icon: shortcut.icon,
-        categories: [shortcut.name],
-        shortcuts: [shortcut],
-      })),
-  ];
-  const bentoGroups = [...groupedShortcuts].sort((a, b) => {
-    const countDifference = b.shortcuts.length - a.shortcuts.length;
-    if (countDifference !== 0) return countDifference;
-    return categoryName(a.name).localeCompare(categoryName(b.name), 'fi');
-  });
-  const communityIndex = bentoGroups.findIndex((group) => group.name === 'Vapaa-aika ja yhteisöt');
-  const publicServicesIndex = bentoGroups.findIndex((group) => group.name === 'Asiointi ja viranomaiset');
-  if (communityIndex > -1 && publicServicesIndex > -1 && communityIndex > publicServicesIndex) {
-    const [communityGroup] = bentoGroups.splice(communityIndex, 1);
-    bentoGroups.splice(publicServicesIndex, 0, communityGroup);
-  }
+  const zoneGroups = shortcutGroups
+    .map((group) => ({
+      ...group,
+      shortcuts: group.categories
+        .map((name) => shortcutsByName.get(name))
+        .filter((shortcut): shortcut is Shortcut => Boolean(shortcut)),
+    }))
+    .filter((group) => group.shortcuts.length > 0);
+  const ungroupedShortcuts = sortedShortcuts.filter((shortcut) => !groupedShortcutNames.has(shortcut.name));
 
   const iconClasses = [
     'text-[2.25rem] md:text-[2.7rem]',
@@ -255,9 +265,6 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
   const baseCardStyles = (color: string) =>
     `${color} group bento-card-surface bento-stripe bento-shimmer relative overflow-hidden flex flex-col gap-2.5 rounded-[44px] border-[1.5px] border-[var(--theme-border)] bg-[var(--theme-surface)] p-7 text-left text-[var(--theme-text)] shadow-[0_1px_4px_rgba(10,26,14,.06)] transition-all duration-200 hover:-translate-y-1 hover:scale-[1.004] hover:border-[var(--border-strong)] hover:shadow-[0_6px_24px_rgba(10,26,14,.12)] focus-visible:outline-[2.5px] focus-visible:outline-[var(--theme-focus)] focus-visible:outline-offset-3 active:-translate-y-0.5 active:scale-100 min-h-[220px]`;
 
-  const groupCardStyles = (color: string, idx: number) =>
-    `${color} bento-group-card group bento-card-surface bento-stripe bento-shimmer relative overflow-hidden flex h-full min-h-[220px] flex-col gap-5 rounded-[44px] border-[1.5px] border-[var(--theme-border)] bg-[var(--theme-surface)] p-7 text-left text-[var(--theme-text)] shadow-[0_1px_4px_rgba(10,26,14,.06)] transition-all duration-200 hover:-translate-y-1 hover:scale-[1.004] hover:border-[var(--border-strong)] hover:shadow-[0_6px_24px_rgba(10,26,14,.12)] focus-within:outline-[2.5px] focus-within:outline-[var(--theme-focus)] focus-within:outline-offset-3 ${idx < 3 ? 'bento-wide col-span-2' : ''}`;
-
   return (
     <div className="space-y-8 animate-in">
 
@@ -275,11 +282,13 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
               : 'border-[var(--theme-border)] pr-24 focus:border-[var(--theme-gold)] focus:ring-[var(--theme-focus)]/30'
             } ${inputClasses[fontSizeStep]}`}
           aria-label={t('searchPlaceholder')}
+          title="Etsi palveluita, kategorioita ja puhelinnumeroita tältä sivulta"
         />
         <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2">
           {search && (
             <button
               onClick={() => setSearch('')}
+              title="Tyhjennä palveluhaku"
               className="text-2xl font-black text-[var(--theme-muted)] transition-colors hover:text-[var(--theme-text)]"
               aria-label={t('clearSearch')}
             >
@@ -289,6 +298,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
           {speechState !== 'unsupported' && (
             <button
               onClick={toggleListening}
+              title={speechState === 'listening' ? 'Lopeta puheentunnistus' : 'Hae palvelua puhumalla'}
               className={`flex items-center justify-center rounded-full transition-all focus:ring-4 focus:ring-red-300 focus:outline-none active:scale-95
                 ${speechState === 'listening'
                   ? 'bg-red-500 text-white animate-pulse w-14 h-14 md:w-12 md:h-12 text-2xl shadow-lg shadow-red-300'
@@ -331,6 +341,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
                   <button
                     key={idx}
                     onClick={() => onSelectCategory({ ...shortcut, color })}
+                    title={`Avaa kategoria ${categoryName(shortcut.name)}`}
                     className={baseCardStyles(color)}
                     aria-label={`${t('openCategory')}: ${categoryName(shortcut.name)}`}
                   >
@@ -366,6 +377,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
                         href={link.url}
                         target="_blank"
                         rel="noopener noreferrer"
+                        title={`Avaa verkkosivu: ${link.name}`}
                         className={baseCardStyles(link.color)}
                         aria-label={`${t('goToSite')}: ${link.name}`}
                       >
@@ -390,6 +402,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
                           category: link.categoryName,
                           source: 'QuickLinks',
                         })}
+                        title={`Ilmoita ongelma linkissä: ${link.name}`}
                         className="absolute bottom-3 right-3 flex h-10 w-10 items-center justify-center rounded-full bg-[var(--theme-surface)] text-xl text-[var(--theme-text)] opacity-0 shadow-md transition-all hover:bg-[var(--theme-pale)] focus:opacity-100 focus:outline-none focus:ring-4 focus:ring-[var(--theme-focus)]/30 group-hover/link:opacity-100"
                         aria-label={`${t('reportLink')}: ${link.name}`}
                       >
@@ -398,6 +411,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
                       )}
                       <button
                         onClick={() => onToggleFavorite(fav)}
+                        title={isFav ? `Poista suosikeista: ${link.name}` : `Lisää suosikkeihin: ${link.name}`}
                         className={`absolute top-3 right-3 flex items-center justify-center rounded-full transition-all focus:ring-4 focus:ring-yellow-300 focus:outline-none
                           ${isFav
                             ? 'bg-yellow-400 hover:bg-yellow-500 shadow-md'
@@ -447,41 +461,49 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
           )}
         </>
       ) : (
-        /* Normaali kategoriaruudukko */
-        <div className="bento-grid grid grid-cols-4 gap-4">
-          {bentoGroups.map((group, idx) => {
-            const color = rowColors[idx % rowColors.length];
+        /* Värivyöhykkeet ja sisällysvalikko */
+        <>
+          <nav className="toc-card" aria-label={t('whatAreYouLookingFor')}>
+            <p className="toc-heading">{t('whatAreYouLookingFor')}</p>
+            <ul className="toc-list">
+              {zoneGroups.map((group) => (
+                <li key={group.anchor}>
+                  <a href={`#${group.anchor}`} className={`toc-chip ${group.zone}`}>
+                    <span className="toc-dot" aria-hidden="true">{group.icon}</span>
+                    {categoryName(group.name)}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
 
-            return (
+          <div className="space-y-8">
+            {zoneGroups.map((group, idx) => (
               <section
                 key={group.name}
-                className={groupCardStyles(color, idx)}
+                id={group.anchor}
+                className={`zone ${group.zone}`}
                 aria-labelledby={`shortcut-group-${idx}`}
               >
-                <div className="flex items-start gap-4">
-                  <span className="flex h-[3.25rem] w-[3.25rem] flex-shrink-0 items-center justify-center rounded-[18px] bg-[var(--theme-pale)] text-[1.6rem] transition-transform duration-200 group-hover:scale-[1.08] group-hover:rotate-[-2deg]" aria-hidden="true">
-                    {group.icon}
-                  </span>
+                <div className="zone-head">
+                  <span className="zone-icon" aria-hidden="true">{group.icon}</span>
                   <div className="min-w-0">
-                    <h3 id={`shortcut-group-${idx}`} className="font-display mt-auto min-w-0 max-w-full break-words text-[clamp(1.15rem,1.5vw,1.4rem)] font-semibold leading-[1.15] tracking-tight [overflow-wrap:anywhere]">
+                    <h3 id={`shortcut-group-${idx}`} className="font-display zone-title break-words [overflow-wrap:anywhere]">
                       {categoryName(group.name)}
                     </h3>
+                    <p className="zone-info">{t(group.descriptionKey)}</p>
                   </div>
                 </div>
 
-                <div className={`grid flex-1 content-start gap-3 ${idx < 3 ? 'sm:grid-cols-2' : 'grid-cols-1'}`}>
+                <div className="zone-links-grid">
                   {group.shortcuts.map((shortcut) => {
                     const isCategory = !!shortcut.providers;
                     const label = categoryName(shortcut.name);
-                    const subCategoryClasses = `mobile-subcategory flex min-h-14 min-w-0 items-center gap-2.5 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-bg)] px-4 py-3 text-left font-black leading-tight text-[var(--theme-text)] break-words [overflow-wrap:anywhere] transition-all hover:-translate-y-0.5 hover:bg-[var(--theme-pale)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--theme-focus)] active:translate-y-0 ${subTextClasses[fontSizeStep]}`;
                     const content = (
                       <>
-                        <span className="subcategory-icon flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-[var(--theme-pale)] text-xl leading-none" aria-hidden="true">
-                          {shortcut.icon || '🔗'}
-                        </span>
-                        <span className="min-w-0 flex-1 break-words [overflow-wrap:anywhere]">
-                          {label}
-                        </span>
+                        <span className="zone-link-icon" aria-hidden="true">{shortcut.icon || '🔗'}</span>
+                        <span className="zone-link-label">{label}</span>
+                        <span className="zone-link-arrow" aria-hidden="true">→</span>
                       </>
                     );
 
@@ -490,8 +512,8 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
                         <button
                           key={shortcut.name}
                           type="button"
-                          onClick={() => onSelectCategory({ ...shortcut, color })}
-                          className={subCategoryClasses}
+                          onClick={() => onSelectCategory({ ...shortcut, color: rowColors[0] })}
+                          className="zone-link"
                           aria-label={`${t('openCategory')}: ${label}`}
                         >
                           {content}
@@ -505,7 +527,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
                         href={shortcut.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className={subCategoryClasses}
+                        className="zone-link"
                         aria-label={`${t('goToSite')}: ${label}`}
                       >
                         {content}
@@ -514,9 +536,48 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
                   })}
                 </div>
               </section>
-            );
-          })}
-        </div>
+            ))}
+
+            {ungroupedShortcuts.length > 0 && (
+              <section className="zone zone-uutiset" aria-label={t('categories')}>
+                <div className="zone-links-grid">
+                  {ungroupedShortcuts.map((shortcut) => {
+                    const label = categoryName(shortcut.name);
+                    const content = (
+                      <>
+                        <span className="zone-link-icon" aria-hidden="true">{shortcut.icon || '🔗'}</span>
+                        <span className="zone-link-label">{label}</span>
+                        <span className="zone-link-arrow" aria-hidden="true">→</span>
+                      </>
+                    );
+                    return shortcut.providers ? (
+                      <button
+                        key={shortcut.name}
+                        type="button"
+                        onClick={() => onSelectCategory({ ...shortcut, color: rowColors[0] })}
+                        className="zone-link"
+                        aria-label={`${t('openCategory')}: ${label}`}
+                      >
+                        {content}
+                      </button>
+                    ) : (
+                      <a
+                        key={shortcut.name}
+                        href={shortcut.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="zone-link"
+                        aria-label={`${t('goToSite')}: ${label}`}
+                      >
+                        {content}
+                      </a>
+                    );
+                  })}
+                </div>
+              </section>
+            )}
+          </div>
+        </>
       )}
     </div>
   );

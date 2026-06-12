@@ -149,12 +149,17 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, fontSizeStep = 0
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {[
                 { name: 'Kunnat', count: LOCAL_LINK_STATS.municipalities, note: 'kunnan omat verkkosivut' },
+                { name: 'Kieliversiot', count: LOCAL_LINK_STATS.municipalityLanguageVersions, note: 'kuntien ruotsi-, englanti- ja muut kieliversiot' },
                 { name: 'Hyvinvointialueet', count: LOCAL_LINK_STATS.wellbeingAreas, note: 'alueen sote-sivut' },
                 { name: 'Kunnan palvelusivut', count: LOCAL_LINK_STATS.municipalityServicePages, note: 'esim. palvelut ja asiointi' },
                 { name: 'Paikallisliikenne', count: LOCAL_LINK_STATS.localTransport, note: 'joukkoliikenne ja reittioppaat' },
+                { name: 'Palveluliikenne', count: LOCAL_LINK_STATS.localServiceTransport, note: 'kuntien palvelu-, asiointi- ja kutsuliikenne' },
                 { name: 'Paikalliset kirjastot', count: LOCAL_LINK_STATS.localLibraries, note: 'kirjastojen omat palvelut' },
                 { name: 'Lehdet', count: LOCAL_LINK_STATS.localNewspapers, note: 'suomalaiset paikallislehdet' },
+                { name: 'Uutisvirrat', count: LOCAL_LINK_STATS.localNewsFeeds, note: 'paikallislehtien RSS-syötteet' },
+                { name: 'Ohjattu liikunta', count: LOCAL_LINK_STATS.localExerciseLinks, note: 'kuntien liikuntaryhmät ja soveltava liikunta' },
                 { name: 'Urheiluseurat', count: LOCAL_LINK_STATS.localSportsClubs, note: 'paikkakunnan omat seurat' },
+                { name: 'Kela-taksien puhelinnumerot', count: LOCAL_LINK_STATS.localKelaTaxiPhones, note: 'alueelliset tilausnumerot' },
               ].map((item) => (
                 <div key={item.name} className="aurora-card flex items-center justify-between p-4">
                   <div className="space-y-1">
@@ -168,12 +173,12 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, fontSizeStep = 0
               ))}
             </div>
             <p className="text-sm font-bold text-[var(--theme-text-3)]">
-              Paikalliset uutiset haetaan sijainnin perusteella eikä niitä lasketa tähän määrään. Lehdet-kategoria sisältää paikallislehtien kotisivut.
+              Paikalliset sisällöt näkyvät oman kunnan perusteella. Osa linkeistä on kunta- tai aluekohtaisia palveluita, osa taas yleisiä kategorioita, joiden näkyvyyttä tarkennetaan paikkakunnan mukaan.
             </p>
           </section>
 
           <section className="space-y-6">
-            <h3 className="aurora-section-title border-b-2 border-[var(--theme-border)] pb-2 text-2xl">Kaikki 30 kategoriaa</h3>
+            <h3 className="aurora-section-title border-b-2 border-[var(--theme-border)] pb-2 text-2xl">Kaikki {categoryStats.length} kategoriaa</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {categoryStats.sort((a,b) => a.name.localeCompare(b.name)).map((stat, idx) => (
                 <div key={idx} className="aurora-card flex items-center justify-between p-4">

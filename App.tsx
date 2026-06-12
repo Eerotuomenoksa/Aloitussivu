@@ -12,6 +12,7 @@ import FeedbackModal from './components/FeedbackModal';
 import OnboardingTour from './components/OnboardingTour';
 import SearchBar from './components/SearchBar';
 import RegionalServicesPanel from './components/RegionalServicesPanel';
+import ScamAlertsBanner from './components/ScamAlertsBanner';
 import FloatingControls from './components/FloatingControls';
 import FavoriteLinks from './components/FavoriteLinks';
 import TimeAwareLogo, { LogoPhase, getLogoPhase } from './components/TimeAwareLogo';
@@ -124,7 +125,10 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({ language, setLangua
   const activeLanguage = LANGUAGES.find((item) => item.code === language) ?? LANGUAGES[0];
 
   return (
-    <label className="relative inline-flex h-12 items-center rounded-full border border-white/20 bg-white/10 text-white shadow-sm focus-within:ring-2 focus-within:ring-[#e8a020] md:h-12">
+    <label
+      className="relative inline-flex h-12 items-center rounded-full border border-white/20 bg-white/10 text-white shadow-sm focus-within:ring-2 focus-within:ring-[#e8a020] md:h-12"
+      title="Vaihda sivun kieli"
+    >
       <span className="sr-only">{label}</span>
       <span className="pointer-events-none flex items-center gap-2 pl-4 pr-10 text-white">
         <span className="text-xl leading-none" aria-hidden="true">{activeLanguage.flag}</span>
@@ -389,6 +393,7 @@ const AppContent: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setIsFeedbackOpen(true)}
+                  title="Anna palautetta sivusta"
                   className="rounded-full bg-white/10 px-3 py-1 text-xs font-black text-white transition-colors hover:bg-white/20 focus-visible:ring-2 focus-visible:ring-white"
                 >
                   Palaute
@@ -397,16 +402,26 @@ const AppContent: React.FC = () => {
               <LanguageSelector language={language} setLanguage={setLanguage} label={t('language')} />
               <button
                 onClick={() => setIsHomepageOpen(true)}
+                title="Avaa ohje aloitussivuksi asettamiseen"
                 className="inline-flex min-h-[2.75rem] items-center gap-1.5 rounded-full border border-white/20 bg-[var(--theme-gold)] px-[1.1rem] py-[.55rem] text-[.95rem] font-extrabold text-[var(--theme-cta-label)] transition-all hover:bg-[var(--theme-gold-light)] active:scale-[.97]"
                 aria-label={t('openHomepageHelp')}
               >
                 🏠 {t('help')}
               </button>
               <button
+                type="button"
+                onClick={() => setIsInfoOpen(true)}
+                title="Katso mitä Aloitussivu sisältää ja miten sitä ylläpidetään"
+                className="inline-flex min-h-[2.75rem] items-center gap-1.5 rounded-full border border-white/[.16] bg-white/[.09] px-[1.1rem] py-[.55rem] text-[.95rem] font-bold text-white/85 transition-all hover:bg-white/[.18] hover:text-white"
+              >
+                ℹ️ {t('info')}
+              </button>
+              <button
                 ref={settingsButtonRef}
                 type="button"
                 onClick={() => setIsSettingsOpen(prev => !prev)}
                 data-tour="settings"
+                title="Avaa asetukset: värit, tekstikoko ja etusivun osiot"
                 className="inline-flex min-h-[2.75rem] items-center gap-1.5 rounded-full border border-white/[.16] bg-white/[.09] px-[1.1rem] py-[.55rem] text-[.95rem] font-bold text-white/85 transition-all hover:bg-white/[.18] hover:text-white"
                 aria-label={t('openSettings')}
                 aria-expanded={isSettingsOpen}
@@ -429,6 +444,9 @@ const AppContent: React.FC = () => {
                       timeZone: selectedSecondaryTimeZone.value,
                     } : undefined}
                   />
+                  <p className="text-lg font-bold text-[var(--theme-gold-light)]">
+                    {t(logoPhase === 'dawn' ? 'greetingMorning' : logoPhase === 'day' ? 'greetingDay' : 'greetingEvening')}
+                  </p>
                 </div>
               )}
               <div className="flex flex-col gap-3 animate-rise hero-tool-stack" style={{ animationDelay: '120ms' }} data-tour="google-search">
@@ -520,10 +538,11 @@ const AppContent: React.FC = () => {
             </div>
 
             <button
-              type="button"
-              onClick={toggleDarkMode}
-              className="mb-4 flex w-full items-center justify-between gap-4 rounded-2xl border-2 border-[var(--theme-border)] px-4 py-3 text-left font-bold text-[var(--theme-text)] hover:bg-[var(--theme-pale)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--theme-focus)]/40"
-              aria-label={isDarkMode ? t('lightTheme') : t('darkTheme')}
+                type="button"
+                onClick={toggleDarkMode}
+                title={isDarkMode ? 'Vaihda vaaleaan teemaan' : 'Vaihda tummaan teemaan'}
+                className="mb-4 flex w-full items-center justify-between gap-4 rounded-2xl border-2 border-[var(--theme-border)] px-4 py-3 text-left font-bold text-[var(--theme-text)] hover:bg-[var(--theme-pale)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--theme-focus)]/40"
+                aria-label={isDarkMode ? t('lightTheme') : t('darkTheme')}
             >
               <span>{isDarkMode ? t('lightTheme') : t('darkTheme')}</span>
               <span aria-hidden="true">{isDarkMode ? '☀️' : '🌙'}</span>
@@ -558,6 +577,7 @@ const AppContent: React.FC = () => {
                   type="button"
                   onClick={decreaseFont}
                   disabled={uiScale <= MIN_UI_SCALE}
+                  title="Pienennä sivun tekstiä ja painikkeita"
                   className="flex h-14 w-14 items-center justify-center rounded-full bg-[var(--theme-header-bg)] text-lg font-black text-white shadow-md transition-all hover:bg-[var(--theme-primary)] focus-visible:ring-4 focus-visible:ring-[var(--theme-focus)]/40 active:scale-95 disabled:opacity-40 md:h-12 md:w-12"
                   aria-label={`${t('decreaseText')} (${uiScale}%)`}
                 >
@@ -570,6 +590,7 @@ const AppContent: React.FC = () => {
                   type="button"
                   onClick={increaseFont}
                   disabled={uiScale >= MAX_UI_SCALE}
+                  title="Suurenna sivun tekstiä ja painikkeita"
                   className="flex h-14 w-14 items-center justify-center rounded-full bg-[var(--theme-header-bg)] text-lg font-black text-white shadow-md transition-all hover:bg-[var(--theme-primary)] focus-visible:ring-4 focus-visible:ring-[var(--theme-focus)]/40 active:scale-95 disabled:opacity-40 md:h-12 md:w-12"
                   aria-label={`${t('increaseText')} (${uiScale}%)`}
                 >
@@ -579,6 +600,7 @@ const AppContent: React.FC = () => {
                   <button
                     type="button"
                     onClick={resetFont}
+                    title="Palauta tekstikoko normaaliksi"
                     className="rounded-full bg-[var(--theme-gold)] px-4 py-3 text-sm font-black text-[var(--theme-cta-label)] shadow-md transition-all hover:bg-[var(--theme-gold-light)] focus-visible:ring-4 focus-visible:ring-[var(--theme-focus)]/40 active:scale-95"
                     aria-label={t('resetText')}
                   >
@@ -605,6 +627,7 @@ const AppContent: React.FC = () => {
                     type="checkbox"
                     checked={uiVisibility[item.key as keyof UiVisibilityState]}
                     onChange={(event) => updateVisibility(item.key as keyof UiVisibilityState, event.target.checked)}
+                    title={`${item.label}: näytä tai piilota tämä osio etusivulta`}
                     className="h-14 w-14 shrink-0 accent-[var(--theme-primary)] md:h-5 md:w-5"
                     aria-label={item.label}
                   />
@@ -632,6 +655,8 @@ const AppContent: React.FC = () => {
         )}
 
         <main id="main-content" className="space-y-10 animate-fade-up" style={{ animationDelay: '300ms' }} tabIndex={-1}>
+          {uiVisibility.scamAlerts && <ScamAlertsBanner compact framed />}
+
           <div data-tour="favorites">
             <FavoriteLinks favorites={favorites} onToggleFavorite={toggleFavorite} fontSizeStep={fontSizeStep} />
           </div>
@@ -644,18 +669,11 @@ const AppContent: React.FC = () => {
                 onLocalitySelected={updateLocality}
                 onReportLink={openReportModal}
                 showNews={uiVisibility.regionalNews}
-                showScamAlerts={uiVisibility.scamAlerts}
               />
             </div>
           )}
 
           <section className="space-y-8" data-tour="quick-links">
-            <h2 className="font-display mb-5 flex items-center gap-3 text-4xl font-semibold tracking-tight text-[var(--theme-text)] md:text-5xl">
-              <span className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-2xl bg-[var(--theme-pale)] text-xl" aria-hidden="true">
-                🌿
-              </span>
-              {t('chooseService')}
-            </h2>
             <QuickLinks
               onSelectCategory={setSelectedCategory}
               fontSizeStep={fontSizeStep}
@@ -840,4 +858,3 @@ const App: React.FC = () => (
 );
 
 export default App;
-
