@@ -152,21 +152,38 @@ export const getUserAuthDebugInfo = (user: User | null) => {
   return `UID: ${user.uid}. Providerit: ${providerIds}. Sähköpostin lähde: ${emailSources}.`;
 };
 
+const createGoogleProvider = (withPrompt: boolean) => {
+  const provider = new GoogleAuthProvider();
+  provider.addScope('email');
+  provider.addScope('profile');
+
+  if (withPrompt) {
+    provider.setCustomParameters({
+      login_hint: ADMIN_EMAIL,
+      prompt: 'select_account',
+    });
+  }
+
+  return provider;
+};
+
 export const signInWithGoogle = async () => {
   const firebaseAuth = getFirebaseAuth();
   if (!firebaseAuth) {
     throw new Error('Firebase ei ole määritetty.');
   }
 
-  const provider = new GoogleAuthProvider();
-  provider.addScope('email');
-  provider.addScope('profile');
-  provider.setCustomParameters({
-    login_hint: ADMIN_EMAIL,
-    prompt: 'select_account consent',
-  });
+  let result;
+  try {
+    result = await signInWithPopup(firebaseAuth, createGoogleProvider(true));
+  } catch (error) {
+    const code = typeof error === 'object' && error !== null && 'code' in error
+      ? (error as { code?: unknown }).code
+      : '';
+    if (code !== 'auth/internal-error') throw error;
+    result = await signInWithPopup(firebaseAuth, createGoogleProvider(false));
+  }
 
-  const result = await signInWithPopup(firebaseAuth, provider);
   const profile = getAdditionalUserInfo(result)?.profile as GoogleProfile | null | undefined;
   if (typeof profile?.email === 'string') {
     storeAdminEmail(result.user.uid, profile.email);

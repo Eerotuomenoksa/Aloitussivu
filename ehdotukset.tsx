@@ -183,8 +183,19 @@ const getErrorCode = (error: unknown) => {
   return typeof code === 'string' ? code : '';
 };
 
+const getErrorDetails = (error: unknown) => {
+  if (typeof error !== 'object' || error === null) return '';
+  const customData = 'customData' in error ? (error as { customData?: unknown }).customData : null;
+  if (!customData || typeof customData !== 'object') return '';
+  const values = Object.entries(customData as Record<string, unknown>)
+    .filter(([, value]) => typeof value === 'string' && value)
+    .map(([key, value]) => `${key}: ${value}`);
+  return values.length > 0 ? ` Lisätieto: ${values.join(', ')}.` : '';
+};
+
 const getSignInErrorMessage = (error: unknown) => {
   const code = getErrorCode(error);
+  const details = getErrorDetails(error);
 
   if (code === 'auth/unauthorized-domain') {
     return 'Kirjautuminen ei onnistu tästä osoitteesta. Lisää Firebase Authenticationin Authorized domains -listaan 127.0.0.1 ja GitHub Pages -domain, tai avaa paikallinen sivu osoitteella localhost:5173.';
@@ -206,8 +217,12 @@ const getSignInErrorMessage = (error: unknown) => {
     return 'Kirjautumisikkuna suljettiin ennen kirjautumista.';
   }
 
+  if (code === 'auth/internal-error') {
+    return `Firebase palautti sisäisen kirjautumisvirheen. Tarkista Firebase Consolesta, että Google provider on käytössä, GitHub Pages -domain on Authorized domains -listalla ja API-avaimen HTTP referrer -rajoitus sallii https://eerotuomenoksa.github.io/*.${details}`;
+  }
+
   return code
-    ? `Kirjautuminen ei onnistunut. Firebase-virhe: ${code}.`
+    ? `Kirjautuminen ei onnistunut. Firebase-virhe: ${code}.${details}`
     : 'Kirjautuminen ei onnistunut. Tarkista Firebase-asetukset ja Google-kirjautuminen.';
 };
 
