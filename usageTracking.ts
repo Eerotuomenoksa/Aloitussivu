@@ -17,6 +17,37 @@ const getUsageTrackUrl = () => {
   return `https://europe-west1-${projectId}.cloudfunctions.net/trackUsage`;
 };
 
+const USAGE_TRACKING_DISABLED_KEY = 'seniorSurfUsageTrackingDisabled';
+
+const isLocalDevelopmentHost = () => {
+  if (typeof window === 'undefined') return false;
+  return ['localhost', '127.0.0.1', '::1'].includes(window.location.hostname);
+};
+
+const readUsageTrackingDisabled = () => {
+  try {
+    if (typeof localStorage === 'undefined') return false;
+    return localStorage.getItem(USAGE_TRACKING_DISABLED_KEY) === '1';
+  } catch {
+    return false;
+  }
+};
+
+export const isUsageTrackingDisabled = () => isLocalDevelopmentHost() || readUsageTrackingDisabled();
+
+export const setUsageTrackingDisabled = (disabled: boolean) => {
+  try {
+    if (typeof localStorage === 'undefined') return;
+    if (disabled) {
+      localStorage.setItem(USAGE_TRACKING_DISABLED_KEY, '1');
+    } else {
+      localStorage.removeItem(USAGE_TRACKING_DISABLED_KEY);
+    }
+  } catch {
+    // Usage tracking preferences are best-effort only.
+  }
+};
+
 const getPageName = () => {
   if (typeof window === 'undefined') return 'unknown';
   const path = window.location.pathname.split('/').pop() || 'index.html';
@@ -26,6 +57,7 @@ const getPageName = () => {
 const sendUsageEvent = async (event: UsageEvent) => {
   const url = getUsageTrackUrl();
   if (!url || typeof navigator === 'undefined') return;
+  if (isUsageTrackingDisabled()) return;
 
   const body = JSON.stringify(event);
   const appCheckToken = await getFirebaseAppCheckToken();
@@ -59,6 +91,8 @@ export const trackLinkClick = (values: { url: string; label?: string; category?:
 };
 
 export const installUsageTracking = (page = getPageName()) => {
+  if (isUsageTrackingDisabled()) return () => {};
+
   trackPageView(page);
 
   const handleClick = (event: MouseEvent) => {

@@ -43,7 +43,11 @@ import {
   getUsageStatsErrorMessage,
   shiftDate,
 } from './usageStats';
-import { installUsageTracking } from './usageTracking';
+import {
+  installUsageTracking,
+  isUsageTrackingDisabled,
+  setUsageTrackingDisabled,
+} from './usageTracking';
 
 const normalizeUrl = (url: string) => url.trim().replace(/\/+$/, '');
 
@@ -248,6 +252,7 @@ function App() {
   const [usageStats, setUsageStats] = useState<UsageDailyStats[]>([]);
   const [usageStatsBusy, setUsageStatsBusy] = useState(false);
   const [usageStatsError, setUsageStatsError] = useState('');
+  const [usageTrackingDisabled, setUsageTrackingDisabledState] = useState(() => isUsageTrackingDisabled());
 
   const hasAdminAccess = isAdminUser(user);
   const userEmail = getUserEmail(user);
@@ -256,7 +261,12 @@ function App() {
     ? `Nykyinen Firebase UID: ${user.uid}. Lisää tämä UID Firestore-sääntöjen admin-listaan, jos sähköposticlaim ei riitä.`
     : '';
 
-  useEffect(() => installUsageTracking('ehdotukset'), []);
+  useEffect(() => installUsageTracking('ehdotukset'), [usageTrackingDisabled]);
+
+  const updateUsageTrackingPreference = (disabled: boolean) => {
+    setUsageTrackingDisabled(disabled);
+    setUsageTrackingDisabledState(isUsageTrackingDisabled());
+  };
 
   useEffect(() => {
     const unsubscribe = subscribeToAuth((nextUser) => {
@@ -683,6 +693,23 @@ function App() {
                   Etusivu {usageTotals.frontPageViews}
                 </span>
               </div>
+
+              <label className="flex flex-col gap-3 rounded-2xl border border-cyan-200 bg-cyan-50 p-4 dark:border-cyan-900 dark:bg-cyan-950/30 md:flex-row md:items-center md:justify-between">
+                <span>
+                  <span className="block font-black text-cyan-950 dark:text-cyan-100">
+                    Älä raportoi tämän selaimen käyttöä
+                  </span>
+                  <span className="mt-1 block text-sm font-bold text-cyan-900/80 dark:text-cyan-100/75">
+                    Asetus tallentuu vain tälle koneelle ja selaimelle. Paikallinen kehityspalvelin jätetään aina tilastojen ulkopuolelle.
+                  </span>
+                </span>
+                <input
+                  type="checkbox"
+                  checked={usageTrackingDisabled}
+                  onChange={(event) => updateUsageTrackingPreference(event.target.checked)}
+                  className="h-6 w-6 shrink-0 accent-cyan-700"
+                />
+              </label>
 
               <div className="flex flex-wrap gap-2" aria-label="Käyttötilaston aikaväli">
                 {(Object.keys(usageRangeLabels) as UsageRangeMode[]).map((mode) => (
