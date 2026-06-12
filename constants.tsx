@@ -242,6 +242,7 @@ export const SHORTCUTS: Shortcut[] = [
       { name: 'Teatteri Rollo', url: 'https://www.rollo.fi' },
       { name: 'Teatteri Vanha Juko', url: 'https://teatterivanhajuko.fi/', group: 'Lahti' },
       { name: 'Teatteri Vantaa', url: 'https://www.teatterivantaa.fi/', group: 'Vantaa' },
+      { name: 'Toijalan Näyttämö', url: 'https://akaa.fi/kohteet/toijalan-nayttamo/', group: 'Akaa' },
       { name: 'Turun Kaupunginteatteri', url: 'https://tkteatteri.fi/', group: 'Turku' },
       { name: 'Unga Teatern', url: 'https://www.ungateatern.fi/', group: 'Espoo' },
       { name: 'Vaasan kaupunginteatteri', url: 'https://www.vaasankaupunginteatteri.fi/', group: 'Vaasa' },

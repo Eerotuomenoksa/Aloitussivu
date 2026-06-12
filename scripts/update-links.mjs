@@ -399,6 +399,7 @@ const collectLinks = async () => {
   }
 
   const localServices = await readText('localServices.ts');
+  const localServiceTransportLinks = await readText('localServiceTransportLinks.ts');
   const localKelaTaxiNumbers = await readText('localKelaTaxiNumbers.ts');
   const localNewspaperFeeds = await readText('localNewspaperFeeds.ts');
   const localTransportCount = [...localServices.matchAll(/publicTransport:\s*\{/g)].length;
@@ -408,6 +409,10 @@ const collectLinks = async () => {
 
   for (const match of localServices.matchAll(/(publicTransport|library|municipality|wellbeingArea):\s*\{\s*name:\s*'([^']+)',\s*url:\s*'([^']+)',\s*group:\s*'([^']+)'/g)) {
     addRow('Paikalliset erikoislinkit', match[4], match[2], match[3], 'localServices.ts');
+  }
+
+  for (const match of localServiceTransportLinks.matchAll(/provider:\s*\{\s*name:\s*"([^"]+)",\s*url:\s*"([^"]+)",\s*group:\s*'([^']+)'/g)) {
+    addRow('Paikalliset erikoislinkit', match[3], match[1], match[2], 'localServiceTransportLinks.ts');
   }
 
   for (const match of localServices.matchAll(/regionalNewsProvider\('([^']+)',\s*'([^']+)'\)/g)) {
@@ -482,6 +487,7 @@ const collectLinks = async () => {
     categoryNames,
     localTransportCount,
     localLibraryCount,
+    localServiceTransportCount: [...localServiceTransportLinks.matchAll(/provider:\s*\{/g)].length,
     localMunicipalityServiceCount,
     localWellbeingAreaCount,
     municipalityWebsiteCount: [...municipalityWebsites.matchAll(/'([^']+)':\s*'([^']+)'/g)].length,
@@ -503,6 +509,7 @@ const main = async () => {
     categoryNames,
     localTransportCount,
     localLibraryCount,
+    localServiceTransportCount,
     localMunicipalityServiceCount,
     localWellbeingAreaCount,
     municipalityWebsiteCount,
@@ -620,6 +627,7 @@ const main = async () => {
     `  wellbeingAreas: ${localWellbeingAreaCount},`,
     `  municipalityServicePages: ${localMunicipalityServiceCount},`,
     `  localTransport: ${localTransportCount},`,
+    `  localServiceTransport: ${localServiceTransportCount},`,
     `  localLibraries: ${localLibraryCount},`,
     `  localNewspapers: ${localNewspaperCount},`,
     `  localNewsFeeds: ${localNewsFeedCount},`,

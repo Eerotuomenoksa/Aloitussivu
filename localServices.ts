@@ -4,6 +4,7 @@ import { MUNICIPALITY_WEBSITE_LANGUAGE_URLS } from './municipalityWebsiteLocales
 import { MUNICIPALITY_SWEDISH_NAMES_BY_CODE } from './municipalityNames';
 import { LOCAL_NEWSPAPER_FEEDS } from './localNewspaperFeeds';
 import { LOCAL_NEWSPAPER_LINKS } from './localNewspaperLinks';
+import { LOCAL_SERVICE_TRANSPORT_LINKS } from './localServiceTransportLinks';
 import { LOCAL_SPORTS_CLUBS } from './localSportsClubs';
 import { KELA_TAXI_PROVIDERS } from './localKelaTaxiNumbers';
 import type { RegionalProvider } from './communityLinks';
@@ -13,6 +14,7 @@ import type { LanguageCode } from './i18n';
 
 interface LocalServiceConfig {
   publicTransport?: Provider;
+  serviceTransport?: Provider[];
   library?: Provider;
   wellbeingArea?: Provider;
   municipality?: Provider;
@@ -177,6 +179,14 @@ const regionalServiceAreas: RegionalServiceArea[] = [
     municipalities: ['kangasala', 'lempäälä', 'nokia', 'orivesi', 'pirkkala', 'tampere', 'vesilahti', 'ylöjärvi'],
     services: {
       publicTransport: { name: 'Nysse', url: 'https://www.nysse.fi/', group: 'Julkinen liikenne' },
+    },
+  },
+  {
+    id: 'vau-region',
+    name: 'Valkeakoski-Akaa-Urjala',
+    municipalities: ['akaa', 'valkeakoski', 'urjala'],
+    services: {
+      publicTransport: { name: 'VAU-liikenne', url: 'https://akaa.fi/meidan-akaa/liikenneyhteydet/vau/', group: 'Julkinen liikenne' },
     },
   },
   {
@@ -445,6 +455,9 @@ const getRegionalLibraryArea = (municipalityKey: string): RegionalLibraryArea | 
 );
 
 const hslPublicTransport: Provider = { name: 'HSL', url: 'https://www.hsl.fi/', group: 'Julkinen liikenne' };
+const serviceTransportByMunicipality = new Map(
+  LOCAL_SERVICE_TRANSPORT_LINKS.map((entry) => [normalizeMunicipality(entry.municipality), entry.provider])
+);
 
 const regionalNewsProvider = (name: string, url: string): Provider => ({
   name,
@@ -744,6 +757,10 @@ export const getRegionalProviders = (context: RegionalContext, language: Languag
   const serviceArea = getRegionalServiceArea(key);
   const wellbeingArea = exact?.wellbeingArea ?? getWellbeingAreaProvider(context.municipality);
   const publicTransport = exact?.publicTransport ?? serviceArea?.services.publicTransport;
+  const serviceTransport = [
+    ...(exact?.serviceTransport ?? []),
+    serviceTransportByMunicipality.get(key),
+  ].filter((provider): provider is Provider => Boolean(provider));
   const municipalityProvider = localizeMunicipalityProvider(exact?.municipality, municipality, language)
     ?? getMunicipalityWebsiteProvider(municipality, language);
 
@@ -752,6 +769,7 @@ export const getRegionalProviders = (context: RegionalContext, language: Languag
     wellbeingArea,
     exact?.library,
     publicTransport,
+    ...serviceTransport,
   ].filter((provider): provider is Provider => Boolean(provider)))) ?? [];
 };
 

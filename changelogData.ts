@@ -24,16 +24,57 @@ export type ChangelogCommit = {
   tags: string[];
 };
 
-export const CHANGELOG_GENERATED_AT = "11.6.2026 klo 07.39";
+export const CHANGELOG_GENERATED_AT = "12.6.2026 klo 16.49";
 export const CHANGELOG_VERSION = "0.71.0";
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
-  "Linkkien tarkistusdata ja ylläpitoloki päivitettiin uusimman buildin yhteydessä.",
-  "Linkkitarkistukseen lisättiin RSS- ja uutisvirtalinkit sekä http-osoitteet, jotta muuttuneet alasivut ja ei-suojatut linkit jäävät heti pois näkyvistä.",
-  "Kaikki linkkilähteet tarkistettiin uudelleen ja katkenneet tai epäilyttävät linkit piilotettiin loppukäyttäjiltä.",
-  "Alueelliset Kela-taksit poistettiin etusivun nostolinkeistä, mutta ne löytyvät edelleen Liikenne-kategorian taksilinkkien kärjestä."
+  "Alueellisiin palveluihin lisättiin uusi Palveluliikenne-kategoria ja 137 kuntien palvelu-, asiointi- ja kutsuliikenteeseen viittaavaa linkkiä.",
+  "Akaan, Valkeakosken ja Urjalan VAU-liikenne lisättiin alueelliseksi julkisen liikenteen linkiksi.",
+  "Akaan Toijalan Näyttämö lisättiin Teatterit-kategoriaan.",
+  "Paikallislehtilinkkejä siivottiin: Auranmaan Viikkolehti päivitettiin uuteen avl.fi-osoitteeseen ja lakannut Lakeuden Joutsen poistettiin.",
+  "Linkkien tarkistusdata ja ylläpitoloki päivitettiin uusimman 1518 linkin tarkistuksen perusteella."
 ];
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
+  {
+    "hash": "eb622a352001dceeee06ab14fa500c11ce274458",
+    "date": "2026-06-12",
+    "version": "0.81.0",
+    "changeType": "minor",
+    "subject": "lisää käyttötilastojen selainkohtainen esto",
+    "tags": []
+  },
+  {
+    "hash": "d6c41420ecdd34b45e5dd414edc2f114bf04df6c",
+    "date": "2026-06-12",
+    "version": "0.80.5",
+    "changeType": "patch",
+    "subject": "palautejonon korjaus",
+    "tags": []
+  },
+  {
+    "hash": "285c4b6a44ed3745f6b5979ed80020b940bc91ab",
+    "date": "2026-06-12",
+    "version": "0.80.4",
+    "changeType": "patch",
+    "subject": "korjaa palautteen tallennus GitHub Pagesissa",
+    "tags": []
+  },
+  {
+    "hash": "5d1095c51928b96082d77850a88793bd1f283162",
+    "date": "2026-06-12",
+    "version": "0.80.3",
+    "changeType": "patch",
+    "subject": "uusi linkkien turvallisuustarkistus",
+    "tags": []
+  },
+  {
+    "hash": "8212a81dfcf862bb0f0e0d042bec0846f13eeea9",
+    "date": "2026-06-11",
+    "version": "0.80.2",
+    "changeType": "patch",
+    "subject": "päivitä muutosloki ja laajenna linkkitarkistusta",
+    "tags": []
+  },
   {
     "hash": "a27821476e5c9c7f91e42fdd6782efae19aa25ca",
     "date": "2026-06-11",

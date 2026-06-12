@@ -13,7 +13,7 @@ export const LOCAL_NEWSPAPER_LINKS = [
   },
   {
     "name": "Auranmaan Viikkolehti",
-    "url": "http://www.auranmaanviikkolehti.fi"
+    "url": "https://www.avl.fi/"
   },
   {
     "name": "Elimäen Sanomat",
@@ -186,10 +186,6 @@ export const LOCAL_NEWSPAPER_LINKS = [
   {
     "name": "Laitilan Sanomat",
     "url": "https://www.laitilansanomat.fi/"
-  },
-  {
-    "name": "Lakeuden Joutsen",
-    "url": "http://www.lakeudenjoutsen.fi"
   },
   {
     "name": "Lakeuden Lehti",
