@@ -798,6 +798,9 @@ const extraTranslations = {
     groupDescVapaa: 'Harrastukset, eläkeyhdistykset, hengelliset yhteisöt ja mukavaa ajanvietettä.',
     siteCreatedBy: 'Tämän sivuston on laatinut',
     pageTagline: 'Linkkihakemisto arjen verkkopalveluihin',
+    footerProvidedBy: 'Tämän palvelun tarjoaa',
+    footerVtklLink: 'Vanhustyön keskusliiton',
+    footerSeniorSurfLink: 'SeniorSurf-toiminta',
   },
   sv: {
     skipToContent: 'Gå till innehållet',
@@ -897,6 +900,9 @@ const extraTranslations = {
     groupDescVapaa: 'Hobbyer, pensionärsföreningar, andliga gemenskaper och trevliga tidsfördriv.',
     siteCreatedBy: 'Webbplatsen har skapats av',
     pageTagline: 'Länkkatalog för vardagens webbtjänster',
+    footerProvidedBy: 'Tjänsten tillhandahålls av',
+    footerVtklLink: 'Centralförbundet för de gamlas väl rf:s',
+    footerSeniorSurfLink: 'SeniorSurf-verksamhet',
   },
   en: {
     skipToContent: 'Skip to content',
@@ -996,6 +1002,9 @@ const extraTranslations = {
     groupDescVapaa: 'Hobbies, pensioners’ associations, spiritual communities and pleasant pastimes.',
     siteCreatedBy: 'This site was created by',
     pageTagline: 'A link directory for everyday online services',
+    footerProvidedBy: 'This service is provided by',
+    footerVtklLink: 'the Finnish Association for the Welfare of Older People’s',
+    footerSeniorSurfLink: 'SeniorSurf activities',
   },
   uk: {
     pageTitle: 'Aloitussivu',

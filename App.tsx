@@ -23,6 +23,9 @@ import { useApprovedLinkSuggestionsVersion } from './approvedLinks';
 import { LanguageCode, LanguageProvider, LANGUAGES, useI18n } from './i18n';
 import { APP_VERSION_LABEL } from './appVersion';
 import { installUsageTracking } from './usageTracking';
+// Valkoinen logo näytetään tummassa teemassa, värillinen vaaleassa.
+import seniorSurfLogoTummaTeema from './assets/seniorsurf-logo-tumma-teema.png';
+import seniorSurfLogoVaaleaTeema from './assets/seniorsurf-logo-vaalea-teema.png';
 
 const MIN_UI_SCALE = 50;
 const MAX_UI_SCALE = 200;
@@ -679,43 +682,51 @@ const AppContent: React.FC = () => {
         </main>
 
         <footer
-          className="relative left-1/2 w-screen -translate-x-1/2 overflow-hidden text-white"
+          className="relative left-1/2 w-screen -translate-x-1/2 overflow-hidden text-[var(--theme-footer-text)]"
           style={{ width: fullBleedWidth, background: 'var(--theme-footer-bg)' }}
         >
-          <div
-            aria-hidden="true"
-            className="absolute inset-0"
-            style={{
-              background: [
-                'radial-gradient(ellipse 60% 80% at 15% 120%, var(--theme-primary) 0%, transparent 55%)',
-                'radial-gradient(ellipse 40% 60% at 85% -20%, rgba(212,148,10,.12) 0%, transparent 50%)',
-              ].join(', '),
-            }}
-          />
-          <div className="footer-inner-grid relative mx-auto grid w-full max-w-[1400px] grid-cols-3 gap-10 px-6 pb-10 pt-8">
+          {isDarkMode && (
+            <div
+              aria-hidden="true"
+              className="absolute inset-0"
+              style={{
+                background: [
+                  'radial-gradient(ellipse 60% 80% at 15% 120%, var(--theme-primary) 0%, transparent 55%)',
+                  'radial-gradient(ellipse 40% 60% at 85% -20%, rgba(212,148,10,.12) 0%, transparent 50%)',
+                ].join(', '),
+              }}
+            />
+          )}
+          <div className="footer-inner-grid relative mx-auto grid w-full max-w-[1400px] grid-cols-2 gap-10 px-6 pb-10 pt-8">
             <div>
-              <p className="font-display text-2xl text-white">
+              <p className="font-display text-2xl text-[var(--theme-footer-text)]">
                 Aloitussivu
               </p>
-              <p className="mt-1 text-[.7rem] font-bold uppercase tracking-[.22em] text-white/70">
-                Vanhustyön keskusliitto · SeniorSurf
+              <p className="mt-1 text-sm font-semibold text-[var(--theme-footer-muted)]">
+                {t('pageTagline')}
               </p>
-              <p className="mt-2 text-sm font-semibold text-white/80">
-                {t('siteCreatedBy')}{' '}
+              <p className="mt-3 max-w-[40ch] text-sm font-semibold leading-relaxed text-[var(--theme-footer-muted)]">
+                {t('footerProvidedBy')}{' '}
+                <a
+                  href="https://vtkl.fi/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title="Avaa Vanhustyön keskusliiton verkkosivut"
+                  className="font-black text-[var(--theme-footer-text)] underline decoration-[var(--theme-footer-muted)] underline-offset-4 hover:decoration-[var(--theme-footer-text)]"
+                >
+                  {t('footerVtklLink')}
+                </a>{' '}
                 <a
                   href="https://seniorsurf.fi/"
                   target="_blank"
                   rel="noopener noreferrer"
                   title="Avaa SeniorSurfin verkkosivut"
-                  className="font-black text-white underline decoration-white/55 underline-offset-4 hover:text-white"
+                  className="font-black text-[var(--theme-footer-text)] underline decoration-[var(--theme-footer-muted)] underline-offset-4 hover:decoration-[var(--theme-footer-text)]"
                 >
-                  SeniorSurf
+                  {t('footerSeniorSurfLink')}
                 </a>.
               </p>
-              <p className="mt-3 max-w-[36ch] text-sm font-semibold leading-relaxed text-white/80">
-                {t('footer')}
-              </p>
-              {isLinkVisible('https://seniorsurf.fi/') && isLinkVisible('https://seniorsurf.fi/wp-content/uploads/SeniorSurf_White-320-x-102-px.svg') && (
+              {isLinkVisible('https://seniorsurf.fi/') && (
                 <a
                   href="https://seniorsurf.fi/"
                   target="_blank"
@@ -724,9 +735,9 @@ const AppContent: React.FC = () => {
                   aria-label={t('seniorSurfLogoAlt')}
                 >
                   <img
-                    src="https://seniorsurf.fi/wp-content/uploads/SeniorSurf_White-320-x-102-px.svg"
+                    src={isDarkMode ? seniorSurfLogoTummaTeema : seniorSurfLogoVaaleaTeema}
                     alt={t('seniorSurfLogoAlt')}
-                    className="h-9 w-auto brightness-0 invert opacity-80 transition-opacity hover:opacity-100"
+                    className="h-20 w-auto opacity-90 transition-opacity hover:opacity-100"
                     loading="lazy"
                   />
                 </a>
@@ -735,21 +746,21 @@ const AppContent: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setIsFeedbackOpen(true)}
-                  className="mt-5 inline-flex items-center gap-2 rounded-full bg-[var(--theme-primary)] px-5 py-2.5 text-sm font-black text-white shadow-[0_3px_0_rgba(0,0,0,.28)] hover:bg-[var(--theme-primary-mid)] focus-visible:ring-2 focus-visible:ring-white active:translate-y-[2px] active:shadow-none"
+                  className="mt-5 inline-flex items-center gap-2 rounded-full bg-[var(--theme-primary)] px-5 py-2.5 text-sm font-black text-white shadow-[0_3px_0_rgba(0,0,0,.28)] hover:bg-[var(--theme-primary-mid)] focus-visible:ring-2 focus-visible:ring-[var(--theme-focus)] active:translate-y-[2px] active:shadow-none"
                 >
                   Anna palautetta
                 </button>
                 <button
                   type="button"
                   onClick={() => openReportModal({ name: '', url: '', category: '', source: 'Footer' })}
-                  className="mt-5 inline-flex items-center gap-2 rounded-full bg-[var(--theme-gold)] px-5 py-2.5 text-sm font-black text-[var(--theme-cta-label)] shadow-[0_3px_0_rgba(0,0,0,.28)] hover:bg-[var(--theme-gold-light)] focus-visible:ring-2 focus-visible:ring-white active:translate-y-[2px] active:shadow-none"
+                  className="mt-5 inline-flex items-center gap-2 rounded-full bg-[var(--theme-gold)] px-5 py-2.5 text-sm font-black text-[var(--theme-cta-label)] shadow-[0_3px_0_rgba(0,0,0,.28)] hover:bg-[var(--theme-gold-light)] focus-visible:ring-2 focus-visible:ring-[var(--theme-focus)] active:translate-y-[2px] active:shadow-none"
                 >
                   {t('reportNewLink')}
                 </button>
                 <button
                   type="button"
                   onClick={() => setIsInfoOpen(true)}
-                  className="mt-5 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-5 py-2.5 text-sm font-black text-white hover:bg-white/20 focus-visible:ring-2 focus-visible:ring-white"
+                  className="mt-5 inline-flex items-center gap-2 rounded-full border border-[var(--theme-footer-border)] bg-[var(--theme-footer-chip)] px-5 py-2.5 text-sm font-black text-[var(--theme-footer-text)] hover:bg-[var(--theme-footer-chip-hover)] focus-visible:ring-2 focus-visible:ring-[var(--theme-focus)]"
                 >
                   ℹ️ {t('info')}
                 </button>
@@ -757,17 +768,16 @@ const AppContent: React.FC = () => {
             </div>
 
             <nav className="grid content-start gap-3" aria-label={t('footerLinks')}>
-              <p className="text-[.7rem] font-black uppercase tracking-[.2em] text-white/70 sm:col-span-2">
+              <p className="text-[.7rem] font-black uppercase tracking-[.2em] text-[var(--theme-footer-muted)]">
                 {t('footerNavSite')}
               </p>
               {[
-                { href: './yllapito.html', label: t('admin') },
-                { href: './kehitysjono.html', label: 'Kehitysjono' },
-                { href: './muutosloki.html', label: t('changelog') },
                 { href: './linkit.html', label: t('linkList') },
+                { href: './sivua-tukemassa.html', label: t('supporters') },
                 { href: './tietosuoja.html', label: t('privacyNotice') },
                 { href: './saavutettavuus.html', label: t('accessibilityStatement') },
-                { href: './sivua-tukemassa.html', label: t('supporters') },
+                { href: './muutosloki.html', label: t('changelog') },
+                { href: './kehitysjono.html', label: 'Kehitysjono' },
               ].map((link) => (
                 <a
                   key={link.href}
@@ -780,29 +790,30 @@ const AppContent: React.FC = () => {
                 </a>
               ))}
             </nav>
-            <div className="content-start">
-              <p className="mb-3 text-[.7rem] font-black uppercase tracking-[.2em] text-white/70">
-                {t('footerNavLegal')}
-              </p>
-              <div className="grid gap-3">
-                <a href="./tietosuoja.html" className="footer-link" target="_blank" rel="noopener noreferrer">{t('privacyNotice')}</a>
-                <a href="./saavutettavuus.html" className="footer-link" target="_blank" rel="noopener noreferrer">{t('accessibilityStatement')}</a>
-              </div>
-            </div>
           </div>
-          <div className="relative mx-auto flex max-w-[1400px] flex-wrap items-center justify-between gap-2 border-t border-white/10 px-6 py-3">
-            <p className="text-xs font-semibold text-white/65">
-              © Aloitussivu
+          <div className="relative mx-auto flex max-w-[1400px] flex-wrap items-center justify-between gap-2 border-t border-[var(--theme-footer-border)] px-6 py-3">
+            <p className="text-xs font-semibold text-[var(--theme-footer-muted)]">
+              Aloitussivu {new Date().getFullYear()}
             </p>
-            <a
-              href="./muutosloki.html"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-xs font-black uppercase tracking-[.15em] text-white/70 no-underline hover:text-white"
-              aria-label={`${t('changelog')}: ${APP_VERSION_LABEL}`}
-            >
-              {APP_VERSION_LABEL}
-            </a>
+            <div className="flex flex-wrap items-center gap-5">
+              <a
+                href="./yllapito.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs font-black uppercase tracking-[.15em] text-[var(--theme-footer-muted)] no-underline hover:text-[var(--theme-footer-text)]"
+              >
+                {t('admin')}
+              </a>
+              <a
+                href="./muutosloki.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs font-black uppercase tracking-[.15em] text-[var(--theme-footer-muted)] no-underline hover:text-[var(--theme-footer-text)]"
+                aria-label={`${t('changelog')}: ${APP_VERSION_LABEL}`}
+              >
+                {APP_VERSION_LABEL}
+              </a>
+            </div>
           </div>
         </footer>
 

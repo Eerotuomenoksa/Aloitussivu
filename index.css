@@ -45,7 +45,12 @@
   --theme-gold-light: #f0c040;
   --theme-gold-pale: #fdf6e3;
   --theme-border: rgba(28,82,53,.14);
-  --theme-footer-bg: #0f2318;
+  --theme-footer-bg: var(--theme-pale);
+  --theme-footer-text: var(--theme-text);
+  --theme-footer-muted: var(--theme-text-2);
+  --theme-footer-border: var(--theme-border);
+  --theme-footer-chip: rgba(0,0,0,.06);
+  --theme-footer-chip-hover: rgba(0,0,0,.12);
   --theme-focus: #f0c040;
   --theme-cta-label: #0f2318;
 }
@@ -68,7 +73,7 @@ html.theme-violetti {
   --theme-gold-light: #f7b870;
   --theme-gold-pale: #fff3e6;
   --theme-border: rgba(92,26,158,.14);
-  --theme-footer-bg: #1a053a;
+  --theme-footer-bg: var(--theme-pale);
   --theme-focus: #f49638;
   --theme-cta-label: #ffffff;
 }
@@ -91,7 +96,7 @@ html.theme-sininen {
   --theme-gold-light: #e0b050;
   --theme-gold-pale: #fdf4e0;
   --theme-border: rgba(26,58,106,.14);
-  --theme-footer-bg: #0e1f3b;
+  --theme-footer-bg: var(--theme-pale);
   --theme-focus: #e0b050;
   --theme-cta-label: #0a1428;
 }
@@ -114,7 +119,7 @@ html.theme-oranssi {
   --theme-gold-light: #28aa58;
   --theme-gold-pale: #e8f8ee;
   --theme-border: rgba(138,48,16,.14);
-  --theme-footer-bg: #2e0e04;
+  --theme-footer-bg: var(--theme-pale);
   --theme-focus: #28aa58;
   --theme-cta-label: #0e0604;
 }
@@ -201,6 +206,14 @@ html.dark.theme-oranssi {
   --theme-footer-bg: #0a0302;
   --theme-focus: #40d070;
   --theme-cta-label: #0e0604;
+}
+
+html.dark {
+  --theme-footer-text: #ffffff;
+  --theme-footer-muted: rgba(255,255,255,.7);
+  --theme-footer-border: rgba(255,255,255,.12);
+  --theme-footer-chip: rgba(255,255,255,.1);
+  --theme-footer-chip-hover: rgba(255,255,255,.2);
 }
 
 html.dark .bento-card-surface {
@@ -322,7 +335,7 @@ html.dark .glass-chip {
 
 .footer-link {
   font-size: .9rem;
-  color: rgba(255,255,255,.5);
+  color: var(--theme-footer-muted);
   text-decoration: none;
   font-weight: 400;
   transition: color .15s;
@@ -330,7 +343,7 @@ html.dark .glass-chip {
   align-items: center;
   gap: .4rem;
 }
-.footer-link:hover { color: rgba(255,255,255,.85); }
+.footer-link:hover { color: var(--theme-footer-text); }
 .footer-link:focus-visible {
   outline: 2px solid var(--theme-focus);
   border-radius: 2px;
@@ -993,6 +1006,10 @@ html.dark .aurora-modal-shell {
   .footer-inner-grid { grid-template-columns: 1fr 1fr !important; }
 }
 @media (max-width: 560px) {
+  .footer-inner-grid {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+  }
   .bento-grid {
     grid-template-columns: 1fr !important;
     gap: .75rem !important;
