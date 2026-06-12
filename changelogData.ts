@@ -24,19 +24,14 @@ export type ChangelogCommit = {
   tags: string[];
 };
 
-export const CHANGELOG_GENERATED_AT = "12.6.2026 klo 17.35";
+export const CHANGELOG_GENERATED_AT = "12.6.2026 klo 21.31";
 export const CHANGELOG_VERSION = "0.72.0";
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
-  "Liikenne-osioon lisättiin suorien reittioppaiden linkkejä kaupunkiliikenteisiin ja valtakunnallisiin reittioppaisiin.",
-  "Headeriin lisättiin Tietoa-linkki Ohjeen viereen ja tietolaatikon sisältö päivitettiin vastaamaan nykyisiä kategorioita, paikallisuutta, palveluliikennettä ja palautekanavia.",
-  "Keskeisiin painikkeisiin, linkkeihin ja hallintatoimintoihin lisättiin tooltip-ohjeita.",
-  "Palautelomakkeelle lisättiin automaattiset laite- ja selaintiedot, mahdollisuus liittää kuvakaappaus sekä ohje lähettää yksi palautekokonaisuus kerrallaan.",
-  "Etusivun ulkoasu uudistettiin värivyöhykkeiksi: jokaisella aihealueella on oma tunnistettava väri, iso kuvake ja kuvausteksti. Sivun alkuun lisättiin Mitä etsit tänään? -valikko, huijausvaroitusbanneri, suosikkien kultavyöhyke ja Lähelläsi-alue paikallisuutisineen.",
-  "Alueellisiin palveluihin lisättiin uusi Palveluliikenne-kategoria ja 137 kuntien palvelu-, asiointi- ja kutsuliikenteeseen viittaavaa linkkiä.",
-  "Akaan, Valkeakosken ja Urjalan VAU-liikenne lisättiin alueelliseksi julkisen liikenteen linkiksi.",
-  "Akaan Toijalan Näyttämö lisättiin Teatterit-kategoriaan.",
-  "Paikallislehtilinkkejä siivottiin: Auranmaan Viikkolehti päivitettiin uuteen avl.fi-osoitteeseen ja lakannut Lakeuden Joutsen poistettiin.",
-  "Linkkien tarkistusdata ja ylläpitoloki päivitettiin uusimman 1518 linkin tarkistuksen perusteella."
+  "Lähelläsi-osio tiivistettiin: tärkeät paikalliset palvelut näytetään suorina linkkeinä ja laajemmat alueelliset osumat avattavina alakategorioina, kuten Museot, Teatterit, Lehdet, Liikunta ja Urheilu.",
+  "Isojen kaupunkien alueelliset linkit eivät enää täytä etusivua yksittäisinä kortteina; esimerkiksi museot ja teatterit avautuvat nyt omiin alueellisiin linkkilistoihinsa.",
+  "Huijausvaroituksen avautuva ikkuna suurennettiin näytön kokoon sopivaksi, otsikoita ja tekstiä kasvatettiin sekä alareunaan lisättiin aina Lue lisää varoituksesta -linkki.",
+  "Footerin sisältöä selkeytettiin: sivun kuvaus, Vanhustyön keskusliiton ja SeniorSurfin tarjoajatieto sekä ylläpito- ja versiolinkit järjesteltiin uudelleen.",
+  "Viimeisimmät visuaaliset muutokset ja niiden jälkeinen saavutettavuustarkistus päivitettiin muutoslokiin ja työlokiseurantaan."
 ];
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
