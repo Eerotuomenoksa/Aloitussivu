@@ -1,6 +1,6 @@
 # Palvelun linkit
 
-Päivitetty: 11.6.2026 klo 7.36
+Päivitetty: 12.6.2026 klo 9.34
 
 Tämä tiedosto summaa sovelluksessa olevat linkit. Varsinainen avattava taulukko on tiedostossa `docs/linkit.csv`.
 
@@ -24,10 +24,13 @@ Puhelinnumeroita yhteensä: 88.
 Näistä alueellisia Kela-taksien tilausnumeroita: 42.
 Uutisvirtoja ja RSS-syötteitä tarkistuksessa: 23.
 
-Tarkistusvirheitä: 10.
-Huomioita: 100.
-Piilotettu loppukäyttäjiltä: 102 linkkiä.
+Tarkistusvirheitä: 11.
+Huomioita: 181.
+Piilotettu loppukäyttäjiltä: 104 linkkiä.
+Manuaaliseen tarkistusjonoon nostettu: 203 linkkiä.
 
-Turvallisuustarkistus on perustarkistus: URL-muoto, sallittu protokolla, HTTPS, kirjautumistietojen puuttuminen sekä paikallisten/sisäverkon osoitteiden esto. Se ei korvaa haittasivustojen erillistä mainearviota.
+Turvallisuustarkistus kattaa URL-muodon, protokollan, DNS/IP-riskit, HTTP-polun, uudelleenohjaukset, kevyen sisältösignaalin, riskipisteytyksen sekä RDAP-pohjaisen domain-signaalin silloin kun julkista tietoa on saatavilla.
+
+RDAP-signaali on taustatieto manuaaliselle tarkistukselle. Se voi kertoa rekisteröijän, välittäjän tai omistajaan liittyvän julkisen tiedon, mutta ei yksin todista linkkia aidoksi tai turvalliseksi.
 
 Huomio: paikalliset uutisotsikot ja käyttäjän tekemät Google-haut muodostuvat ajossa, joten yksittäisiä hakutuloksia ei listata staattisessa taulukossa.
