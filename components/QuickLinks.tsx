@@ -116,6 +116,41 @@ const shortcutGroups: ShortcutGroup[] = [
   },
 ];
 
+export const ZoneToc: React.FC<{ showLocal?: boolean }> = ({ showLocal = false }) => {
+  const { t, categoryName } = useI18n();
+  return (
+    <nav className="toc-card" aria-label={t('whatAreYouLookingFor')}>
+      <p className="toc-heading">{t('whatAreYouLookingFor')}</p>
+      <ul className="toc-list">
+        {showLocal && (
+          <li>
+            <a
+              href="#lahellasi"
+              className="toc-chip zone-local"
+              title={`Siirry kohtaan ${t('nearYou')}`}
+            >
+              <span className="toc-dot" aria-hidden="true">📍</span>
+              {t('nearYou')}
+            </a>
+          </li>
+        )}
+        {shortcutGroups.map((group) => (
+          <li key={group.anchor}>
+            <a
+              href={`#${group.anchor}`}
+              className={`toc-chip ${group.zone}`}
+              title={`Siirry kohtaan ${categoryName(group.name)}`}
+            >
+              <span className="toc-dot" aria-hidden="true">{group.icon}</span>
+              {categoryName(group.name)}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  );
+};
+
 const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep = 0, favorites, onToggleFavorite, locality, onReportLink }) => {
   const { t, categoryName, language, speechLocale } = useI18n();
   const [search, setSearch] = useState('');
@@ -461,22 +496,8 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
           )}
         </>
       ) : (
-        /* Värivyöhykkeet ja sisällysvalikko */
+        /* Värivyöhykkeet */
         <>
-          <nav className="toc-card" aria-label={t('whatAreYouLookingFor')}>
-            <p className="toc-heading">{t('whatAreYouLookingFor')}</p>
-            <ul className="toc-list">
-              {zoneGroups.map((group) => (
-                <li key={group.anchor}>
-                  <a href={`#${group.anchor}`} className={`toc-chip ${group.zone}`}>
-                    <span className="toc-dot" aria-hidden="true">{group.icon}</span>
-                    {categoryName(group.name)}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
-
           <div className="space-y-8">
             {zoneGroups.map((group, idx) => (
               <section
@@ -514,6 +535,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
                           type="button"
                           onClick={() => onSelectCategory({ ...shortcut, color: rowColors[0] })}
                           className="zone-link"
+                          title={`Avaa kategoria ${label}`}
                           aria-label={`${t('openCategory')}: ${label}`}
                         >
                           {content}
@@ -528,6 +550,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
                         target="_blank"
                         rel="noopener noreferrer"
                         className="zone-link"
+                        title={`Avaa verkkosivu: ${label}`}
                         aria-label={`${t('goToSite')}: ${label}`}
                       >
                         {content}
@@ -556,6 +579,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
                         type="button"
                         onClick={() => onSelectCategory({ ...shortcut, color: rowColors[0] })}
                         className="zone-link"
+                        title={`Avaa kategoria ${label}`}
                         aria-label={`${t('openCategory')}: ${label}`}
                       >
                         {content}
@@ -567,6 +591,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
                         target="_blank"
                         rel="noopener noreferrer"
                         className="zone-link"
+                        title={`Avaa verkkosivu: ${label}`}
                         aria-label={`${t('goToSite')}: ${label}`}
                       >
                         {content}

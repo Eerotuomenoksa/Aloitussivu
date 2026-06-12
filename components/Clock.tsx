@@ -90,26 +90,15 @@ const Clock: React.FC<ClockProps> = ({ fontSizeStep = 0, variant = 'hero', mode 
               <span className="aurora-analog-pin" />
             </div>
           </div>
-          <div className="mt-6 flex items-start gap-4">
-            <span
-              aria-hidden="true"
-              className="mt-2 h-[6px] w-[6px] rounded-full"
-              style={{
-                background: 'var(--theme-primary-glow)',
-                boxShadow: '0 0 8px var(--theme-primary-glow)',
-                animation: 'aurora-pulse 2s ease-in-out infinite',
-              }}
-            />
-            <div>
-              <p className="font-body text-[clamp(.9rem,1.2vw,1rem)] font-bold uppercase tracking-[.06em] text-white/55">
-                {dateString}
+          <div className="mt-6">
+            <p className="font-body text-[clamp(1.15rem,1.6vw,1.35rem)] font-bold capitalize leading-snug text-[#cfe7d6]">
+              {dateString}
+            </p>
+            {nameDayLabel && (
+              <p className="mt-1 font-body text-[clamp(.95rem,1.2vw,1.05rem)] font-bold text-white/75">
+                {nameDayLabel}
               </p>
-              {nameDayLabel && (
-                <p className="mt-1 font-body text-[clamp(.88rem,1.05vw,.98rem)] font-bold text-white/72">
-                  {nameDayLabel}
-                </p>
-              )}
-            </div>
+            )}
           </div>
           {secondaryClock && (
             <a
@@ -133,36 +122,26 @@ const Clock: React.FC<ClockProps> = ({ fontSizeStep = 0, variant = 'hero', mode 
         <time
           dateTime={time.toISOString()}
           aria-live="polite"
-          className="block font-display font-light text-white"
+          className="block font-body font-bold text-white"
           style={{
-            fontSize: 'clamp(4.25rem, 8vw, 6.8rem)',
-            letterSpacing: '-.04em',
-            lineHeight: '.9',
+            fontSize: 'clamp(3.6rem, 6.5vw, 5rem)',
+            letterSpacing: '.01em',
+            lineHeight: '1',
+            fontVariantNumeric: 'tabular-nums',
             textShadow: '0 2px 60px rgba(61,184,112,.2)',
           }}
         >
           {timeString}
         </time>
-        <div className="mt-4 flex items-start gap-3">
-          <span
-            aria-hidden="true"
-            className="mt-2 h-[6px] w-[6px] rounded-full"
-            style={{
-              background: 'var(--theme-primary-glow)',
-              boxShadow: '0 0 8px var(--theme-primary-glow)',
-              animation: 'aurora-pulse 2s ease-in-out infinite',
-            }}
-          />
-          <div>
-            <p className="font-body text-[clamp(.9rem,1.2vw,1rem)] font-bold uppercase tracking-[.06em] text-white/55">
-              {dateString}
+        <div className="mt-3">
+          <p className="font-body text-[clamp(1.15rem,1.6vw,1.35rem)] font-bold capitalize leading-snug text-[#cfe7d6]">
+            {dateString}
+          </p>
+          {nameDayLabel && (
+            <p className="mt-1 font-body text-[clamp(.95rem,1.2vw,1.05rem)] font-bold text-white/75">
+              {nameDayLabel}
             </p>
-            {nameDayLabel && (
-              <p className="mt-1 font-body text-[clamp(.88rem,1.05vw,.98rem)] font-bold text-white/72">
-                {nameDayLabel}
-              </p>
-            )}
-          </div>
+          )}
         </div>
         {secondaryClock && (
           <a

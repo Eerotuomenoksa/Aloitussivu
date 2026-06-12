@@ -2,7 +2,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import Clock from './components/Clock';
 import WeatherCard from './components/WeatherCard';
-import QuickLinks from './components/QuickLinks';
+import QuickLinks, { ZoneToc } from './components/QuickLinks';
 import Assistant from './components/Assistant';
 import ProviderModal from './components/ProviderModal';
 import InfoModal from './components/InfoModal';
@@ -28,7 +28,7 @@ const MIN_UI_SCALE = 50;
 const MAX_UI_SCALE = 200;
 const DEFAULT_UI_SCALE = 100;
 const UI_SCALE_STEP = 10;
-const BASE_UI_SCALE_MULTIPLIER = 0.9;
+const BASE_UI_SCALE_MULTIPLIER = 1.25;
 const SAVED_LOCALITY_KEY = 'locality';
 const ONBOARDING_SEEN_KEY = 'onboardingSeen';
 const SECONDARY_TIME_ZONE_KEY = 'secondaryTimeZone';
@@ -378,9 +378,6 @@ const AppContent: React.FC = () => {
           <div className="relative z-[5] mx-auto max-w-[1380px] px-5 pt-6 md:px-8">
             <nav className="mb-8 flex flex-wrap items-center gap-4 border-b border-white/[.08] pb-5" aria-label={t('topArea')}>
               <div className="mr-auto flex flex-col gap-0.5">
-                <p className="text-[.7rem] font-bold uppercase tracking-[.22em] text-[var(--theme-gold)] opacity-85">
-                  Vanhustyön keskusliitto · SeniorSurf
-                </p>
                 <h1 className="font-display text-[clamp(1.5rem,3vw,2.2rem)] font-semibold leading-none tracking-tight text-white">
                   {t('pageTitle')}
                 </h1>
@@ -455,8 +452,8 @@ const AppContent: React.FC = () => {
                 )}
                 <div className="glass-chip-row hero-widget-row flex flex-wrap gap-3" role="region" aria-label={t('currentInfo')}>
                   {uiVisibility.weather && (
-                    <div className="hero-widget min-w-[240px] flex-1">
-                      <WeatherCard locality={regionalLocality} onLocationResolved={updateLocality} variant="aurora" />
+                    <div className="hero-widget hero-chip min-w-[240px] flex-1">
+                      <WeatherCard locality={regionalLocality} onLocationResolved={updateLocality} variant="chip" />
                     </div>
                   )}
                   {uiVisibility.assistant && (
@@ -468,15 +465,6 @@ const AppContent: React.FC = () => {
               </div>
             </div>
           </div>
-          <div
-            aria-hidden="true"
-            className="absolute bottom-0 left-0 right-0 z-[4]"
-            style={{
-              height: '5rem',
-              background: 'var(--theme-bg)',
-              clipPath: 'ellipse(60% 100% at 50% 100%)',
-            }}
-          />
         </header>
 
         {isSettingsOpen && (
@@ -654,7 +642,9 @@ const AppContent: React.FC = () => {
           </div>
         )}
 
-        <main id="main-content" className="space-y-10 animate-fade-up" style={{ animationDelay: '300ms' }} tabIndex={-1}>
+        <main id="main-content" className="space-y-10 animate-fade-up" style={{ animationDelay: '300ms', marginTop: '-3.5rem' }} tabIndex={-1}>
+          <ZoneToc showLocal={uiVisibility.regionalServices && isFinnishLocality} />
+
           {uiVisibility.scamAlerts && <ScamAlertsBanner compact framed />}
 
           <div data-tour="favorites">
@@ -699,15 +689,13 @@ const AppContent: React.FC = () => {
               ].join(', '),
             }}
           />
-          <div
-            aria-hidden="true"
-            className="relative block h-10 w-full bg-[var(--theme-bg)]"
-            style={{ clipPath: 'ellipse(55% 100% at 50% 0%)' }}
-          />
           <div className="footer-inner-grid relative mx-auto grid w-full max-w-[1400px] grid-cols-3 gap-10 px-6 pb-10 pt-8">
             <div>
               <p className="font-display text-2xl text-white">
                 Aloitussivu
+              </p>
+              <p className="mt-1 text-[.7rem] font-bold uppercase tracking-[.22em] text-white/45">
+                Vanhustyön keskusliitto · SeniorSurf
               </p>
               <p className="mt-3 max-w-[36ch] text-sm font-semibold leading-relaxed text-white/55">
                 {t('footer')}

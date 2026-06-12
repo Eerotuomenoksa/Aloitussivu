@@ -53,21 +53,13 @@ const Assistant: React.FC<AssistantProps> = ({ variant = 'default' }) => {
     return (
       <button
         onClick={() => setIsMinimized(false)}
-        className="assistant-card relative flex h-full min-h-[116px] w-full items-center justify-center gap-3 overflow-hidden rounded-[20px] border border-white/10 p-4 text-white shadow-[0_8px_32px_rgba(10,26,14,.3)] transition-all hover:-translate-y-0.5 active:scale-95 md:min-h-[128px] md:p-4"
-        style={{
-          background: 'linear-gradient(135deg, #0c1829 0%, #0f2318 60%, #1a3428 100%)',
-          animation: 'assistant-glow 4s ease-in-out infinite alternate',
-        }}
+        className="hero-chip h-full text-left text-white transition-all hover:bg-white/[.16] active:scale-[.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--theme-focus)]"
         aria-label={t('assistantOpen')}
       >
-        <span className="flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-3xl md:h-12 md:w-12 md:text-4xl" aria-hidden="true">✦</span>
-        <span className="text-left text-white/85">
-          <span className="mb-1 flex items-center gap-2 text-[.65rem] font-black uppercase tracking-[.2em] text-[rgba(240,192,64,.75)]">
-            AI-avustaja
-            <span className="ml-auto h-[6px] w-[6px] rounded-full bg-[#3db870] shadow-[0_0_6px_#3db870]" style={{ animation: 'aurora-pulse 2.5s ease-in-out infinite' }} aria-hidden="true" />
-          </span>
-          <span className="block text-base font-black leading-tight md:text-lg">{t('assistantNeedHelp')}</span>
-          <span className="block text-sm font-bold leading-snug text-white/55">{t('assistantAskAnything')}</span>
+        <span className="flex-shrink-0 text-[2rem] leading-none md:text-[2.35rem]" aria-hidden="true">💬</span>
+        <span className="min-w-0 flex-1 leading-tight">
+          <strong className="block text-[1.05rem] font-black leading-tight text-white md:text-[1.2rem]">{t('assistantNeedHelp')}</strong>
+          <span className="mt-1 block text-[.9rem] font-bold leading-tight text-white/65 md:text-[1rem]">{t('assistantAskAnything')}</span>
         </span>
       </button>
     );

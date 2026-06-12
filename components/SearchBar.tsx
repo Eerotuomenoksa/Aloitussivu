@@ -43,7 +43,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ fontSizeStep = 0, variant = 'defa
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder={speechState === 'listening' ? t('listeningPlaceholder') : t('googlePlaceholder')}
-            className="w-full rounded-[28px] border-[1.5px] border-white/50 bg-white/70 py-[.9rem] pl-12 pr-36 font-body text-[1rem] font-bold text-[#0a1a0e] shadow-[0_8px_32px_rgba(10,26,14,.18),0_1px_0_rgba(255,255,255,.6)_inset] outline-none backdrop-blur-[20px] transition-all placeholder:text-[#7a9882] focus:border-[var(--theme-gold)] focus:shadow-[0_0_0_4px_rgba(212,148,10,.2),0_8px_32px_rgba(10,26,14,.18),0_1px_0_rgba(255,255,255,.6)_inset]"
+            className="w-full rounded-[28px] border-[1.5px] border-white bg-white py-[.9rem] pl-12 pr-36 font-body text-[1.1rem] font-bold text-[#0a1a0e] shadow-[0_8px_32px_rgba(10,26,14,.25)] outline-none transition-all placeholder:text-[#4a6455] focus:border-[var(--theme-gold)] focus:shadow-[0_0_0_4px_rgba(212,148,10,.2),0_8px_32px_rgba(10,26,14,.25)]"
             aria-label={t('googleSearch')}
             title="Kirjoita hakusana ja hae Googlesta"
           />

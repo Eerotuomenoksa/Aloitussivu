@@ -4,9 +4,9 @@ import { ScamAlertEntry, subscribeScamAlerts } from '../scamAlerts';
 import { useI18n } from '../i18n';
 
 const severityStyles = {
-  info: 'border-[var(--theme-gold)] bg-[var(--theme-gold-pale)] text-[var(--theme-text)]',
-  warning: 'border-[var(--theme-gold)] bg-[var(--theme-gold-pale)] text-[var(--theme-text)]',
-  danger: 'border-[var(--theme-gold)] bg-[var(--theme-gold-pale)] text-[var(--theme-text)]',
+  info: 'border-[var(--theme-gold)] bg-[var(--theme-surface)] text-[var(--theme-text)]',
+  warning: 'border-[var(--theme-gold)] bg-[var(--theme-surface)] text-[var(--theme-text)]',
+  danger: 'border-[var(--theme-gold)] bg-[var(--theme-surface)] text-[var(--theme-text)]',
 };
 
 const MORE_SCAM_ALERTS_URL = 'https://www.kyberturvallisuuskeskus.fi/fi/varoitukset';
@@ -125,7 +125,7 @@ const ScamAlertsBanner: React.FC<ScamAlertsBannerProps> = ({ compact = false, fr
         </div>
       </div>
 
-      <div className={compact ? 'space-y-3' : 'grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4'} aria-label={t('scamAlertsHeadings')}>
+      <div className={compact ? 'grid grid-cols-1 gap-3 md:grid-cols-2' : 'grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4'} aria-label={t('scamAlertsHeadings')}>
         {visibleAlerts.map((alert) => (
           <button
             key={alert.id}

@@ -30,7 +30,7 @@ const FavoriteLinks: React.FC<FavoriteLinksProps> = ({ favorites, onToggleFavori
   ];
 
   const basePillStyles =
-    'inline-flex items-center gap-2 rounded-full border-2 border-[#e8a020] bg-[#fff8e8] px-5 py-2.5 font-black text-[#1a2e1e] shadow-[0_3px_0_#c27e10] transition-all duration-100 hover:-translate-y-0.5 hover:bg-[#fff0c0] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1a4d2e] active:translate-y-0 active:shadow-none dark:bg-[#2a2010] dark:text-[#e8f5ed]';
+    'inline-flex items-center gap-2 rounded-full border-2 border-[#e8a020] bg-[var(--theme-surface)] px-5 py-2.5 font-black text-[var(--theme-text)] shadow-[0_3px_0_#c27e10] transition-all duration-100 hover:-translate-y-0.5 hover:bg-[#fff0c0] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1a4d2e] active:translate-y-0 active:shadow-none dark:hover:bg-[#2a2010]';
 
   return (
     <section className="zone zone-suosikit" aria-labelledby="favorites-heading">
