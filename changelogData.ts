@@ -24,18 +24,80 @@ export type ChangelogCommit = {
   tags: string[];
 };
 
-export const CHANGELOG_GENERATED_AT = "12.6.2026 klo 21.31";
+export const CHANGELOG_GENERATED_AT = "14.6.2026 klo 16.06";
 export const CHANGELOG_VERSION = "0.72.0";
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
   "Lähelläsi-osio tiivistettiin: tärkeät paikalliset palvelut näytetään suorina linkkeinä ja laajemmat alueelliset osumat avattavina alakategorioina, kuten Museot, Teatterit, Lehdet, Liikunta ja Urheilu.",
-  "Isojen kaupunkien alueelliset linkit eivät enää täytä etusivua yksittäisinä kortteina; esimerkiksi museot ja teatterit avautuvat nyt omiin alueellisiin linkkilistoihinsa.",
   "Kunnille, joilta puuttuu oma tai seudullinen julkisen liikenteen linkki, näytetään nyt Matkahuollon reittiopas varayhteytenä.",
-  "Huijausvaroituksen avautuva ikkuna suurennettiin näytön kokoon sopivaksi, otsikoita ja tekstiä kasvatettiin sekä alareunaan lisättiin aina Lue lisää varoituksesta -linkki.",
-  "Footerin sisältöä selkeytettiin: sivun kuvaus, Vanhustyön keskusliiton ja SeniorSurfin tarjoajatieto sekä ylläpito- ja versiolinkit järjesteltiin uudelleen.",
-  "Viimeisimmät visuaaliset muutokset ja niiden jälkeinen saavutettavuustarkistus päivitettiin muutoslokiin ja työlokiseurantaan."
+  "HSL-alueella näytetään erikseen HSL:n palvelusivu ja HSL Reittiopas.",
+  "Kela-taksit eivät nouse Lähelläsi-osioon, vaan pysyvät varsinaisissa Liikenne- ja Puhelinnumerot-kategorioissa."
 ];
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
+  {
+    "hash": "87216675e15161e053261d5cf03a82c6e5421ee4",
+    "date": "2026-06-14",
+    "version": "0.84.1",
+    "changeType": "patch",
+    "subject": "alueelliset linkit alakategorioiksi ja matkahuolto fallback",
+    "tags": []
+  },
+  {
+    "hash": "42e684a8afa39280bbef8a3d96cb5942cd2bc993",
+    "date": "2026-06-12",
+    "version": "0.84.0",
+    "changeType": "minor",
+    "subject": "uudet footer logot",
+    "tags": [
+      "Visuaalisuus"
+    ]
+  },
+  {
+    "hash": "76347b01bca5d087f3971e7a6898f017c7ee3f3c",
+    "date": "2026-06-12",
+    "version": "0.83.2",
+    "changeType": "patch",
+    "subject": "muutosloki kuntoon",
+    "tags": []
+  },
+  {
+    "hash": "c42e6e95ca1ea094804438aeae0d1f4d07fc329f",
+    "date": "2026-06-12",
+    "version": "0.83.1",
+    "changeType": "patch",
+    "subject": "Saavuttettavuus tarkistus visu muutosten jälkeen",
+    "tags": [
+      "Visuaalisuus"
+    ]
+  },
+  {
+    "hash": "291a0d27887156d03f7deac6e64f0b10725be68e",
+    "date": "2026-06-12",
+    "version": "0.83.0",
+    "changeType": "minor",
+    "subject": "Visuaalinen muutos",
+    "tags": [
+      "Visuaalisuus"
+    ]
+  },
+  {
+    "hash": "7ed4c21e441273583ea90fa9aed912e2a375ce61",
+    "date": "2026-06-12",
+    "version": "0.82.0",
+    "changeType": "minor",
+    "subject": "reittioppaat, tooltip, tietoa headeriin, visuaalinen muutos ja palautelomakkeen tarkennukset",
+    "tags": [
+      "Visuaalisuus"
+    ]
+  },
+  {
+    "hash": "cf8b5418e7d18d0bcd98f0f54838c4b75e653b86",
+    "date": "2026-06-12",
+    "version": "0.81.1",
+    "changeType": "patch",
+    "subject": "lisätty alueellisia linkkejä ja palveluliikenteen linkit",
+    "tags": []
+  },
   {
     "hash": "eb622a352001dceeee06ab14fa500c11ce274458",
     "date": "2026-06-12",
