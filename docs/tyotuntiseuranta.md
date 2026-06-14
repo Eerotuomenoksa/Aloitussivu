@@ -1,6 +1,6 @@
 # Tyotuntiseuranta
 
-Paivitetty: 12.6.2026
+Paivitetty: 14.6.2026
 
 Tama dokumentti seuraa Aloitussivu-projektin toteutunutta ja arvioitua tyomaaraa. Seuranta erottaa kaksi eri asiaa:
 
@@ -66,6 +66,7 @@ Kirjausperiaate:
 | 2026-06-12 | Akaan Toijalan Nayttamon lisays teatterilistalle | 0,25 h | 0,5 h | arvio | constants.tsx, vite build | Linkki varmistettu HTTP 200 -vastauksella; taysi linkkiajo aikakatkaistiin |
 | 2026-06-12 | Visuaalinen muutos ja saavutettavuustarkistus | 0,75-1,25 h | 2-4 h | arvio | commitit 291a0d2 ja c42e6e9, vite build, kontrastilaskenta | Sisaltaa Clauden visuaalisen muutoksen commitoinnin, tekstikontrastien parannukset ja build-varmistuksen |
 | 2026-06-12 | Lahellasi-osion alueelliset linkit alakategorioiksi | 0,5-1 h | 1,5-3 h | arvio | App.tsx, components/RegionalServicesPanel.tsx, localServices.ts, Playwright-pistokokeet | Ensin kokeiltiin kaikkia alueellisia linkkeja suorina, sitten isot kaupungit tiivistettiin alakategorioihin |
+| 2026-06-14 | Alueellisten linkkien ja julkisen liikenteen viimeistely | 0,5-1 h | 1-2 h | arvio | App.tsx, components/RegionalServicesPanel.tsx, localServices.ts, docs/julkinen-liikenne-puuttuvat-kunnat.md, vite build | Lahellasi-osio viimeisteltiin alakategorioiksi, HSL-linkitys selkeytettiin ja Matkahuolto lisattiin fallbackiksi kunnille joilta oma julkinen liikenne puuttui |
 | 2026-06-12 | Huijausvaroituksen modaalin parannus | 0,25-0,5 h | 0,75-1,5 h | arvio | components/ScamAlertsBanner.tsx, i18n.tsx, vite build | Modaali suurennettiin, tekstikokoja kasvatettiin ja Lue lisaa -linkki lisattiin aina |
 | 2026-06-12 | Muutoslokin ja tyolokin paivitys | 0,25 h | 0,5 h | arvio | changelogData.ts, docs/tyotuntiseuranta.md, docs/tyotuntiseuranta.csv | Paivitettiin uusimpien kokeilujen ja korjausten tilanne muutoslokiin ja tuntiseurantaan |
 

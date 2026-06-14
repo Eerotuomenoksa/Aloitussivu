@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { getLocalizedMunicipalityName, getRegionalLibraryProviders, getRegionalNewsProviders, getRegionalProviders, getRegionalRssFeeds, normalizeMunicipality, resolveRegionalContext } from '../localServices';
+import { getLocalizedMunicipalityName, getRegionalCategoryShortcuts, getRegionalLibraryProviders, getRegionalNewsProviders, getRegionalProviders, getRegionalRssFeeds, normalizeMunicipality, resolveRegionalContext } from '../localServices';
 import { filterVisibleProviders } from '../linkVisibility';
-import { LocalityInfo, Provider, LinkReportDraft } from '../types';
+import { LocalityInfo, Provider, LinkReportDraft, Shortcut } from '../types';
 import LocalNewsHeadlines from './LocalNewsHeadlines';
 import { useI18n } from '../i18n';
 
@@ -10,6 +10,7 @@ interface RegionalServicesPanelProps {
   fontSizeStep?: number;
   onLocalitySelected?: (locality: LocalityInfo) => void;
   onReportLink?: (draft: LinkReportDraft) => void;
+  onSelectCategory?: (shortcut: Shortcut) => void;
   showNews?: boolean;
 }
 
@@ -34,6 +35,11 @@ const getRegionalServiceIcon = (provider: Provider) => {
   if (text.includes('kela-taksi') || text.includes('taksi')) return '🚕';
   if (text.includes('liikenne') || text.includes('reitti') || text.includes('hsl') || text.includes('nysse') || text.includes('föli')) return '🚌';
   if (text.includes('kirjasto') || text.includes('finna') || text.includes('helmet')) return '📚';
+  if (text.includes('lehti') || text.includes('lehdet') || text.includes('uutiset') || text.includes('media')) return '📰';
+  if (text.includes('museo')) return '🖼️';
+  if (text.includes('teatteri')) return '🎭';
+  if (text.includes('liikunta') || text.includes('urheilu')) return '🚶';
+  if (text.includes('eläkeyhdistys') || text.includes('eläkeyhdistykset') || text.includes('yhdistys') || text.includes('yhdistykset')) return '👥';
   if (text.includes('hyvinvointialue') || text.includes('sote') || text.includes('terveys')) return '🏥';
   if (text.includes('paikalliset palvelut') || text.includes('palvelut') || text.includes('kunta') || text.includes('kaupunki')) return '🏛️';
   return '📍';
@@ -92,7 +98,33 @@ const ServiceLink: React.FC<{ provider: Provider; index: number; fontSizeStep: n
   );
 };
 
-const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality, fontSizeStep = 0, onLocalitySelected, onReportLink, showNews = true }) => {
+const CategoryLink: React.FC<{ shortcut: Shortcut; fontSizeStep: number; onSelectCategory?: (shortcut: Shortcut) => void }> = ({ shortcut, fontSizeStep, onSelectCategory }) => {
+  const { categoryName } = useI18n();
+  const count = shortcut.providers?.length ?? 0;
+  const countLabel = count === 1 ? '1 alueellinen linkki' : `${count} alueellista linkkiä`;
+
+  if (!onSelectCategory) return null;
+
+  return (
+    <button
+      type="button"
+      onClick={() => onSelectCategory(shortcut)}
+      className="zone-link"
+      title={`Avaa alueelliset linkit kategoriassa ${categoryName(shortcut.name)}`}
+    >
+      <span className="zone-link-icon" aria-hidden="true">{shortcut.icon}</span>
+      <span className="zone-link-label flex min-w-0 flex-col gap-0.5">
+        <span className={`min-w-0 leading-tight ${textClasses[fontSizeStep]}`}>{categoryName(shortcut.name)}</span>
+        <span className={`font-semibold text-[var(--theme-text-3)] ${smallTextClasses[fontSizeStep]}`}>
+          {countLabel}
+        </span>
+      </span>
+      <span className="zone-link-arrow" aria-hidden="true">→</span>
+    </button>
+  );
+};
+
+const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality, fontSizeStep = 0, onLocalitySelected, onReportLink, onSelectCategory, showNews = true }) => {
   const { language, t } = useI18n();
   const [query, setQuery] = useState('');
   const [isManualQuery, setIsManualQuery] = useState(false);
@@ -104,10 +136,14 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
   }, [isManualQuery, locality?.municipality]);
 
   const context = useMemo(() => resolveRegionalContext(query, locality), [query, locality]);
-  const services = useMemo(() => context ? filterVisibleProviders(uniqueProvidersByUrl([
-    ...getRegionalProviders(context, language),
-    ...getRegionalLibraryProviders(context),
-  ])) ?? [] : [], [context, language]);
+  const services = useMemo(() => context ? filterVisibleProviders(uniqueProvidersByUrl(
+    [
+      ...getRegionalProviders(context, language),
+      ...getRegionalLibraryProviders(context),
+      ...getRegionalNewsProviders(context),
+    ]
+  )) ?? [] : [], [context, language]);
+  const regionalCategories = useMemo(() => context ? getRegionalCategoryShortcuts(context, language) : [], [context, language]);
   const newsFallbacks = useMemo(() => context ? filterVisibleProviders(getRegionalNewsProviders(context)) ?? [] : [], [context]);
   const rssFeeds = useMemo(() => context ? getRegionalRssFeeds(context) : [], [context]);
   const fallbackNewsUrl = newsFallbacks[0]?.url ?? '';
@@ -204,6 +240,14 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
         <div className={showNews ? 'local-grid' : ''}>
           <div className="zone-links-grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(15rem, 1fr))', alignContent: 'start' }}>
             {services.map((provider, index) => <ServiceLink key={provider.url} provider={provider} index={index} fontSizeStep={fontSizeStep} onReportLink={onReportLink} />)}
+            {regionalCategories.map((shortcut) => (
+              <CategoryLink
+                key={shortcut.name}
+                shortcut={shortcut}
+                fontSizeStep={fontSizeStep}
+                onSelectCategory={onSelectCategory}
+              />
+            ))}
           </div>
 
           {showNews && (

@@ -29,6 +29,7 @@ export const CHANGELOG_VERSION = "0.72.0";
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
   "Lähelläsi-osio tiivistettiin: tärkeät paikalliset palvelut näytetään suorina linkkeinä ja laajemmat alueelliset osumat avattavina alakategorioina, kuten Museot, Teatterit, Lehdet, Liikunta ja Urheilu.",
   "Isojen kaupunkien alueelliset linkit eivät enää täytä etusivua yksittäisinä kortteina; esimerkiksi museot ja teatterit avautuvat nyt omiin alueellisiin linkkilistoihinsa.",
+  "Kunnille, joilta puuttuu oma tai seudullinen julkisen liikenteen linkki, näytetään nyt Matkahuollon reittiopas varayhteytenä.",
   "Huijausvaroituksen avautuva ikkuna suurennettiin näytön kokoon sopivaksi, otsikoita ja tekstiä kasvatettiin sekä alareunaan lisättiin aina Lue lisää varoituksesta -linkki.",
   "Footerin sisältöä selkeytettiin: sivun kuvaus, Vanhustyön keskusliiton ja SeniorSurfin tarjoajatieto sekä ylläpito- ja versiolinkit järjesteltiin uudelleen.",
   "Viimeisimmät visuaaliset muutokset ja niiden jälkeinen saavutettavuustarkistus päivitettiin muutoslokiin ja työlokiseurantaan."

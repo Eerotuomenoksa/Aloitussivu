@@ -664,6 +664,7 @@ const AppContent: React.FC = () => {
                 fontSizeStep={fontSizeStep}
                 onLocalitySelected={updateLocality}
                 onReportLink={openReportModal}
+                onSelectCategory={setSelectedCategory}
                 showNews={uiVisibility.regionalNews}
               />
             </div>

@@ -8,6 +8,7 @@ import { LOCAL_SERVICE_TRANSPORT_LINKS } from './localServiceTransportLinks';
 import { LOCAL_SPORTS_CLUBS } from './localSportsClubs';
 import { KELA_TAXI_PROVIDERS } from './localKelaTaxiNumbers';
 import type { RegionalProvider } from './communityLinks';
+import { SHORTCUTS } from './constants';
 import { filterVisibleProviders } from './linkVisibility';
 import { LocalityInfo, Municipality, Provider, RegionalContext, RssFeedConfig, Shortcut } from './types';
 import type { LanguageCode } from './i18n';
@@ -170,7 +171,7 @@ const regionalServiceAreas: RegionalServiceArea[] = [
     name: 'Helsingin seutu',
     municipalities: ['espoo', 'helsinki', 'kauniainen', 'kerava', 'kirkkonummi', 'siuntio', 'sipoo', 'tuusula', 'vantaa'],
     services: {
-      publicTransport: { name: 'HSL Reittiopas', url: 'https://www.hsl.fi/', group: 'Julkinen liikenne' },
+      publicTransport: { name: 'HSL', url: 'https://www.hsl.fi/', group: 'Julkinen liikenne' },
     },
   },
   {
@@ -455,6 +456,8 @@ const getRegionalLibraryArea = (municipalityKey: string): RegionalLibraryArea | 
 );
 
 const hslPublicTransport: Provider = { name: 'HSL', url: 'https://www.hsl.fi/', group: 'Julkinen liikenne' };
+const hslRouteGuide: Provider = { name: 'HSL Reittiopas', url: 'https://reittiopas.hsl.fi/', group: 'Reittioppaat' };
+const matkahuoltoRouteGuide: Provider = { name: 'Matkahuollon reittiopas', url: 'https://reittiopas.matkahuolto.fi/', group: 'Julkinen liikenne' };
 const serviceTransportByMunicipality = new Map(
   LOCAL_SERVICE_TRANSPORT_LINKS.map((entry) => [normalizeMunicipality(entry.municipality), entry.provider])
 );
@@ -642,6 +645,22 @@ const filterRegionalProviders = (providers: Provider[], context: RegionalContext
   providers.filter((provider) => regionalProviderRank(provider, context) < 2)
 );
 
+const isProviderRegionalForContext = (provider: Provider, context: RegionalContext) => {
+  if (regionalProviderRank(provider, context) < 2) return true;
+
+  const municipalityKey = normalizeMunicipality(context.municipality.name);
+  const groupMunicipality = provider.group ? findMunicipality(provider.group) : null;
+  if (groupMunicipality && normalizeMunicipality(groupMunicipality.name) === municipalityKey) return true;
+
+  const nameMunicipality = findMunicipality(provider.name);
+  return Boolean(nameMunicipality && normalizeMunicipality(nameMunicipality.name) === municipalityKey);
+};
+
+const markRegionalCategory = (provider: Provider, category: string): Provider => ({
+  ...provider,
+  group: category,
+});
+
 const filterPatientAssociationProviders = (providers: Provider[], context: RegionalContext) => {
   const memoryGroup = 'Muistiyhdistykset';
   const nonMemoryProviders = providers.filter((provider) => provider.group !== memoryGroup);
@@ -756,7 +775,7 @@ export const getRegionalProviders = (context: RegionalContext, language: Languag
   const exact = localServiceMap[key];
   const serviceArea = getRegionalServiceArea(key);
   const wellbeingArea = exact?.wellbeingArea ?? getWellbeingAreaProvider(context.municipality);
-  const publicTransport = exact?.publicTransport ?? serviceArea?.services.publicTransport;
+  const publicTransport = exact?.publicTransport ?? serviceArea?.services.publicTransport ?? matkahuoltoRouteGuide;
   const serviceTransport = [
     ...(exact?.serviceTransport ?? []),
     serviceTransportByMunicipality.get(key),
@@ -764,11 +783,14 @@ export const getRegionalProviders = (context: RegionalContext, language: Languag
   const municipalityProvider = localizeMunicipalityProvider(exact?.municipality, municipality, language)
     ?? getMunicipalityWebsiteProvider(municipality, language);
 
+  const routeGuide = publicTransport?.url.includes('hsl.fi') ? hslRouteGuide : undefined;
+
   return filterVisibleProviders(uniqueProviders([
     municipalityProvider,
     wellbeingArea,
     exact?.library,
     publicTransport,
+    routeGuide,
     ...serviceTransport,
   ].filter((provider): provider is Provider => Boolean(provider)))) ?? [];
 };
@@ -777,9 +799,11 @@ export const getRegionalPublicTransportProviders = (context: RegionalContext): P
   const key = normalizeMunicipality(context.municipality.name);
   const exact = localServiceMap[key];
   const serviceArea = getRegionalServiceArea(key);
+  const publicTransport = exact?.publicTransport ?? serviceArea?.services.publicTransport ?? matkahuoltoRouteGuide;
 
   return filterVisibleProviders(uniqueProviders([
-    exact?.publicTransport ?? serviceArea?.services.publicTransport,
+    publicTransport,
+    publicTransport?.url.includes('hsl.fi') ? hslRouteGuide : undefined,
   ].filter((provider): provider is Provider => Boolean(provider)))) ?? [];
 };
 
@@ -832,6 +856,62 @@ const getRegionalSportsClubProviders = (context: RegionalContext): Provider[] =>
   sortProvidersByLocality(filterRegionalProviders(LOCAL_SPORTS_CLUBS, context), context)
 );
 
+export const getAllRegionalProviders = (context: RegionalContext, language: LanguageCode = 'fi'): Provider[] => {
+  const shortcutRegionalProviders = SHORTCUTS.flatMap((shortcut) => (
+    shortcut.providers
+      ?.filter((provider) => isProviderRegionalForContext(provider, context))
+      .map((provider) => markRegionalCategory(provider, shortcut.name)) ?? []
+  ));
+
+  return filterVisibleProviders(uniqueProviders(sortProvidersByLocality([
+    ...getRegionalProviders(context, language),
+    ...getRegionalLibraryProviders(context),
+    ...getRegionalNewsProviders(context),
+    ...getRegionalNewspaperProviders(context).map((provider) => markRegionalCategory(provider, 'Lehdet')),
+    ...getRegionalSportsClubProviders(context).map((provider) => markRegionalCategory(provider, 'Urheilu')),
+    ...shortcutRegionalProviders,
+  ], context))) ?? [];
+};
+
+export const getRegionalCategoryShortcuts = (context: RegionalContext, language: LanguageCode = 'fi'): Shortcut[] => {
+  const primaryUrls = new Set([
+    ...getRegionalProviders(context, language),
+    ...getRegionalLibraryProviders(context),
+    ...getRegionalNewsProviders(context),
+  ].map((provider) => provider.url));
+  const groupedProviders = new Map<string, Provider[]>();
+
+  getAllRegionalProviders(context, language)
+    .filter((provider) => provider.group && !primaryUrls.has(provider.url))
+    .forEach((provider) => {
+      const category = provider.group ?? 'Alueelliset';
+      groupedProviders.set(category, [...(groupedProviders.get(category) ?? []), provider]);
+    });
+
+  return [...groupedProviders.entries()]
+    .map(([name, providers]) => ({
+      name,
+      icon: getRegionalCategoryIcon(name),
+      color: 'bg-brand-teal',
+      providers: uniqueProviders(sortProvidersByLocality(providers, context)),
+    }))
+    .filter((shortcut) => shortcut.providers.length > 0)
+    .sort((a, b) => a.name.localeCompare(b.name, 'fi'));
+};
+
+const getRegionalCategoryIcon = (category: string) => {
+  const text = category.toLocaleLowerCase('fi-FI');
+  if (text.includes('lehti') || text.includes('lehdet') || text.includes('uutinen')) return '📰';
+  if (text.includes('liikenne') || text.includes('reitti')) return '🚌';
+  if (text.includes('museo')) return '🖼️';
+  if (text.includes('teatteri')) return '🎭';
+  if (text.includes('musiikki')) return '🎵';
+  if (text.includes('liikunta') || text.includes('urheilu')) return '🚶';
+  if (text.includes('yhdistys') || text.includes('yhdistykset')) return '👥';
+  if (text.includes('kotihoito')) return '🤝';
+  return '📍';
+};
+
 export const getRegionalRssFeeds = (context: RegionalContext): RssFeedConfig[] => {
   const municipality = context.municipality.name;
   const key = normalizeMunicipality(municipality);
@@ -857,7 +937,7 @@ export const getLocalizedShortcuts = (shortcuts: Shortcut[], locality: LocalityI
   const wellbeingArea = exact?.wellbeingArea ?? getWellbeingAreaProvider(context.municipality);
 
   const fallback: LocalServiceConfig = {
-    publicTransport: serviceArea?.services.publicTransport,
+    publicTransport: serviceArea?.services.publicTransport ?? matkahuoltoRouteGuide,
     wellbeingArea,
     municipality: localizeMunicipalityProvider(exact?.municipality, municipality, language)
       ?? getMunicipalityWebsiteProvider(municipality, language),
@@ -931,7 +1011,14 @@ export const getLocalizedShortcuts = (shortcuts: Shortcut[], locality: LocalityI
     }
 
     if (shortcut.name === 'Eläkeyhdistykset') {
-      return { ...shortcut, providers: uniqueProviders(prioritizeRegionalProviders(filterRegionalProviders(shortcut.providers, context), context)) };
+      const regionalAssociations = filterRegionalProviders(shortcut.providers, context);
+      return {
+        ...shortcut,
+        providers: uniqueProviders(prioritizeRegionalProviders(
+          regionalAssociations.length > 0 ? regionalAssociations : shortcut.providers,
+          context,
+        )),
+      };
     }
 
     if (shortcut.name === 'Potilasyhdistykset') {
