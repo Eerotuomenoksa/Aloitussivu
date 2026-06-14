@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { submitLinkReport } from '../linkVisibility';
+import { normalizeReportUrl, submitLinkReport } from '../linkVisibility';
 import { LinkReportDraft, LinkReportEntry, LinkReportType } from '../types';
 import { useI18n } from '../i18n';
 
@@ -15,6 +15,7 @@ const LinkReportModal: React.FC<LinkReportModalProps> = ({ draft, onClose }) => 
   const [url, setUrl] = useState('');
   const [category, setCategory] = useState('');
   const [note, setNote] = useState('');
+  const [website, setWebsite] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -28,6 +29,7 @@ const LinkReportModal: React.FC<LinkReportModalProps> = ({ draft, onClose }) => 
     setUrl(draft.url ?? '');
     setCategory(draft.category ?? '');
     setNote('');
+    setWebsite('');
     setSubmitted(false);
     setSubmitError('');
     setIsSubmitting(false);
@@ -64,14 +66,25 @@ const LinkReportModal: React.FC<LinkReportModalProps> = ({ draft, onClose }) => 
     const trimmedCategory = category.trim() || draft.category?.trim() || '';
     const trimmedNote = note.trim();
 
-    if (!trimmedUrl) return;
+    const normalizedUrl = normalizeReportUrl(trimmedUrl);
+    if (website.trim()) {
+      setSubmitted(true);
+      closeTimerRef.current = window.setTimeout(onClose, 900);
+      return;
+    }
+
+    if (!normalizedUrl) {
+      setSubmitError(t('reportUrlMustBeHttps'));
+      return;
+    }
+
     setIsSubmitting(true);
 
     const entry: LinkReportEntry = {
       id: crypto.randomUUID(),
       type,
       name: trimmedName,
-      url: trimmedUrl,
+      url: normalizedUrl,
       category: trimmedCategory,
       source: draft.source || t('userReport'),
       createdAt: new Date().toISOString(),
@@ -118,6 +131,16 @@ const LinkReportModal: React.FC<LinkReportModalProps> = ({ draft, onClose }) => 
 
         <form onSubmit={submit} className="flex min-h-0 flex-1 flex-col">
           <div className="aurora-modal-body min-h-0 flex-1 space-y-5 overflow-y-auto p-5 md:p-8">
+            <label className="sr-only" aria-hidden="true">
+              Website
+              <input
+                tabIndex={-1}
+                autoComplete="off"
+                value={website}
+                onChange={(event) => setWebsite(event.target.value)}
+              />
+            </label>
+
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               {typeOptions.map((option) => (
                 <button

@@ -24,9 +24,12 @@ export type ChangelogCommit = {
   tags: string[];
 };
 
-export const CHANGELOG_GENERATED_AT = "14.6.2026 klo 16.06";
+export const CHANGELOG_GENERATED_AT = "14.6.2026 klo 16.34";
 export const CHANGELOG_VERSION = "0.72.0";
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
+  "Kunnan vaihtamista helpotettiin desktopissa: nykyisen kunnan voi korvata suoraan kirjoittamalla, kentän voi tyhjentää ilman että vanha sijainti palaa heti takaisin ja vaihtopainikkeet ovat aiempaa selkeämmät.",
+  "Huijausvaroitusten avautuva ikkuna suurennettiin, tekstikokoa kasvatettiin ja siihen lisättiin aina näkyvä Lue lisää varoituksesta -linkki sekä näppäimistöllä toimiva sulkeminen.",
+  "Linkki-ilmoitusten spammisuojaa aloitettiin: lomake hyväksyy vain https-osoitteet ja mukana on hiljainen bottikenttä, jonka täyttäminen estää ilmoituksen tallennuksen.",
   "Lähelläsi-osio tiivistettiin: tärkeät paikalliset palvelut näytetään suorina linkkeinä ja laajemmat alueelliset osumat avattavina alakategorioina, kuten Museot, Teatterit, Lehdet, Liikunta ja Urheilu.",
   "Kunnille, joilta puuttuu oma tai seudullinen julkisen liikenteen linkki, näytetään nyt Matkahuollon reittiopas varayhteytenä.",
   "HSL-alueella näytetään erikseen HSL:n palvelusivu ja HSL Reittiopas.",

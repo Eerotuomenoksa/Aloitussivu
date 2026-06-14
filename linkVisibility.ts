@@ -22,6 +22,18 @@ const BLOCKED_LINKS_COLLECTION = 'blockedLinks';
 
 export type LinkReportStatus = 'pending' | 'approved' | 'rejected';
 
+export const normalizeReportUrl = (url: string) => {
+  const trimmed = url.trim();
+  try {
+    const parsed = new URL(trimmed);
+    if (parsed.protocol !== 'https:') return '';
+    parsed.hash = '';
+    return parsed.toString();
+  } catch {
+    return '';
+  }
+};
+
 export interface ManagedLinkReportEntry extends LinkReportEntry {
   status: LinkReportStatus;
   updatedAt?: string;
@@ -151,8 +163,14 @@ const emitLinkReportsChange = () => {
 };
 
 export const submitLinkReport = async (entry: LinkReportEntry) => {
+  const normalizedUrl = normalizeReportUrl(entry.url);
+  if (!normalizedUrl) {
+    throw new Error('Invalid link report URL');
+  }
+
   const report: ManagedLinkReportEntry = {
     ...entry,
+    url: normalizedUrl,
     status: 'pending',
     updatedAt: entry.createdAt,
   };

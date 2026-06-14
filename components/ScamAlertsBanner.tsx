@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { ScamAlertEntry, subscribeScamAlerts } from '../scamAlerts';
 import { useI18n } from '../i18n';
@@ -51,6 +51,7 @@ const ScamAlertsBanner: React.FC<ScamAlertsBannerProps> = ({ compact = false, fr
   const { locale, t } = useI18n();
   const [alerts, setAlerts] = useState<ScamAlertEntry[]>([]);
   const [selectedAlert, setSelectedAlert] = useState<ScamAlertEntry | null>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => subscribeScamAlerts(setAlerts), []);
 
@@ -59,51 +60,80 @@ const ScamAlertsBanner: React.FC<ScamAlertsBannerProps> = ({ compact = false, fr
     [alerts]
   );
 
+  useEffect(() => {
+    if (!selectedAlert) return undefined;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    window.requestAnimationFrame(() => closeButtonRef.current?.focus());
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setSelectedAlert(null);
+      }
+    };
+
+    window.addEventListener('keydown', onKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', onKeyDown);
+    };
+  }, [selectedAlert]);
+
   if (visibleAlerts.length === 0) return null;
 
   const alertDialog = selectedAlert ? ReactDOM.createPortal(
-    <div className="fixed inset-0 z-[90] flex items-end justify-center bg-black/70 p-3 backdrop-blur-sm sm:items-center sm:p-4" role="presentation">
+    <div
+      className="fixed inset-0 z-[90] flex items-end justify-center bg-black/75 p-2 backdrop-blur-sm sm:items-center sm:p-5"
+      role="presentation"
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget) {
+          setSelectedAlert(null);
+        }
+      }}
+    >
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby="scam-alerts-dialog-heading"
-        className="aurora-modal-shell max-h-[calc(100dvh-1.5rem)] w-full max-w-3xl overflow-y-auto rounded-[2rem] bg-[var(--theme-surface)] p-4 shadow-2xl sm:max-h-[90vh] sm:p-6 md:p-7"
+        aria-describedby="scam-alerts-dialog-body"
+        className="aurora-modal-shell flex max-h-[calc(100dvh-1rem)] w-full max-w-[min(72rem,calc(100vw-1rem))] flex-col overflow-y-auto rounded-[2rem] bg-[var(--theme-surface)] p-4 shadow-2xl sm:max-h-[92vh] sm:p-7 md:p-10"
       >
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
-            <h2 id="scam-alerts-dialog-heading" className="text-2xl font-black text-[var(--theme-text)] md:text-4xl">
+            <h2 id="scam-alerts-dialog-heading" className="text-3xl font-black leading-tight text-[var(--theme-text)] md:text-5xl">
               {t('scamAlertsTitle')}
             </h2>
           </div>
           <button
+            ref={closeButtonRef}
             type="button"
             onClick={() => setSelectedAlert(null)}
-            className="rounded-full bg-[var(--theme-pale)] px-5 py-3 font-black text-[var(--theme-text)] transition-all hover:bg-[var(--theme-gold-pale)] focus:outline-none focus:ring-4 focus:ring-[var(--theme-focus)]/30"
+            className="min-h-14 rounded-full bg-[var(--theme-pale)] px-6 py-3 text-lg font-black text-[var(--theme-text)] transition-all hover:bg-[var(--theme-gold-pale)] focus:outline-none focus:ring-4 focus:ring-[var(--theme-focus)]/30"
           >
             {t('close')}
           </button>
         </div>
 
-        <article className={`mt-4 rounded-2xl border-2 p-4 shadow-sm md:mt-5 md:p-5 ${severityStyles[selectedAlert.severity]}`}>
-          <h3 className="text-xl md:text-2xl font-black">
+        <article className={`mt-6 flex min-h-[min(34rem,62dvh)] flex-1 flex-col rounded-[1.75rem] border-2 p-5 shadow-sm md:p-8 ${severityStyles[selectedAlert.severity]}`}>
+          <h3 className="text-2xl font-black leading-tight md:text-4xl">
             {selectedAlert.title}
           </h3>
-          <p className="mt-1 text-sm font-bold text-[var(--theme-muted)]">
+          <p className="mt-3 text-base font-bold text-[var(--theme-muted)] md:text-lg">
             {formatAlertMeta(selectedAlert, locale, t('ncscSource'), t('scamAlertsTitle'))}
           </p>
-          <p className="mt-2 text-base md:text-lg font-bold leading-relaxed">
+          <p id="scam-alerts-dialog-body" className="mt-5 text-xl font-bold leading-relaxed md:text-2xl">
             {selectedAlert.body}
           </p>
-          {selectedAlert.sourceUrl && (
-            <a
-              href={selectedAlert.sourceUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-3 inline-flex text-sm font-black underline decoration-2 underline-offset-4"
-            >
-              {t('scamAlertSource')}
-            </a>
-          )}
+          <a
+            href={selectedAlert.sourceUrl || MORE_SCAM_ALERTS_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-auto inline-flex w-fit items-center gap-2 rounded-full bg-[var(--theme-gold)] px-6 py-3 text-lg font-black text-[var(--theme-cta-label)] no-underline shadow-md transition-all hover:bg-[var(--theme-gold-light)] focus:outline-none focus:ring-4 focus:ring-[var(--theme-focus)]/30 md:mt-8"
+          >
+            {t('scamAlertReadMore')} →
+          </a>
         </article>
       </div>
     </div>,

@@ -135,7 +135,7 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
     setQuery(locality.municipality);
   }, [isManualQuery, locality?.municipality]);
 
-  const context = useMemo(() => resolveRegionalContext(query, locality), [query, locality]);
+  const context = useMemo(() => resolveRegionalContext(query, isManualQuery ? null : locality), [isManualQuery, query, locality]);
   const services = useMemo(() => context ? filterVisibleProviders(uniqueProvidersByUrl(
     [
       ...getRegionalProviders(context, language),
@@ -171,6 +171,20 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
     });
   };
 
+  const useDetectedMunicipality = () => {
+    if (!locality?.municipality) return;
+    setIsManualQuery(false);
+    setQuery(locality.municipality);
+  };
+
+  const clearMunicipalityInput = () => {
+    setIsManualQuery(true);
+    setQuery('');
+    window.requestAnimationFrame(() => {
+      municipalityInputRef.current?.focus();
+    });
+  };
+
   return (
     <section className="zone zone-local" id="lahellasi" aria-labelledby="regional-services-heading">
       <div className="zone-head">
@@ -184,46 +198,71 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
       </div>
       <div className="mb-5">
         <div className="w-full xl:max-w-2xl">
-          <div className="flex flex-col md:flex-row md:items-center gap-3">
+          <div className="flex flex-col gap-3 lg:flex-row lg:items-end">
             <label className="flex-1">
               <span className={`mb-1 block font-black text-[var(--theme-muted)] ${smallTextClasses[fontSizeStep]}`}>{t('municipality')}</span>
               <input
                 ref={municipalityInputRef}
                 type="search"
                 value={displayedQuery}
+                onFocus={() => {
+                  if (!isManualQuery) {
+                    setIsManualQuery(true);
+                    window.requestAnimationFrame(() => municipalityInputRef.current?.select());
+                  }
+                }}
                 onChange={(event) => {
                   const nextQuery = event.target.value;
                   setQuery(nextQuery);
-                  setIsManualQuery(nextQuery.trim().length > 0);
+                  setIsManualQuery(true);
+                }}
+                onKeyDown={(event) => {
+                  if (event.key === 'Escape') {
+                    event.preventDefault();
+                    useDetectedMunicipality();
+                    municipalityInputRef.current?.blur();
+                  }
                 }}
                 placeholder={localizedMunicipalityName ? `${t('localityPrefix')}: ${localizedMunicipalityName}` : t('municipalityPlaceholder')}
-                className={`min-h-14 w-full rounded-full border-2 border-[var(--theme-border)] bg-[var(--theme-surface)] px-4 py-3 font-bold text-[var(--theme-text)] placeholder:text-[var(--theme-muted)] focus:border-[var(--theme-gold)] focus:outline-none focus:ring-4 focus:ring-[var(--theme-focus)]/30 ${smallTextClasses[fontSizeStep]}`}
+                className={`min-h-16 w-full rounded-2xl border-2 border-[var(--theme-border)] bg-[var(--theme-surface)] px-5 py-4 font-black text-[var(--theme-text)] placeholder:text-[var(--theme-muted)] focus:border-[var(--theme-gold)] focus:outline-none focus:ring-4 focus:ring-[var(--theme-focus)]/30 ${textClasses[fontSizeStep]}`}
                 aria-label={t('municipality')}
+                enterKeyHint="done"
               />
               {context && (
                 <span className={`mt-1 block font-semibold text-[var(--theme-muted)] ${smallTextClasses[fontSizeStep]}`}>
                   Näytetään alueelliset palvelut: {localizedMunicipalityName || context.displayName}.
                 </span>
               )}
+              {!context && isManualQuery && query.trim() && (
+                <span className={`mt-1 block font-semibold text-[var(--theme-muted)] ${smallTextClasses[fontSizeStep]}`}>
+                  Kirjoita kunnan nimi kokonaan, esimerkiksi Helsinki, Akaa tai Alajärvi.
+                </span>
+              )}
             </label>
-            {context && (
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:w-80 lg:grid-cols-1">
               <button
                 type="button"
                 onClick={focusMunicipalityInput}
-                className="min-h-14 rounded-full border border-[var(--theme-border)] bg-[var(--theme-surface)] px-4 py-2 font-bold text-[var(--theme-primary)] transition-all hover:border-[var(--border-strong)] hover:bg-[var(--theme-pale)] active:scale-95 md:self-end"
+                className="min-h-14 rounded-2xl border-2 border-[var(--theme-border)] bg-[var(--theme-surface)] px-5 py-3 text-left font-black text-[var(--theme-primary)] transition-all hover:border-[var(--border-strong)] hover:bg-[var(--theme-pale)] active:scale-95"
               >
                 Vaihda kunta
               </button>
-            )}
+              {(isManualQuery && query.trim()) || locality?.municipality ? (
+                <button
+                  type="button"
+                  onClick={isManualQuery && query.trim() ? clearMunicipalityInput : useDetectedMunicipality}
+                  className="min-h-14 rounded-2xl bg-[var(--theme-primary)] px-5 py-3 text-left font-black text-white transition-all hover:bg-[var(--theme-primary-mid)] active:scale-95"
+                >
+                  {isManualQuery && query.trim() ? 'Tyhjennä kenttä' : `Käytä sijaintia: ${detectedMunicipalityName}`}
+                </button>
+              ) : null}
+            </div>
           </div>
-          {context && locality?.municipality && isManualQuery && (
+          {locality?.municipality && isManualQuery && context && normalizeMunicipality(locality.municipality) !== normalizeMunicipality(context.municipality.name) && (
             <div className="mt-2">
               <button
                 type="button"
-                onClick={() => {
-                  setIsManualQuery(false);
-                  setQuery(locality.municipality);
-                }}
+                onClick={useDetectedMunicipality}
                 className="rounded-full bg-[var(--theme-primary)] px-4 py-2 font-black text-white transition-all hover:bg-[var(--theme-primary-mid)] active:scale-95"
               >
                 Käytä sijaintia {detectedMunicipalityName}
