@@ -450,7 +450,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
                         className={`absolute top-3 right-3 flex items-center justify-center rounded-full transition-all focus:ring-4 focus:ring-yellow-300 focus:outline-none
                           ${isFav
                             ? 'bg-yellow-400 hover:bg-yellow-500 shadow-md'
-                            : 'bg-[var(--theme-surface)] hover:bg-[var(--theme-gold-pale)] opacity-0 group-hover/link:opacity-100 focus:opacity-100'
+                            : 'bg-[var(--theme-surface)] shadow-md hover:bg-[var(--theme-gold-pale)]'
                           } ${starClasses[fontSizeStep]}`}
                         aria-label={isFav ? `${t('removeFavorite')}: ${link.name}` : `${t('addFavorite')}: ${link.name}`}
                       >

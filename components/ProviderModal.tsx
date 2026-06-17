@@ -207,7 +207,7 @@ const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSi
                         className={`absolute top-3 right-3 flex items-center justify-center rounded-full transition-all focus:ring-4 focus:ring-yellow-300 focus:outline-none
                           ${isFav
                             ? 'bg-yellow-400 hover:bg-yellow-500 shadow-md'
-                            : 'bg-slate-100 dark:bg-slate-700 hover:bg-yellow-100 dark:hover:bg-yellow-900/40 sm:opacity-0 sm:group-hover/card:opacity-100 focus:opacity-100'
+                            : 'bg-slate-100 shadow-md hover:bg-yellow-100 dark:bg-slate-700 dark:hover:bg-yellow-900/40'
                           } ${starClasses[fontSizeStep]}`}
                         aria-label={isFav ? `${t('removeFavorite')}: ${provider.name}` : `${t('addFavorite')}: ${provider.name}`}
                       >

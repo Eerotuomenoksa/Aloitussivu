@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { fetchLocalNewsHeadlines } from '../services/rssService';
 import { isLinkVisible, useLinkVisibilityVersion } from '../linkVisibility';
 import { LocalNewsHeadline, RssFeedConfig } from '../types';
+import { useI18n } from '../i18n';
 
 interface LocalNewsHeadlinesProps {
   feeds: RssFeedConfig[];
@@ -44,11 +45,19 @@ const LocalNewsHeadlines: React.FC<LocalNewsHeadlinesProps> = ({ feeds, fallback
   const [headlines, setHeadlines] = useState<LocalNewsHeadline[]>([]);
   const [loading, setLoading] = useState(false);
   const [failed, setFailed] = useState(false);
+  const { t } = useI18n();
 
   useEffect(() => {
     let isActive = true;
 
     const load = async () => {
+      if (feeds.length === 0) {
+        setLoading(false);
+        setFailed(false);
+        setHeadlines([]);
+        return;
+      }
+
       setLoading(true);
       setFailed(false);
       setHeadlines([]);
@@ -72,6 +81,26 @@ const LocalNewsHeadlines: React.FC<LocalNewsHeadlinesProps> = ({ feeds, fallback
     };
   }, [feeds]);
 
+  if (feeds.length === 0) {
+    return (
+      <div className="rounded-2xl border-2 border-dashed border-[var(--theme-border)] bg-[var(--theme-surface)] p-6 text-center">
+        <p className={`mb-4 font-bold text-[var(--theme-muted)] ${smallTextClasses[fontSizeStep]}`}>
+          {t('localNewsNoSources')}
+        </p>
+        {fallbackUrl && isLinkVisible(fallbackUrl) && (
+          <a
+            href={fallbackUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`inline-flex items-center justify-center rounded-full bg-[var(--theme-primary)] px-6 py-3 font-black text-white transition-all hover:bg-[var(--theme-primary-mid)] active:scale-95 ${smallTextClasses[fontSizeStep]}`}
+          >
+            {t('openRegionalNews')}
+          </a>
+        )}
+      </div>
+    );
+  }
+
   if (loading) {
     return (
       <div className={compact ? 'space-y-3' : 'grid grid-cols-1 md:grid-cols-3 gap-4'} aria-label="Ladataan paikallisia uutisia">
@@ -89,7 +118,7 @@ const LocalNewsHeadlines: React.FC<LocalNewsHeadlinesProps> = ({ feeds, fallback
     return (
       <div className="rounded-2xl border-2 border-dashed border-[var(--theme-border)] bg-[var(--theme-surface)] p-6 text-center">
         <p className={`mb-4 font-bold text-[var(--theme-muted)] ${smallTextClasses[fontSizeStep]}`}>
-          Paikallisia uutisia ei saatu haettua.
+          {t('localNewsFetchFailed')}
         </p>
         {fallbackUrl && isLinkVisible(fallbackUrl) && (
           <a
@@ -98,7 +127,7 @@ const LocalNewsHeadlines: React.FC<LocalNewsHeadlinesProps> = ({ feeds, fallback
             rel="noopener noreferrer"
             className={`inline-flex items-center justify-center rounded-full bg-[var(--theme-primary)] px-6 py-3 font-black text-white transition-all hover:bg-[var(--theme-primary-mid)] active:scale-95 ${smallTextClasses[fontSizeStep]}`}
           >
-            Avaa uutishaku
+            {t('openRegionalNews')}
           </a>
         )}
       </div>

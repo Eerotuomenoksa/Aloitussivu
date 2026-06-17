@@ -610,6 +610,23 @@ export const SENIOR_ASSOCIATION_LINKS: RegionalProvider[] = [
 
 export const MUSEUM_LINKS: RegionalProvider[] = [
   {
+    name: "Taide- ja museokeskus Sinkka",
+    url: "https://www.sinkka.fi/",
+    group: "Kerava",
+    type: "Taide- ja museokeskus",
+    municipality: "Kerava",
+    specialty: "Taide ja paikallishistoria"
+  },
+  {
+    name: "Halosenniemi",
+    url: "https://www.halosenniemi.fi/",
+    group: "Tuusula",
+    type: "Kotimuseo",
+    municipality: "Tuusula",
+    municipalities: ["Kerava", "Tuusula", "Järvenpää"],
+    specialty: "Taide ja kulttuurihistoria"
+  },
+  {
     name: "Suomen kansallismuseo",
     url: "https://www.kansallismuseo.fi/",
     group: "Helsinki",
@@ -922,7 +939,8 @@ export const MUSEUM_LINKS: RegionalProvider[] = [
     type: "Paikallismuseo",
     area: "Uusimaa",
     municipality: "Järvenpää",
-    specialty: "Kotimuseo"
+    municipalities: ["Kerava", "Tuusula", "Järvenpää"],
+    specialty: "Musiikki ja kulttuurihistoria"
   },
   {
     name: "Serlachius-museo Gustaf",

@@ -1,6 +1,10 @@
 import type { RegionalProvider } from './communityLinks';
 
 export const LOCAL_SPORTS_CLUBS: RegionalProvider[] = [
+  { name: 'KP-75', url: 'https://www.kp-75.fi/', group: 'Kerava', municipality: 'Kerava', specialty: 'Jalkapallo' },
+  { name: 'Keravan Urheilijat', url: 'https://keravanurheilijat.fi/', group: 'Kerava', municipality: 'Kerava', specialty: 'Urheiluseura' },
+  { name: 'Keski-Uudenmaan Yleisurheilu', url: 'https://www.kuy.fi/', group: 'Keski-Uusimaa', municipalities: ['Järvenpää', 'Kerava', 'Tuusula'], specialty: 'Yleisurheilu' },
+  { name: 'PK Keski-Uusimaa', url: 'https://pkku.fi/', group: 'Keski-Uusimaa', municipalities: ['Kerava', 'Tuusula'], specialty: 'Jalkapallo' },
   { name: 'HJK', url: 'https://hjk.fi/', group: 'Helsinki', municipality: 'Helsinki', specialty: 'Jalkapallo' },
   { name: 'HIFK Fotboll', url: 'https://hifkfotboll.fi/', group: 'Helsinki', municipality: 'Helsinki', specialty: 'Jalkapallo' },
   { name: 'Tapiolan Honka', url: 'https://www.tapiolanhonka.fi/', group: 'Espoo', municipality: 'Espoo', specialty: 'Koripallo' },

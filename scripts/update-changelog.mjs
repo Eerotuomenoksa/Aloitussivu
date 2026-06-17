@@ -168,6 +168,19 @@ function summarizeWorktree(changes) {
   const paths = changes.map((change) => change.path);
   const notes = [];
 
+  if (paths.some((pathName) => ['App.tsx'].includes(pathName))) {
+    notes.push('Android-puhelimilla asetuspaneeli pysyy nyt ruudun sisällä ja vierii omana paneelinaan.');
+  }
+
+  if (paths.some((pathName) => ['communityLinks.ts', 'localSportsClubs.ts'].includes(pathName))) {
+    notes.push('Keravan Lähelläsi-sisältöjä täydennettiin: museoihin lisättiin Sinkka, Halosenniemi ja Ainola sekä urheiluseuroihin KP-75, Keravan Urheilijat, Keski-Uudenmaan Yleisurheilu ja PK Keski-Uusimaa.');
+  }
+
+  if (paths.some((pathName) => ['components/QuickLinks.tsx', 'components/ProviderModal.tsx', 'components/LocalNewsHeadlines.tsx', 'components/ScamAlertsBanner.tsx', 'components/RegionalServicesPanel.tsx', 'i18n.tsx'].includes(pathName))) {
+    notes.push('Suosikkien löydettävyyttä parannettiin pitämällä tähdet näkyvissä, selkeyttämällä Omat suosikkini -ohjetta ja näyttämällä puuttuvista paikallisuutisista oma viesti.');
+    notes.push('Huijausvaroitusten etusivunäkymää tiivistettiin niin, että varoitukset vievät vähemmän tilaa mutta avautuvat edelleen lisätietoihin.');
+  }
+
   if (paths.some((pathName) => ['appVersion.ts', 'package.json', 'package-lock.json', 'muutosloki.tsx', 'App.tsx'].includes(pathName))) {
     notes.push('Versionumerointi otettiin käyttöön: nykyinen versio näkyy footerissa ja muutoslokin yläosassa.');
     notes.push('Muutoshistoria näyttää versionumeron jokaisen muutoksen yhteydessä.');

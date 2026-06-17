@@ -476,7 +476,7 @@ const AppContent: React.FC = () => {
         {isSettingsOpen && (
           <div
             id="settings-panel"
-              className="absolute right-3 md:right-8 lg:right-12 top-[5.5rem] z-30 w-[min(24rem,calc(100vw-1.5rem))] rounded-[2rem] border-2 border-[rgba(28,82,53,.18)] bg-[var(--theme-surface)] p-5 shadow-[0_16px_64px_rgba(10,26,14,.18)]"
+              className="fixed inset-x-3 top-3 z-[80] h-[75dvh] overflow-y-auto rounded-[2rem] border-2 border-[rgba(28,82,53,.18)] bg-[var(--theme-surface)] p-5 shadow-[0_16px_64px_rgba(10,26,14,.18)] sm:absolute sm:inset-x-auto sm:right-4 sm:top-[5.5rem] sm:h-auto sm:max-h-[calc(100dvh-7rem)] sm:w-[min(24rem,calc(100vw-2rem))] md:right-8 lg:right-12"
             role="dialog"
             aria-labelledby="settings-panel-title"
           >

@@ -24,19 +24,46 @@ export type ChangelogCommit = {
   tags: string[];
 };
 
-export const CHANGELOG_GENERATED_AT = "14.6.2026 klo 16.34";
+export const CHANGELOG_GENERATED_AT = "17.6.2026 klo 15.49";
 export const CHANGELOG_VERSION = "0.72.0";
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
-  "Kunnan vaihtamista helpotettiin desktopissa: nykyisen kunnan voi korvata suoraan kirjoittamalla, kentän voi tyhjentää ilman että vanha sijainti palaa heti takaisin ja vaihtopainikkeet ovat aiempaa selkeämmät.",
-  "Huijausvaroitusten avautuva ikkuna suurennettiin, tekstikokoa kasvatettiin ja siihen lisättiin aina näkyvä Lue lisää varoituksesta -linkki sekä näppäimistöllä toimiva sulkeminen.",
-  "Linkki-ilmoitusten spammisuojaa aloitettiin: lomake hyväksyy vain https-osoitteet ja mukana on hiljainen bottikenttä, jonka täyttäminen estää ilmoituksen tallennuksen.",
-  "Lähelläsi-osio tiivistettiin: tärkeät paikalliset palvelut näytetään suorina linkkeinä ja laajemmat alueelliset osumat avattavina alakategorioina, kuten Museot, Teatterit, Lehdet, Liikunta ja Urheilu.",
-  "Kunnille, joilta puuttuu oma tai seudullinen julkisen liikenteen linkki, näytetään nyt Matkahuollon reittiopas varayhteytenä.",
-  "HSL-alueella näytetään erikseen HSL:n palvelusivu ja HSL Reittiopas.",
-  "Kela-taksit eivät nouse Lähelläsi-osioon, vaan pysyvät varsinaisissa Liikenne- ja Puhelinnumerot-kategorioissa."
+  "Android-puhelimilla asetuspaneeli pysyy nyt ruudun sisällä ja vierii omana paneelinaan.",
+  "Keravan Lähelläsi-sisältöjä täydennettiin: museoihin lisättiin Sinkka, Halosenniemi ja Ainola sekä urheiluseuroihin KP-75, Keravan Urheilijat, Keski-Uudenmaan Yleisurheilu ja PK Keski-Uusimaa.",
+  "Suosikkien löydettävyyttä parannettiin pitämällä tähdet näkyvissä, selkeyttämällä Omat suosikkini -ohjetta ja näyttämällä puuttuvista paikallisuutisista oma viesti.",
+  "Huijausvaroitusten etusivunäkymää tiivistettiin niin, että varoitukset vievät vähemmän tilaa mutta avautuvat edelleen lisätietoihin.",
+  "Versionumerointi otettiin käyttöön: nykyinen versio näkyy footerissa ja muutoslokin yläosassa.",
+  "Muutoshistoria näyttää versionumeron jokaisen muutoksen yhteydessä.",
+  "Linkkien tarkistusdata ja ylläpitoloki päivitettiin uusimman buildin yhteydessä.",
+  "Linkkitarkistukseen lisättiin RSS- ja uutisvirtalinkit sekä http-osoitteet, jotta muuttuneet alasivut ja ei-suojatut linkit jäävät heti pois näkyvistä.",
+  "Google-haku, palveluhaku ja tekoälyavustaja toimivat nyt myös omalla äänellä mikrofonipainikkeen kautta.",
+  "Asetuksiin lisättiin mahdollisuus vaihtaa etusivun digitaalinen kello vanhan ajan analogiseen kelloon.",
+  "Digitaalisen kellon päivämäärän välistystä parannettiin ja analogisen kellon numerot sijoitettiin selvästi kellotaulun ulkokehälle.",
+  "Mobiilissa palveluruudukko muutettiin yksipalstaiseksi listaksi ja alakategorioiden symbolit piilotettiin.",
+  "Palveluruudukon ja palveluhaun visuaalinen ilme yhtenäistettiin Aurora-teemaan.",
+  "Alueelliset Kela-taksit poistettiin etusivun aluepalveluiden nostokorteista ja jätettiin näkyviin Liikenne-kategorian taksilinkkien kärkeen.",
+  "Etusivun alueellisiin palveluihin nostettiin myös paikalliset kirjastokimpat, jotta esimerkiksi Loviisalle näkyy Helle-kirjastot.",
+  "Alueellisten palvelujen kunnan valintaa selkeytettiin: rajausviesti päivitettiin, turha kuntalaatikko poistettiin ja Vaihda kunta -painike siirrettiin työpöytänäkymässä kunnan kentän rinnalle.",
+  "Alueellisten palveluiden paneelin kortit, kuntahaku ja paikalliset uutiset päivitettiin uuteen Aurora-pintakieleen.",
+  "Sivustolle lisättiin kokeiluna Sivua tukemassa -sivu, jossa kerrotaan tukijaperiaatteet ja näytetään ensimmäisenä tukijana Vanhustyön keskusliitto ry."
 ];
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
+  {
+    "hash": "1f376b2a1f7e20efd68a6a5c918ae76030aab2db",
+    "date": "2026-06-14",
+    "version": "0.84.3",
+    "changeType": "patch",
+    "subject": "kunnan vaihto + huijausvaroitus + linkki-ilmoituksen kevyt suojaus",
+    "tags": []
+  },
+  {
+    "hash": "be25a490e948c8fa0277246f2de950c2b7f6a630",
+    "date": "2026-06-14",
+    "version": "0.84.2",
+    "changeType": "patch",
+    "subject": "puuttuvia julkisen liikenteen kuntia",
+    "tags": []
+  },
   {
     "hash": "87216675e15161e053261d5cf03a82c6e5421ee4",
     "date": "2026-06-14",

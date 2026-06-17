@@ -149,6 +149,7 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
   const fallbackNewsUrl = newsFallbacks[0]?.url ?? '';
   const localizedMunicipalityName = context ? getLocalizedMunicipalityName(context.municipality, language) : '';
   const detectedMunicipalityName = locality?.municipality ? getLocalizedMunicipalityName(locality.municipality, language) : '';
+  const detectedLocationLabel = detectedMunicipalityName || locality?.municipality || '';
   const displayedQuery = !isManualQuery && localizedMunicipalityName ? localizedMunicipalityName : query;
 
   useEffect(() => {
@@ -253,7 +254,7 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
                   onClick={isManualQuery && query.trim() ? clearMunicipalityInput : useDetectedMunicipality}
                   className="min-h-14 rounded-2xl bg-[var(--theme-primary)] px-5 py-3 text-left font-black text-white transition-all hover:bg-[var(--theme-primary-mid)] active:scale-95"
                 >
-                  {isManualQuery && query.trim() ? 'Tyhjennä kenttä' : `Käytä sijaintia: ${detectedMunicipalityName}`}
+                  {isManualQuery && query.trim() ? 'Tyhjennä kenttä' : `Käytä sijaintia: ${detectedLocationLabel}`}
                 </button>
               ) : null}
             </div>
@@ -265,7 +266,7 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
                 onClick={useDetectedMunicipality}
                 className="rounded-full bg-[var(--theme-primary)] px-4 py-2 font-black text-white transition-all hover:bg-[var(--theme-primary-mid)] active:scale-95"
               >
-                Käytä sijaintia {detectedMunicipalityName}
+                Käytä sijaintia {detectedLocationLabel}
               </button>
             </div>
           )}
