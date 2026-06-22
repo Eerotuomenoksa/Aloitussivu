@@ -185,6 +185,26 @@ kirjaa testipalautteen kasittelymalli
 Ihmisen arvioitu aika: 30-60 min  
 Codex-/toteutusaika: 45-90 min
 
+Toteuma 22.6.2026:
+
+- Julkinen kehitysjono tarkistettiin osoitteessa `http://127.0.0.1:5173/kehitysjono.html`.
+- Avoimia palautteita ei ollut:
+  - uusi: 0
+  - arvioinnissa: 0
+  - jonossa: 0
+  - työn alla: 0
+- Näkyvissä oli 2 käsiteltyä palautetta ja 1 `Ei toteuteta` -tilainen palaute.
+- Kehitysjono latautui ilman selaimen konsolivirheitä, kun tarkistus tehtiin DOM-latauksen jälkeen. `networkidle`-odotus ei ole tälle sivulle luotettava tarkistustapa, koska taustayhteydet voivat jäädä auki tai viivästyä.
+- Linkki-ilmoitusten ylläpitonäkymä `ehdotukset.html` tarkistettiin kirjautumattomana:
+  - sivu latautui ilman konsolivirheitä
+  - näkymä jäi oikein Google-ylläpitäjäkirjautumisen taakse
+  - ilmoitusten määrää ei vahvistettu, koska ylläpitäjän kirjautumista ei tehty tässä tarkistuksessa
+- Väliaikainen käsittelymalli pysyy voimassa: Eero käsittelee pilotin palautteet, linkki-ilmoitukset ja kehitysjonon tilamuutokset, kunnes ylläpitovastuu ja mahdollinen varahenkilö päätetään.
+
+Seuraava askel:
+
+- Kirjaa torstain päätöspakettiin lopullinen tai väliaikainen heinäkuun tarkistusrytmi: kuka katsoo kehitysjonon, kuinka usein ja mistä linkki-ilmoitukset tarkistetaan.
+
 ### Torstai 25.6.2026: päätökset ja heinäkuun rauhoitus
 
 Tavoite: valmistellaan heinäkuun kevyt ylläpitovaihe niin, ettei projekti jää “auki joka suuntaan”.
