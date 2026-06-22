@@ -1,6 +1,6 @@
 # Tyotuntiseuranta
 
-Paivitetty: 14.6.2026
+Paivitetty: 18.6.2026
 
 Tama dokumentti seuraa Aloitussivu-projektin toteutunutta ja arvioitua tyomaaraa. Seuranta erottaa kaksi eri asiaa:
 
@@ -72,6 +72,9 @@ Kirjausperiaate:
 | 2026-06-14 | Linkki-ilmoitusten spammisuojan aloitus | 0,25-0,5 h | 0,75-1,5 h | arvio | components/LinkReportModal.tsx, linkVisibility.ts, firestore.rules, i18n.tsx, vite build | Linkki-ilmoituksiin lisattiin https-validointi, URL-normalisointi ja hiljainen honeypot-kentta |
 | 2026-06-12 | Huijausvaroituksen modaalin parannus | 0,25-0,5 h | 0,75-1,5 h | arvio | components/ScamAlertsBanner.tsx, i18n.tsx, vite build | Modaali suurennettiin, tekstikokoja kasvatettiin ja Lue lisaa -linkki lisattiin aina |
 | 2026-06-12 | Muutoslokin ja tyolokin paivitys | 0,25 h | 0,5 h | arvio | changelogData.ts, docs/tyotuntiseuranta.md, docs/tyotuntiseuranta.csv | Paivitettiin uusimpien kokeilujen ja korjausten tilanne muutoslokiin ja tuntiseurantaan |
+| 2026-06-18 | Keskeneraisten tyopakettien sulkemissuunnitelman toteutus | 0,25-0,5 h | 1-2 h | arvio | docs/keskeneraiset-tyot-valmiiksi-2026-06-18.md, docs/seuraava-tyopaketti-paatokset-ja-yllapitomalli-2026-06-14.md, docs/tietoturva-jatkotoiden-tyolista.md, npx vite build, Playwright-pistokoe | Tyopuu jaettiin commit-koreihin, paatosdokumenttiin kirjattiin valiaikaiset minimilinjaukset, tietoturvan jatkot rajattiin pilotti- ja tuotantotasoon ja kehitysjono tarkistettiin selaimessa |
+| 2026-06-22 | Ensi viikon tyopaketin aloitus ja nakyvan koodikorin tarkistus | 0,25-0,5 h | 0,75-1,5 h | arvio | index.html, kehitysjono.tsx, public/favicon.svg, public/favicon-32.png, public/apple-touch-icon.png, docs/ensi-viikon-tyopaketti-2026-06-22.md, npx vite build, Playwright-pistokoe | Valittiin ensimmainen commit-kori, korjattiin rikkinainen paikallislehtilinkkimuutos pois korista, testattiin etusivu, kehitysjono ja faviconit |
+| 2026-06-22 | Desktopin aluepalveluiden ja huijausvaroitusten nakyman parannus | 0,25-0,5 h | 1-2 h | arvio | components/RegionalServicesPanel.tsx, components/ScamAlertsBanner.tsx, i18n.tsx, docs/ensi-viikon-tyopaketti-2026-06-22.md, npx vite build, Playwright-pistokokeet | Alueelliset palvelut jaettiin selkeammin suoriin aluepalveluihin ja aiheittaisiin linkkeihin, kunnan valinta yhdistettiin Lahellasi-otsikkoon ja desktopin kompaktit huijausvaroitukset nayttavat kaksi korttia rinnakkain |
 
 ## Yllapidon suositus
 

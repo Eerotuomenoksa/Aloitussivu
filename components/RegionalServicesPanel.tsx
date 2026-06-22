@@ -164,14 +164,6 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
     });
   }, [context, isManualQuery, locality?.municipality, localizedMunicipalityName, onLocalitySelected]);
 
-  const focusMunicipalityInput = () => {
-    setIsManualQuery(true);
-    window.requestAnimationFrame(() => {
-      municipalityInputRef.current?.focus();
-      municipalityInputRef.current?.select();
-    });
-  };
-
   const useDetectedMunicipality = () => {
     if (!locality?.municipality) return;
     setIsManualQuery(false);
@@ -188,87 +180,78 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
 
   return (
     <section className="zone zone-local" id="lahellasi" aria-labelledby="regional-services-heading">
-      <div className="zone-head">
+      <div className="zone-head items-start">
         <span className="zone-icon" aria-hidden="true">📍</span>
-        <div className="min-w-0">
-          <h2 id="regional-services-heading" className="font-display zone-title break-words [overflow-wrap:anywhere]">
-            {localizedMunicipalityName ? `${t('nearYou')} · ${localizedMunicipalityName}` : t('nearYou')}
-          </h2>
-          <p className="zone-info">{t('localZoneInfo')}</p>
-        </div>
-      </div>
-      <div className="mb-5">
-        <div className="w-full xl:max-w-2xl">
-          <div className="flex flex-col gap-3 lg:flex-row lg:items-end">
-            <label className="flex-1">
-              <span className={`mb-1 block font-black text-[var(--theme-muted)] ${smallTextClasses[fontSizeStep]}`}>{t('municipality')}</span>
-              <input
-                ref={municipalityInputRef}
-                type="search"
-                value={displayedQuery}
-                onFocus={() => {
-                  if (!isManualQuery) {
+        <div className="min-w-0 flex-1">
+          <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
+            <h2 id="regional-services-heading" className="font-display zone-title break-words [overflow-wrap:anywhere]">
+              {t('nearYou')}
+            </h2>
+            <div className="flex min-w-0 flex-1 flex-col gap-2 sm:flex-row sm:items-center">
+              <label className="min-w-0 flex-1 lg:max-w-md">
+                <span className="sr-only">
+                  {t('municipality')}
+                </span>
+                <input
+                  ref={municipalityInputRef}
+                  type="search"
+                  value={displayedQuery}
+                  onFocus={() => {
+                    if (!isManualQuery) {
+                      setIsManualQuery(true);
+                      window.requestAnimationFrame(() => municipalityInputRef.current?.select());
+                    }
+                  }}
+                  onChange={(event) => {
+                    const nextQuery = event.target.value;
+                    setQuery(nextQuery);
                     setIsManualQuery(true);
-                    window.requestAnimationFrame(() => municipalityInputRef.current?.select());
-                  }
-                }}
-                onChange={(event) => {
-                  const nextQuery = event.target.value;
-                  setQuery(nextQuery);
-                  setIsManualQuery(true);
-                }}
-                onKeyDown={(event) => {
-                  if (event.key === 'Escape') {
-                    event.preventDefault();
-                    useDetectedMunicipality();
-                    municipalityInputRef.current?.blur();
-                  }
-                }}
-                placeholder={localizedMunicipalityName ? `${t('localityPrefix')}: ${localizedMunicipalityName}` : t('municipalityPlaceholder')}
-                className={`min-h-16 w-full rounded-2xl border-2 border-[var(--theme-border)] bg-[var(--theme-surface)] px-5 py-4 font-black text-[var(--theme-text)] placeholder:text-[var(--theme-muted)] focus:border-[var(--theme-gold)] focus:outline-none focus:ring-4 focus:ring-[var(--theme-focus)]/30 ${textClasses[fontSizeStep]}`}
-                aria-label={t('municipality')}
-                enterKeyHint="done"
-              />
-              {context && (
-                <span className={`mt-1 block font-semibold text-[var(--theme-muted)] ${smallTextClasses[fontSizeStep]}`}>
-                  Näytetään alueelliset palvelut: {localizedMunicipalityName || context.displayName}.
-                </span>
-              )}
-              {!context && isManualQuery && query.trim() && (
-                <span className={`mt-1 block font-semibold text-[var(--theme-muted)] ${smallTextClasses[fontSizeStep]}`}>
-                  Kirjoita kunnan nimi kokonaan, esimerkiksi Helsinki, Akaa tai Alajärvi.
-                </span>
-              )}
-            </label>
-            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:w-80 lg:grid-cols-1">
-              <button
-                type="button"
-                onClick={focusMunicipalityInput}
-                className="min-h-14 rounded-2xl border-2 border-[var(--theme-border)] bg-[var(--theme-surface)] px-5 py-3 text-left font-black text-[var(--theme-primary)] transition-all hover:border-[var(--border-strong)] hover:bg-[var(--theme-pale)] active:scale-95"
-              >
-                Vaihda kunta
-              </button>
-              {(isManualQuery && query.trim()) || locality?.municipality ? (
-                <button
-                  type="button"
-                  onClick={isManualQuery && query.trim() ? clearMunicipalityInput : useDetectedMunicipality}
-                  className="min-h-14 rounded-2xl bg-[var(--theme-primary)] px-5 py-3 text-left font-black text-white transition-all hover:bg-[var(--theme-primary-mid)] active:scale-95"
-                >
-                  {isManualQuery && query.trim() ? 'Tyhjennä kenttä' : `Käytä sijaintia: ${detectedLocationLabel}`}
-                </button>
-              ) : null}
+                  }}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Escape') {
+                      event.preventDefault();
+                      useDetectedMunicipality();
+                      municipalityInputRef.current?.blur();
+                    }
+                  }}
+                  placeholder={localizedMunicipalityName ? localizedMunicipalityName : t('municipalityPlaceholder')}
+                  className={`min-h-12 w-full rounded-full border-2 border-[var(--zone-border)] bg-[var(--theme-surface)] px-5 py-2 font-black text-[var(--theme-text)] placeholder:text-[var(--theme-muted)] focus:border-[var(--theme-gold)] focus:outline-none focus:ring-4 focus:ring-[var(--theme-focus)]/30 ${textClasses[fontSizeStep]}`}
+                  aria-label={t('municipality')}
+                  enterKeyHint="done"
+                />
+              </label>
+              <div className="flex flex-wrap gap-2">
+                {isManualQuery && query.trim() ? (
+                  <button
+                    type="button"
+                    onClick={clearMunicipalityInput}
+                    className={`min-h-11 rounded-full bg-[var(--theme-primary)] px-5 py-2 font-black text-white transition-all hover:bg-[var(--theme-primary-mid)] active:scale-95 ${smallTextClasses[fontSizeStep]}`}
+                  >
+                    Tyhjennä
+                  </button>
+                ) : null}
+                {locality?.municipality && isManualQuery && context && normalizeMunicipality(locality.municipality) !== normalizeMunicipality(context.municipality.name) ? (
+                  <button
+                    type="button"
+                    onClick={useDetectedMunicipality}
+                    className={`min-h-11 rounded-full bg-[var(--theme-primary)] px-5 py-2 font-black text-white transition-all hover:bg-[var(--theme-primary-mid)] active:scale-95 ${smallTextClasses[fontSizeStep]}`}
+                  >
+                    Käytä sijaintia
+                  </button>
+                ) : null}
+              </div>
             </div>
           </div>
+          <p className="zone-info">{t('localZoneInfo')}</p>
           {locality?.municipality && isManualQuery && context && normalizeMunicipality(locality.municipality) !== normalizeMunicipality(context.municipality.name) && (
-            <div className="mt-2">
-              <button
-                type="button"
-                onClick={useDetectedMunicipality}
-                className="rounded-full bg-[var(--theme-primary)] px-4 py-2 font-black text-white transition-all hover:bg-[var(--theme-primary-mid)] active:scale-95"
-              >
-                Käytä sijaintia {detectedLocationLabel}
-              </button>
-            </div>
+            <p className={`mt-2 font-semibold text-[var(--theme-muted)] ${smallTextClasses[fontSizeStep]}`}>
+              Sijaintisi on {detectedLocationLabel}.
+            </p>
+          )}
+          {!context && isManualQuery && query.trim() && (
+            <p className={`mt-2 font-semibold text-[var(--theme-muted)] ${smallTextClasses[fontSizeStep]}`}>
+              Kirjoita kunnan nimi kokonaan, esimerkiksi Helsinki, Akaa tai Alajärvi.
+            </p>
           )}
           <p className="sr-only">
             {t('changeMunicipalityHint')}
@@ -278,16 +261,45 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
 
       {context ? (
         <div className={showNews ? 'local-grid' : ''}>
-          <div className="zone-links-grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(15rem, 1fr))', alignContent: 'start' }}>
-            {services.map((provider, index) => <ServiceLink key={provider.url} provider={provider} index={index} fontSizeStep={fontSizeStep} onReportLink={onReportLink} />)}
-            {regionalCategories.map((shortcut) => (
-              <CategoryLink
-                key={shortcut.name}
-                shortcut={shortcut}
-                fontSizeStep={fontSizeStep}
-                onSelectCategory={onSelectCategory}
-              />
-            ))}
+          <div className="space-y-5">
+            {services.length > 0 && (
+              <section className="space-y-3" aria-label={t('primaryRegionalServices')}>
+                <div className="flex items-center justify-between gap-3 border-b border-[var(--zone-border)] pb-2">
+                  <h3 className="font-display text-xl font-bold text-[var(--theme-text)] md:text-2xl">
+                    {t('primaryRegionalServices')}
+                  </h3>
+                  <span className="rounded-full bg-[var(--theme-pale)] px-3 py-1 text-sm font-black text-[var(--theme-muted)]">
+                    {services.length}
+                  </span>
+                </div>
+                <div className="zone-links-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(16rem, 1fr))', alignContent: 'start' }}>
+                  {services.map((provider, index) => <ServiceLink key={provider.url} provider={provider} index={index} fontSizeStep={fontSizeStep} onReportLink={onReportLink} />)}
+                </div>
+              </section>
+            )}
+
+            {regionalCategories.length > 0 && (
+              <section className="space-y-3" aria-label={t('regionalLinksByTopic')}>
+                <div className="flex items-center justify-between gap-3 border-b border-[var(--zone-border)] pb-2">
+                  <h3 className="font-display text-xl font-bold text-[var(--theme-text)] md:text-2xl">
+                    {t('regionalLinksByTopic')}
+                  </h3>
+                  <span className="rounded-full bg-[var(--theme-pale)] px-3 py-1 text-sm font-black text-[var(--theme-muted)]">
+                    {regionalCategories.length}
+                  </span>
+                </div>
+                <div className="zone-links-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(16rem, 1fr))', alignContent: 'start' }}>
+                  {regionalCategories.map((shortcut) => (
+                    <CategoryLink
+                      key={shortcut.name}
+                      shortcut={shortcut}
+                      fontSizeStep={fontSizeStep}
+                      onSelectCategory={onSelectCategory}
+                    />
+                  ))}
+                </div>
+              </section>
+            )}
           </div>
 
           {showNews && (

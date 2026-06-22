@@ -156,30 +156,23 @@ const ScamAlertsBanner: React.FC<ScamAlertsBannerProps> = ({ compact = false, fr
       </div>
 
       {compact ? (
-        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between" aria-label={t('scamAlertsHeadings')}>
-          <button
-            type="button"
-            onClick={() => setSelectedAlert(visibleAlerts[0])}
-            className={`${severityStyles[visibleAlerts[0].severity]} flex flex-1 flex-col gap-1 rounded-2xl border-2 p-3 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md active:scale-[.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--theme-focus)]`}
-            aria-haspopup="dialog"
-          >
-            <span className="font-black text-base leading-tight md:text-lg">
-              {visibleAlerts[0].title}
-            </span>
-            <span className="text-xs font-bold text-[var(--theme-muted)]">
-              {formatAlertMeta(visibleAlerts[0], locale, t('ncscSource'), t('scamAlertsTitle'))}
-            </span>
-          </button>
-          {visibleAlerts.length > 1 && (
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-2" aria-label={t('scamAlertsHeadings')}>
+          {visibleAlerts.map((alert) => (
             <button
+              key={alert.id}
               type="button"
-              onClick={() => setSelectedAlert(visibleAlerts[1])}
-              className="inline-flex min-h-12 items-center justify-center rounded-full border-2 border-[var(--theme-gold)] bg-[var(--theme-surface)] px-5 py-2 font-black text-[var(--theme-primary)] transition-all hover:bg-[var(--theme-gold-pale)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--theme-focus)]"
+              onClick={() => setSelectedAlert(alert)}
+              className={`${severityStyles[alert.severity]} flex min-h-[5.75rem] flex-col justify-between gap-2 rounded-2xl border-2 p-3 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md active:scale-[.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--theme-focus)]`}
               aria-haspopup="dialog"
             >
-              {t('additionalScamAlert')}
+              <span className="font-black text-base leading-tight md:text-lg">
+                {alert.title}
+              </span>
+              <span className="text-xs font-bold text-[var(--theme-muted)]">
+                {formatAlertMeta(alert, locale, t('ncscSource'), t('scamAlertsTitle'))}
+              </span>
             </button>
-          )}
+          ))}
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3" aria-label={t('scamAlertsHeadings')}>

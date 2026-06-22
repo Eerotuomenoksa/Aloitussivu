@@ -222,10 +222,15 @@ function summarizeWorktree(changes) {
   }
 
   if (paths.some((pathName) => ['components/RegionalServicesPanel.tsx'].includes(pathName))) {
+    notes.push('Lähelläsi-osion kunnan valinta yhdistettiin otsikon viereen ja aluepalvelut ryhmiteltiin selkeämmin.');
     notes.push('Alueelliset Kela-taksit poistettiin etusivun aluepalveluiden nostokorteista ja jätettiin näkyviin Liikenne-kategorian taksilinkkien kärkeen.');
     notes.push('Etusivun alueellisiin palveluihin nostettiin myös paikalliset kirjastokimpat, jotta esimerkiksi Loviisalle näkyy Helle-kirjastot.');
     notes.push('Alueellisten palvelujen kunnan valintaa selkeytettiin: rajausviesti päivitettiin, turha kuntalaatikko poistettiin ja Vaihda kunta -painike siirrettiin työpöytänäkymässä kunnan kentän rinnalle.');
     notes.push('Alueellisten palveluiden paneelin kortit, kuntahaku ja paikalliset uutiset päivitettiin uuteen Aurora-pintakieleen.');
+  }
+
+  if (paths.some((pathName) => ['components/ScamAlertsBanner.tsx'].includes(pathName))) {
+    notes.push('Desktopissa kompaktiin huijausvaroitusnäkymään mahtuu nyt kaksi aktiivista varoitusta rinnakkain.');
   }
 
   if (paths.some((pathName) => ['ehdotukset.tsx', 'adminStats.ts', 'functions/nameday.ts', 'firestore.rules'].includes(pathName))) {
