@@ -186,6 +186,14 @@ function summarizeWorktree(changes) {
     notes.push('Muutoshistoria näyttää versionumeron jokaisen muutoksen yhteydessä.');
   }
 
+  if (paths.some((pathName) => ['index.html', 'public/favicon.svg', 'public/favicon-32.png', 'public/apple-touch-icon.png'].includes(pathName))) {
+    notes.push('Sivun otsikkoa, kuvausta ja favicon-kuvakkeita täsmennettiin.');
+  }
+
+  if (paths.some((pathName) => ['kehitysjono.tsx'].includes(pathName))) {
+    notes.push('Kehitysjonon julkiselle käsittelymerkinnälle annettiin pidempi tekstikenttä.');
+  }
+
   if (paths.some((pathName) => ['localServices.ts'].includes(pathName))) {
     notes.push('Loviisan joukkoliikenteen linkki lisättiin alueellisiin palveluihin.');
     notes.push('Paikallisia kirjastolinkkejä täydennettiin Kirkanta/Kirjastot.fi-dataan pohjautuvilla kirjastokimpoilla.');

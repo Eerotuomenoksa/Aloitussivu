@@ -96,10 +96,15 @@ Toteuma 22.6.2026:
 - Mobiilipistokokeessa etusivulla ja kehitysjonossa ei ollut vaakasuuntaista ylivuotoa 390 px leveydellä.
 - Mobiilipistokokeessa Firestore-yhteys antoi hetkellisiä 429/unavailable-virheitä. Tämä ei näyttänyt rikkovan sivun latautumista, mutta kehitysjonon data voi testitilanteessa näkyä puutteellisena, jos Firestore ei vastaa.
 - `npm run check:secrets` onnistui.
+- Kori tarkistettiin uudelleen 22.6.2026:
+  - `npx vite build` onnistui.
+  - faviconit palautuivat kehityspalvelimelta HTTP 200 -vastauksilla.
+  - `index.html`-muutokset rajaavat sivun otsikon ja kuvauksen linkkihakemistoksi.
+  - `kehitysjono.tsx` käyttää julkisessa käsittelymerkinnässä pidempää tekstialuetta.
 
 Seuraava askel:
 
-- Päätä, commitataanko tämä kori viestillä `viimeistele testausjakson nakyvat korjaukset` vai yhdistetäänkö se samaan dokumenttikorin kanssa.
+- Commitoi tämä kori erillisenä näkyvien testauskorjausten kokonaisuutena tai yhdistä se vain, jos samalla halutaan julkaista faviconit ja kehitysjonon tekstikenttä.
 
 ### Tiistai 23.6.2026: käyttäjälle näkyvä testauskori
 

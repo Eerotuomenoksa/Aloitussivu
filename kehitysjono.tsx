@@ -116,12 +116,13 @@ function AdminEditor({
         </label>
         <label className="grid gap-2">
           <span className="text-sm font-black uppercase tracking-wide text-[var(--theme-muted)]">Julkinen käsittelymerkintä</span>
-          <input
+          <textarea
             value={publicNote}
             onChange={(event) => setPublicNote(event.target.value)}
             className="aurora-input rounded-2xl px-4 py-3 font-bold"
             placeholder="Esim. Korjattu versiossa 0.71.1"
-            maxLength={600}
+            maxLength={4000}
+            rows={3}
           />
         </label>
         <button
