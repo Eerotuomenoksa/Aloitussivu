@@ -12,6 +12,8 @@ export default defineConfig({
         changelog: 'muutosloki.html',
         suggestions: 'ehdotukset.html',
         feedbackQueue: 'kehitysjono.html',
+        testFeedback: 'testipalaute.html',
+        testFeedbackAdmin: 'testipalaute-yllapito.html',
         links: 'linkit.html',
         admin: 'yllapito.html',
         supporters: 'sivua-tukemassa.html',

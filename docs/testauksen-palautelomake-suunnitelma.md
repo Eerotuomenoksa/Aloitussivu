@@ -1,6 +1,6 @@
 # Palautelomakkeen suunnitelma 1.6. alkavaan testaukseen
 
-Tämä dokumentti kuvaa SeniorSurfin aloitussivun julkisen testauksen palautelomakkeen rakenteen. Testaus alkaa 1.6. ja kestää noin kuukauden. Palautteet käydään läpi elokuun alussa ennen julkaisun viimeistelyä.
+Tämä dokumentti kuvaa aloitussivun julkisen testauksen palautelomakkeen rakenteen. Testaus alkaa 1.6. ja kestää noin kuukauden. Palautteet käydään läpi elokuun alussa ennen julkaisun viimeistelyä.
 
 ## Tavoite
 
@@ -20,7 +20,7 @@ Lomakkeen pitää olla riittävän lyhyt, jotta vastauskynnys pysyy matalana. Ka
 ## Suositeltu aloitusteksti
 
 ```text
-Kiitos, että testaat SeniorSurfin aloitussivua.
+Kiitos, että testaat aloitussivua.
 
 Palautteen avulla korjaamme sivua ennen varsinaista julkaisua. Lomakkeeseen vastaaminen vie noin 5-10 minuuttia. Voit vastata itse tai yhdessä digiopastajan kanssa.
 ```
@@ -44,14 +44,13 @@ Taustakysymykset auttavat tulkitsemaan palautetta. Niiden pitää olla kevyitä 
 
 ### Millä laitteella testasit?
 
-Tyyppi: monivalinta
+Tyyppi: valintaruudut, voi valita useamman
 
 Vaihtoehdot:
 
 - Puhelin
 - Tabletti
 - Tietokone
-- Useammalla laitteella
 
 Suositus: pakollinen.
 
@@ -182,65 +181,39 @@ Vaihtoehdot:
 
 ## 5. Toiminnot
 
-### Käytitkö hakua?
+### Kuinka tarpeellisilta nämä toiminnot tuntuvat?
 
-Tyyppi: monivalinta
+Tyyppi: arviointitaulukko, asteikko 1-5
 
-Vaihtoehdot:
+Ohje vastaajalle:
 
-- Kyllä
-- Ei
-- En huomannut sitä
+Arvioi jokainen toiminto sen mukaan, kuinka tarpeelliselta se tuntuu aloitussivulla.
 
-### Käytitkö tekoälyavustajaa?
+Asteikko:
 
-Tyyppi: monivalinta
+- 1 = Ei lainkaan tarpeellinen
+- 2 = Melko tarpeeton
+- 3 = En osaa sanoa / kohtalaisen tarpeellinen
+- 4 = Tarpeellinen
+- 5 = Erittäin tarpeellinen
 
-Vaihtoehdot:
+Arvioitavat toiminnot:
 
-- Kyllä
-- Ei
-- En huomannut sitä
+- Sää
+- Tekoäly
+- Internet-haku
+- Huijausvaroitukset
+- Lähelläsi
+- Suosikit
+- Kategoria haku
+- Nimipäivät (ei näy heinäkuussa)
+- Paikalliset uutiset
 
-### Jos käytit tekoälyavustajaa, oliko siitä apua?
+Suositus: vapaaehtoinen, mutta pidetään yhtenä isona kysymyksenä.
 
-Tyyppi: monivalinta
+### Puuttuuko jokin tärkeä toiminto?
 
-Vaihtoehdot:
-
-- Kyllä
-- Osittain
-- Ei
-- En käyttänyt
-
-### Huomasitko huijausvaroitukset?
-
-Tyyppi: monivalinta
-
-Vaihtoehdot:
-
-- Kyllä
-- Ei
-
-### Oliko huijausvaroitusten esitystapa selkeä?
-
-Tyyppi: monivalinta
-
-Vaihtoehdot:
-
-- Kyllä
-- Osittain
-- Ei
-
-### Käytitkö tekstin suurennusta tai asetuksia?
-
-Tyyppi: monivalinta
-
-Vaihtoehdot:
-
-- Kyllä
-- Ei
-- En huomannut niitä
+Tyyppi: avoin tekstikenttä
 
 ## 6. Käytettävyys ja saavutettavuus
 
@@ -375,7 +348,7 @@ Yhteystieto on vapaaehtoinen. Käytämme sitä vain, jos tarvitsemme tarkennusta
 ```text
 Kiitos palautteesta.
 
-Käymme vastaukset läpi elokuussa ja käytämme niitä SeniorSurfin aloitussivun viimeistelyyn ennen julkaisua.
+Käymme vastaukset läpi elokuussa ja käytämme niitä aloitussivun viimeistelyyn ennen julkaisua.
 ```
 
 ## Lomakkeen toteutussuositus

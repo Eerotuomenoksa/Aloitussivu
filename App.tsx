@@ -9,6 +9,7 @@ import InfoModal from './components/InfoModal';
 import HomepageModal from './components/HomepageModal';
 import LinkReportModal from './components/LinkReportModal';
 import FeedbackModal from './components/FeedbackModal';
+import TestFeedbackPrompt from './components/TestFeedbackPrompt';
 import OnboardingTour from './components/OnboardingTour';
 import SearchBar from './components/SearchBar';
 import RegionalServicesPanel from './components/RegionalServicesPanel';
@@ -23,6 +24,7 @@ import { useApprovedLinkSuggestionsVersion } from './approvedLinks';
 import { LanguageCode, LanguageProvider, LANGUAGES, useI18n } from './i18n';
 import { APP_VERSION_LABEL } from './appVersion';
 import { installUsageTracking } from './usageTracking';
+import { postponeTestFeedbackPrompt, shouldShowTestFeedbackPrompt } from './testFeedback';
 // Valkoinen logo näytetään tummassa teemassa, värillinen vaaleassa.
 import seniorSurfLogoTummaTeema from './assets/seniorsurf-logo-tumma-teema.png';
 import seniorSurfLogoVaaleaTeema from './assets/seniorsurf-logo-vaalea-teema.png';
@@ -37,6 +39,7 @@ const ONBOARDING_SEEN_KEY = 'onboardingSeen';
 const SECONDARY_TIME_ZONE_KEY = 'secondaryTimeZone';
 const THEME_KEY = 'colorTheme';
 const CLOCK_MODE_KEY = 'clockMode';
+const TEST_FEEDBACK_PROMPT_DELAY_MS = 2 * 60 * 1000;
 
 type ColorTheme = 'vihrea' | 'violetti' | 'sininen' | 'oranssi';
 type ClockMode = 'digital' | 'analog';
@@ -164,6 +167,8 @@ const AppContent: React.FC = () => {
   const [isHomepageOpen, setIsHomepageOpen] = useState(false);
   const [isOnboardingOpen, setIsOnboardingOpen] = useState(false);
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
+  const [isTestFeedbackPromptOpen, setIsTestFeedbackPromptOpen] = useState(false);
+  const [hasTestFeedbackPromptDelayElapsed, setHasTestFeedbackPromptDelayElapsed] = useState(false);
   const [hasSeenOnboarding, setHasSeenOnboarding] = useState(() => localStorage.getItem(ONBOARDING_SEEN_KEY) === 'true');
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [locality, setLocality] = useState<LocalityInfo | null>(() => {
@@ -312,15 +317,34 @@ const AppContent: React.FC = () => {
     const nextUrl = `${window.location.pathname}${nextSearch ? `?${nextSearch}` : ''}${window.location.hash}`;
     window.history.replaceState(null, '', nextUrl);
   }, []);
+  useEffect(() => {
+    if (typeof window === 'undefined' || !shouldShowTestFeedbackPrompt()) return undefined;
+    const timer = window.setTimeout(() => {
+      setHasTestFeedbackPromptDelayElapsed(true);
+    }, TEST_FEEDBACK_PROMPT_DELAY_MS);
+
+    return () => window.clearTimeout(timer);
+  }, []);
   const openReportModal = useCallback((draft: LinkReportDraft) => setReportDraft(draft), []);
   const closeReportModal = useCallback(() => setReportDraft(null), []);
   const selectedShortcut = selectedCategory ? mergeApprovedLinksIntoShortcuts([selectedCategory])[0] ?? selectedCategory : null;
   const isFinnishLocality = locality?.isInFinland !== false;
   const regionalLocality = isFinnishLocality ? locality : null;
   const selectedSecondaryTimeZone = SECONDARY_TIME_ZONE_OPTIONS.find((option) => option.value === secondaryTimeZone) ?? SECONDARY_TIME_ZONE_OPTIONS[0];
-  const isAnyModalOpen = Boolean(selectedShortcut || isInfoOpen || isHomepageOpen || isOnboardingOpen || isFeedbackOpen || reportDraft || isSettingsOpen);
+  const isModalOpenWithoutTestFeedbackPrompt = Boolean(selectedShortcut || isInfoOpen || isHomepageOpen || isOnboardingOpen || isFeedbackOpen || reportDraft || isSettingsOpen);
+  const isAnyModalOpen = isModalOpenWithoutTestFeedbackPrompt || isTestFeedbackPromptOpen;
+  useEffect(() => {
+    if (!hasTestFeedbackPromptDelayElapsed || isModalOpenWithoutTestFeedbackPrompt || isTestFeedbackPromptOpen) return;
+    if (shouldShowTestFeedbackPrompt()) {
+      setIsTestFeedbackPromptOpen(true);
+    }
+  }, [hasTestFeedbackPromptDelayElapsed, isModalOpenWithoutTestFeedbackPrompt, isTestFeedbackPromptOpen]);
   const updateVisibility = useCallback((key: keyof UiVisibilityState, value: boolean) => {
     setUiVisibility(prev => ({ ...prev, [key]: value }));
+  }, []);
+  const postponeTestFeedback = useCallback(() => {
+    postponeTestFeedbackPrompt();
+    setIsTestFeedbackPromptOpen(false);
   }, []);
   const startOnboarding = useCallback(() => {
     setIsInfoOpen(false);
@@ -401,6 +425,13 @@ const AppContent: React.FC = () => {
                 >
                   Palaute
                 </button>
+                <a
+                  href="./testipalaute.html"
+                  title="Avaa testipalautelomake"
+                  className="rounded-full bg-white/10 px-3 py-1 text-xs font-black text-white no-underline transition-colors hover:bg-white/20 focus-visible:ring-2 focus-visible:ring-white"
+                >
+                  Testaus
+                </a>
               </div>
               <LanguageSelector language={language} setLanguage={setLanguage} label={t('language')} />
               <button
@@ -744,6 +775,12 @@ const AppContent: React.FC = () => {
                 </a>
               )}
               <div className="flex flex-wrap gap-3">
+                <a
+                  href="./testipalaute.html"
+                  className="mt-5 inline-flex items-center gap-2 rounded-full bg-[var(--theme-gold)] px-5 py-2.5 text-sm font-black text-[var(--theme-cta-label)] no-underline shadow-[0_3px_0_rgba(0,0,0,.28)] hover:bg-[var(--theme-gold-light)] focus-visible:ring-2 focus-visible:ring-[var(--theme-focus)] active:translate-y-[2px] active:shadow-none"
+                >
+                  Vastaa testauslomakkeeseen
+                </a>
                 <button
                   type="button"
                   onClick={() => setIsFeedbackOpen(true)}
@@ -779,6 +816,7 @@ const AppContent: React.FC = () => {
                 { href: './saavutettavuus.html', label: t('accessibilityStatement') },
                 { href: './muutosloki.html', label: t('changelog') },
                 { href: './kehitysjono.html', label: 'Kehitysjono' },
+                { href: './testipalaute.html', label: 'Testauslomake' },
               ].map((link) => (
                 <a
                   key={link.href}
@@ -847,6 +885,11 @@ const AppContent: React.FC = () => {
         />
         <LinkReportModal draft={reportDraft} onClose={closeReportModal} />
         <FeedbackModal isOpen={isFeedbackOpen} onClose={() => setIsFeedbackOpen(false)} />
+        <TestFeedbackPrompt
+          isOpen={isTestFeedbackPromptOpen}
+          onClose={postponeTestFeedback}
+          onPostpone={postponeTestFeedback}
+        />
       </div>
       <FloatingControls
         decreaseLabel={t('decreaseText')}

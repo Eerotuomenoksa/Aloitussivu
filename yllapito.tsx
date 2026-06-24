@@ -16,6 +16,11 @@ const adminLinks = [
     href: './ehdotukset.html',
   },
   {
+    title: 'Testipalautteen koonti',
+    description: 'Tarkastele anonyymin testilomakkeen vastauksia, jakaumia, keskiarvoja ja avoimia huomioita.',
+    href: './testipalaute-yllapito.html',
+  },
+  {
     title: 'Linkkiluettelo',
     description: 'Tarkastele kaikkia linkkejä, alueellisia linkkejä ja paikkakuntakohtaista listausta.',
     href: './linkit.html',

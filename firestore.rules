@@ -131,6 +131,145 @@ service cloud.firestore {
         && request.resource.data.screenshot.dataUrl.size() <= 700000;
     }
 
+    function isValidTestFeedbackResponseCreate() {
+      return request.resource.data.keys().hasOnly([
+          'id',
+          'formVersion',
+          'createdAt',
+          'deviceTypes',
+          'useMode',
+          'webExperience',
+          'purposeClear',
+          'firstImpression',
+          'pageFeelings',
+          'foundServices',
+          'searchedFor',
+          'missingService',
+          'categoryClarity',
+          'unclearCategory',
+          'municipalityCorrect',
+          'localServicesUseful',
+          'missingLocalLink',
+          'localNewsUseful',
+          'featureRatings',
+          'missingFeature',
+          'textSize',
+          'contrastClarity',
+          'mobileEase',
+          'difficultPart',
+          'tourViewed',
+          'tourHelpful',
+          'tourFeedback',
+          'usefulnessRating',
+          'easeRating',
+          'recommend',
+          'mostImportantFix',
+          'bestThing'
+        ])
+        && request.resource.data.keys().hasAll([
+          'id',
+          'formVersion',
+          'createdAt',
+          'deviceTypes',
+          'useMode',
+          'webExperience',
+          'purposeClear',
+          'firstImpression',
+          'pageFeelings',
+          'foundServices',
+          'searchedFor',
+          'missingService',
+          'categoryClarity',
+          'unclearCategory',
+          'municipalityCorrect',
+          'localServicesUseful',
+          'missingLocalLink',
+          'localNewsUseful',
+          'featureRatings',
+          'missingFeature',
+          'textSize',
+          'contrastClarity',
+          'mobileEase',
+          'difficultPart',
+          'tourViewed',
+          'tourHelpful',
+          'tourFeedback',
+          'usefulnessRating',
+          'easeRating',
+          'recommend',
+          'mostImportantFix',
+          'bestThing'
+        ])
+        && request.resource.data.id is string
+        && request.resource.data.formVersion == '2026-06'
+        && request.resource.data.createdAt is string
+        && request.resource.data.deviceTypes is list
+        && request.resource.data.deviceTypes.size() >= 1
+        && request.resource.data.deviceTypes.size() <= 3
+        && request.resource.data.deviceTypes.hasOnly(['phone', 'tablet', 'computer'])
+        && request.resource.data.useMode in ['', 'self', 'withSomeone', 'guidance']
+        && request.resource.data.webExperience in ['', 'often', 'sometimes', 'needsHelp', 'observer']
+        && request.resource.data.purposeClear in ['', 'yes', 'partly', 'no']
+        && request.resource.data.firstImpression is string
+        && request.resource.data.firstImpression.size() <= 1200
+        && request.resource.data.pageFeelings is list
+        && request.resource.data.pageFeelings.size() <= 8
+        && request.resource.data.pageFeelings.hasOnly(['clear', 'calm', 'useful', 'tooFull', 'confusing', 'pleasant'])
+        && request.resource.data.foundServices in ['yes', 'partly', 'no']
+        && request.resource.data.searchedFor is string
+        && request.resource.data.searchedFor.size() <= 900
+        && request.resource.data.missingService is string
+        && request.resource.data.missingService.size() <= 900
+        && request.resource.data.categoryClarity in ['', 'yes', 'partly', 'no']
+        && request.resource.data.unclearCategory is string
+        && request.resource.data.unclearCategory.size() <= 900
+        && request.resource.data.municipalityCorrect in ['', 'yes', 'no', 'notSeen']
+        && request.resource.data.localServicesUseful in ['', 'yes', 'partly', 'no', 'notUsed']
+        && request.resource.data.missingLocalLink is string
+        && request.resource.data.missingLocalLink.size() <= 900
+        && request.resource.data.localNewsUseful in ['', 'yes', 'partly', 'no', 'notSeen']
+        && request.resource.data.featureRatings is map
+        && request.resource.data.featureRatings.keys().hasOnly([
+          'weather',
+          'assistant',
+          'internetSearch',
+          'scamAlerts',
+          'nearby',
+          'favorites',
+          'categorySearch',
+          'namedays',
+          'localNews'
+        ])
+        && (!('weather' in request.resource.data.featureRatings) || request.resource.data.featureRatings.weather in [1, 2, 3, 4, 5])
+        && (!('assistant' in request.resource.data.featureRatings) || request.resource.data.featureRatings.assistant in [1, 2, 3, 4, 5])
+        && (!('internetSearch' in request.resource.data.featureRatings) || request.resource.data.featureRatings.internetSearch in [1, 2, 3, 4, 5])
+        && (!('scamAlerts' in request.resource.data.featureRatings) || request.resource.data.featureRatings.scamAlerts in [1, 2, 3, 4, 5])
+        && (!('nearby' in request.resource.data.featureRatings) || request.resource.data.featureRatings.nearby in [1, 2, 3, 4, 5])
+        && (!('favorites' in request.resource.data.featureRatings) || request.resource.data.featureRatings.favorites in [1, 2, 3, 4, 5])
+        && (!('categorySearch' in request.resource.data.featureRatings) || request.resource.data.featureRatings.categorySearch in [1, 2, 3, 4, 5])
+        && (!('namedays' in request.resource.data.featureRatings) || request.resource.data.featureRatings.namedays in [1, 2, 3, 4, 5])
+        && (!('localNews' in request.resource.data.featureRatings) || request.resource.data.featureRatings.localNews in [1, 2, 3, 4, 5])
+        && request.resource.data.missingFeature is string
+        && request.resource.data.missingFeature.size() <= 900
+        && request.resource.data.textSize in ['', 'good', 'tooSmall', 'tooLarge', 'changed']
+        && request.resource.data.contrastClarity in ['', 'yes', 'partly', 'no']
+        && request.resource.data.mobileEase in ['', 'yes', 'partly', 'no', 'notTested']
+        && request.resource.data.difficultPart is string
+        && request.resource.data.difficultPart.size() <= 1200
+        && request.resource.data.tourViewed in ['', 'yes', 'partly', 'no']
+        && request.resource.data.tourHelpful in ['', 'yes', 'partly', 'no', 'notViewed']
+        && request.resource.data.tourFeedback is string
+        && request.resource.data.tourFeedback.size() <= 900
+        && request.resource.data.usefulnessRating in [1, 2, 3, 4, 5]
+        && request.resource.data.easeRating in [0, 1, 2, 3, 4, 5]
+        && request.resource.data.recommend in ['', 'yes', 'maybe', 'no']
+        && request.resource.data.mostImportantFix is string
+        && request.resource.data.mostImportantFix.size() >= 3
+        && request.resource.data.mostImportantFix.size() <= 1200
+        && request.resource.data.bestThing is string
+        && request.resource.data.bestThing.size() <= 900;
+    }
+
     match /linkReports/{reportId} {
       allow create: if isValidReport();
       allow read, delete: if isAdmin();
@@ -146,6 +285,12 @@ service cloud.firestore {
     match /feedbackAttachments/{feedbackId} {
       allow read, update, delete: if isAdmin();
       allow create: if isValidFeedbackAttachmentCreate(feedbackId);
+    }
+
+    match /testFeedbackResponses/{responseId} {
+      allow create: if isValidTestFeedbackResponseCreate();
+      allow read, delete: if isAdmin();
+      allow update: if false;
     }
 
     match /approvedLinks/{linkId} {

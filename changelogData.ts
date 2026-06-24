@@ -24,9 +24,10 @@ export type ChangelogCommit = {
   tags: string[];
 };
 
-export const CHANGELOG_GENERATED_AT = "22.6.2026 klo 08.37";
+export const CHANGELOG_GENERATED_AT = "24.6.2026 klo 09.59";
 export const CHANGELOG_VERSION = "0.72.0";
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
+  "Sivustolle lisättiin anonyymi testipalautelomake, ylläpidon koontinäkymä ja kahden minuutin jälkeen näkyvä kyselykehotus.",
   "Sivun otsikkoa, kuvausta ja favicon-kuvakkeita täsmennettiin, ja kehitysjonon julkiselle käsittelymerkinnälle annettiin pidempi tekstikenttä.",
   "Lähelläsi-osion kunnan valinta yhdistettiin otsikon viereen, aluepalvelut ryhmiteltiin selkeämmin ja desktopissa mahtuu nyt kaksi huijausvaroitusta rinnakkain.",
   "Android-puhelimilla asetuspaneeli pysyy nyt ruudun sisällä ja vierii omana paneelinaan.",
