@@ -1,5 +1,3 @@
-import { getFirebaseAppCheckToken } from './firebaseClient';
-
 type UsageEvent = {
   type: 'pageview' | 'linkClick';
   page: string;
@@ -18,6 +16,7 @@ const getUsageTrackUrl = () => {
 };
 
 const USAGE_TRACKING_DISABLED_KEY = 'seniorSurfUsageTrackingDisabled';
+const PAGEVIEW_DELAY_MS = 5000;
 
 const isLocalDevelopmentHost = () => {
   if (typeof window === 'undefined') return false;
@@ -60,6 +59,7 @@ const sendUsageEvent = async (event: UsageEvent) => {
   if (isUsageTrackingDisabled()) return;
 
   const body = JSON.stringify(event);
+  const { getFirebaseAppCheckToken } = await import('./firebaseClient');
   const appCheckToken = await getFirebaseAppCheckToken();
   if (!appCheckToken) return;
 
@@ -93,7 +93,7 @@ export const trackLinkClick = (values: { url: string; label?: string; category?:
 export const installUsageTracking = (page = getPageName()) => {
   if (isUsageTrackingDisabled()) return () => {};
 
-  trackPageView(page);
+  const pageViewTimer = window.setTimeout(() => trackPageView(page), PAGEVIEW_DELAY_MS);
 
   const handleClick = (event: MouseEvent) => {
     const target = event.target;
@@ -113,5 +113,8 @@ export const installUsageTracking = (page = getPageName()) => {
   };
 
   document.addEventListener('click', handleClick, { capture: true });
-  return () => document.removeEventListener('click', handleClick, { capture: true });
+  return () => {
+    window.clearTimeout(pageViewTimer);
+    document.removeEventListener('click', handleClick, { capture: true });
+  };
 };

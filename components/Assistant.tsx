@@ -1,6 +1,5 @@
 
 import React, { useCallback, useState, useRef, useEffect } from 'react';
-import { getGeminiAssistant } from '../services/geminiService';
 import { ChatMessage } from '../types';
 import { useI18n } from '../i18n';
 import { useSpeechInput } from '../hooks/useSpeechInput';
@@ -39,6 +38,7 @@ const Assistant: React.FC<AssistantProps> = ({ variant = 'default' }) => {
     setIsLoading(true);
 
     try {
+      const { getGeminiAssistant } = await import('../services/geminiService');
       const responseText = await getGeminiAssistant(input, messages);
       const aiMsg: ChatMessage = { role: 'assistant', content: responseText };
       setMessages(prev => [...prev, aiMsg]);

@@ -1,19 +1,10 @@
 
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { lazy, Suspense, useState, useCallback, useEffect } from 'react';
 import Clock from './components/Clock';
 import WeatherCard from './components/WeatherCard';
 import QuickLinks, { ZoneToc } from './components/QuickLinks';
-import Assistant from './components/Assistant';
-import ProviderModal from './components/ProviderModal';
-import InfoModal from './components/InfoModal';
-import HomepageModal from './components/HomepageModal';
-import LinkReportModal from './components/LinkReportModal';
-import FeedbackModal from './components/FeedbackModal';
 import TestFeedbackPrompt from './components/TestFeedbackPrompt';
-import OnboardingTour from './components/OnboardingTour';
 import SearchBar from './components/SearchBar';
-import RegionalServicesPanel from './components/RegionalServicesPanel';
-import ScamAlertsBanner from './components/ScamAlertsBanner';
 import FloatingControls from './components/FloatingControls';
 import FavoriteLinks from './components/FavoriteLinks';
 import TimeAwareLogo, { LogoPhase, getLogoPhase } from './components/TimeAwareLogo';
@@ -23,11 +14,36 @@ import { mergeApprovedLinksIntoShortcuts } from './approvedLinks';
 import { useApprovedLinkSuggestionsVersion } from './approvedLinks';
 import { LanguageCode, LanguageProvider, LANGUAGES, useI18n } from './i18n';
 import { APP_VERSION_LABEL } from './appVersion';
-import { installUsageTracking } from './usageTracking';
-import { postponeTestFeedbackPrompt, shouldShowTestFeedbackPrompt } from './testFeedback';
+import { postponeTestFeedbackPrompt, shouldShowTestFeedbackPrompt } from './testFeedbackPromptState';
 // Valkoinen logo näytetään tummassa teemassa, värillinen vaaleassa.
 import seniorSurfLogoTummaTeema from './assets/seniorsurf-logo-tumma-teema.png';
 import seniorSurfLogoVaaleaTeema from './assets/seniorsurf-logo-vaalea-teema.png';
+
+const Assistant = lazy(() => import('./components/Assistant'));
+const ProviderModal = lazy(() => import('./components/ProviderModal'));
+const InfoModal = lazy(() => import('./components/InfoModal'));
+const HomepageModal = lazy(() => import('./components/HomepageModal'));
+const LinkReportModal = lazy(() => import('./components/LinkReportModal'));
+const FeedbackModal = lazy(() => import('./components/FeedbackModal'));
+const OnboardingTour = lazy(() => import('./components/OnboardingTour'));
+const RegionalServicesPanel = lazy(() => import('./components/RegionalServicesPanel'));
+const ScamAlertsBanner = lazy(() => import('./components/ScamAlertsBanner'));
+
+const AssistantFallback = () => (
+  <div className="hero-chip h-full min-h-[5.5rem]" aria-hidden="true" />
+);
+
+const RegionalServicesFallback = () => (
+  <div
+    className="zone zone-lahellasi min-h-[13rem] rounded-[2rem] border-2 border-[var(--theme-border)] bg-[var(--theme-surface)]"
+    aria-hidden="true"
+  />
+);
+
+type IdleCapableWindow = Window & {
+  requestIdleCallback?: (callback: () => void, options?: { timeout?: number }) => number;
+  cancelIdleCallback?: (handle: number) => void;
+};
 
 const MIN_UI_SCALE = 50;
 const MAX_UI_SCALE = 200;
@@ -306,7 +322,36 @@ const AppContent: React.FC = () => {
   const fullBleedWidth = `calc(100vw / ${uiZoom})`;
   useLinkVisibilityVersion();
   useApprovedLinkSuggestionsVersion();
-  useEffect(() => installUsageTracking('etusivu'), []);
+  useEffect(() => {
+    let cancelled = false;
+    let cleanup = () => {};
+    let idleHandle: number | undefined;
+    const win = window as IdleCapableWindow;
+
+    const startUsageTracking = () => {
+      void import('./usageTracking').then(({ installUsageTracking }) => {
+        if (cancelled) return;
+        cleanup = installUsageTracking('etusivu');
+      });
+    };
+
+    const timer = window.setTimeout(() => {
+      if (win.requestIdleCallback) {
+        idleHandle = win.requestIdleCallback(startUsageTracking, { timeout: 3000 });
+      } else {
+        startUsageTracking();
+      }
+    }, 1500);
+
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+      if (idleHandle !== undefined) {
+        win.cancelIdleCallback?.(idleHandle);
+      }
+      cleanup();
+    };
+  }, []);
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const params = new URLSearchParams(window.location.search);
@@ -495,7 +540,9 @@ const AppContent: React.FC = () => {
                   )}
                   {uiVisibility.assistant && (
                     <div className="hero-widget relative z-50 hidden min-w-[220px] flex-1 md:block" data-tour="assistant">
-                      <Assistant variant="header" />
+                      <Suspense fallback={<AssistantFallback />}>
+                        <Assistant variant="header" />
+                      </Suspense>
                     </div>
                   )}
                 </div>
@@ -682,7 +729,11 @@ const AppContent: React.FC = () => {
         <main id="main-content" className="space-y-10 animate-fade-up" style={{ animationDelay: '300ms', marginTop: '-3.5rem' }} tabIndex={-1}>
           <ZoneToc showLocal={uiVisibility.regionalServices && isFinnishLocality} />
 
-          {uiVisibility.scamAlerts && <ScamAlertsBanner compact framed />}
+          {uiVisibility.scamAlerts && (
+            <Suspense fallback={null}>
+              <ScamAlertsBanner compact framed />
+            </Suspense>
+          )}
 
           <div data-tour="favorites">
             <FavoriteLinks favorites={favorites} onToggleFavorite={toggleFavorite} fontSizeStep={fontSizeStep} />
@@ -690,14 +741,16 @@ const AppContent: React.FC = () => {
 
           {uiVisibility.regionalServices && isFinnishLocality && (
             <div data-tour="regional-services">
-              <RegionalServicesPanel
-                locality={regionalLocality}
-                fontSizeStep={fontSizeStep}
-                onLocalitySelected={updateLocality}
-                onReportLink={openReportModal}
-                onSelectCategory={setSelectedCategory}
-                showNews={uiVisibility.regionalNews}
-              />
+              <Suspense fallback={<RegionalServicesFallback />}>
+                <RegionalServicesPanel
+                  locality={regionalLocality}
+                  fontSizeStep={fontSizeStep}
+                  onLocalitySelected={updateLocality}
+                  onReportLink={openReportModal}
+                  onSelectCategory={setSelectedCategory}
+                  showNews={uiVisibility.regionalNews}
+                />
+              </Suspense>
             </div>
           )}
 
@@ -856,35 +909,45 @@ const AppContent: React.FC = () => {
           </div>
         </footer>
 
-        <ProviderModal
-          shortcut={selectedShortcut}
-          onClose={() => setSelectedCategory(null)}
-          fontSizeStep={fontSizeStep}
-          favorites={favorites}
-          onToggleFavorite={toggleFavorite}
-          onReportLink={openReportModal}
-          locality={regionalLocality}
-        />
-        <InfoModal
-          isOpen={isInfoOpen}
-          onClose={() => setIsInfoOpen(false)}
-          fontSizeStep={fontSizeStep}
-          showOnboardingOffer={!hasSeenOnboarding}
-          onStartOnboarding={startOnboarding}
-        />
-        <HomepageModal
-          isOpen={isHomepageOpen}
-          onClose={() => setIsHomepageOpen(false)}
-          fontSizeStep={fontSizeStep}
-          onStartOnboarding={startOnboarding}
-        />
-        <OnboardingTour
-          isOpen={isOnboardingOpen}
-          onClose={() => setIsOnboardingOpen(false)}
-          onComplete={completeOnboarding}
-        />
-        <LinkReportModal draft={reportDraft} onClose={closeReportModal} />
-        <FeedbackModal isOpen={isFeedbackOpen} onClose={() => setIsFeedbackOpen(false)} />
+        <Suspense fallback={null}>
+          {selectedShortcut && (
+            <ProviderModal
+              shortcut={selectedShortcut}
+              onClose={() => setSelectedCategory(null)}
+              fontSizeStep={fontSizeStep}
+              favorites={favorites}
+              onToggleFavorite={toggleFavorite}
+              onReportLink={openReportModal}
+              locality={regionalLocality}
+            />
+          )}
+          {isInfoOpen && (
+            <InfoModal
+              isOpen={isInfoOpen}
+              onClose={() => setIsInfoOpen(false)}
+              fontSizeStep={fontSizeStep}
+              showOnboardingOffer={!hasSeenOnboarding}
+              onStartOnboarding={startOnboarding}
+            />
+          )}
+          {isHomepageOpen && (
+            <HomepageModal
+              isOpen={isHomepageOpen}
+              onClose={() => setIsHomepageOpen(false)}
+              fontSizeStep={fontSizeStep}
+              onStartOnboarding={startOnboarding}
+            />
+          )}
+          {isOnboardingOpen && (
+            <OnboardingTour
+              isOpen={isOnboardingOpen}
+              onClose={() => setIsOnboardingOpen(false)}
+              onComplete={completeOnboarding}
+            />
+          )}
+          {reportDraft && <LinkReportModal draft={reportDraft} onClose={closeReportModal} />}
+          {isFeedbackOpen && <FeedbackModal isOpen={isFeedbackOpen} onClose={() => setIsFeedbackOpen(false)} />}
+        </Suspense>
         <TestFeedbackPrompt
           isOpen={isTestFeedbackPromptOpen}
           onClose={postponeTestFeedback}

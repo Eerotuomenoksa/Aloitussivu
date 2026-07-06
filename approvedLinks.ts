@@ -1,14 +1,4 @@
 import { useEffect, useState } from 'react';
-import {
-  collection,
-  deleteDoc,
-  doc,
-  onSnapshot,
-  orderBy,
-  query,
-  setDoc,
-} from 'firebase/firestore';
-import { getFirebaseDb, isFirebaseConfigured } from './firebaseClient';
 import { Shortcut } from './types';
 
 export interface ApprovedLinkSuggestion {
@@ -24,6 +14,24 @@ export interface ApprovedLinkSuggestion {
 const APPROVED_LINKS_KEY = 'approvedLinkSuggestions';
 const APPROVED_LINKS_CHANGE_EVENT = 'approvedlinkchange';
 const APPROVED_LINKS_COLLECTION = 'approvedLinks';
+const REMOTE_SYNC_DELAY_MS = 3500;
+
+const hasFirebaseConfig = Boolean(
+  import.meta.env.VITE_FIREBASE_API_KEY?.trim()
+  && import.meta.env.VITE_FIREBASE_AUTH_DOMAIN?.trim()
+  && import.meta.env.VITE_FIREBASE_PROJECT_ID?.trim()
+);
+
+const loadRemoteFirestore = async () => {
+  if (!hasFirebaseConfig) return null;
+  const [client, firestore] = await Promise.all([
+    import('./firebaseClient'),
+    import('firebase/firestore'),
+  ]);
+  if (!client.isFirebaseConfigured) return null;
+  const db = client.getFirebaseDb();
+  return db ? { db, firestore } : null;
+};
 
 const normalizeText = (value: string) => value.trim().toLocaleLowerCase('fi-FI').replace(/\s+/g, ' ');
 const normalizeUrl = (url: string) => {
@@ -77,35 +85,42 @@ const setApprovedLinksCache = (links: ApprovedLinkSuggestion[]) => {
 export const getApprovedLinkSuggestions = () => approvedLinksCache;
 
 export const subscribeApprovedLinkSuggestions = (callback: (links: ApprovedLinkSuggestion[]) => void) => {
-  if (!isFirebaseConfigured) {
-    const handleChange = () => callback(getApprovedLinkSuggestions());
-    callback(getApprovedLinkSuggestions());
-    window.addEventListener('storage', handleChange);
-    window.addEventListener(APPROVED_LINKS_CHANGE_EVENT, handleChange);
-    return () => {
-      window.removeEventListener('storage', handleChange);
-      window.removeEventListener(APPROVED_LINKS_CHANGE_EVENT, handleChange);
-    };
-  }
+  const handleChange = () => callback(getApprovedLinkSuggestions());
+  callback(getApprovedLinkSuggestions());
+  window.addEventListener('storage', handleChange);
+  window.addEventListener(APPROVED_LINKS_CHANGE_EVENT, handleChange);
 
-  const db = getFirebaseDb();
-  if (!db) {
-    callback(getApprovedLinkSuggestions());
-    return () => {};
-  }
+  let cancelled = false;
+  let unsubscribeRemote: (() => void) | undefined;
+  const timer = window.setTimeout(() => {
+    void loadRemoteFirestore().then((remote) => {
+      if (cancelled || !remote) return;
+      const { db, firestore } = remote;
+      unsubscribeRemote = firestore.onSnapshot(
+        firestore.query(
+          firestore.collection(db, APPROVED_LINKS_COLLECTION),
+          firestore.orderBy('createdAt', 'desc')
+        ),
+        (snapshot) => {
+          const links = snapshot.docs.map((document) => ({
+            id: document.id,
+            ...document.data(),
+          })) as ApprovedLinkSuggestion[];
+          setApprovedLinksCache(links);
+          callback(links);
+        },
+        () => callback(getApprovedLinkSuggestions())
+      );
+    });
+  }, REMOTE_SYNC_DELAY_MS);
 
-  return onSnapshot(
-    query(collection(db, APPROVED_LINKS_COLLECTION), orderBy('createdAt', 'desc')),
-    (snapshot) => {
-      const links = snapshot.docs.map((document) => ({
-        id: document.id,
-        ...document.data(),
-      })) as ApprovedLinkSuggestion[];
-      setApprovedLinksCache(links);
-      callback(links);
-    },
-    () => callback(getApprovedLinkSuggestions())
-  );
+  return () => {
+    cancelled = true;
+    window.clearTimeout(timer);
+    unsubscribeRemote?.();
+    window.removeEventListener('storage', handleChange);
+    window.removeEventListener(APPROVED_LINKS_CHANGE_EVENT, handleChange);
+  };
 };
 
 export const approveLinkSuggestion = async (suggestion: Omit<ApprovedLinkSuggestion, 'id' | 'createdAt'> & Partial<Pick<ApprovedLinkSuggestion, 'id' | 'createdAt'>>) => {
@@ -126,11 +141,9 @@ export const approveLinkSuggestion = async (suggestion: Omit<ApprovedLinkSuggest
     ...existing.filter((item) => item.id !== next.id && normalizeUrl(item.url) !== normalizedNextUrl),
   ];
 
-  if (isFirebaseConfigured) {
-    const db = getFirebaseDb();
-    if (db) {
-      await setDoc(doc(db, APPROVED_LINKS_COLLECTION, next.id), next);
-    }
+  const remote = await loadRemoteFirestore();
+  if (remote) {
+    await remote.firestore.setDoc(remote.firestore.doc(remote.db, APPROVED_LINKS_COLLECTION, next.id), next);
   }
 
   setApprovedLinksCache(merged);
@@ -139,11 +152,9 @@ export const approveLinkSuggestion = async (suggestion: Omit<ApprovedLinkSuggest
 
 export const removeApprovedLinkSuggestion = async (id: string) => {
   const next = getApprovedLinkSuggestions().filter((item) => item.id !== id);
-  if (isFirebaseConfigured) {
-    const db = getFirebaseDb();
-    if (db) {
-      await deleteDoc(doc(db, APPROVED_LINKS_COLLECTION, id));
-    }
+  const remote = await loadRemoteFirestore();
+  if (remote) {
+    await remote.firestore.deleteDoc(remote.firestore.doc(remote.db, APPROVED_LINKS_COLLECTION, id));
   }
   setApprovedLinksCache(next);
 };

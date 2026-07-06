@@ -1,14 +1,4 @@
 import { useEffect, useState } from 'react';
-import {
-  collection,
-  doc,
-  onSnapshot,
-  orderBy,
-  query,
-  setDoc,
-  updateDoc,
-} from 'firebase/firestore';
-import { getFirebaseDb, isFirebaseConfigured } from './firebaseClient';
 import { BLOCKED_LINK_URLS } from './linkHealth';
 import { LinkReportEntry, Provider, Shortcut } from './types';
 
@@ -19,6 +9,24 @@ const LINK_HEALTH_CHANGE_EVENT = 'linkhealthchange';
 const LINK_REPORTS_CHANGE_EVENT = 'linkreportschange';
 const LINK_REPORTS_COLLECTION = 'linkReports';
 const BLOCKED_LINKS_COLLECTION = 'blockedLinks';
+const REMOTE_SYNC_DELAY_MS = 3500;
+
+const hasFirebaseConfig = Boolean(
+  import.meta.env.VITE_FIREBASE_API_KEY?.trim()
+  && import.meta.env.VITE_FIREBASE_AUTH_DOMAIN?.trim()
+  && import.meta.env.VITE_FIREBASE_PROJECT_ID?.trim()
+);
+
+const loadRemoteFirestore = async () => {
+  if (!hasFirebaseConfig) return null;
+  const [client, firestore] = await Promise.all([
+    import('./firebaseClient'),
+    import('firebase/firestore'),
+  ]);
+  if (!client.isFirebaseConfigured) return null;
+  const db = client.getFirebaseDb();
+  return db ? { db, firestore } : null;
+};
 
 export type LinkReportStatus = 'pending' | 'approved' | 'rejected';
 
@@ -175,13 +183,11 @@ export const submitLinkReport = async (entry: LinkReportEntry) => {
     updatedAt: entry.createdAt,
   };
 
-  if (isFirebaseConfigured) {
-    const db = getFirebaseDb();
-    if (db) {
-      await setDoc(doc(db, LINK_REPORTS_COLLECTION, report.id), report);
-      emitLinkReportsChange();
-      return;
-    }
+  const remote = await loadRemoteFirestore();
+  if (remote) {
+    await remote.firestore.setDoc(remote.firestore.doc(remote.db, LINK_REPORTS_COLLECTION, report.id), report);
+    emitLinkReportsChange();
+    return;
   }
 
   reportLink(entry);
@@ -189,33 +195,40 @@ export const submitLinkReport = async (entry: LinkReportEntry) => {
 };
 
 export const subscribeLinkReports = (callback: (reports: ManagedLinkReportEntry[]) => void) => {
-  if (!isFirebaseConfigured) {
-    const handleChange = () => callback(getManagedLinkReports());
-    callback(getManagedLinkReports());
-    window.addEventListener('storage', handleChange);
-    window.addEventListener(LINK_REPORTS_CHANGE_EVENT, handleChange);
-    return () => {
-      window.removeEventListener('storage', handleChange);
-      window.removeEventListener(LINK_REPORTS_CHANGE_EVENT, handleChange);
-    };
-  }
+  const handleChange = () => callback(getManagedLinkReports());
+  callback(getManagedLinkReports());
+  window.addEventListener('storage', handleChange);
+  window.addEventListener(LINK_REPORTS_CHANGE_EVENT, handleChange);
 
-  const db = getFirebaseDb();
-  if (!db) {
-    callback(getManagedLinkReports());
-    return () => {};
-  }
+  let cancelled = false;
+  let unsubscribeRemote: (() => void) | undefined;
+  const timer = window.setTimeout(() => {
+    void loadRemoteFirestore().then((remote) => {
+      if (cancelled || !remote) return;
+      const { db, firestore } = remote;
+      unsubscribeRemote = firestore.onSnapshot(
+        firestore.query(
+          firestore.collection(db, LINK_REPORTS_COLLECTION),
+          firestore.orderBy('createdAt', 'desc')
+        ),
+        (snapshot) => {
+          callback(snapshot.docs.map((document) => ({
+            id: document.id,
+            ...document.data(),
+          })) as ManagedLinkReportEntry[]);
+        },
+        () => callback(getManagedLinkReports())
+      );
+    });
+  }, REMOTE_SYNC_DELAY_MS);
 
-  return onSnapshot(
-    query(collection(db, LINK_REPORTS_COLLECTION), orderBy('createdAt', 'desc')),
-    (snapshot) => {
-      callback(snapshot.docs.map((document) => ({
-        id: document.id,
-        ...document.data(),
-      })) as ManagedLinkReportEntry[]);
-    },
-    () => callback(getManagedLinkReports())
-  );
+  return () => {
+    cancelled = true;
+    window.clearTimeout(timer);
+    unsubscribeRemote?.();
+    window.removeEventListener('storage', handleChange);
+    window.removeEventListener(LINK_REPORTS_CHANGE_EVENT, handleChange);
+  };
 };
 
 export const updateLinkReportStatus = async (
@@ -227,24 +240,22 @@ export const updateLinkReportStatus = async (
 ) => {
   const reviewedAt = new Date().toISOString();
 
-  if (isFirebaseConfigured) {
-    const db = getFirebaseDb();
-    if (db) {
-      try {
-        await updateDoc(doc(db, LINK_REPORTS_COLLECTION, id), {
-          status,
-          reviewedAt,
-          reviewedBy: reviewerEmail ?? '',
-          updatedAt: reviewedAt,
-          ...(approvedLinkId ? { approvedLinkId } : {}),
-          ...(reviewReason ? { reviewReason } : {}),
-        });
-        emitLinkReportsChange();
-        return;
-      } catch (error) {
-        const hasLocalReport = getManagedLinkReports().some((report) => report.id === id);
-        if (!hasLocalReport) throw error;
-      }
+  const remote = await loadRemoteFirestore();
+  if (remote) {
+    try {
+      await remote.firestore.updateDoc(remote.firestore.doc(remote.db, LINK_REPORTS_COLLECTION, id), {
+        status,
+        reviewedAt,
+        reviewedBy: reviewerEmail ?? '',
+        updatedAt: reviewedAt,
+        ...(approvedLinkId ? { approvedLinkId } : {}),
+        ...(reviewReason ? { reviewReason } : {}),
+      });
+      emitLinkReportsChange();
+      return;
+    } catch (error) {
+      const hasLocalReport = getManagedLinkReports().some((report) => report.id === id);
+      if (!hasLocalReport) throw error;
     }
   }
 
@@ -257,27 +268,35 @@ export const addBlockedLink = async (url: string) => {
   runtimeBlocked.add(normalized);
   setRuntimeBlockedUrlsCache([...runtimeBlocked]);
 
-  if (isFirebaseConfigured) {
-    const db = getFirebaseDb();
-    if (db) {
-      await setDoc(doc(db, BLOCKED_LINKS_COLLECTION, encodeURIComponent(normalized)), {
-        url: normalized,
-        createdAt: new Date().toISOString(),
-      });
-    }
+  const remote = await loadRemoteFirestore();
+  if (remote) {
+    await remote.firestore.setDoc(remote.firestore.doc(remote.db, BLOCKED_LINKS_COLLECTION, encodeURIComponent(normalized)), {
+      url: normalized,
+      createdAt: new Date().toISOString(),
+    });
   }
 };
 
 const subscribeBlockedLinks = () => {
-  if (!isFirebaseConfigured) return () => {};
-  const db = getFirebaseDb();
-  if (!db) return () => {};
+  let cancelled = false;
+  let unsubscribeRemote: (() => void) | undefined;
+  const timer = window.setTimeout(() => {
+    void loadRemoteFirestore().then((remote) => {
+      if (cancelled || !remote) return;
+      const { db, firestore } = remote;
+      unsubscribeRemote = firestore.onSnapshot(
+        firestore.collection(db, BLOCKED_LINKS_COLLECTION),
+        (snapshot) => setRuntimeBlockedUrlsCache(snapshot.docs.map((document) => normalizeUrl(String(document.data().url ?? ''))).filter(Boolean)),
+        () => setRuntimeBlockedUrlsCache(readJsonArray(RUNTIME_BLOCKED_LINKS_KEY) as string[])
+      );
+    });
+  }, REMOTE_SYNC_DELAY_MS);
 
-  return onSnapshot(
-    collection(db, BLOCKED_LINKS_COLLECTION),
-    (snapshot) => setRuntimeBlockedUrlsCache(snapshot.docs.map((document) => normalizeUrl(String(document.data().url ?? ''))).filter(Boolean)),
-    () => setRuntimeBlockedUrlsCache(readJsonArray(RUNTIME_BLOCKED_LINKS_KEY) as string[])
-  );
+  return () => {
+    cancelled = true;
+    window.clearTimeout(timer);
+    unsubscribeRemote?.();
+  };
 };
 
 export const useLinkVisibilityVersion = () => {

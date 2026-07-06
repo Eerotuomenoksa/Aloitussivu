@@ -7,14 +7,17 @@ import {
   setDoc,
 } from 'firebase/firestore';
 import { getFirebaseDb, isFirebaseConfigured } from './firebaseClient';
+export {
+  markTestFeedbackAnswered,
+  postponeTestFeedbackPrompt,
+  shouldShowTestFeedbackPrompt,
+} from './testFeedbackPromptState';
+import { markTestFeedbackAnswered } from './testFeedbackPromptState';
 
 export const TEST_FEEDBACK_FORM_VERSION = '2026-06';
 const TEST_FEEDBACK_COLLECTION = 'testFeedbackResponses';
 const TEST_FEEDBACK_STORAGE_KEY = 'testFeedbackResponses';
 const TEST_FEEDBACK_CHANGE_EVENT = 'testfeedbackresponseschange';
-const TEST_FEEDBACK_ANSWERED_KEY = 'testFeedbackAnsweredAt';
-const TEST_FEEDBACK_PROMPT_POSTPONED_UNTIL_KEY = 'testFeedbackPromptPostponedUntil';
-const TEST_FEEDBACK_PROMPT_POSTPONE_MS = 24 * 60 * 60 * 1000;
 
 export type TestDeviceType = 'phone' | 'tablet' | 'computer';
 export type TestFeatureKey =
@@ -140,25 +143,6 @@ const emitTestFeedbackChange = () => {
   }
 };
 
-const readTimestamp = (key: string) => {
-  try {
-    if (typeof localStorage === 'undefined') return 0;
-    const value = Number(localStorage.getItem(key) ?? 0);
-    return Number.isFinite(value) ? value : 0;
-  } catch {
-    return 0;
-  }
-};
-
-const writeTimestamp = (key: string, value: number) => {
-  try {
-    if (typeof localStorage === 'undefined') return;
-    localStorage.setItem(key, String(value));
-  } catch {
-    // Ignore storage errors.
-  }
-};
-
 const saveLocalResponse = (response: TestFeedbackResponse) => {
   writeLocalResponses([response, ...readLocalResponses()].slice(0, 1000));
   emitTestFeedbackChange();
@@ -175,22 +159,6 @@ const uploadResponse = async (response: TestFeedbackResponse) => {
   const db = getFirebaseDb();
   if (!db) throw new Error('Firestore-yhteyttä ei voitu avata.');
   await setDoc(doc(db, TEST_FEEDBACK_COLLECTION, response.id), response);
-};
-
-export const markTestFeedbackAnswered = () => {
-  const now = Date.now();
-  writeTimestamp(TEST_FEEDBACK_ANSWERED_KEY, now);
-  writeTimestamp(TEST_FEEDBACK_PROMPT_POSTPONED_UNTIL_KEY, 0);
-};
-
-export const postponeTestFeedbackPrompt = () => {
-  writeTimestamp(TEST_FEEDBACK_PROMPT_POSTPONED_UNTIL_KEY, Date.now() + TEST_FEEDBACK_PROMPT_POSTPONE_MS);
-};
-
-export const shouldShowTestFeedbackPrompt = () => {
-  if (readTimestamp(TEST_FEEDBACK_ANSWERED_KEY) > 0) return false;
-  const postponedUntil = readTimestamp(TEST_FEEDBACK_PROMPT_POSTPONED_UNTIL_KEY);
-  return postponedUntil <= Date.now();
 };
 
 export const submitTestFeedback = async (draft: TestFeedbackDraft): Promise<TestFeedbackSubmitResult> => {

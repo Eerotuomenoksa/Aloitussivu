@@ -1,13 +1,3 @@
-import {
-  collection,
-  onSnapshot,
-  orderBy,
-  query,
-  updateDoc,
-  doc,
-} from 'firebase/firestore';
-import { getFirebaseAuth, getFirebaseDb, isFirebaseConfigured } from './firebaseClient';
-
 export type ScamAlertSeverity = 'info' | 'warning' | 'danger';
 
 export interface ScamAlertEntry {
@@ -38,6 +28,24 @@ export interface NcscScrapeLogEntry {
 
 const SCAM_ALERTS_COLLECTION = 'scamAlerts';
 const NCSC_SCRAPE_LOG_COLLECTION = 'ncscScrapeLog';
+const REMOTE_SYNC_DELAY_MS = 3500;
+
+const hasFirebaseConfig = Boolean(
+  import.meta.env.VITE_FIREBASE_API_KEY?.trim()
+  && import.meta.env.VITE_FIREBASE_AUTH_DOMAIN?.trim()
+  && import.meta.env.VITE_FIREBASE_PROJECT_ID?.trim()
+);
+
+const loadRemoteFirestore = async () => {
+  if (!hasFirebaseConfig) return null;
+  const [client, firestore] = await Promise.all([
+    import('./firebaseClient'),
+    import('firebase/firestore'),
+  ]);
+  if (!client.isFirebaseConfigured) return null;
+  const db = client.getFirebaseDb();
+  return db ? { client, db, firestore } : null;
+};
 
 const getScrapeLogReadErrorMessage = (error: { code?: string; message: string }) => (
   error.code === 'permission-denied'
@@ -46,66 +54,77 @@ const getScrapeLogReadErrorMessage = (error: { code?: string; message: string })
 );
 
 export const subscribeScamAlerts = (callback: (alerts: ScamAlertEntry[]) => void) => {
-  if (!isFirebaseConfigured) {
-    callback([]);
-    return () => {};
-  }
+  callback([]);
+  let cancelled = false;
+  let unsubscribeRemote: (() => void) | undefined;
+  const timer = window.setTimeout(() => {
+    void loadRemoteFirestore().then((remote) => {
+      if (cancelled || !remote) return;
+      const { db, firestore } = remote;
+      unsubscribeRemote = firestore.onSnapshot(
+        firestore.query(
+          firestore.collection(db, SCAM_ALERTS_COLLECTION),
+          firestore.orderBy('createdAt', 'desc')
+        ),
+        (snapshot) => {
+          callback(snapshot.docs.map((document) => ({
+            id: document.id,
+            ...document.data(),
+          })) as ScamAlertEntry[]);
+        },
+        () => callback([])
+      );
+    });
+  }, REMOTE_SYNC_DELAY_MS);
 
-  const db = getFirebaseDb();
-  if (!db) {
-    callback([]);
-    return () => {};
-  }
-
-  return onSnapshot(
-    query(collection(db, SCAM_ALERTS_COLLECTION), orderBy('createdAt', 'desc')),
-    (snapshot) => {
-      callback(snapshot.docs.map((document) => ({
-        id: document.id,
-        ...document.data(),
-      })) as ScamAlertEntry[]);
-    },
-    () => callback([])
-  );
+  return () => {
+    cancelled = true;
+    window.clearTimeout(timer);
+    unsubscribeRemote?.();
+  };
 };
 
 export const subscribeNcscScrapeLogs = (
   callback: (logs: NcscScrapeLogEntry[]) => void,
   onError?: (message: string, error?: { code?: string; message: string }) => void
 ) => {
-  if (!isFirebaseConfigured) {
-    callback([]);
-    onError?.('Firebase-asetukset puuttuvat, joten ajolokia ei voi lukea.');
-    return () => {};
-  }
-
-  const db = getFirebaseDb();
-  if (!db) {
-    callback([]);
-    onError?.('Firestore-yhteyttä ei voitu avata.');
-    return () => {};
-  }
-
-  return onSnapshot(
-    query(collection(db, NCSC_SCRAPE_LOG_COLLECTION), orderBy('processedAt', 'desc')),
-    (snapshot) => {
-      onError?.('');
-      callback(snapshot.docs.slice(0, 10).map((document) => ({
-        id: document.id,
-        ...document.data(),
-      })) as NcscScrapeLogEntry[]);
-    },
-    (error) => {
+  let unsubscribeRemote: (() => void) | undefined;
+  let cancelled = false;
+  void loadRemoteFirestore().then((remote) => {
+    if (cancelled) return;
+    if (!remote) {
       callback([]);
-      onError?.(getScrapeLogReadErrorMessage(error), error);
+      onError?.('Firebase-asetukset puuttuvat, joten ajolokia ei voi lukea.');
+      return;
     }
-  );
+
+    const { db, firestore } = remote;
+    unsubscribeRemote = firestore.onSnapshot(
+      firestore.query(firestore.collection(db, NCSC_SCRAPE_LOG_COLLECTION), firestore.orderBy('processedAt', 'desc')),
+      (snapshot) => {
+        onError?.('');
+        callback(snapshot.docs.slice(0, 10).map((document) => ({
+          id: document.id,
+          ...document.data(),
+        })) as NcscScrapeLogEntry[]);
+      },
+      (error) => {
+        callback([]);
+        onError?.(getScrapeLogReadErrorMessage(error), error);
+      }
+    );
+  });
+
+  return () => {
+    cancelled = true;
+    unsubscribeRemote?.();
+  };
 };
 
 export const updateScamAlertActiveState = async (id: string, active: boolean) => {
-  const db = getFirebaseDb();
-  if (!db) return;
-  await updateDoc(doc(db, SCAM_ALERTS_COLLECTION, id), {
+  const remote = await loadRemoteFirestore();
+  if (!remote) return;
+  await remote.firestore.updateDoc(remote.firestore.doc(remote.db, SCAM_ALERTS_COLLECTION, id), {
     active,
     updatedAt: new Date().toISOString(),
   });
@@ -122,7 +141,8 @@ export const getNcscScrapeNowUrl = () => {
 
 export const runNcscScrapeNow = async () => {
   const url = getNcscScrapeNowUrl();
-  const user = getFirebaseAuth()?.currentUser;
+  const remote = await loadRemoteFirestore();
+  const user = remote?.client.getFirebaseAuth()?.currentUser;
 
   if (!user) {
     throw new Error('Kirjaudu ylläpitäjänä ennen Kyberturvallisuuskeskuksen ajon käynnistämistä.');
