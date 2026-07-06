@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { getLocalizedMunicipalityName, getRegionalCategoryShortcuts, getRegionalLibraryProviders, getRegionalNewsProviders, getRegionalProviders, getRegionalRssFeeds, normalizeMunicipality, resolveRegionalContext } from '../localServices';
+import { findMunicipality, getLocalizedMunicipalityName, getRegionalCategoryShortcuts, getRegionalLibraryProviders, getRegionalNewsProviders, getRegionalProviderScopeInfo, getRegionalProviders, getRegionalRssFeeds, normalizeMunicipality, resolveRegionalContext } from '../localServices';
 import { filterVisibleProviders } from '../linkVisibility';
-import { LocalityInfo, Provider, LinkReportDraft, Shortcut } from '../types';
+import { LocalityInfo, Provider, LinkReportDraft, RegionalContext, Shortcut } from '../types';
 import LocalNewsHeadlines from './LocalNewsHeadlines';
 import { useI18n } from '../i18n';
 
@@ -55,12 +55,27 @@ const uniqueProvidersByUrl = (providers: Provider[]) => providers.filter(
   (provider, index, all) => all.findIndex((item) => item.url === provider.url) === index
 );
 
-const ServiceLink: React.FC<{ provider: Provider; index: number; fontSizeStep: number; onReportLink?: (draft: LinkReportDraft) => void }> = ({ provider, index, fontSizeStep, onReportLink }) => {
+const formatScopeLabel = (scopeInfo: ReturnType<typeof getRegionalProviderScopeInfo>, t: ReturnType<typeof useI18n>['t']) => {
+  if (!scopeInfo) return '';
+  const label = scopeInfo.scope === 'municipality'
+    ? t('regionalScopeOwnMunicipality')
+    : scopeInfo.scope === 'regional'
+      ? t('regionalScopeRegional')
+      : scopeInfo.scope === 'wellbeingArea'
+        ? t('regionalScopeWellbeingArea')
+        : scopeInfo.scope === 'neighbor'
+          ? t('regionalScopeNeighbor')
+          : t('regionalScopeNationalFallback');
+  return scopeInfo.detail ? `${label}: ${scopeInfo.detail}` : label;
+};
+
+const ServiceLink: React.FC<{ provider: Provider; index: number; fontSizeStep: number; context: RegionalContext; onReportLink?: (draft: LinkReportDraft) => void }> = ({ provider, index, fontSizeStep, context, onReportLink }) => {
   const { t, categoryName } = useI18n();
   const icon = getRegionalServiceIcon(provider);
   const phoneHref = getPhoneHref(provider);
   const href = phoneHref ?? provider.url;
   const isPhoneLink = Boolean(phoneHref);
+  const scopeLabel = formatScopeLabel(getRegionalProviderScopeInfo(provider, context), t);
   return (
     <div className="relative group/service">
       <a
@@ -76,6 +91,7 @@ const ServiceLink: React.FC<{ provider: Provider; index: number; fontSizeStep: n
           <span className={`min-w-0 leading-tight ${textClasses[fontSizeStep]}`}>{provider.name}</span>
           {provider.phone && <span className={`font-black text-[var(--zone-strong)] ${smallTextClasses[fontSizeStep]}`}>☎ {provider.phone}</span>}
           {provider.group && <span className={`font-semibold text-[var(--theme-text-3)] ${smallTextClasses[fontSizeStep]}`}>{categoryName(provider.group)}</span>}
+          {scopeLabel && <span className={`font-semibold text-[var(--theme-muted)] ${smallTextClasses[fontSizeStep]}`}>{scopeLabel}</span>}
         </span>
         <span className="zone-link-arrow" aria-hidden="true">→</span>
       </a>
@@ -148,7 +164,8 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
   const rssFeeds = useMemo(() => context ? getRegionalRssFeeds(context) : [], [context]);
   const fallbackNewsUrl = newsFallbacks[0]?.url ?? '';
   const localizedMunicipalityName = context ? getLocalizedMunicipalityName(context.municipality, language) : '';
-  const detectedMunicipalityName = locality?.municipality ? getLocalizedMunicipalityName(locality.municipality, language) : '';
+  const detectedMunicipality = locality?.municipality ? findMunicipality(locality.municipality) : null;
+  const detectedMunicipalityName = detectedMunicipality ? getLocalizedMunicipalityName(detectedMunicipality, language) : '';
   const detectedLocationLabel = detectedMunicipalityName || locality?.municipality || '';
   const displayedQuery = !isManualQuery && localizedMunicipalityName ? localizedMunicipalityName : query;
 
@@ -273,7 +290,7 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
                   </span>
                 </div>
                 <div className="zone-links-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(16rem, 1fr))', alignContent: 'start' }}>
-                  {services.map((provider, index) => <ServiceLink key={provider.url} provider={provider} index={index} fontSizeStep={fontSizeStep} onReportLink={onReportLink} />)}
+                  {services.map((provider, index) => <ServiceLink key={provider.url} provider={provider} index={index} fontSizeStep={fontSizeStep} context={context} onReportLink={onReportLink} />)}
                 </div>
               </section>
             )}

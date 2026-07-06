@@ -1,5 +1,5 @@
 # Security Workpackages for Codex
-# SeniorSurf aloitussivu — tietoturvakorjaukset
+# aloitussivu — tietoturvakorjaukset
 # Tarkistuspvm: 2026-05-26
 #
 # KÄYTTÖ CODEXILLE:
@@ -413,18 +413,37 @@ Pitkällä tähtäimellä kannattaa siirtyä nonce-pohjaiseen CSP:hen kun mahdol
 
 ---
 
-## SEC-07 · HUOMIO · Lisää robots.txt ylläpitosivujen suojaamiseksi
+## SEC-07 · HUOMIO · Piilota ylläpitosivut julkisesta navigaatiosta ja lisää robots/noindex
 
-**Ongelma:** Ylläpitosivut (`yllapito.html`, `ehdotukset.html`) ovat hakukoneiden
-indeksoitavissa ja julkisesti löydettävissä.
+**Ongelma:** Ylläpitosivut (`yllapito.html`, `ehdotukset.html`) ovat julkisesta
+navigaatiosta löydettävissä ja hakukoneiden indeksoitavissa. Tämä lisää
+satunnaista kolistelua, vaikka varsinainen suojaus onkin kirjautumisessa,
+admin-oikeuksissa ja Firestore/API-säännöissä.
+
+**Huom:** Vähemmän arvattava ylläpitoreitti vähentää näkyvyyttä, mutta ei ole
+tietoturvaratkaisu yksinään. Sitä saa käyttää vain lisäkerroksena oikean
+pääsynhallinnan, `noindex`-merkintöjen, robots-rajauksen ja tarvittaessa
+pyyntörajojen rinnalla.
 
 **Tiedostot joita muutetaan / luodaan:**
 - `public/robots.txt` (tai `robots.txt` juuressa jos Vite kopioi sen)
 - `vite.config.ts` — varmista että `public/`-hakemiston tiedostot kopioituvat
+- footer-/navigaatiokomponentti, jossa ylläpitolinkki näkyy
+- ylläpitosivujen reitit ja niihin viittaavat linkit, jos päätetään vaihtaa ne vähemmän arvattaviin osoitteisiin
 
 **Mitä Codexin tulee tehdä:**
 
-1. Luo tiedosto `public/robots.txt`:
+1. Päätä julkaisun omistajan kanssa, jääkö ylläpito-linkki näkyviin footerissa. Suositus tuotantoon:
+   - poista `Ylläpito` julkisesta footerista ja muusta käyttäjänavigaatiosta
+   - jaa ylläpidon osoite vain ylläpitotiimille
+   - säilytä kirjautumis- ja admin-tarkistukset ennallaan
+
+2. Jos ylläpitoreittejä vaihdetaan, valitse vähemmän arvattavat osoitteet ja päivitä kaikki sisäiset viittaukset. Esimerkki:
+   - `yllapito.html` -> sovittu ylläpitopolku
+   - `ehdotukset.html` -> sovittu linkki-ilmoitusten hallintapolku
+   - varmista, että vanhat osoitteet eivät paljasta ylläpitoa tai ohjaa kirjautumisen ohi
+
+3. Luo tiedosto `public/robots.txt`:
 ```
 User-agent: *
 Allow: /
@@ -432,13 +451,14 @@ Disallow: /yllapito.html
 Disallow: /ehdotukset.html
 Disallow: /linkit.html
 Disallow: /muutosloki.html
+Disallow: /sovittu-yllapitopolku/
 
 Sitemap: https://tuotantodomain.fi/sitemap.xml
 ```
 
-2. Tarkista `vite.config.ts` että `publicDir` on asetettu oikein (oletuksena `public/` kopioidaan `dist/` -hakemistoon automaattisesti).
+4. Tarkista `vite.config.ts` että `publicDir` on asetettu oikein (oletuksena `public/` kopioidaan `dist/` -hakemistoon automaattisesti).
 
-3. Lisää `index.html` head-osioon:
+5. Lisää `index.html` head-osioon:
 ```html
 <meta name="robots" content="index, follow">
 ```
@@ -452,6 +472,9 @@ Ja ylläpitosivujen HTML-tiedostoihin (`yllapito.html`, `ehdotukset.html`, `link
 - [ ] `dist/robots.txt` löytyy buildin jälkeen
 - [ ] `robots.txt` sisältää `Disallow: /yllapito.html`
 - [ ] `yllapito.html` sisältää `<meta name="robots" content="noindex, nofollow">`
+- [ ] julkisessa footerissa ei ole ylläpitolinkkiä, ellei sitä ole erikseen päätetty pitää näkyvissä
+- [ ] ylläpitoreitit on dokumentoitu ylläpitotiimille, mutta niitä ei markkinoida julkisena käyttäjätoimintona
+- [ ] ei-ylläpitäjän pääsy ylläpitodataaan estyy edelleen kirjautumisella ja palvelinpuolen oikeussäännöillä
 
 ---
 
@@ -531,7 +554,7 @@ git commit -m "sec: lisätty lokitiedostot .gitignore-tiedostoon"
 [ ] SEC-04: CORS rajattu tuotantodomainin mukaan ✓
 [ ] SEC-05: Firestore-säännöt tiukennettu ✓
 [ ] SEC-06: HTTP-suojausotsikot lisätty ✓
-[ ] SEC-07: robots.txt lisätty ✓
+[ ] SEC-07: ylläpitolinkit piilotettu tarvittaessa ja robots/noindex lisätty ✓
 [ ] SEC-08: functions/.env .gitignore-tiedostoon ✓
 [ ] SEC-09: Lokitiedostot siivottu ✓
 

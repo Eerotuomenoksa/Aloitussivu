@@ -17,5 +17,6 @@
     "jsx": "react-jsx"
   },
   "include": ["./**/*.ts", "./**/*.tsx"],
+  "exclude": ["dist", "outputs", "functions", "services/ncscScheduler.ts", "vite.config.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

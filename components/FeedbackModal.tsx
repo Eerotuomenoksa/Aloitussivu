@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { submitFeedback } from '../feedback';
 import type { FeedbackClientInfo, FeedbackScreenshotDraft, FeedbackType } from '../feedback';
+import { useModalFocusTrap } from '../hooks/useModalFocusTrap';
 
 interface FeedbackModalProps {
   isOpen: boolean;
@@ -24,6 +25,9 @@ const getCurrentPageLabel = () => {
 };
 
 const SCREENSHOT_MAX_BYTES = 450 * 1024;
+const allowedScreenshotTypes = new Set(['image/png', 'image/jpeg', 'image/webp', 'image/gif']);
+const screenshotAcceptTypes = [...allowedScreenshotTypes].join(',');
+const screenshotDataUrlPattern = /^data:image\/(?:png|jpeg|webp|gif);base64,/;
 
 const detectBrowser = (userAgent: string) => {
   const rules = [
@@ -82,6 +86,10 @@ const fileToScreenshot = (file: File): Promise<FeedbackScreenshotDraft> => new P
       reject(new Error('Kuvakaappausta ei voitu lukea.'));
       return;
     }
+    if (!screenshotDataUrlPattern.test(reader.result)) {
+      reject(new Error('Kuvakaappauksen tiedostomuoto ei ole sallittu.'));
+      return;
+    }
     resolve({
       name: file.name,
       type: file.type || 'image/png',
@@ -108,6 +116,9 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose }) => {
   const closeTimerRef = useRef<number | null>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  useModalFocusTrap(modalRef, isOpen, onClose, closeButtonRef);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -123,23 +134,16 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose }) => {
     setScreenshot(null);
     setScreenshotError('');
     if (fileInputRef.current) fileInputRef.current.value = '';
-    window.requestAnimationFrame(() => closeButtonRef.current?.focus());
   }, [isOpen]);
 
   useEffect(() => {
     if (!isOpen) return undefined;
-    const handleEsc = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onClose();
-    };
-
-    window.addEventListener('keydown', handleEsc);
     return () => {
-      window.removeEventListener('keydown', handleEsc);
       if (closeTimerRef.current !== null) {
         window.clearTimeout(closeTimerRef.current);
       }
     };
-  }, [isOpen, onClose]);
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -151,9 +155,9 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose }) => {
       return;
     }
 
-    if (!file.type.startsWith('image/')) {
+    if (!allowedScreenshotTypes.has(file.type)) {
       setScreenshot(null);
-      setScreenshotError('Valitse kuvatiedosto, esimerkiksi PNG tai JPG.');
+      setScreenshotError('Valitse PNG-, JPG-, WebP- tai GIF-kuva.');
       event.target.value = '';
       return;
     }
@@ -231,7 +235,7 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose }) => {
       aria-modal="true"
       aria-labelledby="feedback-modal-title"
     >
-      <div className="aurora-modal-shell flex max-h-[calc(100dvh-1.5rem)] w-full max-w-3xl flex-col overflow-hidden sm:max-h-[calc(100dvh-2rem)] sm:rounded-[2.5rem]">
+      <div ref={modalRef} tabIndex={-1} className="aurora-modal-shell flex max-h-[calc(100dvh-1.5rem)] w-full max-w-3xl flex-col overflow-hidden sm:max-h-[calc(100dvh-2rem)] sm:rounded-[2.5rem]">
         <div className="aurora-modal-header flex shrink-0 items-center justify-between gap-4 p-5 text-white md:p-8">
           <div className="space-y-1">
             <p className="text-sm font-black uppercase tracking-widest text-white/70">Testipalaute</p>
@@ -324,7 +328,7 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose }) => {
                   <input
                     ref={fileInputRef}
                     type="file"
-                    accept="image/png,image/jpeg,image/webp,image/gif"
+                    accept={screenshotAcceptTypes}
                     onChange={chooseScreenshot}
                     className="block w-full text-sm font-bold text-[var(--theme-text-2)] file:mr-3 file:rounded-full file:border-0 file:bg-[var(--theme-primary)] file:px-4 file:py-2 file:font-black file:text-white"
                   />

@@ -1,0 +1,5565 @@
+{
+  "generatedAt": "2026-07-06T18:17:13.557Z",
+  "municipalityCount": 308,
+  "counts": {
+    "publicTransport": {
+      "ok-regional": 79,
+      "fallback-national": 228,
+      "ok-own": 1
+    },
+    "serviceTransport": {
+      "ok-own": 137,
+      "missing": 171
+    },
+    "localNewsFeed": {
+      "ok-own": 13,
+      "missing": 295
+    }
+  },
+  "municipalities": [
+    {
+      "code": "020",
+      "name": "Akaa",
+      "key": "akaa",
+      "wellbeingAreaCode": "08",
+      "wellbeingAreaName": "Pirkanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "VAU-liikenne",
+        "area": "Valkeakoski-Akaa-Urjala"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "ok-own"
+      }
+    },
+    {
+      "code": "005",
+      "name": "Alajärvi",
+      "key": "alajärvi",
+      "wellbeingAreaCode": "16",
+      "wellbeingAreaName": "Etelä-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "009",
+      "name": "Alavieska",
+      "key": "alavieska",
+      "wellbeingAreaCode": "19",
+      "wellbeingAreaName": "Pohjois-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "010",
+      "name": "Alavus",
+      "key": "alavus",
+      "wellbeingAreaCode": "16",
+      "wellbeingAreaName": "Etelä-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "016",
+      "name": "Asikkala",
+      "key": "asikkala",
+      "wellbeingAreaCode": "09",
+      "wellbeingAreaName": "Päijät-Hämeen hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Lahden seudun liikenne",
+        "area": "Lahden seutu"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "018",
+      "name": "Askola",
+      "key": "askola",
+      "wellbeingAreaCode": "01",
+      "wellbeingAreaName": "Itä-Uudenmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "019",
+      "name": "Aura",
+      "key": "aura",
+      "wellbeingAreaCode": "05",
+      "wellbeingAreaName": "Varsinais-Suomen hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "035",
+      "name": "Brändö",
+      "key": "brändö",
+      "wellbeingAreaCode": "91",
+      "wellbeingAreaName": "Ahvenanmaa",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Ålandstrafiken",
+        "area": "Ahvenanmaa"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "043",
+      "name": "Eckerö",
+      "key": "eckerö",
+      "wellbeingAreaCode": "91",
+      "wellbeingAreaName": "Ahvenanmaa",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Ålandstrafiken",
+        "area": "Ahvenanmaa"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "046",
+      "name": "Enonkoski",
+      "key": "enonkoski",
+      "wellbeingAreaCode": "12",
+      "wellbeingAreaName": "Etelä-Savon hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "047",
+      "name": "Enontekiö",
+      "key": "enontekiö",
+      "wellbeingAreaCode": "21",
+      "wellbeingAreaName": "Lapin hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "049",
+      "name": "Espoo",
+      "key": "espoo",
+      "wellbeingAreaCode": "03",
+      "wellbeingAreaName": "Länsi-Uudenmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "HSL",
+        "area": "Helsingin seutu"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "050",
+      "name": "Eura",
+      "key": "eura",
+      "wellbeingAreaCode": "06",
+      "wellbeingAreaName": "Satakunnan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "051",
+      "name": "Eurajoki",
+      "key": "eurajoki",
+      "wellbeingAreaCode": "06",
+      "wellbeingAreaName": "Satakunnan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "052",
+      "name": "Evijärvi",
+      "key": "evijärvi",
+      "wellbeingAreaCode": "16",
+      "wellbeingAreaName": "Etelä-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "060",
+      "name": "Finström",
+      "key": "finström",
+      "wellbeingAreaCode": "91",
+      "wellbeingAreaName": "Ahvenanmaa",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Ålandstrafiken",
+        "area": "Ahvenanmaa"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "061",
+      "name": "Forssa",
+      "key": "forssa",
+      "wellbeingAreaCode": "07",
+      "wellbeingAreaName": "Kanta-Hämeen hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "062",
+      "name": "Föglö",
+      "key": "föglö",
+      "wellbeingAreaCode": "91",
+      "wellbeingAreaName": "Ahvenanmaa",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Ålandstrafiken",
+        "area": "Ahvenanmaa"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "065",
+      "name": "Geta",
+      "key": "geta",
+      "wellbeingAreaCode": "91",
+      "wellbeingAreaName": "Ahvenanmaa",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Ålandstrafiken",
+        "area": "Ahvenanmaa"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "069",
+      "name": "Haapajärvi",
+      "key": "haapajärvi",
+      "wellbeingAreaCode": "19",
+      "wellbeingAreaName": "Pohjois-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "071",
+      "name": "Haapavesi",
+      "key": "haapavesi",
+      "wellbeingAreaCode": "19",
+      "wellbeingAreaName": "Pohjois-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "ok-own"
+      }
+    },
+    {
+      "code": "072",
+      "name": "Hailuoto",
+      "key": "hailuoto",
+      "wellbeingAreaCode": "19",
+      "wellbeingAreaName": "Pohjois-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "074",
+      "name": "Halsua",
+      "key": "halsua",
+      "wellbeingAreaCode": "18",
+      "wellbeingAreaName": "Keski-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "075",
+      "name": "Hamina",
+      "key": "hamina",
+      "wellbeingAreaCode": "10",
+      "wellbeingAreaName": "Kymenlaakson hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "076",
+      "name": "Hammarland",
+      "key": "hammarland",
+      "wellbeingAreaCode": "91",
+      "wellbeingAreaName": "Ahvenanmaa",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Ålandstrafiken",
+        "area": "Ahvenanmaa"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "077",
+      "name": "Hankasalmi",
+      "key": "hankasalmi",
+      "wellbeingAreaCode": "15",
+      "wellbeingAreaName": "Keski-Suomen hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Linkki-paikallisliikenne",
+        "area": "Jyväskylän seutu"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "078",
+      "name": "Hanko",
+      "key": "hanko",
+      "wellbeingAreaCode": "03",
+      "wellbeingAreaName": "Länsi-Uudenmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "079",
+      "name": "Harjavalta",
+      "key": "harjavalta",
+      "wellbeingAreaCode": "06",
+      "wellbeingAreaName": "Satakunnan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "081",
+      "name": "Hartola",
+      "key": "hartola",
+      "wellbeingAreaCode": "09",
+      "wellbeingAreaName": "Päijät-Hämeen hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "082",
+      "name": "Hattula",
+      "key": "hattula",
+      "wellbeingAreaCode": "07",
+      "wellbeingAreaName": "Kanta-Hämeen hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Hämeenlinnan joukkoliikenne",
+        "area": "Hämeenlinnan seutu"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "086",
+      "name": "Hausjärvi",
+      "key": "hausjärvi",
+      "wellbeingAreaCode": "07",
+      "wellbeingAreaName": "Kanta-Hämeen hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "111",
+      "name": "Heinola",
+      "key": "heinola",
+      "wellbeingAreaCode": "09",
+      "wellbeingAreaName": "Päijät-Hämeen hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Lahden seudun liikenne",
+        "area": "Lahden seutu"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "090",
+      "name": "Heinävesi",
+      "key": "heinävesi",
+      "wellbeingAreaCode": "14",
+      "wellbeingAreaName": "Pohjois-Karjalan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "091",
+      "name": "Helsinki",
+      "key": "helsinki",
+      "wellbeingAreaCode": "90",
+      "wellbeingAreaName": "Helsingin kaupunki",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "HSL",
+        "area": "Helsingin seutu"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "097",
+      "name": "Hirvensalmi",
+      "key": "hirvensalmi",
+      "wellbeingAreaCode": "12",
+      "wellbeingAreaName": "Etelä-Savon hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "098",
+      "name": "Hollola",
+      "key": "hollola",
+      "wellbeingAreaCode": "09",
+      "wellbeingAreaName": "Päijät-Hämeen hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Lahden seudun liikenne",
+        "area": "Lahden seutu"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "102",
+      "name": "Huittinen",
+      "key": "huittinen",
+      "wellbeingAreaCode": "06",
+      "wellbeingAreaName": "Satakunnan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "103",
+      "name": "Humppila",
+      "key": "humppila",
+      "wellbeingAreaCode": "07",
+      "wellbeingAreaName": "Kanta-Hämeen hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "105",
+      "name": "Hyrynsalmi",
+      "key": "hyrynsalmi",
+      "wellbeingAreaCode": "20",
+      "wellbeingAreaName": "Kainuun hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "106",
+      "name": "Hyvinkää",
+      "key": "hyvinkää",
+      "wellbeingAreaCode": "02",
+      "wellbeingAreaName": "Keski-Uudenmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "108",
+      "name": "Hämeenkyrö",
+      "key": "hämeenkyrö",
+      "wellbeingAreaCode": "08",
+      "wellbeingAreaName": "Pirkanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "109",
+      "name": "Hämeenlinna",
+      "key": "hämeenlinna",
+      "wellbeingAreaCode": "07",
+      "wellbeingAreaName": "Kanta-Hämeen hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Hämeenlinnan joukkoliikenne",
+        "area": "Hämeenlinnan seutu"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "139",
+      "name": "Ii",
+      "key": "ii",
+      "wellbeingAreaCode": "19",
+      "wellbeingAreaName": "Pohjois-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Oulun joukkoliikenne",
+        "area": "Oulun seutu"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "140",
+      "name": "Iisalmi",
+      "key": "iisalmi",
+      "wellbeingAreaCode": "13",
+      "wellbeingAreaName": "Pohjois-Savon hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "142",
+      "name": "Iitti",
+      "key": "iitti",
+      "wellbeingAreaCode": "09",
+      "wellbeingAreaName": "Päijät-Hämeen hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "143",
+      "name": "Ikaalinen",
+      "key": "ikaalinen",
+      "wellbeingAreaCode": "08",
+      "wellbeingAreaName": "Pirkanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "145",
+      "name": "Ilmajoki",
+      "key": "ilmajoki",
+      "wellbeingAreaCode": "16",
+      "wellbeingAreaName": "Etelä-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "146",
+      "name": "Ilomantsi",
+      "key": "ilomantsi",
+      "wellbeingAreaCode": "14",
+      "wellbeingAreaName": "Pohjois-Karjalan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "153",
+      "name": "Imatra",
+      "key": "imatra",
+      "wellbeingAreaCode": "11",
+      "wellbeingAreaName": "Etelä-Karjalan hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Jouko",
+        "area": "Lappeenrannan seutu"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "148",
+      "name": "Inari",
+      "key": "inari",
+      "wellbeingAreaCode": "21",
+      "wellbeingAreaName": "Lapin hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "149",
+      "name": "Inkoo",
+      "key": "inkoo",
+      "wellbeingAreaCode": "03",
+      "wellbeingAreaName": "Länsi-Uudenmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "151",
+      "name": "Isojoki",
+      "key": "isojoki",
+      "wellbeingAreaCode": "16",
+      "wellbeingAreaName": "Etelä-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "152",
+      "name": "Isokyrö",
+      "key": "isokyrö",
+      "wellbeingAreaCode": "16",
+      "wellbeingAreaName": "Etelä-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "165",
+      "name": "Janakkala",
+      "key": "janakkala",
+      "wellbeingAreaCode": "07",
+      "wellbeingAreaName": "Kanta-Hämeen hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Hämeenlinnan joukkoliikenne",
+        "area": "Hämeenlinnan seutu"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "167",
+      "name": "Joensuu",
+      "key": "joensuu",
+      "wellbeingAreaCode": "14",
+      "wellbeingAreaName": "Pohjois-Karjalan hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "JOJO",
+        "area": "Joensuun seutu"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "169",
+      "name": "Jokioinen",
+      "key": "jokioinen",
+      "wellbeingAreaCode": "07",
+      "wellbeingAreaName": "Kanta-Hämeen hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "170",
+      "name": "Jomala",
+      "key": "jomala",
+      "wellbeingAreaCode": "91",
+      "wellbeingAreaName": "Ahvenanmaa",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Ålandstrafiken",
+        "area": "Ahvenanmaa"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "171",
+      "name": "Joroinen",
+      "key": "joroinen",
+      "wellbeingAreaCode": "13",
+      "wellbeingAreaName": "Pohjois-Savon hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "172",
+      "name": "Joutsa",
+      "key": "joutsa",
+      "wellbeingAreaCode": "15",
+      "wellbeingAreaName": "Keski-Suomen hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "176",
+      "name": "Juuka",
+      "key": "juuka",
+      "wellbeingAreaCode": "14",
+      "wellbeingAreaName": "Pohjois-Karjalan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "177",
+      "name": "Juupajoki",
+      "key": "juupajoki",
+      "wellbeingAreaCode": "08",
+      "wellbeingAreaName": "Pirkanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "178",
+      "name": "Juva",
+      "key": "juva",
+      "wellbeingAreaCode": "12",
+      "wellbeingAreaName": "Etelä-Savon hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "ok-own"
+      }
+    },
+    {
+      "code": "179",
+      "name": "Jyväskylä",
+      "key": "jyväskylä",
+      "wellbeingAreaCode": "15",
+      "wellbeingAreaName": "Keski-Suomen hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Linkki-paikallisliikenne",
+        "area": "Jyväskylän seutu"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "181",
+      "name": "Jämijärvi",
+      "key": "jämijärvi",
+      "wellbeingAreaCode": "06",
+      "wellbeingAreaName": "Satakunnan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "182",
+      "name": "Jämsä",
+      "key": "jämsä",
+      "wellbeingAreaCode": "15",
+      "wellbeingAreaName": "Keski-Suomen hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "186",
+      "name": "Järvenpää",
+      "key": "järvenpää",
+      "wellbeingAreaCode": "02",
+      "wellbeingAreaName": "Keski-Uudenmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "202",
+      "name": "Kaarina",
+      "key": "kaarina",
+      "wellbeingAreaCode": "05",
+      "wellbeingAreaName": "Varsinais-Suomen hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Föli",
+        "area": "Turun seutu"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "204",
+      "name": "Kaavi",
+      "key": "kaavi",
+      "wellbeingAreaCode": "13",
+      "wellbeingAreaName": "Pohjois-Savon hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "205",
+      "name": "Kajaani",
+      "key": "kajaani",
+      "wellbeingAreaCode": "20",
+      "wellbeingAreaName": "Kainuun hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "208",
+      "name": "Kalajoki",
+      "key": "kalajoki",
+      "wellbeingAreaCode": "19",
+      "wellbeingAreaName": "Pohjois-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "211",
+      "name": "Kangasala",
+      "key": "kangasala",
+      "wellbeingAreaCode": "08",
+      "wellbeingAreaName": "Pirkanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Nysse",
+        "area": "Tampereen kaupunkiseutu"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "ok-own"
+      }
+    },
+    {
+      "code": "213",
+      "name": "Kangasniemi",
+      "key": "kangasniemi",
+      "wellbeingAreaCode": "12",
+      "wellbeingAreaName": "Etelä-Savon hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "214",
+      "name": "Kankaanpää",
+      "key": "kankaanpää",
+      "wellbeingAreaCode": "06",
+      "wellbeingAreaName": "Satakunnan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "216",
+      "name": "Kannonkoski",
+      "key": "kannonkoski",
+      "wellbeingAreaCode": "15",
+      "wellbeingAreaName": "Keski-Suomen hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "217",
+      "name": "Kannus",
+      "key": "kannus",
+      "wellbeingAreaCode": "18",
+      "wellbeingAreaName": "Keski-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "218",
+      "name": "Karijoki",
+      "key": "karijoki",
+      "wellbeingAreaCode": "16",
+      "wellbeingAreaName": "Etelä-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "224",
+      "name": "Karkkila",
+      "key": "karkkila",
+      "wellbeingAreaCode": "03",
+      "wellbeingAreaName": "Länsi-Uudenmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "ok-own"
+      }
+    },
+    {
+      "code": "226",
+      "name": "Karstula",
+      "key": "karstula",
+      "wellbeingAreaCode": "15",
+      "wellbeingAreaName": "Keski-Suomen hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "230",
+      "name": "Karvia",
+      "key": "karvia",
+      "wellbeingAreaCode": "06",
+      "wellbeingAreaName": "Satakunnan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "231",
+      "name": "Kaskinen",
+      "key": "kaskinen",
+      "wellbeingAreaCode": "17",
+      "wellbeingAreaName": "Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "232",
+      "name": "Kauhajoki",
+      "key": "kauhajoki",
+      "wellbeingAreaCode": "16",
+      "wellbeingAreaName": "Etelä-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "233",
+      "name": "Kauhava",
+      "key": "kauhava",
+      "wellbeingAreaCode": "16",
+      "wellbeingAreaName": "Etelä-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "235",
+      "name": "Kauniainen",
+      "key": "kauniainen",
+      "wellbeingAreaCode": "03",
+      "wellbeingAreaName": "Länsi-Uudenmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "HSL",
+        "area": "Helsingin seutu"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "236",
+      "name": "Kaustinen",
+      "key": "kaustinen",
+      "wellbeingAreaCode": "18",
+      "wellbeingAreaName": "Keski-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "239",
+      "name": "Keitele",
+      "key": "keitele",
+      "wellbeingAreaCode": "13",
+      "wellbeingAreaName": "Pohjois-Savon hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "240",
+      "name": "Kemi",
+      "key": "kemi",
+      "wellbeingAreaCode": "21",
+      "wellbeingAreaName": "Lapin hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "320",
+      "name": "Kemijärvi",
+      "key": "kemijärvi",
+      "wellbeingAreaCode": "21",
+      "wellbeingAreaName": "Lapin hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "241",
+      "name": "Keminmaa",
+      "key": "keminmaa",
+      "wellbeingAreaCode": "21",
+      "wellbeingAreaName": "Lapin hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "322",
+      "name": "Kemiönsaari",
+      "key": "kemiönsaari",
+      "wellbeingAreaCode": "05",
+      "wellbeingAreaName": "Varsinais-Suomen hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "244",
+      "name": "Kempele",
+      "key": "kempele",
+      "wellbeingAreaCode": "19",
+      "wellbeingAreaName": "Pohjois-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Oulun joukkoliikenne",
+        "area": "Oulun seutu"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "245",
+      "name": "Kerava",
+      "key": "kerava",
+      "wellbeingAreaCode": "04",
+      "wellbeingAreaName": "Vantaan ja Keravan hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "HSL",
+        "area": "Helsingin seutu"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "249",
+      "name": "Keuruu",
+      "key": "keuruu",
+      "wellbeingAreaCode": "15",
+      "wellbeingAreaName": "Keski-Suomen hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "250",
+      "name": "Kihniö",
+      "key": "kihniö",
+      "wellbeingAreaCode": "08",
+      "wellbeingAreaName": "Pirkanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "256",
+      "name": "Kinnula",
+      "key": "kinnula",
+      "wellbeingAreaCode": "15",
+      "wellbeingAreaName": "Keski-Suomen hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "257",
+      "name": "Kirkkonummi",
+      "key": "kirkkonummi",
+      "wellbeingAreaCode": "03",
+      "wellbeingAreaName": "Länsi-Uudenmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "HSL",
+        "area": "Helsingin seutu"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "260",
+      "name": "Kitee",
+      "key": "kitee",
+      "wellbeingAreaCode": "14",
+      "wellbeingAreaName": "Pohjois-Karjalan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "261",
+      "name": "Kittilä",
+      "key": "kittilä",
+      "wellbeingAreaCode": "21",
+      "wellbeingAreaName": "Lapin hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "263",
+      "name": "Kiuruvesi",
+      "key": "kiuruvesi",
+      "wellbeingAreaCode": "13",
+      "wellbeingAreaName": "Pohjois-Savon hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "265",
+      "name": "Kivijärvi",
+      "key": "kivijärvi",
+      "wellbeingAreaCode": "15",
+      "wellbeingAreaName": "Keski-Suomen hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "271",
+      "name": "Kokemäki",
+      "key": "kokemäki",
+      "wellbeingAreaCode": "06",
+      "wellbeingAreaName": "Satakunnan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "272",
+      "name": "Kokkola",
+      "key": "kokkola",
+      "wellbeingAreaCode": "18",
+      "wellbeingAreaName": "Keski-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "273",
+      "name": "Kolari",
+      "key": "kolari",
+      "wellbeingAreaCode": "21",
+      "wellbeingAreaName": "Lapin hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "275",
+      "name": "Konnevesi",
+      "key": "konnevesi",
+      "wellbeingAreaCode": "15",
+      "wellbeingAreaName": "Keski-Suomen hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "276",
+      "name": "Kontiolahti",
+      "key": "kontiolahti",
+      "wellbeingAreaCode": "14",
+      "wellbeingAreaName": "Pohjois-Karjalan hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "JOJO",
+        "area": "Joensuun seutu"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "280",
+      "name": "Korsnäs",
+      "key": "korsnäs",
+      "wellbeingAreaCode": "17",
+      "wellbeingAreaName": "Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "284",
+      "name": "Koski Tl",
+      "key": "koski tl",
+      "wellbeingAreaCode": "05",
+      "wellbeingAreaName": "Varsinais-Suomen hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "285",
+      "name": "Kotka",
+      "key": "kotka",
+      "wellbeingAreaCode": "10",
+      "wellbeingAreaName": "Kymenlaakson hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "286",
+      "name": "Kouvola",
+      "key": "kouvola",
+      "wellbeingAreaCode": "10",
+      "wellbeingAreaName": "Kymenlaakson hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Koutsi",
+        "area": "Kouvola"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "287",
+      "name": "Kristiinankaupunki",
+      "key": "kristiinankaupunki",
+      "wellbeingAreaCode": "17",
+      "wellbeingAreaName": "Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "288",
+      "name": "Kruunupyy",
+      "key": "kruunupyy",
+      "wellbeingAreaCode": "17",
+      "wellbeingAreaName": "Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "290",
+      "name": "Kuhmo",
+      "key": "kuhmo",
+      "wellbeingAreaCode": "20",
+      "wellbeingAreaName": "Kainuun hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "291",
+      "name": "Kuhmoinen",
+      "key": "kuhmoinen",
+      "wellbeingAreaCode": "08",
+      "wellbeingAreaName": "Pirkanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "295",
+      "name": "Kumlinge",
+      "key": "kumlinge",
+      "wellbeingAreaCode": "91",
+      "wellbeingAreaName": "Ahvenanmaa",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Ålandstrafiken",
+        "area": "Ahvenanmaa"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "297",
+      "name": "Kuopio",
+      "key": "kuopio",
+      "wellbeingAreaCode": "13",
+      "wellbeingAreaName": "Pohjois-Savon hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Vilkku",
+        "area": "Kuopion seutu"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "300",
+      "name": "Kuortane",
+      "key": "kuortane",
+      "wellbeingAreaCode": "16",
+      "wellbeingAreaName": "Etelä-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "301",
+      "name": "Kurikka",
+      "key": "kurikka",
+      "wellbeingAreaCode": "16",
+      "wellbeingAreaName": "Etelä-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "304",
+      "name": "Kustavi",
+      "key": "kustavi",
+      "wellbeingAreaCode": "05",
+      "wellbeingAreaName": "Varsinais-Suomen hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "305",
+      "name": "Kuusamo",
+      "key": "kuusamo",
+      "wellbeingAreaCode": "19",
+      "wellbeingAreaName": "Pohjois-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "312",
+      "name": "Kyyjärvi",
+      "key": "kyyjärvi",
+      "wellbeingAreaCode": "15",
+      "wellbeingAreaName": "Keski-Suomen hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "316",
+      "name": "Kärkölä",
+      "key": "kärkölä",
+      "wellbeingAreaCode": "09",
+      "wellbeingAreaName": "Päijät-Hämeen hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "317",
+      "name": "Kärsämäki",
+      "key": "kärsämäki",
+      "wellbeingAreaCode": "19",
+      "wellbeingAreaName": "Pohjois-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "318",
+      "name": "Kökar",
+      "key": "kökar",
+      "wellbeingAreaCode": "91",
+      "wellbeingAreaName": "Ahvenanmaa",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Ålandstrafiken",
+        "area": "Ahvenanmaa"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "398",
+      "name": "Lahti",
+      "key": "lahti",
+      "wellbeingAreaCode": "09",
+      "wellbeingAreaName": "Päijät-Hämeen hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Lahden seudun liikenne",
+        "area": "Lahden seutu"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "399",
+      "name": "Laihia",
+      "key": "laihia",
+      "wellbeingAreaCode": "17",
+      "wellbeingAreaName": "Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "400",
+      "name": "Laitila",
+      "key": "laitila",
+      "wellbeingAreaCode": "05",
+      "wellbeingAreaName": "Varsinais-Suomen hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "ok-own"
+      }
+    },
+    {
+      "code": "407",
+      "name": "Lapinjärvi",
+      "key": "lapinjärvi",
+      "wellbeingAreaCode": "01",
+      "wellbeingAreaName": "Itä-Uudenmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "402",
+      "name": "Lapinlahti",
+      "key": "lapinlahti",
+      "wellbeingAreaCode": "13",
+      "wellbeingAreaName": "Pohjois-Savon hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "403",
+      "name": "Lappajärvi",
+      "key": "lappajärvi",
+      "wellbeingAreaCode": "16",
+      "wellbeingAreaName": "Etelä-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "405",
+      "name": "Lappeenranta",
+      "key": "lappeenranta",
+      "wellbeingAreaCode": "11",
+      "wellbeingAreaName": "Etelä-Karjalan hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Jouko",
+        "area": "Lappeenrannan seutu"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "408",
+      "name": "Lapua",
+      "key": "lapua",
+      "wellbeingAreaCode": "16",
+      "wellbeingAreaName": "Etelä-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "410",
+      "name": "Laukaa",
+      "key": "laukaa",
+      "wellbeingAreaCode": "15",
+      "wellbeingAreaName": "Keski-Suomen hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Linkki-paikallisliikenne",
+        "area": "Jyväskylän seutu"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "416",
+      "name": "Lemi",
+      "key": "lemi",
+      "wellbeingAreaCode": "11",
+      "wellbeingAreaName": "Etelä-Karjalan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "417",
+      "name": "Lemland",
+      "key": "lemland",
+      "wellbeingAreaCode": "91",
+      "wellbeingAreaName": "Ahvenanmaa",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Ålandstrafiken",
+        "area": "Ahvenanmaa"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "418",
+      "name": "Lempäälä",
+      "key": "lempäälä",
+      "wellbeingAreaCode": "08",
+      "wellbeingAreaName": "Pirkanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Nysse",
+        "area": "Tampereen kaupunkiseutu"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "420",
+      "name": "Leppävirta",
+      "key": "leppävirta",
+      "wellbeingAreaCode": "13",
+      "wellbeingAreaName": "Pohjois-Savon hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "421",
+      "name": "Lestijärvi",
+      "key": "lestijärvi",
+      "wellbeingAreaCode": "18",
+      "wellbeingAreaName": "Keski-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "422",
+      "name": "Lieksa",
+      "key": "lieksa",
+      "wellbeingAreaCode": "14",
+      "wellbeingAreaName": "Pohjois-Karjalan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "ok-own"
+      }
+    },
+    {
+      "code": "423",
+      "name": "Lieto",
+      "key": "lieto",
+      "wellbeingAreaCode": "05",
+      "wellbeingAreaName": "Varsinais-Suomen hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Föli",
+        "area": "Turun seutu"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "425",
+      "name": "Liminka",
+      "key": "liminka",
+      "wellbeingAreaCode": "19",
+      "wellbeingAreaName": "Pohjois-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Oulun joukkoliikenne",
+        "area": "Oulun seutu"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "426",
+      "name": "Liperi",
+      "key": "liperi",
+      "wellbeingAreaCode": "14",
+      "wellbeingAreaName": "Pohjois-Karjalan hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "JOJO",
+        "area": "Joensuun seutu"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "444",
+      "name": "Lohja",
+      "key": "lohja",
+      "wellbeingAreaCode": "03",
+      "wellbeingAreaName": "Länsi-Uudenmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "430",
+      "name": "Loimaa",
+      "key": "loimaa",
+      "wellbeingAreaCode": "05",
+      "wellbeingAreaName": "Varsinais-Suomen hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "ok-own"
+      }
+    },
+    {
+      "code": "433",
+      "name": "Loppi",
+      "key": "loppi",
+      "wellbeingAreaCode": "07",
+      "wellbeingAreaName": "Kanta-Hämeen hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "434",
+      "name": "Loviisa",
+      "key": "loviisa",
+      "wellbeingAreaCode": "01",
+      "wellbeingAreaName": "Itä-Uudenmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-own",
+        "providerName": "Loviisan joukkoliikenne",
+        "area": "Loviisa"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "ok-own"
+      }
+    },
+    {
+      "code": "435",
+      "name": "Luhanka",
+      "key": "luhanka",
+      "wellbeingAreaCode": "15",
+      "wellbeingAreaName": "Keski-Suomen hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "436",
+      "name": "Lumijoki",
+      "key": "lumijoki",
+      "wellbeingAreaCode": "19",
+      "wellbeingAreaName": "Pohjois-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Oulun joukkoliikenne",
+        "area": "Oulun seutu"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "438",
+      "name": "Lumparland",
+      "key": "lumparland",
+      "wellbeingAreaCode": "91",
+      "wellbeingAreaName": "Ahvenanmaa",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Ålandstrafiken",
+        "area": "Ahvenanmaa"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "440",
+      "name": "Luoto",
+      "key": "luoto",
+      "wellbeingAreaCode": "17",
+      "wellbeingAreaName": "Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "441",
+      "name": "Luumäki",
+      "key": "luumäki",
+      "wellbeingAreaCode": "11",
+      "wellbeingAreaName": "Etelä-Karjalan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "475",
+      "name": "Maalahti",
+      "key": "maalahti",
+      "wellbeingAreaCode": "17",
+      "wellbeingAreaName": "Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "478",
+      "name": "Maarianhamina - Mariehamn",
+      "key": "maarianhamina",
+      "wellbeingAreaCode": "91",
+      "wellbeingAreaName": "Ahvenanmaa",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Ålandstrafiken",
+        "area": "Ahvenanmaa"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "480",
+      "name": "Marttila",
+      "key": "marttila",
+      "wellbeingAreaCode": "05",
+      "wellbeingAreaName": "Varsinais-Suomen hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "481",
+      "name": "Masku",
+      "key": "masku",
+      "wellbeingAreaCode": "05",
+      "wellbeingAreaName": "Varsinais-Suomen hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "483",
+      "name": "Merijärvi",
+      "key": "merijärvi",
+      "wellbeingAreaCode": "19",
+      "wellbeingAreaName": "Pohjois-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "484",
+      "name": "Merikarvia",
+      "key": "merikarvia",
+      "wellbeingAreaCode": "06",
+      "wellbeingAreaName": "Satakunnan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "489",
+      "name": "Miehikkälä",
+      "key": "miehikkälä",
+      "wellbeingAreaCode": "10",
+      "wellbeingAreaName": "Kymenlaakson hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "491",
+      "name": "Mikkeli",
+      "key": "mikkeli",
+      "wellbeingAreaCode": "12",
+      "wellbeingAreaName": "Etelä-Savon hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "494",
+      "name": "Muhos",
+      "key": "muhos",
+      "wellbeingAreaCode": "19",
+      "wellbeingAreaName": "Pohjois-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Oulun joukkoliikenne",
+        "area": "Oulun seutu"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "495",
+      "name": "Multia",
+      "key": "multia",
+      "wellbeingAreaCode": "15",
+      "wellbeingAreaName": "Keski-Suomen hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "498",
+      "name": "Muonio",
+      "key": "muonio",
+      "wellbeingAreaCode": "21",
+      "wellbeingAreaName": "Lapin hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "499",
+      "name": "Mustasaari",
+      "key": "mustasaari",
+      "wellbeingAreaCode": "17",
+      "wellbeingAreaName": "Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Lifti",
+        "area": "Vaasan seutu"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "500",
+      "name": "Muurame",
+      "key": "muurame",
+      "wellbeingAreaCode": "15",
+      "wellbeingAreaName": "Keski-Suomen hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Linkki-paikallisliikenne",
+        "area": "Jyväskylän seutu"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "503",
+      "name": "Mynämäki",
+      "key": "mynämäki",
+      "wellbeingAreaCode": "05",
+      "wellbeingAreaName": "Varsinais-Suomen hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "504",
+      "name": "Myrskylä",
+      "key": "myrskylä",
+      "wellbeingAreaCode": "01",
+      "wellbeingAreaName": "Itä-Uudenmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "505",
+      "name": "Mäntsälä",
+      "key": "mäntsälä",
+      "wellbeingAreaCode": "02",
+      "wellbeingAreaName": "Keski-Uudenmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "508",
+      "name": "Mänttä-Vilppula",
+      "key": "mänttä-vilppula",
+      "wellbeingAreaCode": "08",
+      "wellbeingAreaName": "Pirkanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "507",
+      "name": "Mäntyharju",
+      "key": "mäntyharju",
+      "wellbeingAreaCode": "12",
+      "wellbeingAreaName": "Etelä-Savon hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "529",
+      "name": "Naantali",
+      "key": "naantali",
+      "wellbeingAreaCode": "05",
+      "wellbeingAreaName": "Varsinais-Suomen hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Föli",
+        "area": "Turun seutu"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "531",
+      "name": "Nakkila",
+      "key": "nakkila",
+      "wellbeingAreaCode": "06",
+      "wellbeingAreaName": "Satakunnan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "535",
+      "name": "Nivala",
+      "key": "nivala",
+      "wellbeingAreaCode": "19",
+      "wellbeingAreaName": "Pohjois-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "ok-own"
+      }
+    },
+    {
+      "code": "536",
+      "name": "Nokia",
+      "key": "nokia",
+      "wellbeingAreaCode": "08",
+      "wellbeingAreaName": "Pirkanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Nysse",
+        "area": "Tampereen kaupunkiseutu"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "538",
+      "name": "Nousiainen",
+      "key": "nousiainen",
+      "wellbeingAreaCode": "05",
+      "wellbeingAreaName": "Varsinais-Suomen hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "541",
+      "name": "Nurmes",
+      "key": "nurmes",
+      "wellbeingAreaCode": "14",
+      "wellbeingAreaName": "Pohjois-Karjalan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "543",
+      "name": "Nurmijärvi",
+      "key": "nurmijärvi",
+      "wellbeingAreaCode": "02",
+      "wellbeingAreaName": "Keski-Uudenmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "545",
+      "name": "Närpiö",
+      "key": "närpiö",
+      "wellbeingAreaCode": "17",
+      "wellbeingAreaName": "Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "560",
+      "name": "Orimattila",
+      "key": "orimattila",
+      "wellbeingAreaCode": "09",
+      "wellbeingAreaName": "Päijät-Hämeen hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Lahden seudun liikenne",
+        "area": "Lahden seutu"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "561",
+      "name": "Oripää",
+      "key": "oripää",
+      "wellbeingAreaCode": "05",
+      "wellbeingAreaName": "Varsinais-Suomen hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "562",
+      "name": "Orivesi",
+      "key": "orivesi",
+      "wellbeingAreaCode": "08",
+      "wellbeingAreaName": "Pirkanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Nysse",
+        "area": "Tampereen kaupunkiseutu"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "563",
+      "name": "Oulainen",
+      "key": "oulainen",
+      "wellbeingAreaCode": "19",
+      "wellbeingAreaName": "Pohjois-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "564",
+      "name": "Oulu",
+      "key": "oulu",
+      "wellbeingAreaCode": "19",
+      "wellbeingAreaName": "Pohjois-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Oulun joukkoliikenne",
+        "area": "Oulun seutu"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "309",
+      "name": "Outokumpu",
+      "key": "outokumpu",
+      "wellbeingAreaCode": "14",
+      "wellbeingAreaName": "Pohjois-Karjalan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "576",
+      "name": "Padasjoki",
+      "key": "padasjoki",
+      "wellbeingAreaCode": "09",
+      "wellbeingAreaName": "Päijät-Hämeen hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Lahden seudun liikenne",
+        "area": "Lahden seutu"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "577",
+      "name": "Paimio",
+      "key": "paimio",
+      "wellbeingAreaCode": "05",
+      "wellbeingAreaName": "Varsinais-Suomen hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Föli",
+        "area": "Turun seutu"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "578",
+      "name": "Paltamo",
+      "key": "paltamo",
+      "wellbeingAreaCode": "20",
+      "wellbeingAreaName": "Kainuun hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "445",
+      "name": "Parainen",
+      "key": "parainen",
+      "wellbeingAreaCode": "05",
+      "wellbeingAreaName": "Varsinais-Suomen hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "580",
+      "name": "Parikkala",
+      "key": "parikkala",
+      "wellbeingAreaCode": "11",
+      "wellbeingAreaName": "Etelä-Karjalan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "581",
+      "name": "Parkano",
+      "key": "parkano",
+      "wellbeingAreaCode": "08",
+      "wellbeingAreaName": "Pirkanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "599",
+      "name": "Pedersören kunta",
+      "key": "pedersören",
+      "wellbeingAreaCode": "17",
+      "wellbeingAreaName": "Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "583",
+      "name": "Pelkosenniemi",
+      "key": "pelkosenniemi",
+      "wellbeingAreaCode": "21",
+      "wellbeingAreaName": "Lapin hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "854",
+      "name": "Pello",
+      "key": "pello",
+      "wellbeingAreaCode": "21",
+      "wellbeingAreaName": "Lapin hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "584",
+      "name": "Perho",
+      "key": "perho",
+      "wellbeingAreaCode": "18",
+      "wellbeingAreaName": "Keski-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "592",
+      "name": "Petäjävesi",
+      "key": "petäjävesi",
+      "wellbeingAreaCode": "15",
+      "wellbeingAreaName": "Keski-Suomen hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Linkki-paikallisliikenne",
+        "area": "Jyväskylän seutu"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "593",
+      "name": "Pieksämäki",
+      "key": "pieksämäki",
+      "wellbeingAreaCode": "12",
+      "wellbeingAreaName": "Etelä-Savon hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "595",
+      "name": "Pielavesi",
+      "key": "pielavesi",
+      "wellbeingAreaCode": "13",
+      "wellbeingAreaName": "Pohjois-Savon hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "598",
+      "name": "Pietarsaari",
+      "key": "pietarsaari",
+      "wellbeingAreaCode": "17",
+      "wellbeingAreaName": "Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "601",
+      "name": "Pihtipudas",
+      "key": "pihtipudas",
+      "wellbeingAreaCode": "15",
+      "wellbeingAreaName": "Keski-Suomen hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "604",
+      "name": "Pirkkala",
+      "key": "pirkkala",
+      "wellbeingAreaCode": "08",
+      "wellbeingAreaName": "Pirkanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Nysse",
+        "area": "Tampereen kaupunkiseutu"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "ok-own"
+      }
+    },
+    {
+      "code": "607",
+      "name": "Polvijärvi",
+      "key": "polvijärvi",
+      "wellbeingAreaCode": "14",
+      "wellbeingAreaName": "Pohjois-Karjalan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "608",
+      "name": "Pomarkku",
+      "key": "pomarkku",
+      "wellbeingAreaCode": "06",
+      "wellbeingAreaName": "Satakunnan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "609",
+      "name": "Pori",
+      "key": "pori",
+      "wellbeingAreaCode": "06",
+      "wellbeingAreaName": "Satakunnan hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Porin joukkoliikenne",
+        "area": "Pori"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "611",
+      "name": "Pornainen",
+      "key": "pornainen",
+      "wellbeingAreaCode": "02",
+      "wellbeingAreaName": "Keski-Uudenmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "638",
+      "name": "Porvoo",
+      "key": "porvoo",
+      "wellbeingAreaCode": "01",
+      "wellbeingAreaName": "Itä-Uudenmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "614",
+      "name": "Posio",
+      "key": "posio",
+      "wellbeingAreaCode": "21",
+      "wellbeingAreaName": "Lapin hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "615",
+      "name": "Pudasjärvi",
+      "key": "pudasjärvi",
+      "wellbeingAreaCode": "19",
+      "wellbeingAreaName": "Pohjois-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "616",
+      "name": "Pukkila",
+      "key": "pukkila",
+      "wellbeingAreaCode": "01",
+      "wellbeingAreaName": "Itä-Uudenmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "619",
+      "name": "Punkalaidun",
+      "key": "punkalaidun",
+      "wellbeingAreaCode": "08",
+      "wellbeingAreaName": "Pirkanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "620",
+      "name": "Puolanka",
+      "key": "puolanka",
+      "wellbeingAreaCode": "20",
+      "wellbeingAreaName": "Kainuun hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "623",
+      "name": "Puumala",
+      "key": "puumala",
+      "wellbeingAreaCode": "12",
+      "wellbeingAreaName": "Etelä-Savon hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "624",
+      "name": "Pyhtää",
+      "key": "pyhtää",
+      "wellbeingAreaCode": "10",
+      "wellbeingAreaName": "Kymenlaakson hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "625",
+      "name": "Pyhäjoki",
+      "key": "pyhäjoki",
+      "wellbeingAreaCode": "19",
+      "wellbeingAreaName": "Pohjois-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "626",
+      "name": "Pyhäjärvi",
+      "key": "pyhäjärvi",
+      "wellbeingAreaCode": "19",
+      "wellbeingAreaName": "Pohjois-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "630",
+      "name": "Pyhäntä",
+      "key": "pyhäntä",
+      "wellbeingAreaCode": "19",
+      "wellbeingAreaName": "Pohjois-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "631",
+      "name": "Pyhäranta",
+      "key": "pyhäranta",
+      "wellbeingAreaCode": "05",
+      "wellbeingAreaName": "Varsinais-Suomen hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "635",
+      "name": "Pälkäne",
+      "key": "pälkäne",
+      "wellbeingAreaCode": "08",
+      "wellbeingAreaName": "Pirkanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "636",
+      "name": "Pöytyä",
+      "key": "pöytyä",
+      "wellbeingAreaCode": "05",
+      "wellbeingAreaName": "Varsinais-Suomen hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "678",
+      "name": "Raahe",
+      "key": "raahe",
+      "wellbeingAreaCode": "19",
+      "wellbeingAreaName": "Pohjois-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "710",
+      "name": "Raasepori",
+      "key": "raasepori",
+      "wellbeingAreaCode": "03",
+      "wellbeingAreaName": "Länsi-Uudenmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "680",
+      "name": "Raisio",
+      "key": "raisio",
+      "wellbeingAreaCode": "05",
+      "wellbeingAreaName": "Varsinais-Suomen hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Föli",
+        "area": "Turun seutu"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "681",
+      "name": "Rantasalmi",
+      "key": "rantasalmi",
+      "wellbeingAreaCode": "12",
+      "wellbeingAreaName": "Etelä-Savon hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "683",
+      "name": "Ranua",
+      "key": "ranua",
+      "wellbeingAreaCode": "21",
+      "wellbeingAreaName": "Lapin hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "684",
+      "name": "Rauma",
+      "key": "rauma",
+      "wellbeingAreaCode": "06",
+      "wellbeingAreaName": "Satakunnan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "686",
+      "name": "Rautalampi",
+      "key": "rautalampi",
+      "wellbeingAreaCode": "13",
+      "wellbeingAreaName": "Pohjois-Savon hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "687",
+      "name": "Rautavaara",
+      "key": "rautavaara",
+      "wellbeingAreaCode": "13",
+      "wellbeingAreaName": "Pohjois-Savon hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "689",
+      "name": "Rautjärvi",
+      "key": "rautjärvi",
+      "wellbeingAreaCode": "11",
+      "wellbeingAreaName": "Etelä-Karjalan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "691",
+      "name": "Reisjärvi",
+      "key": "reisjärvi",
+      "wellbeingAreaCode": "19",
+      "wellbeingAreaName": "Pohjois-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "694",
+      "name": "Riihimäki",
+      "key": "riihimäki",
+      "wellbeingAreaCode": "07",
+      "wellbeingAreaName": "Kanta-Hämeen hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "697",
+      "name": "Ristijärvi",
+      "key": "ristijärvi",
+      "wellbeingAreaCode": "20",
+      "wellbeingAreaName": "Kainuun hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "698",
+      "name": "Rovaniemi",
+      "key": "rovaniemi",
+      "wellbeingAreaCode": "21",
+      "wellbeingAreaName": "Lapin hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Linkkari",
+        "area": "Rovaniemi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "700",
+      "name": "Ruokolahti",
+      "key": "ruokolahti",
+      "wellbeingAreaCode": "11",
+      "wellbeingAreaName": "Etelä-Karjalan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "702",
+      "name": "Ruovesi",
+      "key": "ruovesi",
+      "wellbeingAreaCode": "08",
+      "wellbeingAreaName": "Pirkanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "704",
+      "name": "Rusko",
+      "key": "rusko",
+      "wellbeingAreaCode": "05",
+      "wellbeingAreaName": "Varsinais-Suomen hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Föli",
+        "area": "Turun seutu"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "707",
+      "name": "Rääkkylä",
+      "key": "rääkkylä",
+      "wellbeingAreaCode": "14",
+      "wellbeingAreaName": "Pohjois-Karjalan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "729",
+      "name": "Saarijärvi",
+      "key": "saarijärvi",
+      "wellbeingAreaCode": "15",
+      "wellbeingAreaName": "Keski-Suomen hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "732",
+      "name": "Salla",
+      "key": "salla",
+      "wellbeingAreaCode": "21",
+      "wellbeingAreaName": "Lapin hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "734",
+      "name": "Salo",
+      "key": "salo",
+      "wellbeingAreaCode": "05",
+      "wellbeingAreaName": "Varsinais-Suomen hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "736",
+      "name": "Saltvik",
+      "key": "saltvik",
+      "wellbeingAreaCode": "91",
+      "wellbeingAreaName": "Ahvenanmaa",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Ålandstrafiken",
+        "area": "Ahvenanmaa"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "790",
+      "name": "Sastamala",
+      "key": "sastamala",
+      "wellbeingAreaCode": "08",
+      "wellbeingAreaName": "Pirkanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "738",
+      "name": "Sauvo",
+      "key": "sauvo",
+      "wellbeingAreaCode": "05",
+      "wellbeingAreaName": "Varsinais-Suomen hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "739",
+      "name": "Savitaipale",
+      "key": "savitaipale",
+      "wellbeingAreaCode": "11",
+      "wellbeingAreaName": "Etelä-Karjalan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "740",
+      "name": "Savonlinna",
+      "key": "savonlinna",
+      "wellbeingAreaCode": "12",
+      "wellbeingAreaName": "Etelä-Savon hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "742",
+      "name": "Savukoski",
+      "key": "savukoski",
+      "wellbeingAreaCode": "21",
+      "wellbeingAreaName": "Lapin hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "743",
+      "name": "Seinäjoki",
+      "key": "seinäjoki",
+      "wellbeingAreaCode": "16",
+      "wellbeingAreaName": "Etelä-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "746",
+      "name": "Sievi",
+      "key": "sievi",
+      "wellbeingAreaCode": "19",
+      "wellbeingAreaName": "Pohjois-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "747",
+      "name": "Siikainen",
+      "key": "siikainen",
+      "wellbeingAreaCode": "06",
+      "wellbeingAreaName": "Satakunnan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "748",
+      "name": "Siikajoki",
+      "key": "siikajoki",
+      "wellbeingAreaCode": "19",
+      "wellbeingAreaName": "Pohjois-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "791",
+      "name": "Siikalatva",
+      "key": "siikalatva",
+      "wellbeingAreaCode": "19",
+      "wellbeingAreaName": "Pohjois-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "749",
+      "name": "Siilinjärvi",
+      "key": "siilinjärvi",
+      "wellbeingAreaCode": "13",
+      "wellbeingAreaName": "Pohjois-Savon hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Vilkku",
+        "area": "Kuopion seutu"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "751",
+      "name": "Simo",
+      "key": "simo",
+      "wellbeingAreaCode": "21",
+      "wellbeingAreaName": "Lapin hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "753",
+      "name": "Sipoo",
+      "key": "sipoo",
+      "wellbeingAreaCode": "01",
+      "wellbeingAreaName": "Itä-Uudenmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "HSL",
+        "area": "Helsingin seutu"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "755",
+      "name": "Siuntio",
+      "key": "siuntio",
+      "wellbeingAreaCode": "03",
+      "wellbeingAreaName": "Länsi-Uudenmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "HSL",
+        "area": "Helsingin seutu"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "758",
+      "name": "Sodankylä",
+      "key": "sodankylä",
+      "wellbeingAreaCode": "21",
+      "wellbeingAreaName": "Lapin hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "759",
+      "name": "Soini",
+      "key": "soini",
+      "wellbeingAreaCode": "16",
+      "wellbeingAreaName": "Etelä-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "761",
+      "name": "Somero",
+      "key": "somero",
+      "wellbeingAreaCode": "05",
+      "wellbeingAreaName": "Varsinais-Suomen hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "ok-own"
+      }
+    },
+    {
+      "code": "762",
+      "name": "Sonkajärvi",
+      "key": "sonkajärvi",
+      "wellbeingAreaCode": "13",
+      "wellbeingAreaName": "Pohjois-Savon hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "765",
+      "name": "Sotkamo",
+      "key": "sotkamo",
+      "wellbeingAreaCode": "20",
+      "wellbeingAreaName": "Kainuun hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "766",
+      "name": "Sottunga",
+      "key": "sottunga",
+      "wellbeingAreaCode": "91",
+      "wellbeingAreaName": "Ahvenanmaa",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Ålandstrafiken",
+        "area": "Ahvenanmaa"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "768",
+      "name": "Sulkava",
+      "key": "sulkava",
+      "wellbeingAreaCode": "12",
+      "wellbeingAreaName": "Etelä-Savon hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "771",
+      "name": "Sund",
+      "key": "sund",
+      "wellbeingAreaCode": "91",
+      "wellbeingAreaName": "Ahvenanmaa",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Ålandstrafiken",
+        "area": "Ahvenanmaa"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "777",
+      "name": "Suomussalmi",
+      "key": "suomussalmi",
+      "wellbeingAreaCode": "20",
+      "wellbeingAreaName": "Kainuun hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "778",
+      "name": "Suonenjoki",
+      "key": "suonenjoki",
+      "wellbeingAreaCode": "13",
+      "wellbeingAreaName": "Pohjois-Savon hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "781",
+      "name": "Sysmä",
+      "key": "sysmä",
+      "wellbeingAreaCode": "09",
+      "wellbeingAreaName": "Päijät-Hämeen hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "783",
+      "name": "Säkylä",
+      "key": "säkylä",
+      "wellbeingAreaCode": "06",
+      "wellbeingAreaName": "Satakunnan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "831",
+      "name": "Taipalsaari",
+      "key": "taipalsaari",
+      "wellbeingAreaCode": "11",
+      "wellbeingAreaName": "Etelä-Karjalan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "832",
+      "name": "Taivalkoski",
+      "key": "taivalkoski",
+      "wellbeingAreaCode": "19",
+      "wellbeingAreaName": "Pohjois-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "833",
+      "name": "Taivassalo",
+      "key": "taivassalo",
+      "wellbeingAreaCode": "05",
+      "wellbeingAreaName": "Varsinais-Suomen hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "834",
+      "name": "Tammela",
+      "key": "tammela",
+      "wellbeingAreaCode": "07",
+      "wellbeingAreaName": "Kanta-Hämeen hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "837",
+      "name": "Tampere",
+      "key": "tampere",
+      "wellbeingAreaCode": "08",
+      "wellbeingAreaName": "Pirkanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Nysse",
+        "area": "Tampereen kaupunkiseutu"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "844",
+      "name": "Tervo",
+      "key": "tervo",
+      "wellbeingAreaCode": "13",
+      "wellbeingAreaName": "Pohjois-Savon hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "845",
+      "name": "Tervola",
+      "key": "tervola",
+      "wellbeingAreaCode": "21",
+      "wellbeingAreaName": "Lapin hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "846",
+      "name": "Teuva",
+      "key": "teuva",
+      "wellbeingAreaCode": "16",
+      "wellbeingAreaName": "Etelä-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "848",
+      "name": "Tohmajärvi",
+      "key": "tohmajärvi",
+      "wellbeingAreaCode": "14",
+      "wellbeingAreaName": "Pohjois-Karjalan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "849",
+      "name": "Toholampi",
+      "key": "toholampi",
+      "wellbeingAreaCode": "18",
+      "wellbeingAreaName": "Keski-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "850",
+      "name": "Toivakka",
+      "key": "toivakka",
+      "wellbeingAreaCode": "15",
+      "wellbeingAreaName": "Keski-Suomen hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Linkki-paikallisliikenne",
+        "area": "Jyväskylän seutu"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "851",
+      "name": "Tornio",
+      "key": "tornio",
+      "wellbeingAreaCode": "21",
+      "wellbeingAreaName": "Lapin hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "853",
+      "name": "Turku",
+      "key": "turku",
+      "wellbeingAreaCode": "05",
+      "wellbeingAreaName": "Varsinais-Suomen hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Föli",
+        "area": "Turun seutu"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "857",
+      "name": "Tuusniemi",
+      "key": "tuusniemi",
+      "wellbeingAreaCode": "13",
+      "wellbeingAreaName": "Pohjois-Savon hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "858",
+      "name": "Tuusula",
+      "key": "tuusula",
+      "wellbeingAreaCode": "02",
+      "wellbeingAreaName": "Keski-Uudenmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "HSL",
+        "area": "Helsingin seutu"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "859",
+      "name": "Tyrnävä",
+      "key": "tyrnävä",
+      "wellbeingAreaCode": "19",
+      "wellbeingAreaName": "Pohjois-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Oulun joukkoliikenne",
+        "area": "Oulun seutu"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "886",
+      "name": "Ulvila",
+      "key": "ulvila",
+      "wellbeingAreaCode": "06",
+      "wellbeingAreaName": "Satakunnan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "887",
+      "name": "Urjala",
+      "key": "urjala",
+      "wellbeingAreaCode": "08",
+      "wellbeingAreaName": "Pirkanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "VAU-liikenne",
+        "area": "Valkeakoski-Akaa-Urjala"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "ok-own"
+      }
+    },
+    {
+      "code": "889",
+      "name": "Utajärvi",
+      "key": "utajärvi",
+      "wellbeingAreaCode": "19",
+      "wellbeingAreaName": "Pohjois-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Oulun joukkoliikenne",
+        "area": "Oulun seutu"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "890",
+      "name": "Utsjoki",
+      "key": "utsjoki",
+      "wellbeingAreaCode": "21",
+      "wellbeingAreaName": "Lapin hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "892",
+      "name": "Uurainen",
+      "key": "uurainen",
+      "wellbeingAreaCode": "15",
+      "wellbeingAreaName": "Keski-Suomen hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "893",
+      "name": "Uusikaarlepyy",
+      "key": "uusikaarlepyy",
+      "wellbeingAreaCode": "17",
+      "wellbeingAreaName": "Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "895",
+      "name": "Uusikaupunki",
+      "key": "uusikaupunki",
+      "wellbeingAreaCode": "05",
+      "wellbeingAreaName": "Varsinais-Suomen hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "785",
+      "name": "Vaala",
+      "key": "vaala",
+      "wellbeingAreaCode": "19",
+      "wellbeingAreaName": "Pohjois-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "905",
+      "name": "Vaasa",
+      "key": "vaasa",
+      "wellbeingAreaCode": "17",
+      "wellbeingAreaName": "Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Lifti",
+        "area": "Vaasan seutu"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "908",
+      "name": "Valkeakoski",
+      "key": "valkeakoski",
+      "wellbeingAreaCode": "08",
+      "wellbeingAreaName": "Pirkanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "VAU-liikenne",
+        "area": "Valkeakoski-Akaa-Urjala"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "092",
+      "name": "Vantaa",
+      "key": "vantaa",
+      "wellbeingAreaCode": "04",
+      "wellbeingAreaName": "Vantaan ja Keravan hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "HSL",
+        "area": "Helsingin seutu"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "915",
+      "name": "Varkaus",
+      "key": "varkaus",
+      "wellbeingAreaCode": "13",
+      "wellbeingAreaName": "Pohjois-Savon hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "918",
+      "name": "Vehmaa",
+      "key": "vehmaa",
+      "wellbeingAreaCode": "05",
+      "wellbeingAreaName": "Varsinais-Suomen hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "921",
+      "name": "Vesanto",
+      "key": "vesanto",
+      "wellbeingAreaCode": "13",
+      "wellbeingAreaName": "Pohjois-Savon hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "922",
+      "name": "Vesilahti",
+      "key": "vesilahti",
+      "wellbeingAreaCode": "08",
+      "wellbeingAreaName": "Pirkanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Nysse",
+        "area": "Tampereen kaupunkiseutu"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "924",
+      "name": "Veteli",
+      "key": "veteli",
+      "wellbeingAreaCode": "18",
+      "wellbeingAreaName": "Keski-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "925",
+      "name": "Vieremä",
+      "key": "vieremä",
+      "wellbeingAreaCode": "13",
+      "wellbeingAreaName": "Pohjois-Savon hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "927",
+      "name": "Vihti",
+      "key": "vihti",
+      "wellbeingAreaCode": "03",
+      "wellbeingAreaName": "Länsi-Uudenmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "931",
+      "name": "Viitasaari",
+      "key": "viitasaari",
+      "wellbeingAreaCode": "15",
+      "wellbeingAreaName": "Keski-Suomen hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "934",
+      "name": "Vimpeli",
+      "key": "vimpeli",
+      "wellbeingAreaCode": "16",
+      "wellbeingAreaName": "Etelä-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "935",
+      "name": "Virolahti",
+      "key": "virolahti",
+      "wellbeingAreaCode": "10",
+      "wellbeingAreaName": "Kymenlaakson hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "936",
+      "name": "Virrat",
+      "key": "virrat",
+      "wellbeingAreaCode": "08",
+      "wellbeingAreaName": "Pirkanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "941",
+      "name": "Vårdö",
+      "key": "vårdö",
+      "wellbeingAreaCode": "91",
+      "wellbeingAreaName": "Ahvenanmaa",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Ålandstrafiken",
+        "area": "Ahvenanmaa"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "946",
+      "name": "Vöyri",
+      "key": "vöyri",
+      "wellbeingAreaCode": "17",
+      "wellbeingAreaName": "Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "976",
+      "name": "Ylitornio",
+      "key": "ylitornio",
+      "wellbeingAreaCode": "21",
+      "wellbeingAreaName": "Lapin hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "977",
+      "name": "Ylivieska",
+      "key": "ylivieska",
+      "wellbeingAreaCode": "19",
+      "wellbeingAreaName": "Pohjois-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "980",
+      "name": "Ylöjärvi",
+      "key": "ylöjärvi",
+      "wellbeingAreaCode": "08",
+      "wellbeingAreaName": "Pirkanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Nysse",
+        "area": "Tampereen kaupunkiseutu"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "981",
+      "name": "Ypäjä",
+      "key": "ypäjä",
+      "wellbeingAreaCode": "07",
+      "wellbeingAreaName": "Kanta-Hämeen hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "989",
+      "name": "Ähtäri",
+      "key": "ähtäri",
+      "wellbeingAreaCode": "16",
+      "wellbeingAreaName": "Etelä-Pohjanmaan hyvinvointialue",
+      "publicTransport": {
+        "status": "fallback-national",
+        "providerName": "Matkahuollon reittiopas",
+        "area": "Suomi"
+      },
+      "serviceTransport": {
+        "status": "missing"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    },
+    {
+      "code": "992",
+      "name": "Äänekoski",
+      "key": "äänekoski",
+      "wellbeingAreaCode": "15",
+      "wellbeingAreaName": "Keski-Suomen hyvinvointialue",
+      "publicTransport": {
+        "status": "ok-regional",
+        "providerName": "Linkki-paikallisliikenne",
+        "area": "Jyväskylän seutu"
+      },
+      "serviceTransport": {
+        "status": "ok-own"
+      },
+      "localNewsFeed": {
+        "status": "missing"
+      }
+    }
+  ]
+}

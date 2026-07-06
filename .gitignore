@@ -14,3 +14,4 @@ devserver.*
 .vite-dev*.log
 .vite-current*.log
 visual-check-report/
+~$*

@@ -1,0 +1,795 @@
+{
+  "document": {
+    "title": "Aloitussivun nykyarkkitehtuuri",
+    "date": "2026-06-14",
+    "language": "fi",
+    "repository": "Aloitussivu",
+    "scope": "current_state",
+    "human_readable_companion": "docs/nykyarkkitehtuuri-asiantuntijakuvaus-2026-06-14.md"
+  },
+  "system": {
+    "name": "Aloitussivu",
+    "purpose": "Seniorikäyttäjille suunnattu aloitussivu, joka kokoaa linkit, paikalliset palvelut, uutiset, säätilan, huijausvaroitukset, palautteen ja tekoälyavustajan.",
+    "architecture_style": "static_react_frontend_with_firebase_serverless_backend",
+    "deployment_target": "Firebase Hosting and Firebase Cloud Functions",
+    "primary_runtime": "browser",
+    "backend_runtime": "Firebase Cloud Functions v2 on Node.js 20"
+  },
+  "technology_stack": {
+    "frontend": [
+      "React 19",
+      "TypeScript",
+      "Vite 6",
+      "Tailwind CSS",
+      "PostCSS",
+      "Firebase Web SDK"
+    ],
+    "backend": [
+      "Firebase Cloud Functions v2",
+      "Firebase Admin SDK",
+      "Firestore",
+      "Firebase Authentication",
+      "Firebase App Check",
+      "Google GenAI SDK"
+    ],
+    "tooling": [
+      "npm",
+      "TypeScript",
+      "Playwright",
+      "custom Node.js data generation scripts"
+    ]
+  },
+  "build": {
+    "package": "package.json",
+    "commands": {
+      "dev": "vite",
+      "prebuild": "npm run newspapers && npm run newspaper-feeds && npm run links && npm run changelog",
+      "build": "vite build",
+      "preview": "vite preview",
+      "check_secrets": "node scripts/check-no-hardcoded-secrets.mjs"
+    },
+    "generated_data_scripts": [
+      {
+        "command": "npm run newspapers",
+        "script": "scripts/update-newspapers.mjs",
+        "purpose": "update local newspaper data"
+      },
+      {
+        "command": "npm run newspaper-feeds",
+        "script": "scripts/update-newspaper-feeds.mjs",
+        "purpose": "update local newspaper RSS feed data"
+      },
+      {
+        "command": "npm run links",
+        "script": "scripts/update-links.mjs",
+        "purpose": "update link inventory and generated blocked link list"
+      },
+      {
+        "command": "npm run changelog",
+        "script": "scripts/update-changelog.mjs",
+        "purpose": "update changelog data"
+      }
+    ],
+    "output_directory": "dist",
+    "vite_base": "./"
+  },
+  "entrypoints": [
+    {
+      "id": "main",
+      "html": "index.html",
+      "tsx": "index.tsx",
+      "primary_component": "App.tsx",
+      "purpose": "front page"
+    },
+    {
+      "id": "changelog",
+      "html": "muutosloki.html",
+      "tsx": "muutosloki.tsx",
+      "purpose": "public changelog"
+    },
+    {
+      "id": "suggestions",
+      "html": "ehdotukset.html",
+      "tsx": "ehdotukset.tsx",
+      "purpose": "admin login, feedback processing, link reports, usage stats and scam alerts"
+    },
+    {
+      "id": "feedbackQueue",
+      "html": "kehitysjono.html",
+      "tsx": "kehitysjono.tsx",
+      "purpose": "public feedback and development queue"
+    },
+    {
+      "id": "links",
+      "html": "linkit.html",
+      "tsx": "linkit.tsx",
+      "purpose": "link inventory views"
+    },
+    {
+      "id": "admin",
+      "html": "yllapito.html",
+      "tsx": "yllapito.tsx",
+      "purpose": "admin landing page"
+    },
+    {
+      "id": "supporters",
+      "html": "sivua-tukemassa.html",
+      "tsx": "sivuaTukemassa.tsx",
+      "purpose": "supporters page"
+    },
+    {
+      "id": "privacy",
+      "html": "tietosuoja.html",
+      "tsx": "tietosuoja.tsx",
+      "purpose": "privacy page"
+    },
+    {
+      "id": "accessibility",
+      "html": "saavutettavuus.html",
+      "tsx": "saavutettavuus.tsx",
+      "purpose": "accessibility statement"
+    }
+  ],
+  "frontend_components": [
+    {
+      "name": "App",
+      "file": "App.tsx",
+      "responsibilities": [
+        "compose front page",
+        "manage user preferences in localStorage",
+        "coordinate modal state",
+        "connect locality, favorites, UI scale and visibility settings"
+      ]
+    },
+    {
+      "name": "QuickLinks",
+      "file": "components/QuickLinks.tsx",
+      "responsibilities": [
+        "render general link categories",
+        "search links and phone numbers",
+        "handle favorites",
+        "open category modal",
+        "apply link visibility filtering"
+      ]
+    },
+    {
+      "name": "RegionalServicesPanel",
+      "file": "components/RegionalServicesPanel.tsx",
+      "responsibilities": [
+        "resolve municipality from user input or detected locality",
+        "render regional service links",
+        "render regional category links",
+        "render local news headlines",
+        "allow link report creation"
+      ]
+    },
+    {
+      "name": "WeatherCard",
+      "file": "components/WeatherCard.tsx",
+      "responsibilities": [
+        "request browser location",
+        "fetch current weather from Open-Meteo",
+        "reverse geocode with Nominatim",
+        "resolve Finnish municipality for regional personalization"
+      ]
+    },
+    {
+      "name": "Assistant",
+      "file": "components/Assistant.tsx",
+      "responsibilities": [
+        "provide AI assistant UI",
+        "send prompts through geminiService"
+      ]
+    },
+    {
+      "name": "FeedbackModal",
+      "file": "components/FeedbackModal.tsx",
+      "responsibilities": [
+        "collect feedback",
+        "collect browser and device info",
+        "optionally attach screenshot",
+        "submit feedback through feedback.ts"
+      ]
+    },
+    {
+      "name": "LinkReportModal",
+      "file": "components/LinkReportModal.tsx",
+      "responsibilities": [
+        "collect broken, wrong or missing link reports",
+        "validate HTTPS URL",
+        "submit report through linkVisibility.ts"
+      ]
+    },
+    {
+      "name": "ScamAlertsBanner",
+      "file": "components/ScamAlertsBanner.tsx",
+      "responsibilities": [
+        "render active scam alerts",
+        "read local and Firestore-backed alert data",
+        "show larger dialog with read-more link"
+      ]
+    },
+    {
+      "name": "FloatingControls",
+      "file": "components/FloatingControls.tsx",
+      "responsibilities": [
+        "provide primary floating actions and settings access"
+      ]
+    }
+  ],
+  "frontend_services": [
+    {
+      "name": "firebaseClient",
+      "file": "firebaseClient.ts",
+      "responsibilities": [
+        "initialize Firebase app",
+        "initialize Firebase Auth",
+        "initialize Firestore",
+        "initialize App Check",
+        "sign in and sign out admin with Google",
+        "determine admin user by trusted email"
+      ],
+      "environment_variables": [
+        "VITE_FIREBASE_API_KEY",
+        "VITE_FIREBASE_AUTH_DOMAIN",
+        "VITE_FIREBASE_PROJECT_ID",
+        "VITE_FIREBASE_STORAGE_BUCKET",
+        "VITE_FIREBASE_MESSAGING_SENDER_ID",
+        "VITE_FIREBASE_APP_ID",
+        "VITE_FIREBASE_APPCHECK_SITE_KEY"
+      ]
+    },
+    {
+      "name": "feedback",
+      "file": "feedback.ts",
+      "responsibilities": [
+        "create feedbackItems documents",
+        "create feedbackAttachments documents",
+        "subscribe to feedback items",
+        "update feedback status",
+        "fall back to localStorage in selected failure cases"
+      ],
+      "firestore_collections": [
+        "feedbackItems",
+        "feedbackAttachments"
+      ],
+      "localStorage_keys": [
+        "feedbackItems",
+        "feedbackAttachments"
+      ]
+    },
+    {
+      "name": "linkVisibility",
+      "file": "linkVisibility.ts",
+      "responsibilities": [
+        "normalize and validate reported URLs",
+        "filter hidden links",
+        "submit and subscribe link reports",
+        "manage runtime blocked links",
+        "merge Firestore and localStorage visibility state"
+      ],
+      "firestore_collections": [
+        "linkReports",
+        "blockedLinks"
+      ],
+      "localStorage_keys": [
+        "blockedLinkUrls",
+        "linkReports"
+      ]
+    },
+    {
+      "name": "approvedLinks",
+      "file": "approvedLinks.ts",
+      "responsibilities": [
+        "subscribe approved links",
+        "add or remove approved link suggestions",
+        "merge approved links into visible shortcut categories"
+      ],
+      "firestore_collections": [
+        "approvedLinks"
+      ],
+      "localStorage_keys": [
+        "approvedLinkSuggestions"
+      ]
+    },
+    {
+      "name": "usageTracking",
+      "file": "usageTracking.ts",
+      "responsibilities": [
+        "track page views",
+        "track link clicks",
+        "skip tracking on localhost and when disabled in localStorage",
+        "send events to trackUsage Cloud Function with App Check token"
+      ],
+      "localStorage_keys": [
+        "seniorSurfUsageTrackingDisabled"
+      ],
+      "environment_variables": [
+        "VITE_USAGE_TRACK_URL",
+        "VITE_FIREBASE_PROJECT_ID"
+      ]
+    },
+    {
+      "name": "rssService",
+      "file": "services/rssService.ts",
+      "responsibilities": [
+        "fetch local news from RSS or Atom",
+        "fallback to rss2json",
+        "fallback to HTML scraping through allorigins",
+        "deduplicate and sort headlines"
+      ],
+      "external_dependencies": [
+        "rss feeds",
+        "api.rss2json.com",
+        "api.allorigins.win"
+      ]
+    },
+    {
+      "name": "geminiService",
+      "file": "services/geminiService.ts",
+      "responsibilities": [
+        "call geminiChat Cloud Function",
+        "include App Check token when available",
+        "provide assistant and news summarization APIs to frontend"
+      ],
+      "environment_variables": [
+        "VITE_GEMINI_CHAT_URL",
+        "VITE_FIREBASE_PROJECT_ID"
+      ]
+    },
+    {
+      "name": "guidancePlacesService",
+      "file": "services/guidancePlacesService.ts",
+      "responsibilities": [
+        "calculate nearest SeniorSurf guidance places from coordinates"
+      ]
+    }
+  ],
+  "data_modules": [
+    {
+      "file": "constants.tsx",
+      "description": "general shortcut categories and providers"
+    },
+    {
+      "file": "communityLinks.ts",
+      "description": "community and regional link data"
+    },
+    {
+      "file": "municipalRegistry.ts",
+      "description": "municipality registry and wellbeing area mapping"
+    },
+    {
+      "file": "municipalityWebsites.ts",
+      "description": "municipality website URLs"
+    },
+    {
+      "file": "municipalityWebsiteLocales.ts",
+      "description": "language-specific municipality website URLs"
+    },
+    {
+      "file": "localServices.ts",
+      "description": "regional service composition logic"
+    },
+    {
+      "file": "localServiceTransportLinks.ts",
+      "description": "service transport and local public transport links"
+    },
+    {
+      "file": "localNewspaperLinks.ts",
+      "description": "local newspaper providers"
+    },
+    {
+      "file": "localNewspaperFeeds.ts",
+      "description": "local RSS feed configuration"
+    },
+    {
+      "file": "localKelaTaxiNumbers.ts",
+      "description": "regional Kela taxi phone links"
+    },
+    {
+      "file": "localSportsClubs.ts",
+      "description": "local sports club data"
+    },
+    {
+      "file": "seniorSurfGuidancePlaces.ts",
+      "description": "SeniorSurf guidance place coordinates and organizers"
+    },
+    {
+      "file": "scamAlerts.ts",
+      "description": "local scam alert seed data"
+    },
+    {
+      "file": "changelogData.ts",
+      "description": "generated changelog data"
+    },
+    {
+      "file": "linkHealth.ts",
+      "description": "generated build-time blocked URL list"
+    }
+  ],
+  "backend_functions": [
+    {
+      "name": "geminiChat",
+      "file": "functions/gemini.ts",
+      "trigger": "https_onRequest",
+      "region": "europe-west1",
+      "authentication": "Firebase App Check token",
+      "rate_limit": {
+        "type": "in_memory_per_client_ip",
+        "window_ms": 600000,
+        "max_requests": 20
+      },
+      "purpose": "proxy assistant and news summarization requests to Gemini API",
+      "environment_variables": [
+        "GEMINI_API_KEY",
+        "ALLOWED_ORIGINS",
+        "ALLOWED_ORIGIN"
+      ],
+      "external_dependencies": [
+        "Gemini API"
+      ]
+    },
+    {
+      "name": "trackUsage",
+      "file": "functions/usage.ts",
+      "trigger": "https_onRequest",
+      "region": "europe-west1",
+      "authentication": "Firebase App Check token",
+      "rate_limit": {
+        "type": "in_memory_per_client_ip",
+        "window_ms": 60000,
+        "max_requests": 120
+      },
+      "purpose": "store daily aggregate page view and link click counters in Firestore",
+      "writes_to": [
+        "usageStats"
+      ]
+    },
+    {
+      "name": "ncscWeeklyScrape",
+      "file": "functions/ncscCron.ts",
+      "trigger": "scheduled",
+      "schedule": "30 11,15 * * 1-5",
+      "timezone": "Europe/Helsinki",
+      "region": "europe-west1",
+      "purpose": "scheduled fetch of Finnish cyber scam warnings"
+    },
+    {
+      "name": "ncscScrapeNow",
+      "file": "functions/ncscCron.ts",
+      "trigger": "https_onRequest",
+      "region": "europe-west1",
+      "authentication": "Firebase ID token and admin email or ADMIN_UIDS",
+      "purpose": "manual admin-triggered fetch of Finnish cyber scam warnings"
+    },
+    {
+      "name": "namedayToday",
+      "file": "functions/nameday.ts",
+      "trigger": "https_onRequest",
+      "region": "europe-west1",
+      "purpose": "fetch today's Finnish name day data with monthly request accounting",
+      "environment_variables": [
+        "NAMEDAY_API_TOKEN"
+      ],
+      "writes_to": [
+        "adminStats"
+      ],
+      "external_dependencies": [
+        "nimipaivarajapinta.fi"
+      ]
+    }
+  ],
+  "firestore": {
+    "rules_file": "firestore.rules",
+    "admin_identity": {
+      "type": "request.auth.uid or request.auth.token.email",
+      "emails": [
+        "eero.tuomenoksa@gmail.com",
+        "seniorsurf.suomi@gmail.com"
+      ],
+      "uids": [
+        "hZU1Fhi7EncUZm7UDzKMDaHFzaV2"
+      ]
+    },
+    "collections": [
+      {
+        "name": "feedbackItems",
+        "public_read": true,
+        "public_create": true,
+        "admin_update": true,
+        "admin_delete": true,
+        "validation_summary": "strict allowed keys; type enum; title 3-140 chars; description 5-1600 chars; status must be new on create; optional bounded client metadata"
+      },
+      {
+        "name": "feedbackAttachments",
+        "public_read": false,
+        "public_create": true,
+        "admin_read": true,
+        "admin_update": true,
+        "admin_delete": true,
+        "validation_summary": "one attachment per feedback id; allowed image types; size <= 460800 bytes; dataUrl <= 700000 chars"
+      },
+      {
+        "name": "linkReports",
+        "public_read": false,
+        "public_create": true,
+        "admin_read": true,
+        "admin_update": true,
+        "admin_delete": true,
+        "validation_summary": "strict allowed keys; type enum; status must be pending on create; url must match https://.+; bounded field lengths"
+      },
+      {
+        "name": "approvedLinks",
+        "public_read": true,
+        "public_create": false,
+        "admin_create": true,
+        "admin_update": true,
+        "admin_delete": true
+      },
+      {
+        "name": "blockedLinks",
+        "public_read": true,
+        "public_create": false,
+        "admin_create": true,
+        "admin_update": true,
+        "admin_delete": true
+      },
+      {
+        "name": "scamAlerts",
+        "public_read": true,
+        "public_create": false,
+        "admin_create": true,
+        "admin_update": true,
+        "admin_delete": true
+      },
+      {
+        "name": "ncscScrapeLog",
+        "public_read": false,
+        "admin_read": true,
+        "public_write": false,
+        "admin_write": false
+      },
+      {
+        "name": "adminStats",
+        "public_read": false,
+        "admin_read": true,
+        "public_write": false,
+        "admin_write": false
+      },
+      {
+        "name": "usageStats",
+        "public_read": false,
+        "admin_read": true,
+        "public_write": false,
+        "admin_write": false
+      }
+    ]
+  },
+  "hosting": {
+    "config_file": "firebase.json",
+    "public_directory": "dist",
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ],
+    "security_headers": [
+      "Strict-Transport-Security",
+      "X-Frame-Options",
+      "X-Content-Type-Options",
+      "Referrer-Policy",
+      "Permissions-Policy",
+      "Content-Security-Policy"
+    ],
+    "csp_connect_src": [
+      "self",
+      "firestore.googleapis.com",
+      "identitytoolkit.googleapis.com",
+      "firebaseinstallations.googleapis.com",
+      "firebaseappcheck.googleapis.com",
+      "content-firebaseappcheck.googleapis.com",
+      "securetoken.googleapis.com",
+      "europe-west1-aloitussivu-5d50c.cloudfunctions.net",
+      "api.rss2json.com",
+      "api.allorigins.win",
+      "api.open-meteo.com",
+      "geocoding-api.open-meteo.com",
+      "nominatim.openstreetmap.org"
+    ]
+  },
+  "local_storage": [
+    {
+      "key": "locality",
+      "purpose": "selected or detected municipality"
+    },
+    {
+      "key": "favorites",
+      "purpose": "user favorite links"
+    },
+    {
+      "key": "uiVisibility",
+      "purpose": "section visibility preferences"
+    },
+    {
+      "key": "uiScale",
+      "purpose": "user interface scaling percentage"
+    },
+    {
+      "key": "isDarkMode",
+      "purpose": "theme mode"
+    },
+    {
+      "key": "colorTheme",
+      "purpose": "color theme"
+    },
+    {
+      "key": "clockMode",
+      "purpose": "digital or analog clock"
+    },
+    {
+      "key": "secondaryTimeZone",
+      "purpose": "secondary clock timezone"
+    },
+    {
+      "key": "onboardingSeen",
+      "purpose": "onboarding completion state"
+    },
+    {
+      "key": "seniorSurfUsageTrackingDisabled",
+      "purpose": "disable usage tracking in browser"
+    },
+    {
+      "key": "feedbackItems",
+      "purpose": "local feedback fallback"
+    },
+    {
+      "key": "feedbackAttachments",
+      "purpose": "local feedback screenshot fallback"
+    },
+    {
+      "key": "linkReports",
+      "purpose": "local link report fallback"
+    },
+    {
+      "key": "blockedLinkUrls",
+      "purpose": "runtime hidden links"
+    },
+    {
+      "key": "approvedLinkSuggestions",
+      "purpose": "approved link suggestion cache"
+    }
+  ],
+  "external_integrations": [
+    {
+      "name": "Open-Meteo Forecast API",
+      "used_by": "components/WeatherCard.tsx",
+      "purpose": "current weather"
+    },
+    {
+      "name": "Open-Meteo Geocoding API",
+      "used_by": "components/WeatherCard.tsx",
+      "purpose": "municipality coordinate lookup fallback"
+    },
+    {
+      "name": "OpenStreetMap Nominatim",
+      "used_by": "components/WeatherCard.tsx",
+      "purpose": "reverse geocoding"
+    },
+    {
+      "name": "rss2json",
+      "used_by": "services/rssService.ts",
+      "purpose": "RSS CORS fallback"
+    },
+    {
+      "name": "allorigins",
+      "used_by": "services/rssService.ts",
+      "purpose": "HTML/RSS CORS fallback"
+    },
+    {
+      "name": "Kyberturvallisuuskeskus RSS and web pages",
+      "used_by": "services/ncscScraper.ts and functions/ncscCron.ts",
+      "purpose": "scam alert discovery"
+    },
+    {
+      "name": "nimipaivarajapinta.fi",
+      "used_by": "functions/nameday.ts",
+      "purpose": "Finnish name day data"
+    },
+    {
+      "name": "Gemini API",
+      "used_by": "functions/gemini.ts",
+      "purpose": "assistant and news summarization"
+    }
+  ],
+  "security_controls": [
+    {
+      "control": "Firebase Hosting security headers",
+      "implemented_in": "firebase.json"
+    },
+    {
+      "control": "Content Security Policy",
+      "implemented_in": "firebase.json"
+    },
+    {
+      "control": "Firestore field-level validation",
+      "implemented_in": "firestore.rules"
+    },
+    {
+      "control": "Google admin sign-in",
+      "implemented_in": "firebaseClient.ts and Firestore rules"
+    },
+    {
+      "control": "Firebase App Check for selected functions",
+      "implemented_in": "firebaseClient.ts, functions/gemini.ts, functions/usage.ts"
+    },
+    {
+      "control": "HTTPS-only public link report URLs",
+      "implemented_in": "linkVisibility.ts and firestore.rules"
+    },
+    {
+      "control": "bounded feedback and attachment sizes",
+      "implemented_in": "components/FeedbackModal.tsx and firestore.rules"
+    },
+    {
+      "control": "best-effort secret scan",
+      "implemented_in": "scripts/check-no-hardcoded-secrets.mjs"
+    }
+  ],
+  "known_architecture_risks": [
+    {
+      "id": "multi_page_rewrite",
+      "severity": "medium",
+      "description": "Vite builds multiple HTML entrypoints but Firebase Hosting rewrites all paths to /index.html.",
+      "recommendation": "Verify intended production routing and adjust rewrites if direct subpage URLs must serve their own HTML files."
+    },
+    {
+      "id": "typescript_data_volume",
+      "severity": "medium",
+      "description": "Large static datasets are stored directly in TypeScript modules.",
+      "recommendation": "Move source data to JSON or CSV and generate typed modules during build."
+    },
+    {
+      "id": "link_truth_source",
+      "severity": "medium",
+      "description": "Link state exists in static modules, generated files, Firestore and localStorage.",
+      "recommendation": "Define one canonical link registry and explicit publication workflow."
+    },
+    {
+      "id": "firestore_screenshot_storage",
+      "severity": "medium",
+      "description": "Feedback screenshots are stored as data URLs inside Firestore documents.",
+      "recommendation": "Use Firebase Storage if screenshot volume or size grows."
+    },
+    {
+      "id": "in_memory_rate_limit",
+      "severity": "low",
+      "description": "Cloud Function rate limiting uses in-memory maps per instance.",
+      "recommendation": "Use a shared store or edge protection if abuse increases."
+    },
+    {
+      "id": "duplicated_admin_identity",
+      "severity": "medium",
+      "description": "Admin emails and identities are configured in several code locations.",
+      "recommendation": "Centralize admin authorization with Firebase custom claims or documented config."
+    },
+    {
+      "id": "browser_side_rss_fallbacks",
+      "severity": "low",
+      "description": "Local news uses browser-side RSS fetches and public CORS proxy fallbacks.",
+      "recommendation": "Move critical feed aggregation to a Cloud Function."
+    }
+  ],
+  "expert_review_checklist": [
+    "Verify Firebase Hosting rewrites for multi-page deployment.",
+    "Test Firestore rules with emulator tests for public create and admin update paths.",
+    "Verify CSP against actual production domains and all Cloud Function URLs.",
+    "Confirm privacy text matches feedback metadata and usage statistics storage.",
+    "Review App Check fallback behavior in browsers where App Check fails.",
+    "Review localStorage data lifecycle and user controls.",
+    "Define the canonical link registry and audit workflow.",
+    "Review accessibility with keyboard, screen reader, mobile and 200 percent zoom.",
+    "Review Cloud Function secrets management and use of Firebase Secret Manager.",
+    "Review whether Firestore is appropriate for screenshot attachments."
+  ]
+}

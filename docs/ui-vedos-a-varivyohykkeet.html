@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UI-vedos A — Värivyöhykkeet · Aloitussivu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --forest: #0f2318;
+    --green: #1c5235;
+    --green-mid: #2a7a4e;
+    --gold: #d4940a;
+    --gold-light: #f0c040;
+    --bg: #f7f5f0;
+    --surface: #ffffff;
+    --ink: #0a1a0e;
+    --ink-2: #3a5442;
+    --focus: #f0c040;
+  }
+  * { box-sizing: border-box; }
+  html { font-size: 20px; }
+  body {
+    margin: 0;
+    font-family: 'Atkinson Hyperlegible', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.45;
+  }
+  .display { font-family: 'Cormorant Garamond', Georgia, serif; }
+  a, button { font-family: inherit; }
+  :is(a, button):focus-visible { outline: 4px solid var(--focus); outline-offset: 3px; border-radius: 14px; }
+
+  /* ───────── Yläosa ───────── */
+  header.hero {
+    background: linear-gradient(150deg, #1c6040 0%, #0f2318 60%, #0a2e1a 100%);
+    color: #fff;
+    padding: 1.4rem 1.5rem 4.5rem;
+  }
+  .hero-inner { max-width: 1280px; margin: 0 auto; }
+  .topbar { display: flex; flex-wrap: wrap; align-items: center; gap: .9rem; padding-bottom: 1.1rem; border-bottom: 1px solid rgba(255,255,255,.12); }
+  .brand { margin-right: auto; }
+  .brand .eyebrow { font-size: .72rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--gold-light); margin: 0 0 .15rem; }
+  .brand h1 { margin: 0; font-size: 2rem; font-weight: 600; line-height: 1; }
+  .topbtn {
+    display: inline-flex; align-items: center; gap: .5rem;
+    min-height: 3rem; padding: .55rem 1.2rem; border-radius: 999px;
+    border: 1px solid rgba(255,255,255,.25); background: rgba(255,255,255,.1);
+    color: #fff; font-size: .95rem; font-weight: 700; cursor: pointer;
+  }
+  .topbtn.gold { background: var(--gold); border-color: transparent; color: #0f2318; font-weight: 800; }
+
+  .hero-grid {
+    display: grid; grid-template-columns: minmax(17rem,.85fr) 1.6fr; gap: 1.6rem;
+    align-items: center; padding-top: 1.6rem;
+  }
+  .clockcard { text-align: left; }
+  .clock-time { font-size: 4.6rem; font-weight: 700; line-height: 1; letter-spacing: .01em; font-variant-numeric: tabular-nums; }
+  .clock-date { font-size: 1.25rem; font-weight: 700; color: #cfe7d6; margin-top: .4rem; }
+  .greeting { font-size: 1.1rem; color: var(--gold-light); font-weight: 700; margin-top: .3rem; }
+
+  .searchwrap { display: flex; flex-direction: column; gap: 1rem; }
+  .searchbar {
+    display: flex; align-items: center; gap: .8rem;
+    background: #fff; border-radius: 999px; padding: .4rem .5rem .4rem 1.4rem;
+    box-shadow: 0 8px 32px rgba(0,0,0,.25);
+  }
+  .searchbar .magnify { font-size: 1.6rem; }
+  .searchbar input {
+    flex: 1; border: 0; outline: 0; font: inherit; font-size: 1.3rem; font-weight: 700;
+    color: var(--ink); min-width: 0; background: transparent; padding: .8rem 0;
+  }
+  .searchbar .go {
+    min-height: 3.6rem; padding: 0 1.6rem; border: 0; border-radius: 999px;
+    background: var(--green); color: #fff; font-size: 1.15rem; font-weight: 800; cursor: pointer;
+  }
+  .heroinfo { display: flex; flex-wrap: wrap; gap: 1rem; }
+  .heroinfo .chip {
+    flex: 1; min-width: 230px; display: flex; align-items: center; gap: .9rem;
+    background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.18);
+    border-radius: 24px; padding: .85rem 1.2rem; font-size: 1.05rem; font-weight: 700;
+  }
+  .heroinfo .chip .big { font-size: 2.2rem; }
+  .heroinfo .chip small { display: block; font-size: .85rem; font-weight: 400; color: #cfe7d6; }
+
+  /* ───────── Sisällysvalikko ───────── */
+  .toc {
+    max-width: 1280px; margin: -3rem auto 0; padding: 0 1.5rem; position: relative; z-index: 5;
+  }
+  .toc-card {
+    background: var(--surface); border-radius: 32px; padding: 1.4rem 1.6rem;
+    box-shadow: 0 14px 48px rgba(10,26,14,.14);
+  }
+  .toc-card h2 { margin: 0 0 .9rem; font-size: 1.15rem; letter-spacing: .04em; color: var(--ink-2); text-transform: uppercase; }
+  .toc-list { display: flex; flex-wrap: wrap; gap: .7rem; list-style: none; margin: 0; padding: 0; }
+  .toc-list a {
+    display: inline-flex; align-items: center; gap: .6rem;
+    min-height: 3.4rem; padding: .5rem 1.25rem .5rem .6rem; border-radius: 999px;
+    text-decoration: none; color: var(--ink); font-weight: 800; font-size: 1.05rem;
+    border: 2px solid transparent; background: var(--chip-bg);
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .toc-list a:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(10,26,14,.16); border-color: var(--chip-accent); }
+  .toc-list a .dot {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 2.5rem; height: 2.5rem; border-radius: 999px; background: var(--chip-accent);
+    font-size: 1.3rem;
+  }
+
+  /* ───────── Värivyöhykkeet ───────── */
+  main { max-width: 1280px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; display: grid; gap: 2.2rem; }
+
+  section.zone {
+    border-radius: 40px; padding: 2rem 2rem 2.2rem;
+    background: var(--zone-bg);
+    border: 2px solid var(--zone-border);
+  }
+  .zone-head { display: flex; align-items: flex-start; gap: 1.4rem; margin-bottom: 1.5rem; }
+  .zone-icon {
+    flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+    width: 5.4rem; height: 5.4rem; border-radius: 28px; font-size: 3rem;
+    background: var(--zone-accent); box-shadow: 0 6px 18px rgba(10,26,14,.14);
+  }
+  .zone-head h2 { margin: 0; font-size: 2.1rem; font-weight: 700; line-height: 1.1; }
+  .zone-head p.info {
+    margin: .45rem 0 0; font-size: 1.2rem; color: var(--ink-2); max-width: 60ch;
+  }
+  .zone-links { display: grid; grid-template-columns: repeat(auto-fill, minmax(17.5rem, 1fr)); gap: 1rem; }
+  .zone-links a {
+    display: flex; align-items: center; gap: 1rem;
+    min-height: 4.6rem; padding: .9rem 1.2rem; border-radius: 24px;
+    background: var(--surface); border: 2px solid var(--zone-border);
+    color: var(--ink); text-decoration: none; font-size: 1.25rem; font-weight: 800;
+    transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+  }
+  .zone-links a:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(10,26,14,.14); border-color: var(--zone-strong); }
+  .zone-links .ico {
+    flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+    width: 3.4rem; height: 3.4rem; border-radius: 18px; font-size: 2rem;
+    background: var(--zone-accent);
+  }
+  .zone-links .arrow { margin-left: auto; font-size: 1.4rem; color: var(--zone-strong); }
+
+  /* Vyöhykkeiden värit — pastellitausta + voimakas tunnusväri */
+  .z-asiointi  { --zone-bg:#eaf1f9; --zone-accent:#cfe0f2; --zone-border:#b9d0e8; --zone-strong:#1a4d8a; }
+  .z-raha      { --zone-bg:#e9f5ec; --zone-accent:#cdebd6; --zone-border:#b4dec2; --zone-strong:#1c6e3d; }
+  .z-terveys   { --zone-bg:#fdeef0; --zone-accent:#f9d6da; --zone-border:#f0bcc3; --zone-strong:#a8273b; }
+  .z-digi      { --zone-bg:#f2edfa; --zone-accent:#e2d6f4; --zone-border:#cfbceb; --zone-strong:#5c2d91; }
+  .z-uutiset   { --zone-bg:#eef4f5; --zone-accent:#d5e6e9; --zone-border:#bcd6da; --zone-strong:#21626e; }
+  .z-kulttuuri { --zone-bg:#fbeef6; --zone-accent:#f4d4e7; --zone-border:#eab9d6; --zone-strong:#a02670; }
+  .z-lukeminen { --zone-bg:#f9f1e4; --zone-accent:#f0dfc0; --zone-border:#e4cda2; --zone-strong:#8a5a0e; }
+  .z-liikkuminen { --zone-bg:#e9f5f6; --zone-accent:#cfeaec; --zone-border:#b2dce0; --zone-strong:#0e6b74; }
+  .z-vapaa     { --zone-bg:#fdf1e7; --zone-accent:#f9ddc4; --zone-border:#f0caa4; --zone-strong:#b35a10; }
+
+  /* ───────── Huijausvaroitus ───────── */
+  .scam-alert {
+    display: flex; align-items: center; gap: 1.1rem; flex-wrap: wrap;
+    border-radius: 28px; padding: 1.1rem 1.5rem;
+    background: #fff4d6; border: 3px solid #d4940a;
+  }
+  .scam-alert .sign { font-size: 2.6rem; flex-shrink: 0; }
+  .scam-alert .body { flex: 1; min-width: 16rem; }
+  .scam-alert strong { display: block; font-size: 1.25rem; color: #6b4a00; }
+  .scam-alert p { margin: .2rem 0 0; font-size: 1.1rem; color: #4a3a10; }
+  .scam-alert a.more {
+    display: inline-flex; align-items: center; min-height: 3.2rem; padding: .5rem 1.4rem;
+    border-radius: 999px; background: #d4940a; color: #2e2000; font-weight: 800;
+    font-size: 1.05rem; text-decoration: none; white-space: nowrap;
+  }
+
+  /* ───────── Suosikit ───────── */
+  .favorites { border-radius: 40px; padding: 1.6rem 2rem 1.8rem; background: #fdf6e3; border: 2px solid #ecd9a8; }
+  .favorites h2 { display: flex; align-items: center; gap: .7rem; margin: 0 0 1rem; font-size: 1.6rem; }
+  .favorites .hint { font-size: 1.05rem; color: var(--ink-2); margin: -0.6rem 0 1rem; }
+  .fav-list { display: flex; flex-wrap: wrap; gap: .8rem; }
+  .fav-list a {
+    display: inline-flex; align-items: center; gap: .7rem;
+    min-height: 3.8rem; padding: .6rem 1.5rem; border-radius: 999px;
+    background: #fff; border: 2px solid #e0b050; box-shadow: 0 3px 0 #c8922a;
+    color: var(--ink); font-size: 1.2rem; font-weight: 800; text-decoration: none;
+    transition: transform .12s ease;
+  }
+  .fav-list a:hover { transform: translateY(-2px); background: #fff8e6; }
+  .fav-list a .fico { font-size: 1.6rem; }
+  .fav-list a small { font-weight: 400; color: var(--ink-2); font-size: .95rem; }
+
+  /* ───────── Lähelläsi-vyöhyke ───────── */
+  .zone.z-local { --zone-bg:#eef6ef; --zone-accent:#d2e9d8; --zone-border:#b6dcc2; --zone-strong:#1c5235; }
+  .local-top { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; margin-bottom: 1.3rem; }
+  .muni-pick {
+    display: flex; align-items: center; gap: .7rem; background: #fff;
+    border: 2px solid var(--zone-border); border-radius: 999px; padding: .4rem .6rem .4rem 1.2rem;
+  }
+  .muni-pick label { font-weight: 800; font-size: 1.05rem; }
+  .muni-pick input { border: 0; outline: 0; font: inherit; font-size: 1.15rem; font-weight: 700; width: 11rem; }
+  .muni-pick button {
+    min-height: 3rem; padding: 0 1.2rem; border: 0; border-radius: 999px;
+    background: var(--green); color: #fff; font-weight: 800; font-size: 1rem; cursor: pointer; font-family: inherit;
+  }
+  .local-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 1.4rem; align-items: start; }
+  .news-card { background: #fff; border: 2px solid var(--zone-border); border-radius: 24px; padding: 1.2rem 1.4rem; }
+  .news-card h3 { display: flex; align-items: center; gap: .6rem; margin: 0 0 .8rem; font-size: 1.3rem; }
+  .news-card ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .4rem; }
+  .news-card li a {
+    display: flex; gap: .7rem; align-items: baseline; padding: .55rem .6rem; border-radius: 14px;
+    color: var(--ink); text-decoration: none; font-size: 1.1rem; font-weight: 700; line-height: 1.3;
+  }
+  .news-card li a:hover { background: var(--zone-bg); }
+  .news-card li a .src { margin-left: auto; flex-shrink: 0; font-size: .9rem; font-weight: 400; color: var(--ink-2); }
+  .news-card .allnews { display: inline-block; margin-top: .7rem; font-size: 1.05rem; font-weight: 800; color: var(--zone-strong); }
+
+  @media (max-width: 900px) { .local-grid { grid-template-columns: 1fr; } }
+
+  footer {
+    background: var(--forest); color: #fff; padding: 2.5rem 1.5rem; text-align: center; font-size: 1rem;
+  }
+  footer .note { color: rgba(255,255,255,.55); }
+
+  .badge {
+    position: fixed; left: 1rem; bottom: 1rem; z-index: 50;
+    background: #0f2318; color: var(--gold-light); font-weight: 800; font-size: .85rem;
+    padding: .5rem 1rem; border-radius: 999px; box-shadow: 0 4px 16px rgba(0,0,0,.3);
+  }
+
+  @media (max-width: 900px) {
+    html { font-size: 18px; }
+    .hero-grid { grid-template-columns: 1fr; }
+    .clock-time { font-size: 3.6rem; }
+    section.zone { padding: 1.4rem 1.2rem 1.6rem; border-radius: 28px; }
+    .zone-head { gap: 1rem; }
+    .zone-icon { width: 4.2rem; height: 4.2rem; font-size: 2.3rem; }
+    .zone-head h2 { font-size: 1.6rem; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="topbar">
+      <div class="brand">
+        <p class="eyebrow">Vanhustyön keskusliitto · SeniorSurf</p>
+        <h1 class="display">Aloitussivu</h1>
+      </div>
+      <button class="topbtn">Palaute</button>
+      <button class="topbtn">🇫🇮 Suomi ▾</button>
+      <button class="topbtn gold">🏠 Apua sivun käyttöön</button>
+      <button class="topbtn" aria-label="Asetukset">⚙️ Asetukset</button>
+    </div>
+
+    <div class="hero-grid">
+      <div class="clockcard">
+        <div class="clock-time" id="clock">12.34</div>
+        <div class="clock-date" id="date">perjantai 12. kesäkuuta 2026</div>
+        <div class="greeting">Hyvää päivää!</div>
+      </div>
+      <div class="searchwrap">
+        <div class="searchbar" role="search">
+          <span class="magnify" aria-hidden="true">🔎</span>
+          <input type="search" placeholder="Etsi tietoa internetistä…" aria-label="Etsi tietoa internetistä">
+          <button class="go">Hae</button>
+        </div>
+        <div class="heroinfo">
+          <div class="chip"><span class="big" aria-hidden="true">🌤️</span><span>+18 °C, puolipilvistä<small>Sää · Helsinki</small></span></div>
+          <div class="chip"><span class="big" aria-hidden="true">💬</span><span>Kysy neuvoa avustajalta<small>Avustaja vastaa kysymyksiisi</small></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Aihealueet">
+  <div class="toc-card">
+    <h2>Mitä etsit tänään?</h2>
+    <ul class="toc-list">
+      <li><a href="#lahellasi" style="--chip-bg:#eef6ef; --chip-accent:#d2e9d8"><span class="dot" aria-hidden="true">📍</span>Lähelläsi</a></li>
+      <li><a href="#asiointi" style="--chip-bg:#eaf1f9; --chip-accent:#cfe0f2"><span class="dot" aria-hidden="true">🏛️</span>Asiointi</a></li>
+      <li><a href="#raha" style="--chip-bg:#e9f5ec; --chip-accent:#cdebd6"><span class="dot" aria-hidden="true">🏦</span>Raha</a></li>
+      <li><a href="#terveys" style="--chip-bg:#fdeef0; --chip-accent:#f9d6da"><span class="dot" aria-hidden="true">🏥</span>Terveys</a></li>
+      <li><a href="#digi" style="--chip-bg:#f2edfa; --chip-accent:#e2d6f4"><span class="dot" aria-hidden="true">💻</span>Digi ja yhteydenpito</a></li>
+      <li><a href="#uutiset" style="--chip-bg:#eef4f5; --chip-accent:#d5e6e9"><span class="dot" aria-hidden="true">📰</span>Uutiset</a></li>
+      <li><a href="#kulttuuri" style="--chip-bg:#fbeef6; --chip-accent:#f4d4e7"><span class="dot" aria-hidden="true">🎭</span>Kulttuuri</a></li>
+      <li><a href="#lukeminen" style="--chip-bg:#f9f1e4; --chip-accent:#f0dfc0"><span class="dot" aria-hidden="true">📚</span>Lukeminen</a></li>
+      <li><a href="#liikkuminen" style="--chip-bg:#e9f5f6; --chip-accent:#cfeaec"><span class="dot" aria-hidden="true">🚌</span>Liikkuminen</a></li>
+      <li><a href="#vapaa" style="--chip-bg:#fdf1e7; --chip-accent:#f9ddc4"><span class="dot" aria-hidden="true">🎈</span>Vapaa-aika</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+  <div class="scam-alert" role="alert">
+    <span class="sign" aria-hidden="true">⚠️</span>
+    <div class="body">
+      <strong>Huijausvaroitus</strong>
+      <p>Pankkien nimissä lähetetään nyt huijausviestejä. Älä koskaan anna pankkitunnuksiasi viestin tai puhelun perusteella.</p>
+    </div>
+    <a class="more" href="#">Lue lisää varoituksesta →</a>
+  </div>
+
+  <section class="favorites" aria-labelledby="h-suosikit">
+    <h2 class="display" id="h-suosikit"><span aria-hidden="true">⭐</span>Omat suosikkini</h2>
+    <p class="hint">Tähän tallentamasi sivut. Lisää suosikki painamalla tähteä minkä tahansa linkin kohdalla.</p>
+    <div class="fav-list">
+      <a href="#"><span class="fico" aria-hidden="true">📰</span>Yle Uutiset <small>Uutiset</small></a>
+      <a href="#"><span class="fico" aria-hidden="true">🏦</span>Oma pankki <small>Pankit</small></a>
+      <a href="#"><span class="fico" aria-hidden="true">🏥</span>Omakanta <small>Terveys</small></a>
+      <a href="#"><span class="fico" aria-hidden="true">☀️</span>Ilmatieteen laitos <small>Sää</small></a>
+    </div>
+  </section>
+
+  <section class="zone z-local" id="lahellasi" aria-labelledby="h-local">
+    <div class="zone-head">
+      <span class="zone-icon" aria-hidden="true">📍</span>
+      <div>
+        <h2 class="display" id="h-local">Lähelläsi · Helsinki</h2>
+        <p class="info">Oman kuntasi palvelut ja paikalliset uutiset. Voit vaihtaa kuntaa milloin tahansa.</p>
+      </div>
+    </div>
+    <div class="local-top">
+      <div class="muni-pick">
+        <label for="muni">Kunta:</label>
+        <input id="muni" type="text" value="Helsinki">
+        <button type="button">Vaihda</button>
+      </div>
+    </div>
+    <div class="local-grid">
+      <div class="zone-links" style="grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));">
+        <a href="#"><span class="ico" aria-hidden="true">🏛️</span>Helsingin kaupunki<span class="arrow" aria-hidden="true">→</span></a>
+        <a href="#"><span class="ico" aria-hidden="true">🏥</span>Terveysasemat<span class="arrow" aria-hidden="true">→</span></a>
+        <a href="#"><span class="ico" aria-hidden="true">🚌</span>HSL Reittiopas<span class="arrow" aria-hidden="true">→</span></a>
+        <a href="#"><span class="ico" aria-hidden="true">📚</span>Helmet-kirjastot<span class="arrow" aria-hidden="true">→</span></a>
+        <a href="#"><span class="ico" aria-hidden="true">🚕</span>Kela-taksi · 0800 414 243<span class="arrow" aria-hidden="true">→</span></a>
+        <a href="#"><span class="ico" aria-hidden="true">📍</span>Palvelukeskukset<span class="arrow" aria-hidden="true">→</span></a>
+      </div>
+      <div class="news-card">
+        <h3 class="display"><span aria-hidden="true">📰</span>Paikalliset uutiset</h3>
+        <ul>
+          <li><a href="#">Helsingin keskustakirjasto Oodi laajentaa aukioloaikojaan kesällä<span class="src">Yle</span></a></li>
+          <li><a href="#">Raitiolinja 13 poikkeusreitille heinäkuussa<span class="src">HS</span></a></li>
+          <li><a href="#">Senioreiden liikuntaryhmiin haku alkaa elokuussa<span class="src">Hel.fi</span></a></li>
+        </ul>
+        <a class="allnews" href="#">Kaikki paikallisuutiset →</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="zone z-asiointi" id="asiointi" aria-labelledby="h-asiointi">
+    <div class="zone-head">
+      <span class="zone-icon" aria-hidden="true">🏛️</span>
+      <div>
+        <h2 class="display" id="h-asiointi">Asiointi ja viranomaiset</h2>
+        <p class="info">Hoida viralliset asiat verkossa: Kela, verottaja, poliisi ja muut viranomaiset. Täältä löydät myös tärkeät puhelinnumerot.</p>
+      </div>
+    </div>
+    <div class="zone-links">
+      <a href="#"><span class="ico" aria-hidden="true">🏛️</span>Julkiset palvelut<span class="arrow" aria-hidden="true">→</span></a>
+      <a href="#"><span class="ico" aria-hidden="true">⚖️</span>Oikeus<span class="arrow" aria-hidden="true">→</span></a>
+      <a href="#"><span class="ico" aria-hidden="true">☎️</span>Puhelinnumerot<span class="arrow" aria-hidden="true">→</span></a>
+      <a href="#"><span class="ico" aria-hidden="true">🛡️</span>Turvallisuus<span class="arrow" aria-hidden="true">→</span></a>
+    </div>
+  </section>
+
+  <section class="zone z-raha" id="raha" aria-labelledby="h-raha">
+    <div class="zone-head">
+      <span class="zone-icon" aria-hidden="true">🏦</span>
+      <div>
+        <h2 class="display" id="h-raha">Raha ja ostaminen</h2>
+        <p class="info">Pankkiasiat, oman talouden hoito ja turvallinen ostaminen verkossa.</p>
+      </div>
+    </div>
+    <div class="zone-links">
+      <a href="#"><span class="ico" aria-hidden="true">🏦</span>Pankit<span class="arrow" aria-hidden="true">→</span></a>
+      <a href="#"><span class="ico" aria-hidden="true">📈</span>Talous<span class="arrow" aria-hidden="true">→</span></a>
+      <a href="#"><span class="ico" aria-hidden="true">🛒</span>Verkkokaupat<span class="arrow" aria-hidden="true">→</span></a>
+      <a href="#"><span class="ico" aria-hidden="true">🥘</span>Ruoka<span class="arrow" aria-hidden="true">→</span></a>
+    </div>
+  </section>
+
+  <section class="zone z-terveys" id="terveys" aria-labelledby="h-terveys">
+    <div class="zone-head">
+      <span class="zone-icon" aria-hidden="true">🏥</span>
+      <div>
+        <h2 class="display" id="h-terveys">Terveys ja hoiva</h2>
+        <p class="info">Terveyspalvelut, omat terveystiedot ja apua kotiin. Mukana myös potilasyhdistysten neuvonta.</p>
+      </div>
+    </div>
+    <div class="zone-links">
+      <a href="#"><span class="ico" aria-hidden="true">🏥</span>Terveys<span class="arrow" aria-hidden="true">→</span></a>
+      <a href="#"><span class="ico" aria-hidden="true">🫶</span>Potilasyhdistykset<span class="arrow" aria-hidden="true">→</span></a>
+      <a href="#"><span class="ico" aria-hidden="true">🤝</span>Kotihoito ja palvelut<span class="arrow" aria-hidden="true">→</span></a>
+      <a href="#"><span class="ico" aria-hidden="true">🏠</span>Koti<span class="arrow" aria-hidden="true">→</span></a>
+    </div>
+  </section>
+
+  <section class="zone z-digi" id="digi" aria-labelledby="h-digi">
+    <div class="zone-head">
+      <span class="zone-icon" aria-hidden="true">💻</span>
+      <div>
+        <h2 class="display" id="h-digi">Digi ja yhteydenpito</h2>
+        <p class="info">Apua tietokoneen ja puhelimen käyttöön sekä yhteydenpito läheisiin sähköpostilla ja viesteillä.</p>
+      </div>
+    </div>
+    <div class="zone-links">
+      <a href="#"><span class="ico" aria-hidden="true">💻</span>Apua digiin<span class="arrow" aria-hidden="true">→</span></a>
+      <a href="#"><span class="ico" aria-hidden="true">🔎</span>Hakukoneet<span class="arrow" aria-hidden="true">→</span></a>
+      <a href="#"><span class="ico" aria-hidden="true">✉️</span>Sähköposti<span class="arrow" aria-hidden="true">→</span></a>
+      <a href="#"><span class="ico" aria-hidden="true">💬</span>Sosiaalinen media<span class="arrow" aria-hidden="true">→</span></a>
+      <a href="#"><span class="ico" aria-hidden="true">📱</span>Sovellukset<span class="arrow" aria-hidden="true">→</span></a>
+      <a href="#"><span class="ico" aria-hidden="true">⚙️</span>Tekniikka<span class="arrow" aria-hidden="true">→</span></a>
+    </div>
+  </section>
+
+  <section class="zone z-uutiset" id="uutiset" aria-labelledby="h-uutiset">
+    <div class="zone-head">
+      <span class="zone-icon" aria-hidden="true">📰</span>
+      <div>
+        <h2 class="display" id="h-uutiset">Uutiset ja tieto</h2>
+        <p class="info">Päivän uutiset, sanomalehdet, säätiedot ja kiinnostavaa tiedettä.</p>
+      </div>
+    </div>
+    <div class="zone-links">
+      <a href="#"><span class="ico" aria-hidden="true">📰</span>Uutiset &amp; media<span class="arrow" aria-hidden="true">→</span></a>
+      <a href="#"><span class="ico" aria-hidden="true">🗞️</span>Lehdet<span class="arrow" aria-hidden="true">→</span></a>
+      <a href="#"><span class="ico" aria-hidden="true">☀️</span>Sää<span class="arrow" aria-hidden="true">→</span></a>
+      <a href="#"><span class="ico" aria-hidden="true">🧪</span>Tiede<span class="arrow" aria-hidden="true">→</span></a>
+    </div>
+  </section>
+
+  <section class="zone z-kulttuuri" id="kulttuuri" aria-labelledby="h-kulttuuri">
+    <div class="zone-head">
+      <span class="zone-icon" aria-hidden="true">🎭</span>
+      <div>
+        <h2 class="display" id="h-kulttuuri">Kulttuuri ja taide</h2>
+        <p class="info">Museot, teatterit, musiikki ja taide — elämyksiä verkossa ja lähelläsi.</p>
+      </div>
+    </div>
+    <div class="zone-links">
+      <a href="#"><span class="ico" aria-hidden="true">🎭</span>Kulttuuri<span class="arrow" aria-hidden="true">→</span></a>
+      <a href="#"><span class="ico" aria-hidden="true">🖼️</span>Museot<span class="arrow" aria-hidden="true">→</span></a>
+      <a href="#"><span class="ico" aria-hidden="true">🎟️</span>Teatterit<span class="arrow" aria-hidden="true">→</span></a>
+      <a href="#"><span class="ico" aria-hidden="true">🎵</span>Musiikki<span class="arrow" aria-hidden="true">→</span></a>
+      <a href="#"><span class="ico" aria-hidden="true">🎨</span>Taiteet<span class="arrow" aria-hidden="true">→</span></a>
+    </div>
+  </section>
+
+  <section class="zone z-lukeminen" id="lukeminen" aria-labelledby="h-lukeminen">
+    <div class="zone-head">
+      <span class="zone-icon" aria-hidden="true">📚</span>
+      <div>
+        <h2 class="display" id="h-lukeminen">Lukeminen, kielet ja historia</h2>
+        <p class="info">Kirjat ja kirjastot, kielten opiskelu sekä oman suvun historian tutkiminen.</p>
+      </div>
+    </div>
+    <div class="zone-links">
+      <a href="#"><span class="ico" aria-hidden="true">📖</span>Kirjallisuus<span class="arrow" aria-hidden="true">→</span></a>
+      <a href="#"><span class="ico" aria-hidden="true">📚</span>Kirjastot<span class="arrow" aria-hidden="true">→</span></a>
+      <a href="#"><span class="ico" aria-hidden="true">🗣️</span>Kielet<span class="arrow" aria-hidden="true">→</span></a>
+      <a href="#"><span class="ico" aria-hidden="true">🌳</span>Sukututkimus<span class="arrow" aria-hidden="true">→</span></a>
+    </div>
+  </section>
+
+  <section class="zone z-liikkuminen" id="liikkuminen" aria-labelledby="h-liikkuminen">
+    <div class="zone-head">
+      <span class="zone-icon" aria-hidden="true">🚌</span>
+      <div>
+        <h2 class="display" id="h-liikkuminen">Liikkuminen ja ulkoilu</h2>
+        <p class="info">Bussien ja junien aikataulut, matkustaminen, liikunta ja luonnossa ulkoilu.</p>
+      </div>
+    </div>
+    <div class="zone-links">
+      <a href="#"><span class="ico" aria-hidden="true">🚌</span>Liikenne<span class="arrow" aria-hidden="true">→</span></a>
+      <a href="#"><span class="ico" aria-hidden="true">✈️</span>Matkailu<span class="arrow" aria-hidden="true">→</span></a>
+      <a href="#"><span class="ico" aria-hidden="true">🚶</span>Liikunta<span class="arrow" aria-hidden="true">→</span></a>
+      <a href="#"><span class="ico" aria-hidden="true">🌲</span>Luonto<span class="arrow" aria-hidden="true">→</span></a>
+      <a href="#"><span class="ico" aria-hidden="true">⚽</span>Urheilu<span class="arrow" aria-hidden="true">→</span></a>
+    </div>
+  </section>
+
+  <section class="zone z-vapaa" id="vapaa" aria-labelledby="h-vapaa">
+    <div class="zone-head">
+      <span class="zone-icon" aria-hidden="true">🎈</span>
+      <div>
+        <h2 class="display" id="h-vapaa">Vapaa-aika ja yhteisöt</h2>
+        <p class="info">Harrastukset, eläkeyhdistykset, hengelliset yhteisöt ja mukavaa ajanvietettä.</p>
+      </div>
+    </div>
+    <div class="zone-links">
+      <a href="#"><span class="ico" aria-hidden="true">🎈</span>Vapaa-aika<span class="arrow" aria-hidden="true">→</span></a>
+      <a href="#"><span class="ico" aria-hidden="true">👥</span>Eläkeyhdistykset<span class="arrow" aria-hidden="true">→</span></a>
+      <a href="#"><span class="ico" aria-hidden="true">⛪</span>Hengellisyys<span class="arrow" aria-hidden="true">→</span></a>
+      <a href="#"><span class="ico" aria-hidden="true">🍿</span>Viihde<span class="arrow" aria-hidden="true">→</span></a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p><strong>Aloitussivu</strong> · Vanhustyön keskusliitto · SeniorSurf</p>
+  <p class="note">UI-vedos A: yhtenäiset värivyöhykkeet — ei toiminnallisuutta, vain ulkoasun arviointiin.</p>
+</footer>
+
+<div class="badge">VEDOS A · Värivyöhykkeet</div>
+
+<script>
+  function tick() {
+    const now = new Date();
+    document.getElementById('clock').textContent =
+      now.toLocaleTimeString('fi-FI', { hour: '2-digit', minute: '2-digit' });
+    document.getElementById('date').textContent =
+      now.toLocaleDateString('fi-FI', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+    const h = now.getHours();
+    document.querySelector('.greeting').textContent =
+      h < 10 ? 'Hyvää huomenta!' : h < 17 ? 'Hyvää päivää!' : 'Hyvää iltaa!';
+  }
+  tick(); setInterval(tick, 30000);
+</script>
+</body>
+</html>

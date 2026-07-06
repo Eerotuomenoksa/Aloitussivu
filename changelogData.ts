@@ -24,33 +24,79 @@ export type ChangelogCommit = {
   tags: string[];
 };
 
-export const CHANGELOG_GENERATED_AT = "24.6.2026 klo 09.59";
+export const CHANGELOG_GENERATED_AT = "6.7.2026 klo 21.31";
 export const CHANGELOG_VERSION = "0.72.0";
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
-  "Sivustolle lisättiin anonyymi testipalautelomake, ylläpidon koontinäkymä ja kahden minuutin jälkeen näkyvä kyselykehotus.",
-  "Sivun otsikkoa, kuvausta ja favicon-kuvakkeita täsmennettiin, ja kehitysjonon julkiselle käsittelymerkinnälle annettiin pidempi tekstikenttä.",
-  "Lähelläsi-osion kunnan valinta yhdistettiin otsikon viereen, aluepalvelut ryhmiteltiin selkeämmin ja desktopissa mahtuu nyt kaksi huijausvaroitusta rinnakkain.",
-  "Android-puhelimilla asetuspaneeli pysyy nyt ruudun sisällä ja vierii omana paneelinaan.",
-  "Keravan Lähelläsi-sisältöjä täydennettiin: museoihin lisättiin Sinkka, Halosenniemi ja Ainola sekä urheiluseuroihin KP-75, Keravan Urheilijat, Keski-Uudenmaan Yleisurheilu ja PK Keski-Uusimaa.",
+  "Alueelliset linkit kertovat nyt selvemmin, onko kyse oman kunnan palvelusta, seudullisesta palvelusta, hyvinvointialueesta, naapurikunnan palvelusta vai valtakunnallisesta hausta.",
   "Suosikkien löydettävyyttä parannettiin pitämällä tähdet näkyvissä, selkeyttämällä Omat suosikkini -ohjetta ja näyttämällä puuttuvista paikallisuutisista oma viesti.",
   "Huijausvaroitusten etusivunäkymää tiivistettiin niin, että varoitukset vievät vähemmän tilaa mutta avautuvat edelleen lisätietoihin.",
+  "Modaaleihin lisättiin yhteinen fokusloukku, Escape-sulku ja fokuksen palautus, jotta ikkunoita voi käyttää luotettavammin näppäimistöllä ja ruudunlukijalla.",
+  "Palautelomakkeen kuvakaappausliitteet rajattiin sallittuihin kuvatyyppeihin ja turvalliseen data URL -muotoon.",
   "Versionumerointi otettiin käyttöön: nykyinen versio näkyy footerissa ja muutoslokin yläosassa.",
   "Muutoshistoria näyttää versionumeron jokaisen muutoksen yhteydessä.",
-  "Linkkien tarkistusdata ja ylläpitoloki päivitettiin uusimman buildin yhteydessä.",
-  "Linkkitarkistukseen lisättiin RSS- ja uutisvirtalinkit sekä http-osoitteet, jotta muuttuneet alasivut ja ei-suojatut linkit jäävät heti pois näkyvistä.",
-  "Google-haku, palveluhaku ja tekoälyavustaja toimivat nyt myös omalla äänellä mikrofonipainikkeen kautta.",
+  "Alueellisten linkkien datamalliin lisättiin alkuperätieto oman kunnan, seudun, hyvinvointialueen, naapurikunnan ja valtakunnallisen fallbackin erottamiseen.",
+  "Joukkoliikenteen alueellisia linkkejä täydennettiin Lahden seudulle, Hämeenlinnan seudulle, Vaasaan, Mustasaareen ja Rovaniemelle.",
+  "Loviisan joukkoliikenteen linkki lisättiin alueellisiin palveluihin.",
+  "Paikallisia kirjastolinkkejä täydennettiin Kirkanta/Kirjastot.fi-dataan pohjautuvilla kirjastokimpoilla.",
+  "Alueellisiin palveluihin lisättiin ja laajennettiin palvelualue-mallia, jotta joukkoliikennejärjestäjät, kuten HSL, Nysse, Föli, Linkki ja Vilkku, voidaan jakaa usealle kunnalle yhdestä paikasta.",
+  "Alueellisista linkeistä poistettiin tuplana näkynyt kunnan verkkosivut -linkki, kun kunnan palvelut näyttää saman asian käyttäjälle selkeämmin.",
+  "Firestore-sääntöjä kovennettiin: ylläpidon sähköpostikirjautumiselta vaaditaan vahvistettu sähköposti, dokumentin ID sidotaan kirjoitettuun dataan ja palauteliitteiden kuvamuoto validoidaan.",
+  "Dokumentaatioon lisättiin täyden tarkistuksen raportti, ylläpito-ohjeet ja alueellisten linkkien kattavuusraportti.",
+  "TypeScript-tarkistus korjattiin kulkemaan läpi erottamalla Vite-asetukset omasta projektistaan ja täsmentämällä ongelmalliset tyypit.",
   "Asetuksiin lisättiin mahdollisuus vaihtaa etusivun digitaalinen kello vanhan ajan analogiseen kelloon.",
   "Digitaalisen kellon päivämäärän välistystä parannettiin ja analogisen kellon numerot sijoitettiin selvästi kellotaulun ulkokehälle.",
-  "Mobiilissa palveluruudukko muutettiin yksipalstaiseksi listaksi ja alakategorioiden symbolit piilotettiin.",
-  "Palveluruudukon ja palveluhaun visuaalinen ilme yhtenäistettiin Aurora-teemaan.",
+  "Lähelläsi-osion kunnan valinta yhdistettiin otsikon viereen ja aluepalvelut ryhmiteltiin selkeämmin.",
   "Alueelliset Kela-taksit poistettiin etusivun aluepalveluiden nostokorteista ja jätettiin näkyviin Liikenne-kategorian taksilinkkien kärkeen.",
   "Etusivun alueellisiin palveluihin nostettiin myös paikalliset kirjastokimpat, jotta esimerkiksi Loviisalle näkyy Helle-kirjastot.",
   "Alueellisten palvelujen kunnan valintaa selkeytettiin: rajausviesti päivitettiin, turha kuntalaatikko poistettiin ja Vaihda kunta -painike siirrettiin työpöytänäkymässä kunnan kentän rinnalle.",
   "Alueellisten palveluiden paneelin kortit, kuntahaku ja paikalliset uutiset päivitettiin uuteen Aurora-pintakieleen.",
-  "Sivustolle lisättiin kokeiluna Sivua tukemassa -sivu, jossa kerrotaan tukijaperiaatteet ja näytetään ensimmäisenä tukijana Vanhustyön keskusliitto ry."
+  "Ylläpitoon lisättiin nimipäivärajapinnan käyttölaskuri, joka näyttää kutsujen kokonaismäärän, onnistuneet ja epäonnistuneet haut sekä viimeisimmän käyttöajan.",
+  "Kirjautuminen ja huijausvaroitukset -sivulle lisättiin näkyvä Palaa etusivulle -linkki.",
+  "Sivuston esittelyyn lisättiin tieto, että robottia, Google-hakua ja palveluhakua voi käyttää myös omalla äänellä.",
+  "Ohje- ja esittelyikkunoiden visuaalinen ilme yhtenäistettiin muun Aurora-ulkoasun kanssa."
 ];
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
+  {
+    "hash": "c4565d5dc4516ece9269c50b1169e0f5b6217183",
+    "date": "2026-06-24",
+    "version": "0.87.0",
+    "changeType": "minor",
+    "subject": "testauslomake sivustolle",
+    "tags": []
+  },
+  {
+    "hash": "20b626d084040b974bba48642af09b4c8eba1845",
+    "date": "2026-06-22",
+    "version": "0.86.2",
+    "changeType": "patch",
+    "subject": "kirjaa testipalautteen kasittelymalli",
+    "tags": []
+  },
+  {
+    "hash": "0fdd9b67c699ecf64dc6583b2c204eb34954c426",
+    "date": "2026-06-22",
+    "version": "0.86.1",
+    "changeType": "patch",
+    "subject": "viimeistele testausjakson nakyvat korjaukset",
+    "tags": []
+  },
+  {
+    "hash": "2e57302ce85d5c61401bdde662ad1c453cf9de70",
+    "date": "2026-06-22",
+    "version": "0.86.0",
+    "changeType": "minor",
+    "subject": "selkeyta aluepalveluiden desktop-nakyma",
+    "tags": []
+  },
+  {
+    "hash": "9af4ef6729abc61f5ab90ed16d703ac304435101",
+    "date": "2026-06-17",
+    "version": "0.85.0",
+    "changeType": "minor",
+    "subject": "Testaaja palautteen korjauksia",
+    "tags": []
+  },
   {
     "hash": "1f376b2a1f7e20efd68a6a5c918ae76030aab2db",
     "date": "2026-06-14",

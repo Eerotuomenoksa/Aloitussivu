@@ -16,10 +16,10 @@ const NAMEDAY_API_STATS_DOCUMENT = 'namedayApi';
 const toNumber = (value: unknown) => (typeof value === 'number' && Number.isFinite(value) ? value : 0);
 const toMonthlyRequests = (value: unknown) => {
   if (!value || typeof value !== 'object') return {};
+  const entries: [string, number][] = Object.entries(value as Record<string, unknown>)
+    .map(([month, count]) => [month, toNumber(count)]);
   return Object.fromEntries(
-    Object.entries(value as Record<string, unknown>)
-      .map(([month, count]) => [month, toNumber(count)])
-      .filter(([, count]) => count > 0)
+    entries.filter(([, count]) => count > 0)
   );
 };
 const getFirestoreReadErrorMessage = (error: { code?: string; message: string }) => (

@@ -2,19 +2,46 @@
 <img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
 </div>
 
-# Run and deploy your AI Studio app
+# Aloitussivu
 
-This contains everything you need to run your app locally.
+SeniorSurf-kayttoon rakennettu React/Vite-sovellus, joka kokoaa helppokayttoisia yleisia ja alueellisia linkkeja, palautteenkeruuta, yllapitotoimintoja ja kevyita Firebase-taustapalveluja.
 
-View your app in AI Studio: https://ai.studio/apps/6554f890-fbbf-4a63-b537-040b0b601d33
+## Paikallinen kehitys
 
-## Run Locally
+**Edellytys:** Node.js 20 tai uudempi.
 
-**Prerequisites:**  Node.js
+1. Asenna riippuvuudet: `npm install`
+2. Kopioi tarvittaessa `.env.example` tiedostoksi `.env.local` ja tayta vain julkiset `VITE_*`-arvot.
+3. Kaynnista kehityspalvelin: `npm run dev`
 
+Frontendin `VITE_*`-arvot paatyvat selaimen JavaScriptiin, joten niihin ei saa laittaa Gemini-avaimia, admin-salaisuuksia, Firebase service account -tietoja tai muita salaisuuksia. Cloud Functions -salaisuudet asetetaan Firebase Secret Manageriin tai turvalliseen deploy-ymparistoon.
 
-1. Install dependencies:
-   `npm install`
-2. Copy [.env.example](.env.example) to `.env.local` and fill only the public `VITE_*` values. Do not put Gemini or other secret API tokens in frontend env files.
-3. Run the app:
-   `npm run dev`
+## Tarkistukset
+
+Kayta ennen julkaisua tai isompaa muutosta ainakin:
+
+- `npm run check:secrets` tarkistaa tunnettuja kovakoodattuja salaisuuksia.
+- `npm run regional-coverage` paivittaa alueellisten linkkien kattavuusraportin.
+- `npx tsc --noEmit -p tsconfig.json` tarkistaa frontendin TypeScript-tyypit.
+- `npx vite build` tekee frontend-buildin ilman ylimaaraisia dokumenttigeneraattoreita.
+- `cd functions && npm run build` tarkistaa Cloud Functions -tyypityksen.
+
+## Tietoturvan peruslinja
+
+- Firestore-saannot ovat ensisijainen kirjoitus- ja yllapito-oikeuksien valvontapaikka.
+- Yllapito-oikeus ei saa nojata selaimen `localStorage`-arvoihin; niita saa kayttaa vain kayttoliittyman apuna.
+- Kayttajien kirjoittama palaute ja linkki-ilmoitukset validoidaan seka clientissa etta Firestore-saannoissa.
+- Kuvakaappaukset rajataan sallittuihin kuvatyyppeihin ja kokoon ennen tallennusta.
+- Firebase Hosting -otsakkeet maaritetaan tiedostossa `firebase.json`.
+
+## Alueelliset linkit
+
+Alueelliset joukkoliikenne-, palveluliikenne- ja uutispuutteet seurataan tiedostoissa:
+
+- `localServices.ts`
+- `localServiceTransportLinks.ts`
+- `localNewspaperFeeds.ts`
+- `docs/alueelliset-linkit-puuttuvat-kunnat.md`
+- `outputs/regional-link-coverage.json`
+
+Uusi alueellinen linkki lisataan vain, kun virallinen lahde tai selkea palveluntuottajan lahde loytyy. Jos linkki palvelee useaa kuntaa, merkitse se seudulliseksi alueeksi, jotta kayttajalle voidaan nayttaa, onko kyse oman kunnan, seudun vai valtakunnallisesta fallback-linkista.

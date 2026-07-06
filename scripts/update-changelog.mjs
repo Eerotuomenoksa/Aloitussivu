@@ -177,8 +177,17 @@ function summarizeWorktree(changes) {
   }
 
   if (paths.some((pathName) => ['components/QuickLinks.tsx', 'components/ProviderModal.tsx', 'components/LocalNewsHeadlines.tsx', 'components/ScamAlertsBanner.tsx', 'components/RegionalServicesPanel.tsx', 'i18n.tsx'].includes(pathName))) {
+    notes.push('Alueelliset linkit kertovat nyt selvemmin, onko kyse oman kunnan palvelusta, seudullisesta palvelusta, hyvinvointialueesta, naapurikunnan palvelusta vai valtakunnallisesta hausta.');
     notes.push('Suosikkien löydettävyyttä parannettiin pitämällä tähdet näkyvissä, selkeyttämällä Omat suosikkini -ohjetta ja näyttämällä puuttuvista paikallisuutisista oma viesti.');
     notes.push('Huijausvaroitusten etusivunäkymää tiivistettiin niin, että varoitukset vievät vähemmän tilaa mutta avautuvat edelleen lisätietoihin.');
+  }
+
+  if (paths.some((pathName) => ['hooks/useModalFocusTrap.ts', 'components/FeedbackModal.tsx', 'components/LinkReportModal.tsx', 'components/InfoModal.tsx', 'components/HomepageModal.tsx', 'components/ProviderModal.tsx'].includes(pathName))) {
+    notes.push('Modaaleihin lisättiin yhteinen fokusloukku, Escape-sulku ja fokuksen palautus, jotta ikkunoita voi käyttää luotettavammin näppäimistöllä ja ruudunlukijalla.');
+  }
+
+  if (paths.some((pathName) => ['components/FeedbackModal.tsx'].includes(pathName))) {
+    notes.push('Palautelomakkeen kuvakaappausliitteet rajattiin sallittuihin kuvatyyppeihin ja turvalliseen data URL -muotoon.');
   }
 
   if (paths.some((pathName) => ['appVersion.ts', 'package.json', 'package-lock.json', 'muutosloki.tsx', 'App.tsx'].includes(pathName))) {
@@ -195,10 +204,24 @@ function summarizeWorktree(changes) {
   }
 
   if (paths.some((pathName) => ['localServices.ts'].includes(pathName))) {
+    notes.push('Alueellisten linkkien datamalliin lisättiin alkuperätieto oman kunnan, seudun, hyvinvointialueen, naapurikunnan ja valtakunnallisen fallbackin erottamiseen.');
+    notes.push('Joukkoliikenteen alueellisia linkkejä täydennettiin Lahden seudulle, Hämeenlinnan seudulle, Vaasaan, Mustasaareen ja Rovaniemelle.');
     notes.push('Loviisan joukkoliikenteen linkki lisättiin alueellisiin palveluihin.');
     notes.push('Paikallisia kirjastolinkkejä täydennettiin Kirkanta/Kirjastot.fi-dataan pohjautuvilla kirjastokimpoilla.');
     notes.push('Alueellisiin palveluihin lisättiin ja laajennettiin palvelualue-mallia, jotta joukkoliikennejärjestäjät, kuten HSL, Nysse, Föli, Linkki ja Vilkku, voidaan jakaa usealle kunnalle yhdestä paikasta.');
     notes.push('Alueellisista linkeistä poistettiin tuplana näkynyt kunnan verkkosivut -linkki, kun kunnan palvelut näyttää saman asian käyttäjälle selkeämmin.');
+  }
+
+  if (paths.some((pathName) => ['firestore.rules'].includes(pathName))) {
+    notes.push('Firestore-sääntöjä kovennettiin: ylläpidon sähköpostikirjautumiselta vaaditaan vahvistettu sähköposti, dokumentin ID sidotaan kirjoitettuun dataan ja palauteliitteiden kuvamuoto validoidaan.');
+  }
+
+  if (paths.some((pathName) => ['README.md', 'security_best_practices_report.md', 'docs/alueelliset-linkit-puuttuvat-kunnat.md'].includes(pathName))) {
+    notes.push('Dokumentaatioon lisättiin täyden tarkistuksen raportti, ylläpito-ohjeet ja alueellisten linkkien kattavuusraportti.');
+  }
+
+  if (paths.some((pathName) => ['tsconfig.json', 'vite-env.d.ts', 'adminStats.ts', 'components/RegionalServicesPanel.tsx'].includes(pathName))) {
+    notes.push('TypeScript-tarkistus korjattiin kulkemaan läpi erottamalla Vite-asetukset omasta projektistaan ja täsmentämällä ongelmalliset tyypit.');
   }
 
   if (paths.some((pathName) => ['constants.tsx'].includes(pathName))) {

@@ -1,10 +1,10 @@
-# Elokuun julkaisusuunnitelma: SeniorSurfin aloitussivu
+# Elokuun julkaisusuunnitelma: aloitussivu
 
 Tämä suunnitelma kokoaa julkisen testauksen jälkeiset työt, Cloudcity-siirron valmistelun ja lopullisen julkaisun vaiheet. Lähtökohtana on, että julkinen testaus alkaa 1.6. ja kestää noin kuukauden, heinäkuu on lomakuukausi, ja elokuun alussa aloitetaan testitulosten läpikäynti sekä julkaisun viimeistely.
 
 ## 1. Tavoite
 
-Tavoitteena on viedä SeniorSurfin aloitussivu julkiseen, vakaaseen tuotantokäyttöön elo-syyskuussa. Lopullinen osoite on joko oma selkeä domain tai SeniorSurfin alla oleva polku:
+Tavoitteena on viedä aloitussivu julkiseen, vakaaseen tuotantokäyttöön elo-syyskuussa. Lopullinen osoite on joko oma selkeä domain tai SeniorSurfin alla oleva polku:
 
 - `seniorsurf.fi/aloitussivu`
 - vaihtoehtoisesti erillinen oma domain, jos sivustolle päätetään antaa itsenäinen nimi
@@ -495,6 +495,8 @@ Ensisijaisesti `seniorsurf.fi/aloitussivu`, ellei löydy erittäin selkeää oma
 
 ## 14. Elokuun työpaketit
 
+Tarkempi elokuun ensimmäisen viikon suunnitelma on tiedostossa `docs/elokuun-ensimmaisen-viikon-tyopaketti-2026-08-03.md`. Se yhdistää WP1-testitulosten koonnin ja WP2-julkaisun rajauksen käytännön päiväkohtaiseksi työpaketiksi viikolle 3.-9.8.2026.
+
 ### Työpaketti 1: palautteen analyysi
 
 Kestoarvio: 1-3 päivää
@@ -504,6 +506,26 @@ Tulokset:
 - palautekooste
 - päätös korjattavista asioista
 - priorisoitu tehtävälista
+
+Alueellisten linkkien täydentämiseen käytetään erillistä suunnitelmaa `docs/puuttuvien-alueellisten-linkkien-taydennyssuunnitelma.md`. Sen mukaan puuttuvat kuntalinkit käydään läpi aiheittain, naapurikunnan linkit merkitään erikseen ja käyttöliittymässä kerrotaan, onko linkki oman kunnan, seudun, hyvinvointialueen, naapurikunnan vai valtakunnallisen fallbackin palvelu.
+
+### Työpaketti 1A: julkaisua edeltävät päätökset ja poistot
+
+Kestoarvio: 0,5-1 päivää
+
+Tavoite:
+
+Kootaan yhteen ne päätökset ja siivoukset, jotka pitää tehdä ennen kuin palvelua voi julkaista pysyvämmin. Tämä työpaketti kannattaa käsitellä samassa päätöskeskustelussa kuin palautteen priorisointi, jotta julkaisu ei jää kiinni nimistä, osoitteista tai ylläpidon avoimista ratkaisuista.
+
+Tulokset:
+
+- päätös virallisesta nimestä: jääkö työnimi Aloitussivu käyttöön vai valitaanko muu julkaisunimi
+- päätös lopullisesta osoitteesta: oma domain, SeniorSurf-polku tai väliaikainen turvallisempi hosting-osoite
+- päätös ylläpidon sähköposti-ilmoituksista: vastaanottajat, lähettäjäosoite, lähetyspalvelu ja varamalli
+- lista poistettavista tai piilotettavista linkeistä, kuten testilinkit, keskeneräiset kokeilut ja vain ylläpitoon tarkoitetut linkit
+- päätös siitä, poistetaanko ylläpidon julkinen footer-linkki ja vaihdetaanko ylläpitoreitit vähemmän arvattaviin osoitteisiin
+- varmistus, että ylläpidon suojaus ei perustu pelkkään kryptisempään linkkiin, vaan kirjautumiseen, admin-oikeuksiin, palvelinpuolen sääntöihin, indeksoinnin estoon ja tarvittaessa pyyntörajoihin
+- päivitystarpeet kieliversioihin, metatietoihin, tietosuoja- ja saavutettavuussivuihin sekä julkaisuviestintään
 
 ### Työpaketti 1B: saavutettavuus ja tietosuoja
 
@@ -541,6 +563,7 @@ Selvitettävät asiat:
 - SSH-tunnelin käyttö
 - ympäristömuuttujien tai salaisuuksien hallinta
 - sähköpostilähetysten tuki ylläpidon ilmoituksille, esimerkiksi Cloudcityn sähköposti, Microsoft 365 SMTP tai erillinen lähetyspalvelu
+- ylläpidon ilmoitusten vastaanottajat, lähettäjäosoite ja salaisuuksien palvelinpuolinen säilytys
 - staging-ympäristön mahdollisuus
 - lokitus ja varmuuskopiot
 
@@ -596,6 +619,10 @@ Kestoarvio: 1-2 päivää
 Tulokset:
 
 - lopullinen domain tai polku käytössä
+- virallinen nimi, osoite ja yhteystiedot päivitetty kaikkiin kieliversioihin, metatietoihin ja selosteisiin
+- julkaisuun kuulumattomat linkit poistettu tai piilotettu
+- ylläpitolinkit ja -reitit siistitty, eikä ylläpito ole julkisen navigaation varassa
+- ylläpidon ilmoitusmalli tai manuaalinen tarkistusrytmi sovittu
 - ohjeet päivitetty
 - käyttäjätestauksen jälkeen sovitut korjaukset mukana
 - ylläpito ohjeistettu
@@ -664,6 +691,10 @@ Hallinta:
 Ennen elokuun toteutusta pitää päättää:
 
 - lopullinen osoite: oma domain vai `seniorsurf.fi/aloitussivu`
+- virallinen nimi: jääkö Aloitussivu käyttöön vai valitaanko muu nimi
+- mikä sähköposti tai jakelulista vastaanottaa ylläpidon ilmoitukset
+- mitkä testilinkit, ylläpitolinkit ja keskeneräiset palvelulinkit poistetaan tai piilotetaan ennen julkaisua
+- poistetaanko ylläpito julkisesta navigaatiosta ja vaihdetaanko ylläpitoreitit vähemmän arvattaviin osoitteisiin
 - käytetäänkö Firebasea vielä julkaisussa vai siirrytäänkö heti Cloudcity-tietokantaan
 - mikä backend-tekniikka Cloudcityssä valitaan
 - mikä kirjautumistapa ylläpitoon tulee
@@ -697,7 +728,7 @@ Jos aika loppuu, turvallisin välimalli on:
 Pitkän aikavälin tavoite on kuitenkin:
 
 ```text
-SeniorSurfin aloitussivu
+aloitussivu
   -> Cloudcity API
     -> Cloudcityn oma tietokanta
 ```

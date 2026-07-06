@@ -2,7 +2,7 @@
 
 Päivitetty: 31.5.2026
 
-Tämä dokumentti suunnittelee kaksi julkista lisäsivua SeniorSurfin aloitussivulle:
+Tämä dokumentti suunnittelee kaksi julkista lisäsivua aloitussivulle:
 
 - `saavutettavuus.html`
 - `tietosuoja.html`
@@ -43,7 +43,7 @@ Tietosuojasivun pitää vastata tavalliselle käyttäjälle:
 
 ### Pääviesti
 
-SeniorSurfin aloitussivu on rakennettu niin, että sitä voi käyttää ilman kirjautumista ja ilman evästeisiin perustuvaa seurantaa. Sivusto tallentaa käyttäjän omia asetuksia vain käyttäjän omaan selaimeen.
+aloitussivu on rakennettu niin, että sitä voi käyttää ilman kirjautumista ja ilman evästeisiin perustuvaa seurantaa. Sivusto tallentaa käyttäjän omia asetuksia vain käyttäjän omaan selaimeen.
 
 ### Ehdotettu rakenne
 
@@ -63,7 +63,7 @@ SeniorSurfin aloitussivu on rakennettu niin, että sitä voi käyttää ilman ki
 
 #### Mitä tämä sivu kertoo
 
-Tämä tietosuojasivu kertoo, mitä tietoja SeniorSurfin aloitussivu käsittelee ja mihin tarkoitukseen. Sivun tarkoitus on olla selkeä myös käyttäjälle, joka ei tunne tietosuojatermejä.
+Tämä tietosuojasivu kertoo, mitä tietoja aloitussivu käsittelee ja mihin tarkoitukseen. Sivun tarkoitus on olla selkeä myös käyttäjälle, joka ei tunne tietosuojatermejä.
 
 #### Mitä tietoja käsitellään
 
@@ -227,7 +227,7 @@ Saavutettavuussivun pitää kertoa:
 
 ### Pääviesti
 
-SeniorSurfin aloitussivu on suunniteltu ikääntyneille käyttäjille: isot painikkeet, selkeä rakenne, tekstikoon säätö ja rauhallinen näkymä ovat osa palvelun ydintä. Saavutettavuus ei ole erillinen lisä, vaan sivun peruslähtökohta.
+aloitussivu on suunniteltu ikääntyneille käyttäjille: isot painikkeet, selkeä rakenne, tekstikoon säätö ja rauhallinen näkymä ovat osa palvelun ydintä. Saavutettavuus ei ole erillinen lisä, vaan sivun peruslähtökohta.
 
 ### Ehdotettu rakenne
 
@@ -245,19 +245,19 @@ SeniorSurfin aloitussivu on suunniteltu ikääntyneille käyttäjille: isot pain
 
 #### Saavutettavuusselosteen tarkoitus
 
-Tämä saavutettavuusseloste koskee SeniorSurfin aloitussivua. Seloste kertoo, miten saavutettavuus on huomioitu, mitä puutteita on tunnistettu ja miten käyttäjä voi antaa palautetta.
+Tämä saavutettavuusseloste koskee aloitussivua. Seloste kertoo, miten saavutettavuus on huomioitu, mitä puutteita on tunnistettu ja miten käyttäjä voi antaa palautetta.
 
 Seloste on laadittu kehitysvaiheen tarkistuksen perusteella. Sitä päivitetään ennen laajempaa julkaisua, kun näppäimistö-, kontrasti- ja ruudunlukijatestausta on täydennetty.
 
 #### Palvelun saavutettavuuden tila
 
-SeniorSurfin aloitussivu täyttää saavutettavuuden tavoitteet osittain.
+aloitussivu täyttää saavutettavuuden tavoitteet osittain.
 
 Sivustolla on jo paljon saavutettavuutta tukevia ratkaisuja, kuten suuret painikkeet, selkeä rakenne, tekstikoon säätö, pääsisältöön hyppäämisen linkki ja kuvaavat nimet painikkeille. Kaikkia kohtia ei ole kuitenkaan vielä testattu riittävän kattavasti ruudunlukijalla ja pelkällä näppäimistöllä.
 
 #### Saavutettavuuden tavoite
 
-SeniorSurfin aloitussivun tavoitteena on olla mahdollisimman helppo käyttää myös silloin, kun näkö, motoriikka, muisti tai digitaidot aiheuttavat haasteita.
+aloitussivun tavoitteena on olla mahdollisimman helppo käyttää myös silloin, kun näkö, motoriikka, muisti tai digitaidot aiheuttavat haasteita.
 
 Sivusto pyrkii tukemaan erityisesti:
 

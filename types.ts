@@ -5,7 +5,18 @@ export interface Provider {
   group?: string;
   phone?: string;
   phoneUrl?: string;
+  municipality?: string;
+  municipalities?: string[];
+  area?: string;
+  sourceMunicipality?: string;
+  sourceArea?: string;
+  scope?: RegionalProviderScope;
+  fallbackFor?: string[];
+  sourceNote?: string;
+  verifiedAt?: string;
 }
+
+export type RegionalProviderScope = 'municipality' | 'regional' | 'wellbeingArea' | 'neighbor' | 'nationalFallback';
 
 export interface Municipality {
   code: string;

@@ -5,6 +5,8 @@ import { filterVisibleProviders, useLinkVisibilityVersion } from '../linkVisibil
 import { Shortcut, Provider, Favorite, LinkReportDraft, LocalityInfo } from '../types';
 import { useI18n } from '../i18n';
 import NearbyGuidancePlaces from './NearbyGuidancePlaces';
+import { getRegionalProviderScopeInfo, resolveRegionalContext } from '../localServices';
+import { useModalFocusTrap } from '../hooks/useModalFocusTrap';
 
 interface ProviderModalProps {
   shortcut: Shortcut | null;
@@ -22,10 +24,25 @@ const getPhoneHref = (provider: Provider) => {
   return `tel:${provider.phone.replace(/[^\d+]/g, '')}`;
 };
 
+const formatScopeLabel = (scopeInfo: ReturnType<typeof getRegionalProviderScopeInfo>, t: ReturnType<typeof useI18n>['t']) => {
+  if (!scopeInfo) return '';
+  const label = scopeInfo.scope === 'municipality'
+    ? t('regionalScopeOwnMunicipality')
+    : scopeInfo.scope === 'regional'
+      ? t('regionalScopeRegional')
+      : scopeInfo.scope === 'wellbeingArea'
+        ? t('regionalScopeWellbeingArea')
+        : scopeInfo.scope === 'neighbor'
+          ? t('regionalScopeNeighbor')
+          : t('regionalScopeNationalFallback');
+  return scopeInfo.detail ? `${label}: ${scopeInfo.detail}` : label;
+};
+
 const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSizeStep = 0, favorites, onToggleFavorite, onReportLink, locality = null }) => {
   const { t, categoryName } = useI18n();
   useLinkVisibilityVersion();
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
   const titleClasses = [
     'text-3xl md:text-5xl',
     'text-4xl md:text-6xl',
@@ -58,25 +75,23 @@ const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSi
     'text-6xl w-20 h-20',
   ];
 
+  const rawProviders = shortcut?.providers ?? [];
+  const visibleProviders = filterVisibleProviders(rawProviders) ?? [];
+  const isOpen = Boolean(shortcut && rawProviders.length > 0 && visibleProviders.length > 0);
+
+  useModalFocusTrap(modalRef, isOpen, onClose, closeButtonRef);
+
   useEffect(() => {
-    if (shortcut?.providers) {
-      window.requestAnimationFrame(() => closeButtonRef.current?.focus());
-    }
     const root = document.getElementById('root');
     const previousAriaHidden = root?.getAttribute('aria-hidden');
     const previousDisplay = root?.style.display;
     const previousPointerEvents = root?.style.pointerEvents;
-    if (root && shortcut?.providers) {
+    if (root && isOpen) {
       root.setAttribute('aria-hidden', 'true');
       root.style.display = 'none';
       root.style.pointerEvents = 'none';
     }
-    const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-    };
-    window.addEventListener('keydown', handleEsc);
     return () => {
-      window.removeEventListener('keydown', handleEsc);
       if (!root) return;
       if (previousAriaHidden === null) {
         root.removeAttribute('aria-hidden');
@@ -86,12 +101,12 @@ const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSi
       root.style.display = previousDisplay ?? '';
       root.style.pointerEvents = previousPointerEvents ?? '';
     };
-  }, [onClose, shortcut]);
+  }, [isOpen]);
 
   if (!shortcut || !shortcut.providers) return null;
 
-  const visibleProviders = filterVisibleProviders(shortcut.providers) ?? [];
   if (visibleProviders.length === 0) return null;
+  const regionalContext = resolveRegionalContext('', locality);
 
   const groupedProviders = visibleProviders.reduce((acc, provider) => {
     const key = categoryName(provider.group || t('services'));
@@ -110,7 +125,7 @@ const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSi
       aria-modal="true"
       aria-labelledby="modal-title"
     >
-      <div className="aurora-modal-shell relative z-[10000] flex max-h-[calc(100dvh-1.5rem)] w-full max-w-6xl flex-col overflow-hidden sm:my-8 sm:max-h-[95vh]">
+      <div ref={modalRef} tabIndex={-1} className="aurora-modal-shell relative z-[10000] flex max-h-[calc(100dvh-1.5rem)] w-full max-w-6xl flex-col overflow-hidden sm:my-8 sm:max-h-[95vh]">
         <div className="aurora-modal-header p-4 text-white flex items-center justify-between gap-3 shadow-xl sm:p-6 md:p-10">
           <div className="flex min-w-0 items-center gap-3 sm:gap-4 md:gap-6">
             <span className={`flex shrink-0 items-center justify-center rounded-[1.5rem] bg-white/10 p-3 transition-all duration-300 ${iconClasses[fontSizeStep]}`} aria-hidden="true">{shortcut.icon}</span>
@@ -146,6 +161,7 @@ const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSi
                 {groupedProviders[group].map((provider, idx) => {
                   const isFav = favorites.some(f => f.url === provider.url);
                   const phoneHref = getPhoneHref(provider);
+                  const scopeLabel = regionalContext ? formatScopeLabel(getRegionalProviderScopeInfo(provider, regionalContext), t) : '';
                   const fav: Favorite = {
                     name: provider.name,
                     url: provider.url,
@@ -157,8 +173,15 @@ const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSi
                     <div key={idx} className="relative group/card">
                       <div className={`aurora-card flex flex-col justify-between gap-4 text-center transition-all hover:-translate-y-0.5 hover:border-[var(--theme-primary-mid)] hover:shadow-md sm:p-5 md:gap-5 md:p-6 ${provider.phone ? 'min-h-[180px] md:min-h-[220px]' : 'min-h-[132px] md:min-h-[150px]'}`}>
                         <div className="flex flex-1 items-center justify-center px-2 sm:px-4 md:px-8">
-                          <span className={`font-black leading-tight text-[var(--theme-text)] ${itemTextClasses[fontSizeStep]}`}>
-                            {provider.name}
+                          <span className="flex min-w-0 flex-col items-center gap-2">
+                            <span className={`font-black leading-tight text-[var(--theme-text)] ${itemTextClasses[fontSizeStep]}`}>
+                              {provider.name}
+                            </span>
+                            {scopeLabel && (
+                              <span className="text-sm font-black leading-tight text-[var(--theme-muted)] md:text-base">
+                                {scopeLabel}
+                              </span>
+                            )}
                           </span>
                         </div>
                         <div className="grid w-full grid-cols-1 gap-3">

@@ -12,6 +12,7 @@
     "municipality-locales": "node scripts/update-municipality-website-locales.mjs",
     "newspapers": "node scripts/update-newspapers.mjs",
     "newspaper-feeds": "node scripts/update-newspaper-feeds.mjs",
+    "regional-coverage": "node scripts/update-regional-link-coverage.mjs",
     "changelog": "node scripts/update-changelog.mjs",
     "version:bump": "node scripts/bump-version.mjs",
     "release:prepare": "npm run version:bump && npm run changelog",

@@ -1,0 +1,1537 @@
+{
+  "schemaVersion": "1.0",
+  "project": "aloitussivu",
+  "plannedReleaseDate": "2026-10-06",
+  "currentVersionAtPlanning": "0.70.0",
+  "timezone": "Europe/Helsinki",
+  "purpose": "Koneluettava tyopakettisuunnitelma 6.10.2026 julkaisuun.",
+  "codexEffortLevels": {
+    "minimal": {
+      "description": "Kayta pieniin mekaanisiin muutoksiin, yksittaisiin linkkeihin, tekstikorjauksiin ja tiedostojen kevyisiin paivityksiin.",
+      "typicalUse": [
+        "yksittainen linkkikorjaus",
+        "pieni tekstimuutos",
+        "yksinkertainen dokumenttilisays"
+      ]
+    },
+    "low": {
+      "description": "Kayta rajattuihin koodimuutoksiin, pieniin UI-korjauksiin, taulukkojen tai dokumenttien paivityksiin ja tarkistusajoihin.",
+      "typicalUse": [
+        "pieni komponenttikorjaus",
+        "linkkitarkistuksen tulosten kasittely",
+        "selkeasti rajattu bugi"
+      ]
+    },
+    "medium": {
+      "description": "Kayta tyypilliseen toteutukseen, jossa pitaa lukea useampi tiedosto, tehda toteutus, ajaa testit ja paivittaa dokumentaatio.",
+      "typicalUse": [
+        "uusi pieni toiminto",
+        "saavutettavuuskorjausten sarja",
+        "testipalautteen perusteella tehtavat usean tiedoston muutokset"
+      ]
+    },
+    "high": {
+      "description": "Kayta monimutkaisiin, riskialttiisiin tai poikkileikkaaviin muutoksiin, joissa tarvitaan huolellista suunnittelua ja vahvistusta.",
+      "typicalUse": [
+        "Cloudcity- tai Firebase-tuotantopolku",
+        "kirjautuminen ja yllapito-oikeudet",
+        "tietosuoja- tai saavutettavuuteen vaikuttavat laajat muutokset"
+      ]
+    },
+    "xhigh": {
+      "description": "Kayta vain kriittisiin arkkitehtuuri-, tietoturva- tai migraatiopaatoksiin, joissa virhe voi estaa julkaisun tai vaarantaa tietoja.",
+      "typicalUse": [
+        "salaisuuksien hallinnan uudistus",
+        "tietokantamigraatio tuotantoon",
+        "julkaisua estavan tietoturvahaavakkeen korjaus"
+      ]
+    }
+  },
+  "versioningPolicy": {
+    "major": "Rikkovat tai tuotantomallia muuttavat isot muutokset. Ensimmainen vakaa julkaisu on 1.0.0.",
+    "minor": "Uudet kayttajalle nakyvat ominaisuudet tai selkeat kokonaisuudet ennen 1.0-julkaisua.",
+    "patch": "Bugikorjaukset, linkkien lisaykset, tekstikorjaukset, dokumentaatio ja yllapito.",
+    "releaseCandidate": "0.95.0",
+    "preReleaseApproval": "0.99.0",
+    "productionRelease": "1.0.0"
+  },
+  "workPackages": [
+    {
+      "id": "WP0",
+      "name": "Testausjakson tuki",
+      "status": "planned",
+      "timeWindow": {
+        "startDate": "2026-06-01",
+        "endDate": "2026-07-05",
+        "startWeek": "2026-W23",
+        "endWeek": "2026-W27"
+      },
+      "plannedVersions": [
+        "0.71.x"
+      ],
+      "workType": [
+        "kevyt koodaus",
+        "yllapito",
+        "testauksen tuki"
+      ],
+      "recommendedCodexEffort": "low",
+      "recommendedHumanMode": "nopea tarkistus ja hyvaksynta",
+      "humanHours": {
+        "min": 3,
+        "max": 6
+      },
+      "codexHours": {
+        "min": 8,
+        "max": 16
+      },
+      "goal": "Pidetaan avoin testaus kaynnissa ja korjataan vain testauksen estavat tai selvasti hairitsevat asiat.",
+      "inputs": [
+        "testaajien ilmoitukset",
+        "linkkiehdotukset",
+        "virhelokit",
+        "kayttajan suorat havainnot"
+      ],
+      "tasks": [
+        {
+          "id": "WP0-T1",
+          "type": "verification",
+          "description": "Varmista viikoittain, etta testauslinkki, palautelomake, etusivu ja yllapito avautuvat.",
+          "recommendedCodexEffort": "minimal"
+        },
+        {
+          "id": "WP0-T2",
+          "type": "patch",
+          "description": "Korjaa yksittaiset rikkinäiset linkit ja pienet tekstivirheet.",
+          "recommendedCodexEffort": "minimal"
+        },
+        {
+          "id": "WP0-T3",
+          "type": "patch",
+          "description": "Korjaa kriittiset mobiili-, saavutettavuus- tai kirjautumisvirheet, jos ne estavat testausta.",
+          "recommendedCodexEffort": "medium"
+        }
+      ],
+      "acceptanceCriteria": [
+        "Testauslinkki toimii koko jakson ajan.",
+        "Kriittiset testauksen estavat virheet on korjattu tai kirjattu varasuunnitelmaan.",
+        "Testauksen aikana ei ole tehty isoja visuaalisia tai arkkitehtuurimuutoksia."
+      ],
+      "outputs": [
+        "patch-commitit tarvittaessa",
+        "paivitetty palautekoonti",
+        "lista elokuussa kasiteltavista havainnoista"
+      ],
+      "dependencies": [],
+      "releaseCritical": true
+    },
+    {
+      "id": "WP1",
+      "name": "Testitulosten koonti",
+      "status": "planned",
+      "timeWindow": {
+        "startDate": "2026-08-03",
+        "endDate": "2026-08-06",
+        "startWeek": "2026-W32",
+        "endWeek": "2026-W32"
+      },
+      "plannedVersions": [
+        "0.72.0"
+      ],
+      "workType": [
+        "testitulosten lapikaynti",
+        "analyysi",
+        "dokumentointi"
+      ],
+      "recommendedCodexEffort": "medium",
+      "recommendedHumanMode": "aktiivinen tulkinta ja priorisointi",
+      "humanHours": {
+        "min": 6,
+        "max": 10
+      },
+      "codexHours": {
+        "min": 4,
+        "max": 8
+      },
+      "goal": "Muunnetaan avoimen testauksen palaute priorisoiduksi korjaus- ja paatoslistaksi.",
+      "inputs": [
+        "palautelomakkeen vastaukset",
+        "digiopastajien havainnot",
+        "yllapidon linkkiehdotukset",
+        "kayttotilastot",
+        "virhe- ja ajolokit"
+      ],
+      "tasks": [
+        {
+          "id": "WP1-T1",
+          "type": "analysis",
+          "description": "Kokoa palautteet yhteen taulukkoon ja poista selvät duplikaatit.",
+          "recommendedCodexEffort": "low"
+        },
+        {
+          "id": "WP1-T2",
+          "type": "classification",
+          "description": "Luokittele palaute kategorioihin: bugi, kaytettavyys, saavutettavuus, sisalto, uusi idea, tekninen riski.",
+          "recommendedCodexEffort": "medium"
+        },
+        {
+          "id": "WP1-T3",
+          "type": "prioritization",
+          "description": "Ehdota P1/P2/P3-prioriteetit ja merkitse julkaisua estavat havainnot.",
+          "recommendedCodexEffort": "medium"
+        }
+      ],
+      "acceptanceCriteria": [
+        "Kaikki palautteet ovat yhdessa koonnissa.",
+        "Jokaisella palautteella on luokka ja alustava prioriteetti.",
+        "P1/P2-lista on valmis WP2-paatosta varten."
+      ],
+      "outputs": [
+        "testipalautteen yhteenveto",
+        "priorisoitu korjauslista",
+        "jatkokehitykseen siirrettavien ideoiden lista"
+      ],
+      "dependencies": [
+        "WP0"
+      ],
+      "releaseCritical": true
+    },
+    {
+      "id": "WP2",
+      "name": "Julkaisun rajaus",
+      "status": "planned",
+      "timeWindow": {
+        "startDate": "2026-08-05",
+        "endDate": "2026-08-09",
+        "startWeek": "2026-W32",
+        "endWeek": "2026-W32"
+      },
+      "plannedVersions": [],
+      "workType": [
+        "paatos",
+        "rajauksen hallinta",
+        "kokous"
+      ],
+      "recommendedCodexEffort": "low",
+      "recommendedHumanMode": "isomman porukan paatos",
+      "humanHours": {
+        "min": 3,
+        "max": 5
+      },
+      "codexHours": {
+        "min": 2,
+        "max": 4
+      },
+      "goal": "Paatetaan, mitka asiat kuuluvat 6.10. julkaisuun, mitka poistetaan tai piilotetaan ennen julkaisua ja mitka siirretaan jatkokehitykseen.",
+      "inputs": [
+        "WP1 priorisoitu palaute",
+        "julkaisuroadmap",
+        "resurssi- ja aikatauluarvio",
+        "tekniset riskit"
+      ],
+      "tasks": [
+        {
+          "id": "WP2-T1",
+          "type": "decision-prep",
+          "description": "Laadi paatosmateriaali: pakolliset, hyodylliset, myohemmin tehtavat.",
+          "recommendedCodexEffort": "low"
+        },
+        {
+          "id": "WP2-T2",
+          "type": "decision",
+          "description": "Pida paatoskokous ja lukitse julkaisun minimitaso.",
+          "recommendedCodexEffort": "minimal"
+        },
+        {
+          "id": "WP2-T3",
+          "type": "decision-prep",
+          "description": "Laadi erillinen lista poistettavista tai piilotettavista asioista: testilinkit, yllapitolinkit, keskeneraiset kokeilut ja julkiseen julkaisuun kuulumattomat tekniset sivut.",
+          "recommendedCodexEffort": "low"
+        }
+      ],
+      "acceptanceCriteria": [
+        "Julkaisun pakollinen scope on kirjattu.",
+        "Poistettavat ja piilotettavat linkit tai toiminnot on kirjattu omaksi listakseen.",
+        "Jatkokehitykseen siirrettavat asiat on kirjattu.",
+        "Lokakuun julkaisu ei sisalla avoimia 'ehka tehdään' -kokonaisuuksia."
+      ],
+      "outputs": [
+        "hyvaksytty julkaisuscope",
+        "jatkokehityslista",
+        "paivitetty roadmap",
+        "poistettavien ja piilotettavien asioiden lista"
+      ],
+      "dependencies": [
+        "WP1"
+      ],
+      "releaseCritical": true
+    },
+    {
+      "id": "WP3",
+      "name": "Nimi ja osoite",
+      "status": "planned",
+      "timeWindow": {
+        "startDate": "2026-08-05",
+        "endDate": "2026-08-16",
+        "startWeek": "2026-W32",
+        "endWeek": "2026-W33"
+      },
+      "plannedVersions": [],
+      "workType": [
+        "paatos",
+        "viestinta",
+        "brandi"
+      ],
+      "recommendedCodexEffort": "low",
+      "recommendedHumanMode": "isomman porukan paatos",
+      "humanHours": {
+        "min": 3,
+        "max": 6
+      },
+      "codexHours": {
+        "min": 2,
+        "max": 5
+      },
+      "goal": "Paatetaan virallinen julkaisunimi tai vahvistetaan tyonimi Aloitussivu seka lopullinen osoite tai polku.",
+      "inputs": [
+        "nykyiset nimivaihtoehdot",
+        "SeniorSurf-brandi",
+        "domain- ja palvelinmahdollisuudet",
+        "kayttajapalautteen ensivaikutelmat",
+        "nykyinen tyonimi Aloitussivu"
+      ],
+      "tasks": [
+        {
+          "id": "WP3-T1",
+          "type": "decision-prep",
+          "description": "Laadi nimivaihtoehtojen vertailu: ymmarrettavyys, muistettavuus, kieliversiot, domain-sopivuus ja suhde SeniorSurf-brandiin.",
+          "recommendedCodexEffort": "low"
+        },
+        {
+          "id": "WP3-T2",
+          "type": "decision",
+          "description": "Paatetaan virallinen nimi tai vahvistetaan tyonimi Aloitussivu seka lopullinen osoite.",
+          "recommendedCodexEffort": "minimal"
+        },
+        {
+          "id": "WP3-T3",
+          "type": "documentation",
+          "description": "Paivita roadmapiin, kayttoliittymaan, kieliversioihin, metatietoihin ja viestintapohjiin valittu nimi ja osoite.",
+          "recommendedCodexEffort": "low"
+        }
+      ],
+      "acceptanceCriteria": [
+        "Virallinen nimi on paatetty tai tyonimi Aloitussivu on hyvaksytty julkaisunimeksi.",
+        "Julkaisuosoite tai varapolku on paatetty.",
+        "Nimen kaytto on yhtenainen dokumenteissa ja kayttoliittymassa ennen RC-vaihetta.",
+        "Nimi, osoite ja SeniorSurf-konteksti ovat yhtenaiset kaikissa kieliversioissa ja dokumenteissa ennen RC-vaihetta."
+      ],
+      "outputs": [
+        "nimipaatos tai paatos tyonimen kaytosta",
+        "osoitepaatos",
+        "paivitetyt viestintatekstit"
+      ],
+      "dependencies": [
+        "WP2"
+      ],
+      "releaseCritical": true
+    },
+    {
+      "id": "WP4",
+      "name": "Palautteen P1/P2-korjaukset",
+      "status": "planned",
+      "timeWindow": {
+        "startDate": "2026-08-07",
+        "endDate": "2026-08-23",
+        "startWeek": "2026-W32",
+        "endWeek": "2026-W34"
+      },
+      "plannedVersions": [
+        "0.73.0",
+        "0.74.x",
+        "0.75.x",
+        "0.76.x"
+      ],
+      "workType": [
+        "koodaus",
+        "sisalto",
+        "testaus"
+      ],
+      "recommendedCodexEffort": "medium",
+      "recommendedHumanMode": "tarkistus jokaisen korjauskorin jalkeen",
+      "humanHours": {
+        "min": 5,
+        "max": 10
+      },
+      "codexHours": {
+        "min": 16,
+        "max": 35
+      },
+      "goal": "Korjataan testipalautteen perusteella julkaisua estavat tai selvasti kayttokokemusta heikentavat asiat.",
+      "inputs": [
+        "WP1 P1/P2-lista",
+        "kayttoliittyman nykytila",
+        "linkkitarkistusdata",
+        "kieliversioiden havainnot"
+      ],
+      "tasks": [
+        {
+          "id": "WP4-T1",
+          "type": "implementation",
+          "description": "Korjaa P1-bugit yksi kori kerrallaan.",
+          "recommendedCodexEffort": "medium"
+        },
+        {
+          "id": "WP4-T2",
+          "type": "implementation",
+          "description": "Korjaa P2-kaytettavyys- ja sisaltohavainnot, jotka on hyvaksytty julkaisuun.",
+          "recommendedCodexEffort": "medium"
+        },
+        {
+          "id": "WP4-T3",
+          "type": "verification",
+          "description": "Aja build, linkkitarkistus tarvittaessa ja selaintarkistus muutoskohtaisesti.",
+          "recommendedCodexEffort": "low"
+        }
+      ],
+      "acceptanceCriteria": [
+        "Kaikki julkaisuun valitut P1-havainnot on ratkaistu.",
+        "P2-havainnot on ratkaistu tai kirjattu jatkokehitykseen perustelun kanssa.",
+        "Build menee lapi ja muutokset on testattu selaimessa."
+      ],
+      "outputs": [
+        "korjauscommitit",
+        "paivitetty testipalaute-status",
+        "paivitetty muutosloki"
+      ],
+      "dependencies": [
+        "WP1",
+        "WP2"
+      ],
+      "releaseCritical": true
+    },
+    {
+      "id": "WP5",
+      "name": "Visuaalinen lukitus",
+      "status": "planned",
+      "timeWindow": {
+        "startDate": "2026-08-17",
+        "endDate": "2026-08-31",
+        "startWeek": "2026-W34",
+        "endWeek": "2026-W35"
+      },
+      "plannedVersions": [
+        "0.77.0"
+      ],
+      "workType": [
+        "paatos",
+        "UI-koodaus",
+        "design review"
+      ],
+      "recommendedCodexEffort": "medium",
+      "recommendedHumanMode": "yksi paatoskierros, sen jalkeen toteutus",
+      "humanHours": {
+        "min": 4,
+        "max": 8
+      },
+      "codexHours": {
+        "min": 8,
+        "max": 18
+      },
+      "goal": "Lukitaan julkaisun visuaalinen ilme ja estetaan isot ulkoasumuutokset release candidate -vaiheessa.",
+      "inputs": [
+        "testipalautteen visuaaliset havainnot",
+        "nykyinen UI",
+        "SeniorSurf-brandi",
+        "saavutettavuuden kontrastivaatimukset"
+      ],
+      "tasks": [
+        {
+          "id": "WP5-T1",
+          "type": "decision-prep",
+          "description": "Laadi nykyisen ilmeen tiivis arvio ja 1-2 parannusvaihtoehtoa.",
+          "recommendedCodexEffort": "medium"
+        },
+        {
+          "id": "WP5-T2",
+          "type": "decision",
+          "description": "Lukitse paavärit, korttitiheys, painikkeet, mobiilirytmi ja tukijaelementtien kaytto.",
+          "recommendedCodexEffort": "minimal"
+        },
+        {
+          "id": "WP5-T3",
+          "type": "implementation",
+          "description": "Toteuta lukitut visuaaliset muutokset ja tarkista desktop/mobiili.",
+          "recommendedCodexEffort": "medium"
+        }
+      ],
+      "acceptanceCriteria": [
+        "Visuaaliset paatoskohdat on kirjattu.",
+        "Kayttoliittyman paanakyma toimii mobiilissa ja desktopissa.",
+        "Isoja visuaalisia muutoksia ei avata enaa ennen 1.0.0-julkaisua."
+      ],
+      "outputs": [
+        "lukittu UI-linjaus",
+        "mahdolliset UI-commitit",
+        "jatkokehitykseen siirretyt design-ideat"
+      ],
+      "dependencies": [
+        "WP2",
+        "WP4"
+      ],
+      "releaseCritical": true
+    },
+    {
+      "id": "WP6",
+      "name": "Saavutettavuustutkimus",
+      "status": "planned",
+      "timeWindow": {
+        "startDate": "2026-08-17",
+        "endDate": "2026-08-24",
+        "startWeek": "2026-W34",
+        "endWeek": "2026-W34"
+      },
+      "plannedVersions": [],
+      "workType": [
+        "testaus",
+        "arviointi",
+        "dokumentointi"
+      ],
+      "recommendedCodexEffort": "medium",
+      "recommendedHumanMode": "kasintestaus ja asiantuntijatulkinta",
+      "humanHours": {
+        "min": 5,
+        "max": 9
+      },
+      "codexHours": {
+        "min": 4,
+        "max": 10
+      },
+      "goal": "Selvitetaan julkaisua estavat saavutettavuuspuutteet ennen selosteen viimeistelya.",
+      "inputs": [
+        "nykyinen saavutettavuusseloste",
+        "selaintestit",
+        "nayttolukija- ja nappaimistohavainnot",
+        "mobiilinakyma"
+      ],
+      "tasks": [
+        {
+          "id": "WP6-T1",
+          "type": "test-plan",
+          "description": "Laadi saavutettavuustestauksen tarkistuslista keskeisille kayttopoluille.",
+          "recommendedCodexEffort": "low"
+        },
+        {
+          "id": "WP6-T2",
+          "type": "manual-test",
+          "description": "Testaa nappaimisto, fokus, modaalit, kontrastit, lomakkeet, kieliversiot ja mobiili.",
+          "recommendedCodexEffort": "minimal"
+        },
+        {
+          "id": "WP6-T3",
+          "type": "analysis",
+          "description": "Kirjaa havainnot P1/P2/P3-prioriteeteilla.",
+          "recommendedCodexEffort": "medium"
+        }
+      ],
+      "acceptanceCriteria": [
+        "Keskeiset kayttopolut on testattu.",
+        "Havainnot on priorisoitu.",
+        "Julkaisua estavat saavutettavuuspuutteet on tunnistettu."
+      ],
+      "outputs": [
+        "saavutettavuustutkimuksen havaintolista",
+        "WP7-korjauslista"
+      ],
+      "dependencies": [
+        "WP5"
+      ],
+      "releaseCritical": true
+    },
+    {
+      "id": "WP7",
+      "name": "Saavutettavuuskorjaukset ja seloste",
+      "status": "planned",
+      "timeWindow": {
+        "startDate": "2026-08-24",
+        "endDate": "2026-08-31",
+        "startWeek": "2026-W35",
+        "endWeek": "2026-W35"
+      },
+      "plannedVersions": [
+        "0.78.0",
+        "0.79.x",
+        "0.80.x"
+      ],
+      "workType": [
+        "koodaus",
+        "dokumentointi",
+        "testaus"
+      ],
+      "recommendedCodexEffort": "high",
+      "recommendedHumanMode": "tarkka hyvaksynta korjausten jalkeen",
+      "humanHours": {
+        "min": 4,
+        "max": 8
+      },
+      "codexHours": {
+        "min": 12,
+        "max": 25
+      },
+      "goal": "Korjataan julkaisua estavat saavutettavuuspuutteet ja viimeistellaan saavutettavuusseloste.",
+      "inputs": [
+        "WP6 havaintolista",
+        "saavutettavuusselosteen luonnos",
+        "kayttoliittymakoodi",
+        "WCAG-tulkinnat"
+      ],
+      "tasks": [
+        {
+          "id": "WP7-T1",
+          "type": "implementation",
+          "description": "Korjaa P1-saavutettavuuspuutteet.",
+          "recommendedCodexEffort": "high"
+        },
+        {
+          "id": "WP7-T2",
+          "type": "implementation",
+          "description": "Korjaa julkaisuun valitut P2-puutteet.",
+          "recommendedCodexEffort": "medium"
+        },
+        {
+          "id": "WP7-T3",
+          "type": "documentation",
+          "description": "Paivita saavutettavuusseloste vastaamaan testattua tilannetta.",
+          "recommendedCodexEffort": "medium"
+        },
+        {
+          "id": "WP7-T4",
+          "type": "verification",
+          "description": "Toista keskeiset nappaimisto-, ruudunlukija-, mobiili- ja kontrastitarkistukset.",
+          "recommendedCodexEffort": "low"
+        }
+      ],
+      "acceptanceCriteria": [
+        "Tunnettuja P1-saavutettavuuspuutteita ei ole avoinna.",
+        "Saavutettavuusselosteessa on palautekanava ja testauksen kuvaus.",
+        "Korjaukset on testattu kayttoliittymassa."
+      ],
+      "outputs": [
+        "saavutettavuuskorjauscommitit",
+        "viimeistelty saavutettavuusseloste",
+        "paivitetty saavutettavuustestausraportti"
+      ],
+      "dependencies": [
+        "WP6"
+      ],
+      "releaseCritical": true
+    },
+    {
+      "id": "WP8",
+      "name": "Tietosuojaselosteen viimeistely",
+      "status": "planned",
+      "timeWindow": {
+        "startDate": "2026-08-24",
+        "endDate": "2026-08-31",
+        "startWeek": "2026-W35",
+        "endWeek": "2026-W35"
+      },
+      "plannedVersions": [
+        "0.81.0"
+      ],
+      "workType": [
+        "paatos",
+        "dokumentointi",
+        "tietosuojatarkistus"
+      ],
+      "recommendedCodexEffort": "medium",
+      "recommendedHumanMode": "vastuutietojen paatos ja tekstin hyvaksynta",
+      "humanHours": {
+        "min": 3,
+        "max": 5
+      },
+      "codexHours": {
+        "min": 4,
+        "max": 8
+      },
+      "goal": "Viimeistellaan tietosuojaseloste julkaisun todellisten tietovirtojen mukaiseksi.",
+      "inputs": [
+        "tietosuojaselosteen luonnos",
+        "kayttotilastojen kuvaus",
+        "Firebase/Cloudcity-roolit",
+        "rekisterinpitajan ja yhteyshenkilon tiedot"
+      ],
+      "tasks": [
+        {
+          "id": "WP8-T1",
+          "type": "decision",
+          "description": "Paatetaan rekisterinpitaja, yhteystiedot ja palautekanava.",
+          "recommendedCodexEffort": "minimal"
+        },
+        {
+          "id": "WP8-T2",
+          "type": "documentation",
+          "description": "Paivita tietosuojaseloste: paikallistallennus, kayttotilastot, tekoalyavustaja, linkkiehdotukset ja yllapito.",
+          "recommendedCodexEffort": "medium"
+        },
+        {
+          "id": "WP8-T3",
+          "type": "review",
+          "description": "Tarkista, etta seloste vastaa lopullista tuotantoymparistoa.",
+          "recommendedCodexEffort": "low"
+        }
+      ],
+      "acceptanceCriteria": [
+        "Rekisterinpitaja ja yhteystieto on kirjattu.",
+        "Tietovirrat on kuvattu ymmarrettavasti.",
+        "Seloste vastaa valittua tuotantomallia."
+      ],
+      "outputs": [
+        "viimeistelty tietosuojaseloste",
+        "paivitetty tietosuojasivu",
+        "mahdolliset käännöspaivitykset"
+      ],
+      "dependencies": [
+        "WP9"
+      ],
+      "releaseCritical": true
+    },
+    {
+      "id": "WP9",
+      "name": "Tuotantopolun paatos",
+      "status": "planned",
+      "timeWindow": {
+        "startDate": "2026-09-01",
+        "endDate": "2026-09-05",
+        "startWeek": "2026-W36",
+        "endWeek": "2026-W36"
+      },
+      "plannedVersions": [],
+      "workType": [
+        "paatos",
+        "tekninen selvitys",
+        "riskienhallinta"
+      ],
+      "recommendedCodexEffort": "high",
+      "recommendedHumanMode": "tekninen ja organisatorinen paatos",
+      "humanHours": {
+        "min": 4,
+        "max": 8
+      },
+      "codexHours": {
+        "min": 4,
+        "max": 8
+      },
+      "goal": "Paatetaan julkaistaanko Cloudcitylla, Firebase Hostingilla vai muulla valitulla tuotantomallilla.",
+      "inputs": [
+        "Cloudcity Pro -tilin mahdollisuudet",
+        "Firebase nykytila",
+        "tietoturva- ja tietosuojavaatimukset",
+        "julkaisuaikataulu"
+      ],
+      "tasks": [
+        {
+          "id": "WP9-T1",
+          "type": "technical-discovery",
+          "description": "Selvita Cloudcityn backend-, tietokanta-, ymparistomuuttuja-, ajastus- ja sahkopostimahdollisuudet.",
+          "recommendedCodexEffort": "high"
+        },
+        {
+          "id": "WP9-T2",
+          "type": "options-analysis",
+          "description": "Vertaile Cloudcity, Firebase Hosting ja valiaikainen nykyinen malli riskien ja aikataulun nakokulmasta.",
+          "recommendedCodexEffort": "high"
+        },
+        {
+          "id": "WP9-T3",
+          "type": "decision",
+          "description": "Tee tuotantopolun paatos ja kirjaa varasuunnitelma.",
+          "recommendedCodexEffort": "minimal"
+        }
+      ],
+      "acceptanceCriteria": [
+        "Tuotantopolku on paatetty.",
+        "Varasuunnitelma on kirjattu.",
+        "WP10 voi alkaa ilman avointa alustavalintaa."
+      ],
+      "outputs": [
+        "tuotantopolun paatos",
+        "staging-suunnitelma",
+        "paivitetty riskilista"
+      ],
+      "dependencies": [
+        "WP2",
+        "WP3"
+      ],
+      "releaseCritical": true
+    },
+    {
+      "id": "WP10",
+      "name": "Palvelinsiirto ja staging",
+      "status": "planned",
+      "timeWindow": {
+        "startDate": "2026-09-01",
+        "endDate": "2026-09-15",
+        "startWeek": "2026-W36",
+        "endWeek": "2026-W38"
+      },
+      "plannedVersions": [
+        "0.82.0",
+        "0.83.x",
+        "0.84.x",
+        "0.85.x",
+        "0.86.x"
+      ],
+      "workType": [
+        "koodaus",
+        "ymparistotyo",
+        "julkaisupolku",
+        "tietoturva"
+      ],
+      "recommendedCodexEffort": "xhigh",
+      "recommendedHumanMode": "tiivis valvonta ja selkeat hyvaksyntaportit",
+      "humanHours": {
+        "min": 8,
+        "max": 16
+      },
+      "codexHours": {
+        "min": 25,
+        "max": 55
+      },
+      "goal": "Toteutetaan valittu tuotantopolku ja staging, jossa julkaisu voidaan testata ennen release candidatea.",
+      "inputs": [
+        "WP9 tuotantopolun paatos",
+        "ymparistomuuttujat",
+        "Firebase/App Check -asetukset tai Cloudcity-asetukset",
+        "nykyinen deploy-putki",
+        "tietoturvaohjeet"
+      ],
+      "tasks": [
+        {
+          "id": "WP10-T1",
+          "type": "implementation",
+          "description": "Pystytä staging valitulla tuotantomallilla.",
+          "recommendedCodexEffort": "xhigh"
+        },
+        {
+          "id": "WP10-T2",
+          "type": "security",
+          "description": "Varmista, etta salaisuudet ovat palvelinpuolella eivatka paady frontend-bundleen.",
+          "recommendedCodexEffort": "xhigh"
+        },
+        {
+          "id": "WP10-T3",
+          "type": "implementation",
+          "description": "Testaa ja korjaa kirjautuminen, yllapito, linkkiehdotukset, kayttotilastot ja automaatiot stagingissa.",
+          "recommendedCodexEffort": "high"
+        },
+        {
+          "id": "WP10-T4",
+          "type": "verification",
+          "description": "Aja build, linkkitarkistus, salaisuustarkistus ja selaintestit uudessa osoitteessa.",
+          "recommendedCodexEffort": "medium"
+        }
+      ],
+      "acceptanceCriteria": [
+        "Staging-osoite toimii.",
+        "Google-kirjautuminen toimii sallitussa osoitteessa.",
+        "Yllapito toimii admin-tunnuksella ja ei-adminin paasy estyy.",
+        "Salaisuudet eivat ole frontend-bundlessa.",
+        "Suojausotsikot tai valitun hostingin vastaavat suojaukset on tarkistettu."
+      ],
+      "outputs": [
+        "staging-ymparisto",
+        "paivitetty deploy-ohje",
+        "tarkistusraportti",
+        "mahdolliset tuotantokonfiguraation muutokset"
+      ],
+      "dependencies": [
+        "WP9"
+      ],
+      "releaseCritical": true
+    },
+    {
+      "id": "WP11",
+      "name": "Yllapidon ilmoitukset",
+      "status": "planned",
+      "timeWindow": {
+        "startDate": "2026-09-08",
+        "endDate": "2026-09-19",
+        "startWeek": "2026-W37",
+        "endWeek": "2026-W38"
+      },
+      "plannedVersions": [
+        "0.87.0"
+      ],
+      "workType": [
+        "koodaus",
+        "palvelinselvitys",
+        "yllapitoprosessi"
+      ],
+      "recommendedCodexEffort": "high",
+      "recommendedHumanMode": "paatos toteutetaanko julkaisuun vai jatkokehitykseen",
+      "humanHours": {
+        "min": 3,
+        "max": 6
+      },
+      "codexHours": {
+        "min": 8,
+        "max": 20
+      },
+      "goal": "Paatetaan ja mahdollisesti toteutetaan yllapidon ilmoitusmalli uusista todo-asioista, kuten linkki-ilmoituksista ja automaatiovirheista.",
+      "inputs": [
+        "Cloudcity Pro -sahkopostimahdollisuudet",
+        "yllapidon tarpeet",
+        "linkkiehdotukset",
+        "huijausvaroitusten ajoloki",
+        "nimipaivarajapinnan kayttoraja",
+        "yllapidon vastaanottajalista",
+        "lahettajaosoite tai jakelulista"
+      ],
+      "tasks": [
+        {
+          "id": "WP11-T1",
+          "type": "technical-discovery",
+          "description": "Selvita sahkopostin tai muun ilmoituskanavan mahdollisuudet ilman frontend-salaisuuksia; kirjaa vastaanottajat, lahettajaosoite ja salaisuuksien palvelinpuolinen sailytys.",
+          "recommendedCodexEffort": "high"
+        },
+        {
+          "id": "WP11-T2",
+          "type": "decision",
+          "description": "Paatetaan toteutetaanko sahkoposti-ilmoitukset, paivittainen koonti vai manuaalinen tarkistusrytmi 1.0-julkaisuun.",
+          "recommendedCodexEffort": "minimal"
+        },
+        {
+          "id": "WP11-T3",
+          "type": "implementation",
+          "description": "Toteuta ensimmainen ilmoitustyyppi, esimerkiksi uusi linkkiehdotus, huijausvaroitusautomaation virhe tai paivittainen koonti.",
+          "recommendedCodexEffort": "high"
+        }
+      ],
+      "acceptanceCriteria": [
+        "Ilmoitusmalli on paatetty.",
+        "Vastaanottajat, lahettajaosoite ja varamalli on kirjattu.",
+        "Jos toteutetaan julkaisuun, salaisuudet ovat palvelinpuolella.",
+        "Jos ei toteuteta julkaisuun, manuaalinen yllapitorytmi on sovittu."
+      ],
+      "outputs": [
+        "ilmoitusmallin paatos",
+        "mahdollinen ilmoitustoiminto",
+        "yllapito-ohje",
+        "vastaanottaja- ja lahettajaosoitepaatos"
+      ],
+      "dependencies": [
+        "WP9",
+        "WP10"
+      ],
+      "releaseCritical": false
+    },
+    {
+      "id": "WP12",
+      "name": "Nimipaivat tuotantoon",
+      "status": "planned",
+      "timeWindow": {
+        "startDate": "2026-09-08",
+        "endDate": "2026-09-19",
+        "startWeek": "2026-W37",
+        "endWeek": "2026-W38"
+      },
+      "plannedVersions": [
+        "0.88.0"
+      ],
+      "workType": [
+        "koodaus",
+        "sisaltopaatos",
+        "riskienhallinta"
+      ],
+      "recommendedCodexEffort": "medium",
+      "recommendedHumanMode": "paatos datan hankinnasta tai toiminnon piilotuksesta",
+      "humanHours": {
+        "min": 2,
+        "max": 4
+      },
+      "codexHours": {
+        "min": 6,
+        "max": 14
+      },
+      "goal": "Poistetaan testirajallisen nimipaivarajapinnan tuotantoriski.",
+      "inputs": [
+        "nimipaivarajapinnan kayttoraja",
+        "mahdollinen ostettu nimipaivadata",
+        "nykyinen nimipaivatoiminto",
+        "TODO_HUMAN SEC-015"
+      ],
+      "tasks": [
+        {
+          "id": "WP12-T1",
+          "type": "decision",
+          "description": "Paatetaan ostetaanko tai hankitaanko nimipaivadata vai piilotetaanko toiminto tuotannosta.",
+          "recommendedCodexEffort": "minimal"
+        },
+        {
+          "id": "WP12-T2",
+          "type": "implementation",
+          "description": "Toteuta tiedostopohjainen nimipaivadata tai piilota nimipaivat oletuksena.",
+          "recommendedCodexEffort": "medium"
+        },
+        {
+          "id": "WP12-T3",
+          "type": "verification",
+          "description": "Testaa taman paivan nimipaiva tai piilotuksen toiminta.",
+          "recommendedCodexEffort": "low"
+        }
+      ],
+      "acceptanceCriteria": [
+        "Testirajallinen API ei ole pakollinen tuotantoriippuvuus.",
+        "Nimipaivatoiminto toimii valitulla mallilla tai on piilotettu.",
+        "Tietosuoja- ja yllapito-ohjeet vastaavat valittua mallia."
+      ],
+      "outputs": [
+        "nimipaivien tuotantopaatos",
+        "mahdollinen assets/namedays-2026.json",
+        "poistettu tai piilotettu API-riippuvuus"
+      ],
+      "dependencies": [
+        "WP2",
+        "WP9"
+      ],
+      "releaseCritical": true
+    },
+    {
+      "id": "WP13",
+      "name": "Huijausvaroitusten automaatio",
+      "status": "planned",
+      "timeWindow": {
+        "startDate": "2026-09-08",
+        "endDate": "2026-09-19",
+        "startWeek": "2026-W37",
+        "endWeek": "2026-W38"
+      },
+      "plannedVersions": [
+        "0.89.0"
+      ],
+      "workType": [
+        "koodaus",
+        "automaatio",
+        "yllapitoprosessi"
+      ],
+      "recommendedCodexEffort": "high",
+      "recommendedHumanMode": "tarkistus lahteiden ja paivitysrytmin osalta",
+      "humanHours": {
+        "min": 3,
+        "max": 5
+      },
+      "codexHours": {
+        "min": 8,
+        "max": 18
+      },
+      "goal": "Varmistetaan, etta huijausvaroitukset paivittyvat tuotannossa luotettavasti ja yllapito huomaa virheet.",
+      "inputs": [
+        "nykyinen RSS/prosessikuvaus",
+        "ajolokit",
+        "yllapitonakyma",
+        "valittu tuotantoymparisto"
+      ],
+      "tasks": [
+        {
+          "id": "WP13-T1",
+          "type": "decision",
+          "description": "Lukitaan lahde ja ajastus, esimerkiksi 1-2 kertaa paivassa.",
+          "recommendedCodexEffort": "low"
+        },
+        {
+          "id": "WP13-T2",
+          "type": "implementation",
+          "description": "Toteuta tai paivita automaation ajo, ajoloki ja viimeisin paivitysaika.",
+          "recommendedCodexEffort": "high"
+        },
+        {
+          "id": "WP13-T3",
+          "type": "implementation",
+          "description": "Lisaa yllapidolle nakyva huomio, jos haku epaonnistuu tai tulos vanhenee.",
+          "recommendedCodexEffort": "medium"
+        }
+      ],
+      "acceptanceCriteria": [
+        "Paivitysaika nakyy yllapidossa tai kayttajalle tarkoituksenmukaisesti.",
+        "Ajo epaonnistuu hallitusti ja loki kertoo syyn.",
+        "Tuotantoymparistossa automaatio ei riipu kehittajan koneesta."
+      ],
+      "outputs": [
+        "paivitetty automaatio",
+        "ajolokin tarkistus",
+        "yllapito-ohje"
+      ],
+      "dependencies": [
+        "WP10"
+      ],
+      "releaseCritical": true
+    },
+    {
+      "id": "WP14",
+      "name": "Linkkitarkistus ja sisallon siivous",
+      "status": "planned",
+      "timeWindow": {
+        "startDate": "2026-09-16",
+        "endDate": "2026-09-23",
+        "startWeek": "2026-W38",
+        "endWeek": "2026-W39"
+      },
+      "plannedVersions": [
+        "0.90.x"
+      ],
+      "workType": [
+        "tarkistus",
+        "patch-korjaukset",
+        "sisalto"
+      ],
+      "recommendedCodexEffort": "low",
+      "recommendedHumanMode": "nopea hyvaksynta epaselville linkeille",
+      "humanHours": {
+        "min": 4,
+        "max": 7
+      },
+      "codexHours": {
+        "min": 8,
+        "max": 20
+      },
+      "goal": "Siivotaan rikkinäiset linkit, tuplat, julkaisuun kuulumattomat linkit ja yllapidon julkiset linkit ennen release candidatea.",
+      "inputs": [
+        "linkkitarkistusraportti",
+        "kayttajien linkkiehdotukset",
+        "paikalliset palvelut",
+        "yllapitoloki",
+        "WP2 poistettavien ja piilotettavien asioiden lista"
+      ],
+      "tasks": [
+        {
+          "id": "WP14-T1",
+          "type": "verification",
+          "description": "Aja linkkitarkistus ja kokoa virheelliset linkit.",
+          "recommendedCodexEffort": "low"
+        },
+        {
+          "id": "WP14-T2",
+          "type": "patch",
+          "description": "Korjaa tai poista 404-linkit, selvät uudelleenohjaukset, tuplat ja julkaisuun kuulumattomat testilinkit.",
+          "recommendedCodexEffort": "low"
+        },
+        {
+          "id": "WP14-T3",
+          "type": "review",
+          "description": "Pyydä ihmisen paatos epaselville, sisallollisesti merkittaville tai poistettavaksi ehdotetuille linkeille.",
+          "recommendedCodexEffort": "minimal"
+        },
+        {
+          "id": "WP14-T4",
+          "type": "security-hardening",
+          "description": "Poista yllapidon suorat linkit julkisesta navigaatiosta tai vaihda ne vahemman arvattaviin reitteihin; varmista samalla kirjautuminen, admin-oikeudet, noindex/robots ja palvelinpuolen saannot.",
+          "recommendedCodexEffort": "medium"
+        }
+      ],
+      "acceptanceCriteria": [
+        "Linkkitarkistus on ajettu.",
+        "Julkaisua haittaavat rikkinäiset linkit on korjattu tai poistettu.",
+        "Julkaisuun kuulumattomat testi-, yllapito- ja tekniset linkit on poistettu tai piilotettu.",
+        "Raportti on paivitetty.",
+        "Yllapidon reitit eivat perustu pelkkaan kryptiseen URLiin, vaan paasy on suojattu oikeuksilla ja indeksoinnin estolla."
+      ],
+      "outputs": [
+        "paivitetty linkkidata",
+        "yllapitoloki",
+        "patch-versiot",
+        "paivitetty yllapitoreittien ja julkisten linkkien tarkistus"
+      ],
+      "dependencies": [
+        "WP2",
+        "WP4"
+      ],
+      "releaseCritical": true
+    },
+    {
+      "id": "WP15",
+      "name": "Release candidate",
+      "status": "planned",
+      "timeWindow": {
+        "startDate": "2026-09-21",
+        "endDate": "2026-09-27",
+        "startWeek": "2026-W39",
+        "endWeek": "2026-W39"
+      },
+      "plannedVersions": [
+        "0.95.0"
+      ],
+      "workType": [
+        "testaus",
+        "jaadytys",
+        "julkaisukandidaatti"
+      ],
+      "recommendedCodexEffort": "high",
+      "recommendedHumanMode": "aktiivinen hyvaksyntatestaus",
+      "humanHours": {
+        "min": 6,
+        "max": 10
+      },
+      "codexHours": {
+        "min": 10,
+        "max": 25
+      },
+      "goal": "Tehdaan julkaisukandidaatti, jonka jalkeen sallitaan vain hyvaksyntatestauksessa loytyneet korjaukset.",
+      "inputs": [
+        "kaikki julkaisuun valitut korjaukset",
+        "staging",
+        "selosteet",
+        "linkkitarkistus",
+        "testiprotokolla"
+      ],
+      "tasks": [
+        {
+          "id": "WP15-T1",
+          "type": "release-prep",
+          "description": "Nosta versio 0.95.0 ja paivita muutosloki.",
+          "recommendedCodexEffort": "low"
+        },
+        {
+          "id": "WP15-T2",
+          "type": "verification",
+          "description": "Aja build, salaisuustarkistus, linkkitarkistus ja keskeiset selaintestit.",
+          "recommendedCodexEffort": "medium"
+        },
+        {
+          "id": "WP15-T3",
+          "type": "manual-test",
+          "description": "Hyvaksyntatestaa etusivu, asetukset, kieliversiot, yllapito, kirjautuminen, selosteet ja automaatiot.",
+          "recommendedCodexEffort": "low"
+        }
+      ],
+      "acceptanceCriteria": [
+        "0.95.0-julkaisukandidaatti on tehty.",
+        "Kriittiset tarkistukset menevat lapi.",
+        "Uusia ominaisuuksia ei lisata taman jalkeen ennen 1.0.0-julkaisua."
+      ],
+      "outputs": [
+        "release candidate -commit",
+        "testausraportti",
+        "hyvaksyntatestauksen havaintolista"
+      ],
+      "dependencies": [
+        "WP10",
+        "WP14",
+        "WP7",
+        "WP8"
+      ],
+      "releaseCritical": true
+    },
+    {
+      "id": "WP16",
+      "name": "Hyvaksynta ja julkaisuviestinta",
+      "status": "planned",
+      "timeWindow": {
+        "startDate": "2026-09-28",
+        "endDate": "2026-10-05",
+        "startWeek": "2026-W40",
+        "endWeek": "2026-W40"
+      },
+      "plannedVersions": [
+        "0.99.0"
+      ],
+      "workType": [
+        "paatos",
+        "viestinta",
+        "lopputestaus"
+      ],
+      "recommendedCodexEffort": "medium",
+      "recommendedHumanMode": "go/no-go-paatos isommalla porukalla",
+      "humanHours": {
+        "min": 5,
+        "max": 9
+      },
+      "codexHours": {
+        "min": 4,
+        "max": 10
+      },
+      "goal": "Valmistellaan go/no-go, julkaisuviestit, metatiedot ja viimeiset tarkistukset.",
+      "inputs": [
+        "release candidate",
+        "hyvaksyntatestauksen havainnot",
+        "julkaisunimi ja osoite",
+        "viestintakohderyhmat"
+      ],
+      "tasks": [
+        {
+          "id": "WP16-T1",
+          "type": "verification",
+          "description": "Tarkista lopullinen osoite, virallinen nimi, metatiedot, jakolinkit, footer-linkit, yllapidon yhteystiedot ja selosteet.",
+          "recommendedCodexEffort": "medium"
+        },
+        {
+          "id": "WP16-T1B",
+          "type": "verification",
+          "description": "Tarkista, etta kieliversiot, tietosuoja, saavutettavuus, julkaisuviestit ja dokumentit kayttavat samaa nimea, osoitetta ja yllapidon yhteystietoa.",
+          "recommendedCodexEffort": "medium"
+        },
+        {
+          "id": "WP16-T2",
+          "type": "communication",
+          "description": "Laadi julkaisuviesti testaajille, tiimille ja sidosryhmille.",
+          "recommendedCodexEffort": "low"
+        },
+        {
+          "id": "WP16-T3",
+          "type": "decision",
+          "description": "Tee go/no-go-paatos viimeistaan 1.10., varapaiva 2.10.",
+          "recommendedCodexEffort": "minimal"
+        }
+      ],
+      "acceptanceCriteria": [
+        "Go/no-go-paatos on tehty.",
+        "Virallinen nimi, osoite ja yllapidon yhteystiedot ovat yhtenaiset kaikissa julkaisupinnoissa.",
+        "Poistettavat linkit ja yllapidon julkiset reitit on tarkistettu ennen go/no-go-paatosta.",
+        "Julkaisuviestit ovat valmiit.",
+        "Tunnetut julkaisua estavat puutteet on ratkaistu tai julkaisu siirretty."
+      ],
+      "outputs": [
+        "0.99.0-hyvaksyntaversio",
+        "julkaisuviestit",
+        "go/no-go-muistio"
+      ],
+      "dependencies": [
+        "WP15"
+      ],
+      "releaseCritical": true
+    },
+    {
+      "id": "WP17",
+      "name": "Julkaisu",
+      "status": "planned",
+      "timeWindow": {
+        "startDate": "2026-10-06",
+        "endDate": "2026-10-06",
+        "startWeek": "2026-W41",
+        "endWeek": "2026-W41"
+      },
+      "plannedVersions": [
+        "1.0.0"
+      ],
+      "workType": [
+        "julkaisu",
+        "tuotantotarkistus",
+        "viestinta"
+      ],
+      "recommendedCodexEffort": "high",
+      "recommendedHumanMode": "aktiivinen valvonta julkaisun ajan",
+      "humanHours": {
+        "min": 3,
+        "max": 6
+      },
+      "codexHours": {
+        "min": 3,
+        "max": 8
+      },
+      "goal": "Julkaistaan palvelu tuotantoon versiona 1.0.0 ja tarkistetaan perustoiminnot heti julkaisun jalkeen.",
+      "inputs": [
+        "go/no-go-paatos",
+        "0.99.0-hyvaksyntaversio",
+        "tuotanto-osoite",
+        "julkaisuviestit"
+      ],
+      "tasks": [
+        {
+          "id": "WP17-T1",
+          "type": "release",
+          "description": "Nosta versio 1.0.0, tee julkaisucommit ja deployaa tuotantoon.",
+          "recommendedCodexEffort": "high"
+        },
+        {
+          "id": "WP17-T2",
+          "type": "verification",
+          "description": "Tarkista tuotannossa etusivu, yllapito, kirjautuminen, tietosuoja, saavutettavuus ja muutosloki.",
+          "recommendedCodexEffort": "medium"
+        },
+        {
+          "id": "WP17-T3",
+          "type": "communication",
+          "description": "Laheta julkaisuviestit ja merkitse testiosoite vanhaksi tai ohjaa uuteen osoitteeseen.",
+          "recommendedCodexEffort": "low"
+        }
+      ],
+      "acceptanceCriteria": [
+        "Tuotanto-osoite toimii.",
+        "Versio 1.0.0 nakyy muutoslokissa tai sovitussa paikassa.",
+        "Keskeiset tuotantotarkistukset menevat lapi.",
+        "Julkaisuviesti on lahetetty."
+      ],
+      "outputs": [
+        "1.0.0-julkaisu",
+        "tuotantotarkistuslista",
+        "julkaisuviestit lahetetty"
+      ],
+      "dependencies": [
+        "WP16"
+      ],
+      "releaseCritical": true
+    },
+    {
+      "id": "WP18",
+      "name": "Ensimmäisen viikon seuranta",
+      "status": "planned",
+      "timeWindow": {
+        "startDate": "2026-10-07",
+        "endDate": "2026-10-18",
+        "startWeek": "2026-W41",
+        "endWeek": "2026-W42"
+      },
+      "plannedVersions": [
+        "1.0.1",
+        "1.0.x"
+      ],
+      "workType": [
+        "yllapito",
+        "bugikorjaukset",
+        "palauteseuranta"
+      ],
+      "recommendedCodexEffort": "low",
+      "recommendedHumanMode": "paivittainen lyhyt tarkistus ensimmaisella viikolla",
+      "humanHours": {
+        "min": 3,
+        "max": 6
+      },
+      "codexHours": {
+        "min": 5,
+        "max": 15
+      },
+      "goal": "Seurataan ensimmainen julkaisuviikko ja korjataan vain kriittiset tai pienet selvät virheet.",
+      "inputs": [
+        "tuotannon lokit",
+        "kayttopalaute",
+        "yllapidon ilmoitukset",
+        "kayttotilastot"
+      ],
+      "tasks": [
+        {
+          "id": "WP18-T1",
+          "type": "monitoring",
+          "description": "Tarkista paivittain kriittiset virheet, yllapitopyynnot ja automaatiot.",
+          "recommendedCodexEffort": "low"
+        },
+        {
+          "id": "WP18-T2",
+          "type": "patch",
+          "description": "Korjaa julkaisun jalkeiset pienet bugit patch-versioina.",
+          "recommendedCodexEffort": "low"
+        },
+        {
+          "id": "WP18-T3",
+          "type": "summary",
+          "description": "Laadi ensimmaisen viikon yhteenveto ja jatkokehityksen lista.",
+          "recommendedCodexEffort": "low"
+        }
+      ],
+      "acceptanceCriteria": [
+        "Kriittiset julkaisun jalkeiset virheet on korjattu tai eskaloitu.",
+        "Pienet korjaukset on julkaistu patch-versioina.",
+        "Ensimmäisen viikon yhteenveto on tehty."
+      ],
+      "outputs": [
+        "1.0.x-patchit",
+        "ensimmaisen viikon seurantaraportti",
+        "jatkokehityslista"
+      ],
+      "dependencies": [
+        "WP17"
+      ],
+      "releaseCritical": true
+    },
+    {
+      "id": "WP19",
+      "name": "Chrome Built-in AI -selvitys",
+      "status": "planned",
+      "timeWindow": {
+        "startDate": "2027-01-06",
+        "endDate": "2027-01-31",
+        "startWeek": "2027-W01",
+        "endWeek": "2027-W04"
+      },
+      "plannedVersions": [
+        "1.2.0"
+      ],
+      "workType": [
+        "jatkokehitys",
+        "tekninen kokeilu",
+        "AI-adapteri",
+        "tietosuojatarkistus"
+      ],
+      "recommendedCodexEffort": "medium",
+      "recommendedHumanMode": "paatos selaintuen, tietosuojan ja kayttajahyodyn perusteella",
+      "humanHours": {
+        "min": 2,
+        "max": 4
+      },
+      "codexHours": {
+        "min": 6,
+        "max": 14
+      },
+      "goal": "Selvitetaan noin kolme kuukautta 1.0.0-julkaisun jalkeen, voidaanko Chrome-selaimen sisaanrakennettua AI-rajapintaa kayttaa aloitussivun avustajan tai tekstinkasittelyn tukena nykyisen Cloud Function + Gemini -mallin rinnalla.",
+      "inputs": [
+        "Chrome Built-in AI ja Prompt API -dokumentaatio selvityshetkella",
+        "kayttajapalaute AI-avustajasta",
+        "tietosuojaseloste",
+        "nykyinen geminiChat Cloud Function",
+        "selain- ja laitetukitilanne"
+      ],
+      "tasks": [
+        {
+          "id": "WP19-T1",
+          "type": "technical-discovery",
+          "description": "Tarkista Chrome Built-in AI / Prompt API -rajapinnan saatavuus, selainversiot, laitevaatimukset, kielituki ja tuotantokelpoisuus tammikuussa 2027.",
+          "recommendedCodexEffort": "medium"
+        },
+        {
+          "id": "WP19-T2",
+          "type": "prototype",
+          "description": "Tee pieni adapterikokeilu, joka tunnistaa paikallisen AI-tuen ja putoaa automaattisesti nykyiseen geminiChat Cloud Function -ratkaisuun.",
+          "recommendedCodexEffort": "medium"
+        },
+        {
+          "id": "WP19-T3",
+          "type": "privacy-review",
+          "description": "Arvioi, miten paikallinen selain-AI vaikuttaa tietosuojatekstiin, kayttajaviestintaan ja AI-avustajan riskikuvaukseen.",
+          "recommendedCodexEffort": "low"
+        },
+        {
+          "id": "WP19-T4",
+          "type": "decision",
+          "description": "Paatetaan otetaanko paikallinen selain-AI kayttoon rajattuna lisatoimintona, jatketaanko kokeilua vai jatetaanko se pois.",
+          "recommendedCodexEffort": "minimal"
+        }
+      ],
+      "acceptanceCriteria": [
+        "Selain- ja laitetuki on tarkistettu ajantasaisesta dokumentaatiosta.",
+        "Suomen kielen kayttokelpoisuus seniorikayttajan tarpeisiin on arvioitu.",
+        "Ominaisuus ei ole pakollinen riippuvuus yhdelle selaimelle.",
+        "Nykyinen Cloud Function + Gemini -malli sailyy fallbackina.",
+        "Tietosuojavaikutukset on kirjattu ennen mahdollista kayttoonottoa."
+      ],
+      "outputs": [
+        "Chrome Built-in AI -selvitys",
+        "mahdollinen AI-adapterin prototyyppi",
+        "paatos jatkosta",
+        "tarvittaessa paivitetty tietosuojateksti ja AI-avustajan kuvaus"
+      ],
+      "dependencies": [
+        "WP18"
+      ],
+      "releaseCritical": false,
+      "postReleaseMonths": 3
+    }
+  ],
+  "recommendedExecutionRules": [
+    "Avaa erillinen Codex-ajo per tyopaketti tai per selkea korjauskori.",
+    "Ala yhdista paatosvalmistelua, Cloudcity-migraatiota ja UI-korjauksia samaan ajoon.",
+    "Commitoi jokainen valmis kori erikseen.",
+    "Kayta minimal/low-tasoa linkkeihin, teksteihin ja pieniin dokumentteihin.",
+    "Kayta medium-tasoa tavanomaisiin koodimuutoksiin ja saavutettavuuskorjauksiin.",
+    "Kayta high/xhigh-tasoa vain tuotantopolkuun, salaisuuksiin, kirjautumiseen, tietoturvaan ja migraatioihin.",
+    "Jos tyopaketti ylittaa arvion, pysayta ja tee uusi rajauspaatos ennen jatkoa.",
+    "Release candidate -vaiheen jalkeen uusia ominaisuuksia ei toteuteta ilman go/no-go-riskin uudelleenarviointia."
+  ]
+}

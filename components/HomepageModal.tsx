@@ -2,6 +2,7 @@
 import React, { useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom';
 import { useI18n } from '../i18n';
+import { useModalFocusTrap } from '../hooks/useModalFocusTrap';
 
 interface HomepageModalProps {
   isOpen: boolean;
@@ -14,6 +15,7 @@ interface HomepageModalProps {
 const HomepageModal: React.FC<HomepageModalProps> = ({ isOpen, onClose, fontSizeStep = 0, onStartOnboarding }) => {
   const { t } = useI18n();
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
   // Scaling arrays for elder-friendly instruction display
   const titleClasses = [
     'text-2xl sm:text-3xl md:text-3xl',
@@ -37,9 +39,10 @@ const HomepageModal: React.FC<HomepageModalProps> = ({ isOpen, onClose, fontSize
     'text-4xl md:text-5xl',
   ];
 
+  useModalFocusTrap(modalRef, isOpen, onClose, closeButtonRef);
+
   useEffect(() => {
     if (!isOpen) return;
-    closeButtonRef.current?.focus();
     const root = document.getElementById('root');
     const previousAriaHidden = root?.getAttribute('aria-hidden');
     const previousDisplay = root?.style.display;
@@ -49,12 +52,7 @@ const HomepageModal: React.FC<HomepageModalProps> = ({ isOpen, onClose, fontSize
       root.style.display = 'none';
       root.style.pointerEvents = 'none';
     }
-    const handleEsc = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onClose();
-    };
-    window.addEventListener('keydown', handleEsc);
     return () => {
-      window.removeEventListener('keydown', handleEsc);
       if (!root) return;
       if (previousAriaHidden === null) {
         root.removeAttribute('aria-hidden');
@@ -64,7 +62,7 @@ const HomepageModal: React.FC<HomepageModalProps> = ({ isOpen, onClose, fontSize
       root.style.display = previousDisplay ?? '';
       root.style.pointerEvents = previousPointerEvents ?? '';
     };
-  }, [isOpen, onClose]);
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -75,7 +73,7 @@ const HomepageModal: React.FC<HomepageModalProps> = ({ isOpen, onClose, fontSize
       aria-modal="true"
       aria-labelledby="homepage-modal-title"
     >
-      <div className="aurora-modal-shell relative z-[10000] flex max-h-[calc(100dvh-1.5rem)] w-full max-w-3xl flex-col overflow-hidden sm:my-8 sm:max-h-[92vh]">
+      <div ref={modalRef} tabIndex={-1} className="aurora-modal-shell relative z-[10000] flex max-h-[calc(100dvh-1.5rem)] w-full max-w-3xl flex-col overflow-hidden sm:my-8 sm:max-h-[92vh]">
         <div className="aurora-modal-header sticky top-0 z-10 flex items-center justify-between gap-3 p-4 text-white shadow-lg sm:p-6 md:p-10">
           <div className="flex min-w-0 items-center gap-3 sm:gap-5 md:gap-6">
             <span className={`shrink-0 rounded-[1.5rem] bg-white/10 p-3 drop-shadow-md transition-all duration-300 ${iconClasses[fontSizeStep]}`} aria-hidden="true">🏠</span>

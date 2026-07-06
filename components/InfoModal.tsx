@@ -1,10 +1,11 @@
 
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { SHORTCUTS } from '../constants';
 import { LINK_STATS } from '../linkStats';
 import { LOCAL_LINK_STATS } from '../localStats';
 import { filterVisibleShortcuts, useLinkVisibilityVersion } from '../linkVisibility';
 import { useI18n } from '../i18n';
+import { useModalFocusTrap } from '../hooks/useModalFocusTrap';
 
 interface InfoModalProps {
   isOpen: boolean;
@@ -18,19 +19,12 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, fontSizeStep = 0
   const { t } = useI18n();
   useLinkVisibilityVersion();
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
   const titleClasses = ['text-3xl', 'text-4xl', 'text-5xl', 'text-6xl', 'text-7xl'];
   const headerIconClasses = ['text-5xl', 'text-6xl', 'text-7xl', 'text-8xl', 'text-9xl'];
   const statClasses = ['text-5xl', 'text-6xl', 'text-7xl', 'text-8xl', 'text-9xl'];
 
-  useEffect(() => {
-    if (!isOpen) return;
-    closeButtonRef.current?.focus();
-    const handleEsc = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onClose();
-    };
-    window.addEventListener('keydown', handleEsc);
-    return () => window.removeEventListener('keydown', handleEsc);
-  }, [isOpen, onClose]);
+  useModalFocusTrap(modalRef, isOpen, onClose, closeButtonRef);
 
   if (!isOpen) return null;
 
@@ -53,7 +47,7 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, fontSizeStep = 0
       aria-modal="true"
       aria-labelledby="info-modal-title"
     >
-      <div className="aurora-modal-shell my-8 w-full max-w-4xl overflow-hidden">
+      <div ref={modalRef} tabIndex={-1} className="aurora-modal-shell my-8 w-full max-w-4xl overflow-hidden">
         <div className="aurora-modal-header sticky top-0 z-10 flex items-center justify-between p-8 text-white">
           <div className="flex items-center gap-4">
             <span className={`rounded-[1.5rem] bg-white/10 p-3 transition-all duration-300 ${headerIconClasses[fontSizeStep]}`}>ℹ️</span>

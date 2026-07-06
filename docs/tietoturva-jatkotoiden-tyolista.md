@@ -1,4 +1,4 @@
-# SeniorSurfin aloitussivu - tietoturvan jatkotyolista
+# aloitussivu - tietoturvan jatkotyolista
 
 Tarkistuspaiva: 2026-05-26  
 Lahtokohta: omassa tietoturvakatsauksessa loydetyt jatkokorjaukset aiempien tietoturvapakettien jalkeen.
@@ -11,7 +11,7 @@ Tama lista kokoaa seuraavat tietoturvaparannukset toteutusjarjestykseen. Aiemmat
 
 ### JATKO-01 - Estetaan Gemini-funktion vaarinkaytto
 
-**Tila:** aloitettu  
+**Tila:** kooditasolla tehty, tuotantoasetusten tarkistus viela ennen julkaisua  
 **Taso:** korkea  
 **Tiedostot:** `functions/gemini.ts`, `services/geminiService.ts`, mahdollisesti Firebase App Check -asetukset
 
@@ -29,8 +29,11 @@ Tama lista kokoaa seuraavat tietoturvaparannukset toteutusjarjestykseen. Aiemmat
 - Sama kayttaja tai sama IP ei voi tehda rajattomasti pyyntoja.
 - Avustaja toimii normaalisti sivustolla.
 
+**18.6.2026 rajaus:** App Check -tarkistus ja kevyt instanssikohtainen rate limit ovat koodissa. Ennen tuotantojulkaisua tarkistetaan viela lopullisen domainin App Check -asetukset, Firebase/Google Cloud -budjettihalytykset ja mahdollinen tarve Firestore-, Redis- tai Cloud Armor -pohjaiselle pysyvammalle rate limitille.
+
 ### JATKO-02 - Suojataan linkkiehdotusjono spammilta
 
+**Tila:** pilottitason kevyt suoja tehty, tuotantotason palvelinpuolen suoja avoin  
 **Taso:** korkea/keskitaso  
 **Tiedostot:** `linkVisibility.ts`, `components/LinkReportModal.tsx`, `firestore.rules`, mahdollinen uusi Cloud Function
 
@@ -48,8 +51,11 @@ Tama lista kokoaa seuraavat tietoturvaparannukset toteutusjarjestykseen. Aiemmat
 - Automaattinen massasyotto ei tayta Firestorea rajattomasti.
 - Yllapidon ehdotusjono nayttaa vain palvelimella validoituja raportteja.
 
+**18.6.2026 rajaus:** Pilotissa kaytossa on kevyt suoja: URL-normalisointi, vaarallisten skeemojen torjunta, `https://`-ohjaus/validointi, pituusrajat ja honeypot-kentta. Tama vaikeuttaa tavallista roskaa, mutta ei ole tayden tuotantotason spammisuoja, koska selaimelta on edelleen sallittu rajattu luonti Firestoreen. Tuotantovaiheessa linkkiraportin luonti siirretaan Cloud Functioniin, johon lisataan App Check, palvelinpuolen URL-validointi ja pyyntorajoitus.
+
 ### JATKO-03 - Yhtenaiseta admin-oikeuksien malli
 
+**Tila:** odottaa paatosta tavoitemallista  
 **Taso:** keskitaso  
 **Tiedostot:** `firebaseClient.ts`, `firestore.rules`, `functions/ncscCron.ts`, yllapidon ohjeet
 
@@ -66,8 +72,11 @@ Tama lista kokoaa seuraavat tietoturvaparannukset toteutusjarjestykseen. Aiemmat
 - `localStorage`-muokkaus ei saa yllapitokayttoliittymaa nayttamaan oikeuksia virheellisesti.
 - Adminin vaihto on toistettava ohjeesta.
 
+**18.6.2026 rajaus:** Tahan ei tehda koodimuutosta ennen kuin yllapitokayttajien maara ja tavoitemalli paatetaan. Suositus on custom claims- tai UID-pohjainen malli, joka dokumentoidaan samalla kun uusi admin lisataan.
+
 ### JATKO-04 - Varmistetaan suojausotsikot oikeassa hostingissa
 
+**Tila:** odottaa hosting-paatosta  
 **Taso:** keskitaso  
 **Tiedostot:** `firebase.json`, hosting-palvelun asetukset, `docs/elokuun-julkaisusuunnitelma.md`
 
@@ -82,6 +91,8 @@ Tama lista kokoaa seuraavat tietoturvaparannukset toteutusjarjestykseen. Aiemmat
 - Tuotantodomain palauttaa suojausotsikot.
 - Sivusto toimii ilman selaimen CSP-virheita.
 - Yllapitosivut eivat ole iframe-upotettavissa.
+
+**18.6.2026 rajaus:** GitHub Pages -testiosoite ei kayta `firebase.json`-otsikkoja. Suojausotsikoiden varsinainen hyvaksymistesti voidaan tehda vasta Firebase Hostingissa, Cloudcityssa tai muussa lopullisessa hostingissa komennolla `curl -I` tuotantodomainiin.
 
 ### JATKO-05 - Rajaa operointitietojen julkinen luku
 

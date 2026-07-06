@@ -6,7 +6,7 @@ Tämä ohje kertoo, miten Firebase otetaan käyttöön tässä Aloitussivu-proje
 
 1. Avaa https://console.firebase.google.com/
 2. Valitse **Add project** / **Lisää projekti**.
-3. Anna projektille nimi, esimerkiksi `seniorin-aloitussivu`.
+3. Anna projektille nimi, esimerkiksi `aloitussivu`.
 4. Google Analytics ei ole tämän sovelluksen toiminnan kannalta pakollinen.
 5. Luo projekti loppuun.
 

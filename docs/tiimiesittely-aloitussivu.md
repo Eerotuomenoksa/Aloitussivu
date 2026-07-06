@@ -1,14 +1,27 @@
-# SeniorSurfin aloitussivu: esittely tiimille
+# Aloitussivu: esittely tiimille
 
 ## Lyhyesti
 
-SeniorSurfin aloitussivu on ikääntyneille suunnattu selkeä verkkosivu, joka kokoaa arjen digipalvelut, alueelliset ja paikalliset palvelut, uutiset, huijausvaroitukset, Google-haun ja kevyen tekoälyavustajan yhteen näkymään.
+Aloitussivu on ikääntyneille suunnattu selkeä verkkosivu, joka kokoaa arjen digipalvelut, alueelliset ja paikalliset palvelut, uutiset, huijausvaroitukset, Google-haun ja kevyen tekoälyavustajan yhteen näkymään.
 
 Sivun tarkoitus on madaltaa kynnystä lähteä liikkeelle verkossa. Monelle ikääntyneelle vaikein kohta ei ole yksittäisen palvelun käyttäminen, vaan oikean palvelun löytäminen, oikean linkin tunnistaminen ja uskallus edetä turvallisesti. Aloitussivu pyrkii auttamaan juuri tässä kohdassa: se tarjoaa valmiiksi kuratoidut linkit, oman paikkakunnan palvelut, äänen avulla käytettävän haun ja matalan kynnyksen avustajan.
 
+Viimeisimmissä muutoksissa sivun yläosaa on tiivistetty, sääkortin päähuomio on siirretty lämpötilaan, koettuun lämpötilaan, poutaan/sateeseen ja tuuleen, ja Kela-taksien alueelliset tilausnumerot on lisätty kunnan mukaan puhelinnumeroihin sekä alueellisiin palveluihin.
+
 ## Esittely tiimin agendalle
 
-SeniorSurfin aloitussivu on ikääntyneille suunnattu kokeilu, joka kokoaa turvalliset arjen linkit, paikalliset ja alueelliset palvelut, uutiset, huijausvaroitukset, Google-haun ja kevyen tekoälyavustajan yhteen selkeään näkymään. Sivu on ollut nyt noin kuukauden ajan viiden digiopastajan testikäytössä, ja tavoitteena on arvioida, auttaako se ikääntyneitä löytämään oikeat palvelut nopeammin ja tukeeko se digiopastajien työtä yhteisenä aloituspisteenä.
+Aloitussivu on ikääntyneille suunnattu kokeilu, joka kokoaa turvalliset arjen linkit, paikalliset ja alueelliset palvelut, uutiset, huijausvaroitukset, Google-haun ja kevyen tekoälyavustajan yhteen selkeään näkymään. Sivu on ollut nyt noin kuukauden ajan viiden digiopastajan testikäytössä, ja tavoitteena on arvioida, auttaako se ikääntyneitä löytämään oikeat palvelut nopeammin ja tukeeko se digiopastajien työtä yhteisenä aloituspisteenä.
+
+## Viimeisimmät muutokset
+
+Viimeisin toteutuskierros keskittyi siihen, että sivun tärkeimmät arjen apuvälineet löytyvät nopeammin ja vievät vähemmän tilaa sivun yläosasta.
+
+- Sivuston näkyvä työnimi on yhtenäistetty muotoon Aloitussivu.
+- Yläosan kello, Google-haku, sää ja avustaja on tiivistetty tasapainoisemmaksi kokonaisuudeksi.
+- Sääkortissa korostuvat nyt lämpötila, koettu lämpötila, pouta/sade ja tuulen nopeus.
+- Kela-taksien alueelliset tilausnumerot näkyvät kunnan perusteella alueellisissa palveluissa.
+- Sama Kela-taksin numero nousee myös Puhelinnumerot-osioon, jolloin käyttäjä voi hakea esimerkiksi sanalla "kela" ja soittaa suoraan oikeaan alueelliseen tilausnumeroon.
+- Julkaisua edeltäviin työpaketteihin on lisätty päätökset virallisesta nimestä, palvelun osoitteesta, ylläpidon ilmoitussähköpostista, poistettavista linkeistä ja ylläpidon julkisten linkkien siistimisestä.
 
 ## Mikä ongelma sivu ratkaisee
 
@@ -23,7 +36,7 @@ Ikääntyneen digiarjessa toistuu usein samoja haasteita:
 - kirjoittaminen tai hakusanojen muotoilu voi olla hankalaa
 - digiopastustilanteessa samat aloituspolut pitää rakentaa aina uudelleen
 
-SeniorSurfin aloitussivu tarjoaa yhden rauhallisen lähtöpisteen. Se ei korvaa varsinaisia palveluja, vaan ohjaa käyttäjää niihin selkeämmin ja turvallisemmin.
+Aloitussivu tarjoaa yhden rauhallisen lähtöpisteen. Se ei korvaa varsinaisia palveluja, vaan ohjaa käyttäjää niihin selkeämmin ja turvallisemmin.
 
 ## Kenelle sivu on tarkoitettu
 
@@ -100,11 +113,11 @@ Palautteen avulla voidaan tunnistaa:
 
 ## Mitä sivulla on nyt
 
-Nykyinen aloitussivu sisältää seuraavat päätoiminnot.
+Nykyinen Aloitussivu sisältää seuraavat päätoiminnot.
 
 ### Selkeä etusivu
 
-Etusivulla on isoja aihealueita, joiden alle on ryhmitelty alakategorioita. Tavoitteena on vähentää pitkän linkkilistan kuormitusta ja auttaa käyttäjää hahmottamaan, mistä kannattaa aloittaa.
+Etusivulla on isoja aihealueita, joiden alle on ryhmitelty alakategorioita. Yläosan kello, Google-haku, sää ja tekoälyavustaja on tiivistetty niin, että ne vievät vähemmän tilaa mutta pysyvät nopeasti käytettävinä. Tavoitteena on vähentää pitkän linkkilistan kuormitusta ja auttaa käyttäjää hahmottamaan, mistä kannattaa aloittaa.
 
 Esimerkkejä aihealueista:
 
@@ -122,6 +135,8 @@ Esimerkkejä aihealueista:
 Sivulla on oma haku kategorioihin, linkkeihin ja puhelinnumeroihin. Hakutulokset on ryhmitelty, jotta käyttäjä näkee paremmin, onko tulos aihealue, verkkosivu vai puhelinnumero.
 
 Lisäksi sivulla on Google-haku verkkohakuja varten. Google-hakua voi käyttää myös omalla äänellä, jos selain ja laite tukevat puheentunnistusta.
+
+Kunnan mukaan löytyvät puhelinnumerot nousevat mukaan hakutuloksiin. Esimerkiksi Kela-taksin alueellinen tilausnumero näkyy Puhelinnumerot-osiossa, kun käyttäjän kunta on tiedossa.
 
 ### Äänikäyttö
 
@@ -142,6 +157,7 @@ Näkyviin voidaan tuoda esimerkiksi:
 - kunnan sivut
 - hyvinvointialue
 - paikallisliikenne
+- Kela-taksin alueellinen tilausnumero
 - paikalliset ja alueelliset kirjastot
 - museot ja teatterit
 - potilasyhdistykset
@@ -149,6 +165,14 @@ Näkyviin voidaan tuoda esimerkiksi:
 - paikalliset uutiset
 
 Kirjastojen kattavuutta on täydennetty alueellisilla kirjastoilla. Tavoitteena on, että jokaiselle kunnalle näkyy heti etusivulla sopiva kirjastolinkki, vaikka palvelu toimisi useamman kunnan yhteisenä verkkokirjastona.
+
+Kela-taksien tilausnumerot on lisätty Kelan alueellisen listauksen perusteella. Numero näytetään käyttäjän kunnan mukaan, jotta käyttäjä ei joudu etsimään oikeaa tilausnumeroa erillisestä PDF-listasta.
+
+### Sää ja yläosan apuvälineet
+
+Yläosassa näkyvät kello, Google-haku, sää ja tekoälyavustaja. Niitä on tiivistetty niin, että ne ovat suunnilleen samankorkuisia eivätkä vie suhteettomasti tilaa etusivun alusta.
+
+Sääkortissa päähuomio on nyt lämpötilassa, koetussa lämpötilassa, pouta/sade-tiedossa ja tuulen nopeudessa. Lähdetietoa ei näytetä käyttäjälle erillisenä elementtinä, jotta kortti pysyy yksinkertaisena.
 
 ### Paikalliset uutiset
 
@@ -300,7 +324,7 @@ Tarvitaan kevyttä ylläpitoa:
 - uusien linkkien hyväksyntä
 - rikkinäisten linkkien poistaminen tai korjaaminen
 - paikallisten sisältöjen tarkistus
-- alueellisten kirjastojen, joukkoliikenteen, museoiden, teatterien ja yhdistysten tarkistus
+- alueellisten kirjastojen, Kela-taksien, joukkoliikenteen, museoiden, teatterien ja yhdistysten tarkistus
 - huijausvaroitusten tarkistus
 - muutoslokin ylläpito
 - tukijoiden lisääminen Sivua tukemassa -sivulle sovittujen periaatteiden mukaisesti
@@ -357,7 +381,7 @@ Sivun uskottavuus syntyy siitä, että se pysyy siistinä, turvallisena ja ajant
 
 ## Suositus tiimille
 
-SeniorSurfin aloitussivu kannattaa nähdä kokeiluna, jolla on mahdollisuus kasvaa pysyväksi työkaluksi.
+Aloitussivu kannattaa nähdä kokeiluna, jolla on mahdollisuus kasvaa pysyväksi työkaluksi.
 
 Ennen lopullista julkaisua kannattaa varmistaa kolme asiaa:
 
@@ -369,7 +393,7 @@ Jos testaus osoittaa, että sivu auttaa käyttäjiä löytämään palveluja ja 
 
 ## Yhteenveto
 
-SeniorSurfin aloitussivu palvelee sekä ikääntynyttä käyttäjää että SeniorSurfin toimintaa. Se tekee digituen ideasta konkreettisen: käyttäjä saa selkeän, turvallisen ja paikallisesti hyödyllisen paikan, josta aloittaa.
+Aloitussivu palvelee sekä ikääntynyttä käyttäjää että SeniorSurfin toimintaa. Se tekee digituen ideasta konkreettisen: käyttäjä saa selkeän, turvallisen ja paikallisesti hyödyllisen paikan, josta aloittaa.
 
 Sivun suurin hyöty on, että se auttaa eteenpäin juuri siinä kohdassa, jossa moni käyttäjä pysähtyy: mitä minun pitäisi klikata, mistä löydän oikean palvelun ja voinko luottaa tähän linkkiin.
 

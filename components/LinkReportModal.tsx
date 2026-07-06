@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { normalizeReportUrl, submitLinkReport } from '../linkVisibility';
 import { LinkReportDraft, LinkReportEntry, LinkReportType } from '../types';
 import { useI18n } from '../i18n';
+import { useModalFocusTrap } from '../hooks/useModalFocusTrap';
 
 interface LinkReportModalProps {
   draft: LinkReportDraft | null;
@@ -21,6 +22,9 @@ const LinkReportModal: React.FC<LinkReportModalProps> = ({ draft, onClose }) => 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const closeTimerRef = useRef<number | null>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  useModalFocusTrap(modalRef, Boolean(draft), onClose, closeButtonRef);
 
   useEffect(() => {
     if (!draft) return;
@@ -33,22 +37,15 @@ const LinkReportModal: React.FC<LinkReportModalProps> = ({ draft, onClose }) => 
     setSubmitted(false);
     setSubmitError('');
     setIsSubmitting(false);
-    window.requestAnimationFrame(() => closeButtonRef.current?.focus());
   }, [draft]);
 
   useEffect(() => {
-    const handleEsc = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onClose();
-    };
-
-    window.addEventListener('keydown', handleEsc);
     return () => {
-      window.removeEventListener('keydown', handleEsc);
       if (closeTimerRef.current !== null) {
         window.clearTimeout(closeTimerRef.current);
       }
     };
-  }, [onClose]);
+  }, []);
 
   if (!draft) return null;
   const typeOptions: { value: LinkReportType; label: string; description: string }[] = [
@@ -113,7 +110,7 @@ const LinkReportModal: React.FC<LinkReportModalProps> = ({ draft, onClose }) => 
       aria-modal="true"
       aria-labelledby="link-report-title"
     >
-      <div className="aurora-modal-shell flex max-h-[calc(100dvh-1.5rem)] w-full max-w-2xl flex-col overflow-hidden sm:max-h-[calc(100dvh-2rem)] sm:rounded-[2.5rem]">
+      <div ref={modalRef} tabIndex={-1} className="aurora-modal-shell flex max-h-[calc(100dvh-1.5rem)] w-full max-w-2xl flex-col overflow-hidden sm:max-h-[calc(100dvh-2rem)] sm:rounded-[2.5rem]">
         <div className="aurora-modal-header flex shrink-0 items-center justify-between gap-4 p-5 text-white md:p-8">
           <div className="space-y-1">
             <p className="text-sm font-black uppercase tracking-widest text-white/70">{t('linkReportKicker')}</p>

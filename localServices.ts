@@ -10,7 +10,7 @@ import { KELA_TAXI_PROVIDERS } from './localKelaTaxiNumbers';
 import type { RegionalProvider } from './communityLinks';
 import { SHORTCUTS } from './constants';
 import { filterVisibleProviders } from './linkVisibility';
-import { LocalityInfo, Municipality, Provider, RegionalContext, RssFeedConfig, Shortcut } from './types';
+import { LocalityInfo, Municipality, Provider, RegionalContext, RegionalProviderScope, RssFeedConfig, Shortcut } from './types';
 import type { LanguageCode } from './i18n';
 
 interface LocalServiceConfig {
@@ -133,6 +133,91 @@ const municipalitiesByNormalizedSwedishName = new Map<string, Municipality>(
   ])
 );
 
+export interface RegionalProviderScopeInfo {
+  scope: RegionalProviderScope;
+  detail?: string;
+}
+
+const getMunicipalityNameFromKey = (municipalityKey: string) => (
+  municipalitiesByNormalizedName.get(normalizeMunicipality(municipalityKey))?.name ?? municipalityKey
+);
+
+const getMunicipalityNamesFromKeys = (municipalityKeys: string[]) => (
+  municipalityKeys.map(getMunicipalityNameFromKey)
+);
+
+const withRegionalScope = (provider: Provider | undefined, meta: Partial<Provider>): Provider | undefined => (
+  provider ? { ...provider, ...meta } : undefined
+);
+
+const withMunicipalityScope = (provider: Provider | undefined, municipality: string): Provider | undefined => (
+  withRegionalScope(provider, {
+    municipality,
+    sourceMunicipality: municipality,
+    scope: 'municipality',
+  })
+);
+
+const withRegionalAreaScope = (provider: Provider | undefined, area: { name: string; municipalities: string[] }): Provider | undefined => (
+  withRegionalScope(provider, {
+    municipalities: getMunicipalityNamesFromKeys(area.municipalities),
+    sourceArea: area.name,
+    scope: 'regional',
+  })
+);
+
+export const getRegionalProviderScopeInfo = (provider: Provider, context: RegionalContext): RegionalProviderScopeInfo | null => {
+  const municipalityKey = normalizeMunicipality(context.municipality.name);
+  const sourceMunicipality = provider.sourceMunicipality ?? provider.municipality;
+  const sourceMunicipalityKey = sourceMunicipality ? normalizeMunicipality(sourceMunicipality) : '';
+  const providerMunicipalityKeys = provider.municipalities?.map(normalizeMunicipality) ?? [];
+  const sourceArea = provider.sourceArea ?? provider.area;
+
+  if (provider.scope === 'nationalFallback') {
+    return { scope: 'nationalFallback' };
+  }
+
+  if (provider.scope === 'wellbeingArea') {
+    return { scope: 'wellbeingArea', detail: sourceArea ?? context.municipality.wellbeingAreaName };
+  }
+
+  if (provider.scope === 'neighbor') {
+    return { scope: 'neighbor', detail: sourceMunicipality };
+  }
+
+  if (provider.scope === 'regional') {
+    return { scope: 'regional', detail: sourceArea };
+  }
+
+  if (provider.scope === 'municipality') {
+    if (!sourceMunicipality || sourceMunicipalityKey === municipalityKey) {
+      return { scope: 'municipality' };
+    }
+    return { scope: 'neighbor', detail: sourceMunicipality };
+  }
+
+  if (sourceMunicipality) {
+    return sourceMunicipalityKey === municipalityKey
+      ? { scope: 'municipality' }
+      : { scope: 'neighbor', detail: sourceMunicipality };
+  }
+
+  if (providerMunicipalityKeys.includes(municipalityKey)) {
+    return { scope: 'regional', detail: sourceArea };
+  }
+
+  const groupMunicipality = provider.group ? findMunicipality(provider.group) : null;
+  if (groupMunicipality && normalizeMunicipality(groupMunicipality.name) === municipalityKey) {
+    return { scope: 'municipality' };
+  }
+
+  if (sourceArea) {
+    return { scope: 'regional', detail: sourceArea };
+  }
+
+  return null;
+};
+
 export const getLocalizedMunicipalityName = (municipality: Municipality | null | undefined, language: string) => {
   if (!municipality) return '';
   if (language === 'sv') {
@@ -156,13 +241,22 @@ const getMunicipalityWebsiteProvider = (municipality: string, language: Language
     name: `Kunnan palvelut: ${municipality}`,
     url,
     group: 'Paikalliset palvelut',
+    municipality,
+    sourceMunicipality: municipality,
+    scope: 'municipality',
   };
 };
 
 const localizeMunicipalityProvider = (provider: Provider | undefined, municipality: string, language: LanguageCode = 'fi'): Provider | undefined => {
   if (!provider) return provider;
   const url = getMunicipalityWebsiteUrl(municipality, language);
-  return url ? { ...provider, url } : provider;
+  return url ? {
+    ...provider,
+    url,
+    municipality: provider.municipality ?? municipality,
+    sourceMunicipality: provider.sourceMunicipality ?? provider.municipality ?? municipality,
+    scope: provider.scope ?? 'municipality',
+  } : provider;
 };
 
 const regionalServiceAreas: RegionalServiceArea[] = [
@@ -215,6 +309,22 @@ const regionalServiceAreas: RegionalServiceArea[] = [
     },
   },
   {
+    id: 'lahti-region',
+    name: 'Lahden seutu',
+    municipalities: ['asikkala', 'heinola', 'hollola', 'lahti', 'orimattila', 'padasjoki'],
+    services: {
+      publicTransport: { name: 'Lahden seudun liikenne', url: 'https://www.lsl.fi/', group: 'Julkinen liikenne' },
+    },
+  },
+  {
+    id: 'hameenlinna-region',
+    name: 'Hämeenlinnan seutu',
+    municipalities: ['hattula', 'hämeenlinna', 'janakkala'],
+    services: {
+      publicTransport: { name: 'Hämeenlinnan joukkoliikenne', url: 'https://hameenlinnanjoukkoliikenne.fi/', group: 'Julkinen liikenne' },
+    },
+  },
+  {
     id: 'kuopio-region',
     name: 'Kuopion seutu',
     municipalities: ['kuopio', 'siilinjärvi'],
@@ -255,6 +365,22 @@ const regionalServiceAreas: RegionalServiceArea[] = [
     },
   },
   {
+    id: 'vaasa-region',
+    name: 'Vaasan seutu',
+    municipalities: ['mustasaari', 'vaasa'],
+    services: {
+      publicTransport: { name: 'Lifti', url: 'https://www.vaasa.fi/asu-ja-ela/liikenne-ja-kadut/joukkoliikenne/', group: 'Julkinen liikenne' },
+    },
+  },
+  {
+    id: 'rovaniemi-region',
+    name: 'Rovaniemi',
+    municipalities: ['rovaniemi'],
+    services: {
+      publicTransport: { name: 'Linkkari', url: 'https://linkkari.fi/', group: 'Julkinen liikenne' },
+    },
+  },
+  {
     id: 'aland-region',
     name: 'Ahvenanmaa',
     municipalities: ['brändö', 'eckerö', 'finström', 'föglö', 'geta', 'hammarland', 'jomala', 'kumlinge', 'kökar', 'lemland', 'lumparland', 'maarianhamina', 'saltvik', 'sottunga', 'sund', 'vårdö'],
@@ -271,6 +397,27 @@ const getRegionalServiceArea = (municipalityKey: string): RegionalServiceArea | 
 export const getRegionalServiceAreaMunicipalities = (municipalityName: string) => {
   const municipalityKey = normalizeMunicipality(municipalityName);
   return getRegionalServiceArea(municipalityKey)?.municipalities ?? [municipalityKey];
+};
+
+const getScopedPublicTransportProvider = (provider: Provider | undefined, context: RegionalContext, serviceArea?: RegionalServiceArea): Provider | undefined => {
+  if (!provider) return undefined;
+  if (provider.scope) return provider;
+
+  if (provider.url === matkahuoltoRouteGuide.url) {
+    return matkahuoltoRouteGuide;
+  }
+
+  if (serviceArea && provider.url === serviceArea.services.publicTransport?.url) {
+    return withRegionalAreaScope(provider, serviceArea);
+  }
+
+  return withMunicipalityScope(provider, context.municipality.name);
+};
+
+const getScopedRouteGuideProvider = (provider: Provider | undefined, serviceArea?: RegionalServiceArea): Provider | undefined => {
+  if (!provider) return undefined;
+  if (serviceArea) return withRegionalAreaScope(provider, serviceArea);
+  return withRegionalScope(provider, { scope: 'regional', sourceArea: 'HSL-alue' });
 };
 
 const regionalLibraryAreas: RegionalLibraryArea[] = [
@@ -455,11 +602,36 @@ const getRegionalLibraryArea = (municipalityKey: string): RegionalLibraryArea | 
   regionalLibraryAreas.find((area) => area.municipalities.includes(municipalityKey))
 );
 
+const getScopedLibraryProvider = (provider: Provider | undefined, context: RegionalContext, libraryArea?: RegionalLibraryArea): Provider | undefined => {
+  if (!provider) return undefined;
+  if (provider.scope) return provider;
+
+  if (libraryArea && provider.url === libraryArea.provider.url) {
+    return withRegionalScope(provider, {
+      municipalities: getMunicipalityNamesFromKeys(libraryArea.municipalities),
+      sourceArea: provider.name,
+      scope: 'regional',
+    });
+  }
+
+  return withMunicipalityScope(provider, context.municipality.name);
+};
+
 const hslPublicTransport: Provider = { name: 'HSL', url: 'https://www.hsl.fi/', group: 'Julkinen liikenne' };
 const hslRouteGuide: Provider = { name: 'HSL Reittiopas', url: 'https://reittiopas.hsl.fi/', group: 'Reittioppaat' };
-const matkahuoltoRouteGuide: Provider = { name: 'Matkahuollon reittiopas', url: 'https://reittiopas.matkahuolto.fi/', group: 'Julkinen liikenne' };
+const matkahuoltoRouteGuide: Provider = {
+  name: 'Matkahuollon reittiopas',
+  url: 'https://reittiopas.matkahuolto.fi/',
+  group: 'Julkinen liikenne',
+  scope: 'nationalFallback',
+  sourceArea: 'Suomi',
+  sourceNote: 'Valtakunnallinen reittiopas kunnille, joille ei ole vielä omaa tai seudullista joukkoliikennelinkkiä.',
+};
 const serviceTransportByMunicipality = new Map(
-  LOCAL_SERVICE_TRANSPORT_LINKS.map((entry) => [normalizeMunicipality(entry.municipality), entry.provider])
+  LOCAL_SERVICE_TRANSPORT_LINKS.map((entry) => [
+    normalizeMunicipality(entry.municipality),
+    withMunicipalityScope(entry.provider, entry.municipality) as Provider,
+  ])
 );
 
 const regionalNewsProvider = (name: string, url: string): Provider => ({
@@ -754,6 +926,8 @@ const getWellbeingAreaProvider = (municipality: Municipality): Provider | undefi
     name: municipality.wellbeingAreaName,
     url,
     group: 'Hyvinvointialue',
+    sourceArea: municipality.wellbeingAreaName,
+    scope: 'wellbeingArea',
   };
 };
 
@@ -766,6 +940,8 @@ const getWellbeingAreaNewsProvider = (municipality: Municipality): Provider | un
     name: `Hyvinvointialueen tiedotteet: ${municipality.wellbeingAreaName}`,
     url,
     group: 'Alueelliset uutiset',
+    sourceArea: municipality.wellbeingAreaName,
+    scope: 'wellbeingArea',
   };
 };
 
@@ -775,20 +951,22 @@ export const getRegionalProviders = (context: RegionalContext, language: Languag
   const exact = localServiceMap[key];
   const serviceArea = getRegionalServiceArea(key);
   const wellbeingArea = exact?.wellbeingArea ?? getWellbeingAreaProvider(context.municipality);
-  const publicTransport = exact?.publicTransport ?? serviceArea?.services.publicTransport ?? matkahuoltoRouteGuide;
+  const publicTransport = getScopedPublicTransportProvider(exact?.publicTransport ?? serviceArea?.services.publicTransport ?? matkahuoltoRouteGuide, context, serviceArea);
   const serviceTransport = [
     ...(exact?.serviceTransport ?? []),
     serviceTransportByMunicipality.get(key),
   ].filter((provider): provider is Provider => Boolean(provider));
   const municipalityProvider = localizeMunicipalityProvider(exact?.municipality, municipality, language)
     ?? getMunicipalityWebsiteProvider(municipality, language);
+  const libraryArea = getRegionalLibraryArea(key);
+  const library = getScopedLibraryProvider(exact?.library, context, libraryArea);
 
-  const routeGuide = publicTransport?.url.includes('hsl.fi') ? hslRouteGuide : undefined;
+  const routeGuide = publicTransport?.url.includes('hsl.fi') ? getScopedRouteGuideProvider(hslRouteGuide, serviceArea) : undefined;
 
   return filterVisibleProviders(uniqueProviders([
     municipalityProvider,
     wellbeingArea,
-    exact?.library,
+    library,
     publicTransport,
     routeGuide,
     ...serviceTransport,
@@ -799,11 +977,11 @@ export const getRegionalPublicTransportProviders = (context: RegionalContext): P
   const key = normalizeMunicipality(context.municipality.name);
   const exact = localServiceMap[key];
   const serviceArea = getRegionalServiceArea(key);
-  const publicTransport = exact?.publicTransport ?? serviceArea?.services.publicTransport ?? matkahuoltoRouteGuide;
+  const publicTransport = getScopedPublicTransportProvider(exact?.publicTransport ?? serviceArea?.services.publicTransport ?? matkahuoltoRouteGuide, context, serviceArea);
 
   return filterVisibleProviders(uniqueProviders([
     publicTransport,
-    publicTransport?.url.includes('hsl.fi') ? hslRouteGuide : undefined,
+    publicTransport?.url.includes('hsl.fi') ? getScopedRouteGuideProvider(hslRouteGuide, serviceArea) : undefined,
   ].filter((provider): provider is Provider => Boolean(provider)))) ?? [];
 };
 
@@ -813,8 +991,8 @@ export const getRegionalLibraryProviders = (context: RegionalContext): Provider[
   const libraryArea = getRegionalLibraryArea(key);
 
   return filterVisibleProviders(uniqueProviders([
-    exact?.library,
-    libraryArea?.provider,
+    getScopedLibraryProvider(exact?.library, context, libraryArea),
+    getScopedLibraryProvider(libraryArea?.provider, context, libraryArea),
   ].filter((provider): provider is Provider => Boolean(provider)))) ?? [];
 };
 
@@ -849,7 +1027,13 @@ const getRegionalNewspaperProviders = (context: RegionalContext): Provider[] => 
       return getMunicipalityInflections(context.municipality.name)
         .some((form) => newspaperName.includes(` ${normalizeNameForMatch(form)} `));
     })
-    .map((link) => ({ ...link, group: context.municipality.name }));
+    .map((link) => ({
+      ...link,
+      group: context.municipality.name,
+      municipality: context.municipality.name,
+      sourceMunicipality: context.municipality.name,
+      scope: 'municipality' as const,
+    }));
 };
 
 const getRegionalSportsClubProviders = (context: RegionalContext): Provider[] => (
@@ -937,7 +1121,7 @@ export const getLocalizedShortcuts = (shortcuts: Shortcut[], locality: LocalityI
   const wellbeingArea = exact?.wellbeingArea ?? getWellbeingAreaProvider(context.municipality);
 
   const fallback: LocalServiceConfig = {
-    publicTransport: serviceArea?.services.publicTransport ?? matkahuoltoRouteGuide,
+    publicTransport: getScopedPublicTransportProvider(serviceArea?.services.publicTransport ?? matkahuoltoRouteGuide, context, serviceArea),
     wellbeingArea,
     municipality: localizeMunicipalityProvider(exact?.municipality, municipality, language)
       ?? getMunicipalityWebsiteProvider(municipality, language),
