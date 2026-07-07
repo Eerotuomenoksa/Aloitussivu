@@ -122,10 +122,11 @@ const Clock: React.FC<ClockProps> = ({ fontSizeStep = 0, variant = 'hero', mode 
         <time
           dateTime={time.toISOString()}
           aria-live="polite"
-          className="block font-body font-bold text-white"
+          className="block font-bold text-white"
           style={{
+            fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
             fontSize: 'clamp(3.6rem, 6.5vw, 5rem)',
-            letterSpacing: '.01em',
+            letterSpacing: '0',
             lineHeight: '1',
             fontVariantNumeric: 'tabular-nums',
             textShadow: '0 2px 60px rgba(61,184,112,.2)',

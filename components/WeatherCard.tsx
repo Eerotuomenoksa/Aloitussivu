@@ -1,7 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { isLinkVisible, useLinkVisibilityVersion } from '../linkVisibility';
-import { findMunicipality, getLocalizedMunicipalityName, normalizeMunicipality } from '../localServices';
 import { LocalityInfo } from '../types';
 import { useI18n } from '../i18n';
 
@@ -146,7 +145,11 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ locality, onLocationResolved,
     code !== undefined && code >= 51
   );
 
-  const resolveMunicipality = (address: Record<string, string | undefined>, displayName: string) => {
+  const resolveMunicipality = (
+    address: Record<string, string | undefined>,
+    displayName: string,
+    normalize: (name: string) => string,
+  ) => {
     const candidates = [
       address.municipality,
       address.city,
@@ -163,7 +166,7 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ locality, onLocationResolved,
       address.quarter,
     ].filter(Boolean) as string[];
 
-    if (districtCandidates.some((district) => vantaaDistricts.has(normalizeMunicipality(district)))) {
+    if (districtCandidates.some((district) => vantaaDistricts.has(normalize(district)))) {
       return 'Vantaa';
     }
 
@@ -221,7 +224,12 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ locality, onLocationResolved,
         const address = geoData.address || {};
         const countryCode = typeof address.country_code === 'string' ? address.country_code.toLowerCase() : undefined;
         const city = address.city || address.town || address.municipality || t('yourLocation');
-        const municipality = resolveMunicipality(address, geoData.display_name || '');
+        const {
+          findMunicipality,
+          getLocalizedMunicipalityName,
+          normalizeMunicipality,
+        } = await import('../localServices');
+        const municipality = resolveMunicipality(address, geoData.display_name || '', normalizeMunicipality);
         const municipalityInfo = findMunicipality(municipality);
         const isInFinland = countryCode ? countryCode === 'fi' : !!municipalityInfo;
         const localizedMunicipality = getLocalizedMunicipalityName(municipalityInfo, language) || city;
@@ -250,6 +258,10 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ locality, onLocationResolved,
       try {
         setLoading(true);
         setError(null);
+        const {
+          findMunicipality,
+          getLocalizedMunicipalityName,
+        } = await import('../localServices');
         const municipalityInfo = findMunicipality(nextLocality.municipality);
         const displayName = getLocalizedMunicipalityName(municipalityInfo, language) || nextLocality.displayName || nextLocality.municipality;
         setLocationName(displayName);

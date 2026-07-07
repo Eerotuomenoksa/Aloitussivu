@@ -7,6 +7,7 @@ import { Shortcut, Favorite, LocalityInfo, LinkReportDraft } from '../types';
 import { mergeApprovedLinksIntoShortcuts, useApprovedLinkSuggestionsVersion } from '../approvedLinks';
 import { useI18n } from '../i18n';
 import { useSpeechInput } from '../hooks/useSpeechInput';
+import { shortcutGroups } from './shortcutGroups';
 
 interface QuickLinksProps {
   onSelectCategory: (shortcut: Shortcut) => void;
@@ -20,14 +21,6 @@ interface QuickLinksProps {
 type LinkResult = { name: string; url: string; color: string; categoryName: string; categoryIcon: string; phone?: string; phoneUrl?: string };
 type PhoneResult = { name: string; phone: string; phoneUrl?: string; color: string; categoryName: string; categoryIcon: string };
 type CategoryResult = { shortcut: Shortcut; color: string };
-type ShortcutGroup = {
-  name: string;
-  icon: string;
-  categories: string[];
-  zone: string;
-  anchor: string;
-  descriptionKey: 'groupDescAsiointi' | 'groupDescRaha' | 'groupDescTerveys' | 'groupDescDigi' | 'groupDescUutiset' | 'groupDescKulttuuri' | 'groupDescLukeminen' | 'groupDescLiikkuminen' | 'groupDescVapaa';
-};
 
 const getPhoneHref = (phone?: string, phoneUrl?: string) => {
   if (phoneUrl) return phoneUrl;
@@ -40,116 +33,6 @@ const rowColors = [
   'bg-[var(--theme-surface)]',
   'bg-[var(--theme-surface)]',
 ];
-
-const shortcutGroups: ShortcutGroup[] = [
-  {
-    name: 'Asiointi ja viranomaiset',
-    icon: '🏛️',
-    categories: ['Julkiset palvelut', 'Oikeus', 'Puhelinnumerot', 'Turvallisuus'],
-    zone: 'zone-asiointi',
-    anchor: 'asiointi',
-    descriptionKey: 'groupDescAsiointi',
-  },
-  {
-    name: 'Raha ja ostaminen',
-    icon: '🏦',
-    categories: ['Pankit', 'Talous', 'Verkkokaupat', 'Ruoka'],
-    zone: 'zone-raha',
-    anchor: 'raha',
-    descriptionKey: 'groupDescRaha',
-  },
-  {
-    name: 'Terveys ja hoiva',
-    icon: '🏥',
-    categories: ['Terveys', 'Potilasyhdistykset', 'Kotihoito-palvelut', 'Koti'],
-    zone: 'zone-terveys',
-    anchor: 'terveys',
-    descriptionKey: 'groupDescTerveys',
-  },
-  {
-    name: 'Digi ja yhteydenpito',
-    icon: '💻',
-    categories: ['Apua digiin', 'Hakukoneet', 'Sähköposti', 'Sosiaalinen media', 'Sovellukset', 'Tekniikka'],
-    zone: 'zone-digi',
-    anchor: 'digi',
-    descriptionKey: 'groupDescDigi',
-  },
-  {
-    name: 'Uutiset ja tieto',
-    icon: '📰',
-    categories: ['Uutiset & Media', 'Lehdet', 'Sää', 'Tiede'],
-    zone: 'zone-uutiset',
-    anchor: 'uutiset',
-    descriptionKey: 'groupDescUutiset',
-  },
-  {
-    name: 'Kulttuuri ja taide',
-    icon: '🎭',
-    categories: ['Kulttuuri', 'Museot', 'Teatterit', 'Musiikki', 'Taiteet'],
-    zone: 'zone-kulttuuri',
-    anchor: 'kulttuuri',
-    descriptionKey: 'groupDescKulttuuri',
-  },
-  {
-    name: 'Lukeminen, kielet ja historia',
-    icon: '📚',
-    categories: ['Kirjallisuus', 'Kirjastot', 'Kielet', 'Sukututkimus'],
-    zone: 'zone-lukeminen',
-    anchor: 'lukeminen',
-    descriptionKey: 'groupDescLukeminen',
-  },
-  {
-    name: 'Liikkuminen ja ulkoilu',
-    icon: '🚌',
-    categories: ['Liikenne', 'Matkailu', 'Liikunta', 'Luonto', 'Urheilu'],
-    zone: 'zone-liikkuminen',
-    anchor: 'liikkuminen',
-    descriptionKey: 'groupDescLiikkuminen',
-  },
-  {
-    name: 'Vapaa-aika ja yhteisöt',
-    icon: '🎈',
-    categories: ['Vapaa-aika', 'Eläkeyhdistykset', 'Hengellisyys', 'Viihde'],
-    zone: 'zone-vapaa',
-    anchor: 'vapaa-aika',
-    descriptionKey: 'groupDescVapaa',
-  },
-];
-
-export const ZoneToc: React.FC<{ showLocal?: boolean }> = ({ showLocal = false }) => {
-  const { t, categoryName } = useI18n();
-  return (
-    <nav className="toc-card" aria-label={t('whatAreYouLookingFor')}>
-      <p className="toc-heading">{t('whatAreYouLookingFor')}</p>
-      <ul className="toc-list">
-        {showLocal && (
-          <li>
-            <a
-              href="#lahellasi"
-              className="toc-chip zone-local"
-              title={`Siirry kohtaan ${t('nearYou')}`}
-            >
-              <span className="toc-dot" aria-hidden="true">📍</span>
-              {t('nearYou')}
-            </a>
-          </li>
-        )}
-        {shortcutGroups.map((group) => (
-          <li key={group.anchor}>
-            <a
-              href={`#${group.anchor}`}
-              className={`toc-chip ${group.zone}`}
-              title={`Siirry kohtaan ${categoryName(group.name)}`}
-            >
-              <span className="toc-dot" aria-hidden="true">{group.icon}</span>
-              {categoryName(group.name)}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </nav>
-  );
-};
 
 const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep = 0, favorites, onToggleFavorite, locality, onReportLink }) => {
   const { t, categoryName, language, speechLocale } = useI18n();

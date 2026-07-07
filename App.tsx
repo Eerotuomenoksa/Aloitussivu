@@ -2,7 +2,7 @@
 import React, { lazy, Suspense, useState, useCallback, useEffect } from 'react';
 import Clock from './components/Clock';
 import WeatherCard from './components/WeatherCard';
-import QuickLinks, { ZoneToc } from './components/QuickLinks';
+import ZoneToc from './components/ZoneToc';
 import TestFeedbackPrompt from './components/TestFeedbackPrompt';
 import SearchBar from './components/SearchBar';
 import FloatingControls from './components/FloatingControls';
@@ -28,16 +28,23 @@ const FeedbackModal = lazy(() => import('./components/FeedbackModal'));
 const OnboardingTour = lazy(() => import('./components/OnboardingTour'));
 const RegionalServicesPanel = lazy(() => import('./components/RegionalServicesPanel'));
 const ScamAlertsBanner = lazy(() => import('./components/ScamAlertsBanner'));
+const QuickLinks = lazy(() => import('./components/QuickLinks'));
 
 const AssistantFallback = () => (
   <div className="hero-chip h-full min-h-[5.5rem]" aria-hidden="true" />
 );
 
 const RegionalServicesFallback = () => (
-  <div
-    className="zone zone-lahellasi min-h-[13rem] rounded-[2rem] border-2 border-[var(--theme-border)] bg-[var(--theme-surface)]"
-    aria-hidden="true"
+  <section
+    id="lahellasi"
+    className="zone zone-local min-h-[13rem] rounded-[2rem] border-2 border-[var(--theme-border)] bg-[var(--theme-surface)]"
+    aria-busy="true"
+    aria-label="Ladataan lähialueen palveluja"
   />
+);
+
+const QuickLinksFallback = () => (
+  <div className="min-h-[24rem]" aria-hidden="true" />
 );
 
 type IdleCapableWindow = Window & {
@@ -56,6 +63,7 @@ const SECONDARY_TIME_ZONE_KEY = 'secondaryTimeZone';
 const THEME_KEY = 'colorTheme';
 const CLOCK_MODE_KEY = 'clockMode';
 const TEST_FEEDBACK_PROMPT_DELAY_MS = 2 * 60 * 1000;
+const DEFERRED_CONTENT_DELAY_MS = 900;
 
 type ColorTheme = 'vihrea' | 'violetti' | 'sininen' | 'oranssi';
 type ClockMode = 'digital' | 'analog';
@@ -148,7 +156,7 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({ language, setLangua
 
   return (
     <label
-      className="relative inline-flex h-12 items-center rounded-full border border-white/20 bg-white/10 text-white shadow-sm focus-within:ring-2 focus-within:ring-[#e8a020] md:h-12"
+      className="relative inline-flex h-12 min-w-[4.75rem] items-center rounded-full border border-white/20 bg-white/10 text-white shadow-sm focus-within:ring-2 focus-within:ring-[#e8a020] sm:min-w-[9.5rem] md:h-12"
       title="Vaihda sivun kieli"
     >
       <span className="sr-only">{label}</span>
@@ -185,6 +193,7 @@ const AppContent: React.FC = () => {
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
   const [isTestFeedbackPromptOpen, setIsTestFeedbackPromptOpen] = useState(false);
   const [hasTestFeedbackPromptDelayElapsed, setHasTestFeedbackPromptDelayElapsed] = useState(false);
+  const [isDeferredContentReady, setIsDeferredContentReady] = useState(false);
   const [hasSeenOnboarding, setHasSeenOnboarding] = useState(() => localStorage.getItem(ONBOARDING_SEEN_KEY) === 'true');
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [locality, setLocality] = useState<LocalityInfo | null>(() => {
@@ -298,6 +307,34 @@ const AppContent: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    let cancelled = false;
+    let idleHandle: number | undefined;
+    const win = window as IdleCapableWindow;
+
+    const markReady = () => {
+      if (!cancelled) {
+        setIsDeferredContentReady(true);
+      }
+    };
+
+    const timer = window.setTimeout(() => {
+      if (win.requestIdleCallback) {
+        idleHandle = win.requestIdleCallback(markReady, { timeout: 1500 });
+      } else {
+        markReady();
+      }
+    }, DEFERRED_CONTENT_DELAY_MS);
+
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+      if (idleHandle !== undefined) {
+        win.cancelIdleCallback?.(idleHandle);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
     if (!isSettingsOpen) return;
     const handleEsc = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
@@ -378,6 +415,7 @@ const AppContent: React.FC = () => {
   const selectedSecondaryTimeZone = SECONDARY_TIME_ZONE_OPTIONS.find((option) => option.value === secondaryTimeZone) ?? SECONDARY_TIME_ZONE_OPTIONS[0];
   const isModalOpenWithoutTestFeedbackPrompt = Boolean(selectedShortcut || isInfoOpen || isHomepageOpen || isOnboardingOpen || isFeedbackOpen || reportDraft || isSettingsOpen);
   const isAnyModalOpen = isModalOpenWithoutTestFeedbackPrompt || isTestFeedbackPromptOpen;
+  const shouldShowRegionalServices = uiVisibility.regionalServices && isFinnishLocality;
   useEffect(() => {
     if (!hasTestFeedbackPromptDelayElapsed || isModalOpenWithoutTestFeedbackPrompt || isTestFeedbackPromptOpen) return;
     if (shouldShowTestFeedbackPrompt()) {
@@ -513,7 +551,7 @@ const AppContent: React.FC = () => {
 
             <div className="hero-body-grid grid gap-5 pb-7 md:gap-6" style={{ gridTemplateColumns: 'minmax(18rem, .9fr) minmax(0, 1.55fr)', alignItems: 'center' }}>
               {uiVisibility.clock && (
-                <div className="flex flex-col gap-2 animate-rise hero-clock-panel" data-tour="clock">
+                <div className="flex flex-col gap-2 hero-clock-panel" data-tour="clock">
                   <Clock
                     fontSizeStep={fontSizeStep}
                     variant="aurora"
@@ -528,7 +566,7 @@ const AppContent: React.FC = () => {
                   </p>
                 </div>
               )}
-              <div className="flex flex-col gap-3 animate-rise hero-tool-stack" style={{ animationDelay: '120ms' }} data-tour="google-search">
+              <div className="flex flex-col gap-3 hero-tool-stack" data-tour="google-search">
                 {uiVisibility.googleSearch && (
                   <SearchBar fontSizeStep={fontSizeStep} variant="aurora" />
                 )}
@@ -727,9 +765,9 @@ const AppContent: React.FC = () => {
         )}
 
         <main id="main-content" className="space-y-10 animate-fade-up" style={{ animationDelay: '300ms', marginTop: '-3.5rem' }} tabIndex={-1}>
-          <ZoneToc showLocal={uiVisibility.regionalServices && isFinnishLocality} />
+          <ZoneToc showLocal={shouldShowRegionalServices} />
 
-          {uiVisibility.scamAlerts && (
+          {uiVisibility.scamAlerts && isDeferredContentReady && (
             <Suspense fallback={null}>
               <ScamAlertsBanner compact framed />
             </Suspense>
@@ -739,30 +777,40 @@ const AppContent: React.FC = () => {
             <FavoriteLinks favorites={favorites} onToggleFavorite={toggleFavorite} fontSizeStep={fontSizeStep} />
           </div>
 
-          {uiVisibility.regionalServices && isFinnishLocality && (
+          {shouldShowRegionalServices && (
             <div data-tour="regional-services">
-              <Suspense fallback={<RegionalServicesFallback />}>
-                <RegionalServicesPanel
-                  locality={regionalLocality}
-                  fontSizeStep={fontSizeStep}
-                  onLocalitySelected={updateLocality}
-                  onReportLink={openReportModal}
-                  onSelectCategory={setSelectedCategory}
-                  showNews={uiVisibility.regionalNews}
-                />
-              </Suspense>
+              {isDeferredContentReady ? (
+                <Suspense fallback={<RegionalServicesFallback />}>
+                  <RegionalServicesPanel
+                    locality={regionalLocality}
+                    fontSizeStep={fontSizeStep}
+                    onLocalitySelected={updateLocality}
+                    onReportLink={openReportModal}
+                    onSelectCategory={setSelectedCategory}
+                    showNews={uiVisibility.regionalNews}
+                  />
+                </Suspense>
+              ) : (
+                <RegionalServicesFallback />
+              )}
             </div>
           )}
 
           <section className="space-y-8" data-tour="quick-links">
-            <QuickLinks
-              onSelectCategory={setSelectedCategory}
-              fontSizeStep={fontSizeStep}
-              favorites={favorites}
-              onToggleFavorite={toggleFavorite}
-              locality={regionalLocality}
-              onReportLink={openReportModal}
-            />
+            {isDeferredContentReady ? (
+              <Suspense fallback={<QuickLinksFallback />}>
+                <QuickLinks
+                  onSelectCategory={setSelectedCategory}
+                  fontSizeStep={fontSizeStep}
+                  favorites={favorites}
+                  onToggleFavorite={toggleFavorite}
+                  locality={regionalLocality}
+                  onReportLink={openReportModal}
+                />
+              </Suspense>
+            ) : (
+              <QuickLinksFallback />
+            )}
           </section>
         </main>
 
@@ -822,6 +870,8 @@ const AppContent: React.FC = () => {
                   <img
                     src={isDarkMode ? seniorSurfLogoTummaTeema : seniorSurfLogoVaaleaTeema}
                     alt={t('seniorSurfLogoAlt')}
+                    width={2093}
+                    height={1219}
                     className="h-20 w-auto opacity-90 transition-opacity hover:opacity-100"
                     loading="lazy"
                   />
