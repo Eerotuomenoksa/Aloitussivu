@@ -28,7 +28,7 @@ export interface NcscScrapeLogEntry {
 
 const SCAM_ALERTS_COLLECTION = 'scamAlerts';
 const NCSC_SCRAPE_LOG_COLLECTION = 'ncscScrapeLog';
-const REMOTE_SYNC_DELAY_MS = 3500;
+const REMOTE_SYNC_DELAY_MS = 12000;
 
 const hasFirebaseConfig = Boolean(
   import.meta.env.VITE_FIREBASE_API_KEY?.trim()

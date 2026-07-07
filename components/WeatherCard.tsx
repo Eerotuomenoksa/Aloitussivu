@@ -426,14 +426,15 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ locality, onLocationResolved,
           {loading ? '⏳' : weather?.icon || '🌤️'}
         </span>
         <div className="min-w-0 flex-1 leading-tight">
-          <strong className="block text-[1.05rem] font-black leading-tight text-white md:text-[1.2rem]">
+          <strong className="block min-h-[1.25rem] text-[1.05rem] font-black leading-tight text-white md:min-h-[1.45rem] md:text-[1.2rem]">
             {loading ? t('weatherLoading') : error ? error : `${weather?.temp}°C · ${locationName}`}
           </strong>
-          {!loading && !error && (
-            <span className="mt-1 block text-[.9rem] font-bold leading-tight text-white/80 md:text-[1rem]">
-              {weather?.condition}
-            </span>
-          )}
+          <span
+            className={`mt-1 block min-h-[1.05rem] text-[.9rem] font-bold leading-tight text-white/80 md:min-h-[1.2rem] md:text-[1rem] ${loading || error ? 'invisible' : ''}`}
+            aria-hidden={loading || error ? 'true' : undefined}
+          >
+            {weather?.condition || t('weatherVariable')}
+          </span>
         </div>
       </div>
     );

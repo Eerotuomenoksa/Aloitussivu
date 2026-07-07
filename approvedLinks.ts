@@ -14,7 +14,7 @@ export interface ApprovedLinkSuggestion {
 const APPROVED_LINKS_KEY = 'approvedLinkSuggestions';
 const APPROVED_LINKS_CHANGE_EVENT = 'approvedlinkchange';
 const APPROVED_LINKS_COLLECTION = 'approvedLinks';
-const REMOTE_SYNC_DELAY_MS = 3500;
+const REMOTE_SYNC_DELAY_MS = 12000;
 
 const hasFirebaseConfig = Boolean(
   import.meta.env.VITE_FIREBASE_API_KEY?.trim()

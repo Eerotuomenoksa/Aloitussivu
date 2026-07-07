@@ -9,7 +9,7 @@ const LINK_HEALTH_CHANGE_EVENT = 'linkhealthchange';
 const LINK_REPORTS_CHANGE_EVENT = 'linkreportschange';
 const LINK_REPORTS_COLLECTION = 'linkReports';
 const BLOCKED_LINKS_COLLECTION = 'blockedLinks';
-const REMOTE_SYNC_DELAY_MS = 3500;
+const REMOTE_SYNC_DELAY_MS = 12000;
 
 const hasFirebaseConfig = Boolean(
   import.meta.env.VITE_FIREBASE_API_KEY?.trim()

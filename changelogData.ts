@@ -24,9 +24,15 @@ export type ChangelogCommit = {
   tags: string[];
 };
 
-export const CHANGELOG_GENERATED_AT = "6.7.2026 klo 21.31";
+export const CHANGELOG_GENERATED_AT = "7.7.2026 klo 09.25";
 export const CHANGELOG_VERSION = "0.72.0";
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
+  "Etusivun SEO-, GEO- ja AEO-perusta vahvistettiin: sivulle lisättiin canonical-osoite, tarkempi otsikko ja kuvaus, Open Graph- ja Twitter-jakotiedot sekä JSON-LD-rakenne WebSite-, WebApplication-, WebPage-, BreadcrumbList- ja FAQPage-muodossa.",
+  "Sivustolle lisättiin sitemap.xml ja webmanifest, ja julkiset tietosuoja-, saavutettavuus- ja tukijasivut saivat omat canonical-osoitteet, metakuvaukset ja jakotiedot.",
+  "Etusivu sai noscript-yhteenvedon ja usein kysytyt kysymykset, jotta sivun tarkoitus on ymmärrettävä myös ilman Reactin latautumista.",
+  "Uusien Lighthouse-raporttien perusteella taustasynkit ja käyttötilastojen automaattinen pageview siirrettiin myöhemmäksi, jotta Firebase/App Check/Firestore ei kuormita ensimmäistä näkymää.",
+  "Fonttien latausta ja hero-, sääkortti- ja sisällysluetteloalueiden korkeusvarauksia säädettiin, jotta mobiilin CLS ja alkulatauksen renderöintiviive pienenevät.",
+  "Julkaisun työpaketteihin lisättiin palvelinpäätöksen jälkeiset Lighthouse-optimoinnit: assettien välimuisti, HTML:n välimuisti, pakkaus, suojausotsikot ja lopullisen osoitteen Core Web Vitals -tarkistus.",
   "Alueelliset linkit kertovat nyt selvemmin, onko kyse oman kunnan palvelusta, seudullisesta palvelusta, hyvinvointialueesta, naapurikunnan palvelusta vai valtakunnallisesta hausta.",
   "Suosikkien löydettävyyttä parannettiin pitämällä tähdet näkyvissä, selkeyttämällä Omat suosikkini -ohjetta ja näyttämällä puuttuvista paikallisuutisista oma viesti.",
   "Huijausvaroitusten etusivunäkymää tiivistettiin niin, että varoitukset vievät vähemmän tilaa mutta avautuvat edelleen lisätietoihin.",

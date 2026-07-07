@@ -384,6 +384,8 @@ Tyyppi: koodaus ja ympäristötyö.
 
 Toteutetaan valittu tuotantopolku ja staging. Testataan kirjautuminen, Firestore tai mahdollinen Cloudcity API, ympäristömuuttujat, App Check, suojausotsikot ja ylläpito.
 
+Kun palvelinmalli ja lopullinen osoite on päätetty, toteutetaan myös heinäkuun Lighthouse-raporteissa tunnistetut palvelin- ja jakeluoptimoinnit: pitkät välimuistiajat hashatuille asseteille, HTML:n lyhyt välimuisti, gzip/Brotli-pakkaus, suojausotsikot, lopullisen originin Core Web Vitals -mittaus sekä tarkistus siitä, ettei Firebase/App Check tai muu taustasynkki lataudu ennen kuin käyttäjän ensimmäinen näkymä on valmis.
+
 Tämä on suurin tekninen epävarmuus. Jos Cloudcityn rajat tulevat vastaan, käytetään varasuunnitelmaa.
 
 #### WP11: ylläpidon ilmoitukset
@@ -631,6 +633,7 @@ Minimivaatimukset:
 - linkkitarkistus toimii
 - salaisuudet eivät ole frontend-bundlessa
 - Firebase/Cloudcity/App Check -asetukset testattu lopullisessa osoitteessa
+- palvelinpäätöksen jälkeiset Lighthouse-optimoinnit tehty: assettien välimuisti, HTML:n välimuisti, pakkaus, suojausotsikot ja lopullisen osoitteen Core Web Vitals -tarkistus
 - ylläpidon admin-oikeudet testattu
 - ei-adminin pääsy estetty
 

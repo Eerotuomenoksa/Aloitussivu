@@ -16,7 +16,7 @@ const getUsageTrackUrl = () => {
 };
 
 const USAGE_TRACKING_DISABLED_KEY = 'seniorSurfUsageTrackingDisabled';
-const PAGEVIEW_DELAY_MS = 5000;
+const PAGEVIEW_DELAY_MS = 15000;
 
 const isLocalDevelopmentHost = () => {
   if (typeof window === 'undefined') return false;

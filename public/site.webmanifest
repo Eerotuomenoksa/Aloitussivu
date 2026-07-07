@@ -1,0 +1,24 @@
+{
+  "name": "Aloitussivu",
+  "short_name": "Aloitussivu",
+  "description": "Selkeä ja turvallinen linkkihakemisto ikääntyneille.",
+  "lang": "fi-FI",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f7f5f0",
+  "theme_color": "#0f2318",
+  "icons": [
+    {
+      "src": "./favicon-32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "./apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

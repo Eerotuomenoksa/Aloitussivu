@@ -829,6 +829,12 @@
           "type": "verification",
           "description": "Aja build, linkkitarkistus, salaisuustarkistus ja selaintestit uudessa osoitteessa.",
           "recommendedCodexEffort": "medium"
+        },
+        {
+          "id": "WP10-T5",
+          "type": "performance",
+          "description": "Toteuta palvelinpaatoksen jalkeiset Lighthouse-optimoinnit: pitkat cache-ajat hashatuille asseteille, HTML:n lyhyt cache, gzip/Brotli-pakkaus, suojausotsikot ja lopullisen originin Core Web Vitals -mittaus.",
+          "recommendedCodexEffort": "medium"
         }
       ],
       "acceptanceCriteria": [
@@ -836,7 +842,8 @@
         "Google-kirjautuminen toimii sallitussa osoitteessa.",
         "Yllapito toimii admin-tunnuksella ja ei-adminin paasy estyy.",
         "Salaisuudet eivat ole frontend-bundlessa.",
-        "Suojausotsikot tai valitun hostingin vastaavat suojaukset on tarkistettu."
+        "Suojausotsikot tai valitun hostingin vastaavat suojaukset on tarkistettu.",
+        "Hashattujen assettien cache, HTML:n cache, pakkaus ja lopullisen osoitteen Lighthouse/Core Web Vitals -tarkistus on tehty."
       ],
       "outputs": [
         "staging-ymparisto",
