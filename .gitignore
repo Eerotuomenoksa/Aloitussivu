@@ -14,4 +14,8 @@ devserver.*
 .vite-dev*.log
 .vite-current*.log
 visual-check-report/
+tmp/
+/docs/Lighthouse/
+/outputs/*
+!/outputs/regional-link-coverage.json
 ~$*

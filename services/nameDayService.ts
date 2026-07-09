@@ -53,9 +53,16 @@ const writeCachedNameDay = (value: NameDayToday) => {
   }
 };
 
+const isLocalDevelopmentOrigin = () => {
+  if (!import.meta.env.DEV || typeof window === 'undefined') return false;
+  return ['localhost', '127.0.0.1', '::1'].includes(window.location.hostname);
+};
+
 export const getNameDayTodayUrl = () => {
   const explicitUrl = import.meta.env.VITE_NAMEDAY_TODAY_URL?.trim();
   if (explicitUrl) return explicitUrl;
+
+  if (isLocalDevelopmentOrigin()) return '';
 
   const projectId = import.meta.env.VITE_FIREBASE_PROJECT_ID?.trim();
   if (!projectId) return '';

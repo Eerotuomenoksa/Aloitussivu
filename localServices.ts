@@ -358,10 +358,30 @@ const regionalServiceAreas: RegionalServiceArea[] = [
   },
   {
     id: 'pori-region',
-    name: 'Pori',
-    municipalities: ['pori'],
+    name: 'Porin seudullinen joukkoliikenne',
+    municipalities: ['pori', 'ulvila', 'nakkila', 'harjavalta', 'kokemäki'],
     services: {
-      publicTransport: { name: 'Porin joukkoliikenne', url: 'https://pjl.pori.fi/', group: 'Julkinen liikenne' },
+      publicTransport: {
+        name: 'Porin joukkoliikenne',
+        url: 'https://pjl.pori.fi/',
+        group: 'Julkinen liikenne',
+        sourceNote: 'Porin seudullisen joukkoliikenneviranomaisen järjestämisalueeseen kuuluvat Pori, Ulvila, Nakkila, Harjavalta ja Kokemäki.',
+        verifiedAt: '2026-07-09',
+      },
+    },
+  },
+  {
+    id: 'seutuplus-satakunta-region',
+    name: 'Seutu+ Satakunta',
+    municipalities: ['eura', 'eurajoki', 'karvia'],
+    services: {
+      publicTransport: {
+        name: 'Seutu+',
+        url: 'https://seutuplus.fi/',
+        group: 'Julkinen liikenne',
+        sourceNote: 'Seutu+ kokoaa Varsinais-Suomen ja Satakunnan seutuliikenteen reitit, aikataulut ja lipputuotteet. Tarkistettu Euran, Eurajoen ja Karvian yhteyksien lähteistä.',
+        verifiedAt: '2026-07-09',
+      },
     },
   },
   {

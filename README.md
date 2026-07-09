@@ -22,8 +22,11 @@ Kayta ennen julkaisua tai isompaa muutosta ainakin:
 
 - `npm run check:secrets` tarkistaa tunnettuja kovakoodattuja salaisuuksia.
 - `npm run regional-coverage` paivittaa alueellisten linkkien kattavuusraportin.
+- `npm run refresh:links` paivittaa linkkidokumentit ja linkkien tarkistusaineiston. Aja tama erillisena huoltotehtavana, koska tarkistus kay verkossa.
+- `npm run refresh:data` paivittaa verkosta paikallislehti- ja RSS-aineistot, alueellisen kattavuusraportin, linkkidokumentit ja muutoslokin. Aja tama erillisena huoltotehtavana, koska ulkoiset lahteet voivat olla hitaita tai rajoittaa pyyntoja.
 - `npx tsc --noEmit -p tsconfig.json` tarkistaa frontendin TypeScript-tyypit.
-- `npx vite build` tekee frontend-buildin ilman ylimaaraisia dokumenttigeneraattoreita.
+- `npm run build` tekee normaalin frontend-buildin ilman hitaita verkkohakuja.
+- `npm run changelog` paivittaa muutoslokin, kun haluat kirjata tyopuun muutokset ennen commitia.
 - `cd functions && npm run build` tarkistaa Cloud Functions -tyypityksen.
 
 ## Tietoturvan peruslinja

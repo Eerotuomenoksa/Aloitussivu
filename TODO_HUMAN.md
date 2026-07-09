@@ -4,6 +4,20 @@ Tässä tiedostossa on jäljellä oleva siivous- ja tarkistuslista. Varsinaiset 
 
 Älä kirjoita salasanoja, API-avaimia, tokeneita tai service account -avainten sisältöjä tähän tiedostoon.
 
+## Heinäkuu 2026: päätökset ennen elokuun viimeistelyä
+
+Tila: Päätettävä ennen elokuun aloituspakettia
+
+Päätöslista on koottu tiedostoon `docs/julkaisun-paatoslista-2026-07-08.md`. Käy vähintään nämä läpi ennen varsinaista viimeistelyä:
+
+1. Virallinen nimi.
+2. Lopullinen osoite tai julkaisupolku.
+3. Palvelinmalli: Cloudcity, Firebase Hosting välivaiheena tai muu tuotantomalli.
+4. Ylläpidon sähköposti-ilmoitusten vastaanottajat ja toteutustapa.
+5. Nimipäivätoiminnon tuotantomalli: tiedostopohjainen data tai piilotus.
+6. Julkaisuun kuulumattomien linkkien ja ylläpitolinkkien kohtalo.
+7. Päätös siitä, mitkä Office- ja muut päätösaineistot lisätään versionhallintaan. Lighthouse-aineisto pidetään paikallisena eikä viedä GitHubiin.
+
 ## Tehty
 
 - SEC-001: Gemini- ja admin-salaisuudet on uusittu ja `npm run check:secrets` on mennyt läpi.

@@ -1,6 +1,6 @@
 # Alueellisten linkkien kattavuus ja puuttuvat kuntalinkit
 
-Päivitetty: 6.7.2026
+Päivitetty: 9.7.2026
 
 Tämä raportti tukee puuttuvien alueellisten linkkien täydentämistä. Se ei vielä todista, ettei kunnassa ole palvelua, vaan kertoo missä Aloitussivun datassa ei ole omaa tai seudullista linkkiä.
 
@@ -14,9 +14,9 @@ Kuntia yhteensä: 308
 
 | Tila | Kuntia |
 | --- | ---: |
-| fallback-national | 228 |
+| fallback-national | 221 |
 | ok-own | 1 |
-| ok-regional | 79 |
+| ok-regional | 86 |
 
 Tulkinta:
 
@@ -114,9 +114,9 @@ Iisalmi, Joroinen, Kaavi, Keitele, Kiuruvesi, Lapinlahti, Leppävirta, Pielavesi
 
 Hartola, Iitti, Kärkölä, Sysmä
 
-### Satakunnan hyvinvointialue, 15 kuntaa
+### Satakunnan hyvinvointialue, 8 kuntaa
 
-Eura, Eurajoki, Harjavalta, Huittinen, Jämijärvi, Kankaanpää, Karvia, Kokemäki, Merikarvia, Nakkila, Pomarkku, Rauma, Siikainen, Säkylä, Ulvila
+Huittinen, Jämijärvi, Kankaanpää, Merikarvia, Pomarkku, Rauma, Siikainen, Säkylä
 
 ### Varsinais-Suomen hyvinvointialue, 20 kuntaa
 

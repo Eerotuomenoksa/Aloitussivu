@@ -470,3 +470,16 @@ Seuraavaksi tehtävä täyttötyö:
 - Käydään `fallback-national`-kunnat läpi hyvinvointialue tai maakunta kerrallaan.
 - Korvataan Matkahuollon fallback paikallisella tai seudullisella linkillä vain, kun virallinen lähde löytyy.
 - Lisätään naapurikunnan linkki vain suunnitelman hyväksymillä perusteilla ja merkitään se `scope: 'neighbor'` -tiedolla.
+
+## Päivitys 8.-9.7.2026
+
+Kattavuusraportti päivitettiin komennolla `npm run regional-coverage`. Tämän päivän konkreettinen täyttöjono on tiedostossa `docs/alueellisten-linkkien-tyojono-2026-07-08.md`.
+
+Nykyinen tilanne:
+
+- julkinen liikenne on valtakunnallisen fallbackin varassa 221 kunnassa
+- palveluliikenteen oma linkki puuttuu 171 kunnasta
+- paikallisuutisten RSS-syöte puuttuu 295 kunnasta
+- sekä julkinen liikenne että palveluliikenne puuttuvat 113 kunnasta
+
+Satakunnan ensimmäisestä täyttöaallosta vahvistettiin julkisen liikenteen seudulliset linkit Euralle, Eurajoelle, Harjavallalle, Karvialle, Kokemäelle, Nakkilalle ja Ulvilalle. Seuraavaksi täyttö kannattaa jatkaa alueista, joissa molemmat liikennelinkit puuttuvat usealta kunnalta: Pohjanmaa, Pohjois-Pohjanmaa, Varsinais-Suomi, Keski-Suomi ja Lappi.

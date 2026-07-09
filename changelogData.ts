@@ -24,9 +24,18 @@ export type ChangelogCommit = {
   tags: string[];
 };
 
-export const CHANGELOG_GENERATED_AT = "7.7.2026 klo 09.25";
+export const CHANGELOG_GENERATED_AT = "9.7.2026 klo 09.47";
 export const CHANGELOG_VERSION = "0.72.0";
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
+  "Lighthouse-raportit päätettiin pitää paikallisena aineistona: `docs/Lighthouse/` rajattiin pois GitHubiin vietävistä tiedostoista.",
+  "Satakunnan ensimmäistä alueellisten linkkien aaltoa täydennettiin: Porin seudullinen joukkoliikenne lisättiin Porille, Ulvilalle, Nakkilalle, Harjavallalle ja Kokemäelle, ja Seutu+ lisättiin Euralle, Eurajoelle ja Karvialle.",
+  "Alueellisten linkkien kattavuusraportti päivitettiin: julkisen liikenteen valtakunnallinen fallback väheni 228 kunnasta 221 kuntaan.",
+  "Ylläpitotarkistus 8.7.2026 kirjattiin: build, TypeScript, salaisuustarkistus, desktop-/mobiiliselaintarkistus, sitemap, manifest ja julkiset alasivut käytiin läpi.",
+  "`npm run build` muutettiin nopeaksi frontend-buildiksi ilman hitaita verkkoskannauksia; verkkoon tukeutuvat linkki-, RSS- ja datapäivitykset siirrettiin erillisiin `refresh:*`-huoltokomentoihin.",
+  "Paikallislehtien päivitysskripti jatkaa nykyisellä aineistolla, jos ulkoinen lähde palauttaa hetkellisen 429-, 5xx- tai verkkovirheen.",
+  "Nimipäivähaun oletus-Cloud Function -kutsu ohitetaan paikallisessa Vite-kehitysympäristössä, jotta selaintarkistus ei täyty CORS-virheistä.",
+  "Julkaisun päätöslista, alueellisten linkkien konkreettinen työjono ja artefaktien säilytyslinjaus lisättiin heinäkuun kevyen ylläpidon tueksi.",
+  "`tmp/` ja tavalliset `outputs/`-välitulokset rajattiin paikallisiksi, mutta alueellisten linkkien koneellinen kattavuusraportti säilyy versionhallinnassa.",
   "Etusivun SEO-, GEO- ja AEO-perusta vahvistettiin: sivulle lisättiin canonical-osoite, tarkempi otsikko ja kuvaus, Open Graph- ja Twitter-jakotiedot sekä JSON-LD-rakenne WebSite-, WebApplication-, WebPage-, BreadcrumbList- ja FAQPage-muodossa.",
   "Sivustolle lisättiin sitemap.xml ja webmanifest, ja julkiset tietosuoja-, saavutettavuus- ja tukijasivut saivat omat canonical-osoitteet, metakuvaukset ja jakotiedot.",
   "Etusivu sai noscript-yhteenvedon ja usein kysytyt kysymykset, jotta sivun tarkoitus on ymmärrettävä myös ilman Reactin latautumista.",

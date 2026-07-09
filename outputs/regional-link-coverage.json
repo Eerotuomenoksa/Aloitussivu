@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-07-06T18:17:13.557Z",
+  "generatedAt": "2026-07-09T06:47:31.055Z",
   "municipalityCount": 308,
   "counts": {
     "publicTransport": {
-      "ok-regional": 79,
-      "fallback-national": 228,
+      "ok-regional": 86,
+      "fallback-national": 221,
       "ok-own": 1
     },
     "serviceTransport": {
@@ -240,9 +240,9 @@
       "wellbeingAreaCode": "06",
       "wellbeingAreaName": "Satakunnan hyvinvointialue",
       "publicTransport": {
-        "status": "fallback-national",
-        "providerName": "Matkahuollon reittiopas",
-        "area": "Suomi"
+        "status": "ok-regional",
+        "providerName": "Seutu+",
+        "area": "Seutu+ Satakunta"
       },
       "serviceTransport": {
         "status": "missing"
@@ -258,9 +258,9 @@
       "wellbeingAreaCode": "06",
       "wellbeingAreaName": "Satakunnan hyvinvointialue",
       "publicTransport": {
-        "status": "fallback-national",
-        "providerName": "Matkahuollon reittiopas",
-        "area": "Suomi"
+        "status": "ok-regional",
+        "providerName": "Seutu+",
+        "area": "Seutu+ Satakunta"
       },
       "serviceTransport": {
         "status": "missing"
@@ -510,9 +510,9 @@
       "wellbeingAreaCode": "06",
       "wellbeingAreaName": "Satakunnan hyvinvointialue",
       "publicTransport": {
-        "status": "fallback-national",
-        "providerName": "Matkahuollon reittiopas",
-        "area": "Suomi"
+        "status": "ok-regional",
+        "providerName": "Porin joukkoliikenne",
+        "area": "Porin seudullinen joukkoliikenne"
       },
       "serviceTransport": {
         "status": "missing"
@@ -1428,9 +1428,9 @@
       "wellbeingAreaCode": "06",
       "wellbeingAreaName": "Satakunnan hyvinvointialue",
       "publicTransport": {
-        "status": "fallback-national",
-        "providerName": "Matkahuollon reittiopas",
-        "area": "Suomi"
+        "status": "ok-regional",
+        "providerName": "Seutu+",
+        "area": "Seutu+ Satakunta"
       },
       "serviceTransport": {
         "status": "missing"
@@ -1806,9 +1806,9 @@
       "wellbeingAreaCode": "06",
       "wellbeingAreaName": "Satakunnan hyvinvointialue",
       "publicTransport": {
-        "status": "fallback-national",
-        "providerName": "Matkahuollon reittiopas",
-        "area": "Suomi"
+        "status": "ok-regional",
+        "providerName": "Porin joukkoliikenne",
+        "area": "Porin seudullinen joukkoliikenne"
       },
       "serviceTransport": {
         "status": "missing"
@@ -3048,9 +3048,9 @@
       "wellbeingAreaCode": "06",
       "wellbeingAreaName": "Satakunnan hyvinvointialue",
       "publicTransport": {
-        "status": "fallback-national",
-        "providerName": "Matkahuollon reittiopas",
-        "area": "Suomi"
+        "status": "ok-regional",
+        "providerName": "Porin joukkoliikenne",
+        "area": "Porin seudullinen joukkoliikenne"
       },
       "serviceTransport": {
         "status": "missing"
@@ -3608,7 +3608,7 @@
       "publicTransport": {
         "status": "ok-regional",
         "providerName": "Porin joukkoliikenne",
-        "area": "Pori"
+        "area": "Porin seudullinen joukkoliikenne"
       },
       "serviceTransport": {
         "status": "missing"
@@ -5028,9 +5028,9 @@
       "wellbeingAreaCode": "06",
       "wellbeingAreaName": "Satakunnan hyvinvointialue",
       "publicTransport": {
-        "status": "fallback-national",
-        "providerName": "Matkahuollon reittiopas",
-        "area": "Suomi"
+        "status": "ok-regional",
+        "providerName": "Porin joukkoliikenne",
+        "area": "Porin seudullinen joukkoliikenne"
       },
       "serviceTransport": {
         "status": "missing"

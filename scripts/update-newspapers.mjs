@@ -14,18 +14,38 @@ const EXCLUDE_HOSTS = [
   'kansalliskirjasto.fi',
 ];
 
+const TRANSIENT_STATUS_CODES = new Set([408, 425, 429, 500, 502, 503, 504]);
+
+const fetchRemote = async (url) => fetch(url, {
+  headers: {
+    'user-agent': 'Mozilla/5.0 (compatible; SeniorinAloitussivu/1.0; +https://eerotuomenoksa.github.io/Aloitussivu/)',
+    accept: 'application/json,text/html;q=0.9,*/*;q=0.8',
+  },
+});
+
+const createFetchError = (response, url) => {
+  const error = new Error(`HTTP ${response.status} for ${url}`);
+  error.status = response.status;
+  return error;
+};
+
+const isTransientRefreshError = (error) => (
+  TRANSIENT_STATUS_CODES.has(error?.status)
+  || /fetch failed|network|timeout|ECONNRESET|ETIMEDOUT/i.test(error?.message ?? '')
+);
+
 const fetchJson = async (url) => {
-  const response = await fetch(url);
+  const response = await fetchRemote(url);
   if (!response.ok) {
-    throw new Error(`HTTP ${response.status} for ${url}`);
+    throw createFetchError(response, url);
   }
   return response.json();
 };
 
 const fetchText = async (url) => {
-  const response = await fetch(url);
+  const response = await fetchRemote(url);
   if (!response.ok) {
-    throw new Error(`HTTP ${response.status} for ${url}`);
+    throw createFetchError(response, url);
   }
   return response.text();
 };
@@ -143,7 +163,7 @@ const resolveFallbackUrl = async (title) => {
 
 const escapeTs = (value) => JSON.stringify(value);
 
-const main = async () => {
+const refreshNewspaperLinks = async () => {
   const members = await fetchCategoryMembers();
   const titles = members.map((member) => member.title);
   const pageProps = await fetchPageProps(titles);
@@ -184,6 +204,19 @@ const main = async () => {
 
   console.log(`Löytyi ${titles.length} lehteä, kirjoitettiin ${deduped.length} sivustolinkkiä.`);
   console.log(`Puuttuvia ilman linkkiä: ${titles.length - deduped.length}`);
+};
+
+const main = async () => {
+  try {
+    await refreshNewspaperLinks();
+  } catch (error) {
+    if (!isTransientRefreshError(error)) {
+      throw error;
+    }
+
+    console.warn(`Paikallislehtien verkkopäivitys ohitettiin: ${error.message}`);
+    console.warn('Jatketaan nykyisellä localNewspaperLinks.ts-aineistolla.');
+  }
 };
 
 main().catch((error) => {
