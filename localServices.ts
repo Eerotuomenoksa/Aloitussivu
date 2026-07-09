@@ -754,6 +754,33 @@ const localServiceMap: Record<string, LocalServiceConfig> = {
   vaasa: {
     regionalNews: [regionalNewsProvider('Pohjalainen', 'https://www.pohjalainen.fi/')],
   },
+  luoto: {
+    publicTransport: {
+      name: 'Luodon joukkoliikenne',
+      url: 'https://larsmo.fi/boende-och-miljo/vagar-bathamnar-och-almanna-omraden/vagar-och-trafikleder/kollektivtrafik/',
+      group: 'Julkinen liikenne',
+      sourceNote: 'Luodon kunnan joukkoliikennesivu kokoaa bussi-, juna- ja lentoyhteydet sekä ohjaa Ingsvaan ja Matkahuoltoon ajankohtaisia aikatauluja varten.',
+      verifiedAt: '2026-07-09',
+    },
+  },
+  pietarsaari: {
+    publicTransport: {
+      name: 'Pietarsaaren liikenneyhteydet',
+      url: 'https://jakobstad.fi/trafikforbindelser',
+      group: 'Julkinen liikenne',
+      sourceNote: 'Pietarsaaren kaupungin liikenneyhteyssivu kertoo bussiaseman päivittäisistä yhteyksistä Vaasaan, Uuteenkaarlepyyhyn ja Kokkolaan sekä aseman liityntäbussista.',
+      verifiedAt: '2026-07-09',
+    },
+  },
+  vöyri: {
+    publicTransport: {
+      name: 'Vöyrin joukkoliikenne',
+      url: 'https://www.vora.fi/tjanster/trafik-och-vagar',
+      group: 'Julkinen liikenne',
+      sourceNote: 'Vöyrin kunnan joukkoliikennesivu ohjaa Vöyri-Vaasa-linjaliikenteeseen ja Matkahuollon reittioppaaseen.',
+      verifiedAt: '2026-07-09',
+    },
+  },
   kokkola: {
     regionalNews: [regionalNewsProvider('Keskipohjanmaa', 'https://www.keskipohjanmaa.fi/')],
   },

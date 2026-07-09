@@ -14,8 +14,8 @@ Kuntia yhteensä: 308
 
 | Tila | Kuntia |
 | --- | ---: |
-| fallback-national | 221 |
-| ok-own | 1 |
+| fallback-national | 218 |
+| ok-own | 4 |
 | ok-regional | 86 |
 
 Tulkinta:
@@ -28,8 +28,8 @@ Tulkinta:
 
 | Tila | Kuntia |
 | --- | ---: |
-| missing | 171 |
-| ok-own | 137 |
+| missing | 167 |
+| ok-own | 141 |
 
 ### Paikallisuutisten RSS-syötteet
 
@@ -94,9 +94,9 @@ Hanko, Inkoo, Karkkila, Lohja, Raasepori, Vihti
 
 Hämeenkyrö, Ikaalinen, Juupajoki, Kihniö, Kuhmoinen, Mänttä-Vilppula, Parkano, Punkalaidun, Pälkäne, Ruovesi, Sastamala, Virrat
 
-### Pohjanmaan hyvinvointialue, 12 kuntaa
+### Pohjanmaan hyvinvointialue, 9 kuntaa
 
-Kaskinen, Korsnäs, Kristiinankaupunki, Kruunupyy, Laihia, Luoto, Maalahti, Närpiö, Pedersören kunta, Pietarsaari, Uusikaarlepyy, Vöyri
+Kaskinen, Korsnäs, Kristiinankaupunki, Kruunupyy, Laihia, Maalahti, Närpiö, Pedersören kunta, Uusikaarlepyy
 
 ### Pohjois-Karjalan hyvinvointialue, 10 kuntaa
 
@@ -188,9 +188,9 @@ Espoo, Hanko, Inkoo, Kauniainen, Kirkkonummi, Raasepori, Siuntio
 
 Kihniö, Kuhmoinen, Punkalaidun, Tampere, Valkeakoski
 
-### Pohjanmaan hyvinvointialue, 13 kuntaa
+### Pohjanmaan hyvinvointialue, 9 kuntaa
 
-Kaskinen, Korsnäs, Kristiinankaupunki, Kruunupyy, Laihia, Luoto, Maalahti, Mustasaari, Närpiö, Pedersören kunta, Pietarsaari, Uusikaarlepyy, Vöyri
+Kaskinen, Korsnäs, Kruunupyy, Laihia, Maalahti, Mustasaari, Pedersören kunta, Uusikaarlepyy, Vöyri
 
 ### Pohjois-Karjalan hyvinvointialue, 5 kuntaa
 

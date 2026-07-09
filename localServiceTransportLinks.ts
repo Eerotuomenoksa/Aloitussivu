@@ -361,6 +361,15 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
     evidence: "Joukkoliikenne - kitee.fi; termit: asiointiliikenne",
   },
   {
+    municipality: "kristiinankaupunki",
+    provider: {
+      name: "Kristiinankaupunki palveluliikenne",
+      url: "https://www.kristinestad.fi/asuminen-ja-ymparisto/palveluliikenne",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Palveluliikenne Kristiinankaupungin eteläisillä alueilla; termit: palveluliikenne; tarkistettu 2026-07-09",
+  },
+  {
     municipality: "kittilä",
     provider: {
       name: "Kittilä palveluliikenne",
@@ -514,6 +523,15 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
     evidence: "Kyläkyyti starttaa tammikuun puolessa välissä - Loviisan kaupunki; termit: kyläkyyti",
   },
   {
+    municipality: "luoto",
+    provider: {
+      name: "Luoto VIP-palvelulinja",
+      url: "https://larsmo.fi/vard-och-omsorg/seniortjanster/servicelinjen-vip/",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Servicelinjen VIP - Larsmo; termit: servicelinje; palvelulinja; tarkistettu 2026-07-09",
+  },
+  {
     municipality: "luhanka",
     provider: {
       name: "Luhanka palveluliikenne",
@@ -622,6 +640,15 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
     evidence: "Joukkoliikenne - Nokian kaupunki; termit: palveluliikenne; kutsutaksi",
   },
   {
+    municipality: "närpiö",
+    provider: {
+      name: "Närpiö palveluliikenne",
+      url: "https://www.narpes.fi/wp-content/uploads/2026/02/Service_Bilaga-A-Rutter.pdf",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Närpes stads servicetrafik - rutter; termit: servicetrafik; tarkistettu 2026-07-09",
+  },
+  {
     municipality: "nurmijärvi",
     provider: {
       name: "Nurmijärvi palveluliikenne",
@@ -719,6 +746,15 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
       group: 'Palveluliikenne',
     },
     evidence: "Liikenneyhteydet ja liikenneturva - Pelkosenniemi; termit: asiointiliikenne",
+  },
+  {
+    municipality: "pietarsaari",
+    provider: {
+      name: "Pietarsaari Vippari",
+      url: "https://jakobstad.fi/trafikforbindelser",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Trafikförbindelser - Jakobstad; Vippari bokningsstyrd kollektivtrafik; tarkistettu 2026-07-09",
   },
   {
     municipality: "pieksämäki",

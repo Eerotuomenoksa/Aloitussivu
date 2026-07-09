@@ -24,54 +24,60 @@ export type ChangelogCommit = {
   tags: string[];
 };
 
-export const CHANGELOG_GENERATED_AT = "9.7.2026 klo 09.47";
+export const CHANGELOG_GENERATED_AT = "9.7.2026 klo 10.11";
 export const CHANGELOG_VERSION = "0.72.0";
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
-  "Lighthouse-raportit päätettiin pitää paikallisena aineistona: `docs/Lighthouse/` rajattiin pois GitHubiin vietävistä tiedostoista.",
-  "Satakunnan ensimmäistä alueellisten linkkien aaltoa täydennettiin: Porin seudullinen joukkoliikenne lisättiin Porille, Ulvilalle, Nakkilalle, Harjavallalle ja Kokemäelle, ja Seutu+ lisättiin Euralle, Eurajoelle ja Karvialle.",
-  "Alueellisten linkkien kattavuusraportti päivitettiin: julkisen liikenteen valtakunnallinen fallback väheni 228 kunnasta 221 kuntaan.",
-  "Ylläpitotarkistus 8.7.2026 kirjattiin: build, TypeScript, salaisuustarkistus, desktop-/mobiiliselaintarkistus, sitemap, manifest ja julkiset alasivut käytiin läpi.",
-  "`npm run build` muutettiin nopeaksi frontend-buildiksi ilman hitaita verkkoskannauksia; verkkoon tukeutuvat linkki-, RSS- ja datapäivitykset siirrettiin erillisiin `refresh:*`-huoltokomentoihin.",
-  "Paikallislehtien päivitysskripti jatkaa nykyisellä aineistolla, jos ulkoinen lähde palauttaa hetkellisen 429-, 5xx- tai verkkovirheen.",
-  "Nimipäivähaun oletus-Cloud Function -kutsu ohitetaan paikallisessa Vite-kehitysympäristössä, jotta selaintarkistus ei täyty CORS-virheistä.",
-  "Julkaisun päätöslista, alueellisten linkkien konkreettinen työjono ja artefaktien säilytyslinjaus lisättiin heinäkuun kevyen ylläpidon tueksi.",
-  "`tmp/` ja tavalliset `outputs/`-välitulokset rajattiin paikallisiksi, mutta alueellisten linkkien koneellinen kattavuusraportti säilyy versionhallinnassa.",
-  "Etusivun SEO-, GEO- ja AEO-perusta vahvistettiin: sivulle lisättiin canonical-osoite, tarkempi otsikko ja kuvaus, Open Graph- ja Twitter-jakotiedot sekä JSON-LD-rakenne WebSite-, WebApplication-, WebPage-, BreadcrumbList- ja FAQPage-muodossa.",
-  "Sivustolle lisättiin sitemap.xml ja webmanifest, ja julkiset tietosuoja-, saavutettavuus- ja tukijasivut saivat omat canonical-osoitteet, metakuvaukset ja jakotiedot.",
-  "Etusivu sai noscript-yhteenvedon ja usein kysytyt kysymykset, jotta sivun tarkoitus on ymmärrettävä myös ilman Reactin latautumista.",
-  "Uusien Lighthouse-raporttien perusteella taustasynkit ja käyttötilastojen automaattinen pageview siirrettiin myöhemmäksi, jotta Firebase/App Check/Firestore ei kuormita ensimmäistä näkymää.",
-  "Fonttien latausta ja hero-, sääkortti- ja sisällysluetteloalueiden korkeusvarauksia säädettiin, jotta mobiilin CLS ja alkulatauksen renderöintiviive pienenevät.",
-  "Julkaisun työpaketteihin lisättiin palvelinpäätöksen jälkeiset Lighthouse-optimoinnit: assettien välimuisti, HTML:n välimuisti, pakkaus, suojausotsikot ja lopullisen osoitteen Core Web Vitals -tarkistus.",
-  "Alueelliset linkit kertovat nyt selvemmin, onko kyse oman kunnan palvelusta, seudullisesta palvelusta, hyvinvointialueesta, naapurikunnan palvelusta vai valtakunnallisesta hausta.",
-  "Suosikkien löydettävyyttä parannettiin pitämällä tähdet näkyvissä, selkeyttämällä Omat suosikkini -ohjetta ja näyttämällä puuttuvista paikallisuutisista oma viesti.",
-  "Huijausvaroitusten etusivunäkymää tiivistettiin niin, että varoitukset vievät vähemmän tilaa mutta avautuvat edelleen lisätietoihin.",
-  "Modaaleihin lisättiin yhteinen fokusloukku, Escape-sulku ja fokuksen palautus, jotta ikkunoita voi käyttää luotettavammin näppäimistöllä ja ruudunlukijalla.",
-  "Palautelomakkeen kuvakaappausliitteet rajattiin sallittuihin kuvatyyppeihin ja turvalliseen data URL -muotoon.",
-  "Versionumerointi otettiin käyttöön: nykyinen versio näkyy footerissa ja muutoslokin yläosassa.",
-  "Muutoshistoria näyttää versionumeron jokaisen muutoksen yhteydessä.",
-  "Alueellisten linkkien datamalliin lisättiin alkuperätieto oman kunnan, seudun, hyvinvointialueen, naapurikunnan ja valtakunnallisen fallbackin erottamiseen.",
-  "Joukkoliikenteen alueellisia linkkejä täydennettiin Lahden seudulle, Hämeenlinnan seudulle, Vaasaan, Mustasaareen ja Rovaniemelle.",
-  "Loviisan joukkoliikenteen linkki lisättiin alueellisiin palveluihin.",
-  "Paikallisia kirjastolinkkejä täydennettiin Kirkanta/Kirjastot.fi-dataan pohjautuvilla kirjastokimpoilla.",
-  "Alueellisiin palveluihin lisättiin ja laajennettiin palvelualue-mallia, jotta joukkoliikennejärjestäjät, kuten HSL, Nysse, Föli, Linkki ja Vilkku, voidaan jakaa usealle kunnalle yhdestä paikasta.",
-  "Alueellisista linkeistä poistettiin tuplana näkynyt kunnan verkkosivut -linkki, kun kunnan palvelut näyttää saman asian käyttäjälle selkeämmin.",
-  "Firestore-sääntöjä kovennettiin: ylläpidon sähköpostikirjautumiselta vaaditaan vahvistettu sähköposti, dokumentin ID sidotaan kirjoitettuun dataan ja palauteliitteiden kuvamuoto validoidaan.",
-  "Dokumentaatioon lisättiin täyden tarkistuksen raportti, ylläpito-ohjeet ja alueellisten linkkien kattavuusraportti.",
-  "TypeScript-tarkistus korjattiin kulkemaan läpi erottamalla Vite-asetukset omasta projektistaan ja täsmentämällä ongelmalliset tyypit.",
-  "Asetuksiin lisättiin mahdollisuus vaihtaa etusivun digitaalinen kello vanhan ajan analogiseen kelloon.",
-  "Digitaalisen kellon päivämäärän välistystä parannettiin ja analogisen kellon numerot sijoitettiin selvästi kellotaulun ulkokehälle.",
-  "Lähelläsi-osion kunnan valinta yhdistettiin otsikon viereen ja aluepalvelut ryhmiteltiin selkeämmin.",
-  "Alueelliset Kela-taksit poistettiin etusivun aluepalveluiden nostokorteista ja jätettiin näkyviin Liikenne-kategorian taksilinkkien kärkeen.",
-  "Etusivun alueellisiin palveluihin nostettiin myös paikalliset kirjastokimpat, jotta esimerkiksi Loviisalle näkyy Helle-kirjastot.",
-  "Alueellisten palvelujen kunnan valintaa selkeytettiin: rajausviesti päivitettiin, turha kuntalaatikko poistettiin ja Vaihda kunta -painike siirrettiin työpöytänäkymässä kunnan kentän rinnalle.",
-  "Alueellisten palveluiden paneelin kortit, kuntahaku ja paikalliset uutiset päivitettiin uuteen Aurora-pintakieleen.",
-  "Ylläpitoon lisättiin nimipäivärajapinnan käyttölaskuri, joka näyttää kutsujen kokonaismäärän, onnistuneet ja epäonnistuneet haut sekä viimeisimmän käyttöajan.",
-  "Kirjautuminen ja huijausvaroitukset -sivulle lisättiin näkyvä Palaa etusivulle -linkki.",
-  "Sivuston esittelyyn lisättiin tieto, että robottia, Google-hakua ja palveluhakua voi käyttää myös omalla äänellä.",
-  "Ohje- ja esittelyikkunoiden visuaalinen ilme yhtenäistettiin muun Aurora-ulkoasun kanssa."
+  "Pohjanmaan alueellisia liikennelinkkejä täydennettiin: Luoto, Pietarsaari ja Vöyri saivat omat julkisen liikenteen linkit.",
+  "Palveluliikenteen linkit lisättiin Kristiinankaupungille, Luodolle, Närpiölle ja Pietarsaarelle.",
+  "Alueellisten linkkien kattavuusraportti päivitettiin: julkisen liikenteen valtakunnallinen fallback väheni 221 kunnasta 218 kuntaan ja palveluliikenteen puuttuvat linkit 171 kunnasta 167 kuntaan.",
+  "Muutoshistoria päivitettiin näyttämään myös heinäkuun uusimmat julkaisu- ja ylläpitocommitit."
 ];
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
+  {
+    "hash": "8ebd96834a99d1d16f3c6a8c29c2457d19100ff5",
+    "date": "2026-07-09",
+    "version": "0.90.1",
+    "changeType": "patch",
+    "subject": "heinakuun yllapito ja alueelliset linkit",
+    "tags": []
+  },
+  {
+    "hash": "be635fc38506ea96d3c88abc7b71470dabbbec02",
+    "date": "2026-07-07",
+    "version": "0.90.0",
+    "changeType": "minor",
+    "subject": "SEO & GEO & AEO optimointi",
+    "tags": [
+      "Visuaalisuus"
+    ]
+  },
+  {
+    "hash": "05df8a2b6175b3578545f81315d8844e6b039676",
+    "date": "2026-07-07",
+    "version": "0.89.0",
+    "changeType": "minor",
+    "subject": "optimointi osa 2",
+    "tags": [
+      "Visuaalisuus"
+    ]
+  },
+  {
+    "hash": "e65d3a983e57ec0b690add1fc958562675f485af",
+    "date": "2026-07-06",
+    "version": "0.88.0",
+    "changeType": "minor",
+    "subject": "sivun optimointi",
+    "tags": []
+  },
+  {
+    "hash": "bc3523f72d9becd035ee5222acc9ff847ef62568",
+    "date": "2026-07-06",
+    "version": "0.87.1",
+    "changeType": "patch",
+    "subject": "Täysi tarkistus",
+    "tags": []
+  },
   {
     "hash": "c4565d5dc4516ece9269c50b1169e0f5b6217183",
     "date": "2026-06-24",

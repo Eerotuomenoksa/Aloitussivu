@@ -1,15 +1,15 @@
 {
-  "generatedAt": "2026-07-09T06:47:31.055Z",
+  "generatedAt": "2026-07-09T07:05:08.694Z",
   "municipalityCount": 308,
   "counts": {
     "publicTransport": {
       "ok-regional": 86,
-      "fallback-national": 221,
-      "ok-own": 1
+      "fallback-national": 218,
+      "ok-own": 4
     },
     "serviceTransport": {
-      "ok-own": 137,
-      "missing": 171
+      "ok-own": 141,
+      "missing": 167
     },
     "localNewsFeed": {
       "ok-own": 13,
@@ -1973,7 +1973,7 @@
         "area": "Suomi"
       },
       "serviceTransport": {
-        "status": "missing"
+        "status": "ok-own"
       },
       "localNewsFeed": {
         "status": "missing"
@@ -2670,12 +2670,12 @@
       "wellbeingAreaCode": "17",
       "wellbeingAreaName": "Pohjanmaan hyvinvointialue",
       "publicTransport": {
-        "status": "fallback-national",
-        "providerName": "Matkahuollon reittiopas",
-        "area": "Suomi"
+        "status": "ok-own",
+        "providerName": "Luodon joukkoliikenne",
+        "area": "Luoto"
       },
       "serviceTransport": {
-        "status": "missing"
+        "status": "ok-own"
       },
       "localNewsFeed": {
         "status": "missing"
@@ -3161,7 +3161,7 @@
         "area": "Suomi"
       },
       "serviceTransport": {
-        "status": "missing"
+        "status": "ok-own"
       },
       "localNewsFeed": {
         "status": "missing"
@@ -3516,12 +3516,12 @@
       "wellbeingAreaCode": "17",
       "wellbeingAreaName": "Pohjanmaan hyvinvointialue",
       "publicTransport": {
-        "status": "fallback-national",
-        "providerName": "Matkahuollon reittiopas",
-        "area": "Suomi"
+        "status": "ok-own",
+        "providerName": "Pietarsaaren liikenneyhteydet",
+        "area": "Pietarsaari"
       },
       "serviceTransport": {
-        "status": "missing"
+        "status": "ok-own"
       },
       "localNewsFeed": {
         "status": "missing"
@@ -5442,9 +5442,9 @@
       "wellbeingAreaCode": "17",
       "wellbeingAreaName": "Pohjanmaan hyvinvointialue",
       "publicTransport": {
-        "status": "fallback-national",
-        "providerName": "Matkahuollon reittiopas",
-        "area": "Suomi"
+        "status": "ok-own",
+        "providerName": "Vöyrin joukkoliikenne",
+        "area": "Vöyri"
       },
       "serviceTransport": {
         "status": "missing"
