@@ -293,6 +293,41 @@ const regionalServiceAreas: RegionalServiceArea[] = [
     },
   },
   {
+    id: 'seutuplus-varsinais-suomi-region',
+    name: 'Seutu+ Varsinais-Suomi',
+    municipalities: [
+      'aura',
+      'kemiönsaari',
+      'koski tl',
+      'kustavi',
+      'laitila',
+      'loimaa',
+      'marttila',
+      'masku',
+      'mynämäki',
+      'nousiainen',
+      'oripää',
+      'parainen',
+      'pyhäranta',
+      'pöytyä',
+      'salo',
+      'sauvo',
+      'somero',
+      'taivassalo',
+      'uusikaupunki',
+      'vehmaa',
+    ],
+    services: {
+      publicTransport: {
+        name: 'Seutu+',
+        url: 'https://seutuplus.fi/aikataulut/',
+        group: 'Julkinen liikenne',
+        sourceNote: 'Seutu+ kokoaa Varsinais-Suomen seutuliikenteen reitit, aikataulut ja lipputuotteet. Kausilipun kelpoisuusalueet vahvistavat mm. Auran, Kemiönsaaren, Loimaan seudun, Salon/Someron, Paraisten, Kustavin, Uudenkaupungin ja Vehmaan yhteydet.',
+        verifiedAt: '2026-07-09',
+      },
+    },
+  },
+  {
     id: 'oulu-region',
     name: 'Oulun seutu',
     municipalities: ['ii', 'kempele', 'liminka', 'lumijoki', 'muhos', 'oulu', 'tyrnävä', 'utajärvi'],
@@ -301,11 +336,207 @@ const regionalServiceAreas: RegionalServiceArea[] = [
     },
   },
   {
+    id: 'meri-lappi-region',
+    name: 'Meri-Lappi',
+    municipalities: ['kemi', 'keminmaa', 'simo', 'tervola', 'tornio'],
+    services: {
+      publicTransport: {
+        name: 'Meri-Lapin joukkoliikenne',
+        url: 'https://meri-lapinjoukkoliikenne.fi/aikataulut-ja-reitit/',
+        group: 'Julkinen liikenne',
+        sourceNote: 'Meri-Lapin joukkoliikennesivu kokoaa Kemin, Keminmaan, Simon, Tervolan ja Tornion seutu- ja kaupunkiliikenteen aikataulut ja reitit.',
+        verifiedAt: '2026-07-09',
+      },
+    },
+  },
+  {
+    id: 'rundgren-lansi-lappi-region',
+    name: 'Liikenne Rundgren Länsi-Lappi',
+    municipalities: ['enontekiö', 'kolari', 'muonio'],
+    services: {
+      publicTransport: {
+        name: 'Liikenne Rundgren reitit',
+        url: 'https://www.rundgrenoy.fi/',
+        group: 'Julkinen liikenne',
+        sourceNote: 'Liikenne Rundgren kertoo ajavansa päivittäin linjavuoroa Kolarista Muonioon ja Kolari-Muonio-Vuontisjärvi-Hetta-yhteyttä sekä listaa Kolari-Hetta-, Kolari-Rovaniemi-, Kolari-Kemi- ja Kolari-Muonio-reitit.',
+        verifiedAt: '2026-07-09',
+      },
+    },
+  },
+  {
     id: 'jyvaskyla-region',
     name: 'Jyväskylän seutu',
     municipalities: ['hankasalmi', 'jyväskylä', 'laukaa', 'muurame', 'petäjävesi', 'toivakka', 'äänekoski'],
     services: {
       publicTransport: { name: 'Linkki-paikallisliikenne', url: 'https://linkki.jyvaskyla.fi/', group: 'Julkinen liikenne' },
+    },
+  },
+  {
+    id: 'matkahuolto-keski-suomi-tickets-region',
+    name: 'Matkahuollon Keski-Suomen liput',
+    municipalities: ['joutsa', 'kannonkoski', 'konnevesi', 'luhanka', 'pihtipudas', 'saarijärvi', 'viitasaari'],
+    services: {
+      publicTransport: {
+        name: 'Keski-Suomen liput',
+        url: 'https://www.matkahuolto.fi/matkustajat/keski-suomen-liput',
+        group: 'Julkinen liikenne',
+        sourceNote: 'Matkahuollon Keski-Suomen lipputuotteet vahvistavat kuntarajat ylittävät yhteysvälit Konnevesi-Äänekoski, Pihtipudas-Viitasaari, Kannonkoski-Saarijärvi ja Luhanka-Joutsa.',
+        verifiedAt: '2026-07-09',
+      },
+    },
+  },
+  {
+    id: 'matkahuolto-ingsva-go-pohjanmaa-region',
+    name: 'Matkahuollon INGSVA Go Pohjanmaa',
+    municipalities: ['kaskinen', 'korsnäs', 'kristiinankaupunki', 'kruunupyy', 'laihia', 'maalahti', 'närpiö', 'pedersören', 'uusikaarlepyy'],
+    services: {
+      publicTransport: {
+        name: 'INGSVA Go',
+        url: 'https://www.matkahuolto.fi/matkustajat/kokkola-kristiinankaupunki',
+        group: 'Julkinen liikenne',
+        sourceNote: 'Matkahuollon INGSVA Go -lippusivu vahvistaa Kokkola-Kristiinankaupunki-yhteysvälin INGSVA:n liikennöimissä vuoroissa ja listaa lipun kelpoisuusalueeseen Kaskisen, Korsnäsin, Kristiinankaupungin, Kruunupyyn, Laihian, Maalahden, Närpiön, Pedersören ja Uudenkaarlepyyn.',
+        verifiedAt: '2026-07-09',
+      },
+    },
+  },
+  {
+    id: 'pohjois-savo-joukkis-region',
+    name: 'Pohjois-Savo Joukkis',
+    municipalities: ['iisalmi', 'keitele', 'kiuruvesi', 'lapinlahti', 'leppävirta', 'pielavesi', 'rautalampi', 'sonkajärvi', 'suonenjoki', 'tuusniemi', 'varkaus', 'vieremä'],
+    services: {
+      publicTransport: {
+        name: 'Joukkis',
+        url: 'https://www.matkahuolto.fi/matkustajat/pohjois-savo-joukkis-liput',
+        group: 'Julkinen liikenne',
+        sourceNote: 'Matkahuollon Pohjois-Savo Joukkis -lippusivu vahvistaa lipun kelpoisuusalueen Pohjois-Savon kuntien välisillä matkoilla, mm. Iisalmi-Kiuruvesi, Iisalmi-Lapinlahti, Iisalmi-Sonkajärvi, Keitele-Pielavesi, Rautalampi-Suonenjoki, Tuusniemi-Kuopio, Varkaus-Leppävirta ja Varkaus-Kuopio.',
+        verifiedAt: '2026-07-09',
+      },
+    },
+  },
+  {
+    id: 'vilkku-kaavi-region',
+    name: 'Vilkku Kaavi',
+    municipalities: ['kaavi'],
+    services: {
+      publicTransport: {
+        name: 'Vilkku linja 90',
+        url: 'https://vilkku.kuopio.fi/90-kuopio-riistavesi-juankoski-kaavi',
+        group: 'Julkinen liikenne',
+        sourceNote: 'Vilkku linjan 90 aikataulusivu vahvistaa Kuopio-Riistavesi-Juankoski-Kaavi-yhteyden ja Kaavin pysähdykset aikataulussa.',
+        verifiedAt: '2026-07-09',
+      },
+    },
+  },
+  {
+    id: 'seutuplus-satakunta-jatko-region',
+    name: 'Seutu+ Satakunta jatkoalue',
+    municipalities: ['merikarvia', 'pomarkku', 'siikainen', 'säkylä'],
+    services: {
+      publicTransport: {
+        name: 'Seutu+',
+        url: 'https://seutuplus.fi/aikataulut/',
+        group: 'Julkinen liikenne',
+        sourceNote: 'Seutu+ kokoaa Satakunnan seutuliikenteen aikatauluja. Merikarvian, Pomarkun, Siikaisten ja Säkylän yhteydet vahvistettiin kuntien, ELY:n ja liikennöitsijöiden ajantasaisista lähteistä.',
+        verifiedAt: '2026-07-09',
+      },
+    },
+  },
+  {
+    id: 'etela-savo-joukkis-region',
+    name: 'Etelä-Savo Joukkis',
+    municipalities: ['enonkoski', 'kangasniemi', 'mäntyharju', 'sulkava'],
+    services: {
+      publicTransport: {
+        name: 'Joukkis',
+        url: 'https://www.matkahuolto.fi/matkustajat/etela-savo-joukkis-liput',
+        group: 'Julkinen liikenne',
+        sourceNote: 'Matkahuollon Etelä-Savo Joukkis -lippusivu vahvistaa Enonkosken, Kangasniemen, Mäntyharjun ja Sulkavan kuntarajat ylittäviä yhteysvälejä.',
+        verifiedAt: '2026-07-09',
+      },
+    },
+  },
+  {
+    id: 'kainuu-kuntien-valinen-region',
+    name: 'Kainuun kuntien välinen joukkoliikenne',
+    municipalities: ['kuhmo', 'puolanka', 'suomussalmi'],
+    services: {
+      publicTransport: {
+        name: 'Kainuun kuntien välinen joukkoliikenne',
+        url: 'https://kajaaninjoukkoliikenne.fi/kainuun-kuntien-valinen-joukkoliikenne/',
+        group: 'Julkinen liikenne',
+        sourceNote: 'Kajaanin joukkoliikenteen Kainuun kuntien välinen sivu listaa Kajaani-Sotkamo-Kuhmo-, Kajaani-Paltamo-Puolanka- ja Kajaani-Suomussalmi-Kuusamo-yhteydet.',
+        verifiedAt: '2026-07-09',
+      },
+    },
+  },
+  {
+    id: 'lansi-uusimaa-joukkoliikenne-region',
+    name: 'Länsi-Uudenmaan joukkoliikenne',
+    municipalities: ['hanko', 'inkoo', 'raasepori'],
+    services: {
+      publicTransport: {
+        name: 'Länsi-Uudenmaan joukkoliikenne',
+        url: 'https://www.inkoo.fi/asuminen-ja-ymparisto/kadut-liikenne-ja-satamat/julkinen-liikenne/',
+        group: 'Julkinen liikenne',
+        sourceNote: 'Inkoon julkisen liikenteen sivu listaa Länsi-Uudenmaan seutulipun kelpoisuusalueeksi mm. Hangon, Inkoon ja Raaseporin sekä ohjaa alueen aikatauluihin.',
+        verifiedAt: '2026-07-09',
+      },
+    },
+  },
+  {
+    id: 'askola-pukkila-porvoo-region',
+    name: 'Pukkila-Askola-Porvoo',
+    municipalities: ['askola', 'pukkila'],
+    services: {
+      publicTransport: {
+        name: 'Pukkila-Askola-Porvoo',
+        url: 'https://askola.fi/asuminen-ja-elinymparisto/julkinen-liikenne/',
+        group: 'Julkinen liikenne',
+        sourceNote: 'Askolan julkisen liikenteen sivu vahvistaa Pukkila-Askola-Porvoo-liikenteen ja aikataulukauden 1.8.2024-31.7.2026.',
+        verifiedAt: '2026-07-09',
+      },
+    },
+  },
+  {
+    id: 'kotkan-seutu-jonne-ja-minne-region',
+    name: 'Kotkan seudun joukkoliikenne',
+    municipalities: ['kotka', 'pyhtää'],
+    services: {
+      publicTransport: {
+        name: 'Jonne ja Minne',
+        url: 'https://jonnejaminne.fi/',
+        group: 'Julkinen liikenne',
+        sourceNote: 'Kotkan joukkoliikennesivu ohjaa Jonne ja Minne -palveluun ja Pyhtään aikataulusivu vahvistaa Pyhtään yhteydet seudun aikatauluissa.',
+        verifiedAt: '2026-07-09',
+      },
+    },
+  },
+  {
+    id: 'harman-liikenne-etela-pohjanmaa-region',
+    name: 'Härmän Liikenne Etelä-Pohjanmaa',
+    municipalities: ['alajärvi', 'ilmajoki', 'isokyrö', 'kauhava', 'lappajärvi', 'lapua', 'seinäjoki', 'vimpeli'],
+    services: {
+      publicTransport: {
+        name: 'Härmän Liikenne reittiliikenne',
+        url: 'https://harmanliikenne.fi/reittiliikenne/',
+        group: 'Julkinen liikenne',
+        sourceNote: 'Härmän Liikenteen reittiliikennesivu listaa Etelä-Pohjanmaan reittejä mm. Ilmajoella, Lapualla, Seinäjoella, Kauhavalla, Alajärvellä, Lappajärvellä, Vimpelissä ja Isossakyrössä.',
+        verifiedAt: '2026-07-09',
+      },
+    },
+  },
+  {
+    id: 'kulukuri-keski-pohjanmaa-region',
+    name: 'Kulukuri Keski-Pohjanmaan maaseutu',
+    municipalities: ['halsua', 'kannus', 'kaustinen', 'lestijärvi', 'perho', 'toholampi', 'veteli'],
+    services: {
+      publicTransport: {
+        name: 'Kulukuri',
+        url: 'https://www.kulukuri.com/fi/joukkoliikenne/bussireitit-juuri-nyt',
+        group: 'Julkinen liikenne',
+        sourceNote: 'Kulukuri kokoaa Keski-Pohjanmaan maaseutualueiden liikkumispalvelut. Bussireitit juuri nyt -sivu listaa Halsuan, Kannuksen, Kaustisen, Lestijärven, Perhon, Toholammin ja Vetelin reitit sekä ylläpitäjäksi Kaustisen seutukunnan.',
+        verifiedAt: '2026-07-09',
+      },
     },
   },
   {
@@ -724,6 +955,213 @@ const localServiceMap: Record<string, LocalServiceConfig> = {
     municipality: { name: 'Jyväskylän palvelut', url: 'https://www.jyvaskyla.fi/', group: 'Paikalliset palvelut' },
     regionalNews: [regionalNewsProvider('Keskisuomalainen', 'https://www.ksml.fi/')],
   },
+  jämsä: {
+    publicTransport: {
+      name: 'Jämsän joukkoliikenne',
+      url: 'https://jamsa.fi/asuminen-ja-ymparisto/kadut-ja-liikenne/kadut-ja-liikenne/joukkoliikenne/',
+      group: 'Julkinen liikenne',
+      sourceNote: 'Jämsän kaupungin joukkoliikennesivu kokoaa kaupungin ostamat kaupunkiliikenteen, runkoliikenteen, Pali-kutsuohjatun palveluliikenteen ja aikataulut.',
+      verifiedAt: '2026-07-09',
+    },
+  },
+  joutsa: {
+    publicTransport: {
+      name: 'Joutsan liikenne',
+      url: 'https://www.joutsa.fi/asuminen-ja-ymparisto/liikenne/',
+      group: 'Julkinen liikenne',
+      sourceNote: 'Joutsan kunnan liikennesivu ohjaa kunnan liikennetiedon yhteydessä Matkahuollon reittioppaaseen ja Reitit ja Liput -sovellukseen.',
+      verifiedAt: '2026-07-09',
+    },
+  },
+  luhanka: {
+    publicTransport: {
+      name: 'Luhangan liikenne',
+      url: 'https://www.luhanka.fi/liikenne/',
+      group: 'Julkinen liikenne',
+      sourceNote: 'Luhangan kunnan liikennesivu kertoo kaikille avoimesta asiointiliikenteestä sekä kouluaikaan myös muille matkustajille hyödynnettävästä ELY-keskuksen linja-autoliikenteestä Luhanka-Joutsa-yhteysvälillä.',
+      verifiedAt: '2026-07-09',
+    },
+  },
+  uurainen: {
+    publicTransport: {
+      name: 'Uuraisten joukkoliikenteen sarjalippu',
+      url: 'https://uurainen.fi/ajankohtaiset/uuraisten-joukkoliikenteen-sarjalippu/',
+      group: 'Julkinen liikenne',
+      sourceNote: 'Uuraisten kunnan joukkoliikenteen sarjalippusivu vahvistaa Uuraisten alueen lipputuotteen, Matkahuollon sovelluskäytön ja liikennöitsijät.',
+      verifiedAt: '2026-07-09',
+    },
+  },
+  lemi: {
+    publicTransport: {
+      name: 'Lemin julkinen liikenne',
+      url: 'https://lemi.fi/palvelut/julkinen-liikenne/',
+      group: 'Julkinen liikenne',
+      sourceNote: 'Lemin kunnan julkisen liikenteen sivu ohjaa ajantasaisiin linja-autoaikatauluihin Matkahuollossa ja opas.matka.fi-palvelussa. Sama sivu kertoo linjataksiliikenteen päättyneen 30.6.2022, joten palveluliikennettä ei lisätty.',
+      verifiedAt: '2026-07-09',
+    },
+  },
+  luumäki: {
+    publicTransport: {
+      name: 'Luumäen liikenne',
+      url: 'https://luumaki.fi/fi/palvelut/tiet-ja-liikenne',
+      group: 'Julkinen liikenne',
+      sourceNote: 'Luumäen kunnan tiet ja liikenne -sivu ohjaa julkisen liikenteen aikatauluihin ja Kaakon kausilipun käyttöön Matkahuollon kautta.',
+      verifiedAt: '2026-07-09',
+    },
+  },
+  ruokolahti: {
+    publicTransport: {
+      name: 'Ruokolahden joukkoliikenne',
+      url: 'https://ruokolahti.fi/fi/asuminen-ja-ymparisto/joukkoliikenne',
+      group: 'Julkinen liikenne',
+      sourceNote: 'Ruokolahden kunnan joukkoliikennesivu kokoaa bussi- ja taksiyhteydet sekä kaikille avoimet koulukuljetusvuorot.',
+      verifiedAt: '2026-07-09',
+    },
+  },
+  savitaipale: {
+    publicTransport: {
+      name: 'Savitaipaleen bussiaikataulut',
+      url: 'https://savitaipale.fi/fi/asuminen-ja-ymparisto/asuminen/bussiaikataulut',
+      group: 'Julkinen liikenne',
+      sourceNote: 'Savitaipaleen bussiaikataulusivu kertoo kunnan järjestämästä kaikille avoimesta joukkoliikenteestä lukuvuonna 2025-2026.',
+      verifiedAt: '2026-07-09',
+    },
+  },
+  taipalsaari: {
+    publicTransport: {
+      name: 'Taipalsaaren joukkoliikenne',
+      url: 'https://www.taipalsaari.fi/fi/asuminen-ja-ymparisto/tiet-ja-liikenne/joukkoliikenne',
+      group: 'Julkinen liikenne',
+      sourceNote: 'Taipalsaaren joukkoliikennesivu listaa Lappeenranta-Taipalsaari-yhteyden, ilta- ja viikonloppuyhteydet sekä aikataululinkit.',
+      verifiedAt: '2026-07-09',
+    },
+  },
+  juuka: {
+    publicTransport: {
+      name: 'Juuan julkinen liikenne',
+      url: 'https://www.juuka.fi/asuminen-ja-ymparisto/liikenne/julkinen-liikenne/',
+      group: 'Julkinen liikenne',
+      sourceNote: 'Juuan julkisen liikenteen sivu kokoaa aikataulu- ja reittiopaslinkit sekä paikalliset liikenneyhteydet.',
+      verifiedAt: '2026-07-09',
+    },
+  },
+  lieksa: {
+    publicTransport: {
+      name: 'Lieksan linja-autot',
+      url: 'https://www.lieksa.fi/asuminen-ja-ymparisto/asuminen/kuljetus-liikennointi-joukkoliikenne/linja-autot/',
+      group: 'Julkinen liikenne',
+      sourceNote: 'Lieksan linja-autosivu ohjaa Joensuun seudun reittioppaaseen ja Matkahuoltoon sekä kokoaa Lieksan joukkoliikenteen aikataulutiedon.',
+      verifiedAt: '2026-07-09',
+    },
+  },
+  nurmes: {
+    publicTransport: {
+      name: 'Nurmeksen joukkoliikenne',
+      url: 'https://www.nurmes.fi/asuminen-ja-ymparisto/asuminen/joukkoliikenne/',
+      group: 'Julkinen liikenne',
+      sourceNote: 'Nurmeksen joukkoliikennesivu kokoaa bussiyhteydet sekä Katuri-liikenteen Nurmeksen ja Valtimon alueella.',
+      verifiedAt: '2026-07-09',
+    },
+  },
+  tohmajärvi: {
+    publicTransport: {
+      name: 'Tohmajärven julkinen liikenne',
+      url: 'https://www.tohmajarvi.fi/julkinen-liikenne',
+      group: 'Julkinen liikenne',
+      sourceNote: 'Tohmajärven julkisen liikenteen sivu listaa linja-autoyhteydet Joensuuhun ja Kiteelle sekä koulubussi-, kyytitakuu- ja palveluvuorotiedot.',
+      verifiedAt: '2026-07-09',
+    },
+  },
+  haapajärvi: {
+    publicTransport: {
+      name: 'Jokilaaksojen joukkoliikenne',
+      url: 'https://www.haapajarvi.fi/ajankohtaista/jokilaaksojen-kuntien-valisen-joukkoliikenteen-talvikausi-alkaa',
+      group: 'Julkinen liikenne',
+      sourceNote: 'Haapajärven ajankohtaissivu vahvistaa ELY-keskuksen hankkimat Jokilaaksojen kuntien väliset linja-autoyhteydet talvikaudelle.',
+      verifiedAt: '2026-07-09',
+    },
+  },
+  merijärvi: {
+    publicTransport: {
+      name: 'Merijärven liikenneyhteydet',
+      url: 'https://www.merijarvi.fi/hallinto-ja-paatoksenteko/kuntainfo',
+      group: 'Julkinen liikenne',
+      sourceNote: 'Merijärven kuntainfo ohjaa kunnan linja-autojen aikataulutietoihin Matkahuollossa ja paikallisiin liikenneyhteystietoihin.',
+      verifiedAt: '2026-07-09',
+    },
+  },
+  pyhäjoki: {
+    publicTransport: {
+      name: 'Pyhäjoki-Raahe-Oulu',
+      url: 'https://www.pyhajoki.fi/ajankohtaista/uudet-linja-autovuorot-taydentavat-vuorotarjontaa-pyhajoen-raahen-ja-oulun-valilla',
+      group: 'Julkinen liikenne',
+      sourceNote: 'Pyhäjoen tiedote vahvistaa Pyhäjoen, Raahen ja Oulun väliset ELY-keskuksen uudet linja-autovuorot.',
+      verifiedAt: '2026-07-09',
+    },
+  },
+  reisjärvi: {
+    publicTransport: {
+      name: 'Reisjärven linja-autokuljetukset',
+      url: 'https://www.reisjarvi.fi/tagit/julkinen-liikenne-linja-auto',
+      group: 'Julkinen liikenne',
+      sourceNote: 'Reisjärven julkinen liikenne -koonti listaa linja-autokuljetusten aikatauluja, taksoja ja lipputietoja.',
+      verifiedAt: '2026-07-09',
+    },
+  },
+  karijoki: {
+    publicTransport: {
+      name: 'Karijoki-Kauhajoki',
+      url: 'https://kauhajoki.fi/tyo-ja-yrittajyys/liikenne/avoin-joukkoliikenne-ja-koulukuljetukset/',
+      group: 'Julkinen liikenne',
+      sourceNote: 'Kauhajoen avoimen joukkoliikenteen sivu listaa Karijoki-Kauhajoki-reitin ja ohjaa aikatauluihin.',
+      verifiedAt: '2026-07-09',
+    },
+  },
+  teuva: {
+    publicTransport: {
+      name: 'Teuvan liikenne',
+      url: 'https://site.teuva.fi/e/site?node_id=81',
+      group: 'Julkinen liikenne',
+      sourceNote: 'Teuvan kunnan liikennesivu kokoaa linja-autoliikenteen, Matkahuollon, seutulipun ja muut liikenneyhteydet.',
+      verifiedAt: '2026-07-09',
+    },
+  },
+  ähtäri: {
+    publicTransport: {
+      name: 'Ähtärin liikenneyhteydet',
+      url: 'https://www.ahtari.fi/index.php/kaupunki-ja-hallinto/tietoa-ahtarista/liikenneyhteydet-ja-sijainti',
+      group: 'Julkinen liikenne',
+      sourceNote: 'Ähtärin liikenneyhteyssivu kokoaa rautatieaseman, linja-autoaseman ja seudulliset bussiyhteydet.',
+      verifiedAt: '2026-07-09',
+    },
+  },
+  kuhmoinen: {
+    publicTransport: {
+      name: 'Kuhmoisten julkinen liikenne',
+      url: 'https://www.kuhmoinen.fi/asuminen%20ja%20ymp%C3%A4rist%C3%B6/kadut%20ja%20liikenne/julkinen%20liikenne/',
+      group: 'Julkinen liikenne',
+      sourceNote: 'Kuhmoisten julkisen liikenteen sivu kokoaa Nysse-linjan 42, Matkahuollon yhteydet ja sivukylien asiointiliikenteen.',
+      verifiedAt: '2026-07-09',
+    },
+  },
+  punkalaidun: {
+    publicTransport: {
+      name: 'Punkalaitumen joukkoliikenne',
+      url: 'https://www.punkalaidun.fi/sivu.tmpl?sivu_id=9364',
+      group: 'Julkinen liikenne',
+      sourceNote: 'Punkalaitumen joukkoliikennesivu kertoo Punkalaidun-lipusta, A. Lamminmäen vuoroista sekä Matkahuollon aikataulu- ja lipputiedoista.',
+      verifiedAt: '2026-07-09',
+    },
+  },
+  mäntsälä: {
+    publicTransport: {
+      name: 'Mäntsälän joukkoliikenne',
+      url: 'https://www.mantsala.fi/asuminen-ja-ymparisto/liikenne-ja-kadut/joukkoliikenne/',
+      group: 'Julkinen liikenne',
+      sourceNote: 'Mäntsälän joukkoliikennesivu kokoaa linja-autoreitit, pysäkit, aikataulut sekä HSL- ja Matkahuolto-linkit.',
+      verifiedAt: '2026-07-09',
+    },
+  },
   pori: {
     regionalNews: [regionalNewsProvider('Satakunnan Kansa', 'https://www.satakunnankansa.fi/')],
   },
@@ -733,11 +1171,110 @@ const localServiceMap: Record<string, LocalServiceConfig> = {
   rovaniemi: {
     regionalNews: [regionalNewsProvider('Lapin Kansa', 'https://www.lapinkansa.fi/')],
   },
+  inari: {
+    publicTransport: {
+      name: 'Inarin liikenneyhteydet',
+      url: 'https://www.inari.fi/fi/matkailu/liikenneyhteydet.html',
+      group: 'Julkinen liikenne',
+      sourceNote: 'Inarin kunnan liikenneyhteyssivu kokoaa kunnan bussi-, skibussi-, lento- ja asiointiliikenneyhteydet sekä Inarin lipputuotteet.',
+      verifiedAt: '2026-07-09',
+    },
+  },
+  pello: {
+    publicTransport: {
+      name: 'Pellon julkinen liikenne',
+      url: 'https://www.pello.fi/asuminen-ja-rakentaminen/tiet-ja-liikenne/julkinen-liikenne.html',
+      group: 'Julkinen liikenne',
+      sourceNote: 'Pellon kunnan julkisen liikenteen sivu ohjaa linja-autojen aikatauluihin ja kuvaa kunnan kaikille avointa asiointiliikennettä reitteineen.',
+      verifiedAt: '2026-07-09',
+    },
+  },
+  utsjoki: {
+    publicTransport: {
+      name: 'Utsjoen yhteydet',
+      url: 'https://exploreutsjoki.fi/yhteydet/',
+      group: 'Julkinen liikenne',
+      sourceNote: 'Utsjoen matkailusivu kertoo Ivalosta kulkevasta päivittäisestä linja-autosta Utsjoelle, Karigasniemelle ja Nuorgamiin sekä ohjaa Matkahuollon aikatauluihin.',
+      verifiedAt: '2026-07-09',
+    },
+  },
   lahti: {
     regionalNews: [regionalNewsProvider('Etelä-Suomen Sanomat', 'https://www.ess.fi/')],
   },
   loviisa: {
     publicTransport: { name: 'Loviisan joukkoliikenne', url: 'https://www.loviisa.fi/asuminen-ja-ymparisto/liikenne/joukkoliikenne/', group: 'Julkinen liikenne' },
+  },
+  forssa: {
+    publicTransport: {
+      name: 'Forssan seutu- ja alueliikenne',
+      url: 'https://www.forssa.fi/asuminen-ja-ymparisto/joukkoliikenne-1558118806/seutu-ja-kaukoliikenne/',
+      group: 'Julkinen liikenne',
+      sourceNote: 'Forssan kaupungin seutu- ja alueliikennesivu listaa Lounais-Hämeen yhteyksiä Forssaan, mm. Humppila-Jokioinen-Forssa-, Loimaa-Ypäjä-Jokioinen-Forssa- ja Tammela-Forssa-reitit.',
+      verifiedAt: '2026-07-09',
+    },
+  },
+  hausjärvi: {
+    publicTransport: {
+      name: 'Hausjärven joukkoliikenne',
+      url: 'https://www.hausjarvi.fi/asuminen-ja-rakentaminen/kadut-liikenne-ja-yleiset-alueet/joukkoliikenne/',
+      group: 'Julkinen liikenne',
+      sourceNote: 'Hausjärven kunnan joukkoliikennesivu kokoaa palvelulinjan, kunnan rautatieasemat sekä bussi- ja junayhteyksien aikatauluohjeet.',
+      verifiedAt: '2026-07-09',
+    },
+  },
+  humppila: {
+    publicTransport: {
+      name: 'Humppilan julkinen liikenne',
+      url: 'https://www.humppila.fi/vapaa-aika-ja-matkailu/jubilee-line-ja-julkinen-liikenne/',
+      group: 'Julkinen liikenne',
+      sourceNote: 'Humppilan kunnan julkisen liikenteen sivu kertoo Forssa-Jokioinen-Humppila-yhteydestä, ELY:n jatkavasta liikenteestä sekä bussi- ja junaliikenteen aikataululinkeistä.',
+      verifiedAt: '2026-07-09',
+    },
+  },
+  jokioinen: {
+    publicTransport: {
+      name: 'Jokioisten joukkoliikenne',
+      url: 'https://www.jokioinen.fi/asuminen-ja-ymparisto/palveluja-asukkaille/joukkoliikenne/',
+      group: 'Julkinen liikenne',
+      sourceNote: 'Jokioisten kunnan joukkoliikennesivu kuvaa Jubilee Line -joukkoliikennekokeilun ja ohjaa kaikkien aikataulujen, mukaan lukien muun julkisen liikenteen, Matkahuollon aikatauluhakuun.',
+      verifiedAt: '2026-07-09',
+    },
+  },
+  loppi: {
+    publicTransport: {
+      name: 'Lopen joukkoliikenne',
+      url: 'https://www.loppi.fi/asuminen-ja-ymparisto/joukkoliikenne/',
+      group: 'Julkinen liikenne',
+      sourceNote: 'Lopen kunnan joukkoliikennesivu listaa linja-autovuoroja Riihimäelle, Hämeenlinnaan ja Helsingin suuntaan sekä ohjaa ajantasaisiin Matkahuollon aikatauluihin.',
+      verifiedAt: '2026-07-09',
+    },
+  },
+  riihimäki: {
+    publicTransport: {
+      name: 'Riihimäen joukkoliikenne',
+      url: 'https://www.riihimaki.fi/asu-ja-rakenna/liikenne-ja-kadut/joukkoliikenne/',
+      group: 'Julkinen liikenne',
+      sourceNote: 'Riihimäen kaupungin joukkoliikennesivu kertoo kaupungin toimivalta-alueen paikallisliikenteestä sekä seutuliikenteestä Lopelle, Ryttylään ja Tervakoskelle.',
+      verifiedAt: '2026-07-09',
+    },
+  },
+  tammela: {
+    publicTransport: {
+      name: 'Tammelan liikenneyhteydet',
+      url: 'https://www.tammela.fi/asuminen-ja-ymparisto/liikenne/liikenneyhteydet',
+      group: 'Julkinen liikenne',
+      sourceNote: 'Tammelan kunnan liikenneyhteyssivu kokoaa julkisen liikenteen ja linja-autoyhteydet, kuten Forssan suunnan yhteydet ja Matkahuollon aikatauluhaun.',
+      verifiedAt: '2026-07-09',
+    },
+  },
+  ypäjä: {
+    publicTransport: {
+      name: 'Ypäjän joukkoliikenteen aikataulut',
+      url: 'https://ypaja.fi/joukkoliikenteen-aikatauluja/',
+      group: 'Julkinen liikenne',
+      sourceNote: 'Ypäjän kunnan joukkoliikennesivu ohjaa Matkahuollon linja-autoliikenteen aikatauluun ja lipunmyyntiin, VR:n aikatauluihin sekä Onnibus-yhteyksiin.',
+      verifiedAt: '2026-07-09',
+    },
   },
   hämeenlinna: {
     regionalNews: [regionalNewsProvider('Hämeen Sanomat', 'https://www.hameensanomat.fi/')],
@@ -753,6 +1290,42 @@ const localServiceMap: Record<string, LocalServiceConfig> = {
   },
   vaasa: {
     regionalNews: [regionalNewsProvider('Pohjalainen', 'https://www.pohjalainen.fi/')],
+  },
+  haapavesi: {
+    publicTransport: {
+      name: 'Haapaveden linja-autoyhteydet',
+      url: 'https://haapavesi.fi/linja-autoyhteydet',
+      group: 'Julkinen liikenne',
+      sourceNote: 'Haapaveden kaupungin linja-autoyhteyssivu kokoaa kaupungin kautta kulkevat Ylivieskan, Pyhännän, Kalajoen, Kärsämäen ja Nivalan suunnan yhteydet sekä lipputuote- ja aikatauluohjeet.',
+      verifiedAt: '2026-07-09',
+    },
+  },
+  hailuoto: {
+    publicTransport: {
+      name: 'Hailuodon linja-auto',
+      url: 'https://hailuoto.fi/saapuminen/linja-auto/',
+      group: 'Julkinen liikenne',
+      sourceNote: 'Hailuodon kunnan linja-autosivu kertoo Oulun ja Hailuodon välisten linjojen 59 ja 59S aikataulu- ja lipputiedot.',
+      verifiedAt: '2026-07-09',
+    },
+  },
+  kalajoki: {
+    publicTransport: {
+      name: 'Kalajoen liikenneyhteydet',
+      url: 'https://www.kalajoki.fi/fi/kaupunki-ja-hallinto/tietoa-kalajoesta/liikenneyhteydet-kalajoelle',
+      group: 'Julkinen liikenne',
+      sourceNote: 'Kalajoen kaupungin liikenneyhteyssivu ohjaa Kalajoen linja-autoyhteyksiin Kokkolasta, Oulusta ja Ylivieskasta sekä aikataulujen tarkistamiseen.',
+      verifiedAt: '2026-07-09',
+    },
+  },
+  kuusamo: {
+    publicTransport: {
+      name: 'Kuusamon paikallisliikenne',
+      url: 'https://www.kuusamo.fi/asuminen-ja-ymparisto/asuminen/paikallisliikenne/',
+      group: 'Julkinen liikenne',
+      sourceNote: 'Kuusamon kaupungin paikallisliikennesivu kuvaa yleisölle avoimen paikallisliikenteen, reitit ja aikatauluohjeet.',
+      verifiedAt: '2026-07-09',
+    },
   },
   luoto: {
     publicTransport: {
@@ -781,7 +1354,32 @@ const localServiceMap: Record<string, LocalServiceConfig> = {
       verifiedAt: '2026-07-09',
     },
   },
+  sievi: {
+    publicTransport: {
+      name: 'Sievin joukkoliikenne',
+      url: 'https://www.sievi.fi/joukkoliikenne',
+      group: 'Julkinen liikenne',
+      sourceNote: 'Sievin kunnan joukkoliikennesivu kokoaa Sievin ja Ylivieskan sekä Sievin ja Nivalan välisten linja-autovuorojen aikataulu- ja lipputiedot.',
+      verifiedAt: '2026-07-09',
+    },
+  },
+  ylivieska: {
+    publicTransport: {
+      name: 'Ylivieskan julkinen liikenne',
+      url: 'https://www.ylivieska.fi/asuminen-ja-ymparisto/julkinen-liikenne/',
+      group: 'Julkinen liikenne',
+      sourceNote: 'Ylivieskan kaupungin julkisen liikenteen sivu ohjaa juna-, bussi- ja taksiyhteyksiin sekä kertoo asema- ja linja-autoaseman sijainnin.',
+      verifiedAt: '2026-07-09',
+    },
+  },
   kokkola: {
+    publicTransport: {
+      name: 'Kokkolan kaupunkiliikenne BYSSE',
+      url: 'https://www.kokkola.fi/asuminen-ja-ymparisto/kadut-ja-liikenne/joukkoliikenne/',
+      group: 'Julkinen liikenne',
+      sourceNote: 'Kokkolan kaupungin joukkoliikennesivu kokoaa BYSSE-kaupunkiliikenteen, Kälviän, Lohtajan ja Ullavan suunnan vuorot sekä Matkahuollon reitti- ja lipputiedot.',
+      verifiedAt: '2026-07-09',
+    },
     regionalNews: [regionalNewsProvider('Keskipohjanmaa', 'https://www.keskipohjanmaa.fi/')],
   },
   seinäjoki: {

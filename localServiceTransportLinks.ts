@@ -37,6 +37,15 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
     evidence: "Kutsutaksi | Alavieska; termit: kutsutaksi",
   },
   {
+    municipality: "alavus",
+    provider: {
+      name: "Alavus palvelukyyti",
+      url: "https://www.alavus.fi/fi/etusivu/ajankohtaista/uutiset/palvelukyyti-on-kaikkien-kaytettavissa.html",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Palvelukyyti on kaikkien käytettävissä - Alavuden kaupunki; termit: palvelukyyti; kaiken ikäisille tarkoitettu; tarkistettu 2026-07-09",
+  },
+  {
     municipality: "asikkala",
     provider: {
       name: "Asikkala palveluliikenne",
@@ -44,6 +53,24 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
       group: 'Palveluliikenne',
     },
     evidence: "Joukko- ja palveluliikenne - Asikkala; termit: palveluliikenne",
+  },
+  {
+    municipality: "enontekiö",
+    provider: {
+      name: "Enontekiö palveluliikenne",
+      url: "https://enontekio.fi/fi/asuminen-ja-ymparisto/liikenne/palveluliikenne",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Palveluliikenne - Enontekiön kunta; termit: palveluliikenne; kutsutaksi; kaikille avointa joukkoliikennettä; tarkistettu 2026-07-09",
+  },
+  {
+    municipality: "enonkoski",
+    provider: {
+      name: "Enonkoski asiointiliikenne",
+      url: "https://enonkoski.fi/tiedoksi-koululaiskuljetus-ja-asiointiliikennereitit-1-8-2026-31-7-2029/",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Tiedoksi koululaiskuljetus- ja asiointiliikennereitit 1.8.2026-31.7.2029 - Enonkosken kunta; kuntalaiset voivat käyttää koulukuljetuksia asiointiliikenteenä joukkoliikennetaksalla; tarkistettu 2026-07-09",
   },
   {
     municipality: "evijärvi",
@@ -145,6 +172,24 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
     evidence: "Liikenne - Hyvinkään kaupunki; termit: palvelubussi",
   },
   {
+    municipality: "hausjärvi",
+    provider: {
+      name: "Hausjärvi palvelulinja",
+      url: "https://www.hausjarvi.fi/asuminen-ja-rakentaminen/kadut-liikenne-ja-yleiset-alueet/joukkoliikenne/",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Joukkoliikenne - Hausjärven kunta; termit: palvelulinja; palveluliikenne; Oitti-Hikiä-Riihimäki; tarkistettu 2026-07-09",
+  },
+  {
+    municipality: "hämeenlinna",
+    provider: {
+      name: "Hämeenlinna Palvelulinja Seiska",
+      url: "https://hameenlinnanjoukkoliikenne.fi/aikataulut-ja-reitit/talviaikataulut-12-8-2026-6-6-2027/",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Talviaikataulut 12.8.2026-6.6.2027 - Hämeenlinnan joukkoliikenne; termit: Palvelulinja Seiska; tarkoitettu kaikille; tarkistettu 2026-07-09",
+  },
+  {
     municipality: "hämeenkyrö",
     provider: {
       name: "Hämeenkyrö palveluliikenne",
@@ -190,6 +235,15 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
     evidence: "Asiointiliikenne - Ilomantsin kunta; termit: asiointiliikenne",
   },
   {
+    municipality: "inari",
+    provider: {
+      name: "Inari asiointiliikenne",
+      url: "https://www.inari.fi/fi/matkailu/liikenneyhteydet.html",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Liikenneyhteydet - Inarin kunta; termit: kunnan etukäteen varattava asiointiliikenne; kutsutaksiliikenne; linja on kaikkien matkustajien käytettävissä; tarkistettu 2026-07-09",
+  },
+  {
     municipality: "janakkala",
     provider: {
       name: "Janakkala palveluliikenne",
@@ -197,6 +251,15 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
       group: 'Palveluliikenne',
     },
     evidence: "Bussiliikenteen aikataulut ja liput - Janakkala; termit: palveluliikenne",
+  },
+  {
+    municipality: "jokioinen",
+    provider: {
+      name: "Jokioinen Kyläpussi",
+      url: "https://www.jokioinen.fi/asuminen-ja-ymparisto/palveluja-asukkaille/kylapussi985191716/",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Kyläpussi - Jokioisten kunta; termit: maanantain, tiistain ja lauantain reitit; kyyti tilattava edellisenä päivänä; tarkistettu 2026-07-09",
   },
   {
     municipality: "joensuu",
@@ -253,6 +316,15 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
     evidence: "Joukko- ja palveluliikenne | Jyväskylä.fi; termit: palveluliikenne; asiointiliikenne",
   },
   {
+    municipality: "jämsä",
+    provider: {
+      name: "Jämsä Pali-liikenne",
+      url: "https://jamsa.fi/asuminen-ja-ymparisto/kadut-ja-liikenne/kadut-ja-liikenne/joukkoliikenne/",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Joukkoliikenne - Jämsän kaupunki; termit: Pali-liikenne; kutsuohjattu palveluliikenne; tarkistettu 2026-07-09",
+  },
+  {
     municipality: "järvenpää",
     provider: {
       name: "Järvenpää palveluliikenne",
@@ -280,6 +352,15 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
     evidence: "Palvelu- ja joukkoliikenne - Kangasala; termit: palveluliikenne; asiointiliikenne; palvelubussi",
   },
   {
+    municipality: "kangasniemi",
+    provider: {
+      name: "Kangasniemi Onnikka",
+      url: "https://www.kangasniemi.fi/asuminen-ja-ymparisto/liikenne/monipalveluauto-onnikka/",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Monipalveluauto Onnikka - Kangasniemi; kaikille avointa joukkoliikennettä; reitit ja edellisen illan tilausohje; tarkistettu 2026-07-09",
+  },
+  {
     municipality: "kankaanpää",
     provider: {
       name: "Kankaanpää palveluliikenne",
@@ -296,6 +377,24 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
       group: 'Palveluliikenne',
     },
     evidence: "Joukkoliikenne - Karkkilan kaupunki; termit: asiointiliikenne",
+  },
+  {
+    municipality: "isojoki",
+    provider: {
+      name: "Isojoki asiointiliikenne",
+      url: "https://isojoki.fi/asuminen-ja-ymparisto/isojoen-kunnan-asiointiliikenne-ja-aikataulut/",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Asiointiliikenteen reitit ja aikataulut - Isojoen kunta; termit: asiointiliikenne; reitit 1.8.2026-31.7.2028; tarkistettu 2026-07-09",
+  },
+  {
+    municipality: "kaavi",
+    provider: {
+      name: "Kaavi asiointiliikenne",
+      url: "https://kaavi.fi/mokkilaiset/",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Mökkiläiset - Kaavi; termit: asiointiliikenne; torstaisin kirkonkylän asioille; tarkistettu 2026-07-09",
   },
   {
     municipality: "karstula",
@@ -332,6 +431,24 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
       group: 'Palveluliikenne',
     },
     evidence: "Asiointiliikenne - Keitele; termit: asiointiliikenne; kutsutaksi",
+  },
+  {
+    municipality: "kemi",
+    provider: {
+      name: "Kemi asiointilinja Onnikka",
+      url: "https://www.kemi.fi/asuminen-ja-ymparisto/kadut-ja-liikenne/joukkoliikenne/onnikka/",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Asiointilinja Onnikka - Kemi; termit: asiointilinja; kaikille avointa joukkoliikennettä; kaupungin järjestämä palvelu; tarkistettu 2026-07-09",
+  },
+  {
+    municipality: "keminmaa",
+    provider: {
+      name: "Keminmaa palveluliikenne",
+      url: "https://www.keminmaa.fi/asuminen-ja-ymparisto/kadut-ja-liikenne/joukkoliikenne/",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Joukkoliikenne - Keminmaa; termit: palveluliikenteen vuorot; kunnan järjestämä palveluliikenne; tarkistettu 2026-07-09",
   },
   {
     municipality: "kemijärvi",
@@ -379,6 +496,15 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
     evidence: "Työmatka- ja asiointiliikenne Kittilässä | Kittilä; termit: palveluliikenne; asiointiliikenne; kutsutaksi",
   },
   {
+    municipality: "kiuruvesi",
+    provider: {
+      name: "Kiuruvesi palveluliikenne",
+      url: "https://kiuruvesi.fi/asuminen-ja-ymparisto/liikenne/palveluliikenne/",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Palveluliikenne - Kiuruvesi; termit: palveluliikenne; asiointireitit; kutsutaksi; tarkistettu 2026-07-09",
+  },
+  {
     municipality: "kokkola",
     provider: {
       name: "Kokkola palveluliikenne",
@@ -386,6 +512,15 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
       group: 'Palveluliikenne',
     },
     evidence: "Kaupunkiliikenne BYSSE, joukko- ja palveluliikenne - Kokkola; termit: palveluliikenne; asiointiliikenne",
+  },
+  {
+    municipality: "kolari",
+    provider: {
+      name: "Kolari palveluliikenne",
+      url: "https://www.kolari.fi/fi/asuminen-ja-ymparisto/asuminen/palveluliikenne",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Palveluliikenne - Kolarin kunta; termit: palveluliikenne; tilaa kyyti; reittien kartat; tarkistettu 2026-07-09",
   },
   {
     municipality: "kontiolahti",
@@ -404,6 +539,24 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
       group: 'Palveluliikenne',
     },
     evidence: "Koutsi – Kouvolan joukkoliikenne - Kouvolan kaupunki; termit: palveluliikenne",
+  },
+  {
+    municipality: "kuhmoinen",
+    provider: {
+      name: "Kuhmoinen asiointiliikenne",
+      url: "https://www.kuhmoinen.fi/asuminen%20ja%20ymp%C3%A4rist%C3%B6/kadut%20ja%20liikenne/julkinen%20liikenne/",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Julkinen liikenne - Kuhmoinen; sivukylien asiointiliikenne, reitit ja taksikohtaiset tilausohjeet; tarkistettu 2026-07-09",
+  },
+  {
+    municipality: "kuopio",
+    provider: {
+      name: "Kuopio PALI-palveluliikenne",
+      url: "https://vilkku.kuopio.fi/pali",
+      group: 'Palveluliikenne',
+    },
+    evidence: "PALI-palveluliikenne - Vilkku; termit: palveluliikenne; Kuopio; tarkistettu 2026-07-09",
   },
   {
     municipality: "kuortane",
@@ -469,6 +622,15 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
     evidence: "Lappajärvi - - Liikenne ja kartat; termit: palveluliikenne",
   },
   {
+    municipality: "lapinlahti",
+    provider: {
+      name: "Lapinlahti asiointiliikenne",
+      url: "https://lapinlahti.fi/liikenne/",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Liikenne - Lapinlahti; termit: asiointiliikenne; kutsuperusteista; tarkistettu 2026-07-09",
+  },
+  {
     municipality: "lappeenranta",
     provider: {
       name: "Lappeenranta palveluliikenne",
@@ -485,6 +647,15 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
       group: 'Palveluliikenne',
     },
     evidence: "Asiointiliikenne - Lapuan kaupunki; termit: asiointiliikenne",
+  },
+  {
+    municipality: "laukaa",
+    provider: {
+      name: "Laukaa palvelulinja",
+      url: "https://www.laukaa.fi/asukkaat/asuminen-ja-ymparisto/kadut-ja-liikenne/joukkoliikenne/",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Joukkoliikenne - Laukaa; termit: palvelulinja; palveluliikenne; Lievestuore-Laukaa; tarkistettu 2026-07-09",
   },
   {
     municipality: "lempäälä",
@@ -505,6 +676,15 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
     evidence: "Joukkoliikenne - Leppävirta; termit: palveluliikenne; asiointiliikenne",
   },
   {
+    municipality: "lieksa",
+    provider: {
+      name: "Lieksa asiointiliikenne",
+      url: "https://www.lieksa.fi/asuminen-ja-ymparisto/asuminen/kuljetus-liikennointi-joukkoliikenne/",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Kuljetus, liikennöinti ja joukkoliikenne - Lieksa; kaikille avointa kutsuohjattua esteetöntä asiointiliikennettä ovelta ovelle; tarkistettu 2026-07-09",
+  },
+  {
     municipality: "lohja",
     provider: {
       name: "Lohja palveluliikenne",
@@ -512,6 +692,24 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
       group: 'Palveluliikenne',
     },
     evidence: "Joukkoliikenne - Lohja; termit: palveluliikenne; kutsuliikenne",
+  },
+  {
+    municipality: "loimaa",
+    provider: {
+      name: "Loimaa kutsutaksiliikenne",
+      url: "https://www.loimaa.fi/asuminen-ja-ymparisto/asuminen-ja-tontit/liikenneyhteydet/",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Liikenneyhteydet | Loimaa; termit: kutsutaksiliikenne; kaikille avointa palveluliikennettä; tarkistettu 2026-07-09",
+  },
+  {
+    municipality: "loppi",
+    provider: {
+      name: "Loppi palveluliikenne",
+      url: "https://www.loppi.fi/asuminen-ja-ymparisto/joukkoliikenne/",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Joukkoliikenne - Lopen kunta; termit: palveluliikenne; Läyliäisten, Pilpalan ja Vojakkalan palveluliikenne; tarkistettu 2026-07-09",
   },
   {
     municipality: "loviisa",
@@ -613,6 +811,15 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
     evidence: "Joukkoliikenne | Mänttä-Vilppula; termit: palveluliikenne",
   },
   {
+    municipality: "mäntyharju",
+    provider: {
+      name: "Mäntyharju asiointiliikenne",
+      url: "https://www.mantyharju.fi/sivut/asuminen-ymparisto/ymparistopalvelut/julkinen-liikenne/",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Julkinen liikenne - Mäntyharjun kunta; asiointiliikenne kutsutaksina, asiointiaika noin kaksi tuntia; tarkistettu 2026-07-09",
+  },
+  {
     municipality: "naantali",
     provider: {
       name: "Naantali palveluliikenne",
@@ -656,6 +863,15 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
       group: 'Palveluliikenne',
     },
     evidence: "Joukko&shy;liikenne - Nurmijärvi; termit: palveluliikenne",
+  },
+  {
+    municipality: "nurmes",
+    provider: {
+      name: "Nurmes Katuri",
+      url: "https://www.nurmes.fi/asuminen-ja-ymparisto/asuminen/joukkoliikenne/",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Joukkoliikenne - Nurmes; Katuri on kaikille avointa kutsuohjattua liikennettä Nurmeksen ja Valtimon alueella; tarkistettu 2026-07-09",
   },
   {
     municipality: "orimattila",
@@ -721,6 +937,15 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
     evidence: "Asiointiliikenne - Paltamon kunta; termit: asiointiliikenne; kutsutaksi",
   },
   {
+    municipality: "parainen",
+    provider: {
+      name: "Parainen sisäinen liikenne",
+      url: "https://www.pargas.fi/fi/kaupungin-sisainen-liikenne",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Kaupungin sisäinen liikenne - Parainen; termit: kutsutaksi; palvelulinja; sisäinen liikenne; tarkistettu 2026-07-09",
+  },
+  {
     municipality: "parikkala",
     provider: {
       name: "Parikkala palveluliikenne",
@@ -728,6 +953,15 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
       group: 'Palveluliikenne',
     },
     evidence: "Asiointiliikenne - Parikkala; termit: asiointiliikenne",
+  },
+  {
+    municipality: "pello",
+    provider: {
+      name: "Pello asiointiliikenne",
+      url: "https://www.pello.fi/asuminen-ja-rakentaminen/tiet-ja-liikenne/julkinen-liikenne.html",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Julkinen liikenne - Pellon kunta; termit: asiointiliikenne; kaikille avointa; reitit ja aikataulut; tarkistettu 2026-07-09",
   },
   {
     municipality: "parkano",
@@ -748,6 +982,15 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
     evidence: "Liikenneyhteydet ja liikenneturva - Pelkosenniemi; termit: asiointiliikenne",
   },
   {
+    municipality: "pedersören",
+    provider: {
+      name: "Pedersöre palvelulinja",
+      url: "https://www.pedersore.fi/fi/asuminen-ja-ymparisto/tekninen-virasto/tie-ja-liikenne/palvelulinja/",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Palvelulinja - Pedersören kunta; termit: palvelulinja; jokaisena arkipäivänä; kaikille kuntalaisille; reitit Pietarsaareen; tarkistettu 2026-07-09",
+  },
+  {
     municipality: "pietarsaari",
     provider: {
       name: "Pietarsaari Vippari",
@@ -755,6 +998,15 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
       group: 'Palveluliikenne',
     },
     evidence: "Trafikförbindelser - Jakobstad; Vippari bokningsstyrd kollektivtrafik; tarkistettu 2026-07-09",
+  },
+  {
+    municipality: "pihtipudas",
+    provider: {
+      name: "Pihtipudas asiointiliikenne",
+      url: "https://pihtipudas.fi/pihtiputaan-asiointiliikennekokeilu-kaynnistyy-5-5-2026/",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Pihtiputaan asiointiliikennekokeilu käynnistyy 5.5.2026; termit: asiointiliikenne; kutsuohjattu liikenne; tarkistettu 2026-07-09",
   },
   {
     municipality: "pieksämäki",
@@ -901,6 +1153,15 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
     evidence: "Asiointiliikenne - Ranua; termit: asiointiliikenne",
   },
   {
+    municipality: "rautalampi",
+    provider: {
+      name: "Rautalampi asiointiliikenne",
+      url: "https://www.rautalampi.fi/asuminen-ja-ymparisto/liikenne/joukkoliikenne/",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Joukkoliikenne - Rautalampi; termit: asiointiliikenne; kutsutaksi; tarkistettu 2026-07-09",
+  },
+  {
     municipality: "rauma",
     provider: {
       name: "Rauma palveluliikenne",
@@ -928,6 +1189,15 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
     evidence: "Asiointiliikenne - Rautjärvi; termit: asiointiliikenne; asiointikyyti",
   },
   {
+    municipality: "riihimäki",
+    provider: {
+      name: "Riihimäki R-kyyti",
+      url: "https://www.riihimaki.fi/asu-ja-rakenna/liikenne-ja-kadut/joukkoliikenne/r-kyyti/",
+      group: 'Palveluliikenne',
+    },
+    evidence: "R-kyyti ja palvelulinjat - Riihimäki; termit: kutsukyytipalvelu; palvelualue; matalalattiainen pikkubussi; tarkistettu 2026-07-09",
+  },
+  {
     municipality: "ristijärvi",
     provider: {
       name: "Ristijärvi palveluliikenne",
@@ -935,6 +1205,15 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
       group: 'Palveluliikenne',
     },
     evidence: "Asiointi- ja joukkoliikenne; termit: asiointiliikenne; kutsutaksi",
+  },
+  {
+    municipality: "ruokolahti",
+    provider: {
+      name: "Ruokolahti palveluliikenne",
+      url: "https://ruokolahti.fi/fi/asuminen-ja-ymparisto/joukkoliikenne",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Joukkoliikenne - Ruokolahti; palveluliikenteen aikataulut, palvelutaksivuorot ja edellisen päivän tilausohje; tarkistettu 2026-07-09",
   },
   {
     municipality: "ruovesi",
@@ -1000,6 +1279,15 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
     evidence: "Liikenne - Savonlinna; termit: palveluliikenne; asiointiliikenne",
   },
   {
+    municipality: "savitaipale",
+    provider: {
+      name: "Savitaipale kutsutaksiliikenne",
+      url: "https://savitaipale.fi/fi/asuminen-ja-ymparisto/asuminen/bussiaikataulut",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Bussiaikataulut - Savitaipale; kunnan kutsutaksiliikenne, asiointiliikenne- ja kutsutaksikuljetukset sekä reittikohtaiset tilausohjeet; tarkistettu 2026-07-09",
+  },
+  {
     municipality: "savukoski",
     provider: {
       name: "Savukoski palveluliikenne",
@@ -1045,6 +1333,15 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
     evidence: "Joukkoliikenne - Siilinjärven kunnan verkkosivut; termit: palveluliikenne",
   },
   {
+    municipality: "simo",
+    provider: {
+      name: "Simo asiointikuljetukset",
+      url: "https://www.simo.fi/kunta-ja-hallinto/asiointi/",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Asiointi - Simon kunta; termit: asiointikuljetukset; kutsutaksipohjalla; linja-autotaksa; tarkistettu 2026-07-09",
+  },
+  {
     municipality: "sodankylä",
     provider: {
       name: "Sodankylä palveluliikenne",
@@ -1052,6 +1349,15 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
       group: 'Palveluliikenne',
     },
     evidence: "Liikennepalvelut | Sodankylän kunta; termit: palveluliikenne; asiointiliikenne",
+  },
+  {
+    municipality: "sonkajärvi",
+    provider: {
+      name: "Sonkajärvi asiointi- ja palveluliikenne",
+      url: "https://www.sonkajarvi.fi/asuminen-ja-ymparisto/tiet-ja-liikenne/joukkoliikenne/",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Joukkoliikenne - Sonkajärvi; termit: asiointi- ja palveluliikenne; kutsutaksi; tarkistettu 2026-07-09",
   },
   {
     municipality: "somero",
@@ -1070,6 +1376,15 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
       group: 'Palveluliikenne',
     },
     evidence: "Joukkoliikenne - Sotkamo; termit: asiointiliikenne; kutsutaksi",
+  },
+  {
+    municipality: "sulkava",
+    provider: {
+      name: "Sulkava asiointiliikenne",
+      url: "https://sulkava.fi/asuminen-ja-ymparisto/joukkoliikenne/",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Joukkoliikenne - Sulkava; asiointiliikenteen reitit 1.8.2025-30.10.2026, hinnat ja tilausohjeet; tarkistettu 2026-07-09",
   },
   {
     municipality: "suonenjoki",
@@ -1099,6 +1414,24 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
     evidence: "Joukko- ja palveluliikenne :: Taivassalon kunta; termit: palveluliikenne",
   },
   {
+    municipality: "taivalkoski",
+    provider: {
+      name: "Taivalkoski asiointiliikenne",
+      url: "https://taivalkoski.fi/wp-content/uploads/2025/03/Asiointiliikennetiedote-19.3.2025.wbk_.pdf",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Palvelu-/asiointiliikenne 1.8.2022 lukien; termit: palvelu-/asiointiliikenne; kaikille avointa liikennettä; tarkistettu 2026-07-09",
+  },
+  {
+    municipality: "soini",
+    provider: {
+      name: "Soini asiointiliikenne",
+      url: "https://kunta.soini.fi/sites/default/files/2026-01/Talousarvio%202026.pdf",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Talousarvio 2026 - Soinin kunta; termit: asiointiliikennepalvelu; sivukylien asiointipalvelu; tarkistettu 2026-07-09",
+  },
+  {
     municipality: "tervo",
     provider: {
       name: "Tervo palveluliikenne",
@@ -1108,6 +1441,24 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
     evidence: "Asiointiliikenne - Tervo; termit: asiointiliikenne",
   },
   {
+    municipality: "tervola",
+    provider: {
+      name: "Tervola asiointikuljetukset",
+      url: "https://tervola.fi/hyvinvointipalvelut/tervolan-asiointikuljetukset/",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Asiointikuljetukset - Tervolan kunta; termit: asiointikuljetus; kaikille kuntalaisille avointa liikennettä; sopimuskausi 1.8.2025-31.7.2030; tarkistettu 2026-07-09",
+  },
+  {
+    municipality: "tammela",
+    provider: {
+      name: "Tammela Peliittapirssi",
+      url: "https://www.tammela.fi/peliittapirssi",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Peliittapirssi - Tammelan kunta; termit: palveluliikenne; kaikille avointa joukkoliikennettä; tarkistettu 2026-07-09",
+  },
+  {
     municipality: "toivakka",
     provider: {
       name: "Toivakka palveluliikenne",
@@ -1115,6 +1466,15 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
       group: 'Palveluliikenne',
     },
     evidence: "Joukkoliikenne - Toivakka; termit: palveluliikenne; asiointikyyti",
+  },
+  {
+    municipality: "tohmajärvi",
+    provider: {
+      name: "Tohmajärvi palveluvuorot",
+      url: "https://www.tohmajarvi.fi/julkinen-liikenne",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Julkinen liikenne - Tohmajärvi; sivu listaa kyytitakuukyydit ja Värtsilän palveluvuorot osana julkista liikennettä; tarkistettu 2026-07-09",
   },
   {
     municipality: "tornio",
@@ -1216,6 +1576,15 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
     evidence: "Kutsuohjattu palveluliikenne - Vierema; termit: palveluliikenne; asiointiliikenne",
   },
   {
+    municipality: "vimpeli",
+    provider: {
+      name: "Vimpeli asiointiliikenne",
+      url: "https://vimpeli.fi/node/1133",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Asiointiliikenne - Vimpelin kunta; termit: asiointiliikenne; kaikille avointa liikennettä; tarkistettu 2026-07-09",
+  },
+  {
     municipality: "vihti",
     provider: {
       name: "Vihti palveluliikenne",
@@ -1252,6 +1621,15 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
     evidence: "Palveluliikenne | Virtain kaupunki; termit: palveluliikenne",
   },
   {
+    municipality: "ypäjä",
+    provider: {
+      name: "Ypäjä asioimisliikenne",
+      url: "https://ypaja.fi/asuminen-ja-ymparisto/liikenne-ja-yksityistiet/liikennepalvelut/",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Liikennepalvelut - Ypäjä; termit: asioimisliikenne; kunnan sisäinen avoin asioimisliikenne; kuukausittainen Forssan asioimismatka; tarkistettu 2026-07-09",
+  },
+  {
     municipality: "ylitornio",
     provider: {
       name: "Ylitornio palveluliikenne",
@@ -1268,6 +1646,15 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
       group: 'Palveluliikenne',
     },
     evidence: "Palveluliikenne - Ylöjärvi; termit: palveluliikenne; asiointiliikenne; palvelubussi",
+  },
+  {
+    municipality: "ähtäri",
+    provider: {
+      name: "Ähtäri asiointiliikenne",
+      url: "https://www.petripekkala.com/asiointiliikenne.html",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Asiointiliikenne - Petri Pekkala; palveluntuottajan ajantasainen asiointiliikennesivu Ähtärissä, päivitetty 28.3.2026; tarkistettu 2026-07-09",
   },
   {
     municipality: "äänekoski",
