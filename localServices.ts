@@ -99,8 +99,10 @@ const wellbeingAreaNewsUrls: Record<string, string> = {
   '17': 'https://pohjanmaanhyvinvointi.fi/tietoa-meista/ajankohtaista/uutiset/',
   '18': 'https://soite.fi/soite/ajankohtaista/',
   '19': 'https://pohde.fi/ajankohtaista/',
+  '20': 'https://hyvinvointialue.kainuu.fi/tiedotteet',
   '21': 'https://lapha.fi/ajankohtaista',
   '90': 'https://www.hel.fi/fi/uutiset',
+  '91': 'https://www.ahs.ax/nyheter',
 };
 
 const normalizeText = (value: string) => value
@@ -382,6 +384,62 @@ const regionalServiceAreas: RegionalServiceArea[] = [
         group: 'Julkinen liikenne',
         sourceNote: 'Matkahuollon Keski-Suomen lipputuotteet vahvistavat kuntarajat ylittävät yhteysvälit Konnevesi-Äänekoski, Pihtipudas-Viitasaari, Kannonkoski-Saarijärvi ja Luhanka-Joutsa.',
         verifiedAt: '2026-07-09',
+      },
+    },
+  },
+  {
+    id: 'tillgren-kinnula-kivijarvi-region',
+    name: 'Tillgren Lines Kivijärvi-Kinnula',
+    municipalities: ['kinnula', 'kivijärvi'],
+    services: {
+      publicTransport: {
+        name: 'Tillgren Lines Kivijärvi-Kinnula',
+        url: 'https://www.tillgrenlines.fi/linjaliikenne/',
+        group: 'Julkinen liikenne',
+        sourceNote: 'Tillgren Linesin linjaliikennesivu kertoo Kivijärveltä Kinnulaan ajettavista vuoroista ja siitä, että Kinnulaan suuntautuvia vuoroja voi käyttää kuka tahansa kyytiä tarvitseva. Kinnulan koulukuljetussivu vahvistaa reitin 7.8.2025 alkaen.',
+        verifiedAt: '2026-07-10',
+      },
+    },
+  },
+  {
+    id: 'onnibus-kyyjarvi-region',
+    name: 'OnniBus Kyyjärvi',
+    municipalities: ['kyyjärvi'],
+    services: {
+      publicTransport: {
+        name: 'OnniBus Kyyjärvi',
+        url: 'https://www.onnibus.com/kyyjarvi-kauppakeskus-paletti',
+        group: 'Julkinen liikenne',
+        sourceNote: 'OnniBusin pysäkkisivu nimeää Kyyjärven kauppakeskus Paletin pysäkiksi ja OnniBusin Kyyjärvi-reittisivu kuvaa Helsinki-Kyyjärvi-yhteyden.',
+        verifiedAt: '2026-07-10',
+      },
+    },
+  },
+  {
+    id: 'lamminmaki-kihnio-region',
+    name: 'A. Lamminmäki Kihniö-Parkano',
+    municipalities: ['kihniö'],
+    services: {
+      publicTransport: {
+        name: 'A. Lamminmäki Kihniö-Parkano',
+        url: 'https://www.matkahuolto.fi/matkustajat/lamminmaen-liput-kankaanpaa-parkano',
+        group: 'Julkinen liikenne',
+        sourceNote: 'Matkahuollon Lamminmäen lippusivu vahvistaa Parkano-Kihniö-kausilipun ja sen, että sarjalipun kelpoisuusalueeseen kuuluu Kihniö ja liput käyvät A. Lamminmäki Oy:n vuoroilla.',
+        verifiedAt: '2026-07-10',
+      },
+    },
+  },
+  {
+    id: 'lansilinjat-jamijarvi-region',
+    name: 'Länsilinjat Jämijärvi',
+    municipalities: ['jämijärvi'],
+    services: {
+      publicTransport: {
+        name: 'Länsilinjat Jämijärvi',
+        url: 'https://lansilinjat.fi/aikataulut-ja-hinnat/',
+        group: 'Julkinen liikenne',
+        sourceNote: 'Länsilinjojen aikataulusivu ohjaa ajantasaisiin aikatauluihin ja kesän 22.6.-4.8.2026 aikataulu listaa Jämijärven pysäkit Tampere-Ikaalinen-Kankaanpää-yhteydellä molempiin suuntiin.',
+        verifiedAt: '2026-07-10',
       },
     },
   },

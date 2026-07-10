@@ -1,7 +1,83 @@
 # Paikallisuutiset ilman RSS-syötettä
 
-Löydettyjä paikallislehtien RSS-/feed-linkkejä: 68
-Kuntia ilman paikallislehtien RSS-/feed-löydöstä: 295
+Kuntiin liitettyjä paikallislehtien RSS-/feed-linkkejä: 45
+Kunnille katettuja paikallisuutisten RSS-kuntia: 44
+Löydettyjä uniikkeja RSS-/feed-osoitteita: 66
+Kuntia ilman paikallislehtien RSS-/feed-löydöstä: 264
+
+## Löydetyt syötteet
+- Akaa: Akaan Seutu - https://akaanseutu.fi/feed/
+- (ei kuntamäppäystä): Annonsbladet - https://annonsbladet.fi/feed/
+- (ei kuntamäppäystä): Auranmaan Viikkolehti - https://www.avl.fi/feed/
+- Haapavesi: Haapavesi (lehti) - https://www.haapavesi-lehti.fi/feed
+- Heinävesi: Heinäveden Lehti - https://www.heinavedenlehti.fi/feed/rss
+- Hämeenkyrö: Hämeenkyrön Sanomat - https://hameenkyronsanomat.fi/feed/
+- Ilmajoki: Ilmajoki-lehti - https://www.ilmajoki-lehti.fi/feed/
+- (ei kuntamäppäystä): Inarilainen - https://www.inarilainen.fi/feed
+- (ei kuntamäppäystä): Jaakkiman Sanomat - http://www.jaakkimansanomat.fi/feed/
+- (ei kuntamäppäystä): Joutseno (sanomalehti) - https://www.joutsenolehti.fi/feed/rss
+- Juva: Juvan Lehti - https://www.juvanlehti.fi/feed/rss
+- (ei kuntamäppäystä): Kaakonkulma (lehti) - https://www.kaakonkulma.fi/feed/rss
+- Kaarina: Kaarina-lehti - https://www.kaarina-lehti.fi/feed/
+- Kaarina: Kunnallislehti Paimio-Sauvo-Kaarina - https://www.kuntsari.fi/feed/
+- Kalajoki: Kalajoen Seutu - https://kalajoenseutu.net/feed/
+- (ei kuntamäppäystä): Kalajokilaakso (lehti) - https://www.kalajokilaakso.fi/feed
+- Kangasala: Kangasalan Sanomat - https://kangasalansanomat.fi/feed/
+- Kangasniemi: Kangasniemen Kunnallislehti - https://www.kangasniemenlehti.fi/feed/rss
+- Karkkila: Karkkilan Tienoo - https://www.karkkilalainen.fi/feed/rss
+- Keitele: Pielavesi-Keitele - https://www.pielavesi-keitele.fi/feed/rss
+- (ei kuntamäppäystä): Keski-Häme - https://www.keski-hame.fi/feed/rss
+- (ei kuntamäppäystä): Keskilaakso - https://www.keskilaakso.fi/feed/rss
+- Kiuruvesi: Kiuruvesi-lehti - https://kiuruvesilehti.fi/feed/
+- (ei kuntamäppäystä): Koillis-Savo (lehti) - https://www.koillis-savo.fi/feed/rss
+- Kokemäki: Kokemäkeläinen - http://kokemakelainen.net/feed/
+- Konnevesi: Laukaa-Konnevesi - https://www.laukaa-konnevesi.fi/feed/rss
+- (ei kuntamäppäystä): Kotiseutu-uutiset - https://kotiseutu-uutiset.com/feed/
+- Kuhmo: Kuhmolainen - https://www.kuhmolainen.fi/feed
+- Laitila: Laitilan Sanomat - https://www.laitilansanomat.fi/feed/
+- Laukaa: Laukaa-Konnevesi - https://www.laukaa-konnevesi.fi/feed/rss
+- Lempäälä: Lempäälän-Vesilahden Sanomat - https://lvs.fi/feed/
+- (ei kuntamäppäystä): Lestijoki (lehti) - https://www.lestijoki.fi/feed
+- Lieksa: Lieksan Lehti - https://www.lieksanlehti.fi/feed/rss
+- Loimaa: Loimaan Lehti - https://www.loimaanlehti.fi/feed/
+- Loppi: Lopen Lehti - https://www.lopenlehti.fi/feed/rss
+- Loviisa: Loviisan Sanomat - https://www.loviisansanomat.fi/feed/rss
+- (ei kuntamäppäystä): Meän Tornionlaakso - https://www.meantornionlaakso.fi/feed
+- Nivala: Nivala (lehti) - https://www.nivala-lehti.fi/feed
+- (ei kuntamäppäystä): Nya Östis - https://www.nyaostis.fi/feed/
+- Orivesi: Oriveden Sanomat - https://orivedensanomat.fi/feed/
+- Outokumpu: Outokummun Seutu - https://www.outokummunseutu.fi/feed/rss
+- (ei kuntamäppäystä): Paikallislehti Sisä-Savo - https://www.sisa-savolehti.fi/feed/rss
+- Paimio: Kunnallislehti Paimio-Sauvo-Kaarina - https://www.kuntsari.fi/feed/
+- Parainen: Pargas Kungörelser - Paraisten Kuulutukset - https://www.pku.fi/feed/
+- Parikkala: Parikkalan-Rautjärven Sanomat - https://www.prsanomat.fi/feed/rss
+- (ei kuntamäppäystä): Perhonjokilaakso - https://www.perhonjokilaakso.fi/feed
+- (ei kuntamäppäystä): Perniönseudun Lehti - https://www.pernionseudunlehti.fi/feed/rss
+- Pielavesi: Pielavesi-Keitele - https://www.pielavesi-keitele.fi/feed/rss
+- Pietarsaari: Pietarsaaren Sanomat - https://www.pietarsaarensanomat.fi/feed
+- Pirkkala: Pirkkalainen - https://pirkkalainen.fi/feed/
+- (ei kuntamäppäystä): Pitäjäläinen - https://www.pitajalainen.fi/feed/rss
+- (ei kuntamäppäystä): Pitäjänuutiset - https://www.pitajanuutiset.fi/feed/rss
+- (ei kuntamäppäystä): Pogostan Sanomat - https://www.pogostansanomat.fi/feed/rss
+- (ei kuntamäppäystä): Puruvesi (lehti) - https://www.puruvesi.net/feed/rss
+- Pyhäjärvi: Pyhäjärven Sanomat - https://pyhajarvensanomat.fi/feed/
+- (ei kuntamäppäystä): Rantapohja - https://www.rantapohja.fi/feed/
+- Rautjärvi: Parikkalan-Rautjärven Sanomat - https://www.prsanomat.fi/feed/rss
+- (ei kuntamäppäystä): Sampo (lehti) - https://www.sampolehti.fi/feed/rss
+- Sauvo: Kunnallislehti Paimio-Sauvo-Kaarina - https://www.kuntsari.fi/feed/
+- (ei kuntamäppäystä): Soisalon Seutu - https://www.soisalonseutu.fi/feed/rss
+- Somero: Somero (lehti) - https://www.somerolehti.fi/feed/
+- Sotkamo: Sotkamo-lehti - https://www.sotkamolehti.fi/feed
+- Sulkava: Sulkava-lehti - https://sulkavalehti.fi/feed/
+- (ei kuntamäppäystä): Sydän-Hämeen Lehti - https://shl.fi/feed/
+- Urjala: Urjalan Sanomat - https://urjalansanomat.fi/feed/
+- Uusikaupunki: Uudenkaupungin Sanomat - https://www.uudenkaupunginsanomat.fi/feed/
+- (ei kuntamäppäystä): Uutis-Jousi - https://www.uutis-jousi.fi/feed/rss
+- Varkaus: Warkauden Lehti - https://www.warkaudenlehti.fi/feed/rss
+- Vesilahti: Lempäälän-Vesilahden Sanomat - https://lvs.fi/feed/
+- Viitasaari: Viitasaaren Seutu - https://www.viitasaarenseutu.fi/feed/rss
+- (ei kuntamäppäystä): Ylä-Kainuu - https://www.ylakainuu.fi/feed
+- Ylöjärvi: Ylöjärven Uutiset - https://ylojarvenuutiset.fi/feed/
 
 ## Kunnat
 - Alajärvi
@@ -34,7 +110,6 @@ Kuntia ilman paikallislehtien RSS-/feed-löydöstä: 295
 - Hattula
 - Hausjärvi
 - Heinola
-- Heinävesi
 - Helsinki
 - Hirvensalmi
 - Hollola
@@ -42,13 +117,11 @@ Kuntia ilman paikallislehtien RSS-/feed-löydöstä: 295
 - Humppila
 - Hyrynsalmi
 - Hyvinkää
-- Hämeenkyrö
 - Hämeenlinna
 - Ii
 - Iisalmi
 - Iitti
 - Ikaalinen
-- Ilmajoki
 - Ilomantsi
 - Imatra
 - Inari
@@ -67,11 +140,8 @@ Kuntia ilman paikallislehtien RSS-/feed-löydöstä: 295
 - Jämijärvi
 - Jämsä
 - Järvenpää
-- Kaarina
 - Kaavi
 - Kajaani
-- Kalajoki
-- Kangasniemi
 - Kankaanpää
 - Kannonkoski
 - Kannus
@@ -83,7 +153,6 @@ Kuntia ilman paikallislehtien RSS-/feed-löydöstä: 295
 - Kauhava
 - Kauniainen
 - Kaustinen
-- Keitele
 - Kemi
 - Kemijärvi
 - Keminmaa
@@ -96,12 +165,9 @@ Kuntia ilman paikallislehtien RSS-/feed-löydöstä: 295
 - Kirkkonummi
 - Kitee
 - Kittilä
-- Kiuruvesi
 - Kivijärvi
-- Kokemäki
 - Kokkola
 - Kolari
-- Konnevesi
 - Kontiolahti
 - Korsnäs
 - Koski Tl
@@ -109,7 +175,6 @@ Kuntia ilman paikallislehtien RSS-/feed-löydöstä: 295
 - Kouvola
 - Kristiinankaupunki
 - Kruunupyy
-- Kuhmo
 - Kuhmoinen
 - Kumlinge
 - Kuopio
@@ -128,17 +193,14 @@ Kuntia ilman paikallislehtien RSS-/feed-löydöstä: 295
 - Lappajärvi
 - Lappeenranta
 - Lapua
-- Laukaa
 - Lemi
 - Lemland
-- Lempäälä
 - Leppävirta
 - Lestijärvi
 - Lieto
 - Liminka
 - Liperi
 - Lohja
-- Loppi
 - Luhanka
 - Lumijoki
 - Lumparland
@@ -171,15 +233,10 @@ Kuntia ilman paikallislehtien RSS-/feed-löydöstä: 295
 - Närpiö
 - Orimattila
 - Oripää
-- Orivesi
 - Oulainen
 - Oulu
-- Outokumpu
 - Padasjoki
-- Paimio
 - Paltamo
-- Parainen
-- Parikkala
 - Parkano
 - Pedersören kunta
 - Pelkosenniemi
@@ -187,8 +244,6 @@ Kuntia ilman paikallislehtien RSS-/feed-löydöstä: 295
 - Perho
 - Petäjävesi
 - Pieksämäki
-- Pielavesi
-- Pietarsaari
 - Pihtipudas
 - Polvijärvi
 - Pomarkku
@@ -203,7 +258,6 @@ Kuntia ilman paikallislehtien RSS-/feed-löydöstä: 295
 - Puumala
 - Pyhtää
 - Pyhäjoki
-- Pyhäjärvi
 - Pyhäntä
 - Pyhäranta
 - Pälkäne
@@ -216,7 +270,6 @@ Kuntia ilman paikallislehtien RSS-/feed-löydöstä: 295
 - Rauma
 - Rautalampi
 - Rautavaara
-- Rautjärvi
 - Reisjärvi
 - Riihimäki
 - Ristijärvi
@@ -230,7 +283,6 @@ Kuntia ilman paikallislehtien RSS-/feed-löydöstä: 295
 - Salo
 - Saltvik
 - Sastamala
-- Sauvo
 - Savitaipale
 - Savonlinna
 - Savukoski
@@ -246,9 +298,7 @@ Kuntia ilman paikallislehtien RSS-/feed-löydöstä: 295
 - Sodankylä
 - Soini
 - Sonkajärvi
-- Sotkamo
 - Sottunga
-- Sulkava
 - Sund
 - Suomussalmi
 - Suonenjoki
@@ -275,19 +325,15 @@ Kuntia ilman paikallislehtien RSS-/feed-löydöstä: 295
 - Utsjoki
 - Uurainen
 - Uusikaarlepyy
-- Uusikaupunki
 - Vaala
 - Vaasa
 - Valkeakoski
 - Vantaa
-- Varkaus
 - Vehmaa
 - Vesanto
-- Vesilahti
 - Veteli
 - Vieremä
 - Vihti
-- Viitasaari
 - Vimpeli
 - Virolahti
 - Virrat
@@ -295,7 +341,6 @@ Kuntia ilman paikallislehtien RSS-/feed-löydöstä: 295
 - Vöyri
 - Ylitornio
 - Ylivieska
-- Ylöjärvi
 - Ypäjä
 - Ähtäri
 - Äänekoski

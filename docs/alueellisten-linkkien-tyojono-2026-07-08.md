@@ -2,15 +2,19 @@
 
 Tämä työjono perustuu komennolla `npm run regional-coverage` päivitettyyn raporttiin `docs/alueelliset-linkit-puuttuvat-kunnat.md` ja koneelliseen tiedostoon `outputs/regional-link-coverage.json`.
 
-## Kattavuus 9.7.2026
+## Kattavuus 10.7.2026
 
 | Kokonaisuus | Tilanne |
 | --- | ---: |
 | Kuntia yhteensä | 308 |
-| Julkinen liikenne valtakunnallisen fallbackin varassa | 89 |
-| Palveluliikenteen oma linkki puuttuu | 124 |
-| Paikallisuutisten RSS-syöte puuttuu | 295 |
-| Sekä julkinen liikenne että palveluliikenne puuttuvat | 6 |
+| Julkinen liikenne valtakunnallisen fallbackin varassa | 84 |
+| Palveluliikenteen oma linkki puuttuu | 123 |
+| Paikallisuutisten RSS-syöte puuttuu | 264 |
+| Sekä julkinen liikenne että palveluliikenne puuttuvat | 0 |
+| Kirjastojen alueellinen linkitys | 35 kirjastoaluetta, 308/308 kuntamäppäystä |
+| Museolinkit | 44 palveluntarjoajaa, puuttuvien kuntien raportti tekemättä |
+| Potilasyhdistykset | 107 palveluntarjoajaa, pääosin valtakunnallisia tai diagnoosikohtaisia |
+| Eläkeyhdistykset | 14 palveluntarjoajaa, paikallisyhdistysten kattavuusraportti tekemättä |
 
 ## Toteutettu 9.7.2026
 
@@ -211,15 +215,81 @@ Samassa aallossa lisättiin vahvistetut palveluliikenteen linkit:
 
 Tämän aallon jälkeen molempien liikennelinkkien puutelistalle jäivät enää Kinnula, Kivijärvi, Kyyjärvi, Multia, Kihniö ja Jämijärvi. Lemi, Luumäki, Taipalsaari, Karijoki, Teuva, Satakunnan jatkokunnat, Kainuun kunnat, Länsi-Uusimaa, Askola, Pukkila, Kotka, Pyhtää ja Mäntsälä jäivät palveluliikenteen jatkotarkistukseen, koska nykyistä selkeää käyttäjäsivua ei löytynyt.
 
+## Toteutettu 10.7.2026
+
+Kriittinen kuuden kunnan kori käsiteltiin loppuun. Kattavuusraportin `both missing` -leikkaus tyhjeni: julkisen liikenteen fallback väheni 89 -> 84 ja palveluliikenteen puute 124 -> 123.
+
+Lisättiin vahvistetut julkisen liikenteen linkit:
+
+| Kunnat | Linkki | Peruste |
+| --- | --- | --- |
+| Kinnula, Kivijärvi | Tillgren Lines Kivijärvi-Kinnula | Tillgren Linesin linjaliikennesivu listaa Kivijärvi-Kinnula-vuorot ja kertoo, että Kinnulaan suuntautuvia vuoroja voi käyttää kuka tahansa kyytiä tarvitseva. Kinnulan koulukuljetussivu vahvistaa reitin 7.8.2025 alkaen. |
+| Kyyjärvi | OnniBus Kyyjärvi | OnniBusin pysäkkisivu nimeää Kyyjärven kauppakeskus Paletin pysäkiksi ja Kyyjärven reittisivu kuvaa Helsinki-Kyyjärvi-yhteyden. |
+| Kihniö | A. Lamminmäki Kihniö-Parkano | Matkahuollon Lamminmäen lippusivu vahvistaa Parkano-Kihniö-kausilipun sekä Kihniön kuulumisen A. Lamminmäki Oy:n sarjalipun kelpoisuusalueeseen. |
+| Jämijärvi | Länsilinjat Jämijärvi | Länsilinjojen aikataulusivu ohjaa ajantasaisiin aikatauluihin ja kesän 22.6.-4.8.2026 aikataulu listaa Jämijärven pysäkit Tampere-Ikaalinen-Kankaanpää-yhteydellä molempiin suuntiin. |
+
+Lisättiin vahvistettu palveluliikenteen linkki:
+
+| Kunnat | Linkki | Peruste |
+| --- | --- | --- |
+| Multia | Multia asiointiliikenne | Multian kunnan sivu kertoo keskiviikkoisin ympäri vuoden ajettavasta Isojärven reitin asiointiliikenteestä sekä torstain Multia-Keuruu-asiointiliikenteestä, tilausohjeista ja hinnoista. |
+
+Lisättiin lisäksi puuttuneet hyvinvointialueiden tiedotelinkit:
+
+| Alue | Linkki | Peruste |
+| --- | --- | --- |
+| Kainuu | Kainuun hyvinvointialueen tiedotteet | Virallinen hyvinvointialueen tiedotesivu. |
+| Ahvenanmaa | Ålands hälso- och sjukvård, nyheter | Virallinen ÅHS:n uutiset-sivu. |
+
+Ei lisätty:
+
+- Kinnulan, Kivijärven ja Kyyjärven palveluliikennettä: löytyi koulukuljetus-, pöytäkirja- tai vanhoja hankelähteitä, mutta ei nykyistä käyttäjälle hyödyllistä palvelu-, asiointi- tai kutsuliikennesivua.
+- Kihniön palveluliikennettä: talousarvio- ja tilinpäätösviitteet eivät riittäneet käyttäjälinkiksi.
+- Jämijärven palveluliikennettä: nykyistä virallista palveluliikennesivua ei löytynyt.
+- Multian julkista liikennettä: varma lähde löytyi asiointiliikenteelle, mutta ei säännölliselle julkisen liikenteen linkille.
+
+Paikallisuutisten RSS-syötteiden aloituserässä tiukennettiin `scripts/update-newspaper-feeds.mjs`-hakua niin, että tekniset XML-tiedostot, MediaWiki/Wikimedia-osoitteet ja eri domainiin ohjautuvat vanhat lehtilinkit eivät päädy uutissyötteiksi. Lisäksi lisättiin varmistettu manuaalimäppäys selkeille paikallislehdille ja monen kunnan paikallislehdille. Coverage nousi 13 -> 44 RSS-kuntaan, ja puuttuvien kuntien määrä laski 295 -> 264.
+
 ## Jäljellä oleva täyttöaalto
 
-Aloita alueilta, joissa sekä julkisen liikenteen seudullinen/oma linkki että palveluliikenteen oma linkki puuttuvat monesta kunnasta.
+Aloita jatkossa palveluliikenteen puutteista. Kriittistä listaa, jossa sekä julkisen liikenteen seudullinen/oma linkki että palveluliikenteen oma linkki puuttuvat, ei enää ole.
 
-| Prioriteetti | Alue | Molemmat liikennelinkit puuttuvat | Ensimmäiset kunnat |
-| ---: | --- | ---: | --- |
-| 1 | Keski-Suomen hyvinvointialue | 4 | Kinnula, Kivijärvi, Kyyjärvi, Multia |
-| 2 | Pirkanmaan hyvinvointialue | 1 | Kihniö |
-| 3 | Satakunnan hyvinvointialue | 1 | Jämijärvi |
+| Prioriteetti | Alue | Ensimmäiset palveluliikenteen puutteet |
+| ---: | --- | --- |
+| 1 | Keski-Suomen hyvinvointialue | Hankasalmi, Kannonkoski, Kinnula, Kivijärvi, Konnevesi, Kyyjärvi, Petäjävesi, Saarijärvi, Uurainen |
+| 2 | Pohjois-Pohjanmaan hyvinvointialue | Haapajärvi, Merijärvi, Pyhäjoki, Reisjärvi |
+| 3 | Keski-Pohjanmaan hyvinvointialue | Halsua, Kannus, Kaustinen, Lestijärvi, Perho, Toholampi, Veteli |
+| 4 | Varsinais-Suomen hyvinvointialue | Aura, Kemiönsaari, Koski Tl, Kustavi, Marttila, Nousiainen, Oripää, Vehmaa |
+
+## Muut alueelliset linkkikorit
+
+Liikenne- ja RSS-korien rinnalla täydennetään myös kirjastoja, museoita, eläkeyhdistyksiä ja potilasyhdistyksiä. Näissä ei pidä olettaa, että jokaiselle kunnalle löytyy oma paikallinen sivu. Hyväksy alueellinen tai valtakunnallinen linkki, kun sen kattavuus on lähteestä selvä.
+
+| Kori | Nykytila 10.7.2026 | Seuraava työ |
+| --- | --- | --- |
+| Kirjastot | `regionalLibraryAreas` kattaa 35 kirjastoaluetta ja kaikki 308 kuntaa. `LOCAL_LINK_STATS.localLibraries` ei ole kuntakattavuuden mittari. | Tarkista HTTPS-osoitteet, vanhentuneet kirjastoverkot ja mahdolliset kuntakohtaiset poikkeukset. Jos kirjastoalue muuttuu, päivitä kuntamäppäys ja aja coverage uudelleen. |
+| Museot | `MUSEUM_LINKS` sisältää 44 valtakunnallista, alueellista ja paikallista palveluntarjoajaa. Puuttuvien kuntien listaa ei vielä generoida. | Tee seuraavaksi kattavuusraportti `municipality`-, `municipalities`- ja `area`-metadatan pohjalta. Lisää vain museon oma sivu, kunnan kulttuuri-/museosivu, Museot.fi-sivu tai alueellisen vastuumuseon sivu. |
+| Eläkeyhdistykset | `SENIOR_ASSOCIATION_LINKS` sisältää 9 provideria ja pikavalinta lisää 5 kohdennettua provideria. Paikallisyhdistysten kattavuutta ei vielä raportoida. | Käy läpi Eläkeliiton, Kansallisen senioriliiton, Eläkeläiset ry:n ja Svenska pensionärsförbundetin piiri- ja paikallisyhdistyshaut. Lisää paikallisyhdistys vain, kun kunta tai toiminta-alue käy ilmi virallisesta lähteestä. |
+| Potilasyhdistykset | `PATIENT_ASSOCIATION_LINKS` sisältää 107 provideria, joista suuri osa on valtakunnallisia, diagnoosikohtaisia tai alueellisia. | Käsittele potilasyhdistykset aihe- ja aluepalveluina, ei jokaiselle kunnalle pakollisena linkkinä. Lisää alueellisia muisti-, vammais-, mielenterveys- ja diagnoosiyhdistyksiä, kun toiminta-alue on lähteessä selvä. |
+| Paikallisuutiset | `localNewspaperFeeds.ts` kattaa 45 riviä ja 44 kuntaa. Puuttuvia RSS-kuntia on 264. | Jos kunnalle ei löydy paikallislehden RSS/Atom-syötettä, etsi kunnan uutis- tai tiedotesyöte. Jos sitäkään ei ole, hyvinvointialueen uutiset voivat olla hyväksyttävä alueellinen fallback sosiaali- ja terveyspalvelujen uutisiin. |
+
+### Paikallisuutisten fallback-järjestys
+
+1. Paikallislehden tai paikallislehtiperheen RSS/Atom-syöte, kun kunta kuuluu selvästi lehden alueeseen.
+2. Kunnan oman sivuston uutis-, ajankohtaista- tai tiedotesyöte, jos RSS/Atom löytyy.
+3. Kunnan uutis- tai ajankohtaista-sivu ilman syötettä vain tavallisena uutislinkkinä, ei `rssFeeds`-rivinä.
+4. Hyvinvointialueen uutiset tai tiedotteet, kun paikallinen uutisfeed puuttuu ja sisältö on asukkaalle hyödyllinen fallback.
+5. Maakunta- tai seutulehden paikallissivu vain, jos sivu tai syöte rajautuu uskottavasti kunnan/seudun uutisiin.
+
+Paikallisuutisissa "puuttuu" ei aina tarkoita data- tai hakuvikaa. Kirjaa hakuerän muistiinpanoihin, jos kunnalle ei ole löytynyt sopivaa paikallislehteä tai feediä, ja käytä hyväksyttyä fallbackia sen sijaan että lisäät epäselvän lähteen.
+
+### Tietomallin muistilista
+
+- Kirjastojen alueellinen kattavuus kuuluu `regionalLibraryAreas`-määrittelyyn.
+- Museon, eläkeyhdistyksen tai potilasyhdistyksen paikallinen osuma tarvitsee `municipality`-, `municipalities`- tai `area`-metadatan, jotta kuntakohtainen suodatus toimii.
+- Varsinaiset RSS/Atom-syötteet lisätään `localNewspaperFeeds.ts`-tiedostoon tai kunnan `rssFeeds`-kenttään. Tavallista uutis- tai tiedotesivua ei merkitä RSS-syötteeksi.
+- Hyvinvointialueen uutiset pidetään alueellisena fallbackina, ei kunnan omana paikallismediana.
+- Jokaisesta uudesta linkistä kirjataan lähde, kattavuus, linkkityyppi ja tarkistuspäivä. Ei lähdettä, ei linkkiä.
 
 ## Lähteiden tarkistusjärjestys
 
@@ -230,6 +300,8 @@ Käytä linkin hyväksymiseen tätä järjestystä:
 3. Hyvinvointialueen tai maakunnallisen palvelun virallinen sivu, jos palvelu aidosti kattaa kunnan.
 4. Kunnan sivulta löytyvä ohjaus naapurikunnan tai seudun palveluun.
 5. Palveluntuottajan oma sivu, jos se nimeää kunnan tai alueen selvästi.
+6. Aihekohtaiset korit: kirjastoverkon tai kunnan kirjastosivu, Museot.fi tai museon oma sivu, eläkejärjestön virallinen yhdistyshaku, potilasyhdistyksen oma tai kattojärjestön sivu.
+7. Uutiset: paikallislehden syöte ensin, sitten kunnan oma syöte, sen jälkeen kunnan uutislinkki tai hyvinvointialueen uutiset fallbackina.
 
 Älä lisää linkkiä pelkän hakutuloksen, vanhan uutisen, arkistosivun tai epäselvän yrityshakemiston perusteella.
 
@@ -260,8 +332,9 @@ Yhden ylläpitökerran realistinen tavoite on yksi hyvinvointialue tai 5-10 kunt
 3. Lisää vain vahvistetut linkit.
 4. Aja `npm run regional-coverage`.
 5. Kirjaa lähde ja tarkistuspäivä.
+6. Jos työ koskee kirjastoja, museoita, eläke- tai potilasyhdistyksiä tai uutisfallbackeja, kirjaa myös kattavuustyyppi: oma, alueellinen, valtakunnallinen tai fallback.
 
-## Tarkistuslähteet 9.7.2026
+## Tarkistuslähteet 9.-10.7.2026
 
 - Porin joukkoliikenne, Seutu+: `https://pjl.pori.fi/etusivu/liput-ja-hinnat/seutu/`
 - Ulvilan joukkoliikennesivu: `https://www.ulvila.fi/palvelut-ja-asuminen/tekniset-palvelut/kadut-ja-liikenne/joukkoliikenne/`
@@ -381,3 +454,13 @@ Yhden ylläpitökerran realistinen tavoite on yksi hyvinvointialue tai 5-10 kunt
 - Kuhmoisten julkinen liikenne ja asiointiliikenne: `https://www.kuhmoinen.fi/asuminen%20ja%20ymp%C3%A4rist%C3%B6/kadut%20ja%20liikenne/julkinen%20liikenne/`
 - Punkalaitumen joukkoliikennepalvelut: `https://www.punkalaidun.fi/sivu.tmpl?sivu_id=9364`
 - Mäntsälän joukkoliikenne: `https://www.mantsala.fi/asuminen-ja-ymparisto/liikenne-ja-kadut/joukkoliikenne/`
+- Tillgren Linesin linjaliikenne: `https://www.tillgrenlines.fi/linjaliikenne/`
+- Kinnulan koulukuljetukset: `https://www.kinnula.fi/kasvatus-ja-koulutus/perusopetus.html`
+- OnniBus Kyyjärvi, kauppakeskus Paletti: `https://www.onnibus.com/kyyjarvi-kauppakeskus-paletti`
+- OnniBus Helsinki-Kyyjärvi: `https://www.onnibus.com/matkusta-helsingista-kyyjarvelle`
+- Matkahuollon Lamminmäen liput: `https://www.matkahuolto.fi/matkustajat/lamminmaen-liput-kankaanpaa-parkano`
+- Länsilinjojen aikataulut ja hinnat: `https://lansilinjat.fi/aikataulut-ja-hinnat/`
+- Länsilinjat Tampere-Ikaalinen-Kankaanpää 22.6.-4.8.2026: `https://lansilinjat.fi/wp-content/uploads/22.6.-4.8.2026.pdf`
+- Multian kunta, asiointiliikenne: `https://multia.fi/`
+- Kainuun hyvinvointialueen tiedotteet: `https://hyvinvointialue.kainuu.fi/tiedotteet`
+- Ålands hälso- och sjukvård, nyheter: `https://www.ahs.ax/nyheter`

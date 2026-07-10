@@ -775,6 +775,15 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
     evidence: "Joukkoliikenne - Muonion kunta; termit: asiointiliikenne; kutsuliikenne",
   },
   {
+    municipality: "multia",
+    provider: {
+      name: "Multia asiointiliikenne",
+      url: "https://multia.fi/",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Asiointiliikenne Multian kylät - keskusta - Multian kunta; ympäri vuoden keskiviikkoisin ajettava Isojärven reitin asiointiliikenne sekä torstain Multia-Keuruu-asiointiliikenne; tilausohjeet ja hinnat; tarkistettu 2026-07-10",
+  },
+  {
     municipality: "muurame",
     provider: {
       name: "Muurame palveluliikenne",

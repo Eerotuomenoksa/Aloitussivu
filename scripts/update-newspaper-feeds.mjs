@@ -11,9 +11,124 @@ const MISSING_DOC = path.join(DOCS_DIR, 'paikallisuutiset-puuttuvat-kunnat.md');
 const SCAN_CONCURRENCY = 6;
 const MANUAL_NEWSPAPER_FEEDS = [
   {
+    municipality: 'Heinävesi',
+    name: 'Heinäveden Lehti',
+    url: 'https://www.heinavedenlehti.fi/feed/rss',
+  },
+  {
+    municipality: 'Kangasniemi',
+    name: 'Kangasniemen Kunnallislehti',
+    url: 'https://www.kangasniemenlehti.fi/feed/rss',
+  },
+  {
+    municipality: 'Kalajoki',
+    name: 'Kalajoen Seutu',
+    url: 'https://kalajoenseutu.net/feed/',
+  },
+  {
+    municipality: 'Karkkila',
+    name: 'Karkkilan Tienoo',
+    url: 'https://www.karkkilalainen.fi/feed/rss',
+  },
+  {
+    municipality: 'Keitele',
+    name: 'Pielavesi-Keitele',
+    url: 'https://www.pielavesi-keitele.fi/feed/rss',
+  },
+  {
+    municipality: 'Kokemäki',
+    name: 'Kokemäkeläinen',
+    url: 'http://kokemakelainen.net/feed/',
+  },
+  {
+    municipality: 'Kuhmo',
+    name: 'Kuhmolainen',
+    url: 'https://www.kuhmolainen.fi/feed',
+  },
+  {
+    municipality: 'Laukaa',
+    name: 'Laukaa-Konnevesi',
+    url: 'https://www.laukaa-konnevesi.fi/feed/rss',
+  },
+  {
+    municipality: 'Loppi',
+    name: 'Lopen Lehti',
+    url: 'https://www.lopenlehti.fi/feed/rss',
+  },
+  {
+    municipality: 'Loviisa',
+    name: 'Loviisan Sanomat',
+    url: 'https://www.loviisansanomat.fi/feed/rss',
+  },
+  {
+    municipality: 'Orivesi',
+    name: 'Oriveden Sanomat',
+    url: 'https://orivedensanomat.fi/feed/',
+  },
+  {
+    municipality: 'Outokumpu',
+    name: 'Outokummun Seutu',
+    url: 'https://www.outokummunseutu.fi/feed/rss',
+  },
+  {
+    municipality: 'Paimio',
+    name: 'Kunnallislehti Paimio-Sauvo-Kaarina',
+    url: 'https://www.kuntsari.fi/feed/',
+  },
+  {
+    municipality: 'Parainen',
+    name: 'Pargas Kungörelser - Paraisten Kuulutukset',
+    url: 'https://www.pku.fi/feed/',
+  },
+  {
+    municipality: 'Pietarsaari',
+    name: 'Pietarsaaren Sanomat',
+    url: 'https://www.pietarsaarensanomat.fi/feed',
+  },
+  {
     municipality: 'Pirkkala',
     name: 'Pirkkalainen',
     url: 'https://pirkkalainen.fi/feed/',
+  },
+  {
+    municipality: 'Pyhäjärvi',
+    name: 'Pyhäjärven Sanomat',
+    url: 'https://pyhajarvensanomat.fi/feed/',
+  },
+  {
+    municipality: 'Rautjärvi',
+    name: 'Parikkalan-Rautjärven Sanomat',
+    url: 'https://www.prsanomat.fi/feed/rss',
+  },
+  {
+    municipality: 'Sauvo',
+    name: 'Kunnallislehti Paimio-Sauvo-Kaarina',
+    url: 'https://www.kuntsari.fi/feed/',
+  },
+  {
+    municipality: 'Uusikaupunki',
+    name: 'Uudenkaupungin Sanomat',
+    url: 'https://www.uudenkaupunginsanomat.fi/feed/',
+  },
+  {
+    municipality: 'Varkaus',
+    name: 'Warkauden Lehti',
+    url: 'https://www.warkaudenlehti.fi/feed/rss',
+  },
+  {
+    municipality: 'Vesilahti',
+    name: 'Lempäälän-Vesilahden Sanomat',
+    url: 'https://lvs.fi/feed/',
+  },
+  {
+    municipality: 'Viitasaari',
+    name: 'Viitasaaren Seutu',
+    url: 'https://www.viitasaarenseutu.fi/feed/rss',
+  },
+  {
+    municipality: 'Ylöjärvi',
+    name: 'Ylöjärven Uutiset',
+    url: 'https://ylojarvenuutiset.fi/feed/',
   },
 ];
 
@@ -42,7 +157,7 @@ const readTsArray = async (filePath) => {
 const normalizeText = (value) => value
   .trim()
   .toLocaleLowerCase('fi-FI')
-  .replace(/[.,;:!?()\[\]{}]/g, ' ')
+  .replace(/[.,;:!?()\[\]{}–—-]/g, ' ')
   .replace(/\s+/g, ' ')
   .trim();
 
@@ -89,7 +204,7 @@ const extractMunicipalities = (text) => {
 };
 
 const resolveMunicipality = (title, municipalities) => {
-  const haystack = ` ${normalizeText(title)} `;
+  const haystack = ` ${stripDiacritics(normalizeText(title))} `;
   const ordered = [...municipalities].sort((a, b) => b.length - a.length);
   for (const municipality of ordered) {
     const forms = getInflections(municipality);
@@ -106,14 +221,24 @@ const isCandidateUrl = (url) => {
   try {
     const parsed = new URL(cleanUrl(url));
     if (!['http:', 'https:'].includes(parsed.protocol)) return false;
-    if (['wikimedia.org', 'wikipedia.org', 'creativecommons.org', 'donate.wikimedia.org', 'web.archive.org', 'archive.org', 'tools.wmflabs.org', 'wikimediafoundation.org', 'kansalliskirjasto.fi'].some((host) => parsed.hostname.includes(host))) return false;
+    if (['mediawiki.org', 'wikimedia.org', 'wikipedia.org', 'creativecommons.org', 'donate.wikimedia.org', 'web.archive.org', 'archive.org', 'tools.wmflabs.org', 'wikimediafoundation.org', 'kansalliskirjasto.fi'].some((host) => parsed.hostname.includes(host))) return false;
     return true;
   } catch {
     return false;
   }
 };
 
+const comparableHost = (url) => {
+  try {
+    return new URL(url).hostname.toLocaleLowerCase('fi-FI').replace(/^www\./, '');
+  } catch {
+    return '';
+  }
+};
+
 const discoverFeedLinks = async (siteUrl) => {
+  if (!isCandidateUrl(siteUrl)) return [];
+
   const found = new Set();
   const candidates = new Set();
   const home = new URL(siteUrl);
@@ -142,13 +267,14 @@ const discoverFeedLinks = async (siteUrl) => {
   for (const candidate of candidates) {
     try {
       const absolute = new URL(cleanUrl(candidate), home).toString();
+      if (!isCandidateUrl(absolute)) continue;
       const response = await fetchWithTimeout(absolute, 7000);
       if (!response.ok) continue;
+      if (comparableHost(response.url) !== comparableHost(home.toString())) continue;
       const contentType = response.headers.get('content-type') ?? '';
       const text = await response.text();
-      const looksLikeFeed = /application\/(rss|atom)\+xml|text\/xml|application\/xml/i.test(contentType)
-        || /^\s*<\?(xml|xml-stylesheet)/i.test(text)
-        || /^\s*<(rss|feed|rdf:RDF)/i.test(text);
+      const looksLikeFeed = /application\/(rss|atom)\+xml/i.test(contentType)
+        || /^\s*(?:<\?xml[^>]*>\s*)?(?:<\?xml-stylesheet[^>]*>\s*)?<(rss|feed|rdf:RDF)\b/i.test(text);
       if (looksLikeFeed) {
         found.add(response.url);
       }
@@ -240,12 +366,23 @@ const main = async () => {
   const missingMunicipalities = [...new Set(
     municipalities.filter((municipality) => !feedsByMunicipality.has(municipality))
   )].sort((a, b) => a.localeCompare(b, 'fi-FI'));
+  const feedUrlsWithMunicipality = new Set(discovered.filter((item) => item.municipality).map((item) => item.feedUrl));
+  const displayedFeeds = discovered.filter((item) => item.municipality || !feedUrlsWithMunicipality.has(item.feedUrl));
+  const uniqueFeedUrlCount = new Set(discovered.map((item) => item.feedUrl)).size;
 
   const docLines = [
     '# Paikallisuutiset ilman RSS-syötettä',
     '',
-    `Löydettyjä paikallislehtien RSS-/feed-linkkejä: ${discovered.length}`,
+    `Kuntiin liitettyjä paikallislehtien RSS-/feed-linkkejä: ${feedEntries.length}`,
+    `Kunnille katettuja paikallisuutisten RSS-kuntia: ${feedsByMunicipality.size}`,
+    `Löydettyjä uniikkeja RSS-/feed-osoitteita: ${uniqueFeedUrlCount}`,
     `Kuntia ilman paikallislehtien RSS-/feed-löydöstä: ${missingMunicipalities.length}`,
+    '',
+    '## Löydetyt syötteet',
+    ...displayedFeeds
+      .slice()
+      .sort((a, b) => `${a.municipality || ''}${a.paper}`.localeCompare(`${b.municipality || ''}${b.paper}`, 'fi-FI'))
+      .map((item) => `- ${item.municipality || '(ei kuntamäppäystä)'}: ${item.paper} - ${item.feedUrl}`),
     '',
     '## Kunnat',
     ...missingMunicipalities.map((municipality) => `- ${municipality}`),

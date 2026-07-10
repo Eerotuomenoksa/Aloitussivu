@@ -1,19 +1,19 @@
 {
-  "generatedAt": "2026-07-09T16:33:36.620Z",
+  "generatedAt": "2026-07-10T05:21:19.325Z",
   "municipalityCount": 308,
   "counts": {
     "publicTransport": {
-      "ok-regional": 174,
-      "fallback-national": 89,
+      "ok-regional": 179,
+      "fallback-national": 84,
       "ok-own": 45
     },
     "serviceTransport": {
-      "ok-own": 184,
-      "missing": 124
+      "ok-own": 185,
+      "missing": 123
     },
     "localNewsFeed": {
-      "ok-own": 13,
-      "missing": 295
+      "ok-own": 44,
+      "missing": 264
     }
   },
   "municipalities": [
@@ -608,7 +608,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -752,7 +752,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -860,7 +860,7 @@
         "status": "missing"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -1158,9 +1158,9 @@
       "wellbeingAreaCode": "06",
       "wellbeingAreaName": "Satakunnan hyvinvointialue",
       "publicTransport": {
-        "status": "fallback-national",
-        "providerName": "Matkahuollon reittiopas",
-        "area": "Suomi"
+        "status": "ok-regional",
+        "providerName": "Länsilinjat Jämijärvi",
+        "area": "Länsilinjat Jämijärvi"
       },
       "serviceTransport": {
         "status": "missing"
@@ -1220,7 +1220,7 @@
         "status": "missing"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -1274,7 +1274,7 @@
         "status": "missing"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -1310,7 +1310,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -1544,7 +1544,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -1680,9 +1680,9 @@
       "wellbeingAreaCode": "08",
       "wellbeingAreaName": "Pirkanmaan hyvinvointialue",
       "publicTransport": {
-        "status": "fallback-national",
-        "providerName": "Matkahuollon reittiopas",
-        "area": "Suomi"
+        "status": "ok-regional",
+        "providerName": "A. Lamminmäki Kihniö-Parkano",
+        "area": "A. Lamminmäki Kihniö-Parkano"
       },
       "serviceTransport": {
         "status": "missing"
@@ -1698,9 +1698,9 @@
       "wellbeingAreaCode": "15",
       "wellbeingAreaName": "Keski-Suomen hyvinvointialue",
       "publicTransport": {
-        "status": "fallback-national",
-        "providerName": "Matkahuollon reittiopas",
-        "area": "Suomi"
+        "status": "ok-regional",
+        "providerName": "Tillgren Lines Kivijärvi-Kinnula",
+        "area": "Tillgren Lines Kivijärvi-Kinnula"
       },
       "serviceTransport": {
         "status": "missing"
@@ -1778,7 +1778,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -1788,9 +1788,9 @@
       "wellbeingAreaCode": "15",
       "wellbeingAreaName": "Keski-Suomen hyvinvointialue",
       "publicTransport": {
-        "status": "fallback-national",
-        "providerName": "Matkahuollon reittiopas",
-        "area": "Suomi"
+        "status": "ok-regional",
+        "providerName": "Tillgren Lines Kivijärvi-Kinnula",
+        "area": "Tillgren Lines Kivijärvi-Kinnula"
       },
       "serviceTransport": {
         "status": "missing"
@@ -1814,7 +1814,7 @@
         "status": "missing"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -1868,7 +1868,7 @@
         "status": "missing"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -2012,7 +2012,7 @@
         "status": "missing"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -2148,9 +2148,9 @@
       "wellbeingAreaCode": "15",
       "wellbeingAreaName": "Keski-Suomen hyvinvointialue",
       "publicTransport": {
-        "status": "fallback-national",
-        "providerName": "Matkahuollon reittiopas",
-        "area": "Suomi"
+        "status": "ok-regional",
+        "providerName": "OnniBus Kyyjärvi",
+        "area": "OnniBus Kyyjärvi"
       },
       "serviceTransport": {
         "status": "missing"
@@ -2372,7 +2372,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -2426,7 +2426,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -2588,7 +2588,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -2873,7 +2873,7 @@
         "area": "Suomi"
       },
       "serviceTransport": {
-        "status": "missing"
+        "status": "ok-own"
       },
       "localNewsFeed": {
         "status": "missing"
@@ -3218,7 +3218,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -3272,7 +3272,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -3308,7 +3308,7 @@
         "status": "missing"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -3344,7 +3344,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -3362,7 +3362,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -3506,7 +3506,7 @@
         "status": "missing"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -3524,7 +3524,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -3812,7 +3812,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -4046,7 +4046,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -4298,7 +4298,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -4604,7 +4604,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -4640,7 +4640,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -5144,7 +5144,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -5234,7 +5234,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -5288,7 +5288,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -5360,7 +5360,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -5504,7 +5504,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {

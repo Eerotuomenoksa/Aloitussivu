@@ -29,7 +29,15 @@ export const CHANGELOG_VERSION = "0.72.0";
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
   "Pohjanmaan alueellisia liikennelinkkejä täydennettiin: Luoto, Pietarsaari ja Vöyri saivat omat julkisen liikenteen linkit.",
   "Palveluliikenteen linkit lisättiin Kristiinankaupungille, Luodolle, Närpiölle ja Pietarsaarelle.",
-  "Alueellisten linkkien kattavuusraportti päivitettiin: julkisen liikenteen valtakunnallinen fallback väheni 221 kunnasta 218 kuntaan ja palveluliikenteen puuttuvat linkit 171 kunnasta 167 kuntaan.",
+  "Pohjois-Pohjanmaan ensimmäisessä tarkistusaallossa lisättiin kuusi julkisen liikenteen kuntalinkkiä ja Taivalkosken asiointiliikenne.",
+  "Varsinais-Suomen Seutu+-yhteydet lisättiin 20 kunnalle, ja Loimaan sekä Paraisten palveluliikenteen linkit vahvistettiin.",
+  "Keski-Suomen tarkistusaallossa lisättiin Jämsän, Joutsan, Luhangan ja Uuraisten omia liikennelinkkejä sekä Keski-Suomen lipputuotteet.",
+  "Palveluliikenteen linkit lisättiin Jämsälle, Laukaalle ja Pihtiputaalle.",
+  "Etelä-Pohjanmaan tarkistusaallossa lisättiin Härmän Liikenteen reittiliikennelinkki kahdeksalle kunnalle.",
+  "Palveluliikenteen linkit lisättiin Alavudelle, Isojoelle, Soinille ja Vimpelille.",
+  "Lapin tarkistusaallossa lisättiin Meri-Lapin joukkoliikenteen seutulinkki viidelle kunnalle, Rundgrenin Länsi-Lapin reittilinkki kolmelle kunnalle sekä Inarin, Pellon ja Utsjoen omat julkisen liikenteen linkit.",
+  "Palveluliikenteen linkit lisättiin Enontekiölle, Inarille, Kemille, Keminmaalle, Kolarille, Pellolle, Simolle ja Tervolalle.",
+  "Alueellisten linkkien kattavuusraportti päivitettiin: julkisen liikenteen valtakunnallinen fallback väheni 218 kunnasta 164 kuntaan ja palveluliikenteen puuttuvat linkit 167 kunnasta 149 kuntaan.",
   "Muutoshistoria päivitettiin näyttämään myös heinäkuun uusimmat julkaisu- ja ylläpitocommitit."
 ];
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];

@@ -27,6 +27,7 @@ interface MunicipalityLinkRow {
   wellbeingAreas: RegionalLinkRow[];
   libraries: RegionalLinkRow[];
   publicTransport: RegionalLinkRow[];
+  serviceTransport: RegionalLinkRow[];
   museums: RegionalLinkRow[];
   theaters: RegionalLinkRow[];
   patientAssociations: RegionalLinkRow[];
@@ -40,7 +41,7 @@ type ActiveView = 'general' | 'regional' | 'municipalities';
 const collator = new Intl.Collator('fi-FI');
 const municipalityNameColumnWidth = 176;
 const municipalityLinkColumnWidth = 320;
-const municipalityLinkColumnCount = 10;
+const municipalityLinkColumnCount = 11;
 const municipalityTableMinWidth = municipalityNameColumnWidth + (municipalityLinkColumnWidth * municipalityLinkColumnCount);
 
 const uniqueByKey = <T,>(items: T[], getKey: (item: T) => string) => [
@@ -162,6 +163,11 @@ const municipalityRows: MunicipalityLinkRow[] = MUNICIPALITIES
       .map((provider) => (
         providerToRegionalRow(municipality.name, 'Hyvinvointialue', provider)
       ));
+    const serviceTransport = regionalProviders
+      .filter((provider) => provider.group === 'Palveluliikenne')
+      .map((provider) => (
+        providerToRegionalRow(municipality.name, 'Palveluliikenne', provider)
+      ));
     const museums = museumProviders
       .filter((provider) => providerMatchesMunicipalityArea(provider, municipality))
       .map((provider) => providerToRegionalRow(municipality.name, 'Museot', provider));
@@ -190,6 +196,7 @@ const municipalityRows: MunicipalityLinkRow[] = MUNICIPALITIES
       wellbeingAreas: uniqueByKey(wellbeingAreas, (row) => `${row.category}|${row.name}|${row.url}`),
       libraries: uniqueByKey(libraries, (row) => `${row.category}|${row.name}|${row.url}`),
       publicTransport: uniqueByKey(publicTransport, (row) => `${row.category}|${row.name}|${row.url}`),
+      serviceTransport: uniqueByKey(serviceTransport, (row) => `${row.category}|${row.name}|${row.url}`),
       museums: uniqueByKey(museums, (row) => `${row.category}|${row.name}|${row.url}`),
       theaters: uniqueByKey(theaters, (row) => `${row.category}|${row.name}|${row.url}`),
       patientAssociations: uniqueByKey(patientAssociations, (row) => `${row.category}|${row.name}|${row.url}`),
@@ -201,7 +208,7 @@ const municipalityRows: MunicipalityLinkRow[] = MUNICIPALITIES
   .sort((a, b) => collator.compare(a.municipality, b.municipality));
 
 const regionalLinks = uniqueByKey(
-  municipalityRows.flatMap((row) => [...row.municipalityWebsites, ...row.wellbeingAreas, ...row.libraries, ...row.publicTransport, ...row.museums, ...row.theaters, ...row.patientAssociations, ...row.seniorAssociations, ...row.regionalNews, ...row.rssFeeds]),
+  municipalityRows.flatMap((row) => [...row.municipalityWebsites, ...row.wellbeingAreas, ...row.libraries, ...row.publicTransport, ...row.serviceTransport, ...row.museums, ...row.theaters, ...row.patientAssociations, ...row.seniorAssociations, ...row.regionalNews, ...row.rssFeeds]),
   (row) => `${row.municipality}|${row.category}|${row.name}|${row.url}`
 ).sort((a, b) => collator.compare(`${a.municipality} ${a.category} ${a.name}`, `${b.municipality} ${b.category} ${b.name}`));
 
@@ -263,6 +270,7 @@ function App() {
       ...row.wellbeingAreas.map((link) => `${link.category} ${link.name} ${link.url}`),
       ...row.libraries.map((link) => `${link.category} ${link.name} ${link.url}`),
       ...row.publicTransport.map((link) => `${link.category} ${link.name} ${link.url}`),
+      ...row.serviceTransport.map((link) => `${link.category} ${link.name} ${link.url}`),
       ...row.museums.map((link) => `${link.category} ${link.name} ${link.url}`),
       ...row.theaters.map((link) => `${link.category} ${link.name} ${link.url}`),
       ...row.patientAssociations.map((link) => `${link.category} ${link.name} ${link.url}`),
@@ -277,6 +285,7 @@ function App() {
     wellbeingAreas: filteredMunicipalityRows.reduce((sum, row) => sum + row.wellbeingAreas.length, 0),
     libraries: filteredMunicipalityRows.reduce((sum, row) => sum + row.libraries.length, 0),
     publicTransport: filteredMunicipalityRows.reduce((sum, row) => sum + row.publicTransport.length, 0),
+    serviceTransport: filteredMunicipalityRows.reduce((sum, row) => sum + row.serviceTransport.length, 0),
     museums: filteredMunicipalityRows.reduce((sum, row) => sum + row.museums.length, 0),
     theaters: filteredMunicipalityRows.reduce((sum, row) => sum + row.theaters.length, 0),
     patientAssociations: filteredMunicipalityRows.reduce((sum, row) => sum + row.patientAssociations.length, 0),
@@ -499,6 +508,7 @@ function App() {
                   <th className="min-w-80 px-4 py-3">Hyvinvointialue ({municipalityColumnCounts.wellbeingAreas})</th>
                   <th className="min-w-80 px-4 py-3">Kirjasto ({municipalityColumnCounts.libraries})</th>
                   <th className="min-w-80 px-4 py-3">Julkinen liikenne ({municipalityColumnCounts.publicTransport})</th>
+                  <th className="min-w-80 px-4 py-3">Palveluliikenne ({municipalityColumnCounts.serviceTransport})</th>
                   <th className="min-w-80 px-4 py-3">Museot ({municipalityColumnCounts.museums})</th>
                   <th className="min-w-80 px-4 py-3">Teatterit ({municipalityColumnCounts.theaters})</th>
                   <th className="min-w-80 px-4 py-3">Potilasyhdistykset ({municipalityColumnCounts.patientAssociations})</th>
@@ -515,6 +525,7 @@ function App() {
                     <td className="px-4 py-4"><LinkList links={row.wellbeingAreas} /></td>
                     <td className="px-4 py-4"><LinkList links={row.libraries} /></td>
                     <td className="px-4 py-4"><LinkList links={row.publicTransport} /></td>
+                    <td className="px-4 py-4"><LinkList links={row.serviceTransport} /></td>
                     <td className="px-4 py-4"><LinkList links={row.museums} /></td>
                     <td className="px-4 py-4"><LinkList links={row.theaters} /></td>
                     <td className="px-4 py-4"><LinkList links={row.patientAssociations} /></td>

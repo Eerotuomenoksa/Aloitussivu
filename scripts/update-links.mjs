@@ -45,7 +45,7 @@ const addRow = (section, category, name, url, source) => {
   rows.push({ section, category, name, url, source });
 };
 
-const csvEscape = (value) => `"${String(value ?? '').replace(/"/g, '""')}"`;
+const csvEscape = (value) => `"${String(value ?? '').replace(/\s*\r?\n\s*/g, ' ').trim().replace(/"/g, '""')}"`;
 const jsString = (value) => JSON.stringify(value);
 
 const normalizeHost = (host) => host.toLowerCase().replace(/\.$/, '');
@@ -130,9 +130,27 @@ const readVerifiedLinks = async () => {
         status: match[2],
         confidence: match[3],
       }));
-    return new Map(entries.map((entry) => [entry.url, entry]));
+    const verifiedLinks = new Map(entries.map((entry) => [entry.url, entry]));
+    for (const url of MANUALLY_VERIFIED_URLS) {
+      const normalizedUrl = normalizeUrlForComparison(url);
+      if (!verifiedLinks.has(normalizedUrl)) {
+        verifiedLinks.set(normalizedUrl, {
+          url: normalizedUrl,
+          status: 'verified',
+          confidence: 'C',
+        });
+      }
+    }
+    return verifiedLinks;
   } catch {
-    return new Map();
+    return new Map([...MANUALLY_VERIFIED_URLS].map((url) => {
+      const normalizedUrl = normalizeUrlForComparison(url);
+      return [normalizedUrl, {
+        url: normalizedUrl,
+        status: 'verified',
+        confidence: 'C',
+      }];
+    }));
   }
 };
 
