@@ -19,4 +19,5 @@ tmp/
 /outputs/*
 !/outputs/regional-link-coverage.json
 !/outputs/municipality-population-context.json
+!/outputs/regional-news-feed-coverage.json
 ~$*

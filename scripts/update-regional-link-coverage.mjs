@@ -109,6 +109,11 @@ const regionalServiceAreas = parseRegionalServiceAreas();
 const ownPublicTransport = parseLocalServiceMapPublicTransport();
 const serviceTransportMunicipalities = parseMunicipalityEntries('localServiceTransportLinks.ts');
 const newspaperFeedMunicipalities = parseMunicipalityEntries('localNewspaperFeeds.ts');
+const municipalityNewsFeedMunicipalities = parseMunicipalityEntries('municipalityNewsFeeds.ts');
+const newsFeedMunicipalities = new Set([
+  ...newspaperFeedMunicipalities,
+  ...municipalityNewsFeedMunicipalities,
+]);
 
 const regionalPublicTransportByMunicipality = new Map();
 for (const area of regionalServiceAreas) {
@@ -139,7 +144,7 @@ const coverage = municipalities.map((municipality) => {
       status: serviceTransportMunicipalities.has(municipality.key) ? 'ok-own' : 'missing',
     },
     localNewsFeed: {
-      status: newspaperFeedMunicipalities.has(municipality.key) ? 'ok-own' : 'missing',
+      status: newsFeedMunicipalities.has(municipality.key) ? 'ok-own' : 'missing',
     },
   };
 });

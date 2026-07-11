@@ -1,6 +1,6 @@
 # Alueellisten linkkien kattavuus ja puuttuvat kuntalinkit
 
-Päivitetty: 11.7.2026
+Päivitetty: 12.7.2026
 
 Tämä raportti tukee puuttuvien alueellisten linkkien täydentämistä. Se ei vielä todista, ettei kunnassa ole palvelua, vaan kertoo missä Aloitussivun datassa ei ole omaa tai seudullista linkkiä.
 
@@ -35,8 +35,8 @@ Tulkinta:
 
 | Tila | Kuntia |
 | --- | ---: |
-| missing | 264 |
-| ok-own | 44 |
+| missing | 99 |
+| ok-own | 209 |
 
 ## Julkinen liikenne: valtakunnallisen fallbackin varassa
 
@@ -202,97 +202,89 @@ Aura, Kemiönsaari, Koski Tl, Kustavi, Marttila, Nousiainen, Oripää, Rusko, Ve
 
 
 
-### Ahvenanmaa, 16 kuntaa
+### Ahvenanmaa, 13 kuntaa
 
-Brändö, Eckerö, Finström, Föglö, Geta, Hammarland, Jomala, Kumlinge, Kökar, Lemland, Lumparland, Maarianhamina - Mariehamn, Saltvik, Sottunga, Sund, Vårdö
+Eckerö, Föglö, Geta, Hammarland, Jomala, Kumlinge, Lemland, Lumparland, Maarianhamina - Mariehamn, Saltvik, Sottunga, Sund, Vårdö
 
-### Etelä-Karjalan hyvinvointialue, 7 kuntaa
+### Etelä-Karjalan hyvinvointialue, 5 kuntaa
 
-Imatra, Lappeenranta, Lemi, Luumäki, Ruokolahti, Savitaipale, Taipalsaari
+Lappeenranta, Luumäki, Ruokolahti, Savitaipale, Taipalsaari
 
-### Etelä-Pohjanmaan hyvinvointialue, 17 kuntaa
+### Etelä-Pohjanmaan hyvinvointialue, 7 kuntaa
 
-Alajärvi, Alavus, Evijärvi, Isojoki, Isokyrö, Karijoki, Kauhajoki, Kauhava, Kuortane, Kurikka, Lappajärvi, Lapua, Seinäjoki, Soini, Teuva, Vimpeli, Ähtäri
-
-### Etelä-Savon hyvinvointialue, 8 kuntaa
-
-Enonkoski, Hirvensalmi, Mikkeli, Mäntyharju, Pieksämäki, Puumala, Rantasalmi, Savonlinna
+Alajärvi, Alavus, Evijärvi, Isokyrö, Lapua, Soini, Ähtäri
 
 ### Helsingin kaupunki, 1 kuntaa
 
 Helsinki
 
-### Itä-Uudenmaan hyvinvointialue, 6 kuntaa
+### Itä-Uudenmaan hyvinvointialue, 1 kuntaa
 
-Askola, Lapinjärvi, Myrskylä, Porvoo, Pukkila, Sipoo
+Pukkila
 
-### Kainuun hyvinvointialue, 6 kuntaa
+### Kainuun hyvinvointialue, 3 kuntaa
 
-Hyrynsalmi, Kajaani, Paltamo, Puolanka, Ristijärvi, Suomussalmi
+Paltamo, Ristijärvi, Suomussalmi
 
-### Kanta-Hämeen hyvinvointialue, 10 kuntaa
+### Kanta-Hämeen hyvinvointialue, 5 kuntaa
 
-Forssa, Hattula, Hausjärvi, Humppila, Hämeenlinna, Janakkala, Jokioinen, Riihimäki, Tammela, Ypäjä
+Forssa, Hausjärvi, Humppila, Jokioinen, Riihimäki
 
-### Keski-Pohjanmaan hyvinvointialue, 8 kuntaa
+### Keski-Suomen hyvinvointialue, 6 kuntaa
 
-Halsua, Kannus, Kaustinen, Kokkola, Lestijärvi, Perho, Toholampi, Veteli
+Jämsä, Kinnula, Multia, Saarijärvi, Uurainen, Äänekoski
 
-### Keski-Suomen hyvinvointialue, 19 kuntaa
+### Keski-Uudenmaan hyvinvointialue, 1 kuntaa
 
-Hankasalmi, Joutsa, Jyväskylä, Jämsä, Kannonkoski, Karstula, Keuruu, Kinnula, Kivijärvi, Kyyjärvi, Luhanka, Multia, Muurame, Petäjävesi, Pihtipudas, Saarijärvi, Toivakka, Uurainen, Äänekoski
+Hyvinkää
 
-### Keski-Uudenmaan hyvinvointialue, 6 kuntaa
+### Kymenlaakson hyvinvointialue, 1 kuntaa
 
-Hyvinkää, Järvenpää, Mäntsälä, Nurmijärvi, Pornainen, Tuusula
+Miehikkälä
 
-### Kymenlaakson hyvinvointialue, 6 kuntaa
+### Lapin hyvinvointialue, 12 kuntaa
 
-Hamina, Kotka, Kouvola, Miehikkälä, Pyhtää, Virolahti
+Enontekiö, Inari, Keminmaa, Kolari, Muonio, Pello, Rovaniemi, Savukoski, Simo, Sodankylä, Tervola, Utsjoki
 
-### Lapin hyvinvointialue, 21 kuntaa
+### Länsi-Uudenmaan hyvinvointialue, 1 kuntaa
 
-Enontekiö, Inari, Kemi, Kemijärvi, Keminmaa, Kittilä, Kolari, Muonio, Pelkosenniemi, Pello, Posio, Ranua, Rovaniemi, Salla, Savukoski, Simo, Sodankylä, Tervola, Tornio, Utsjoki, Ylitornio
+Espoo
 
-### Länsi-Uudenmaan hyvinvointialue, 9 kuntaa
+### Pirkanmaan hyvinvointialue, 7 kuntaa
 
-Espoo, Hanko, Inkoo, Kauniainen, Kirkkonummi, Lohja, Raasepori, Siuntio, Vihti
+Kihniö, Kuhmoinen, Mänttä-Vilppula, Punkalaidun, Tampere, Valkeakoski, Virrat
 
-### Pirkanmaan hyvinvointialue, 14 kuntaa
+### Pohjanmaan hyvinvointialue, 6 kuntaa
 
-Ikaalinen, Juupajoki, Kihniö, Kuhmoinen, Mänttä-Vilppula, Nokia, Parkano, Punkalaidun, Pälkäne, Ruovesi, Sastamala, Tampere, Valkeakoski, Virrat
+Kristiinankaupunki, Kruunupyy, Maalahti, Pedersören kunta, Uusikaarlepyy, Vöyri
 
-### Pohjanmaan hyvinvointialue, 13 kuntaa
+### Pohjois-Karjalan hyvinvointialue, 3 kuntaa
 
-Kaskinen, Korsnäs, Kristiinankaupunki, Kruunupyy, Laihia, Luoto, Maalahti, Mustasaari, Närpiö, Pedersören kunta, Uusikaarlepyy, Vaasa, Vöyri
+Kitee, Polvijärvi, Tohmajärvi
 
-### Pohjois-Karjalan hyvinvointialue, 10 kuntaa
+### Pohjois-Pohjanmaan hyvinvointialue, 7 kuntaa
 
-Ilomantsi, Joensuu, Juuka, Kitee, Kontiolahti, Liperi, Nurmes, Polvijärvi, Rääkkylä, Tohmajärvi
+Kuusamo, Kärsämäki, Merijärvi, Oulu, Pudasjärvi, Tyrnävä, Utajärvi
 
-### Pohjois-Pohjanmaan hyvinvointialue, 26 kuntaa
+### Pohjois-Savon hyvinvointialue, 5 kuntaa
 
-Alavieska, Haapajärvi, Hailuoto, Ii, Kempele, Kuusamo, Kärsämäki, Liminka, Lumijoki, Merijärvi, Muhos, Oulainen, Oulu, Pudasjärvi, Pyhäjoki, Pyhäntä, Raahe, Reisjärvi, Sievi, Siikajoki, Siikalatva, Taivalkoski, Tyrnävä, Utajärvi, Vaala, Ylivieska
+Lapinlahti, Rautavaara, Sonkajärvi, Tervo, Tuusniemi
 
-### Pohjois-Savon hyvinvointialue, 15 kuntaa
+### Päijät-Hämeen hyvinvointialue, 2 kuntaa
 
-Iisalmi, Joroinen, Kaavi, Kuopio, Lapinlahti, Leppävirta, Rautalampi, Rautavaara, Siilinjärvi, Sonkajärvi, Suonenjoki, Tervo, Tuusniemi, Vesanto, Vieremä
+Hollola, Iitti
 
-### Päijät-Hämeen hyvinvointialue, 10 kuntaa
+### Satakunnan hyvinvointialue, 3 kuntaa
 
-Asikkala, Hartola, Heinola, Hollola, Iitti, Kärkölä, Lahti, Orimattila, Padasjoki, Sysmä
-
-### Satakunnan hyvinvointialue, 15 kuntaa
-
-Eura, Eurajoki, Harjavalta, Huittinen, Jämijärvi, Kankaanpää, Karvia, Merikarvia, Nakkila, Pomarkku, Pori, Rauma, Siikainen, Säkylä, Ulvila
+Eurajoki, Jämijärvi, Nakkila
 
 ### Vantaan ja Keravan hyvinvointialue, 2 kuntaa
 
 Kerava, Vantaa
 
-### Varsinais-Suomen hyvinvointialue, 19 kuntaa
+### Varsinais-Suomen hyvinvointialue, 8 kuntaa
 
-Aura, Kemiönsaari, Koski Tl, Kustavi, Lieto, Marttila, Masku, Mynämäki, Naantali, Nousiainen, Oripää, Pyhäranta, Pöytyä, Raisio, Rusko, Salo, Taivassalo, Turku, Vehmaa
+Aura, Kemiönsaari, Marttila, Pöytyä, Salo, Taivassalo, Turku, Vehmaa
 
 
 

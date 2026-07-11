@@ -2,6 +2,7 @@ import { MUNICIPALITIES } from './municipalRegistry';
 import { MUNICIPALITY_WEBSITES } from './municipalityWebsites';
 import { MUNICIPALITY_WEBSITE_LANGUAGE_URLS } from './municipalityWebsiteLocales';
 import { MUNICIPALITY_SWEDISH_NAMES_BY_CODE } from './municipalityNames';
+import { MUNICIPALITY_NEWS_FEEDS } from './municipalityNewsFeeds';
 import { LOCAL_NEWSPAPER_FEEDS } from './localNewspaperFeeds';
 import { LOCAL_NEWSPAPER_LINKS } from './localNewspaperLinks';
 import { LOCAL_SERVICE_TRANSPORT_LINKS } from './localServiceTransportLinks';
@@ -1848,9 +1849,13 @@ export const getRegionalRssFeeds = (context: RegionalContext): RssFeedConfig[] =
   const newspaperFeeds = LOCAL_NEWSPAPER_FEEDS
     .filter((feed) => normalizeMunicipality(feed.municipality) === key)
     .map((feed) => ({ name: feed.name, url: feed.url }));
+  const municipalityNewsFeeds = MUNICIPALITY_NEWS_FEEDS
+    .filter((feed) => normalizeMunicipality(feed.municipality) === key)
+    .map((feed) => ({ name: feed.name, url: feed.url }));
 
   return uniqueFeeds([
     ...newspaperFeeds,
+    ...municipalityNewsFeeds,
     ...(exact?.rssFeeds ?? []),
   ]);
 };

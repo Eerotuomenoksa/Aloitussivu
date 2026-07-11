@@ -420,6 +420,7 @@ const collectLinks = async () => {
   const localServiceTransportLinks = await readText('localServiceTransportLinks.ts');
   const localKelaTaxiNumbers = await readText('localKelaTaxiNumbers.ts');
   const localNewspaperFeeds = await readText('localNewspaperFeeds.ts');
+  const municipalityNewsFeeds = await readText('municipalityNewsFeeds.ts');
   const localTransportCount = [...localServices.matchAll(/publicTransport:\s*\{/g)].length;
   const localLibraryCount = [...localServices.matchAll(/library:\s*\{/g)].length;
   const localMunicipalityServiceCount = [...localServices.matchAll(/municipality:\s*\{/g)].length;
@@ -445,6 +446,10 @@ const collectLinks = async () => {
 
   for (const match of localNewspaperFeeds.matchAll(/\{\s*"municipality":\s*"([^"]+)",\s*"name":\s*"([^"]+)",\s*"url":\s*"([^"]+)"\s*\}/g)) {
     addRow('Uutisvirrat', match[1], match[2], match[3], 'localNewspaperFeeds.ts');
+  }
+
+  for (const match of municipalityNewsFeeds.matchAll(/\{\s*"municipality":\s*"([^"]+)",\s*"name":\s*"([^"]+)",\s*"url":\s*"([^"]+)"\s*\}/g)) {
+    addRow('Uutisvirrat', match[1], match[2], match[3], 'municipalityNewsFeeds.ts');
   }
 
   for (const match of localKelaTaxiNumbers.matchAll(/name:\s*"([^"]+)",\s*url:\s*"([^"]+)".*?group:\s*'Kela-taksi'.*?phone:\s*"([^"]+)"/gs)) {
@@ -512,6 +517,7 @@ const collectLinks = async () => {
     municipalityWebsiteLocaleCount: [...municipalityWebsiteLocales.matchAll(/^\s*(sv|en|uk|et|ru|se):\s*"([^"]+)"/gm)].length,
     localNewspaperCount: [...localNewspapers.matchAll(/\{\s*"name":\s*"([^"]+)",\s*"url":\s*"([^"]+)"\s*\}/g)].length,
     localNewsFeedCount: [...localNewspaperFeeds.matchAll(/\{\s*"municipality":\s*"([^"]+)",\s*"name":\s*"([^"]+)",\s*"url":\s*"([^"]+)"\s*\}/g)].length
+      + [...municipalityNewsFeeds.matchAll(/\{\s*"municipality":\s*"([^"]+)",\s*"name":\s*"([^"]+)",\s*"url":\s*"([^"]+)"\s*\}/g)].length
       + [...localServices.matchAll(/rssFeeds:\s*\[[\s\S]*?\]/g)].reduce((sum, block) => (
         sum + [...block[0].matchAll(/\{\s*name:\s*'([^']+)',\s*url:\s*'([^']+)'\s*\}/g)].length
       ), 0),

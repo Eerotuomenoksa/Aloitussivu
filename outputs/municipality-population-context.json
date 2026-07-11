@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-11T21:04:22.838Z",
+  "generatedAt": "2026-07-11T21:06:42.138Z",
   "source": {
     "name": "Tilastokeskus, Kuntien avainluvut",
     "apiUrl": "https://pxdata.stat.fi/PXWeb/api/v1/fi/Kuntien_avainluvut/kuntien_avainluvut_viimeisin.px",
@@ -75,7 +75,7 @@
       "municipalityCount": 54,
       "publicTransportFallbackCount": 15,
       "serviceTransportMissingCount": 32,
-      "localNewsFeedMissingCount": 53,
+      "localNewsFeedMissingCount": 27,
       "regionalServiceLikelihood": "erittäin suuri",
       "serviceExpectation": "palvelut ovat usein seudullisia, kutsupohjaisia tai taksiyrittäjän hoitamia",
       "newsExpectation": "uutiset löytyvät usein seutu- tai maakuntalehdestä"
@@ -87,7 +87,7 @@
       "municipalityCount": 90,
       "publicTransportFallbackCount": 31,
       "serviceTransportMissingCount": 30,
-      "localNewsFeedMissingCount": 79,
+      "localNewsFeedMissingCount": 26,
       "regionalServiceLikelihood": "suuri",
       "serviceExpectation": "palvelu voi olla kunnan oma sivu, asiointiliikenne tai taksipohjainen ratkaisu",
       "newsExpectation": "paikallisuutiset voivat tulla seutulehdestä tai maakuntalehdestä"
@@ -99,7 +99,7 @@
       "municipalityCount": 68,
       "publicTransportFallbackCount": 16,
       "serviceTransportMissingCount": 24,
-      "localNewsFeedMissingCount": 55,
+      "localNewsFeedMissingCount": 24,
       "regionalServiceLikelihood": "kohtalainen",
       "serviceExpectation": "oma tai seudullinen joukkoliikenne- ja palveluliikennesivu on mahdollinen",
       "newsExpectation": "paikallislehti tai seutulehti on todennäköinen ensisijainen lähde"
@@ -111,7 +111,7 @@
       "municipalityCount": 42,
       "publicTransportFallbackCount": 8,
       "serviceTransportMissingCount": 11,
-      "localNewsFeedMissingCount": 28,
+      "localNewsFeedMissingCount": 8,
       "regionalServiceLikelihood": "kohtalainen tai pieni",
       "serviceExpectation": "omalle tai seudulliselle palvelusivulle on yleensä parempi mahdollisuus",
       "newsExpectation": "uutiset löytyvät usein paikallis- tai seutulehdestä, joskus myös kunnan uutisista"
@@ -123,7 +123,7 @@
       "municipalityCount": 33,
       "publicTransportFallbackCount": 9,
       "serviceTransportMissingCount": 8,
-      "localNewsFeedMissingCount": 28,
+      "localNewsFeedMissingCount": 5,
       "regionalServiceLikelihood": "pieni",
       "serviceExpectation": "omaa tai selkeää seudullista joukkoliikenne- ja palveluliikennetietoa kannattaa odottaa",
       "newsExpectation": "paikallinen tai seudullinen uutislähde on usein löydettävissä"
@@ -135,33 +135,37 @@
       "municipalityCount": 21,
       "publicTransportFallbackCount": 2,
       "serviceTransportMissingCount": 8,
-      "localNewsFeedMissingCount": 21,
+      "localNewsFeedMissingCount": 9,
       "regionalServiceLikelihood": "hyvin pieni",
       "serviceExpectation": "omaa tai vahvaa seudullista palvelutietoa kannattaa odottaa",
       "newsExpectation": "paikallinen, seudullinen tai kaupunkikohtainen uutislähde on yleensä löydettävissä"
     }
   ],
   "linkCoverageByPopulationBand": {
-    "keskisuuri:ok-own:ok-own": 12,
-    "pienehko:ok-own:missing": 34,
-    "pieni:ok-own:missing": 51,
-    "keskisuuri:ok-own:missing": 19,
-    "pieni:missing:missing": 28,
-    "erittain-pieni:missing:missing": 32,
-    "erittain-pieni:ok-own:missing": 21,
-    "erittain-suuri:missing:missing": 8,
-    "keskisuuri:missing:missing": 9,
-    "pienehko:missing:missing": 21,
-    "pienehko:missing:ok-own": 3,
-    "pieni:ok-own:ok-own": 9,
-    "suuri:ok-own:missing": 20,
-    "erittain-suuri:ok-own:missing": 13,
-    "keskisuuri:missing:ok-own": 2,
-    "suuri:missing:missing": 8,
-    "pienehko:ok-own:ok-own": 10,
-    "suuri:ok-own:ok-own": 5,
-    "erittain-pieni:ok-own:ok-own": 1,
-    "pieni:missing:ok-own": 2
+    "keskisuuri:ok-own:ok-own": 24,
+    "pienehko:ok-own:missing": 15,
+    "pieni:ok-own:ok-own": 44,
+    "keskisuuri:ok-own:missing": 7,
+    "pienehko:ok-own:ok-own": 29,
+    "pieni:missing:ok-own": 20,
+    "pieni:missing:missing": 10,
+    "erittain-pieni:missing:ok-own": 15,
+    "erittain-pieni:missing:missing": 17,
+    "erittain-pieni:ok-own:ok-own": 12,
+    "erittain-pieni:ok-own:missing": 10,
+    "erittain-suuri:missing:missing": 5,
+    "keskisuuri:missing:ok-own": 10,
+    "pienehko:missing:missing": 9,
+    "pieni:ok-own:missing": 16,
+    "pienehko:missing:ok-own": 15,
+    "suuri:ok-own:missing": 3,
+    "erittain-suuri:ok-own:ok-own": 9,
+    "suuri:ok-own:ok-own": 22,
+    "suuri:missing:ok-own": 6,
+    "suuri:missing:missing": 2,
+    "erittain-suuri:missing:ok-own": 3,
+    "erittain-suuri:ok-own:missing": 4,
+    "keskisuuri:missing:missing": 1
   },
   "municipalities": [
     {
@@ -215,7 +219,7 @@
       "linkCoverage": {
         "publicTransportStatus": "fallback-national",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -251,7 +255,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -269,7 +273,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -305,7 +309,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -341,7 +345,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -395,7 +399,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -449,7 +453,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -521,7 +525,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-own",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -557,7 +561,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-own",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -575,7 +579,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -593,7 +597,7 @@
       "linkCoverage": {
         "publicTransportStatus": "fallback-national",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -629,7 +633,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -647,7 +651,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -665,7 +669,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -683,7 +687,7 @@
       "linkCoverage": {
         "publicTransportStatus": "fallback-national",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -701,7 +705,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -737,7 +741,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -791,7 +795,7 @@
       "linkCoverage": {
         "publicTransportStatus": "fallback-national",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -827,7 +831,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -863,7 +867,7 @@
       "linkCoverage": {
         "publicTransportStatus": "fallback-national",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -917,7 +921,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -935,7 +939,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -953,7 +957,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -989,7 +993,7 @@
       "linkCoverage": {
         "publicTransportStatus": "fallback-national",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -1025,7 +1029,7 @@
       "linkCoverage": {
         "publicTransportStatus": "fallback-national",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -1043,7 +1047,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -1079,7 +1083,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -1097,7 +1101,7 @@
       "linkCoverage": {
         "publicTransportStatus": "fallback-national",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -1133,7 +1137,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -1151,7 +1155,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -1205,7 +1209,7 @@
       "linkCoverage": {
         "publicTransportStatus": "fallback-national",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -1223,7 +1227,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-own",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -1241,7 +1245,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-own",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -1259,7 +1263,7 @@
       "linkCoverage": {
         "publicTransportStatus": "fallback-national",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -1295,7 +1299,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -1349,7 +1353,7 @@
       "linkCoverage": {
         "publicTransportStatus": "fallback-national",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -1385,7 +1389,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -1403,7 +1407,7 @@
       "linkCoverage": {
         "publicTransportStatus": "fallback-national",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -1475,7 +1479,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -1493,7 +1497,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -1511,7 +1515,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -1529,7 +1533,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-own",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -1565,7 +1569,7 @@
       "linkCoverage": {
         "publicTransportStatus": "fallback-national",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -1583,7 +1587,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -1601,7 +1605,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -1619,7 +1623,7 @@
       "linkCoverage": {
         "publicTransportStatus": "fallback-national",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -1637,7 +1641,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -1655,7 +1659,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -1673,7 +1677,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -1709,7 +1713,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -1727,7 +1731,7 @@
       "linkCoverage": {
         "publicTransportStatus": "fallback-national",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -1781,7 +1785,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -1817,7 +1821,7 @@
       "linkCoverage": {
         "publicTransportStatus": "fallback-national",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -1871,7 +1875,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -1907,7 +1911,7 @@
       "linkCoverage": {
         "publicTransportStatus": "fallback-national",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -1943,7 +1947,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -1979,7 +1983,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-own",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -2033,7 +2037,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -2051,7 +2055,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -2069,7 +2073,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -2087,7 +2091,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -2105,7 +2109,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -2213,7 +2217,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -2231,7 +2235,7 @@
       "linkCoverage": {
         "publicTransportStatus": "fallback-national",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -2249,7 +2253,7 @@
       "linkCoverage": {
         "publicTransportStatus": "fallback-national",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -2267,7 +2271,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -2303,7 +2307,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -2321,7 +2325,7 @@
       "linkCoverage": {
         "publicTransportStatus": "fallback-national",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -2357,7 +2361,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -2375,7 +2379,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -2393,7 +2397,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -2429,7 +2433,7 @@
       "linkCoverage": {
         "publicTransportStatus": "fallback-national",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -2465,7 +2469,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -2537,7 +2541,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-own",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -2591,7 +2595,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -2609,7 +2613,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -2645,7 +2649,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -2663,7 +2667,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -2681,7 +2685,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -2699,7 +2703,7 @@
       "linkCoverage": {
         "publicTransportStatus": "fallback-national",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -2771,7 +2775,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-own",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -2789,7 +2793,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -2825,7 +2829,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-own",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -2915,7 +2919,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -2951,7 +2955,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -2987,7 +2991,7 @@
       "linkCoverage": {
         "publicTransportStatus": "fallback-national",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -3005,7 +3009,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -3059,7 +3063,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -3077,7 +3081,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -3095,7 +3099,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -3113,7 +3117,7 @@
       "linkCoverage": {
         "publicTransportStatus": "fallback-national",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -3131,7 +3135,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-own",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -3167,7 +3171,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -3185,7 +3189,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -3239,7 +3243,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -3257,7 +3261,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -3275,7 +3279,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-own",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -3293,7 +3297,7 @@
       "linkCoverage": {
         "publicTransportStatus": "fallback-national",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -3311,7 +3315,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -3329,7 +3333,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -3347,7 +3351,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -3383,7 +3387,7 @@
       "linkCoverage": {
         "publicTransportStatus": "fallback-national",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -3437,7 +3441,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -3527,7 +3531,7 @@
       "linkCoverage": {
         "publicTransportStatus": "fallback-national",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -3563,7 +3567,7 @@
       "linkCoverage": {
         "publicTransportStatus": "fallback-national",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -3599,7 +3603,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -3617,7 +3621,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -3635,7 +3639,7 @@
       "linkCoverage": {
         "publicTransportStatus": "fallback-national",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -3689,7 +3693,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -3743,7 +3747,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -3761,7 +3765,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -3779,7 +3783,7 @@
       "linkCoverage": {
         "publicTransportStatus": "fallback-national",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -3797,7 +3801,7 @@
       "linkCoverage": {
         "publicTransportStatus": "fallback-national",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -3815,7 +3819,7 @@
       "linkCoverage": {
         "publicTransportStatus": "fallback-national",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -3887,7 +3891,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -3905,7 +3909,7 @@
       "linkCoverage": {
         "publicTransportStatus": "fallback-national",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -3923,7 +3927,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -3941,7 +3945,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-own",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -3977,7 +3981,7 @@
       "linkCoverage": {
         "publicTransportStatus": "fallback-national",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -3995,7 +3999,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -4013,7 +4017,7 @@
       "linkCoverage": {
         "publicTransportStatus": "fallback-national",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -4049,7 +4053,7 @@
       "linkCoverage": {
         "publicTransportStatus": "fallback-national",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -4067,7 +4071,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -4085,7 +4089,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -4103,7 +4107,7 @@
       "linkCoverage": {
         "publicTransportStatus": "fallback-national",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -4121,7 +4125,7 @@
       "linkCoverage": {
         "publicTransportStatus": "fallback-national",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -4139,7 +4143,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -4157,7 +4161,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -4211,7 +4215,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-own",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -4301,7 +4305,7 @@
       "linkCoverage": {
         "publicTransportStatus": "fallback-national",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -4319,7 +4323,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -4337,7 +4341,7 @@
       "linkCoverage": {
         "publicTransportStatus": "fallback-national",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -4373,7 +4377,7 @@
       "linkCoverage": {
         "publicTransportStatus": "fallback-national",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -4427,7 +4431,7 @@
       "linkCoverage": {
         "publicTransportStatus": "fallback-national",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -4481,7 +4485,7 @@
       "linkCoverage": {
         "publicTransportStatus": "fallback-national",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -4517,7 +4521,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -4535,7 +4539,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-own",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -4553,7 +4557,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -4571,7 +4575,7 @@
       "linkCoverage": {
         "publicTransportStatus": "fallback-national",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -4589,7 +4593,7 @@
       "linkCoverage": {
         "publicTransportStatus": "fallback-national",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -4607,7 +4611,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -4643,7 +4647,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -4661,7 +4665,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -4841,7 +4845,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -4859,7 +4863,7 @@
       "linkCoverage": {
         "publicTransportStatus": "fallback-national",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -4877,7 +4881,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -4913,7 +4917,7 @@
       "linkCoverage": {
         "publicTransportStatus": "fallback-national",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -4949,7 +4953,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-own",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -5021,7 +5025,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-own",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -5057,7 +5061,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -5075,7 +5079,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -5093,7 +5097,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -5147,7 +5151,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -5183,7 +5187,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -5309,7 +5313,7 @@
       "linkCoverage": {
         "publicTransportStatus": "fallback-national",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -5327,7 +5331,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -5417,7 +5421,7 @@
       "linkCoverage": {
         "publicTransportStatus": "fallback-national",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -5453,7 +5457,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -5471,7 +5475,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -5489,7 +5493,7 @@
       "linkCoverage": {
         "publicTransportStatus": "fallback-national",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -5525,7 +5529,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-regional",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -5543,7 +5547,7 @@
       "linkCoverage": {
         "publicTransportStatus": "fallback-national",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -5615,7 +5619,7 @@
       "linkCoverage": {
         "publicTransportStatus": "fallback-national",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -5633,7 +5637,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-own",
         "serviceTransportStatus": "missing",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
@@ -5669,7 +5673,7 @@
       "linkCoverage": {
         "publicTransportStatus": "ok-own",
         "serviceTransportStatus": "ok-own",
-        "localNewsFeedStatus": "missing"
+        "localNewsFeedStatus": "ok-own"
       }
     },
     {
