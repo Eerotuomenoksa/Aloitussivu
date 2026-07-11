@@ -18,4 +18,5 @@ tmp/
 /docs/Lighthouse/
 /outputs/*
 !/outputs/regional-link-coverage.json
+!/outputs/municipality-population-context.json
 ~$*
