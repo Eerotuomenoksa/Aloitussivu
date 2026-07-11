@@ -529,6 +529,36 @@ export const SENIOR_ASSOCIATION_LINKS: RegionalProvider[] = [
     municipalities: []
   },
   {
+    name: "Eläkkeensaajien Keskusliitto EKL ry",
+    url: "https://www.ekl.fi/",
+    group: "Koko Suomi",
+    type: "Valtakunnallinen",
+    area: "Koko Suomi",
+    municipalities: [],
+    sourceNote: "EETUn jäsenjärjestö ja valtakunnallinen eläkeläisjärjestö; EKL:n sivu ohjaa EKL-yhdistyksiin kautta maan.",
+    verifiedAt: "2026-07-11"
+  },
+  {
+    name: "KRELLI Kristilliset Eläkeläiset ry",
+    url: "https://www.krell.fi/",
+    group: "Koko Suomi",
+    type: "Valtakunnallinen",
+    area: "Koko Suomi",
+    municipalities: [],
+    sourceNote: "EETUn jäsenjärjestö; KRELLI kuvaa itsensä valtakunnalliseksi eläkeläisjärjestöksi ja ylläpitää paikallisyhdistyslistausta.",
+    verifiedAt: "2026-07-11"
+  },
+  {
+    name: "Svenska pensionärsförbundet",
+    url: "https://www.spfpension.fi/",
+    group: "Koko Suomi",
+    type: "Valtakunnallinen",
+    area: "Koko Suomi",
+    municipalities: [],
+    sourceNote: "EETUn jäsenjärjestö; ruotsinkielinen eläkeläisliitto, jolla on paikallisyhdistyksiä eri puolilla Svenskfinlandia.",
+    verifiedAt: "2026-07-11"
+  },
+  {
     name: "Eläkeläisliittojen etujärjestö EETU ry",
     url: "https://www.eetu.fi/",
     group: "Koko Suomi",
@@ -561,8 +591,149 @@ export const SENIOR_ASSOCIATION_LINKS: RegionalProvider[] = [
     municipalities: []
   },
   {
+    name: "EKL-yhdistykset piireittäin",
+    url: "https://www.ekl.fi/tietoa-meista/yhdistykset/",
+    group: "Koko Suomi",
+    type: "Yhdistyshaku",
+    area: "Koko Suomi",
+    municipalities: [],
+    sourceNote: "EKL:n yhdistyshaku ohjaa alueellisiin EKL-yhdistyksiin ja kertoo uuden jäsenen liittyvän alueyhdistykseen.",
+    verifiedAt: "2026-07-11"
+  },
+  {
+    name: "KRELLI paikallisyhdistykset",
+    url: "https://www.krell.fi/yhdistykset/",
+    group: "Paikallisyhdistykset",
+    type: "Yhdistyshaku",
+    area: "Koko Suomi",
+    municipalities: [
+      "Alavus",
+      "Espoo",
+      "Hamina",
+      "Helsinki",
+      "Huittinen",
+      "Hämeenlinna",
+      "Iisalmi",
+      "Joensuu",
+      "Jyväskylä",
+      "Kerava",
+      "Kitee",
+      "Kotka",
+      "Kouvola",
+      "Kuopio",
+      "Kurikka",
+      "Lahti",
+      "Lappeenranta",
+      "Lapua",
+      "Lempäälä",
+      "Leppävirta",
+      "Lohja",
+      "Loimaa",
+      "Mikkeli",
+      "Nurmijärvi",
+      "Pori",
+      "Rauma",
+      "Riihimäki",
+      "Ruokolahti",
+      "Ruovesi",
+      "Rääkkylä",
+      "Sastamala",
+      "Suonenjoki",
+      "Tampere",
+      "Teuva",
+      "Turku",
+      "Valkeakoski",
+      "Vantaa"
+    ],
+    sourceNote: "KRELLIn yhdistyssivu listaa paikallisyhdistykset paikkakunnittain ja linkittää niiden sivuille.",
+    verifiedAt: "2026-07-11"
+  },
+  {
+    name: "Eläkeläiset ry Kainuun Aluejärjestö",
+    url: "https://elakelaiset.fi/jarjesto/aluejarjestot-ja-paikallisyhdistykset/",
+    group: "Kainuu",
+    type: "Aluejärjestö",
+    area: "Kainuu",
+    municipalities: [
+      "Hyrynsalmi",
+      "Kajaani",
+      "Kuhmo",
+      "Paltamo",
+      "Puolanka",
+      "Sotkamo",
+      "Suomussalmi"
+    ],
+    sourceNote: "Eläkeläiset ry:n aluejärjestösivu listaa Kainuun aluejärjestön sekä Hyrynsalmen, Kajaanin, Kuhmon, Paltamon, Puolangan, Sotkamon ja Suomussalmen paikallisyhdistykset.",
+    verifiedAt: "2026-07-11"
+  },
+  {
+    name: "Eläkeläiset ry Keski-Suomen aluejärjestö",
+    url: "https://elakelaiset.fi/jarjesto/aluejarjestot-ja-paikallisyhdistykset/",
+    group: "Keski-Suomi",
+    type: "Aluejärjestö",
+    area: "Keski-Suomi",
+    municipalities: [
+      "Hankasalmi",
+      "Jyväskylä",
+      "Jämsä",
+      "Laukaa",
+      "Multia",
+      "Muurame",
+      "Pihtipudas",
+      "Saarijärvi",
+      "Äänekoski"
+    ],
+    sourceNote: "Eläkeläiset ry:n aluejärjestösivu listaa Keski-Suomen aluejärjestön ja alueen paikallisyhdistysten kotisivulinkkejä.",
+    verifiedAt: "2026-07-11"
+  },
+  {
+    name: "Svenska pensionärsförbundet paikallisyhdistykset",
+    url: "https://www.spfpension.fi/foreningar/",
+    group: "Ruotsinkieliset seniorit",
+    type: "Yhdistyshaku",
+    area: "Svenskfinland",
+    municipalities: [
+      "Porvoo",
+      "Loviisa",
+      "Pyhtää",
+      "Sipoo",
+      "Raasepori",
+      "Inkoo",
+      "Hanko",
+      "Kirkkonummi",
+      "Lohja",
+      "Siuntio",
+      "Helsinki",
+      "Espoo",
+      "Kauniainen",
+      "Vantaa",
+      "Kemiönsaari",
+      "Parainen",
+      "Turku",
+      "Pedersören kunta",
+      "Pietarsaari",
+      "Uusikaarlepyy",
+      "Kokkola",
+      "Kaskinen",
+      "Mustasaari",
+      "Korsnäs",
+      "Kristiinankaupunki",
+      "Kruunupyy",
+      "Luoto",
+      "Maalahti",
+      "Närpiö",
+      "Vöyri",
+      "Vaasa",
+      "Pori",
+      "Tampere",
+      "Maarianhamina"
+    ],
+    sourceNote: "Svenska pensionärsförbundetin yhdistyssivu listaa 72 paikallisyhdistystä alueittain ja erilliset alueelliset organisaatiot.",
+    verifiedAt: "2026-07-11"
+  },
+  {
     name: "Eläkeliiton Etelä-Hämeen piiri",
-    url: "https://elakeliitto.fi/piirit-ja-yhdistykset/",
+    url: "https://etela-hame.elakeliitto.fi/yhdistykset/",
     group: "Etelä-Häme",
     type: "Piirijärjestö",
     area: "Etelä-Häme",
@@ -585,7 +756,9 @@ export const SENIOR_ASSOCIATION_LINKS: RegionalProvider[] = [
       "Urjala",
       "Valkeakoski",
       "Ypäjä"
-    ]
+    ],
+    sourceNote: "Eläkeliiton Etelä-Hämeen piirin sivu kertoo piirissä olevan 18 paikallisyhdistystä ja listaa niiden verkkosivut.",
+    verifiedAt: "2026-07-11"
   },
   {
     name: "Senioriliitto – Etelä-Karjala",
@@ -604,7 +777,9 @@ export const SENIOR_ASSOCIATION_LINKS: RegionalProvider[] = [
       "Ruokolahti",
       "Savitaipale",
       "Taipalsaari"
-    ]
+    ],
+    sourceNote: "Senioriliiton paikallisyhdistykset-sivu ohjaa valitsemaan ensin alueellisen senioripiirin ja sen jälkeen piirin paikallisyhdistyksen.",
+    verifiedAt: "2026-07-11"
   }
 ];
 

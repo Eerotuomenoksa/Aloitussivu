@@ -16,6 +16,7 @@
     "refresh:newspapers": "npm run newspapers && npm run newspaper-feeds",
     "refresh:data": "npm run refresh:newspapers && npm run regional-coverage && npm run refresh:generated",
     "regional-coverage": "node scripts/update-regional-link-coverage.mjs",
+    "community-coverage": "node scripts/update-community-link-coverage.mjs",
     "changelog": "node scripts/update-changelog.mjs",
     "version:bump": "node scripts/bump-version.mjs",
     "release:prepare": "npm run version:bump && npm run changelog",

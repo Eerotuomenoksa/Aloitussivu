@@ -570,8 +570,7 @@ export const SHORTCUTS: Shortcut[] = [
       { name: 'Sateenkaariseniorit ry', url: 'https://www.sateenkaariseniorit.fi/', group: 'Sateenkaarisenioreille' },
       { name: 'Sateenkaariseniorit - ryhmätoiminta', url: 'https://www.sateenkaariseniorit.fi/ryhm%C3%A4toiminta', group: 'Sateenkaarisenioreille' },
       { name: 'Seta - tietoa sateenkaarisenioreille', url: 'https://seniorit.seta.fi/tietoa-sateenkaarisenioreille/', group: 'Sateenkaarisenioreille' },
-      { name: 'Kuurojen Liitto - senioreille', url: 'https://kuurojenliitto.fi/senioreille/', group: 'Viittomakieliset seniorit' },
-      { name: 'Svenska pensionärsförbundet', url: 'https://www.spfpension.fi/fi/suomi/', group: 'Ruotsinkieliset seniorit' }
+      { name: 'Kuurojen Liitto - senioreille', url: 'https://kuurojenliitto.fi/senioreille/', group: 'Viittomakieliset seniorit' }
     ]
   },
   {
