@@ -500,6 +500,48 @@ const regionalServiceAreas: RegionalServiceArea[] = [
     },
   },
   {
+    id: 'huittinen-joukkoliikenne-region',
+    name: 'Huittisten joukkoliikenne',
+    municipalities: ['huittinen'],
+    services: {
+      publicTransport: {
+        name: 'Huittisten joukkoliikenne',
+        url: 'https://www.huittinen.fi/asuminen-ja-ymparisto/asuminen-ymparisto-ja-liikenne/joukkoliikenne/',
+        group: 'Julkinen liikenne',
+        sourceNote: 'Huittisten joukkoliikennesivu kokoaa kaikille avoimet koulupäivien linja-autovuorot, Huitsikka-palveluliikenteen sekä Matkahuollon ja Matka.fi:n aikataululinkit.',
+        verifiedAt: '2026-07-11',
+      },
+    },
+  },
+  {
+    id: 'kankaanpaa-liikenneyhteydet-region',
+    name: 'Kankaanpään liikenneyhteydet',
+    municipalities: ['kankaanpää'],
+    services: {
+      publicTransport: {
+        name: 'Kankaanpään liikenneyhteydet',
+        url: 'https://www.kankaanpaa.fi/kaupunki-ja-hallinto/kankaanpaa-info/liikenneyhteydet/',
+        group: 'Julkinen liikenne',
+        sourceNote: 'Kankaanpään liikenneyhteyssivu kertoo useista päivittäisistä Pori-yhteyksistä, ohjaa Seutu+ aikatauluihin ja kuvaa pysyvän Kankaanpää-Parkano-rautatieaseman kutsuliikenteen.',
+        verifiedAt: '2026-07-11',
+      },
+    },
+  },
+  {
+    id: 'rauma-gyyt-region',
+    name: 'Rauman Gyyt',
+    municipalities: ['rauma'],
+    services: {
+      publicTransport: {
+        name: 'Rauman Gyyt',
+        url: 'https://www.rauma.fi/asuminen-ja-rakentaminen/kadut-ja-liikenne/joukkoliikenne/reitit-ja-aikataulut/',
+        group: 'Julkinen liikenne',
+        sourceNote: 'Rauman reitit ja aikataulut -sivu kokoaa Gyyt-linjat, kesäkauden 2026 aikataulut, reittioppaat sekä Seutu+ ja kaukoliikenteen yhteydet.',
+        verifiedAt: '2026-07-11',
+      },
+    },
+  },
+  {
     id: 'etela-savo-joukkis-region',
     name: 'Etelä-Savo Joukkis',
     municipalities: ['enonkoski', 'kangasniemi', 'mäntyharju', 'sulkava'],

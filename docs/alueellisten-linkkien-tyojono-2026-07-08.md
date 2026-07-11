@@ -2,13 +2,13 @@
 
 Tämä työjono perustuu komennolla `npm run regional-coverage` päivitettyyn raporttiin `docs/alueelliset-linkit-puuttuvat-kunnat.md` ja koneelliseen tiedostoon `outputs/regional-link-coverage.json`.
 
-## Kattavuus 10.7.2026
+## Kattavuus 11.7.2026
 
 | Kokonaisuus | Tilanne |
 | --- | ---: |
 | Kuntia yhteensä | 308 |
-| Julkinen liikenne valtakunnallisen fallbackin varassa | 84 |
-| Palveluliikenteen oma linkki puuttuu | 123 |
+| Julkinen liikenne valtakunnallisen fallbackin varassa | 81 |
+| Palveluliikenteen oma linkki puuttuu | 113 |
 | Paikallisuutisten RSS-syöte puuttuu | 264 |
 | Sekä julkinen liikenne että palveluliikenne puuttuvat | 0 |
 | Kirjastojen alueellinen linkitys | 35 kirjastoaluetta, 308/308 kuntamäppäystä |
@@ -250,16 +250,67 @@ Ei lisätty:
 
 Paikallisuutisten RSS-syötteiden aloituserässä tiukennettiin `scripts/update-newspaper-feeds.mjs`-hakua niin, että tekniset XML-tiedostot, MediaWiki/Wikimedia-osoitteet ja eri domainiin ohjautuvat vanhat lehtilinkit eivät päädy uutissyötteiksi. Lisäksi lisättiin varmistettu manuaalimäppäys selkeille paikallislehdille ja monen kunnan paikallislehdille. Coverage nousi 13 -> 44 RSS-kuntaan, ja puuttuvien kuntien määrä laski 295 -> 264.
 
+Keski-Suomen palveluliikenteen jatkoerässä lisättiin vahvistetut käyttäjälinkit:
+
+| Kunnat | Linkki | Peruste |
+| --- | --- | --- |
+| Petäjävesi | Petäjäveden asiointiliikenne | Kunnan asiointiliikennesivu kertoo Matka Mäkelä Oy:n hoitavan asiointiliikennettä vuosina 2025-2027 ja kuvaa ennakkotilaukseen perustuvan reitin. |
+| Uurainen | Uuraisten kutsutaksi | Kunnan ikäihmisten arjen tuen sivu kertoo torstain kutsutaksista, kotihaun, asiointiajan ja palveluntuottajan yhteystiedon. |
+
+Ei lisätty:
+
+- Hankasalmen, Kannonkosken, Konneveden ja Saarijärven palveluliikennettä: löytyi julkisen liikenteen, koulukuljetusten, kilpailutusten, pöytäkirjojen tai strategioiden viitteitä, mutta ei nykyistä käyttäjälle hyödyllistä asiointi-, palvelu- tai kutsuliikennesivua.
+- Kinnulan, Kivijärven ja Kyyjärven palveluliikennettä: aiempi havainto pysyy voimassa, eli lähteet olivat koulukuljetus-, pöytäkirja- tai suunnittelutasoa.
+- Hattulan ja Humppilan palveluliikennettä: ei löytynyt selkeää nykyistä käyttäjälinkkiä; Humppilan selkeä lähde koskee julkista Jubilee Line -liikennettä, ei erillistä palveluliikennettä.
+
+Pohjois-Pohjanmaan palveluliikenteen jatkoerässä lisättiin vahvistetut käyttäjälinkit:
+
+| Kunnat | Linkki | Peruste |
+| --- | --- | --- |
+| Ii | Iin Iikka-linja | Kunnan liikenne- ja kuljetuspalvelusivu kertoo, että Iikka on kaikille avoin linja, huomioi ikääntyneet ja huonosti liikkuvat matkustajat sekä sisältää ennakkotilauksella toimivan kutsuohjauksen. |
+| Kuusamo | Kuusamon sivukylien asiointiliikenne | Kaupungin paikallisliikennesivu kertoo kerran viikossa tilattavasta sivukylien asiointiliikenteestä, kutsusta toimivista kuljetuksista, maksusta ja voimassaolosta 1.9.2021-31.8.2026. |
+| Reisjärvi | Reisjärven asiointikuljetus | Kunnan 29.6.2026 käyttäjätiedote kertoo 9.7.2026 alkavasta asiointikuljetuksesta, kotiovelta asiointiin kulkevasta palvelusta, reiteistä, hinnasta ja varausnumerosta. |
+
+Ei lisätty:
+
+- Haapajärven, Haapaveden, Kalajoen, Kempeleen, Limingan, Lumijoen, Merijärven, Muhoksen, Sievin, Utajärven ja Ylivieskan palveluliikennettä: löytyi selkeitä julkisen joukkoliikenteen sivuja, mutta ei erillistä nykyistä palvelu-, asiointi- tai kutsuliikenteen käyttäjäsivua.
+- Hailuodon palveluliikennettä: aiemmin löytynyt kokeilu koski marras-joulukuuta 2025, joten sitä ei lisätty nykyiseksi käyttäjälinkiksi.
+- Pyhäjoen kylätaksia: löytynyt käyttäjäsivu oli vanha jatkohankinnan tiedote, eikä se vahvista palvelun nykyistä jatkuvuutta vuonna 2026.
+
+Varsinais-Suomen palveluliikenteen jatkoerässä lisättiin vahvistetut käyttäjälinkit:
+
+| Kunnat | Linkki | Peruste |
+| --- | --- | --- |
+| Kaarina | Föli Kaarinan kutsubussi | Fölin Kutsubussi-sivu kertoo, että kutsubussiliikennettä on Kaarinassa, reitti muodostuu matkustajien tarpeiden mukaan ja bussi noutaa sovitusta paikasta. |
+| Lieto | Föli Liedon kutsubussi | Fölin Kutsubussi-sivu kertoo, että kutsubussiliikennettä on Liedossa, reitti muodostuu matkustajien tarpeiden mukaan ja bussi noutaa sovitusta paikasta. |
+| Paimio | Paimion palveluliikenne | Paimion palvelusivu kertoo kaupungin sisäisestä arkipäivien palveluliikenteestä, Jalobus Oy:n liikennöinnistä ja Föli-tunnuksesta P5. |
+| Raisio | Föli Fölix Raisio | Fölin Fölix-sivu kertoo kaikille avoimesta Raision alueen taksikuljetuksen ja Föli-bussimatkan yhdistävästä palvelusta. |
+| Turku | Föli Turun asiointilinjat | Fölin runkolinjastosivu kertoo Turun 40-numeroisista asiointilinjoista, joista osa ajaa entisten palvelulinjojen reittejä ja jotka pysähtyvät palvelulinjojen tapaan sinisillä alueilla. |
+
+Ei lisätty:
+
+- Auran, Kemiönsaaren, Koski Tl:n, Kustavin, Marttilan, Nousiaisten, Oripään, Ruskon ja Vehmaan palveluliikennettä: löytyi julkisen liikenteen, Seutu+- tai Föli-yhteyksien, koululaisvuorojen, yksityisten taksien tai vanhojen talousasiakirjojen viitteitä, mutta ei nykyistä virallista käyttäjälle hyödyllistä palvelu-, asiointi- tai kutsuliikennesivua.
+
+Satakunnan työpaketin julkisen liikenteen lisähaussa lisättiin vahvistetut käyttäjälinkit:
+
+| Kunnat | Linkki | Peruste |
+| --- | --- | --- |
+| Huittinen | Huittisten joukkoliikenne | Kaupungin joukkoliikennesivu kokoaa kaikille avoimet koulupäivien linja-autovuorot, Huitsikan, Matkahuollon ja Matka.fi:n aikataululinkit. |
+| Kankaanpää | Kankaanpään liikenneyhteydet | Kaupungin liikenneyhteyssivu kertoo useista päivittäisistä Pori-yhteyksistä, ohjaa Seutu+ aikatauluihin ja kuvaa pysyvän Kankaanpää-Parkano-rautatieaseman kutsuliikenteen. |
+| Rauma | Rauman Gyyt | Kaupungin reitit ja aikataulut -sivu kokoaa Gyyt-linjat, kesäkauden 2026 aikataulut, reittioppaat sekä Seutu+ ja kaukoliikenteen yhteydet. |
+
+Satakunnan palveluliikenteen puutteisiin ei tässä lisähaussa lisätty uusia linkkejä. Euran, Eurajoen, Harjavallan, Jämijärven, Karvian, Kokemäen, Merikarvian, Nakkilan, Pomarkun, Porin, Siikaisten, Säkylän ja Ulvilan kohdalla löytyi julkisen liikenteen, taksien, Seutu+-yhteyksien, koulukuljetusten tai vanhojen suunnitteluasiakirjojen viitteitä, mutta ei nykyistä virallista palvelu-, asiointi- tai kutsuliikenteen käyttäjäsivua.
+
 ## Jäljellä oleva täyttöaalto
 
 Aloita jatkossa palveluliikenteen puutteista. Kriittistä listaa, jossa sekä julkisen liikenteen seudullinen/oma linkki että palveluliikenteen oma linkki puuttuvat, ei enää ole.
 
 | Prioriteetti | Alue | Ensimmäiset palveluliikenteen puutteet |
 | ---: | --- | --- |
-| 1 | Keski-Suomen hyvinvointialue | Hankasalmi, Kannonkoski, Kinnula, Kivijärvi, Konnevesi, Kyyjärvi, Petäjävesi, Saarijärvi, Uurainen |
-| 2 | Pohjois-Pohjanmaan hyvinvointialue | Haapajärvi, Merijärvi, Pyhäjoki, Reisjärvi |
+| 1 | Keski-Suomen hyvinvointialue | Hankasalmi, Kannonkoski, Kinnula, Kivijärvi, Konnevesi, Kyyjärvi, Saarijärvi |
+| 2 | Pohjois-Pohjanmaan hyvinvointialue | Haapajärvi, Merijärvi, Pyhäjoki |
 | 3 | Keski-Pohjanmaan hyvinvointialue | Halsua, Kannus, Kaustinen, Lestijärvi, Perho, Toholampi, Veteli |
-| 4 | Varsinais-Suomen hyvinvointialue | Aura, Kemiönsaari, Koski Tl, Kustavi, Marttila, Nousiainen, Oripää, Vehmaa |
+| 4 | Varsinais-Suomen hyvinvointialue | Aura, Kemiönsaari, Koski Tl, Kustavi, Marttila, Nousiainen, Oripää, Rusko, Vehmaa |
 
 ## Muut alueelliset linkkikorit
 
@@ -440,6 +491,18 @@ Yhden ylläpitökerran realistinen tavoite on yksi hyvinvointialue tai 5-10 kunt
 - Merijärven kuntainfo: `https://www.merijarvi.fi/hallinto-ja-paatoksenteko/kuntainfo`
 - Pyhäjoen Pyhäjoki-Raahe-Oulu-vuorot: `https://www.pyhajoki.fi/ajankohtaista/uudet-linja-autovuorot-taydentavat-vuorotarjontaa-pyhajoen-raahen-ja-oulun-valilla`
 - Reisjärven julkinen liikenne: `https://www.reisjarvi.fi/tagit/julkinen-liikenne-linja-auto`
+- Iin liikenne- ja kuljetuspalvelut: `https://www.ii.fi/liikenne-ja-kuljetuspalvelut`
+- Kuusamon paikallisliikenne ja sivukylien asiointiliikenne: `https://www.kuusamo.fi/asuminen-ja-ymparisto/asuminen/paikallisliikenne/`
+- Reisjärven asiointikuljetuspalvelut: `https://www.reisjarvi.fi/ajankohtaista/reisjarven-asiointikuljetuspalvelut-jatkuvat-972026-uusi-puhelinnumero`
+- Föli Kutsubussi: `https://www.foli.fi/fi/aikataulut-ja-reitit/kutsubussi`
+- Paimion palveluliikenne: `https://www.paimio.fi/palvelu/palveluliikenne/`
+- Föli Fölix Raisio: `https://www.foli.fi/fi/aikataulut-ja-reitit/f%C3%B6li-taxi-f%C3%B6lix`
+- Föli runkolinjasto ja Turun asiointilinjat: `https://www.foli.fi/fi/runkolinjasto`
+- Petäjäveden asiointiliikenne: `https://www.petajavesi.fi/info-ja-asiointi/asiontiliikenne/`
+- Uuraisten ennaltaehkäisevä työ ja kutsutaksi: `https://uurainen.fi/sosiaali-ja-terveyspalvelut/ikaihmiset/ennaltaehkaiseva-tyo-ja-arjen-tukeminen/`
+- Huittisten joukkoliikenne: `https://www.huittinen.fi/asuminen-ja-ymparisto/asuminen-ymparisto-ja-liikenne/joukkoliikenne/`
+- Kankaanpään liikenneyhteydet: `https://www.kankaanpaa.fi/kaupunki-ja-hallinto/kankaanpaa-info/liikenneyhteydet/`
+- Rauman Gyyt, reitit ja aikataulut: `https://www.rauma.fi/asuminen-ja-rakentaminen/kadut-ja-liikenne/joukkoliikenne/reitit-ja-aikataulut/`
 - Kauhajoen avoin joukkoliikenne ja Karijoki-Kauhajoki-reitti: `https://kauhajoki.fi/tyo-ja-yrittajyys/liikenne/avoin-joukkoliikenne-ja-koulukuljetukset/`
 - Teuvan liikenne: `https://site.teuva.fi/e/site?node_id=81`
 - Ähtärin liikenneyhteydet ja sijainti: `https://www.ahtari.fi/index.php/kaupunki-ja-hallinto/tietoa-ahtarista/liikenneyhteydet-ja-sijainti`

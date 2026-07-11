@@ -1,15 +1,15 @@
 {
-  "generatedAt": "2026-07-10T05:21:19.325Z",
+  "generatedAt": "2026-07-11T20:59:18.708Z",
   "municipalityCount": 308,
   "counts": {
     "publicTransport": {
-      "ok-regional": 179,
-      "fallback-national": 84,
+      "ok-regional": 182,
+      "fallback-national": 81,
       "ok-own": 45
     },
     "serviceTransport": {
-      "ok-own": 185,
-      "missing": 123
+      "ok-own": 195,
+      "missing": 113
     },
     "localNewsFeed": {
       "ok-own": 44,
@@ -672,9 +672,9 @@
       "wellbeingAreaCode": "06",
       "wellbeingAreaName": "Satakunnan hyvinvointialue",
       "publicTransport": {
-        "status": "fallback-national",
-        "providerName": "Matkahuollon reittiopas",
-        "area": "Suomi"
+        "status": "ok-regional",
+        "providerName": "Huittisten joukkoliikenne",
+        "area": "Huittisten joukkoliikenne"
       },
       "serviceTransport": {
         "status": "ok-own"
@@ -785,7 +785,7 @@
         "area": "Oulun seutu"
       },
       "serviceTransport": {
-        "status": "missing"
+        "status": "ok-own"
       },
       "localNewsFeed": {
         "status": "missing"
@@ -1217,7 +1217,7 @@
         "area": "Turun seutu"
       },
       "serviceTransport": {
-        "status": "missing"
+        "status": "ok-own"
       },
       "localNewsFeed": {
         "status": "ok-own"
@@ -1320,9 +1320,9 @@
       "wellbeingAreaCode": "06",
       "wellbeingAreaName": "Satakunnan hyvinvointialue",
       "publicTransport": {
-        "status": "fallback-national",
-        "providerName": "Matkahuollon reittiopas",
-        "area": "Suomi"
+        "status": "ok-regional",
+        "providerName": "Kankaanpään liikenneyhteydet",
+        "area": "Kankaanpään liikenneyhteydet"
       },
       "serviceTransport": {
         "status": "ok-own"
@@ -2135,7 +2135,7 @@
         "area": "Kuusamo"
       },
       "serviceTransport": {
-        "status": "missing"
+        "status": "ok-own"
       },
       "localNewsFeed": {
         "status": "missing"
@@ -2495,7 +2495,7 @@
         "area": "Turun seutu"
       },
       "serviceTransport": {
-        "status": "missing"
+        "status": "ok-own"
       },
       "localNewsFeed": {
         "status": "missing"
@@ -3305,7 +3305,7 @@
         "area": "Turun seutu"
       },
       "serviceTransport": {
-        "status": "missing"
+        "status": "ok-own"
       },
       "localNewsFeed": {
         "status": "ok-own"
@@ -3467,7 +3467,7 @@
         "area": "Jyväskylän seutu"
       },
       "serviceTransport": {
-        "status": "missing"
+        "status": "ok-own"
       },
       "localNewsFeed": {
         "status": "missing"
@@ -3935,7 +3935,7 @@
         "area": "Turun seutu"
       },
       "serviceTransport": {
-        "status": "missing"
+        "status": "ok-own"
       },
       "localNewsFeed": {
         "status": "missing"
@@ -3984,9 +3984,9 @@
       "wellbeingAreaCode": "06",
       "wellbeingAreaName": "Satakunnan hyvinvointialue",
       "publicTransport": {
-        "status": "fallback-national",
-        "providerName": "Matkahuollon reittiopas",
-        "area": "Suomi"
+        "status": "ok-regional",
+        "providerName": "Rauman Gyyt",
+        "area": "Rauman Gyyt"
       },
       "serviceTransport": {
         "status": "ok-own"
@@ -4061,7 +4061,7 @@
         "area": "Reisjärvi"
       },
       "serviceTransport": {
-        "status": "missing"
+        "status": "ok-own"
       },
       "localNewsFeed": {
         "status": "missing"
@@ -4961,7 +4961,7 @@
         "area": "Turun seutu"
       },
       "serviceTransport": {
-        "status": "missing"
+        "status": "ok-own"
       },
       "localNewsFeed": {
         "status": "missing"
@@ -5105,7 +5105,7 @@
         "area": "Uurainen"
       },
       "serviceTransport": {
-        "status": "missing"
+        "status": "ok-own"
       },
       "localNewsFeed": {
         "status": "missing"

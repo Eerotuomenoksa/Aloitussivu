@@ -208,6 +208,15 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
     evidence: "PALI-palveluliikenne - Iisalmi; termit: palveluliikenne",
   },
   {
+    municipality: "ii",
+    provider: {
+      name: "Iin Iikka-linja",
+      url: "https://www.ii.fi/liikenne-ja-kuljetuspalvelut",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Liikenne- ja kuljetuspalvelut - Iin kunta; Iikka on avoin kaikille matkustajille, huomioi ikääntyneet ja huonosti liikkuvat matkustajat sekä sisältää ennakkotilauksella toimivan kutsuohjauksen; tarkistettu 2026-07-10",
+  },
+  {
     municipality: "iitti",
     provider: {
       name: "Iitti palveluliikenne",
@@ -332,6 +341,15 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
       group: 'Palveluliikenne',
     },
     evidence: "Järvenpään kaupungin palveluliikenne palvelee arkisin ja lauantaisin | Järvenpää; termit: palveluliikenne; palvelubussi",
+  },
+  {
+    municipality: "kaarina",
+    provider: {
+      name: "Föli Kaarinan kutsubussi",
+      url: "https://www.foli.fi/fi/aikataulut-ja-reitit/kutsubussi",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Kutsubussi - Föli; kutsubussiliikennettä on Kaarinassa, reitti muodostuu matkustajien tarpeiden mukaan ja bussi noutaa sovitusta paikasta; tarkistettu 2026-07-10",
   },
   {
     municipality: "kajaani",
@@ -577,6 +595,15 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
     evidence: "Palveluliikenne – Kurikka; termit: palveluliikenne; asiointiliikenne; palvelubussi",
   },
   {
+    municipality: "kuusamo",
+    provider: {
+      name: "Kuusamo sivukylien asiointiliikenne",
+      url: "https://www.kuusamo.fi/asuminen-ja-ymparisto/asuminen/paikallisliikenne/",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Paikallisliikenne - Kuusamo; sivukylien kerran viikossa tilattava asiointiliikenne; voimassa 1.9.2021-31.8.2026; tarkistettu 2026-07-10",
+  },
+  {
     municipality: "kärkölä",
     provider: {
       name: "Kärkölä palveluliikenne",
@@ -683,6 +710,15 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
       group: 'Palveluliikenne',
     },
     evidence: "Kuljetus, liikennöinti ja joukkoliikenne - Lieksa; kaikille avointa kutsuohjattua esteetöntä asiointiliikennettä ovelta ovelle; tarkistettu 2026-07-09",
+  },
+  {
+    municipality: "lieto",
+    provider: {
+      name: "Föli Liedon kutsubussi",
+      url: "https://www.foli.fi/fi/aikataulut-ja-reitit/kutsubussi",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Kutsubussi - Föli; kutsubussiliikennettä on Liedossa, reitti muodostuu matkustajien tarpeiden mukaan ja bussi noutaa sovitusta paikasta; tarkistettu 2026-07-10",
   },
   {
     municipality: "lohja",
@@ -937,6 +973,15 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
     evidence: "Joukkoliikenne - Padasjoki; termit: kutsutaksi",
   },
   {
+    municipality: "paimio",
+    provider: {
+      name: "Paimio palveluliikenne",
+      url: "https://www.paimio.fi/palvelu/palveluliikenne/",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Palveluliikenne - Paimio; kaupungin sisäinen palveluliikenne liikennöi arkipäivisin klo 7.30-15.30, liikennöitsijänä Jalobus Oy ja bussin tunnuksena P5 (Föli); tarkistettu 2026-07-10",
+  },
+  {
     municipality: "paltamo",
     provider: {
       name: "Paltamo palveluliikenne",
@@ -998,6 +1043,15 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
       group: 'Palveluliikenne',
     },
     evidence: "Palvelulinja - Pedersören kunta; termit: palvelulinja; jokaisena arkipäivänä; kaikille kuntalaisille; reitit Pietarsaareen; tarkistettu 2026-07-09",
+  },
+  {
+    municipality: "petäjävesi",
+    provider: {
+      name: "Petäjävesi asiointiliikenne",
+      url: "https://www.petajavesi.fi/info-ja-asiointi/asiontiliikenne/",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Asiointiliikenne - Petäjävesi; Matka Mäkelä Oy 2025-2027; ennakkotilausperusteinen asiointiliikenne; tarkistettu 2026-07-10",
   },
   {
     municipality: "pietarsaari",
@@ -1144,6 +1198,15 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
     evidence: "Liikenne | Raahe.fi; termit: palveluliikenne; kutsuliikenne; kutsutaksi; palvelubussi",
   },
   {
+    municipality: "raisio",
+    provider: {
+      name: "Föli Fölix Raisio",
+      url: "https://www.foli.fi/fi/aikataulut-ja-reitit/f%C3%B6li-taxi-f%C3%B6lix",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Föli + taxi = Fölix; Fölix sisältää taksikuljetuksen Raision kaupungin alueella ja bussimatkan Föli-alueella, ja palvelua voi käyttää kuka tahansa; tarkistettu 2026-07-10",
+  },
+  {
     municipality: "rantasalmi",
     provider: {
       name: "Rantasalmi palveluliikenne",
@@ -1196,6 +1259,15 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
       group: 'Palveluliikenne',
     },
     evidence: "Asiointiliikenne - Rautjärvi; termit: asiointiliikenne; asiointikyyti",
+  },
+  {
+    municipality: "reisjärvi",
+    provider: {
+      name: "Reisjärvi asiointikuljetus",
+      url: "https://www.reisjarvi.fi/ajankohtaista/reisjarven-asiointikuljetuspalvelut-jatkuvat-972026-uusi-puhelinnumero",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Reisjärven asiointikuljetuspalvelut jatkuvat 9.7.2026; Wiimax; kerran viikossa torstaisin; kotiovelta asiointiin ja takaisin; tarkistettu 2026-07-10",
   },
   {
     municipality: "riihimäki",
@@ -1495,6 +1567,15 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
     evidence: "Julkinen liikenne - Tornio; termit: palveluliikenne",
   },
   {
+    municipality: "turku",
+    provider: {
+      name: "Föli Turun asiointilinjat",
+      url: "https://www.foli.fi/fi/runkolinjasto",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Runkolinjasto - Föli; Turun 40-numeroiset linjat ovat asiointilinjoja, osa ajaa entisten palvelulinjojen reittejä, ja asiointilinjoilla pysähdytään palvelulinjojen tapaan sinisillä alueilla; tarkistettu 2026-07-10",
+  },
+  {
     municipality: "tuusniemi",
     provider: {
       name: "Tuusniemi palveluliikenne",
@@ -1511,6 +1592,15 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
       group: 'Palveluliikenne',
     },
     evidence: "Joukkoliikenne - Tyrnävän kunta; termit: palveluliikenne",
+  },
+  {
+    municipality: "uurainen",
+    provider: {
+      name: "Uurainen kutsutaksi",
+      url: "https://uurainen.fi/sosiaali-ja-terveyspalvelut/ikaihmiset/ennaltaehkaiseva-tyo-ja-arjen-tukeminen/",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Ennaltaehkäisevä työ ja arjen tukeminen - Uurainen; kutsutaksipäivä torstaisin; asiointiaika 1-2 tuntia; tarkistettu 2026-07-10",
   },
   {
     municipality: "urjala",

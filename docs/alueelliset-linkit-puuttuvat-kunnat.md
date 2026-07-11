@@ -1,6 +1,6 @@
 # Alueellisten linkkien kattavuus ja puuttuvat kuntalinkit
 
-Päivitetty: 10.7.2026
+Päivitetty: 11.7.2026
 
 Tämä raportti tukee puuttuvien alueellisten linkkien täydentämistä. Se ei vielä todista, ettei kunnassa ole palvelua, vaan kertoo missä Aloitussivun datassa ei ole omaa tai seudullista linkkiä.
 
@@ -14,9 +14,9 @@ Kuntia yhteensä: 308
 
 | Tila | Kuntia |
 | --- | ---: |
-| fallback-national | 84 |
+| fallback-national | 81 |
 | ok-own | 45 |
-| ok-regional | 179 |
+| ok-regional | 182 |
 
 Tulkinta:
 
@@ -28,8 +28,8 @@ Tulkinta:
 
 | Tila | Kuntia |
 | --- | ---: |
-| missing | 123 |
-| ok-own | 185 |
+| missing | 113 |
+| ok-own | 195 |
 
 ### Paikallisuutisten RSS-syötteet
 
@@ -102,10 +102,6 @@ Joroinen, Rautavaara, Tervo, Vesanto
 
 Hartola, Iitti, Kärkölä, Sysmä
 
-### Satakunnan hyvinvointialue, 3 kuntaa
-
-Huittinen, Kankaanpää, Rauma
-
 
 
 ## Palveluliikenne: oma linkki puuttuu datasta
@@ -144,9 +140,9 @@ Hattula, Humppila
 
 Halsua, Kannus, Kaustinen, Lestijärvi, Perho, Toholampi, Veteli
 
-### Keski-Suomen hyvinvointialue, 9 kuntaa
+### Keski-Suomen hyvinvointialue, 7 kuntaa
 
-Hankasalmi, Kannonkoski, Kinnula, Kivijärvi, Konnevesi, Kyyjärvi, Petäjävesi, Saarijärvi, Uurainen
+Hankasalmi, Kannonkoski, Kinnula, Kivijärvi, Konnevesi, Kyyjärvi, Saarijärvi
 
 ### Keski-Uudenmaan hyvinvointialue, 2 kuntaa
 
@@ -176,9 +172,9 @@ Kaskinen, Korsnäs, Kruunupyy, Laihia, Maalahti, Mustasaari, Uusikaarlepyy, Vöy
 
 Juuka, Liperi
 
-### Pohjois-Pohjanmaan hyvinvointialue, 16 kuntaa
+### Pohjois-Pohjanmaan hyvinvointialue, 13 kuntaa
 
-Haapajärvi, Haapavesi, Hailuoto, Ii, Kalajoki, Kempele, Kuusamo, Liminka, Lumijoki, Merijärvi, Muhos, Pyhäjoki, Reisjärvi, Sievi, Utajärvi, Ylivieska
+Haapajärvi, Haapavesi, Hailuoto, Kalajoki, Kempele, Liminka, Lumijoki, Merijärvi, Muhos, Pyhäjoki, Sievi, Utajärvi, Ylivieska
 
 ### Pohjois-Savon hyvinvointialue, 1 kuntaa
 
@@ -196,9 +192,9 @@ Eura, Eurajoki, Harjavalta, Jämijärvi, Karvia, Kokemäki, Merikarvia, Nakkila,
 
 Kerava, Vantaa
 
-### Varsinais-Suomen hyvinvointialue, 14 kuntaa
+### Varsinais-Suomen hyvinvointialue, 9 kuntaa
 
-Aura, Kaarina, Kemiönsaari, Koski Tl, Kustavi, Lieto, Marttila, Nousiainen, Oripää, Paimio, Raisio, Rusko, Turku, Vehmaa
+Aura, Kemiönsaari, Koski Tl, Kustavi, Marttila, Nousiainen, Oripää, Rusko, Vehmaa
 
 
 
