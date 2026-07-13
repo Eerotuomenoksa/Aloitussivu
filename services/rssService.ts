@@ -33,11 +33,18 @@ const decodeText = (value: string) => {
   return decoded.trim();
 };
 
+const withFeedMetadata = (headline: LocalNewsHeadline, feed: RssFeedConfig): LocalNewsHeadline => ({
+  ...headline,
+  sourceType: feed.sourceType,
+  sourcePriority: feed.sourcePriority,
+  sourceKey: feed.sourceKey ?? feed.url,
+});
+
 const fetchDirectFeed = async (feed: RssFeedConfig) => {
   const response = await fetch(feed.url);
   if (!response.ok) throw new Error('RSS-syötettä ei voitu hakea.');
   const xml = await response.text();
-  return parseFeed(xml, feed.name);
+  return parseFeed(xml, feed).map((headline) => withFeedMetadata(headline, feed));
 };
 
 const fetchRss2JsonFeed = async (feed: RssFeedConfig) => {
@@ -54,7 +61,8 @@ const fetchRss2JsonFeed = async (feed: RssFeedConfig) => {
     link: item.link ?? '',
     source,
     publishedAt: item.pubDate,
-  })).filter((headline) => headline.title && headline.link);
+  })).filter((headline) => headline.title && headline.link)
+    .map((headline) => withFeedMetadata(headline, feed));
 };
 
 const fetchTextWithCorsFallback = async (url: string) => {
@@ -92,6 +100,30 @@ const parseFinnishPublishedAt = (value: string) => {
   ).toISOString();
 };
 
+const isLikelyNewsLink = (headline: LocalNewsHeadline, feed: RssFeedConfig) => {
+  const title = headline.title.toLocaleLowerCase('fi-FI');
+  if (!headline.title || !headline.link || headline.title.length < 12) return false;
+  if (title.includes('image:') || title.includes('kuva:')) return false;
+  if (/^(kirjaudu|tilaa|mainos|asiakaspalvelu|näytä lisää|lue lisää)$/i.test(headline.title)) return false;
+
+  let url: URL;
+  try {
+    url = new URL(headline.link);
+  } catch {
+    return false;
+  }
+
+  const path = url.pathname.toLocaleLowerCase('fi-FI');
+  if (path.endsWith('/fi/uutiset') || path.endsWith('/uutiset') || path.endsWith('/nyheter')) return false;
+  if (path.includes('/uutiset/') || path.includes('/nyheter/') || path.includes('/ajankohtaista/') || path.includes('/tiedotteet/')) return true;
+  if (feed.sourceType === 'yle' && url.hostname.includes('yle.fi') && path.startsWith('/a/')) return true;
+  if (['regional-newspaper', 'regional-news', 'national-newspaper'].includes(feed.sourceType ?? '')) {
+    return /\/(art-|paikalliset|maakunta|lappi|satakunta|pirkanmaa|savo|karjala|kainuu|oulu|turku|tampere|helsinki|kymenlaakso|hame|häme)\b/.test(path);
+  }
+
+  return false;
+};
+
 const fetchHtmlNewsPage = async (feed: RssFeedConfig) => {
   const html = await fetchTextWithCorsFallback(feed.url);
   const doc = new DOMParser().parseFromString(html, 'text/html');
@@ -110,12 +142,8 @@ const fetchHtmlNewsPage = async (feed: RssFeedConfig) => {
         publishedAt: parseFinnishPublishedAt(publishedText),
       };
     })
-    .filter((headline) => (
-      headline.title
-      && headline.link.includes('/uutiset/')
-      && !headline.link.endsWith('/fi/uutiset')
-      && !headline.title.toLocaleLowerCase('fi-FI').includes('image:')
-    ));
+    .filter((headline) => isLikelyNewsLink(headline, feed))
+    .map((headline) => withFeedMetadata(headline, feed));
 };
 
 const readFirstText = (element: Element, selectors: string[]) => {
@@ -135,7 +163,7 @@ const readFirstLink = (element: Element) => {
   return rssLink || '';
 };
 
-const parseFeed = (xml: string, source: string): LocalNewsHeadline[] => {
+const parseFeed = (xml: string, feed: RssFeedConfig): LocalNewsHeadline[] => {
   const doc = new DOMParser().parseFromString(xml, 'text/xml');
   const parserError = doc.querySelector('parsererror');
   if (parserError) throw new Error('RSS-syöte ei ollut luettavassa muodossa.');
@@ -144,7 +172,7 @@ const parseFeed = (xml: string, source: string): LocalNewsHeadline[] => {
   return items.map((item) => ({
     title: readFirstText(item, ['title']),
     link: readFirstLink(item),
-    source,
+    source: feed.name,
     publishedAt: readFirstText(item, ['pubDate', 'published', 'updated']),
   })).filter((headline) => headline.title && headline.link);
 };
@@ -167,6 +195,59 @@ const getPublishedAtTime = (value?: string) => {
   return Number.isNaN(time) ? Number.NEGATIVE_INFINITY : time;
 };
 
+const getHeadlineSourceKey = (headline: LocalNewsHeadline) => (
+  headline.sourceKey ?? headline.source
+);
+
+const getHeadlineLane = (headline: LocalNewsHeadline) => {
+  if (['local-newspaper', 'regional-newspaper', 'regional-news', 'national-newspaper'].includes(headline.sourceType ?? '')) {
+    return 'journalistic';
+  }
+  if (['municipality', 'yle'].includes(headline.sourceType ?? '')) {
+    return 'municipality';
+  }
+  if (headline.sourceType === 'wellbeing-area') {
+    return 'wellbeing-area';
+  }
+  return headline.sourceKey ? `source:${headline.sourceKey}` : '';
+};
+
+const selectDistinctHeadlines = (headlines: LocalNewsHeadline[], limit: number) => {
+  const uniqueHeadlines = headlines
+    .filter((headline, index, all) => all.findIndex((item) => item.link === headline.link) === index)
+    .sort((a, b) => {
+      const priorityDiff = (a.sourcePriority ?? 100) - (b.sourcePriority ?? 100);
+      if (priorityDiff !== 0) return priorityDiff;
+      return getPublishedAtTime(b.publishedAt) - getPublishedAtTime(a.publishedAt);
+    });
+  const selected: LocalNewsHeadline[] = [];
+  const usedLanes = new Set<string>();
+  const usedSources = new Set<string>();
+
+  for (const headline of uniqueHeadlines) {
+    const sourceKey = getHeadlineSourceKey(headline);
+    const lane = getHeadlineLane(headline);
+    if (sourceKey && usedSources.has(sourceKey)) continue;
+    if (lane && usedLanes.has(lane)) continue;
+
+    selected.push(headline);
+    if (sourceKey) usedSources.add(sourceKey);
+    if (lane) usedLanes.add(lane);
+    if (selected.length >= limit) return selected;
+  }
+
+  for (const headline of uniqueHeadlines) {
+    const sourceKey = getHeadlineSourceKey(headline);
+    if (sourceKey && usedSources.has(sourceKey)) continue;
+
+    selected.push(headline);
+    if (sourceKey) usedSources.add(sourceKey);
+    if (selected.length >= limit) return selected;
+  }
+
+  return selected;
+};
+
 export const fetchLocalNewsHeadlines = async (feeds: RssFeedConfig[], limit = 3): Promise<LocalNewsHeadline[]> => {
   const headlines: LocalNewsHeadline[] = [];
 
@@ -178,8 +259,5 @@ export const fetchLocalNewsHeadlines = async (feeds: RssFeedConfig[], limit = 3)
     }
   }
 
-  return headlines
-    .filter((headline, index, all) => all.findIndex((item) => item.link === headline.link) === index)
-    .sort((a, b) => getPublishedAtTime(b.publishedAt) - getPublishedAtTime(a.publishedAt))
-    .slice(0, limit);
+  return selectDistinctHeadlines(headlines, limit);
 };

@@ -5,10 +5,10 @@ Alavieska,Pohjois-Pohjanmaan hyvinvointialue,kyllä,,Alavieska uutiset (https://
 Alavus,Etelä-Pohjanmaan hyvinvointialue,ei,,,Hyvinvointialueen uutiset: Etelä-Pohjanmaan hyvinvointialue (https://www.hyvaep.fi/ajankohtaista/),wellbeing-area-news-only
 Asikkala,Päijät-Hämeen hyvinvointialue,kyllä,,Asikkala uutiset (https://asikkala.fi/feed/),Hyvinvointialueen uutiset: Päijät-Hämeen hyvinvointialue (https://paijatha.fi/ajankohtaista/),own-news-flow
 Askola,Itä-Uudenmaan hyvinvointialue,kyllä,,Askola uutiset (https://askola.fi/feed/),Hyvinvointialueen uutiset: Itä-Uudenmaan hyvinvointialue (https://itauusimaa.fi/ajankohtaista/),own-news-flow
-Aura,Varsinais-Suomen hyvinvointialue,ei,,,Hyvinvointialueen uutiset: Varsinais-Suomen hyvinvointialue (https://www.varha.fi/fi/ajankohtaista),wellbeing-area-news-only
+Aura,Varsinais-Suomen hyvinvointialue,kyllä,Auranmaan Viikkolehti (https://www.avl.fi/feed/),,Hyvinvointialueen uutiset: Varsinais-Suomen hyvinvointialue (https://www.varha.fi/fi/ajankohtaista),own-news-flow
 Brändö,Ahvenanmaa,kyllä,,Brändö uutiset (https://www.brando.ax/feed/),Hyvinvointialueen uutiset: Ahvenanmaa (https://www.ahs.ax/nyheter),own-news-flow
 Eckerö,Ahvenanmaa,ei,,,Hyvinvointialueen uutiset: Ahvenanmaa (https://www.ahs.ax/nyheter),wellbeing-area-news-only
-Enonkoski,Etelä-Savon hyvinvointialue,kyllä,,Enonkoski uutiset (https://enonkoski.fi/feed/),Hyvinvointialueen uutiset: Etelä-Savon hyvinvointialue (https://etelasavonha.fi/eloisa/uutiset/),own-news-flow
+Enonkoski,Etelä-Savon hyvinvointialue,kyllä,Puruvesi (https://www.puruvesi.net/feed/rss/),Enonkoski uutiset (https://enonkoski.fi/feed/),Hyvinvointialueen uutiset: Etelä-Savon hyvinvointialue (https://etelasavonha.fi/eloisa/uutiset/),own-news-flow
 Enontekiö,Lapin hyvinvointialue,ei,,,Hyvinvointialueen uutiset: Lapin hyvinvointialue (https://lapha.fi/ajankohtaista),wellbeing-area-news-only
 Espoo,Länsi-Uudenmaan hyvinvointialue,kyllä,,"Espoon uutiset (https://www.espoo.fi/fi/rss/news); Espoon artikkelit (https://www.espoo.fi/fi/rss/articles)",Hyvinvointialueen uutiset: Länsi-Uudenmaan hyvinvointialue (https://www.luvn.fi/fi/haku?q=&type=news),own-news-flow
 Eura,Satakunnan hyvinvointialue,kyllä,,Eura uutiset (https://www.eura.fi/feed/),Hyvinvointialueen uutiset: Satakunnan hyvinvointialue (https://sata.fi/ajankohtaista/),own-news-flow
@@ -66,13 +66,13 @@ Jämijärvi,Satakunnan hyvinvointialue,ei,,,Hyvinvointialueen uutiset: Satakunna
 Jämsä,Keski-Suomen hyvinvointialue,ei,,,Hyvinvointialueen uutiset: Keski-Suomen hyvinvointialue (https://www.hyvaks.fi/uutiset),wellbeing-area-news-only
 Järvenpää,Keski-Uudenmaan hyvinvointialue,kyllä,,Järvenpää uutiset (https://www.jarvenpaa.fi/feed),Hyvinvointialueen uutiset: Keski-Uudenmaan hyvinvointialue (https://www.keusote.fi/ajankohtaista/),own-news-flow
 Kaarina,Varsinais-Suomen hyvinvointialue,kyllä,"Kaarina-lehti (https://www.kaarina-lehti.fi/feed/); Kunnallislehti Paimio-Sauvo-Kaarina (https://www.kuntsari.fi/feed/)",,Hyvinvointialueen uutiset: Varsinais-Suomen hyvinvointialue (https://www.varha.fi/fi/ajankohtaista),own-news-flow
-Kaavi,Pohjois-Savon hyvinvointialue,kyllä,,Kaavi uutiset (https://kaavi.fi/feed/),Hyvinvointialueen uutiset: Pohjois-Savon hyvinvointialue (https://pshyvinvointialue.fi/fi/ajankohtaiset),own-news-flow
+Kaavi,Pohjois-Savon hyvinvointialue,kyllä,Koillis-Savo (https://www.koillis-savo.fi/feed/rss/),Kaavi uutiset (https://kaavi.fi/feed/),Hyvinvointialueen uutiset: Pohjois-Savon hyvinvointialue (https://pshyvinvointialue.fi/fi/ajankohtaiset),own-news-flow
 Kajaani,Kainuun hyvinvointialue,kyllä,,Kajaani uutiset (https://kajaani.fi/feed/),Hyvinvointialueen uutiset: Kainuun hyvinvointialue (https://hyvinvointialue.kainuu.fi/tiedotteet),own-news-flow
 Kalajoki,Pohjois-Pohjanmaan hyvinvointialue,kyllä,Kalajoen Seutu (https://kalajoenseutu.net/feed/),,Hyvinvointialueen uutiset: Pohjois-Pohjanmaan hyvinvointialue (https://pohde.fi/ajankohtaista/),own-news-flow
-Kangasala,Pirkanmaan hyvinvointialue,kyllä,Kangasalan Sanomat (https://kangasalansanomat.fi/feed/),,Hyvinvointialueen uutiset: Pirkanmaan hyvinvointialue (https://www.pirha.fi/ajankohtaista/pirha-nyt),own-news-flow
+Kangasala,Pirkanmaan hyvinvointialue,kyllä,"Kangasalan Sanomat (https://kangasalansanomat.fi/feed/); Sydän-Hämeen Lehti (https://shl.fi/feed/)",,Hyvinvointialueen uutiset: Pirkanmaan hyvinvointialue (https://www.pirha.fi/ajankohtaista/pirha-nyt),own-news-flow
 Kangasniemi,Etelä-Savon hyvinvointialue,kyllä,Kangasniemen Kunnallislehti (https://www.kangasniemenlehti.fi/feed/rss),,Hyvinvointialueen uutiset: Etelä-Savon hyvinvointialue (https://etelasavonha.fi/eloisa/uutiset/),own-news-flow
 Kankaanpää,Satakunnan hyvinvointialue,kyllä,,Kankaanpää uutiset (https://www.kankaanpaa.fi/feed/),Hyvinvointialueen uutiset: Satakunnan hyvinvointialue (https://sata.fi/ajankohtaista/),own-news-flow
-Kannonkoski,Keski-Suomen hyvinvointialue,kyllä,,Kannonkoski uutiset (https://kannonkoski.fi/rss.xml),Hyvinvointialueen uutiset: Keski-Suomen hyvinvointialue (https://www.hyvaks.fi/uutiset),own-news-flow
+Kannonkoski,Keski-Suomen hyvinvointialue,kyllä,Sampo (https://www.sampolehti.fi/feed/rss/),Kannonkoski uutiset (https://kannonkoski.fi/rss.xml),Hyvinvointialueen uutiset: Keski-Suomen hyvinvointialue (https://www.hyvaks.fi/uutiset),own-news-flow
 Kannus,Keski-Pohjanmaan hyvinvointialue,kyllä,,Kannus uutiset (https://kannus.fi/feed/),Hyvinvointialueen uutiset: Keski-Pohjanmaan hyvinvointialue (https://soite.fi/soite/ajankohtaista/),own-news-flow
 Karijoki,Etelä-Pohjanmaan hyvinvointialue,kyllä,,Karijoki uutiset (https://karijoki.fi/feed/),Hyvinvointialueen uutiset: Etelä-Pohjanmaan hyvinvointialue (https://www.hyvaep.fi/ajankohtaista/),own-news-flow
 Karkkila,Länsi-Uudenmaan hyvinvointialue,kyllä,Karkkilan Tienoo (https://www.karkkilalainen.fi/feed/rss),,Hyvinvointialueen uutiset: Länsi-Uudenmaan hyvinvointialue (https://www.luvn.fi/fi/haku?q=&type=news),own-news-flow
@@ -87,14 +87,14 @@ Keitele,Pohjois-Savon hyvinvointialue,kyllä,Pielavesi-Keitele (https://www.piel
 Kemi,Lapin hyvinvointialue,kyllä,,Kemi uutiset (https://www.kemi.fi/feed/),Hyvinvointialueen uutiset: Lapin hyvinvointialue (https://lapha.fi/ajankohtaista),own-news-flow
 Kemijärvi,Lapin hyvinvointialue,kyllä,,Kemijärvi uutiset (https://kemijarvi.fi/feed/),Hyvinvointialueen uutiset: Lapin hyvinvointialue (https://lapha.fi/ajankohtaista),own-news-flow
 Keminmaa,Lapin hyvinvointialue,ei,,,Hyvinvointialueen uutiset: Lapin hyvinvointialue (https://lapha.fi/ajankohtaista),wellbeing-area-news-only
-Kemiönsaari,Varsinais-Suomen hyvinvointialue,ei,,,Hyvinvointialueen uutiset: Varsinais-Suomen hyvinvointialue (https://www.varha.fi/fi/ajankohtaista),wellbeing-area-news-only
+Kemiönsaari,Varsinais-Suomen hyvinvointialue,kyllä,Annonsbladet (https://annonsbladet.fi/feed/),,Hyvinvointialueen uutiset: Varsinais-Suomen hyvinvointialue (https://www.varha.fi/fi/ajankohtaista),own-news-flow
 Kempele,Pohjois-Pohjanmaan hyvinvointialue,kyllä,,Kempele uutiset (https://kempele.fi/feed/),Hyvinvointialueen uutiset: Pohjois-Pohjanmaan hyvinvointialue (https://pohde.fi/ajankohtaista/),own-news-flow
 Kerava,Vantaan ja Keravan hyvinvointialue,ei,,,Hyvinvointialueen uutiset: Vantaan ja Keravan hyvinvointialue (https://vakehyva.fi/fi/ajankohtaista),wellbeing-area-news-only
 Keuruu,Keski-Suomen hyvinvointialue,kyllä,,Keuruu uutiset (https://keuruu.fi/feed/),Hyvinvointialueen uutiset: Keski-Suomen hyvinvointialue (https://www.hyvaks.fi/uutiset),own-news-flow
 Kihniö,Pirkanmaan hyvinvointialue,ei,,,Hyvinvointialueen uutiset: Pirkanmaan hyvinvointialue (https://www.pirha.fi/ajankohtaista/pirha-nyt),wellbeing-area-news-only
 Kinnula,Keski-Suomen hyvinvointialue,ei,,,Hyvinvointialueen uutiset: Keski-Suomen hyvinvointialue (https://www.hyvaks.fi/uutiset),wellbeing-area-news-only
 Kirkkonummi,Länsi-Uudenmaan hyvinvointialue,kyllä,,Kirkkonummi uutiset (https://kyrkslatt.fi/feed/),Hyvinvointialueen uutiset: Länsi-Uudenmaan hyvinvointialue (https://www.luvn.fi/fi/haku?q=&type=news),own-news-flow
-Kitee,Pohjois-Karjalan hyvinvointialue,ei,,,Hyvinvointialueen uutiset: Pohjois-Karjalan hyvinvointialue (https://www.siunsote.fi/ajankohtaista/),wellbeing-area-news-only
+Kitee,Pohjois-Karjalan hyvinvointialue,kyllä,Puruvesi (https://www.puruvesi.net/feed/rss/),,Hyvinvointialueen uutiset: Pohjois-Karjalan hyvinvointialue (https://www.siunsote.fi/ajankohtaista/),own-news-flow
 Kittilä,Lapin hyvinvointialue,kyllä,,Kittilä uutiset (https://kittila.fi/rss.xml),Hyvinvointialueen uutiset: Lapin hyvinvointialue (https://lapha.fi/ajankohtaista),own-news-flow
 Kiuruvesi,Pohjois-Savon hyvinvointialue,kyllä,Kiuruvesi-lehti (https://kiuruvesilehti.fi/feed/),,Hyvinvointialueen uutiset: Pohjois-Savon hyvinvointialue (https://pshyvinvointialue.fi/fi/ajankohtaiset),own-news-flow
 Kivijärvi,Keski-Suomen hyvinvointialue,kyllä,,Kivijärvi uutiset (https://www.kivijarvi.fi/rss.xml),Hyvinvointialueen uutiset: Keski-Suomen hyvinvointialue (https://www.hyvaks.fi/uutiset),own-news-flow
@@ -104,7 +104,7 @@ Kolari,Lapin hyvinvointialue,ei,,,Hyvinvointialueen uutiset: Lapin hyvinvointial
 Konnevesi,Keski-Suomen hyvinvointialue,kyllä,Laukaa-Konnevesi (https://www.laukaa-konnevesi.fi/feed/rss),,Hyvinvointialueen uutiset: Keski-Suomen hyvinvointialue (https://www.hyvaks.fi/uutiset),own-news-flow
 Kontiolahti,Pohjois-Karjalan hyvinvointialue,kyllä,,Kontiolahti uutiset (https://www.kontiolahti.fi/feed/),Hyvinvointialueen uutiset: Pohjois-Karjalan hyvinvointialue (https://www.siunsote.fi/ajankohtaista/),own-news-flow
 Korsnäs,Pohjanmaan hyvinvointialue,kyllä,,Korsnäs uutiset (https://www.korsnas.fi/feed/),Hyvinvointialueen uutiset: Pohjanmaan hyvinvointialue (https://pohjanmaanhyvinvointi.fi/tietoa-meista/ajankohtaista/uutiset/),own-news-flow
-Koski Tl,Varsinais-Suomen hyvinvointialue,kyllä,,Koski Tl uutiset (https://koski.fi/feed/),Hyvinvointialueen uutiset: Varsinais-Suomen hyvinvointialue (https://www.varha.fi/fi/ajankohtaista),own-news-flow
+Koski Tl,Varsinais-Suomen hyvinvointialue,kyllä,Auranmaan Viikkolehti (https://www.avl.fi/feed/),Koski Tl uutiset (https://koski.fi/feed/),Hyvinvointialueen uutiset: Varsinais-Suomen hyvinvointialue (https://www.varha.fi/fi/ajankohtaista),own-news-flow
 Kotka,Kymenlaakson hyvinvointialue,kyllä,,Kotka uutiset (https://www.kotka.fi/feed/),Hyvinvointialueen uutiset: Kymenlaakson hyvinvointialue (https://kymenhva.fi/kategoria/uutiset/),own-news-flow
 Kouvola,Kymenlaakson hyvinvointialue,kyllä,,Kouvola uutiset (https://www.kouvola.fi/feed/),Hyvinvointialueen uutiset: Kymenlaakson hyvinvointialue (https://kymenhva.fi/kategoria/uutiset/),own-news-flow
 Kristiinankaupunki,Pohjanmaan hyvinvointialue,ei,,,Hyvinvointialueen uutiset: Pohjanmaan hyvinvointialue (https://pohjanmaanhyvinvointi.fi/tietoa-meista/ajankohtaista/uutiset/),wellbeing-area-news-only
@@ -138,11 +138,11 @@ Lestijärvi,Keski-Pohjanmaan hyvinvointialue,kyllä,,Lestijärvi uutiset (https:
 Lieksa,Pohjois-Karjalan hyvinvointialue,kyllä,Lieksan Lehti (https://www.lieksanlehti.fi/feed/rss),,Hyvinvointialueen uutiset: Pohjois-Karjalan hyvinvointialue (https://www.siunsote.fi/ajankohtaista/),own-news-flow
 Lieto,Varsinais-Suomen hyvinvointialue,kyllä,,Lieto uutiset (https://www.lieto.fi/feed/),Hyvinvointialueen uutiset: Varsinais-Suomen hyvinvointialue (https://www.varha.fi/fi/ajankohtaista),own-news-flow
 Liminka,Pohjois-Pohjanmaan hyvinvointialue,kyllä,,Liminka uutiset (https://www.liminka.fi/feed/),Hyvinvointialueen uutiset: Pohjois-Pohjanmaan hyvinvointialue (https://pohde.fi/ajankohtaista/),own-news-flow
-Liperi,Pohjois-Karjalan hyvinvointialue,kyllä,,Liperi uutiset (https://www.liperi.fi/feed/),Hyvinvointialueen uutiset: Pohjois-Karjalan hyvinvointialue (https://www.siunsote.fi/ajankohtaista/),own-news-flow
+Liperi,Pohjois-Karjalan hyvinvointialue,kyllä,Kotiseutu-uutiset (https://kotiseutu-uutiset.com/feed/),Liperi uutiset (https://www.liperi.fi/feed/),Hyvinvointialueen uutiset: Pohjois-Karjalan hyvinvointialue (https://www.siunsote.fi/ajankohtaista/),own-news-flow
 Lohja,Länsi-Uudenmaan hyvinvointialue,kyllä,,Lohja uutiset (https://www.lohja.fi/feed/),Hyvinvointialueen uutiset: Länsi-Uudenmaan hyvinvointialue (https://www.luvn.fi/fi/haku?q=&type=news),own-news-flow
 Loimaa,Varsinais-Suomen hyvinvointialue,kyllä,Loimaan Lehti (https://www.loimaanlehti.fi/feed/),,Hyvinvointialueen uutiset: Varsinais-Suomen hyvinvointialue (https://www.varha.fi/fi/ajankohtaista),own-news-flow
 Loppi,Kanta-Hämeen hyvinvointialue,kyllä,Lopen Lehti (https://www.lopenlehti.fi/feed/rss),,Hyvinvointialueen uutiset: Kanta-Hämeen hyvinvointialue (https://omahame.fi/uutiset),own-news-flow
-Loviisa,Itä-Uudenmaan hyvinvointialue,kyllä,Loviisan Sanomat (https://www.loviisansanomat.fi/feed/rss),,Hyvinvointialueen uutiset: Itä-Uudenmaan hyvinvointialue (https://itauusimaa.fi/ajankohtaista/),own-news-flow
+Loviisa,Itä-Uudenmaan hyvinvointialue,kyllä,"Nya Östis (https://www.nyaostis.fi/feed/); Loviisan Sanomat (https://www.loviisansanomat.fi/feed/rss)",,Hyvinvointialueen uutiset: Itä-Uudenmaan hyvinvointialue (https://itauusimaa.fi/ajankohtaista/),own-news-flow
 Luhanka,Keski-Suomen hyvinvointialue,kyllä,,Luhanka uutiset (https://www.luhanka.fi/feed/),Hyvinvointialueen uutiset: Keski-Suomen hyvinvointialue (https://www.hyvaks.fi/uutiset),own-news-flow
 Lumijoki,Pohjois-Pohjanmaan hyvinvointialue,kyllä,,Lumijoki uutiset (https://www.lumijoki.fi/feed/),Hyvinvointialueen uutiset: Pohjois-Pohjanmaan hyvinvointialue (https://pohde.fi/ajankohtaista/),own-news-flow
 Lumparland,Ahvenanmaa,ei,,,Hyvinvointialueen uutiset: Ahvenanmaa (https://www.ahs.ax/nyheter),wellbeing-area-news-only
@@ -150,11 +150,11 @@ Luoto,Pohjanmaan hyvinvointialue,kyllä,,Luoto uutiset (https://larsmo.fi/feed/)
 Luumäki,Etelä-Karjalan hyvinvointialue,ei,,,Hyvinvointialueen uutiset: Etelä-Karjalan hyvinvointialue (https://www.ekhva.fi/hyvinvointialue/ajankohtaista/),wellbeing-area-news-only
 Maalahti,Pohjanmaan hyvinvointialue,ei,,,Hyvinvointialueen uutiset: Pohjanmaan hyvinvointialue (https://pohjanmaanhyvinvointi.fi/tietoa-meista/ajankohtaista/uutiset/),wellbeing-area-news-only
 Maarianhamina - Mariehamn,Ahvenanmaa,ei,,,Hyvinvointialueen uutiset: Ahvenanmaa (https://www.ahs.ax/nyheter),wellbeing-area-news-only
-Marttila,Varsinais-Suomen hyvinvointialue,ei,,,Hyvinvointialueen uutiset: Varsinais-Suomen hyvinvointialue (https://www.varha.fi/fi/ajankohtaista),wellbeing-area-news-only
+Marttila,Varsinais-Suomen hyvinvointialue,kyllä,Auranmaan Viikkolehti (https://www.avl.fi/feed/),,Hyvinvointialueen uutiset: Varsinais-Suomen hyvinvointialue (https://www.varha.fi/fi/ajankohtaista),own-news-flow
 Masku,Varsinais-Suomen hyvinvointialue,kyllä,,Masku uutiset (https://masku.fi/feed),Hyvinvointialueen uutiset: Varsinais-Suomen hyvinvointialue (https://www.varha.fi/fi/ajankohtaista),own-news-flow
 Merijärvi,Pohjois-Pohjanmaan hyvinvointialue,ei,,,Hyvinvointialueen uutiset: Pohjois-Pohjanmaan hyvinvointialue (https://pohde.fi/ajankohtaista/),wellbeing-area-news-only
 Merikarvia,Satakunnan hyvinvointialue,kyllä,,Merikarvia uutiset (https://merikarvia.fi/feed/),Hyvinvointialueen uutiset: Satakunnan hyvinvointialue (https://sata.fi/ajankohtaista/),own-news-flow
-Miehikkälä,Kymenlaakson hyvinvointialue,ei,,,Hyvinvointialueen uutiset: Kymenlaakson hyvinvointialue (https://kymenhva.fi/kategoria/uutiset/),wellbeing-area-news-only
+Miehikkälä,Kymenlaakson hyvinvointialue,kyllä,Kaakonkulma (https://www.kaakonkulma.fi/feed/rss/),,Hyvinvointialueen uutiset: Kymenlaakson hyvinvointialue (https://kymenhva.fi/kategoria/uutiset/),own-news-flow
 Mikkeli,Etelä-Savon hyvinvointialue,kyllä,,Mikkeli uutiset (https://mikkeli.fi/feed/),Hyvinvointialueen uutiset: Etelä-Savon hyvinvointialue (https://etelasavonha.fi/eloisa/uutiset/),own-news-flow
 Muhos,Pohjois-Pohjanmaan hyvinvointialue,kyllä,,Muhos uutiset (https://muhos.fi/feed/),Hyvinvointialueen uutiset: Pohjois-Pohjanmaan hyvinvointialue (https://pohde.fi/ajankohtaista/),own-news-flow
 Multia,Keski-Suomen hyvinvointialue,ei,,,Hyvinvointialueen uutiset: Keski-Suomen hyvinvointialue (https://www.hyvaks.fi/uutiset),wellbeing-area-news-only
@@ -175,7 +175,7 @@ Nurmes,Pohjois-Karjalan hyvinvointialue,kyllä,,Nurmes uutiset (https://www.nurm
 Nurmijärvi,Keski-Uudenmaan hyvinvointialue,kyllä,,Nurmijärvi uutiset (https://www.nurmijarvi.fi/feed/),Hyvinvointialueen uutiset: Keski-Uudenmaan hyvinvointialue (https://www.keusote.fi/ajankohtaista/),own-news-flow
 Närpiö,Pohjanmaan hyvinvointialue,kyllä,,Närpiö uutiset (https://www.narpes.fi/feed/),Hyvinvointialueen uutiset: Pohjanmaan hyvinvointialue (https://pohjanmaanhyvinvointi.fi/tietoa-meista/ajankohtaista/uutiset/),own-news-flow
 Orimattila,Päijät-Hämeen hyvinvointialue,kyllä,,Orimattila uutiset (https://orimattila.fi/feed/),Hyvinvointialueen uutiset: Päijät-Hämeen hyvinvointialue (https://paijatha.fi/ajankohtaista/),own-news-flow
-Oripää,Varsinais-Suomen hyvinvointialue,kyllä,,Oripää uutiset (https://oripaa.fi/feed/),Hyvinvointialueen uutiset: Varsinais-Suomen hyvinvointialue (https://www.varha.fi/fi/ajankohtaista),own-news-flow
+Oripää,Varsinais-Suomen hyvinvointialue,kyllä,Auranmaan Viikkolehti (https://www.avl.fi/feed/),Oripää uutiset (https://oripaa.fi/feed/),Hyvinvointialueen uutiset: Varsinais-Suomen hyvinvointialue (https://www.varha.fi/fi/ajankohtaista),own-news-flow
 Orivesi,Pirkanmaan hyvinvointialue,kyllä,Oriveden Sanomat (https://orivedensanomat.fi/feed/),,Hyvinvointialueen uutiset: Pirkanmaan hyvinvointialue (https://www.pirha.fi/ajankohtaista/pirha-nyt),own-news-flow
 Oulainen,Pohjois-Pohjanmaan hyvinvointialue,kyllä,,Oulainen uutiset (https://www.oulainen.fi/rss.xml),Hyvinvointialueen uutiset: Pohjois-Pohjanmaan hyvinvointialue (https://pohde.fi/ajankohtaista/),own-news-flow
 Oulu,Pohjois-Pohjanmaan hyvinvointialue,kyllä,Kaleva: Oulun seutu (https://kaleva.fi/feedit/rss/managed-listing/oulun-seutu/),Oulun kaupungin uutiset (https://www.ouka.fi/news/feed?audience=All&region=All&topic=All),Hyvinvointialueen uutiset: Pohjois-Pohjanmaan hyvinvointialue (https://pohde.fi/ajankohtaista/),own-news-flow
@@ -212,15 +212,15 @@ Pyhäjoki,Pohjois-Pohjanmaan hyvinvointialue,kyllä,,Pyhäjoki uutiset (https://
 Pyhäjärvi,Pohjois-Pohjanmaan hyvinvointialue,kyllä,Pyhäjärven Sanomat (https://pyhajarvensanomat.fi/feed/),,Hyvinvointialueen uutiset: Pohjois-Pohjanmaan hyvinvointialue (https://pohde.fi/ajankohtaista/),own-news-flow
 Pyhäntä,Pohjois-Pohjanmaan hyvinvointialue,kyllä,,Pyhäntä uutiset (https://www.pyhanta.fi/rss.xml),Hyvinvointialueen uutiset: Pohjois-Pohjanmaan hyvinvointialue (https://pohde.fi/ajankohtaista/),own-news-flow
 Pyhäranta,Varsinais-Suomen hyvinvointialue,kyllä,,Pyhäranta uutiset (https://www.pyharanta.fi/feed/),Hyvinvointialueen uutiset: Varsinais-Suomen hyvinvointialue (https://www.varha.fi/fi/ajankohtaista),own-news-flow
-Pälkäne,Pirkanmaan hyvinvointialue,kyllä,,Pälkäne uutiset (https://www.palkane.fi/feed/),Hyvinvointialueen uutiset: Pirkanmaan hyvinvointialue (https://www.pirha.fi/ajankohtaista/pirha-nyt),own-news-flow
-Pöytyä,Varsinais-Suomen hyvinvointialue,ei,,,Hyvinvointialueen uutiset: Varsinais-Suomen hyvinvointialue (https://www.varha.fi/fi/ajankohtaista),wellbeing-area-news-only
+Pälkäne,Pirkanmaan hyvinvointialue,kyllä,Sydän-Hämeen Lehti (https://shl.fi/feed/),Pälkäne uutiset (https://www.palkane.fi/feed/),Hyvinvointialueen uutiset: Pirkanmaan hyvinvointialue (https://www.pirha.fi/ajankohtaista/pirha-nyt),own-news-flow
+Pöytyä,Varsinais-Suomen hyvinvointialue,kyllä,Auranmaan Viikkolehti (https://www.avl.fi/feed/),,Hyvinvointialueen uutiset: Varsinais-Suomen hyvinvointialue (https://www.varha.fi/fi/ajankohtaista),own-news-flow
 Raahe,Pohjois-Pohjanmaan hyvinvointialue,kyllä,,Raahe uutiset (https://www.raahe.fi/rss.xml),Hyvinvointialueen uutiset: Pohjois-Pohjanmaan hyvinvointialue (https://pohde.fi/ajankohtaista/),own-news-flow
 Raasepori,Länsi-Uudenmaan hyvinvointialue,kyllä,,Raasepori uutiset (https://www.raseborg.fi/feed/),Hyvinvointialueen uutiset: Länsi-Uudenmaan hyvinvointialue (https://www.luvn.fi/fi/haku?q=&type=news),own-news-flow
 Raisio,Varsinais-Suomen hyvinvointialue,kyllä,,Raisio uutiset (https://raisio.fi/fi/rss.xml?q=/fi/rss.xml),Hyvinvointialueen uutiset: Varsinais-Suomen hyvinvointialue (https://www.varha.fi/fi/ajankohtaista),own-news-flow
 Rantasalmi,Etelä-Savon hyvinvointialue,kyllä,,Rantasalmi uutiset (https://rantasalmi.fi/feed/),Hyvinvointialueen uutiset: Etelä-Savon hyvinvointialue (https://etelasavonha.fi/eloisa/uutiset/),own-news-flow
 Ranua,Lapin hyvinvointialue,kyllä,,Ranua uutiset (https://ranua.fi/feed/),Hyvinvointialueen uutiset: Lapin hyvinvointialue (https://lapha.fi/ajankohtaista),own-news-flow
 Rauma,Satakunnan hyvinvointialue,kyllä,,Rauma uutiset (https://www.rauma.fi/feed/),Hyvinvointialueen uutiset: Satakunnan hyvinvointialue (https://sata.fi/ajankohtaista/),own-news-flow
-Rautalampi,Pohjois-Savon hyvinvointialue,kyllä,,Rautalampi uutiset (https://www.rautalampi.fi/feed/),Hyvinvointialueen uutiset: Pohjois-Savon hyvinvointialue (https://pshyvinvointialue.fi/fi/ajankohtaiset),own-news-flow
+Rautalampi,Pohjois-Savon hyvinvointialue,kyllä,Paikallislehti Sisä-Savo (https://www.sisa-savolehti.fi/feed/rss/),Rautalampi uutiset (https://www.rautalampi.fi/feed/),Hyvinvointialueen uutiset: Pohjois-Savon hyvinvointialue (https://pshyvinvointialue.fi/fi/ajankohtaiset),own-news-flow
 Rautavaara,Pohjois-Savon hyvinvointialue,ei,,,Hyvinvointialueen uutiset: Pohjois-Savon hyvinvointialue (https://pshyvinvointialue.fi/fi/ajankohtaiset),wellbeing-area-news-only
 Rautjärvi,Etelä-Karjalan hyvinvointialue,kyllä,Parikkalan-Rautjärven Sanomat (https://www.prsanomat.fi/feed/rss),,Hyvinvointialueen uutiset: Etelä-Karjalan hyvinvointialue (https://www.ekhva.fi/hyvinvointialue/ajankohtaista/),own-news-flow
 Reisjärvi,Pohjois-Pohjanmaan hyvinvointialue,kyllä,,Reisjärvi uutiset (https://www.reisjarvi.fi/rss.xml),Hyvinvointialueen uutiset: Pohjois-Pohjanmaan hyvinvointialue (https://pohde.fi/ajankohtaista/),own-news-flow
@@ -230,15 +230,15 @@ Rovaniemi,Lapin hyvinvointialue,ei,,,Hyvinvointialueen uutiset: Lapin hyvinvoint
 Ruokolahti,Etelä-Karjalan hyvinvointialue,ei,,,Hyvinvointialueen uutiset: Etelä-Karjalan hyvinvointialue (https://www.ekhva.fi/hyvinvointialue/ajankohtaista/),wellbeing-area-news-only
 Ruovesi,Pirkanmaan hyvinvointialue,kyllä,,Ruovesi uutiset (https://www.ruovesi.fi/tiedotteet?rss=true),Hyvinvointialueen uutiset: Pirkanmaan hyvinvointialue (https://www.pirha.fi/ajankohtaista/pirha-nyt),own-news-flow
 Rusko,Varsinais-Suomen hyvinvointialue,kyllä,,Rusko uutiset (https://rusko.fi/feed/),Hyvinvointialueen uutiset: Varsinais-Suomen hyvinvointialue (https://www.varha.fi/fi/ajankohtaista),own-news-flow
-Rääkkylä,Pohjois-Karjalan hyvinvointialue,kyllä,,Rääkkylä uutiset (https://www.raakkyla.fi/feed/),Hyvinvointialueen uutiset: Pohjois-Karjalan hyvinvointialue (https://www.siunsote.fi/ajankohtaista/),own-news-flow
-Saarijärvi,Keski-Suomen hyvinvointialue,ei,,,Hyvinvointialueen uutiset: Keski-Suomen hyvinvointialue (https://www.hyvaks.fi/uutiset),wellbeing-area-news-only
+Rääkkylä,Pohjois-Karjalan hyvinvointialue,kyllä,Kotiseutu-uutiset (https://kotiseutu-uutiset.com/feed/),Rääkkylä uutiset (https://www.raakkyla.fi/feed/),Hyvinvointialueen uutiset: Pohjois-Karjalan hyvinvointialue (https://www.siunsote.fi/ajankohtaista/),own-news-flow
+Saarijärvi,Keski-Suomen hyvinvointialue,kyllä,Sampo (https://www.sampolehti.fi/feed/rss/),,Hyvinvointialueen uutiset: Keski-Suomen hyvinvointialue (https://www.hyvaks.fi/uutiset),own-news-flow
 Salla,Lapin hyvinvointialue,kyllä,,Salla uutiset (https://www.salla.fi/feed/),Hyvinvointialueen uutiset: Lapin hyvinvointialue (https://lapha.fi/ajankohtaista),own-news-flow
-Salo,Varsinais-Suomen hyvinvointialue,ei,,,Hyvinvointialueen uutiset: Varsinais-Suomen hyvinvointialue (https://www.varha.fi/fi/ajankohtaista),wellbeing-area-news-only
+Salo,Varsinais-Suomen hyvinvointialue,kyllä,Perniönseudun Lehti (https://www.pernionseudunlehti.fi/feed/rss/),,Hyvinvointialueen uutiset: Varsinais-Suomen hyvinvointialue (https://www.varha.fi/fi/ajankohtaista),own-news-flow
 Saltvik,Ahvenanmaa,ei,,,Hyvinvointialueen uutiset: Ahvenanmaa (https://www.ahs.ax/nyheter),wellbeing-area-news-only
 Sastamala,Pirkanmaan hyvinvointialue,kyllä,,Sastamala uutiset (https://sastamala.fi/feed/),Hyvinvointialueen uutiset: Pirkanmaan hyvinvointialue (https://www.pirha.fi/ajankohtaista/pirha-nyt),own-news-flow
 Sauvo,Varsinais-Suomen hyvinvointialue,kyllä,Kunnallislehti Paimio-Sauvo-Kaarina (https://www.kuntsari.fi/feed/),,Hyvinvointialueen uutiset: Varsinais-Suomen hyvinvointialue (https://www.varha.fi/fi/ajankohtaista),own-news-flow
 Savitaipale,Etelä-Karjalan hyvinvointialue,ei,,,Hyvinvointialueen uutiset: Etelä-Karjalan hyvinvointialue (https://www.ekhva.fi/hyvinvointialue/ajankohtaista/),wellbeing-area-news-only
-Savonlinna,Etelä-Savon hyvinvointialue,kyllä,,Savonlinna uutiset (https://www.savonlinna.fi/feed/),Hyvinvointialueen uutiset: Etelä-Savon hyvinvointialue (https://etelasavonha.fi/eloisa/uutiset/),own-news-flow
+Savonlinna,Etelä-Savon hyvinvointialue,kyllä,Puruvesi (https://www.puruvesi.net/feed/rss/),Savonlinna uutiset (https://www.savonlinna.fi/feed/),Hyvinvointialueen uutiset: Etelä-Savon hyvinvointialue (https://etelasavonha.fi/eloisa/uutiset/),own-news-flow
 Savukoski,Lapin hyvinvointialue,ei,,,Hyvinvointialueen uutiset: Lapin hyvinvointialue (https://lapha.fi/ajankohtaista),wellbeing-area-news-only
 Seinäjoki,Etelä-Pohjanmaan hyvinvointialue,kyllä,,Seinäjoki uutiset (https://www.seinajoki.fi/feed/),Hyvinvointialueen uutiset: Etelä-Pohjanmaan hyvinvointialue (https://www.hyvaep.fi/ajankohtaista/),own-news-flow
 Sievi,Pohjois-Pohjanmaan hyvinvointialue,kyllä,,Sievi uutiset (https://www.sievi.fi/rss.xml),Hyvinvointialueen uutiset: Pohjois-Pohjanmaan hyvinvointialue (https://pohde.fi/ajankohtaista/),own-news-flow
@@ -258,7 +258,7 @@ Sottunga,Ahvenanmaa,ei,,,Hyvinvointialueen uutiset: Ahvenanmaa (https://www.ahs.
 Sulkava,Etelä-Savon hyvinvointialue,kyllä,Sulkava-lehti (https://sulkavalehti.fi/feed/),,Hyvinvointialueen uutiset: Etelä-Savon hyvinvointialue (https://etelasavonha.fi/eloisa/uutiset/),own-news-flow
 Sund,Ahvenanmaa,ei,,,Hyvinvointialueen uutiset: Ahvenanmaa (https://www.ahs.ax/nyheter),wellbeing-area-news-only
 Suomussalmi,Kainuun hyvinvointialue,ei,,,Hyvinvointialueen uutiset: Kainuun hyvinvointialue (https://hyvinvointialue.kainuu.fi/tiedotteet),wellbeing-area-news-only
-Suonenjoki,Pohjois-Savon hyvinvointialue,kyllä,,Suonenjoki uutiset (https://suonenjoki.fi/feed/),Hyvinvointialueen uutiset: Pohjois-Savon hyvinvointialue (https://pshyvinvointialue.fi/fi/ajankohtaiset),own-news-flow
+Suonenjoki,Pohjois-Savon hyvinvointialue,kyllä,Paikallislehti Sisä-Savo (https://www.sisa-savolehti.fi/feed/rss/),Suonenjoki uutiset (https://suonenjoki.fi/feed/),Hyvinvointialueen uutiset: Pohjois-Savon hyvinvointialue (https://pshyvinvointialue.fi/fi/ajankohtaiset),own-news-flow
 Sysmä,Päijät-Hämeen hyvinvointialue,kyllä,,Sysmä uutiset (https://sysma.fi/feed/),Hyvinvointialueen uutiset: Päijät-Hämeen hyvinvointialue (https://paijatha.fi/ajankohtaista/),own-news-flow
 Säkylä,Satakunnan hyvinvointialue,kyllä,,Säkylä uutiset (https://www.sakyla.fi/feed/),Hyvinvointialueen uutiset: Satakunnan hyvinvointialue (https://sata.fi/ajankohtaista/),own-news-flow
 Taipalsaari,Etelä-Karjalan hyvinvointialue,ei,,,Hyvinvointialueen uutiset: Etelä-Karjalan hyvinvointialue (https://www.ekhva.fi/hyvinvointialue/ajankohtaista/),wellbeing-area-news-only
@@ -266,7 +266,7 @@ Taivalkoski,Pohjois-Pohjanmaan hyvinvointialue,kyllä,,Taivalkoski uutiset (http
 Taivassalo,Varsinais-Suomen hyvinvointialue,ei,,,Hyvinvointialueen uutiset: Varsinais-Suomen hyvinvointialue (https://www.varha.fi/fi/ajankohtaista),wellbeing-area-news-only
 Tammela,Kanta-Hämeen hyvinvointialue,kyllä,,Tammela uutiset (https://www.tammela.fi/rss.xml),Hyvinvointialueen uutiset: Kanta-Hämeen hyvinvointialue (https://omahame.fi/uutiset),own-news-flow
 Tampere,Pirkanmaan hyvinvointialue,kyllä,,"Tampereen uutiset (https://www.tampere.fi/ajankohtaista/uutiset.xml); Tampereen artikkelit (https://www.tampere.fi/ajankohtaista/artikkelit.xml); Tampereen ilmoitukset (https://www.tampere.fi/ajankohtaista/ilmoitukset.xml)",Hyvinvointialueen uutiset: Pirkanmaan hyvinvointialue (https://www.pirha.fi/ajankohtaista/pirha-nyt),own-news-flow
-Tervo,Pohjois-Savon hyvinvointialue,ei,,,Hyvinvointialueen uutiset: Pohjois-Savon hyvinvointialue (https://pshyvinvointialue.fi/fi/ajankohtaiset),wellbeing-area-news-only
+Tervo,Pohjois-Savon hyvinvointialue,kyllä,Paikallislehti Sisä-Savo (https://www.sisa-savolehti.fi/feed/rss/),,Hyvinvointialueen uutiset: Pohjois-Savon hyvinvointialue (https://pshyvinvointialue.fi/fi/ajankohtaiset),own-news-flow
 Tervola,Lapin hyvinvointialue,ei,,,Hyvinvointialueen uutiset: Lapin hyvinvointialue (https://lapha.fi/ajankohtaista),wellbeing-area-news-only
 Teuva,Etelä-Pohjanmaan hyvinvointialue,kyllä,,Teuva uutiset (https://teuva.fi/feed/),Hyvinvointialueen uutiset: Etelä-Pohjanmaan hyvinvointialue (https://www.hyvaep.fi/ajankohtaista/),own-news-flow
 Tohmajärvi,Pohjois-Karjalan hyvinvointialue,ei,,,Hyvinvointialueen uutiset: Pohjois-Karjalan hyvinvointialue (https://www.siunsote.fi/ajankohtaista/),wellbeing-area-news-only
@@ -274,7 +274,7 @@ Toholampi,Keski-Pohjanmaan hyvinvointialue,kyllä,,Toholampi uutiset (https://ww
 Toivakka,Keski-Suomen hyvinvointialue,kyllä,,Toivakka uutiset (https://www.toivakka.fi/feed/),Hyvinvointialueen uutiset: Keski-Suomen hyvinvointialue (https://www.hyvaks.fi/uutiset),own-news-flow
 Tornio,Lapin hyvinvointialue,kyllä,,Tornio uutiset (https://www.tornio.fi/feed/),Hyvinvointialueen uutiset: Lapin hyvinvointialue (https://lapha.fi/ajankohtaista),own-news-flow
 Turku,Varsinais-Suomen hyvinvointialue,ei,,,Hyvinvointialueen uutiset: Varsinais-Suomen hyvinvointialue (https://www.varha.fi/fi/ajankohtaista),wellbeing-area-news-only
-Tuusniemi,Pohjois-Savon hyvinvointialue,ei,,,Hyvinvointialueen uutiset: Pohjois-Savon hyvinvointialue (https://pshyvinvointialue.fi/fi/ajankohtaiset),wellbeing-area-news-only
+Tuusniemi,Pohjois-Savon hyvinvointialue,kyllä,Koillis-Savo (https://www.koillis-savo.fi/feed/rss/),,Hyvinvointialueen uutiset: Pohjois-Savon hyvinvointialue (https://pshyvinvointialue.fi/fi/ajankohtaiset),own-news-flow
 Tuusula,Keski-Uudenmaan hyvinvointialue,kyllä,,Tuusula uutiset (https://tuusula.fi/feed/),Hyvinvointialueen uutiset: Keski-Uudenmaan hyvinvointialue (https://www.keusote.fi/ajankohtaista/),own-news-flow
 Tyrnävä,Pohjois-Pohjanmaan hyvinvointialue,ei,,,Hyvinvointialueen uutiset: Pohjois-Pohjanmaan hyvinvointialue (https://pohde.fi/ajankohtaista/),wellbeing-area-news-only
 Ulvila,Satakunnan hyvinvointialue,kyllä,,Ulvila uutiset (https://www.ulvila.fi/feed/),Hyvinvointialueen uutiset: Satakunnan hyvinvointialue (https://sata.fi/ajankohtaista/),own-news-flow
@@ -290,14 +290,14 @@ Valkeakoski,Pirkanmaan hyvinvointialue,ei,,,Hyvinvointialueen uutiset: Pirkanmaa
 Vantaa,Vantaan ja Keravan hyvinvointialue,kyllä,,"Vantaan uutiset (https://www.vantaa.fi/fi/rss/topical/121); Vantaan tiedotteet (https://www.vantaa.fi/fi/rss/topical/119)",Hyvinvointialueen uutiset: Vantaan ja Keravan hyvinvointialue (https://vakehyva.fi/fi/ajankohtaista),own-news-flow
 Varkaus,Pohjois-Savon hyvinvointialue,kyllä,Warkauden Lehti (https://www.warkaudenlehti.fi/feed/rss),,Hyvinvointialueen uutiset: Pohjois-Savon hyvinvointialue (https://pshyvinvointialue.fi/fi/ajankohtaiset),own-news-flow
 Vehmaa,Varsinais-Suomen hyvinvointialue,ei,,,Hyvinvointialueen uutiset: Varsinais-Suomen hyvinvointialue (https://www.varha.fi/fi/ajankohtaista),wellbeing-area-news-only
-Vesanto,Pohjois-Savon hyvinvointialue,kyllä,,Vesanto uutiset (https://vesanto.fi/feed/),Hyvinvointialueen uutiset: Pohjois-Savon hyvinvointialue (https://pshyvinvointialue.fi/fi/ajankohtaiset),own-news-flow
+Vesanto,Pohjois-Savon hyvinvointialue,kyllä,Paikallislehti Sisä-Savo (https://www.sisa-savolehti.fi/feed/rss/),Vesanto uutiset (https://vesanto.fi/feed/),Hyvinvointialueen uutiset: Pohjois-Savon hyvinvointialue (https://pshyvinvointialue.fi/fi/ajankohtaiset),own-news-flow
 Vesilahti,Pirkanmaan hyvinvointialue,kyllä,Lempäälän-Vesilahden Sanomat (https://lvs.fi/feed/),,Hyvinvointialueen uutiset: Pirkanmaan hyvinvointialue (https://www.pirha.fi/ajankohtaista/pirha-nyt),own-news-flow
 Veteli,Keski-Pohjanmaan hyvinvointialue,kyllä,,Veteli uutiset (https://veteli.fi/feed/),Hyvinvointialueen uutiset: Keski-Pohjanmaan hyvinvointialue (https://soite.fi/soite/ajankohtaista/),own-news-flow
 Vieremä,Pohjois-Savon hyvinvointialue,kyllä,,Vieremä uutiset (https://vierema.fi/feed/),Hyvinvointialueen uutiset: Pohjois-Savon hyvinvointialue (https://pshyvinvointialue.fi/fi/ajankohtaiset),own-news-flow
 Vihti,Länsi-Uudenmaan hyvinvointialue,kyllä,,Vihti uutiset (https://www.vihti.fi/feed/),Hyvinvointialueen uutiset: Länsi-Uudenmaan hyvinvointialue (https://www.luvn.fi/fi/haku?q=&type=news),own-news-flow
 Viitasaari,Keski-Suomen hyvinvointialue,kyllä,Viitasaaren Seutu (https://www.viitasaarenseutu.fi/feed/rss),,Hyvinvointialueen uutiset: Keski-Suomen hyvinvointialue (https://www.hyvaks.fi/uutiset),own-news-flow
 Vimpeli,Etelä-Pohjanmaan hyvinvointialue,kyllä,,Vimpeli uutiset (https://www.vimpeli.fi/rss.xml),Hyvinvointialueen uutiset: Etelä-Pohjanmaan hyvinvointialue (https://www.hyvaep.fi/ajankohtaista/),own-news-flow
-Virolahti,Kymenlaakson hyvinvointialue,kyllä,,Virolahti uutiset (https://virolahti.fi/feed/),Hyvinvointialueen uutiset: Kymenlaakson hyvinvointialue (https://kymenhva.fi/kategoria/uutiset/),own-news-flow
+Virolahti,Kymenlaakson hyvinvointialue,kyllä,Kaakonkulma (https://www.kaakonkulma.fi/feed/rss/),Virolahti uutiset (https://virolahti.fi/feed/),Hyvinvointialueen uutiset: Kymenlaakson hyvinvointialue (https://kymenhva.fi/kategoria/uutiset/),own-news-flow
 Virrat,Pirkanmaan hyvinvointialue,ei,,,Hyvinvointialueen uutiset: Pirkanmaan hyvinvointialue (https://www.pirha.fi/ajankohtaista/pirha-nyt),wellbeing-area-news-only
 Vårdö,Ahvenanmaa,ei,,,Hyvinvointialueen uutiset: Ahvenanmaa (https://www.ahs.ax/nyheter),wellbeing-area-news-only
 Vöyri,Pohjanmaan hyvinvointialue,ei,,,Hyvinvointialueen uutiset: Pohjanmaan hyvinvointialue (https://pohjanmaanhyvinvointi.fi/tietoa-meista/ajankohtaista/uutiset/),wellbeing-area-news-only

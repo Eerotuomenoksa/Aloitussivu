@@ -306,6 +306,15 @@ Tämä raportti erottaa kolme uutislähdetyyppiä:
 - kunnan oma uutisvirta tiedostosta \`municipalityNewsFeeds.ts\` tai tiedoston \`localServices.ts\` kuntakohtaisista \`rssFeeds\`-riveistä, kun syötteen hosti on kunnan oma palveluhosti
 - hyvinvointialueen uutislinkki tiedoston \`localServices.ts\` \`wellbeingAreaNewsUrls\`-kartasta
 
+Käyttöliittymän uutiskortti hakee enintään kolme otsikkoa kolmesta eri lähdekaistasta:
+
+1. journalistinen paikallislähde: paikallislehden feedi, seutulehti tai viimeisenä alueellinen/valtakunnallinen lehti
+2. kunnan oma uutisvirta tai sen puuttuessa alueellinen Yle-syöte
+3. hyvinvointialueen uutiset
+
+Ruotsinkielisessä käyttöliittymässä journalistinen fallback hakee ensin kuntaan sopivan ruotsinkielisen paikallis- tai aluelehden, kuten Borgåbladet, Västra Nyland, Åbo Underrättelser, Vasabladet, Österbottens Tidning, Syd-Österbotten tai Ålandstidningen. Jos sopivaa paikallista ruotsinkielistä lehteä ei ole, fallback on Hufvudstadsbladet.
+Alueelliset lehtifallbackit tarkistetaan sanomalehtien paikkakunta- ja ilmestymistiheyslistoja vasten, jotta esimerkiksi Uudenmaan, Kymenlaakson ja Savon sisäiset seutulehdet eivät peity liian yleisen maakuntalehden alle.
+
 Koneellinen JSON-raportti: \`outputs/regional-news-feed-coverage.json\`
 Kuntakohtainen CSV-taulukko: \`docs/alueelliset-uutisfeedit-kattavuus.csv\`
 
@@ -338,8 +347,9 @@ ${markdownTable(['Hyvinvointialue', 'Kuntia', 'Hyvinvointialueen uutislinkki', '
 
 1. Etsi ensin puuttuville kunnille paikallislehden RSS-/Atom-syöte.
 2. Jos lehdellä ei ole syötettä, etsi kunnan oma RSS, Atom, uutiset-sivu tai tiedotevirta.
-3. Jos kunnalla ei ole omaa uutisvirtaa, hyvinvointialueen uutislinkki jää perustelluksi alueelliseksi fallbackiksi.
-4. Älä lisää feedejä ilman toimivaa lähdeosoitetta ja selvää kuntakytkentää.
+3. Jos kunnalla ei ole omaa uutisvirtaa, tarkista voiko Ylen kunta- tai maakuntasyötteen kohdistaa kunnan alueelle.
+4. Hyvinvointialueen uutislinkki jää kolmanneksi alueelliseksi lähdekaistaksi.
+5. Älä lisää feedejä ilman toimivaa lähdeosoitetta ja selvää kuntakytkentää.
 `;
 
 writeFileSync(path.join(docsDir, 'alueelliset-uutisfeedit-kattavuus.md'), markdown, 'utf8');

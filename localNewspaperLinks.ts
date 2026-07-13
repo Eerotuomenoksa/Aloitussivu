@@ -28,10 +28,6 @@ export const LOCAL_NEWSPAPER_LINKS = [
     "url": "http://www.heinavedenlehti.fi"
   },
   {
-    "name": "Hämeenkyrön Lehti",
-    "url": "https://www.mediawiki.org/"
-  },
-  {
     "name": "Hämeenkyrön Sanomat",
     "url": "http://www.hameenkyronsanomat.fi/"
   },

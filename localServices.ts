@@ -37,6 +37,11 @@ interface RegionalLibraryArea {
   provider: Provider;
 }
 
+interface YleRegionalNewsFeed {
+  name: string;
+  url: string;
+}
+
 const municipalityAliases: Record<string, string> = {
   esbo: 'espoo',
   grankulla: 'kauniainen',
@@ -992,6 +997,286 @@ const regionalNewsProvider = (name: string, url: string): Provider => ({
   group: 'Alueelliset uutiset',
 });
 
+const regionalNewspaperNewsProviders: Provider[] = [
+  {
+    ...regionalNewsProvider('Inarilainen', 'https://www.inarilainen.fi/'),
+    municipalities: ['Inari', 'Utsjoki'],
+    sourceNote: 'Hilla Groupin mediatiedot vahvistavat Inarilaisen markkina-alueeksi Inarin ja Utsjoen. RSS palautti tarkistushetkellä tyhjän syötteen, joten lehti lisättiin tavalliseksi uutislinkiksi.',
+    verifiedAt: '2026-07-13',
+  },
+  {
+    ...regionalNewsProvider('Kalajokilaakso', 'https://www.kalajokilaakso.fi/'),
+    municipalities: ['Alavieska', 'Kalajoki', 'Nivala', 'Sievi', 'Ylivieska'],
+    sourceNote: 'Lehden oma etusivu kuvaa Kalajokilaakson uutisalueeksi Kalajoen, Alavieskan, Ylivieskan, Sievin ja Nivalan. RSS palautti tarkistushetkellä tyhjän syötteen, joten lehti lisättiin tavalliseksi uutislinkiksi.',
+    verifiedAt: '2026-07-13',
+  },
+  {
+    ...regionalNewsProvider('Lestijoki', 'https://www.lestijoki.fi/'),
+    municipalities: ['Kannus', 'Lestijärvi', 'Toholampi'],
+    sourceNote: 'Hilla Groupin mediatiedot vahvistavat Lestijoen markkina-alueeksi Kannuksen, Toholammin ja Lestijärven sekä nykyisin Kokkola/Kalajoki-alueisiin kuuluvia Lohtajaa ja Himankaa. RSS palautti tarkistushetkellä tyhjän syötteen.',
+    verifiedAt: '2026-07-13',
+  },
+  {
+    ...regionalNewsProvider('Meän Tornionlaakso', 'https://www.meantornionlaakso.fi/'),
+    municipalities: ['Pello', 'Ylitornio'],
+    sourceNote: 'Hilla Groupin mediatiedot kuvaavat Meän Tornionlaakson Ylitornion ja Pellon kunnissa julkaistavaksi paikallislehdeksi. RSS palautti tarkistushetkellä tyhjän syötteen.',
+    verifiedAt: '2026-07-13',
+  },
+  {
+    ...regionalNewsProvider('Perhonjokilaakso', 'https://www.perhonjokilaakso.fi/'),
+    municipalities: ['Halsua', 'Kaustinen', 'Perho', 'Veteli'],
+    sourceNote: 'Hilla Groupin mediatiedot vahvistavat Perhonjokilaakson Kaustisen, Perhon, Vetelin ja Halsuan paikallislehdeksi; Ullava jätettiin pois, koska se ei ole nykyinen kunta. RSS palautti tarkistushetkellä tyhjän syötteen.',
+    verifiedAt: '2026-07-13',
+  },
+  {
+    ...regionalNewsProvider('Ylä-Kainuu', 'https://www.ylakainuu.fi/'),
+    municipalities: ['Hyrynsalmi', 'Puolanka', 'Suomussalmi'],
+    sourceNote: 'Hilla Groupin mediatiedot vahvistavat Ylä-Kainuun markkina-alueeksi Hyrynsalmen, Puolangan ja Suomussalmen. RSS palautti tarkistushetkellä tyhjän syötteen.',
+    verifiedAt: '2026-07-13',
+  },
+  {
+    ...regionalNewsProvider('UutisOiva', 'https://oivaseutu.fi/'),
+    municipalities: ['Hämeenkyrö', 'Ikaalinen', 'Jämijärvi', 'Ylöjärvi'],
+    sourceNote: 'UutisOivan oma etusivu kuvaa lehden Hämeenkyrön, Ikaalisten, Jämijärven ja Viljakkalan paikallislehdeksi. Viljakkala mapattiin nykykuntaan Ylöjärveen; RSS-syötettä ei löytynyt ja /feed/ palautti 404-sivun.',
+    verifiedAt: '2026-07-13',
+  },
+];
+
+const LOCAL_NEWSPAPER_NEWS_PRIORITY = 10;
+const MUNICIPALITY_NEWS_PRIORITY = 20;
+const REGIONAL_NEWSPAPER_NEWS_PRIORITY = 30;
+const NATIONAL_NEWSPAPER_NEWS_PRIORITY = 40;
+const YLE_NEWS_PRIORITY = 50;
+const WELLBEING_AREA_NEWS_PRIORITY = 60;
+
+const newsFeed = (
+  name: string,
+  url: string,
+  sourceType: RssFeedConfig['sourceType'],
+  sourcePriority: number,
+  sourceKey = url
+): RssFeedConfig => ({
+  name,
+  url,
+  sourceType,
+  sourcePriority,
+  sourceKey,
+});
+
+const providerToNewsFeed = (
+  provider: Provider,
+  sourceType: RssFeedConfig['sourceType'],
+  sourcePriority: number
+): RssFeedConfig => newsFeed(provider.name, provider.url, sourceType, sourcePriority, provider.url);
+
+const regionalNewspaperFallbackProvidersByWellbeingArea: Record<string, Provider> = {
+  '01': { ...regionalNewsProvider('Uusimaa', 'https://www.uusimaa.fi/'), scope: 'regional', sourceArea: 'Uusimaa' },
+  '02': { ...regionalNewsProvider('Keski-Uusimaa', 'https://www.keski-uusimaa.fi/'), scope: 'regional', sourceArea: 'Keski-Uusimaa' },
+  '03': { ...regionalNewsProvider('Länsi-Uusimaa', 'https://www.lansi-uusimaa.fi/'), scope: 'regional', sourceArea: 'Länsi-Uusimaa' },
+  '04': { ...regionalNewsProvider('Helsingin Sanomat', 'https://www.hs.fi/'), scope: 'regional', sourceArea: 'Pääkaupunkiseutu' },
+  '05': { ...regionalNewsProvider('Turun Sanomat', 'https://www.ts.fi/uutiset'), scope: 'regional', sourceArea: 'Varsinais-Suomi' },
+  '06': { ...regionalNewsProvider('Satakunnan Kansa', 'https://www.satakunnankansa.fi/'), scope: 'regional', sourceArea: 'Satakunta' },
+  '07': { ...regionalNewsProvider('Hämeen Sanomat', 'https://www.hameensanomat.fi/'), scope: 'regional', sourceArea: 'Kanta-Häme' },
+  '08': { ...regionalNewsProvider('Aamulehti', 'https://www.aamulehti.fi/'), scope: 'regional', sourceArea: 'Pirkanmaa' },
+  '09': { ...regionalNewsProvider('Etelä-Suomen Sanomat', 'https://www.ess.fi/'), scope: 'regional', sourceArea: 'Päijät-Häme' },
+  '10': { ...regionalNewsProvider('Kymen Sanomat', 'https://www.kymensanomat.fi/'), scope: 'regional', sourceArea: 'Kymenlaakso' },
+  '11': { ...regionalNewsProvider('Etelä-Saimaa', 'https://www.esaimaa.fi/'), scope: 'regional', sourceArea: 'Etelä-Karjala' },
+  '12': { ...regionalNewsProvider('Länsi-Savo', 'https://www.lansi-savo.fi/'), scope: 'regional', sourceArea: 'Etelä-Savo' },
+  '13': { ...regionalNewsProvider('Savon Sanomat', 'https://www.savonsanomat.fi/'), scope: 'regional', sourceArea: 'Pohjois-Savo' },
+  '14': { ...regionalNewsProvider('Karjalainen', 'https://www.karjalainen.fi/'), scope: 'regional', sourceArea: 'Pohjois-Karjala' },
+  '15': { ...regionalNewsProvider('Keskisuomalainen', 'https://www.ksml.fi/'), scope: 'regional', sourceArea: 'Keski-Suomi' },
+  '16': { ...regionalNewsProvider('Ilkka-Pohjalainen', 'https://ilkkapohjalainen.fi/'), scope: 'regional', sourceArea: 'Etelä-Pohjanmaa' },
+  '17': { ...regionalNewsProvider('Ilkka-Pohjalainen', 'https://ilkkapohjalainen.fi/'), scope: 'regional', sourceArea: 'Pohjanmaa' },
+  '18': { ...regionalNewsProvider('Keskipohjanmaa', 'https://www.keskipohjanmaa.fi/'), scope: 'regional', sourceArea: 'Keski-Pohjanmaa' },
+  '19': { ...regionalNewsProvider('Kaleva', 'https://www.kaleva.fi/'), scope: 'regional', sourceArea: 'Pohjois-Pohjanmaa' },
+  '20': { ...regionalNewsProvider('Kainuun Sanomat', 'https://www.kainuunsanomat.fi/'), scope: 'regional', sourceArea: 'Kainuu' },
+  '21': { ...regionalNewsProvider('Lapin Kansa', 'https://www.lapinkansa.fi/'), scope: 'regional', sourceArea: 'Lappi' },
+  '90': { ...regionalNewsProvider('Helsingin Sanomat', 'https://www.hs.fi/'), scope: 'regional', sourceArea: 'Helsinki' },
+  '91': { ...regionalNewsProvider('Ålandstidningen', 'https://www.alandstidningen.ax/'), scope: 'regional', sourceArea: 'Ahvenanmaa' },
+};
+
+const regionalNewspaperFallbackProvidersByMunicipality: Record<string, Provider> = {
+  salo: { ...regionalNewsProvider('Salon Seudun Sanomat', 'https://www.sss.fi/'), scope: 'regional', sourceArea: 'Salo' },
+  hyvinkää: { ...regionalNewsProvider('Aamuposti', 'https://www.aamuposti.fi/'), scope: 'regional', sourceArea: 'Hyvinkää-Riihimäki' },
+  riihimäki: { ...regionalNewsProvider('Aamuposti', 'https://www.aamuposti.fi/'), scope: 'regional', sourceArea: 'Hyvinkää-Riihimäki' },
+  forssa: { ...regionalNewsProvider('Forssan Lehti', 'https://www.forssanlehti.fi/'), scope: 'regional', sourceArea: 'Forssa' },
+  humppila: { ...regionalNewsProvider('Forssan Lehti', 'https://www.forssanlehti.fi/'), scope: 'regional', sourceArea: 'Forssa' },
+  jokioinen: { ...regionalNewsProvider('Forssan Lehti', 'https://www.forssanlehti.fi/'), scope: 'regional', sourceArea: 'Forssa' },
+  tammela: { ...regionalNewsProvider('Forssan Lehti', 'https://www.forssanlehti.fi/'), scope: 'regional', sourceArea: 'Forssa' },
+  ypäjä: { ...regionalNewsProvider('Forssan Lehti', 'https://www.forssanlehti.fi/'), scope: 'regional', sourceArea: 'Forssa' },
+  heinola: { ...regionalNewsProvider('Itä-Häme', 'https://www.itahame.fi/'), scope: 'regional', sourceArea: 'Heinola' },
+  hartola: { ...regionalNewsProvider('Itä-Häme', 'https://www.itahame.fi/'), scope: 'regional', sourceArea: 'Heinola' },
+  sysmä: { ...regionalNewsProvider('Itä-Häme', 'https://www.itahame.fi/'), scope: 'regional', sourceArea: 'Heinola' },
+  kouvola: { ...regionalNewsProvider('Kouvolan Sanomat', 'https://www.kouvolansanomat.fi/'), scope: 'regional', sourceArea: 'Kouvola' },
+  iitti: { ...regionalNewsProvider('Kouvolan Sanomat', 'https://www.kouvolansanomat.fi/'), scope: 'regional', sourceArea: 'Kouvola' },
+  savonlinna: { ...regionalNewsProvider('Itä-Savo', 'https://www.ita-savo.fi/'), scope: 'regional', sourceArea: 'Savonlinna' },
+  enonkoski: { ...regionalNewsProvider('Itä-Savo', 'https://www.ita-savo.fi/'), scope: 'regional', sourceArea: 'Savonlinna' },
+  rantasalmi: { ...regionalNewsProvider('Itä-Savo', 'https://www.ita-savo.fi/'), scope: 'regional', sourceArea: 'Savonlinna' },
+  sulkava: { ...regionalNewsProvider('Itä-Savo', 'https://www.ita-savo.fi/'), scope: 'regional', sourceArea: 'Savonlinna' },
+  pieksämäki: { ...regionalNewsProvider('Pieksämäen Lehti', 'https://www.pieksamaenlehti.fi/'), scope: 'regional', sourceArea: 'Pieksämäki' },
+  iisalmi: { ...regionalNewsProvider('Iisalmen Sanomat', 'https://www.iisalmensanomat.fi/'), scope: 'regional', sourceArea: 'Ylä-Savo' },
+  keitele: { ...regionalNewsProvider('Iisalmen Sanomat', 'https://www.iisalmensanomat.fi/'), scope: 'regional', sourceArea: 'Ylä-Savo' },
+  kiuruvesi: { ...regionalNewsProvider('Iisalmen Sanomat', 'https://www.iisalmensanomat.fi/'), scope: 'regional', sourceArea: 'Ylä-Savo' },
+  lapinlahti: { ...regionalNewsProvider('Iisalmen Sanomat', 'https://www.iisalmensanomat.fi/'), scope: 'regional', sourceArea: 'Ylä-Savo' },
+  pielavesi: { ...regionalNewsProvider('Iisalmen Sanomat', 'https://www.iisalmensanomat.fi/'), scope: 'regional', sourceArea: 'Ylä-Savo' },
+  sonkajärvi: { ...regionalNewsProvider('Iisalmen Sanomat', 'https://www.iisalmensanomat.fi/'), scope: 'regional', sourceArea: 'Ylä-Savo' },
+  vieremä: { ...regionalNewsProvider('Iisalmen Sanomat', 'https://www.iisalmensanomat.fi/'), scope: 'regional', sourceArea: 'Ylä-Savo' },
+  varkaus: { ...regionalNewsProvider('Warkauden Lehti', 'https://www.warkaudenlehti.fi/'), scope: 'regional', sourceArea: 'Varkaus' },
+  leppävirta: { ...regionalNewsProvider('Warkauden Lehti', 'https://www.warkaudenlehti.fi/'), scope: 'regional', sourceArea: 'Varkaus' },
+  joroinen: { ...regionalNewsProvider('Warkauden Lehti', 'https://www.warkaudenlehti.fi/'), scope: 'regional', sourceArea: 'Varkaus' },
+};
+
+const hufvudstadsbladetNewsProvider: Provider = {
+  ...regionalNewsProvider('Hufvudstadsbladet', 'https://www.hbl.fi/nyheter'),
+  scope: 'nationalFallback',
+  sourceArea: 'Svenskfinland',
+};
+
+const borgabladetNewsProvider: Provider = {
+  ...regionalNewsProvider('Borgåbladet', 'https://www.bbl.fi/'),
+  scope: 'regional',
+  sourceArea: 'Östnyland',
+};
+
+const vastraNylandNewsProvider: Provider = {
+  ...regionalNewsProvider('Västra Nyland', 'https://www.vastranyland.fi/'),
+  scope: 'regional',
+  sourceArea: 'Västnyland',
+};
+
+const aboUnderrattelserNewsProvider: Provider = {
+  ...regionalNewsProvider('Åbo Underrättelser', 'https://www.abounderrattelser.fi/'),
+  scope: 'regional',
+  sourceArea: 'Åboland',
+};
+
+const vasabladetNewsProvider: Provider = {
+  ...regionalNewsProvider('Vasabladet', 'https://www.vasabladet.fi/'),
+  scope: 'regional',
+  sourceArea: 'Österbotten',
+};
+
+const osterbottensTidningNewsProvider: Provider = {
+  ...regionalNewsProvider('Österbottens Tidning', 'https://www.osterbottenstidning.fi/'),
+  scope: 'regional',
+  sourceArea: 'Norra svenska Österbotten',
+};
+
+const sydOsterbottenNewsProvider: Provider = {
+  ...regionalNewsProvider('Syd-Österbotten', 'https://www.sydin.fi/'),
+  scope: 'regional',
+  sourceArea: 'Sydösterbotten',
+};
+
+const alandstidningenNewsProvider: Provider = {
+  ...regionalNewsProvider('Ålandstidningen', 'https://www.alandstidningen.ax/'),
+  scope: 'regional',
+  sourceArea: 'Åland',
+};
+
+const swedishNewspaperFallbackProvidersByWellbeingArea: Record<string, Provider> = {
+  '01': borgabladetNewsProvider,
+  '03': vastraNylandNewsProvider,
+  '04': hufvudstadsbladetNewsProvider,
+  '05': aboUnderrattelserNewsProvider,
+  '17': vasabladetNewsProvider,
+  '18': osterbottensTidningNewsProvider,
+  '90': hufvudstadsbladetNewsProvider,
+  '91': alandstidningenNewsProvider,
+};
+
+const swedishNewspaperFallbackProvidersByMunicipality: Record<string, Provider> = {
+  helsinki: hufvudstadsbladetNewsProvider,
+  espoo: hufvudstadsbladetNewsProvider,
+  kauniainen: hufvudstadsbladetNewsProvider,
+  vantaa: hufvudstadsbladetNewsProvider,
+  kerava: hufvudstadsbladetNewsProvider,
+  porvoo: borgabladetNewsProvider,
+  sipoo: borgabladetNewsProvider,
+  loviisa: { ...regionalNewsProvider('Nya Östis', 'https://www.nyaostis.fi/'), scope: 'regional', sourceArea: 'Lovisanejden' },
+  lapinjärvi: borgabladetNewsProvider,
+  hanko: vastraNylandNewsProvider,
+  raasepori: vastraNylandNewsProvider,
+  inkoo: vastraNylandNewsProvider,
+  kirkkonummi: vastraNylandNewsProvider,
+  siuntio: vastraNylandNewsProvider,
+  lohja: vastraNylandNewsProvider,
+  turku: aboUnderrattelserNewsProvider,
+  kaarina: aboUnderrattelserNewsProvider,
+  parainen: { ...regionalNewsProvider('Pargas Kungörelser - Paraisten Kuulutukset', 'https://www.pku.fi/'), scope: 'regional', sourceArea: 'Pargas' },
+  kemiönsaari: { ...regionalNewsProvider('Annonsbladet', 'https://annonsbladet.fi/'), scope: 'regional', sourceArea: 'Kimitoön' },
+  vaasa: vasabladetNewsProvider,
+  mustasaari: vasabladetNewsProvider,
+  maalahti: vasabladetNewsProvider,
+  vöyri: vasabladetNewsProvider,
+  närpiö: sydOsterbottenNewsProvider,
+  kaskinen: sydOsterbottenNewsProvider,
+  kristiinankaupunki: sydOsterbottenNewsProvider,
+  korsnäs: sydOsterbottenNewsProvider,
+  pietarsaari: osterbottensTidningNewsProvider,
+  kokkola: osterbottensTidningNewsProvider,
+  uusikaarlepyy: osterbottensTidningNewsProvider,
+  pedersören: osterbottensTidningNewsProvider,
+  luoto: osterbottensTidningNewsProvider,
+  kruunupyy: osterbottensTidningNewsProvider,
+};
+
+const swedishNewspaperNames = new Set([
+  'annonsbladet',
+  'borgåbladet',
+  'hufvudstadsbladet',
+  'nya östis',
+  'pargas kungörelser paraisten kuulutukset',
+  'syd österbotten',
+  'vasabladet',
+  'västra nyland',
+  'åbo underrättelser',
+  'ålandstidningen',
+  'österbottens tidning',
+]);
+
+const maaseudunTulevaisuusNewsProvider: Provider = {
+  ...regionalNewsProvider('Maaseudun Tulevaisuus', 'https://www.maaseuduntulevaisuus.fi/uutiset'),
+  scope: 'nationalFallback',
+  sourceArea: 'Suomi',
+};
+
+const yleRegionalNewsFeedsByWellbeingArea: Record<string, YleRegionalNewsFeed> = {
+  '01': { name: 'Yle Uutiset: Uusimaa', url: 'https://yle.fi/rss/t/18-147345/fi' },
+  '02': { name: 'Yle Uutiset: Uusimaa', url: 'https://yle.fi/rss/t/18-147345/fi' },
+  '03': { name: 'Yle Uutiset: Uusimaa', url: 'https://yle.fi/rss/t/18-147345/fi' },
+  '04': { name: 'Yle Uutiset: Uusimaa', url: 'https://yle.fi/rss/t/18-147345/fi' },
+  '05': { name: 'Yle Uutiset: Varsinais-Suomi', url: 'https://yle.fi/rss/t/18-135507/fi' },
+  '06': { name: 'Yle Uutiset: Satakunta', url: 'https://yle.fi/rss/t/18-139772/fi' },
+  '07': { name: 'Yle Uutiset: Kanta-Häme', url: 'https://yle.fi/rss/t/18-138727/fi' },
+  '08': { name: 'Yle Uutiset: Pirkanmaa', url: 'https://yle.fi/rss/t/18-146831/fi' },
+  '09': { name: 'Yle Uutiset: Päijät-Häme', url: 'https://yle.fi/rss/t/18-141401/fi' },
+  '10': { name: 'Yle Uutiset: Kymenlaakso', url: 'https://yle.fi/rss/t/18-131408/fi' },
+  '11': { name: 'Yle Uutiset: Etelä-Karjala', url: 'https://yle.fi/rss/t/18-141372/fi' },
+  '12': { name: 'Yle Uutiset: Etelä-Savo', url: 'https://yle.fi/rss/t/18-141852/fi' },
+  '13': { name: 'Yle Uutiset: Pohjois-Savo', url: 'https://yle.fi/rss/t/18-141764/fi' },
+  '14': { name: 'Yle Uutiset: Pohjois-Karjala', url: 'https://yle.fi/rss/t/18-141936/fi' },
+  '15': { name: 'Yle Uutiset: Keski-Suomi', url: 'https://yle.fi/rss/t/18-148148/fi' },
+  '16': { name: 'Yle Uutiset: Etelä-Pohjanmaa', url: 'https://yle.fi/rss/t/18-146311/fi' },
+  '17': { name: 'Yle Uutiset: Pohjanmaa', url: 'https://yle.fi/rss/t/18-148149/fi' },
+  '18': { name: 'Yle Uutiset: Keski-Pohjanmaa', url: 'https://yle.fi/rss/t/18-135629/fi' },
+  '19': { name: 'Yle Uutiset: Pohjois-Pohjanmaa', url: 'https://yle.fi/rss/t/18-148154/fi' },
+  '20': { name: 'Yle Uutiset: Kainuu', url: 'https://yle.fi/rss/t/18-141399/fi' },
+  '21': { name: 'Yle Uutiset: Lappi', url: 'https://yle.fi/rss/t/18-139752/fi' },
+  '90': { name: 'Yle Uutiset: Uusimaa', url: 'https://yle.fi/rss/t/18-147345/fi' },
+};
+
+const yleSwedishRegionalNewsFeedsByWellbeingArea: Record<string, YleRegionalNewsFeed> = {
+  '01': { name: 'Yle Nyheter: Östnyland', url: 'https://svenska.yle.fi/rss/ostnyland' },
+  '02': { name: 'Yle Nyheter: Huvudstadsregionen', url: 'https://svenska.yle.fi/rss/huvudstadsregionen' },
+  '03': { name: 'Yle Nyheter: Västnyland', url: 'https://svenska.yle.fi/rss/vastnyland' },
+  '04': { name: 'Yle Nyheter: Huvudstadsregionen', url: 'https://svenska.yle.fi/rss/huvudstadsregionen' },
+  '05': { name: 'Yle Nyheter: Åboland', url: 'https://svenska.yle.fi/rss/aboland' },
+  '17': { name: 'Yle Nyheter: Österbotten', url: 'https://svenska.yle.fi/rss/osterbotten' },
+  '18': { name: 'Yle Nyheter: Österbotten', url: 'https://svenska.yle.fi/rss/osterbotten' },
+  '90': { name: 'Yle Nyheter: Huvudstadsregionen', url: 'https://svenska.yle.fi/rss/huvudstadsregionen' },
+};
+
 const localServiceMap: Record<string, LocalServiceConfig> = {
   helsinki: {
     publicTransport: hslPublicTransport,
@@ -1390,7 +1675,7 @@ const localServiceMap: Record<string, LocalServiceConfig> = {
     regionalNews: [regionalNewsProvider('Länsi-Savo', 'https://www.lansi-savo.fi/')],
   },
   vaasa: {
-    regionalNews: [regionalNewsProvider('Pohjalainen', 'https://www.pohjalainen.fi/')],
+    regionalNews: [regionalNewsProvider('Ilkka-Pohjalainen', 'https://ilkkapohjalainen.fi/')],
   },
   haapavesi: {
     publicTransport: {
@@ -1691,6 +1976,92 @@ const getWellbeingAreaNewsProvider = (municipality: Municipality): Provider | un
   };
 };
 
+const comparableHost = (url: string) => {
+  try {
+    return new URL(url).hostname.toLocaleLowerCase('fi-FI').replace(/^www\./, '');
+  } catch {
+    return '';
+  }
+};
+
+const isSwedishNewspaperFeed = (feed: RssFeedConfig) => swedishNewspaperNames.has(normalizeText(feed.name));
+
+const getRegionalNewspaperFallbackProvider = (context: RegionalContext, language: LanguageCode = 'fi'): Provider => {
+  const municipalityKey = normalizeMunicipality(context.municipality.name);
+  if (language === 'sv') {
+    const municipalityProvider = swedishNewspaperFallbackProvidersByMunicipality[municipalityKey];
+    if (municipalityProvider) return municipalityProvider;
+    return context.municipality.wellbeingAreaCode
+      ? swedishNewspaperFallbackProvidersByWellbeingArea[context.municipality.wellbeingAreaCode] ?? hufvudstadsbladetNewsProvider
+      : hufvudstadsbladetNewsProvider;
+  }
+  const municipalityProvider = regionalNewspaperFallbackProvidersByMunicipality[normalizeMunicipality(context.municipality.name)];
+  if (municipalityProvider) return municipalityProvider;
+  return context.municipality.wellbeingAreaCode
+    ? regionalNewspaperFallbackProvidersByWellbeingArea[context.municipality.wellbeingAreaCode] ?? maaseudunTulevaisuusNewsProvider
+    : maaseudunTulevaisuusNewsProvider;
+};
+
+const getYleRegionalNewsFeed = (context: RegionalContext, language: LanguageCode = 'fi'): RssFeedConfig | undefined => {
+  const wellbeingAreaCode = context.municipality.wellbeingAreaCode;
+  if (!wellbeingAreaCode) return undefined;
+
+  const feed = (language === 'sv' ? yleSwedishRegionalNewsFeedsByWellbeingArea[wellbeingAreaCode] : undefined)
+    ?? yleRegionalNewsFeedsByWellbeingArea[wellbeingAreaCode];
+  return feed ? newsFeed(feed.name, feed.url, 'yle', YLE_NEWS_PRIORITY, feed.url) : undefined;
+};
+
+const getJournalisticNewsFeeds = (
+  context: RegionalContext,
+  exact: LocalServiceConfig | undefined,
+  exactNewspaperFeeds: RssFeedConfig[],
+  language: LanguageCode = 'fi'
+): RssFeedConfig[] => {
+  const key = normalizeMunicipality(context.municipality.name);
+  const localNewspaperFeeds = LOCAL_NEWSPAPER_FEEDS
+    .filter((feed) => normalizeMunicipality(feed.municipality) === key)
+    .map((feed) => newsFeed(feed.name, feed.url, 'local-newspaper', LOCAL_NEWSPAPER_NEWS_PRIORITY, feed.url));
+  const exactLocalFeeds = exactNewspaperFeeds
+    .map((feed) => newsFeed(feed.name, feed.url, 'local-newspaper', LOCAL_NEWSPAPER_NEWS_PRIORITY, feed.url));
+
+  if (language === 'sv') {
+    const swedishLocalFeeds = [...localNewspaperFeeds, ...exactLocalFeeds].filter(isSwedishNewspaperFeed);
+    const swedishFallbackProvider = getRegionalNewspaperFallbackProvider(context, language);
+    const swedishFallbackFeeds = [
+      ...swedishLocalFeeds,
+      providerToNewsFeed(swedishFallbackProvider, swedishFallbackProvider.scope === 'nationalFallback' ? 'national-newspaper' : 'regional-newspaper', REGIONAL_NEWSPAPER_NEWS_PRIORITY),
+      ...(swedishFallbackProvider.url === hufvudstadsbladetNewsProvider.url
+        ? []
+        : [providerToNewsFeed(hufvudstadsbladetNewsProvider, 'national-newspaper', NATIONAL_NEWSPAPER_NEWS_PRIORITY)]),
+    ];
+    return uniqueFeeds(swedishFallbackFeeds);
+  }
+
+  if (localNewspaperFeeds.length > 0 || exactLocalFeeds.length > 0) {
+    return [...localNewspaperFeeds, ...exactLocalFeeds];
+  }
+
+  const regionalProviders = uniqueProviders([
+    ...(exact?.regionalNews ?? []),
+    ...prioritizeRegionalProviders(filterRegionalProviders(regionalNewspaperNewsProviders, context), context),
+  ]);
+
+  if (regionalProviders.length > 0) {
+    return regionalProviders.map((provider) => (
+      providerToNewsFeed(provider, 'regional-newspaper', REGIONAL_NEWSPAPER_NEWS_PRIORITY)
+    ));
+  }
+
+  const fallbackProvider = getRegionalNewspaperFallbackProvider(context, language);
+  return [
+    providerToNewsFeed(
+      fallbackProvider,
+      fallbackProvider.scope === 'nationalFallback' ? 'national-newspaper' : 'regional-newspaper',
+      fallbackProvider.scope === 'nationalFallback' ? NATIONAL_NEWSPAPER_NEWS_PRIORITY : REGIONAL_NEWSPAPER_NEWS_PRIORITY
+    ),
+  ];
+};
+
 export const getRegionalProviders = (context: RegionalContext, language: LanguageCode = 'fi'): Provider[] => {
   const municipality = context.municipality.name;
   const key = normalizeMunicipality(municipality);
@@ -1747,14 +2118,26 @@ export const getRegionalKelaTaxiProviders = (context: RegionalContext, language:
   return filterVisibleProviders(sortProvidersByLocality(filterRegionalProviders(providers, context), context)) ?? [];
 };
 
-export const getRegionalNewsProviders = (context: RegionalContext): Provider[] => {
+export const getRegionalNewsProviders = (context: RegionalContext, language: LanguageCode = 'fi'): Provider[] => {
   const municipality = context.municipality.name;
   const key = normalizeMunicipality(municipality);
   const exact = localServiceMap[key];
   const wellbeingAreaNews = getWellbeingAreaNewsProvider(context.municipality);
+  const regionalProviders = uniqueProviders([
+    ...(exact?.regionalNews ?? []),
+    ...prioritizeRegionalProviders(filterRegionalProviders(regionalNewspaperNewsProviders, context), context),
+  ]);
+  const fallbackProvider = getRegionalNewspaperFallbackProvider(context, language);
+  const languageFallbackProviders = language === 'sv'
+    ? uniqueProviders([
+        fallbackProvider,
+        fallbackProvider.url === hufvudstadsbladetNewsProvider.url ? undefined : hufvudstadsbladetNewsProvider,
+      ].filter((provider): provider is Provider => Boolean(provider)))
+    : [fallbackProvider];
 
   return filterVisibleProviders(uniqueProviders([
-    ...(exact?.regionalNews ?? []),
+    ...(language === 'sv' ? languageFallbackProviders : regionalProviders),
+    ...(language === 'sv' ? regionalProviders : languageFallbackProviders),
     wellbeingAreaNews,
   ].filter((provider): provider is Provider => Boolean(provider)))) ?? [];
 };
@@ -1796,7 +2179,7 @@ export const getAllRegionalProviders = (context: RegionalContext, language: Lang
   return filterVisibleProviders(uniqueProviders(sortProvidersByLocality([
     ...getRegionalProviders(context, language),
     ...getRegionalLibraryProviders(context),
-    ...getRegionalNewsProviders(context),
+    ...getRegionalNewsProviders(context, language),
     ...getRegionalNewspaperProviders(context).map((provider) => markRegionalCategory(provider, 'Lehdet')),
     ...getRegionalSportsClubProviders(context).map((provider) => markRegionalCategory(provider, 'Urheilu')),
     ...shortcutRegionalProviders,
@@ -1807,7 +2190,7 @@ export const getRegionalCategoryShortcuts = (context: RegionalContext, language:
   const primaryUrls = new Set([
     ...getRegionalProviders(context, language),
     ...getRegionalLibraryProviders(context),
-    ...getRegionalNewsProviders(context),
+    ...getRegionalNewsProviders(context, language),
   ].map((provider) => provider.url));
   const groupedProviders = new Map<string, Provider[]>();
 
@@ -1842,21 +2225,35 @@ const getRegionalCategoryIcon = (category: string) => {
   return '📍';
 };
 
-export const getRegionalRssFeeds = (context: RegionalContext): RssFeedConfig[] => {
+export const getRegionalRssFeeds = (context: RegionalContext, language: LanguageCode = 'fi'): RssFeedConfig[] => {
   const municipality = context.municipality.name;
   const key = normalizeMunicipality(municipality);
   const exact = localServiceMap[key];
-  const newspaperFeeds = LOCAL_NEWSPAPER_FEEDS
-    .filter((feed) => normalizeMunicipality(feed.municipality) === key)
-    .map((feed) => ({ name: feed.name, url: feed.url }));
+  const municipalityHost = comparableHost(getMunicipalityWebsiteUrl(municipality, language) ?? exact?.municipality?.url ?? '');
+  const exactFeeds = exact?.rssFeeds ?? [];
+  const exactMunicipalityFeeds = exactFeeds.filter((feed) => {
+    const feedHost = comparableHost(feed.url);
+    return municipalityHost && feedHost === municipalityHost;
+  });
+  const exactNewspaperFeeds = exactFeeds.filter((feed) => !exactMunicipalityFeeds.some((item) => item.url === feed.url));
+  const journalisticNewsFeeds = getJournalisticNewsFeeds(context, exact, exactNewspaperFeeds, language);
   const municipalityNewsFeeds = MUNICIPALITY_NEWS_FEEDS
     .filter((feed) => normalizeMunicipality(feed.municipality) === key)
-    .map((feed) => ({ name: feed.name, url: feed.url }));
+    .map((feed) => newsFeed(feed.name, feed.url, 'municipality', MUNICIPALITY_NEWS_PRIORITY, feed.url));
+  const exactMunicipalityNewsFeeds = exactMunicipalityFeeds
+    .map((feed) => newsFeed(feed.name, feed.url, 'municipality', MUNICIPALITY_NEWS_PRIORITY, feed.url));
+  const municipalityOrYleNewsFeeds = municipalityNewsFeeds.length > 0 || exactMunicipalityNewsFeeds.length > 0
+    ? [...municipalityNewsFeeds, ...exactMunicipalityNewsFeeds]
+    : [getYleRegionalNewsFeed(context, language)].filter((feed): feed is RssFeedConfig => Boolean(feed));
+  const wellbeingAreaNews = getWellbeingAreaNewsProvider(context.municipality);
+  const wellbeingAreaNewsFeed = wellbeingAreaNews
+    ? providerToNewsFeed(wellbeingAreaNews, 'wellbeing-area', WELLBEING_AREA_NEWS_PRIORITY)
+    : undefined;
 
   return uniqueFeeds([
-    ...newspaperFeeds,
-    ...municipalityNewsFeeds,
-    ...(exact?.rssFeeds ?? []),
+    ...journalisticNewsFeeds,
+    ...municipalityOrYleNewsFeeds,
+    ...(wellbeingAreaNewsFeed ? [wellbeingAreaNewsFeed] : []),
   ]);
 };
 
@@ -1929,7 +2326,7 @@ export const getLocalizedShortcuts = (shortcuts: Shortcut[], locality: LocalityI
     }
 
     if (shortcut.name === 'Uutiset & Media') {
-      return { ...shortcut, providers: uniqueProviders([...getRegionalNewsProviders(context), ...shortcut.providers]) };
+      return { ...shortcut, providers: uniqueProviders([...getRegionalNewsProviders(context, language), ...shortcut.providers]) };
     }
 
     if (shortcut.name === 'Lehdet') {

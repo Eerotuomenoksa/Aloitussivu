@@ -11,6 +11,131 @@ const MISSING_DOC = path.join(DOCS_DIR, 'paikallisuutiset-puuttuvat-kunnat.md');
 const SCAN_CONCURRENCY = 6;
 const MANUAL_NEWSPAPER_FEEDS = [
   {
+    municipality: 'Aura',
+    name: 'Auranmaan Viikkolehti',
+    url: 'https://www.avl.fi/feed/',
+  },
+  {
+    municipality: 'Enonkoski',
+    name: 'Puruvesi',
+    url: 'https://www.puruvesi.net/feed/rss/',
+  },
+  {
+    municipality: 'Kaavi',
+    name: 'Koillis-Savo',
+    url: 'https://www.koillis-savo.fi/feed/rss/',
+  },
+  {
+    municipality: 'Kangasala',
+    name: 'Sydän-Hämeen Lehti',
+    url: 'https://shl.fi/feed/',
+  },
+  {
+    municipality: 'Kannonkoski',
+    name: 'Sampo',
+    url: 'https://www.sampolehti.fi/feed/rss/',
+  },
+  {
+    municipality: 'Kemiönsaari',
+    name: 'Annonsbladet',
+    url: 'https://annonsbladet.fi/feed/',
+  },
+  {
+    municipality: 'Kitee',
+    name: 'Puruvesi',
+    url: 'https://www.puruvesi.net/feed/rss/',
+  },
+  {
+    municipality: 'Koski Tl',
+    name: 'Auranmaan Viikkolehti',
+    url: 'https://www.avl.fi/feed/',
+  },
+  {
+    municipality: 'Liperi',
+    name: 'Kotiseutu-uutiset',
+    url: 'https://kotiseutu-uutiset.com/feed/',
+  },
+  {
+    municipality: 'Loviisa',
+    name: 'Nya Östis',
+    url: 'https://www.nyaostis.fi/feed/',
+  },
+  {
+    municipality: 'Marttila',
+    name: 'Auranmaan Viikkolehti',
+    url: 'https://www.avl.fi/feed/',
+  },
+  {
+    municipality: 'Miehikkälä',
+    name: 'Kaakonkulma',
+    url: 'https://www.kaakonkulma.fi/feed/rss/',
+  },
+  {
+    municipality: 'Oripää',
+    name: 'Auranmaan Viikkolehti',
+    url: 'https://www.avl.fi/feed/',
+  },
+  {
+    municipality: 'Pälkäne',
+    name: 'Sydän-Hämeen Lehti',
+    url: 'https://shl.fi/feed/',
+  },
+  {
+    municipality: 'Pöytyä',
+    name: 'Auranmaan Viikkolehti',
+    url: 'https://www.avl.fi/feed/',
+  },
+  {
+    municipality: 'Rautalampi',
+    name: 'Paikallislehti Sisä-Savo',
+    url: 'https://www.sisa-savolehti.fi/feed/rss/',
+  },
+  {
+    municipality: 'Rääkkylä',
+    name: 'Kotiseutu-uutiset',
+    url: 'https://kotiseutu-uutiset.com/feed/',
+  },
+  {
+    municipality: 'Saarijärvi',
+    name: 'Sampo',
+    url: 'https://www.sampolehti.fi/feed/rss/',
+  },
+  {
+    municipality: 'Salo',
+    name: 'Perniönseudun Lehti',
+    url: 'https://www.pernionseudunlehti.fi/feed/rss/',
+  },
+  {
+    municipality: 'Savonlinna',
+    name: 'Puruvesi',
+    url: 'https://www.puruvesi.net/feed/rss/',
+  },
+  {
+    municipality: 'Suonenjoki',
+    name: 'Paikallislehti Sisä-Savo',
+    url: 'https://www.sisa-savolehti.fi/feed/rss/',
+  },
+  {
+    municipality: 'Tervo',
+    name: 'Paikallislehti Sisä-Savo',
+    url: 'https://www.sisa-savolehti.fi/feed/rss/',
+  },
+  {
+    municipality: 'Tuusniemi',
+    name: 'Koillis-Savo',
+    url: 'https://www.koillis-savo.fi/feed/rss/',
+  },
+  {
+    municipality: 'Vesanto',
+    name: 'Paikallislehti Sisä-Savo',
+    url: 'https://www.sisa-savolehti.fi/feed/rss/',
+  },
+  {
+    municipality: 'Virolahti',
+    name: 'Kaakonkulma',
+    url: 'https://www.kaakonkulma.fi/feed/rss/',
+  },
+  {
     municipality: 'Heinävesi',
     name: 'Heinäveden Lehti',
     url: 'https://www.heinavedenlehti.fi/feed/rss',
@@ -216,6 +341,7 @@ const resolveMunicipality = (title, municipalities) => {
 };
 
 const cleanUrl = (url) => url.replace(/&amp;/g, '&').replace(/[)\].,;]+$/g, '');
+const normalizeFeedUrl = (url) => cleanUrl(url).replace(/\/+$/g, '');
 
 const isCandidateUrl = (url) => {
   try {
@@ -343,7 +469,7 @@ const main = async () => {
 
   for (const feed of MANUAL_NEWSPAPER_FEEDS) {
     const list = feedsByMunicipality.get(feed.municipality) ?? [];
-    if (!list.some((item) => item.url === feed.url)) {
+    if (!list.some((item) => normalizeFeedUrl(item.url) === normalizeFeedUrl(feed.url))) {
       list.push({ name: feed.name, url: feed.url });
       discovered.push({
         municipality: feed.municipality,
@@ -366,8 +492,8 @@ const main = async () => {
   const missingMunicipalities = [...new Set(
     municipalities.filter((municipality) => !feedsByMunicipality.has(municipality))
   )].sort((a, b) => a.localeCompare(b, 'fi-FI'));
-  const feedUrlsWithMunicipality = new Set(discovered.filter((item) => item.municipality).map((item) => item.feedUrl));
-  const displayedFeeds = discovered.filter((item) => item.municipality || !feedUrlsWithMunicipality.has(item.feedUrl));
+  const feedUrlsWithMunicipality = new Set(discovered.filter((item) => item.municipality).map((item) => normalizeFeedUrl(item.feedUrl)));
+  const displayedFeeds = discovered.filter((item) => item.municipality || !feedUrlsWithMunicipality.has(normalizeFeedUrl(item.feedUrl)));
   const uniqueFeedUrlCount = new Set(discovered.map((item) => item.feedUrl)).size;
 
   const docLines = [

@@ -1,6 +1,6 @@
 # Alueellisten yhteisölinkkien kattavuus
 
-Päivitetty: 11.7.2026
+Päivitetty: 13.7.2026
 
 Tämä raportti kuvaa museo-, eläkeyhdistys- ja potilasyhdistyslinkkien nykyistä metadataa. Se ei tarkoita, että jokaiselle kunnalle pitäisi väkisin löytyä oma yhdistys, vaan auttaa erottamaan valtakunnalliset lähteet paikallisista ja alueellisista osumista.
 

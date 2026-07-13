@@ -148,9 +148,7 @@ const LocalNewsHeadlines: React.FC<LocalNewsHeadlinesProps> = ({ feeds, fallback
             {headline.title}
           </span>
           <span className={`font-bold text-[var(--theme-muted)] ${compact ? 'text-sm' : smallTextClasses[fontSizeStep]}`}>
-            {compact
-              ? formatDateTime(headline.publishedAt)
-              : `${headline.source}${formatDateTime(headline.publishedAt) ? ` · ${formatDateTime(headline.publishedAt)}` : ''}`}
+            {`${headline.source}${formatDateTime(headline.publishedAt) ? ` · ${formatDateTime(headline.publishedAt)}` : ''}`}
           </span>
         </a>
       ))}

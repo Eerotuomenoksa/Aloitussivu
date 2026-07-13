@@ -1,6 +1,6 @@
 # Alueellisten linkkien kattavuus ja puuttuvat kuntalinkit
 
-Päivitetty: 12.7.2026
+Päivitetty: 13.7.2026
 
 Tämä raportti tukee puuttuvien alueellisten linkkien täydentämistä. Se ei vielä todista, ettei kunnassa ole palvelua, vaan kertoo missä Aloitussivun datassa ei ole omaa tai seudullista linkkiä.
 
@@ -35,8 +35,8 @@ Tulkinta:
 
 | Tila | Kuntia |
 | --- | ---: |
-| missing | 99 |
-| ok-own | 209 |
+| missing | 89 |
+| ok-own | 219 |
 
 ## Julkinen liikenne: valtakunnallisen fallbackin varassa
 
@@ -230,17 +230,13 @@ Paltamo, Ristijärvi, Suomussalmi
 
 Forssa, Hausjärvi, Humppila, Jokioinen, Riihimäki
 
-### Keski-Suomen hyvinvointialue, 6 kuntaa
+### Keski-Suomen hyvinvointialue, 5 kuntaa
 
-Jämsä, Kinnula, Multia, Saarijärvi, Uurainen, Äänekoski
+Jämsä, Kinnula, Multia, Uurainen, Äänekoski
 
 ### Keski-Uudenmaan hyvinvointialue, 1 kuntaa
 
 Hyvinkää
-
-### Kymenlaakson hyvinvointialue, 1 kuntaa
-
-Miehikkälä
 
 ### Lapin hyvinvointialue, 12 kuntaa
 
@@ -258,17 +254,17 @@ Kihniö, Kuhmoinen, Mänttä-Vilppula, Punkalaidun, Tampere, Valkeakoski, Virrat
 
 Kristiinankaupunki, Kruunupyy, Maalahti, Pedersören kunta, Uusikaarlepyy, Vöyri
 
-### Pohjois-Karjalan hyvinvointialue, 3 kuntaa
+### Pohjois-Karjalan hyvinvointialue, 2 kuntaa
 
-Kitee, Polvijärvi, Tohmajärvi
+Polvijärvi, Tohmajärvi
 
 ### Pohjois-Pohjanmaan hyvinvointialue, 7 kuntaa
 
 Kuusamo, Kärsämäki, Merijärvi, Oulu, Pudasjärvi, Tyrnävä, Utajärvi
 
-### Pohjois-Savon hyvinvointialue, 5 kuntaa
+### Pohjois-Savon hyvinvointialue, 3 kuntaa
 
-Lapinlahti, Rautavaara, Sonkajärvi, Tervo, Tuusniemi
+Lapinlahti, Rautavaara, Sonkajärvi
 
 ### Päijät-Hämeen hyvinvointialue, 2 kuntaa
 
@@ -282,9 +278,9 @@ Eurajoki, Jämijärvi, Nakkila
 
 Kerava, Vantaa
 
-### Varsinais-Suomen hyvinvointialue, 8 kuntaa
+### Varsinais-Suomen hyvinvointialue, 3 kuntaa
 
-Aura, Kemiönsaari, Marttila, Pöytyä, Salo, Taivassalo, Turku, Vehmaa
+Taivassalo, Turku, Vehmaa
 
 
 

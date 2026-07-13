@@ -72,9 +72,21 @@ export interface CalendarEvent {
   flagType?: 'official' | 'established' | 'recommended';
 }
 
+export type LocalNewsSourceType =
+  | 'local-newspaper'
+  | 'municipality'
+  | 'regional-newspaper'
+  | 'regional-news'
+  | 'wellbeing-area'
+  | 'yle'
+  | 'national-newspaper';
+
 export interface RssFeedConfig {
   name: string;
   url: string;
+  sourceType?: LocalNewsSourceType;
+  sourcePriority?: number;
+  sourceKey?: string;
 }
 
 export interface LocalNewsHeadline {
@@ -82,6 +94,9 @@ export interface LocalNewsHeadline {
   link: string;
   source: string;
   publishedAt?: string;
+  sourceType?: LocalNewsSourceType;
+  sourcePriority?: number;
+  sourceKey?: string;
 }
 
 export interface Shortcut {

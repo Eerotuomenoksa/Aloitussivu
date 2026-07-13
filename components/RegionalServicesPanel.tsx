@@ -156,12 +156,12 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
     [
       ...getRegionalProviders(context, language),
       ...getRegionalLibraryProviders(context),
-      ...getRegionalNewsProviders(context),
+      ...getRegionalNewsProviders(context, language),
     ]
   )) ?? [] : [], [context, language]);
   const regionalCategories = useMemo(() => context ? getRegionalCategoryShortcuts(context, language) : [], [context, language]);
-  const newsFallbacks = useMemo(() => context ? filterVisibleProviders(getRegionalNewsProviders(context)) ?? [] : [], [context]);
-  const rssFeeds = useMemo(() => context ? getRegionalRssFeeds(context) : [], [context]);
+  const newsFallbacks = useMemo(() => context ? filterVisibleProviders(getRegionalNewsProviders(context, language)) ?? [] : [], [context, language]);
+  const rssFeeds = useMemo(() => context ? getRegionalRssFeeds(context, language) : [], [context, language]);
   const fallbackNewsUrl = newsFallbacks[0]?.url ?? '';
   const localizedMunicipalityName = context ? getLocalizedMunicipalityName(context.municipality, language) : '';
   const detectedMunicipality = locality?.municipality ? findMunicipality(locality.municipality) : null;

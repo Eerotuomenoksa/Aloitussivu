@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-11T21:06:41.034Z",
+  "generatedAt": "2026-07-13T05:01:26.090Z",
   "municipalityCount": 308,
   "counts": {
     "publicTransport": {
@@ -12,8 +12,8 @@
       "missing": 113
     },
     "localNewsFeed": {
-      "ok-own": 209,
-      "missing": 99
+      "ok-own": 219,
+      "missing": 89
     }
   },
   "municipalities": [
@@ -140,7 +140,7 @@
         "status": "missing"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -1616,7 +1616,7 @@
         "status": "missing"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -1742,7 +1742,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -2750,7 +2750,7 @@
         "status": "missing"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -2822,7 +2822,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -3884,7 +3884,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -4208,7 +4208,7 @@
         "status": "missing"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -4244,7 +4244,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -4838,7 +4838,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -4982,7 +4982,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {

@@ -507,7 +507,7 @@ Tulokset:
 - päätös korjattavista asioista
 - priorisoitu tehtävälista
 
-Alueellisten linkkien täydentämiseen käytetään erillistä suunnitelmaa `docs/puuttuvien-alueellisten-linkkien-taydennyssuunnitelma.md`. Sen mukaan puuttuvat kuntalinkit käydään läpi aiheittain, naapurikunnan linkit merkitään erikseen ja käyttöliittymässä kerrotaan, onko linkki oman kunnan, seudun, hyvinvointialueen, naapurikunnan vai valtakunnallisen fallbackin palvelu.
+Alueellisten linkkien täydentämiseen käytetään koontia `docs/alueelliset-linkit.md`. Sen mukaan puuttuvat kuntalinkit käydään läpi aiheittain, naapurikunnan linkit merkitään erikseen ja käyttöliittymässä kerrotaan, onko linkki oman kunnan, seudun, hyvinvointialueen, naapurikunnan vai valtakunnallisen fallbackin palvelu.
 
 ### Työpaketti 1A: julkaisua edeltävät päätökset ja poistot
 

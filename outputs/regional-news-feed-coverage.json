@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-07-11T21:08:59.711Z",
+  "generatedAt": "2026-07-13T05:48:32.795Z",
   "municipalityCount": 308,
   "counts": {
-    "localNewspaperFeedMunicipalities": 45,
+    "localNewspaperFeedMunicipalities": 68,
     "municipalityNewsFlowMunicipalities": 170,
-    "ownNewsFlowMunicipalities": 214,
-    "wellbeingAreaNewsOnlyMunicipalities": 94,
+    "ownNewsFlowMunicipalities": 224,
+    "wellbeingAreaNewsOnlyMunicipalities": 84,
     "municipalitiesWithoutAnyNewsSource": 0
   },
   "municipalities": [
@@ -147,11 +147,17 @@
       "key": "aura",
       "wellbeingAreaCode": "05",
       "wellbeingAreaName": "Varsinais-Suomen hyvinvointialue",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Auranmaan Viikkolehti",
+          "url": "https://www.avl.fi/feed/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Varsinais-Suomen hyvinvointialue",
@@ -208,10 +214,16 @@
       "wellbeingAreaCode": "12",
       "wellbeingAreaName": "Etelä-Savon hyvinvointialue",
       "sourceStatus": "own-news-flow",
-      "hasLocalNewspaperFeed": false,
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": true,
       "hasOwnNewsFlow": true,
-      "localNewspaperSources": [],
+      "localNewspaperSources": [
+        {
+          "name": "Puruvesi",
+          "url": "https://www.puruvesi.net/feed/rss/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [
         {
           "name": "Enonkoski uutiset",
@@ -1502,10 +1514,16 @@
       "wellbeingAreaCode": "13",
       "wellbeingAreaName": "Pohjois-Savon hyvinvointialue",
       "sourceStatus": "own-news-flow",
-      "hasLocalNewspaperFeed": false,
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": true,
       "hasOwnNewsFlow": true,
-      "localNewspaperSources": [],
+      "localNewspaperSources": [
+        {
+          "name": "Koillis-Savo",
+          "url": "https://www.koillis-savo.fi/feed/rss/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [
         {
           "name": "Kaavi uutiset",
@@ -1582,6 +1600,11 @@
           "name": "Kangasalan Sanomat",
           "url": "https://kangasalansanomat.fi/feed/",
           "sourceType": "local-newspaper-feed"
+        },
+        {
+          "name": "Sydän-Hämeen Lehti",
+          "url": "https://shl.fi/feed/",
+          "sourceType": "local-newspaper-feed"
         }
       ],
       "municipalityNewsSources": [],
@@ -1646,10 +1669,16 @@
       "wellbeingAreaCode": "15",
       "wellbeingAreaName": "Keski-Suomen hyvinvointialue",
       "sourceStatus": "own-news-flow",
-      "hasLocalNewspaperFeed": false,
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": true,
       "hasOwnNewsFlow": true,
-      "localNewspaperSources": [],
+      "localNewspaperSources": [
+        {
+          "name": "Sampo",
+          "url": "https://www.sampolehti.fi/feed/rss/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [
         {
           "name": "Kannonkoski uutiset",
@@ -1999,11 +2028,17 @@
       "key": "kemiönsaari",
       "wellbeingAreaCode": "05",
       "wellbeingAreaName": "Varsinais-Suomen hyvinvointialue",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Annonsbladet",
+          "url": "https://annonsbladet.fi/feed/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Varsinais-Suomen hyvinvointialue",
@@ -2143,11 +2178,17 @@
       "key": "kitee",
       "wellbeingAreaCode": "14",
       "wellbeingAreaName": "Pohjois-Karjalan hyvinvointialue",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Puruvesi",
+          "url": "https://www.puruvesi.net/feed/rss/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Pohjois-Karjalan hyvinvointialue",
@@ -2372,10 +2413,16 @@
       "wellbeingAreaCode": "05",
       "wellbeingAreaName": "Varsinais-Suomen hyvinvointialue",
       "sourceStatus": "own-news-flow",
-      "hasLocalNewspaperFeed": false,
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": true,
       "hasOwnNewsFlow": true,
-      "localNewspaperSources": [],
+      "localNewspaperSources": [
+        {
+          "name": "Auranmaan Viikkolehti",
+          "url": "https://www.avl.fi/feed/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [
         {
           "name": "Koski Tl uutiset",
@@ -3128,10 +3175,16 @@
       "wellbeingAreaCode": "14",
       "wellbeingAreaName": "Pohjois-Karjalan hyvinvointialue",
       "sourceStatus": "own-news-flow",
-      "hasLocalNewspaperFeed": false,
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": true,
       "hasOwnNewsFlow": true,
-      "localNewspaperSources": [],
+      "localNewspaperSources": [
+        {
+          "name": "Kotiseutu-uutiset",
+          "url": "https://kotiseutu-uutiset.com/feed/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [
         {
           "name": "Liperi uutiset",
@@ -3228,6 +3281,11 @@
       "hasMunicipalityNewsFlow": false,
       "hasOwnNewsFlow": true,
       "localNewspaperSources": [
+        {
+          "name": "Nya Östis",
+          "url": "https://www.nyaostis.fi/feed/",
+          "sourceType": "local-newspaper-feed"
+        },
         {
           "name": "Loviisan Sanomat",
           "url": "https://www.loviisansanomat.fi/feed/rss",
@@ -3391,11 +3449,17 @@
       "key": "marttila",
       "wellbeingAreaCode": "05",
       "wellbeingAreaName": "Varsinais-Suomen hyvinvointialue",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Auranmaan Viikkolehti",
+          "url": "https://www.avl.fi/feed/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Varsinais-Suomen hyvinvointialue",
@@ -3475,11 +3539,17 @@
       "key": "miehikkälä",
       "wellbeingAreaCode": "10",
       "wellbeingAreaName": "Kymenlaakson hyvinvointialue",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Kaakonkulma",
+          "url": "https://www.kaakonkulma.fi/feed/rss/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Kymenlaakson hyvinvointialue",
@@ -3950,10 +4020,16 @@
       "wellbeingAreaCode": "05",
       "wellbeingAreaName": "Varsinais-Suomen hyvinvointialue",
       "sourceStatus": "own-news-flow",
-      "hasLocalNewspaperFeed": false,
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": true,
       "hasOwnNewsFlow": true,
-      "localNewspaperSources": [],
+      "localNewspaperSources": [
+        {
+          "name": "Auranmaan Viikkolehti",
+          "url": "https://www.avl.fi/feed/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [
         {
           "name": "Oripää uutiset",
@@ -4802,10 +4878,16 @@
       "wellbeingAreaCode": "08",
       "wellbeingAreaName": "Pirkanmaan hyvinvointialue",
       "sourceStatus": "own-news-flow",
-      "hasLocalNewspaperFeed": false,
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": true,
       "hasOwnNewsFlow": true,
-      "localNewspaperSources": [],
+      "localNewspaperSources": [
+        {
+          "name": "Sydän-Hämeen Lehti",
+          "url": "https://shl.fi/feed/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [
         {
           "name": "Pälkäne uutiset",
@@ -4825,11 +4907,17 @@
       "key": "pöytyä",
       "wellbeingAreaCode": "05",
       "wellbeingAreaName": "Varsinais-Suomen hyvinvointialue",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Auranmaan Viikkolehti",
+          "url": "https://www.avl.fi/feed/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Varsinais-Suomen hyvinvointialue",
@@ -4988,10 +5076,16 @@
       "wellbeingAreaCode": "13",
       "wellbeingAreaName": "Pohjois-Savon hyvinvointialue",
       "sourceStatus": "own-news-flow",
-      "hasLocalNewspaperFeed": false,
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": true,
       "hasOwnNewsFlow": true,
-      "localNewspaperSources": [],
+      "localNewspaperSources": [
+        {
+          "name": "Paikallislehti Sisä-Savo",
+          "url": "https://www.sisa-savolehti.fi/feed/rss/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [
         {
           "name": "Rautalampi uutiset",
@@ -5198,10 +5292,16 @@
       "wellbeingAreaCode": "14",
       "wellbeingAreaName": "Pohjois-Karjalan hyvinvointialue",
       "sourceStatus": "own-news-flow",
-      "hasLocalNewspaperFeed": false,
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": true,
       "hasOwnNewsFlow": true,
-      "localNewspaperSources": [],
+      "localNewspaperSources": [
+        {
+          "name": "Kotiseutu-uutiset",
+          "url": "https://kotiseutu-uutiset.com/feed/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [
         {
           "name": "Rääkkylä uutiset",
@@ -5221,11 +5321,17 @@
       "key": "saarijärvi",
       "wellbeingAreaCode": "15",
       "wellbeingAreaName": "Keski-Suomen hyvinvointialue",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Sampo",
+          "url": "https://www.sampolehti.fi/feed/rss/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Keski-Suomen hyvinvointialue",
@@ -5263,11 +5369,17 @@
       "key": "salo",
       "wellbeingAreaCode": "05",
       "wellbeingAreaName": "Varsinais-Suomen hyvinvointialue",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Perniönseudun Lehti",
+          "url": "https://www.pernionseudunlehti.fi/feed/rss/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Varsinais-Suomen hyvinvointialue",
@@ -5366,10 +5478,16 @@
       "wellbeingAreaCode": "12",
       "wellbeingAreaName": "Etelä-Savon hyvinvointialue",
       "sourceStatus": "own-news-flow",
-      "hasLocalNewspaperFeed": false,
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": true,
       "hasOwnNewsFlow": true,
-      "localNewspaperSources": [],
+      "localNewspaperSources": [
+        {
+          "name": "Puruvesi",
+          "url": "https://www.puruvesi.net/feed/rss/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [
         {
           "name": "Savonlinna uutiset",
@@ -5798,10 +5916,16 @@
       "wellbeingAreaCode": "13",
       "wellbeingAreaName": "Pohjois-Savon hyvinvointialue",
       "sourceStatus": "own-news-flow",
-      "hasLocalNewspaperFeed": false,
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": true,
       "hasOwnNewsFlow": true,
-      "localNewspaperSources": [],
+      "localNewspaperSources": [
+        {
+          "name": "Paikallislehti Sisä-Savo",
+          "url": "https://www.sisa-savolehti.fi/feed/rss/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [
         {
           "name": "Suonenjoki uutiset",
@@ -5987,11 +6111,17 @@
       "key": "tervo",
       "wellbeingAreaCode": "13",
       "wellbeingAreaName": "Pohjois-Savon hyvinvointialue",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Paikallislehti Sisä-Savo",
+          "url": "https://www.sisa-savolehti.fi/feed/rss/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Pohjois-Savon hyvinvointialue",
@@ -6155,11 +6285,17 @@
       "key": "tuusniemi",
       "wellbeingAreaCode": "13",
       "wellbeingAreaName": "Pohjois-Savon hyvinvointialue",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Koillis-Savo",
+          "url": "https://www.koillis-savo.fi/feed/rss/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Pohjois-Savon hyvinvointialue",
@@ -6497,10 +6633,16 @@
       "wellbeingAreaCode": "13",
       "wellbeingAreaName": "Pohjois-Savon hyvinvointialue",
       "sourceStatus": "own-news-flow",
-      "hasLocalNewspaperFeed": false,
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": true,
       "hasOwnNewsFlow": true,
-      "localNewspaperSources": [],
+      "localNewspaperSources": [
+        {
+          "name": "Paikallislehti Sisä-Savo",
+          "url": "https://www.sisa-savolehti.fi/feed/rss/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [
         {
           "name": "Vesanto uutiset",
@@ -6665,10 +6807,16 @@
       "wellbeingAreaCode": "10",
       "wellbeingAreaName": "Kymenlaakson hyvinvointialue",
       "sourceStatus": "own-news-flow",
-      "hasLocalNewspaperFeed": false,
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": true,
       "hasOwnNewsFlow": true,
-      "localNewspaperSources": [],
+      "localNewspaperSources": [
+        {
+          "name": "Kaakonkulma",
+          "url": "https://www.kaakonkulma.fi/feed/rss/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [
         {
           "name": "Virolahti uutiset",

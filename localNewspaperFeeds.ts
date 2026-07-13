@@ -5,6 +5,16 @@ export const LOCAL_NEWSPAPER_FEEDS = [
     "url": "https://akaanseutu.fi/feed/"
   },
   {
+    "municipality": "Aura",
+    "name": "Auranmaan Viikkolehti",
+    "url": "https://www.avl.fi/feed/"
+  },
+  {
+    "municipality": "Enonkoski",
+    "name": "Puruvesi",
+    "url": "https://www.puruvesi.net/feed/rss/"
+  },
+  {
     "municipality": "Haapavesi",
     "name": "Haapavesi (lehti)",
     "url": "https://www.haapavesi-lehti.fi/feed"
@@ -40,6 +50,11 @@ export const LOCAL_NEWSPAPER_FEEDS = [
     "url": "https://www.kuntsari.fi/feed/"
   },
   {
+    "municipality": "Kaavi",
+    "name": "Koillis-Savo",
+    "url": "https://www.koillis-savo.fi/feed/rss/"
+  },
+  {
     "municipality": "Kalajoki",
     "name": "Kalajoen Seutu",
     "url": "https://kalajoenseutu.net/feed/"
@@ -50,9 +65,19 @@ export const LOCAL_NEWSPAPER_FEEDS = [
     "url": "https://kangasalansanomat.fi/feed/"
   },
   {
+    "municipality": "Kangasala",
+    "name": "Sydän-Hämeen Lehti",
+    "url": "https://shl.fi/feed/"
+  },
+  {
     "municipality": "Kangasniemi",
     "name": "Kangasniemen Kunnallislehti",
     "url": "https://www.kangasniemenlehti.fi/feed/rss"
+  },
+  {
+    "municipality": "Kannonkoski",
+    "name": "Sampo",
+    "url": "https://www.sampolehti.fi/feed/rss/"
   },
   {
     "municipality": "Karkkila",
@@ -63,6 +88,16 @@ export const LOCAL_NEWSPAPER_FEEDS = [
     "municipality": "Keitele",
     "name": "Pielavesi-Keitele",
     "url": "https://www.pielavesi-keitele.fi/feed/rss"
+  },
+  {
+    "municipality": "Kemiönsaari",
+    "name": "Annonsbladet",
+    "url": "https://annonsbladet.fi/feed/"
+  },
+  {
+    "municipality": "Kitee",
+    "name": "Puruvesi",
+    "url": "https://www.puruvesi.net/feed/rss/"
   },
   {
     "municipality": "Kiuruvesi",
@@ -78,6 +113,11 @@ export const LOCAL_NEWSPAPER_FEEDS = [
     "municipality": "Konnevesi",
     "name": "Laukaa-Konnevesi",
     "url": "https://www.laukaa-konnevesi.fi/feed/rss"
+  },
+  {
+    "municipality": "Koski Tl",
+    "name": "Auranmaan Viikkolehti",
+    "url": "https://www.avl.fi/feed/"
   },
   {
     "municipality": "Kuhmo",
@@ -105,6 +145,11 @@ export const LOCAL_NEWSPAPER_FEEDS = [
     "url": "https://www.lieksanlehti.fi/feed/rss"
   },
   {
+    "municipality": "Liperi",
+    "name": "Kotiseutu-uutiset",
+    "url": "https://kotiseutu-uutiset.com/feed/"
+  },
+  {
     "municipality": "Loimaa",
     "name": "Loimaan Lehti",
     "url": "https://www.loimaanlehti.fi/feed/"
@@ -116,13 +161,33 @@ export const LOCAL_NEWSPAPER_FEEDS = [
   },
   {
     "municipality": "Loviisa",
+    "name": "Nya Östis",
+    "url": "https://www.nyaostis.fi/feed/"
+  },
+  {
+    "municipality": "Loviisa",
     "name": "Loviisan Sanomat",
     "url": "https://www.loviisansanomat.fi/feed/rss"
+  },
+  {
+    "municipality": "Marttila",
+    "name": "Auranmaan Viikkolehti",
+    "url": "https://www.avl.fi/feed/"
+  },
+  {
+    "municipality": "Miehikkälä",
+    "name": "Kaakonkulma",
+    "url": "https://www.kaakonkulma.fi/feed/rss/"
   },
   {
     "municipality": "Nivala",
     "name": "Nivala (lehti)",
     "url": "https://www.nivala-lehti.fi/feed"
+  },
+  {
+    "municipality": "Oripää",
+    "name": "Auranmaan Viikkolehti",
+    "url": "https://www.avl.fi/feed/"
   },
   {
     "municipality": "Orivesi",
@@ -170,14 +235,49 @@ export const LOCAL_NEWSPAPER_FEEDS = [
     "url": "https://pyhajarvensanomat.fi/feed/"
   },
   {
+    "municipality": "Pälkäne",
+    "name": "Sydän-Hämeen Lehti",
+    "url": "https://shl.fi/feed/"
+  },
+  {
+    "municipality": "Pöytyä",
+    "name": "Auranmaan Viikkolehti",
+    "url": "https://www.avl.fi/feed/"
+  },
+  {
+    "municipality": "Rautalampi",
+    "name": "Paikallislehti Sisä-Savo",
+    "url": "https://www.sisa-savolehti.fi/feed/rss/"
+  },
+  {
     "municipality": "Rautjärvi",
     "name": "Parikkalan-Rautjärven Sanomat",
     "url": "https://www.prsanomat.fi/feed/rss"
   },
   {
+    "municipality": "Rääkkylä",
+    "name": "Kotiseutu-uutiset",
+    "url": "https://kotiseutu-uutiset.com/feed/"
+  },
+  {
+    "municipality": "Saarijärvi",
+    "name": "Sampo",
+    "url": "https://www.sampolehti.fi/feed/rss/"
+  },
+  {
+    "municipality": "Salo",
+    "name": "Perniönseudun Lehti",
+    "url": "https://www.pernionseudunlehti.fi/feed/rss/"
+  },
+  {
     "municipality": "Sauvo",
     "name": "Kunnallislehti Paimio-Sauvo-Kaarina",
     "url": "https://www.kuntsari.fi/feed/"
+  },
+  {
+    "municipality": "Savonlinna",
+    "name": "Puruvesi",
+    "url": "https://www.puruvesi.net/feed/rss/"
   },
   {
     "municipality": "Somero",
@@ -195,6 +295,21 @@ export const LOCAL_NEWSPAPER_FEEDS = [
     "url": "https://sulkavalehti.fi/feed/"
   },
   {
+    "municipality": "Suonenjoki",
+    "name": "Paikallislehti Sisä-Savo",
+    "url": "https://www.sisa-savolehti.fi/feed/rss/"
+  },
+  {
+    "municipality": "Tervo",
+    "name": "Paikallislehti Sisä-Savo",
+    "url": "https://www.sisa-savolehti.fi/feed/rss/"
+  },
+  {
+    "municipality": "Tuusniemi",
+    "name": "Koillis-Savo",
+    "url": "https://www.koillis-savo.fi/feed/rss/"
+  },
+  {
     "municipality": "Urjala",
     "name": "Urjalan Sanomat",
     "url": "https://urjalansanomat.fi/feed/"
@@ -210,6 +325,11 @@ export const LOCAL_NEWSPAPER_FEEDS = [
     "url": "https://www.warkaudenlehti.fi/feed/rss"
   },
   {
+    "municipality": "Vesanto",
+    "name": "Paikallislehti Sisä-Savo",
+    "url": "https://www.sisa-savolehti.fi/feed/rss/"
+  },
+  {
     "municipality": "Vesilahti",
     "name": "Lempäälän-Vesilahden Sanomat",
     "url": "https://lvs.fi/feed/"
@@ -218,6 +338,11 @@ export const LOCAL_NEWSPAPER_FEEDS = [
     "municipality": "Viitasaari",
     "name": "Viitasaaren Seutu",
     "url": "https://www.viitasaarenseutu.fi/feed/rss"
+  },
+  {
+    "municipality": "Virolahti",
+    "name": "Kaakonkulma",
+    "url": "https://www.kaakonkulma.fi/feed/rss/"
   },
   {
     "municipality": "Ylöjärvi",
