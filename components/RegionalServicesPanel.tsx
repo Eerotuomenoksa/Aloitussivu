@@ -55,27 +55,41 @@ const uniqueProvidersByUrl = (providers: Provider[]) => providers.filter(
   (provider, index, all) => all.findIndex((item) => item.url === provider.url) === index
 );
 
-const formatScopeLabel = (scopeInfo: ReturnType<typeof getRegionalProviderScopeInfo>, t: ReturnType<typeof useI18n>['t']) => {
+const normalizeCardText = (value: string) => value
+  .toLocaleLowerCase('fi-FI')
+  .replace(/[^\p{L}\p{N}]+/gu, ' ')
+  .replace(/\s+/g, ' ')
+  .trim();
+
+const isRedundantScopeDetail = (provider: Provider, detail?: string) => {
+  if (!detail) return true;
+  const providerName = normalizeCardText(provider.name);
+  const detailText = normalizeCardText(detail);
+  return providerName.includes(detailText) || detailText.includes(providerName);
+};
+
+const formatScopeLabel = (provider: Provider, scopeInfo: ReturnType<typeof getRegionalProviderScopeInfo>, t: ReturnType<typeof useI18n>['t']) => {
   if (!scopeInfo) return '';
-  const label = scopeInfo.scope === 'municipality'
-    ? t('regionalScopeOwnMunicipality')
-    : scopeInfo.scope === 'regional'
-      ? t('regionalScopeRegional')
-      : scopeInfo.scope === 'wellbeingArea'
-        ? t('regionalScopeWellbeingArea')
-        : scopeInfo.scope === 'neighbor'
-          ? t('regionalScopeNeighbor')
-          : t('regionalScopeNationalFallback');
+  if (scopeInfo.scope === 'municipality' || scopeInfo.scope === 'wellbeingArea') return '';
+  if (isRedundantScopeDetail(provider, scopeInfo.detail)) {
+    return scopeInfo.scope === 'nationalFallback' ? t('regionalScopeNationalFallback') : '';
+  }
+
+  const label = scopeInfo.scope === 'regional'
+    ? t('regionalScopeRegional')
+    : scopeInfo.scope === 'neighbor'
+      ? t('regionalScopeNeighbor')
+      : t('regionalScopeNationalFallback');
   return scopeInfo.detail ? `${label}: ${scopeInfo.detail}` : label;
 };
 
 const ServiceLink: React.FC<{ provider: Provider; index: number; fontSizeStep: number; context: RegionalContext; onReportLink?: (draft: LinkReportDraft) => void }> = ({ provider, index, fontSizeStep, context, onReportLink }) => {
-  const { t, categoryName } = useI18n();
+  const { t } = useI18n();
   const icon = getRegionalServiceIcon(provider);
   const phoneHref = getPhoneHref(provider);
   const href = phoneHref ?? provider.url;
   const isPhoneLink = Boolean(phoneHref);
-  const scopeLabel = formatScopeLabel(getRegionalProviderScopeInfo(provider, context), t);
+  const scopeLabel = formatScopeLabel(provider, getRegionalProviderScopeInfo(provider, context), t);
   return (
     <div className="relative group/service">
       <a
@@ -90,7 +104,6 @@ const ServiceLink: React.FC<{ provider: Provider; index: number; fontSizeStep: n
         <span className="zone-link-label flex min-w-0 flex-col gap-0.5">
           <span className={`min-w-0 leading-tight ${textClasses[fontSizeStep]}`}>{provider.name}</span>
           {provider.phone && <span className={`font-black text-[var(--zone-strong)] ${smallTextClasses[fontSizeStep]}`}>☎ {provider.phone}</span>}
-          {provider.group && <span className={`font-semibold text-[var(--theme-text-3)] ${smallTextClasses[fontSizeStep]}`}>{categoryName(provider.group)}</span>}
           {scopeLabel && <span className={`font-semibold text-[var(--theme-muted)] ${smallTextClasses[fontSizeStep]}`}>{scopeLabel}</span>}
         </span>
         <span className="zone-link-arrow" aria-hidden="true">→</span>
@@ -156,7 +169,6 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
     [
       ...getRegionalProviders(context, language),
       ...getRegionalLibraryProviders(context),
-      ...getRegionalNewsProviders(context, language),
     ]
   )) ?? [] : [], [context, language]);
   const regionalCategories = useMemo(() => context ? getRegionalCategoryShortcuts(context, language) : [], [context, language]);
@@ -289,7 +301,7 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
                     {services.length}
                   </span>
                 </div>
-                <div className="zone-links-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(16rem, 1fr))', alignContent: 'start' }}>
+                <div className="zone-links-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 20rem), 1fr))', alignContent: 'start' }}>
                   {services.map((provider, index) => <ServiceLink key={provider.url} provider={provider} index={index} fontSizeStep={fontSizeStep} context={context} onReportLink={onReportLink} />)}
                 </div>
               </section>
@@ -305,7 +317,7 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
                     {regionalCategories.length}
                   </span>
                 </div>
-                <div className="zone-links-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(16rem, 1fr))', alignContent: 'start' }}>
+                <div className="zone-links-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 20rem), 1fr))', alignContent: 'start' }}>
                   {regionalCategories.map((shortcut) => (
                     <CategoryLink
                       key={shortcut.name}

@@ -254,7 +254,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
               <p className={`font-black uppercase tracking-widest text-[var(--theme-muted)] ${subTextClasses[fontSizeStep]}`}>
                 {t('categories')}
               </p>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3 2xl:grid-cols-4">
                 {matchedCategories.map(({ shortcut, color }, idx) => (
                   <button
                     key={idx}
@@ -264,7 +264,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
                     aria-label={`${t('openCategory')}: ${categoryName(shortcut.name)}`}
                   >
                   <span className={`flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-2xl bg-[var(--theme-pale)] text-3xl transition-all duration-300 ${iconClasses[fontSizeStep]}`} aria-hidden="true">{shortcut.icon}</span>
-                    <span className={`min-w-0 max-w-full break-words [overflow-wrap:anywhere] font-black leading-tight tracking-tight transition-all duration-300 ${textClasses[fontSizeStep]}`}>
+                    <span className={`link-label-text min-w-0 max-w-full font-black leading-tight tracking-tight transition-all duration-300 ${textClasses[fontSizeStep]}`}>
                       {categoryName(shortcut.name)}
                     </span>
                   </button>
@@ -278,7 +278,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
               <p className={`font-black uppercase tracking-widest text-[var(--theme-muted)] ${subTextClasses[fontSizeStep]}`}>
                 Verkkosivut
               </p>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3 2xl:grid-cols-4">
                 {matchedLinks.map((link, idx) => {
                   const isFav = favorites.some(f => f.url === link.url);
                   const phoneHref = getPhoneHref(link.phone, link.phoneUrl);
@@ -300,7 +300,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
                         aria-label={`${t('goToSite')}: ${link.name}`}
                       >
                         <span className={`flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-2xl bg-[var(--theme-pale)] text-3xl transition-all duration-300 ${iconClasses[fontSizeStep]}`} aria-hidden="true">{link.categoryIcon}</span>
-                        <span className={`min-w-0 max-w-full break-words [overflow-wrap:anywhere] font-black leading-tight tracking-tight transition-all duration-300 ${textClasses[fontSizeStep]}`}>
+                        <span className={`link-label-text min-w-0 max-w-full font-black leading-tight tracking-tight transition-all duration-300 ${textClasses[fontSizeStep]}`}>
                           {link.name}
                         </span>
                         <span className={`opacity-75 font-semibold ${subTextClasses[fontSizeStep]}`}>
@@ -351,7 +351,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
               <p className={`font-black uppercase tracking-widest text-[var(--theme-muted)] ${subTextClasses[fontSizeStep]}`}>
                 Puhelinnumerot
               </p>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3 2xl:grid-cols-4">
                 {matchedPhones.map((phone, idx) => {
                   const phoneHref = getPhoneHref(phone.phone, phone.phoneUrl);
                   return (
@@ -362,7 +362,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
                       aria-label={`Soita: ${phone.name}, ${phone.phone}`}
                     >
                       <span className={`flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-2xl bg-[var(--theme-pale)] text-3xl transition-all duration-300 ${iconClasses[fontSizeStep]}`} aria-hidden="true">☎</span>
-                      <span className={`min-w-0 max-w-full break-words [overflow-wrap:anywhere] font-black leading-tight tracking-tight transition-all duration-300 ${textClasses[fontSizeStep]}`}>
+                      <span className={`link-label-text min-w-0 max-w-full font-black leading-tight tracking-tight transition-all duration-300 ${textClasses[fontSizeStep]}`}>
                         {phone.name}
                       </span>
                       <span className={`font-black ${subTextClasses[fontSizeStep]}`}>

@@ -40,6 +40,11 @@ const formatDateTime = (value?: string) => {
   }).format(date);
 };
 
+const formatHeadlineMeta = (headline: LocalNewsHeadline) => {
+  const publishedAt = formatDateTime(headline.publishedAt);
+  return [publishedAt, headline.source].filter(Boolean).join(' · ');
+};
+
 const LocalNewsHeadlines: React.FC<LocalNewsHeadlinesProps> = ({ feeds, fallbackUrl, fontSizeStep, compact = false }) => {
   useLinkVisibilityVersion();
   const [headlines, setHeadlines] = useState<LocalNewsHeadline[]>([]);
@@ -148,7 +153,7 @@ const LocalNewsHeadlines: React.FC<LocalNewsHeadlinesProps> = ({ feeds, fallback
             {headline.title}
           </span>
           <span className={`font-bold text-[var(--theme-muted)] ${compact ? 'text-sm' : smallTextClasses[fontSizeStep]}`}>
-            {`${headline.source}${formatDateTime(headline.publishedAt) ? ` · ${formatDateTime(headline.publishedAt)}` : ''}`}
+            {formatHeadlineMeta(headline)}
           </span>
         </a>
       ))}

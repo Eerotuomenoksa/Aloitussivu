@@ -113,6 +113,9 @@ export interface Favorite {
   categoryName: string;
   categoryIcon: string;
   color: string;
+  addedAt?: string;
+  lastUsedAt?: string;
+  usageCount?: number;
 }
 
 export type LinkReportType = 'new' | 'broken' | 'wrong';

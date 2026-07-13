@@ -1848,6 +1848,16 @@ const filterRegionalProviders = (providers: Provider[], context: RegionalContext
   providers.filter((provider) => regionalProviderRank(provider, context) < 2)
 );
 
+const filterMunicipalityListedProviders = (providers: Provider[], context: RegionalContext) => {
+  const municipalityKey = normalizeMunicipality(context.municipality.name);
+  return providers.filter((provider) => {
+    const regional = provider as RegionalProvider;
+    const providerMunicipality = regional.municipality ? normalizeMunicipality(regional.municipality) : '';
+    const providerMunicipalities = regional.municipalities?.map(normalizeMunicipality) ?? [];
+    return providerMunicipality === municipalityKey || providerMunicipalities.includes(municipalityKey);
+  });
+};
+
 const isProviderRegionalForContext = (provider: Provider, context: RegionalContext) => {
   if (regionalProviderRank(provider, context) < 2) return true;
 
@@ -2043,7 +2053,7 @@ const getJournalisticNewsFeeds = (
 
   const regionalProviders = uniqueProviders([
     ...(exact?.regionalNews ?? []),
-    ...prioritizeRegionalProviders(filterRegionalProviders(regionalNewspaperNewsProviders, context), context),
+    ...prioritizeRegionalProviders(filterMunicipalityListedProviders(regionalNewspaperNewsProviders, context), context),
   ]);
 
   if (regionalProviders.length > 0) {
@@ -2125,7 +2135,7 @@ export const getRegionalNewsProviders = (context: RegionalContext, language: Lan
   const wellbeingAreaNews = getWellbeingAreaNewsProvider(context.municipality);
   const regionalProviders = uniqueProviders([
     ...(exact?.regionalNews ?? []),
-    ...prioritizeRegionalProviders(filterRegionalProviders(regionalNewspaperNewsProviders, context), context),
+    ...prioritizeRegionalProviders(filterMunicipalityListedProviders(regionalNewspaperNewsProviders, context), context),
   ]);
   const fallbackProvider = getRegionalNewspaperFallbackProvider(context, language);
   const languageFallbackProviders = language === 'sv'

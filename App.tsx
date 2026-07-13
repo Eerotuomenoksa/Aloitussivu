@@ -62,6 +62,7 @@ const ONBOARDING_SEEN_KEY = 'onboardingSeen';
 const SECONDARY_TIME_ZONE_KEY = 'secondaryTimeZone';
 const THEME_KEY = 'colorTheme';
 const CLOCK_MODE_KEY = 'clockMode';
+const FAVORITES_KEY = 'favorites';
 const TEST_FEEDBACK_PROMPT_DELAY_MS = 2 * 60 * 1000;
 const DEFERRED_CONTENT_DELAY_MS = 900;
 
@@ -102,6 +103,52 @@ const formatTimeZoneLabel = (label: string, timeZone: string) => {
   const winterOffset = getUtcOffsetLabel(timeZone, new Date('2026-01-15T12:00:00Z'));
   if (!offset) return label;
   return `${label} (${offset} nyt, talvella ${winterOffset || offset})`;
+};
+
+const normalizeFavoriteUsageCount = (value: unknown) => (
+  typeof value === 'number' && Number.isFinite(value) ? Math.max(0, Math.floor(value)) : 0
+);
+
+const normalizeFavorite = (value: unknown): Favorite | null => {
+  if (!value || typeof value !== 'object') return null;
+  const favorite = value as Partial<Favorite>;
+  if (
+    typeof favorite.name !== 'string'
+    || typeof favorite.url !== 'string'
+    || typeof favorite.categoryName !== 'string'
+    || typeof favorite.categoryIcon !== 'string'
+    || typeof favorite.color !== 'string'
+  ) {
+    return null;
+  }
+
+  return {
+    name: favorite.name,
+    url: favorite.url,
+    categoryName: favorite.categoryName,
+    categoryIcon: favorite.categoryIcon,
+    color: favorite.color,
+    addedAt: typeof favorite.addedAt === 'string' ? favorite.addedAt : undefined,
+    lastUsedAt: typeof favorite.lastUsedAt === 'string' ? favorite.lastUsedAt : undefined,
+    usageCount: normalizeFavoriteUsageCount(favorite.usageCount),
+  };
+};
+
+const readStoredFavorites = () => {
+  try {
+    const parsed = JSON.parse(localStorage.getItem(FAVORITES_KEY) ?? '[]');
+    return Array.isArray(parsed) ? parsed.map(normalizeFavorite).filter((favorite): favorite is Favorite => Boolean(favorite)) : [];
+  } catch {
+    return [];
+  }
+};
+
+const writeStoredFavorites = (favorites: Favorite[]) => {
+  try {
+    localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));
+  } catch {
+    // Favorites are local convenience data; storage failures should not break the page.
+  }
 };
 
 interface UiVisibilityState {
@@ -259,19 +306,37 @@ const AppContent: React.FC = () => {
   const [logoPhase, setLogoPhase] = useState<LogoPhase>(() => getLogoPhase(new Date()));
 
   const [favorites, setFavorites] = useState<Favorite[]>(() => {
-    try {
-      return JSON.parse(localStorage.getItem('favorites') ?? '[]');
-    } catch {
-      return [];
-    }
+    return readStoredFavorites();
   });
 
   const toggleFavorite = useCallback((fav: Favorite) => {
     setFavorites(prev => {
       const exists = prev.some(f => f.url === fav.url);
-      const next = exists ? prev.filter(f => f.url !== fav.url) : [...prev, fav];
-      localStorage.setItem('favorites', JSON.stringify(next));
+      const next = exists
+        ? prev.filter(f => f.url !== fav.url)
+        : [...prev, { ...fav, addedAt: fav.addedAt ?? new Date().toISOString(), usageCount: normalizeFavoriteUsageCount(fav.usageCount) }];
+      writeStoredFavorites(next);
       return next;
+    });
+  }, []);
+
+  const markFavoriteUsed = useCallback((url: string) => {
+    const openedAt = new Date().toISOString();
+    setFavorites(prev => {
+      let didUpdate = false;
+      const next = prev.map((favorite) => {
+        if (favorite.url !== url) return favorite;
+        didUpdate = true;
+        return {
+          ...favorite,
+          lastUsedAt: openedAt,
+          usageCount: normalizeFavoriteUsageCount(favorite.usageCount) + 1,
+        };
+      });
+      if (didUpdate) {
+        writeStoredFavorites(next);
+      }
+      return didUpdate ? next : prev;
     });
   }, []);
 
@@ -774,7 +839,12 @@ const AppContent: React.FC = () => {
           )}
 
           <div data-tour="favorites">
-            <FavoriteLinks favorites={favorites} onToggleFavorite={toggleFavorite} fontSizeStep={fontSizeStep} />
+            <FavoriteLinks
+              favorites={favorites}
+              onToggleFavorite={toggleFavorite}
+              onFavoriteOpen={markFavoriteUsed}
+              fontSizeStep={fontSizeStep}
+            />
           </div>
 
           {shouldShowRegionalServices && (
