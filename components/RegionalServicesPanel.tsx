@@ -293,13 +293,10 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
           <div className="space-y-5">
             {services.length > 0 && (
               <section className="space-y-3" aria-label={t('primaryRegionalServices')}>
-                <div className="flex items-center justify-between gap-3 border-b border-[var(--zone-border)] pb-2">
+                <div className="border-b border-[var(--zone-border)] pb-2">
                   <h3 className="font-display text-xl font-bold text-[var(--theme-text)] md:text-2xl">
                     {t('primaryRegionalServices')}
                   </h3>
-                  <span className="rounded-full bg-[var(--theme-pale)] px-3 py-1 text-sm font-black text-[var(--theme-muted)]">
-                    {services.length}
-                  </span>
                 </div>
                 <div className="zone-links-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 20rem), 1fr))', alignContent: 'start' }}>
                   {services.map((provider, index) => <ServiceLink key={provider.url} provider={provider} index={index} fontSizeStep={fontSizeStep} context={context} onReportLink={onReportLink} />)}
@@ -309,13 +306,10 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
 
             {regionalCategories.length > 0 && (
               <section className="space-y-3" aria-label={t('regionalLinksByTopic')}>
-                <div className="flex items-center justify-between gap-3 border-b border-[var(--zone-border)] pb-2">
+                <div className="border-b border-[var(--zone-border)] pb-2">
                   <h3 className="font-display text-xl font-bold text-[var(--theme-text)] md:text-2xl">
                     {t('regionalLinksByTopic')}
                   </h3>
-                  <span className="rounded-full bg-[var(--theme-pale)] px-3 py-1 text-sm font-black text-[var(--theme-muted)]">
-                    {regionalCategories.length}
-                  </span>
                 </div>
                 <div className="zone-links-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 20rem), 1fr))', alignContent: 'start' }}>
                   {regionalCategories.map((shortcut) => (
