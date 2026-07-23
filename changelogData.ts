@@ -24,30 +24,132 @@ export type ChangelogCommit = {
   tags: string[];
 };
 
-export const CHANGELOG_GENERATED_AT = "23.7.2026 klo 11.41";
+export const CHANGELOG_GENERATED_AT = "23.7.2026 klo 13.43";
 export const CHANGELOG_VERSION = "0.72.0";
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
-  "Pohjanmaan alueellisia liikennelinkkejä täydennettiin: Luoto, Pietarsaari ja Vöyri saivat omat julkisen liikenteen linkit.",
-  "Palveluliikenteen linkit lisättiin Kristiinankaupungille, Luodolle, Närpiölle ja Pietarsaarelle.",
-  "Pohjois-Pohjanmaan ensimmäisessä tarkistusaallossa lisättiin kuusi julkisen liikenteen kuntalinkkiä ja Taivalkosken asiointiliikenne.",
-  "Varsinais-Suomen Seutu+-yhteydet lisättiin 20 kunnalle, ja Loimaan sekä Paraisten palveluliikenteen linkit vahvistettiin.",
-  "Keski-Suomen tarkistusaallossa lisättiin Jämsän, Joutsan, Luhangan ja Uuraisten omia liikennelinkkejä sekä Keski-Suomen lipputuotteet.",
-  "Palveluliikenteen linkit lisättiin Jämsälle, Laukaalle ja Pihtiputaalle.",
-  "Etelä-Pohjanmaan tarkistusaallossa lisättiin Härmän Liikenteen reittiliikennelinkki kahdeksalle kunnalle.",
-  "Palveluliikenteen linkit lisättiin Alavudelle, Isojoelle, Soinille ja Vimpelille.",
-  "Lapin tarkistusaallossa lisättiin Meri-Lapin joukkoliikenteen seutulinkki viidelle kunnalle, Rundgrenin Länsi-Lapin reittilinkki kolmelle kunnalle sekä Inarin, Pellon ja Utsjoen omat julkisen liikenteen linkit.",
-  "Palveluliikenteen linkit lisättiin Enontekiölle, Inarille, Kemille, Keminmaalle, Kolarille, Pellolle, Simolle ja Tervolalle.",
-  "Alueellisten linkkien kattavuusraportti päivitettiin: julkisen liikenteen valtakunnallinen fallback väheni 218 kunnasta 164 kuntaan ja palveluliikenteen puuttuvat linkit 167 kunnasta 149 kuntaan.",
-  "Muutoshistoria päivitettiin näyttämään myös heinäkuun uusimmat julkaisu- ja ylläpitocommitit.",
+  "Länsi-Uudenmaan palveluliikennelinkit lisättiin Espoolle, Inkolle, Kauniaisille, Kirkkonummelle ja Siuntiolle; puuttuvien palveluliikennelinkkien määrä väheni 113 kunnasta 108 kuntaan.",
+  "Alueellisten kategorioiden linkkimäärät näytetään nyt käyttäjän valitsemalla kielellä kaikilla seitsemällä tuetulla kielellä.",
   "Paikallisuutisten lähteet haetaan nyt rinnakkain, ja yhden lähteen virhe ei estä muiden lähteiden tuloksia.",
   "Linkkien näkyvyystarkistus käyttää välimuistitettua estolistaa, ja hyväksyttyjen sekä estettyjen linkkien Firestore-kuuntelut jaetaan päällekkäisten verkkopyyntöjen välttämiseksi.",
   "Opastuskierroksen vieritysmittaus rajattiin yhteen päivitykseen animaatiokehystä kohden, ja sen ajastimet sekä tapahtumankuuntelijat siivotaan sulkemisen yhteydessä.",
-  "Paikallisten asetusten tallennusvirheet eivät enää estä etusivun toimintaa, jos selaimen paikallinen tallennustila ei ole käytettävissä.",
-  "Länsi-Uudenmaan palveluliikennelinkit lisättiin Espoolle, Inkolle, Kauniaisille, Kirkkonummelle ja Siuntiolle; puuttuvien palveluliikennelinkkien määrä väheni 113 kunnasta 108 kuntaan.",
-  "Alueellisten kategorioiden linkkimäärät näytetään nyt käyttäjän valitsemalla kielellä kaikilla seitsemällä tuetulla kielellä."
+  "Paikallisten asetusten tallennusvirheet eivät enää estä etusivun toimintaa, jos selaimen paikallinen tallennustila ei ole käytettävissä."
 ];
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
+  {
+    "hash": "94213bba529aaaa8864aa40469c2ec21016b678d",
+    "date": "2026-07-23",
+    "version": "0.95.0",
+    "changeType": "minor",
+    "subject": "täydennä Länsi-Uudenmaan palveluliikennelinkkejä",
+    "tags": []
+  },
+  {
+    "hash": "4e59e67717072815bc0d6749e8c14e00bc1a3e47",
+    "date": "2026-07-23",
+    "version": "0.94.3",
+    "changeType": "patch",
+    "subject": "korjaa etusivun suorituskykyä ja virheenkestoa",
+    "tags": []
+  },
+  {
+    "hash": "28bb7965faccf86f7f88d53147279dde6ac363d8",
+    "date": "2026-07-13",
+    "version": "0.94.2",
+    "changeType": "patch",
+    "subject": "lähelläsi poistetaan turhat linkkien lukumäärä numerot",
+    "tags": []
+  },
+  {
+    "hash": "c5ccdc280ce1329a610ffeb7c00ccf80e149a416",
+    "date": "2026-07-13",
+    "version": "0.94.1",
+    "changeType": "patch",
+    "subject": "lähelläsi yksinkertaistamista, sekä pitkien linkkisanojen tarkistus",
+    "tags": [
+      "Visuaalisuus"
+    ]
+  },
+  {
+    "hash": "7c3d63ecfbe208abc70e23f3461d75e3a1a985b9",
+    "date": "2026-07-13",
+    "version": "0.94.0",
+    "changeType": "minor",
+    "subject": "uutislähteiden jatkotarkistukset",
+    "tags": []
+  },
+  {
+    "hash": "fab703f649097e283391d8be4d39875c60549391",
+    "date": "2026-07-12",
+    "version": "0.93.1",
+    "changeType": "patch",
+    "subject": "Päivitä alueellisten linkkien työpakettisuunnitelma",
+    "tags": []
+  },
+  {
+    "hash": "458579e58a96fe16dab34872ccf57e28426f397b",
+    "date": "2026-07-12",
+    "version": "0.93.0",
+    "changeType": "minor",
+    "subject": "Lisää uutisfeedien kattavuusraportti",
+    "tags": []
+  },
+  {
+    "hash": "b8a2cfa5666fcfe7b344d997a95828101d3c524e",
+    "date": "2026-07-12",
+    "version": "0.92.2",
+    "changeType": "patch",
+    "subject": "Lisää kuntien väkilukutausta linkkityöhön",
+    "tags": []
+  },
+  {
+    "hash": "653854f1a6c7e9a63cef910c9c1b2455ce5b156b",
+    "date": "2026-07-12",
+    "version": "0.92.1",
+    "changeType": "patch",
+    "subject": "Palveluliikenteen jatkoerä ja Satakunnan joukkoliikenne",
+    "tags": []
+  },
+  {
+    "hash": "a16c1ec0d0311041df2c395b980e32d3ce18eed5",
+    "date": "2026-07-11",
+    "version": "0.92.0",
+    "changeType": "minor",
+    "subject": "Alueelliset eläkejärjestöt läpi käyty",
+    "tags": []
+  },
+  {
+    "hash": "f134b5530ef219edac769567ab4790a88e4f243b",
+    "date": "2026-07-10",
+    "version": "0.91.1",
+    "changeType": "patch",
+    "subject": "linkkiluettelon tarkistus",
+    "tags": []
+  },
+  {
+    "hash": "c1afaf934faea42765b817a9bf40e7cb88b79fc5",
+    "date": "2026-07-09",
+    "version": "0.91.0",
+    "changeType": "minor",
+    "subject": "kuntien nettisivujen lisäys",
+    "tags": []
+  },
+  {
+    "hash": "ec7b1c7a40a5aab6cf9fc7eae9d4d0ad544d9a3a",
+    "date": "2026-07-09",
+    "version": "0.90.3",
+    "changeType": "patch",
+    "subject": "puuttuvia julkisen liikenteen linkkejä",
+    "tags": []
+  },
+  {
+    "hash": "33e6ecfb7dae1f84290c565ee7d9e072fc88fcf5",
+    "date": "2026-07-09",
+    "version": "0.90.2",
+    "changeType": "patch",
+    "subject": "Pohjaanmaan julkinen ja palveluliikenne",
+    "tags": []
+  },
   {
     "hash": "8ebd96834a99d1d16f3c6a8c29c2457d19100ff5",
     "date": "2026-07-09",

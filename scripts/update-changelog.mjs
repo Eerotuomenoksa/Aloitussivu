@@ -165,7 +165,12 @@ function uniqueBy(items, keyFn) {
 }
 
 function summarizeWorktree(changes) {
-  const paths = changes.map((change) => change.path);
+  const visibleChanges = changes.filter((change) => (
+    !['changelogData.ts', 'scripts/update-changelog.mjs'].includes(change.path)
+  ));
+  if (visibleChanges.length === 0) return [];
+
+  const paths = visibleChanges.map((change) => change.path);
   const notes = [];
 
   if (paths.some((pathName) => ['App.tsx'].includes(pathName))) {
@@ -323,6 +328,18 @@ function summarizeCommit(commit) {
   if (subject.includes('linkkien täysi tarkistus')) {
     notes.push('Kaikki linkkilähteet tarkistettiin uudelleen ja katkenneet tai epäilyttävät linkit piilotettiin loppukäyttäjiltä.');
     notes.push('Alueelliset Kela-taksit poistettiin etusivun nostolinkeistä, mutta ne löytyvät edelleen Liikenne-kategorian taksilinkkien kärjestä.');
+  }
+
+  if (subject.includes('suorituskykyä ja virheenkestoa')) {
+    notes.push('Paikallisuutisten lähteet haetaan nyt rinnakkain, ja yhden lähteen virhe ei estä muiden lähteiden tuloksia.');
+    notes.push('Linkkien näkyvyystarkistus käyttää välimuistitettua estolistaa, ja hyväksyttyjen sekä estettyjen linkkien Firestore-kuuntelut jaetaan päällekkäisten verkkopyyntöjen välttämiseksi.');
+    notes.push('Opastuskierroksen vieritysmittaus rajattiin yhteen päivitykseen animaatiokehystä kohden, ja sen ajastimet sekä tapahtumankuuntelijat siivotaan sulkemisen yhteydessä.');
+    notes.push('Paikallisten asetusten tallennusvirheet eivät enää estä etusivun toimintaa, jos selaimen paikallinen tallennustila ei ole käytettävissä.');
+  }
+
+  if (subject.includes('länsi-uudenmaan palveluliikennelinkkejä')) {
+    notes.push('Länsi-Uudenmaan palveluliikennelinkit lisättiin Espoolle, Inkolle, Kauniaisille, Kirkkonummelle ja Siuntiolle; puuttuvien palveluliikennelinkkien määrä väheni 113 kunnasta 108 kuntaan.');
+    notes.push('Alueellisten kategorioiden linkkimäärät näytetään nyt käyttäjän valitsemalla kielellä kaikilla seitsemällä tuetulla kielellä.');
   }
 
   return notes;
