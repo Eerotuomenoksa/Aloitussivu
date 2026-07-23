@@ -127,10 +127,14 @@ const ServiceLink: React.FC<{ provider: Provider; index: number; fontSizeStep: n
   );
 };
 
+const formatRegionalLinkCount = (count: number, t: ReturnType<typeof useI18n>['t']) => (
+  (count === 1 ? t('regionalLinkCountOne') : t('regionalLinkCountOther')).replace('{count}', String(count))
+);
+
 const CategoryLink: React.FC<{ shortcut: Shortcut; fontSizeStep: number; onSelectCategory?: (shortcut: Shortcut) => void }> = ({ shortcut, fontSizeStep, onSelectCategory }) => {
-  const { categoryName } = useI18n();
+  const { categoryName, t } = useI18n();
   const count = shortcut.providers?.length ?? 0;
-  const countLabel = count === 1 ? '1 alueellinen linkki' : `${count} alueellista linkkiä`;
+  const countLabel = formatRegionalLinkCount(count, t);
 
   if (!onSelectCategory) return null;
 

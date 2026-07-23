@@ -24,7 +24,7 @@ export type ChangelogCommit = {
   tags: string[];
 };
 
-export const CHANGELOG_GENERATED_AT = "23.7.2026 klo 11.16";
+export const CHANGELOG_GENERATED_AT = "23.7.2026 klo 11.41";
 export const CHANGELOG_VERSION = "0.72.0";
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
   "Pohjanmaan alueellisia liikennelinkkejä täydennettiin: Luoto, Pietarsaari ja Vöyri saivat omat julkisen liikenteen linkit.",
@@ -42,7 +42,9 @@ export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
   "Paikallisuutisten lähteet haetaan nyt rinnakkain, ja yhden lähteen virhe ei estä muiden lähteiden tuloksia.",
   "Linkkien näkyvyystarkistus käyttää välimuistitettua estolistaa, ja hyväksyttyjen sekä estettyjen linkkien Firestore-kuuntelut jaetaan päällekkäisten verkkopyyntöjen välttämiseksi.",
   "Opastuskierroksen vieritysmittaus rajattiin yhteen päivitykseen animaatiokehystä kohden, ja sen ajastimet sekä tapahtumankuuntelijat siivotaan sulkemisen yhteydessä.",
-  "Paikallisten asetusten tallennusvirheet eivät enää estä etusivun toimintaa, jos selaimen paikallinen tallennustila ei ole käytettävissä."
+  "Paikallisten asetusten tallennusvirheet eivät enää estä etusivun toimintaa, jos selaimen paikallinen tallennustila ei ole käytettävissä.",
+  "Länsi-Uudenmaan palveluliikennelinkit lisättiin Espoolle, Inkolle, Kauniaisille, Kirkkonummelle ja Siuntiolle; puuttuvien palveluliikennelinkkien määrä väheni 113 kunnasta 108 kuntaan.",
+  "Alueellisten kategorioiden linkkimäärät näytetään nyt käyttäjän valitsemalla kielellä kaikilla seitsemällä tuetulla kielellä."
 ];
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [

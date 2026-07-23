@@ -1,6 +1,6 @@
 # Alueellisten linkkien kattavuus ja puuttuvat kuntalinkit
 
-Päivitetty: 13.7.2026
+Päivitetty: 23.7.2026
 
 Tämä raportti tukee puuttuvien alueellisten linkkien täydentämistä. Se ei vielä todista, ettei kunnassa ole palvelua, vaan kertoo missä Aloitussivun datassa ei ole omaa tai seudullista linkkiä.
 
@@ -28,8 +28,8 @@ Tulkinta:
 
 | Tila | Kuntia |
 | --- | ---: |
-| missing | 113 |
-| ok-own | 195 |
+| missing | 108 |
+| ok-own | 200 |
 
 ### Paikallisuutisten RSS-syötteet
 
@@ -156,9 +156,9 @@ Kotka, Pyhtää
 
 Rovaniemi, Utsjoki
 
-### Länsi-Uudenmaan hyvinvointialue, 7 kuntaa
+### Länsi-Uudenmaan hyvinvointialue, 2 kuntaa
 
-Espoo, Hanko, Inkoo, Kauniainen, Kirkkonummi, Raasepori, Siuntio
+Hanko, Raasepori
 
 ### Pirkanmaan hyvinvointialue, 4 kuntaa
 

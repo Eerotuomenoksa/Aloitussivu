@@ -73,6 +73,15 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
     evidence: "Tiedoksi koululaiskuljetus- ja asiointiliikennereitit 1.8.2026-31.7.2029 - Enonkosken kunta; kuntalaiset voivat käyttää koulukuljetuksia asiointiliikenteenä joukkoliikennetaksalla; tarkistettu 2026-07-09",
   },
   {
+    municipality: "espoo",
+    provider: {
+      name: "HSL Espoon lähibussit",
+      url: "https://www.hsl.fi/matkustaminen/lahibussit",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Lähibussit - HSL; Espoo ja Kauniainen -alueen lähibussilinjat; linjat voivat käyttää kaikki matkustajat ja ne vievät kodin läheltä palveluihin; tarkistettu 2026-07-13",
+  },
+  {
     municipality: "evijärvi",
     provider: {
       name: "Evijärvi palveluliikenne",
@@ -253,6 +262,15 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
     evidence: "Liikenneyhteydet - Inarin kunta; termit: kunnan etukäteen varattava asiointiliikenne; kutsutaksiliikenne; linja on kaikkien matkustajien käytettävissä; tarkistettu 2026-07-09",
   },
   {
+    municipality: "inkoo",
+    provider: {
+      name: "Inkoon Inkyyti",
+      url: "https://www.inkoo.fi/asuminen-ja-ymparisto/kadut-liikenne-ja-satamat/julkinen-liikenne/inkyyti/",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Inkyyti - Inkoon kunta; kutsukyytipalvelu kuljettaa keskustassa ja lähiympäristössä, palvelee asiointi- ja palveluliikenteenä arkipäivisin ja täydentää joukkoliikennettä; tarkistettu 2026-07-13",
+  },
+  {
     municipality: "janakkala",
     provider: {
       name: "Janakkala palveluliikenne",
@@ -397,6 +415,15 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
     evidence: "Joukkoliikenne - Karkkilan kaupunki; termit: asiointiliikenne",
   },
   {
+    municipality: "kauniainen",
+    provider: {
+      name: "Kauniaisten lähibussi",
+      url: "https://www.kauniainen.fi/asuminen-ja-ymparisto/liikenne/joukkoliikenne/",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Joukkoliikenne - Kauniaisten kaupunki; lähibussilinja on entinen palvelulinja, kuljettaa lähiympäristön palveluihin, sitä voivat käyttää kaikki matkustajat ja HSL:n liput käyvät; tarkistettu 2026-07-13",
+  },
+  {
     municipality: "isojoki",
     provider: {
       name: "Isojoki asiointiliikenne",
@@ -485,6 +512,15 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
       group: 'Palveluliikenne',
     },
     evidence: "Keuruun kaupungin palveluliikenne - Keuruu; termit: palveluliikenne; asiointiliikenne",
+  },
+  {
+    municipality: "kirkkonummi",
+    provider: {
+      name: "Kirkkonummen lähibussit",
+      url: "https://kirkkonummi.fi/hsl-kirkkonummella-liikennoi-kaksi-kutsupohjaista-lahibussia/",
+      group: 'Palveluliikenne',
+    },
+    evidence: "HSL: Kirkkonummella liikennöi kaksi kutsupohjaista lähibussia - Kirkkonummi; lähibussit 918 ja 919 palvelevat eteläistä ja pohjoista Kirkkonummea, tilataan etukäteen ja niissä kelpaavat HSL:n liput; tarkistettu 2026-07-13",
   },
   {
     municipality: "kitee",
@@ -1412,6 +1448,15 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
       group: 'Palveluliikenne',
     },
     evidence: "Joukkoliikenne - Siilinjärven kunnan verkkosivut; termit: palveluliikenne",
+  },
+  {
+    municipality: "siuntio",
+    provider: {
+      name: "Siuntion Avainlinjat",
+      url: "https://www.hsl.fi/matkustaminen/lahibussit",
+      group: 'Palveluliikenne',
+    },
+    evidence: "Lähibussit - HSL; Siuntion Avainlinjat palvelevat alueita, joilla ei ole muuta joukkoliikennettä, ja busseissa kelpaavat HSL:n liput; tarkistettu 2026-07-13",
   },
   {
     municipality: "simo",

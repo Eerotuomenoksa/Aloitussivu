@@ -23,8 +23,8 @@ Koneellinen lähde: `outputs/regional-link-coverage.json` ja `outputs/regional-n
 | --- | ---: |
 | Julkinen liikenne: oma tai seudullinen linkki | 227 / 308 kuntaa |
 | Julkinen liikenne: valtakunnallisen fallbackin varassa | 81 kuntaa |
-| Palveluliikenne: oma linkki datassa | 195 / 308 kuntaa |
-| Palveluliikenne: oma linkki puuttuu | 113 kuntaa |
+| Palveluliikenne: oma linkki datassa | 200 / 308 kuntaa |
+| Palveluliikenne: oma linkki puuttuu | 108 kuntaa |
 | Paikallisuutisten RSS tai uutisfeed `regional-link-coverage`-raportissa | 219 / 308 kuntaa |
 | Paikallisuutisten RSS tai feed puuttuu `regional-link-coverage`-raportissa | 89 kuntaa |
 | Oma uutisvirta tarkemmassa uutisraportissa | 224 / 308 kuntaa |
@@ -86,6 +86,8 @@ Monikuntalehtiä ei saa mapittaa kunnille pelkän omistajan tai lehtiperheen per
 
 13.7.2026 seutulehtitarkistuksessa lisättiin vahvistettuja paikallislehti-RSS-mapityksiä ja tavallisia alueuutislinkkejä. UutisOiva lisättiin tavalliseksi alueuutislinkiksi kunnille Hämeenkyrö, Ikaalinen, Jämijärvi ja Ylöjärvi, koska Viljakkala kuuluu nykyisin Ylöjärveen ja `https://oivaseutu.fi/feed/` palautti 404-sivun. RSS-listaan sitä ei lisätty.
 
+13.7.2026 palveluliikennebatchissa lisättiin vahvistetut Länsi-Uudenmaan palveluliikennelinkit kunnille Espoo, Inkoo, Kauniainen, Kirkkonummi ja Siuntio. Länsi-Uudenmaan palveluliikenteen puuttuvat kunnat vähenivät seitsemästä kahteen.
+
 Jatkoon ovat edelleen hyviä uutishakukohteita etenkin:
 
 - Länsi-Uusimaa ja pääkaupunkiseutu: Länsi-Uusimaa, Länsiväylä, Vihdin Uutiset, Karkkilalainen, Keski-Uusimaa ja Uusimaa
@@ -109,7 +111,7 @@ Tämänhetkiset käytännön prioriteetit:
 
 | Prioriteetti | Kori | Nykyiset suurimmat aukot |
 | ---: | --- | --- |
-| 1 | Palveluliikenne | Ahvenanmaa 16, Pohjois-Pohjanmaa 13, Satakunta 13, Varsinais-Suomi 9, Pohjanmaa 8, Keski-Pohjanmaa 7, Keski-Suomi 7, Länsi-Uusimaa 7 |
+| 1 | Palveluliikenne | Ahvenanmaa 16, Pohjois-Pohjanmaa 13, Satakunta 13, Varsinais-Suomi 9, Pohjanmaa 8, Keski-Pohjanmaa 7, Keski-Suomi 7, Etelä-Pohjanmaa 4, Etelä-Karjala 4, Pirkanmaa 4 |
 | 2 | Julkinen liikenne | Pohjois-Pohjanmaa 12, Lappi 9, Pirkanmaa 9, Etelä-Pohjanmaa 7, Etelä-Savo 7, Pohjois-Karjala 6 |
 | 3 | Uutisvirrat | Ahvenanmaa 13, Lappi 12, Etelä-Pohjanmaa 7, Pirkanmaa 6, Pohjanmaa 6, Pohjois-Pohjanmaa 6 |
 | 4 | Yhteisolinkit | Eläkeyhdistysten, potilasyhdistysten ja museoiden kattavuutta jatketaan järjestö tai aihe kerrallaan, ei kunnittain pakottaen |

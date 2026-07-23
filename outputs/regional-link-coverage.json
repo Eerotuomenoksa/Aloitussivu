@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-13T05:01:26.090Z",
+  "generatedAt": "2026-07-23T08:42:30.756Z",
   "municipalityCount": 308,
   "counts": {
     "publicTransport": {
@@ -8,8 +8,8 @@
       "ok-own": 45
     },
     "serviceTransport": {
-      "ok-own": 195,
-      "missing": 113
+      "ok-own": 200,
+      "missing": 108
     },
     "localNewsFeed": {
       "ok-own": 219,
@@ -227,7 +227,7 @@
         "area": "Helsingin seutu"
       },
       "serviceTransport": {
-        "status": "missing"
+        "status": "ok-own"
       },
       "localNewsFeed": {
         "status": "missing"
@@ -929,7 +929,7 @@
         "area": "Länsi-Uudenmaan joukkoliikenne"
       },
       "serviceTransport": {
-        "status": "missing"
+        "status": "ok-own"
       },
       "localNewsFeed": {
         "status": "ok-own"
@@ -1505,7 +1505,7 @@
         "area": "Helsingin seutu"
       },
       "serviceTransport": {
-        "status": "missing"
+        "status": "ok-own"
       },
       "localNewsFeed": {
         "status": "ok-own"
@@ -1721,7 +1721,7 @@
         "area": "Helsingin seutu"
       },
       "serviceTransport": {
-        "status": "missing"
+        "status": "ok-own"
       },
       "localNewsFeed": {
         "status": "ok-own"
@@ -4511,7 +4511,7 @@
         "area": "Helsingin seutu"
       },
       "serviceTransport": {
-        "status": "missing"
+        "status": "ok-own"
       },
       "localNewsFeed": {
         "status": "ok-own"
