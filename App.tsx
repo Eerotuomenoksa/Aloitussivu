@@ -66,6 +66,22 @@ const FAVORITES_KEY = 'favorites';
 const TEST_FEEDBACK_PROMPT_DELAY_MS = 2 * 60 * 1000;
 const DEFERRED_CONTENT_DELAY_MS = 900;
 
+const readLocalPreference = (key: string) => {
+  try {
+    return localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+};
+
+const writeLocalPreference = (key: string, value: string) => {
+  try {
+    localStorage.setItem(key, value);
+  } catch {
+    // Local preferences must not prevent the page from working.
+  }
+};
+
 type ColorTheme = 'vihrea' | 'violetti' | 'sininen' | 'oranssi';
 type ClockMode = 'digital' | 'analog';
 
@@ -136,7 +152,7 @@ const normalizeFavorite = (value: unknown): Favorite | null => {
 
 const readStoredFavorites = () => {
   try {
-    const parsed = JSON.parse(localStorage.getItem(FAVORITES_KEY) ?? '[]');
+    const parsed = JSON.parse(readLocalPreference(FAVORITES_KEY) ?? '[]');
     return Array.isArray(parsed) ? parsed.map(normalizeFavorite).filter((favorite): favorite is Favorite => Boolean(favorite)) : [];
   } catch {
     return [];
@@ -144,11 +160,7 @@ const readStoredFavorites = () => {
 };
 
 const writeStoredFavorites = (favorites: Favorite[]) => {
-  try {
-    localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));
-  } catch {
-    // Favorites are local convenience data; storage failures should not break the page.
-  }
+  writeLocalPreference(FAVORITES_KEY, JSON.stringify(favorites));
 };
 
 interface UiVisibilityState {
@@ -241,11 +253,11 @@ const AppContent: React.FC = () => {
   const [isTestFeedbackPromptOpen, setIsTestFeedbackPromptOpen] = useState(false);
   const [hasTestFeedbackPromptDelayElapsed, setHasTestFeedbackPromptDelayElapsed] = useState(false);
   const [isDeferredContentReady, setIsDeferredContentReady] = useState(false);
-  const [hasSeenOnboarding, setHasSeenOnboarding] = useState(() => localStorage.getItem(ONBOARDING_SEEN_KEY) === 'true');
+  const [hasSeenOnboarding, setHasSeenOnboarding] = useState(() => readLocalPreference(ONBOARDING_SEEN_KEY) === 'true');
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [locality, setLocality] = useState<LocalityInfo | null>(() => {
     try {
-      const saved = localStorage.getItem(SAVED_LOCALITY_KEY);
+      const saved = readLocalPreference(SAVED_LOCALITY_KEY);
       if (!saved) return null;
       const parsed = JSON.parse(saved) as Partial<LocalityInfo>;
       if (typeof parsed.municipality !== 'string' || typeof parsed.displayName !== 'string') return null;
@@ -264,7 +276,7 @@ const AppContent: React.FC = () => {
   const [reportDraft, setReportDraft] = useState<LinkReportDraft | null>(null);
   const [uiVisibility, setUiVisibility] = useState<UiVisibilityState>(() => {
     try {
-      const saved = localStorage.getItem('uiVisibility');
+      const saved = readLocalPreference('uiVisibility');
       if (!saved) return defaultUiVisibility;
       const parsed = JSON.parse(saved) as Partial<UiVisibilityState>;
       return { ...defaultUiVisibility, ...parsed };
@@ -274,33 +286,33 @@ const AppContent: React.FC = () => {
   });
 
   const [isDarkMode, setIsDarkMode] = useState(() => {
-    return localStorage.getItem('isDarkMode') === 'true';
+    return readLocalPreference('isDarkMode') === 'true';
   });
   const [colorTheme, setColorTheme] = useState<ColorTheme>(() => {
-    const saved = localStorage.getItem(THEME_KEY);
+    const saved = readLocalPreference(THEME_KEY);
     return ['vihrea', 'violetti', 'sininen', 'oranssi'].includes(saved ?? '')
       ? saved as ColorTheme
       : 'vihrea';
   });
 
   const [uiScale, setUiScale] = useState(() => {
-    const savedScale = parseInt(localStorage.getItem('uiScale') ?? '', 10);
+    const savedScale = parseInt(readLocalPreference('uiScale') ?? '', 10);
     if (!Number.isNaN(savedScale)) {
       return Math.min(MAX_UI_SCALE, Math.max(MIN_UI_SCALE, savedScale));
     }
 
-    const legacyStep = parseInt(localStorage.getItem('fontSizeStep') ?? '0', 10);
+    const legacyStep = parseInt(readLocalPreference('fontSizeStep') ?? '0', 10);
     const legacyScale = [100, 125, 150, 175, 200][legacyStep] ?? DEFAULT_UI_SCALE;
     return legacyScale;
   });
   const [secondaryTimeZone, setSecondaryTimeZone] = useState(() => {
-    const saved = localStorage.getItem(SECONDARY_TIME_ZONE_KEY);
+    const saved = readLocalPreference(SECONDARY_TIME_ZONE_KEY);
     return SECONDARY_TIME_ZONE_OPTIONS.some((option) => option.value === saved)
       ? saved
       : SECONDARY_TIME_ZONE_OPTIONS[0].value;
   });
   const [clockMode, setClockMode] = useState<ClockMode>(() => {
-    const saved = localStorage.getItem(CLOCK_MODE_KEY);
+    const saved = readLocalPreference(CLOCK_MODE_KEY);
     return saved === 'analog' ? 'analog' : 'digital';
   });
   const [logoPhase, setLogoPhase] = useState<LogoPhase>(() => getLogoPhase(new Date()));
@@ -345,25 +357,25 @@ const AppContent: React.FC = () => {
     root.classList.remove('theme-vihrea', 'theme-violetti', 'theme-sininen', 'theme-oranssi');
     root.classList.toggle('dark', isDarkMode);
     root.classList.add(`theme-${colorTheme}`);
-    localStorage.setItem(THEME_KEY, colorTheme);
-    localStorage.setItem('isDarkMode', String(isDarkMode));
+    writeLocalPreference(THEME_KEY, colorTheme);
+    writeLocalPreference('isDarkMode', String(isDarkMode));
   }, [isDarkMode, colorTheme]);
 
   useEffect(() => {
     document.documentElement.style.fontSize = '100%';
-    localStorage.setItem('uiScale', String(uiScale));
+    writeLocalPreference('uiScale', String(uiScale));
   }, [uiScale]);
 
   useEffect(() => {
-    localStorage.setItem('uiVisibility', JSON.stringify(uiVisibility));
+    writeLocalPreference('uiVisibility', JSON.stringify(uiVisibility));
   }, [uiVisibility]);
 
   useEffect(() => {
-    localStorage.setItem(SECONDARY_TIME_ZONE_KEY, secondaryTimeZone);
+    writeLocalPreference(SECONDARY_TIME_ZONE_KEY, secondaryTimeZone);
   }, [secondaryTimeZone]);
 
   useEffect(() => {
-    localStorage.setItem(CLOCK_MODE_KEY, clockMode);
+    writeLocalPreference(CLOCK_MODE_KEY, clockMode);
   }, [clockMode]);
 
   useEffect(() => {
@@ -417,7 +429,7 @@ const AppContent: React.FC = () => {
   const resetFont = useCallback(() => setUiScale(DEFAULT_UI_SCALE), []);
   const updateLocality = useCallback((nextLocality: LocalityInfo) => {
     setLocality(nextLocality);
-    localStorage.setItem(SAVED_LOCALITY_KEY, JSON.stringify(nextLocality));
+    writeLocalPreference(SAVED_LOCALITY_KEY, JSON.stringify(nextLocality));
   }, []);
   const fontSizeStep = 0;
   const uiZoom = (uiScale * BASE_UI_SCALE_MULTIPLIER) / 100;
@@ -500,7 +512,7 @@ const AppContent: React.FC = () => {
     setIsOnboardingOpen(true);
   }, []);
   const completeOnboarding = useCallback(() => {
-    localStorage.setItem(ONBOARDING_SEEN_KEY, 'true');
+    writeLocalPreference(ONBOARDING_SEEN_KEY, 'true');
     setHasSeenOnboarding(true);
   }, []);
 

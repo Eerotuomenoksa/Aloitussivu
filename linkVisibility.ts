@@ -72,7 +72,15 @@ const writeJsonArray = (key: string, value: string[]) => {
   }
 };
 
+const staticBlockedUrls = new Set(BLOCKED_LINK_URLS.map(normalizeUrl));
 let runtimeBlockedUrlsCache = (readJsonArray(RUNTIME_BLOCKED_LINKS_KEY) as string[]).map(normalizeUrl);
+let blockedUrlsCache = new Set([...staticBlockedUrls, ...runtimeBlockedUrlsCache]);
+
+const normalizeBlockedUrls = (urls: string[]) => [...new Set(urls.map(normalizeUrl))].sort();
+
+const rebuildBlockedUrlsCache = () => {
+  blockedUrlsCache = new Set([...staticBlockedUrls, ...runtimeBlockedUrlsCache]);
+};
 
 const emitLinkHealthChange = () => {
   if (typeof window !== 'undefined') {
@@ -81,17 +89,19 @@ const emitLinkHealthChange = () => {
 };
 
 const setRuntimeBlockedUrlsCache = (urls: string[]) => {
-  runtimeBlockedUrlsCache = [...new Set(urls.map(normalizeUrl))];
+  const normalizedUrls = normalizeBlockedUrls(urls);
+  if (
+    normalizedUrls.length === runtimeBlockedUrlsCache.length
+    && normalizedUrls.every((url, index) => url === runtimeBlockedUrlsCache[index])
+  ) {
+    return;
+  }
+
+  runtimeBlockedUrlsCache = normalizedUrls;
+  rebuildBlockedUrlsCache();
   writeJsonArray(RUNTIME_BLOCKED_LINKS_KEY, runtimeBlockedUrlsCache);
   emitLinkHealthChange();
 };
-
-const getRuntimeBlockedUrls = () => runtimeBlockedUrlsCache;
-
-const getBlockedUrls = () => new Set([
-  ...BLOCKED_LINK_URLS.map(normalizeUrl),
-  ...getRuntimeBlockedUrls(),
-]);
 
 export const getLinkReports = () => readJsonArray(LINK_REPORTS_KEY) as LinkReportEntry[];
 
@@ -135,7 +145,7 @@ const updateLocalLinkReportStatus = (
 
 export const isLinkVisible = (url?: string | null) => {
   if (!url) return false;
-  return !getBlockedUrls().has(normalizeUrl(url));
+  return !blockedUrlsCache.has(normalizeUrl(url));
 };
 
 export const filterVisibleProviders = (providers: Provider[] | undefined) => {
@@ -277,7 +287,7 @@ export const addBlockedLink = async (url: string) => {
   }
 };
 
-const subscribeBlockedLinks = () => {
+const startBlockedLinksRemoteSync = () => {
   let cancelled = false;
   let unsubscribeRemote: (() => void) | undefined;
   const timer = window.setTimeout(() => {
@@ -299,16 +309,43 @@ const subscribeBlockedLinks = () => {
   };
 };
 
+let blockedLinksSubscriberCount = 0;
+let stopBlockedLinksRemoteSync: (() => void) | null = null;
+
+const subscribeBlockedLinks = () => {
+  blockedLinksSubscriberCount += 1;
+  if (blockedLinksSubscriberCount === 1) {
+    stopBlockedLinksRemoteSync = startBlockedLinksRemoteSync();
+  }
+
+  let active = true;
+  return () => {
+    if (!active) return;
+    active = false;
+    blockedLinksSubscriberCount = Math.max(0, blockedLinksSubscriberCount - 1);
+    if (blockedLinksSubscriberCount === 0) {
+      stopBlockedLinksRemoteSync?.();
+      stopBlockedLinksRemoteSync = null;
+    }
+  };
+};
+
 export const useLinkVisibilityVersion = () => {
   const [version, setVersion] = useState(0);
 
   useEffect(() => {
+    const handleStorage = (event: StorageEvent) => {
+      if (event.key !== RUNTIME_BLOCKED_LINKS_KEY) return;
+      runtimeBlockedUrlsCache = normalizeBlockedUrls(readJsonArray(RUNTIME_BLOCKED_LINKS_KEY) as string[]);
+      rebuildBlockedUrlsCache();
+      setVersion((current) => current + 1);
+    };
     const handleChange = () => setVersion((current) => current + 1);
-    window.addEventListener('storage', handleChange);
+    window.addEventListener('storage', handleStorage);
     window.addEventListener(LINK_HEALTH_CHANGE_EVENT, handleChange);
     const unsubscribeBlockedLinks = subscribeBlockedLinks();
     return () => {
-      window.removeEventListener('storage', handleChange);
+      window.removeEventListener('storage', handleStorage);
       window.removeEventListener(LINK_HEALTH_CHANGE_EVENT, handleChange);
       unsubscribeBlockedLinks();
     };

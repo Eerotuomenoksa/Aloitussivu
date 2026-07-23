@@ -84,12 +84,7 @@ const setApprovedLinksCache = (links: ApprovedLinkSuggestion[]) => {
 
 export const getApprovedLinkSuggestions = () => approvedLinksCache;
 
-export const subscribeApprovedLinkSuggestions = (callback: (links: ApprovedLinkSuggestion[]) => void) => {
-  const handleChange = () => callback(getApprovedLinkSuggestions());
-  callback(getApprovedLinkSuggestions());
-  window.addEventListener('storage', handleChange);
-  window.addEventListener(APPROVED_LINKS_CHANGE_EVENT, handleChange);
-
+const startApprovedLinksRemoteSync = () => {
   let cancelled = false;
   let unsubscribeRemote: (() => void) | undefined;
   const timer = window.setTimeout(() => {
@@ -107,9 +102,8 @@ export const subscribeApprovedLinkSuggestions = (callback: (links: ApprovedLinkS
             ...document.data(),
           })) as ApprovedLinkSuggestion[];
           setApprovedLinksCache(links);
-          callback(links);
         },
-        () => callback(getApprovedLinkSuggestions())
+        () => {}
       );
     });
   }, REMOTE_SYNC_DELAY_MS);
@@ -118,8 +112,40 @@ export const subscribeApprovedLinkSuggestions = (callback: (links: ApprovedLinkS
     cancelled = true;
     window.clearTimeout(timer);
     unsubscribeRemote?.();
-    window.removeEventListener('storage', handleChange);
+  };
+};
+
+let approvedLinksSubscriberCount = 0;
+let stopApprovedLinksRemoteSync: (() => void) | null = null;
+
+export const subscribeApprovedLinkSuggestions = (callback: (links: ApprovedLinkSuggestion[]) => void) => {
+  const handleStorage = (event: StorageEvent) => {
+    if (event.key !== APPROVED_LINKS_KEY) return;
+    approvedLinksCache = readJsonArray<ApprovedLinkSuggestion>(APPROVED_LINKS_KEY);
+    callback(getApprovedLinkSuggestions());
+  };
+  const handleChange = () => callback(getApprovedLinkSuggestions());
+
+  callback(getApprovedLinkSuggestions());
+  window.addEventListener('storage', handleStorage);
+  window.addEventListener(APPROVED_LINKS_CHANGE_EVENT, handleChange);
+
+  approvedLinksSubscriberCount += 1;
+  if (approvedLinksSubscriberCount === 1) {
+    stopApprovedLinksRemoteSync = startApprovedLinksRemoteSync();
+  }
+
+  let active = true;
+  return () => {
+    if (!active) return;
+    active = false;
+    window.removeEventListener('storage', handleStorage);
     window.removeEventListener(APPROVED_LINKS_CHANGE_EVENT, handleChange);
+    approvedLinksSubscriberCount = Math.max(0, approvedLinksSubscriberCount - 1);
+    if (approvedLinksSubscriberCount === 0) {
+      stopApprovedLinksRemoteSync?.();
+      stopApprovedLinksRemoteSync = null;
+    }
   };
 };
 
@@ -163,15 +189,9 @@ export const useApprovedLinkSuggestionsVersion = () => {
   const [version, setVersion] = useState(0);
 
   useEffect(() => {
-    const handleChange = () => setVersion((current) => current + 1);
-    window.addEventListener('storage', handleChange);
-    window.addEventListener(APPROVED_LINKS_CHANGE_EVENT, handleChange);
-    const unsubscribe = subscribeApprovedLinkSuggestions(() => handleChange());
-    return () => {
-      window.removeEventListener('storage', handleChange);
-      window.removeEventListener(APPROVED_LINKS_CHANGE_EVENT, handleChange);
-      unsubscribe();
-    };
+    return subscribeApprovedLinkSuggestions(() => {
+      setVersion((current) => current + 1);
+    });
   }, []);
 
   return version;

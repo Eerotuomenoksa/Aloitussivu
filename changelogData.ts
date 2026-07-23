@@ -24,7 +24,7 @@ export type ChangelogCommit = {
   tags: string[];
 };
 
-export const CHANGELOG_GENERATED_AT = "9.7.2026 klo 10.11";
+export const CHANGELOG_GENERATED_AT = "23.7.2026 klo 11.16";
 export const CHANGELOG_VERSION = "0.72.0";
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
   "Pohjanmaan alueellisia liikennelinkkejä täydennettiin: Luoto, Pietarsaari ja Vöyri saivat omat julkisen liikenteen linkit.",
@@ -38,7 +38,11 @@ export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
   "Lapin tarkistusaallossa lisättiin Meri-Lapin joukkoliikenteen seutulinkki viidelle kunnalle, Rundgrenin Länsi-Lapin reittilinkki kolmelle kunnalle sekä Inarin, Pellon ja Utsjoen omat julkisen liikenteen linkit.",
   "Palveluliikenteen linkit lisättiin Enontekiölle, Inarille, Kemille, Keminmaalle, Kolarille, Pellolle, Simolle ja Tervolalle.",
   "Alueellisten linkkien kattavuusraportti päivitettiin: julkisen liikenteen valtakunnallinen fallback väheni 218 kunnasta 164 kuntaan ja palveluliikenteen puuttuvat linkit 167 kunnasta 149 kuntaan.",
-  "Muutoshistoria päivitettiin näyttämään myös heinäkuun uusimmat julkaisu- ja ylläpitocommitit."
+  "Muutoshistoria päivitettiin näyttämään myös heinäkuun uusimmat julkaisu- ja ylläpitocommitit.",
+  "Paikallisuutisten lähteet haetaan nyt rinnakkain, ja yhden lähteen virhe ei estä muiden lähteiden tuloksia.",
+  "Linkkien näkyvyystarkistus käyttää välimuistitettua estolistaa, ja hyväksyttyjen sekä estettyjen linkkien Firestore-kuuntelut jaetaan päällekkäisten verkkopyyntöjen välttämiseksi.",
+  "Opastuskierroksen vieritysmittaus rajattiin yhteen päivitykseen animaatiokehystä kohden, ja sen ajastimet sekä tapahtumankuuntelijat siivotaan sulkemisen yhteydessä.",
+  "Paikallisten asetusten tallennusvirheet eivät enää estä etusivun toimintaa, jos selaimen paikallinen tallennustila ei ole käytettävissä."
 ];
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [

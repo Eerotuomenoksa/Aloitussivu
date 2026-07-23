@@ -249,15 +249,10 @@ const selectDistinctHeadlines = (headlines: LocalNewsHeadline[], limit: number) 
 };
 
 export const fetchLocalNewsHeadlines = async (feeds: RssFeedConfig[], limit = 3): Promise<LocalNewsHeadline[]> => {
-  const headlines: LocalNewsHeadline[] = [];
-
-  for (const feed of feeds) {
-    try {
-      headlines.push(...await fetchOneFeed(feed));
-    } catch {
-      // Continue with the next feed; one broken municipal RSS should not hide other local headlines.
-    }
-  }
+  const results = await Promise.allSettled(feeds.map((feed) => fetchOneFeed(feed)));
+  const headlines = results.flatMap((result) => (
+    result.status === 'fulfilled' ? result.value : []
+  ));
 
   return selectDistinctHeadlines(headlines, limit);
 };

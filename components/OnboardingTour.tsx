@@ -125,26 +125,53 @@ const OnboardingTour: React.FC<OnboardingTourProps> = ({ isOpen, onClose, onComp
   useEffect(() => {
     if (!isOpen) return;
 
-    const updateTarget = () => {
+    let animationFrame: number | undefined;
+    let settleTimer: number | undefined;
+
+    const measureTarget = () => {
       const element = document.querySelector<HTMLElement>(`[data-tour="${step.target}"]`);
       if (!element) {
         setTargetRect(null);
         return;
       }
+      setTargetRect(element.getBoundingClientRect());
+    };
+
+    const scheduleMeasurement = () => {
+      if (animationFrame !== undefined) return;
+      animationFrame = window.requestAnimationFrame(() => {
+        animationFrame = undefined;
+        measureTarget();
+      });
+    };
+
+    const element = document.querySelector<HTMLElement>(`[data-tour="${step.target}"]`);
+    if (element) {
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       element.scrollIntoView({
-        behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+        behavior: prefersReducedMotion ? 'auto' : 'smooth',
         block: 'center',
         inline: 'nearest',
       });
-      window.setTimeout(() => setTargetRect(element.getBoundingClientRect()), 220);
-    };
+      scheduleMeasurement();
+      if (!prefersReducedMotion) {
+        settleTimer = window.setTimeout(scheduleMeasurement, 220);
+      }
+    } else {
+      setTargetRect(null);
+    }
 
-    updateTarget();
-    window.addEventListener('resize', updateTarget);
-    window.addEventListener('scroll', updateTarget, { passive: true });
+    window.addEventListener('resize', scheduleMeasurement);
+    window.addEventListener('scroll', scheduleMeasurement, { passive: true });
     return () => {
-      window.removeEventListener('resize', updateTarget);
-      window.removeEventListener('scroll', updateTarget);
+      window.removeEventListener('resize', scheduleMeasurement);
+      window.removeEventListener('scroll', scheduleMeasurement);
+      if (animationFrame !== undefined) {
+        window.cancelAnimationFrame(animationFrame);
+      }
+      if (settleTimer !== undefined) {
+        window.clearTimeout(settleTimer);
+      }
     };
   }, [isOpen, step]);
 
