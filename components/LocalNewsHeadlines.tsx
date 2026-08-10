@@ -147,7 +147,7 @@ const LocalNewsHeadlines: React.FC<LocalNewsHeadlinesProps> = ({ feeds, fallback
           href={headline.link}
           target="_blank"
           rel="noopener noreferrer"
-          className={`flex flex-col justify-between gap-4 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-surface)] p-5 text-[var(--theme-text)] shadow-sm transition-all hover:-translate-y-0.5 hover:border-[var(--border-strong)] hover:bg-[var(--theme-pale)] hover:shadow-md active:scale-[.99] ${compact ? 'min-h-[72px]' : 'min-h-[130px]'}`}
+          className={`flex flex-col justify-between gap-4 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-surface)] p-5 text-[var(--theme-text)] shadow-sm transition-all hover:-translate-y-0.5 hover:border-[var(--theme-border-strong)] hover:bg-[var(--theme-pale)] hover:shadow-md active:scale-[.99] ${compact ? 'min-h-[72px]' : 'min-h-[130px]'}`}
         >
           <span className={`font-black leading-tight ${textClasses[fontSizeStep]}`}>
             {headline.title}

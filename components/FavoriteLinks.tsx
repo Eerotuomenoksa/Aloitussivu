@@ -130,7 +130,7 @@ const FavoriteLinks: React.FC<FavoriteLinksProps> = ({ favorites, onToggleFavori
   ];
 
   const basePillStyles =
-    `${isCompact ? 'px-4 py-2' : 'px-5 py-2.5'} inline-flex items-center gap-2 rounded-full border-2 border-[#e8a020] bg-[var(--theme-surface)] font-black text-[var(--theme-text)] shadow-[0_3px_0_#c27e10] transition-all duration-100 hover:-translate-y-0.5 hover:bg-[#fff0c0] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1a4d2e] active:translate-y-0 active:shadow-none dark:hover:bg-[#2a2010]`;
+    `${isCompact ? 'px-4 py-2' : 'px-5 py-2.5'} inline-flex items-center gap-2 rounded-full border-2 border-[var(--theme-gold)] bg-[var(--theme-surface)] font-black text-[var(--theme-text)] shadow-[0_3px_0_rgba(0,0,0,.24)] transition-all duration-100 hover:-translate-y-0.5 hover:bg-[var(--theme-gold-pale)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--theme-focus)] active:translate-y-0 active:shadow-none`;
 
   const renderFavorite = (fav: FavoriteViewItem) => (
     <div key={fav.url} className="group/fav inline-flex items-center gap-2">
@@ -156,7 +156,7 @@ const FavoriteLinks: React.FC<FavoriteLinksProps> = ({ favorites, onToggleFavori
       <button
         onClick={() => onToggleFavorite(fav)}
         title={`Poista suosikeista: ${fav.name}`}
-        className="inline-flex h-11 w-11 items-center justify-center rounded-full border-2 border-dashed border-[#c8dece] bg-transparent text-xl font-black text-[#6b8c72] transition-all hover:border-[#e8a020] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1a4d2e]"
+        className="inline-flex h-11 w-11 items-center justify-center rounded-full border-2 border-dashed border-[var(--theme-border-strong)] bg-transparent text-xl font-black text-[var(--theme-text-3)] transition-all hover:border-[var(--theme-gold)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--theme-focus)]"
         aria-label={`${t('removeFavorite')}: ${fav.name}`}
       >
         ⭐

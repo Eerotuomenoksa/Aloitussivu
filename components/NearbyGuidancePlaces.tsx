@@ -84,7 +84,7 @@ const NearbyGuidancePlaces: React.FC<NearbyGuidancePlacesProps> = ({ locality, f
                 href={visibleHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex min-h-[150px] flex-col justify-between gap-4 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-surface)] p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:border-[var(--border-strong)] hover:bg-[var(--theme-pale)] hover:shadow-md active:scale-[.99]"
+                className="flex min-h-[150px] flex-col justify-between gap-4 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-surface)] p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:border-[var(--theme-border-strong)] hover:bg-[var(--theme-pale)] hover:shadow-md active:scale-[.99]"
               >
                 {content}
               </a>

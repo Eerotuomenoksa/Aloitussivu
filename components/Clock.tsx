@@ -223,11 +223,11 @@ const Clock: React.FC<ClockProps> = ({ fontSizeStep = 0, variant = 'hero', mode 
   return (
     <div className="text-center lg:text-left space-y-2">
       <div className="flex flex-col">
-        <h1 className={`font-display font-bold text-[#1a2e1e] dark:text-[#e8f5ed] tracking-tighter leading-none transition-all duration-300 ${timeSizes[fontSizeStep]}`}>
+        <h1 className={`font-display font-bold text-[var(--theme-text)] tracking-tighter leading-none transition-all duration-300 ${timeSizes[fontSizeStep]}`}>
           {timeString}
         </h1>
       </div>
-      <p className={`text-[#3d5a44] dark:text-[#9ec4a8] capitalize font-bold tracking-tight transition-all duration-300 ${dateSizes[fontSizeStep]}`}>
+      <p className={`text-[var(--theme-text-2)] capitalize font-bold tracking-tight transition-all duration-300 ${dateSizes[fontSizeStep]}`}>
         {dateString}
       </p>
       {secondaryClock && (

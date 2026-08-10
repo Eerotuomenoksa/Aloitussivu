@@ -442,7 +442,7 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ locality, onLocationResolved,
 
   return (
     <div 
-      className={`bg-[#1a4d2e] ${isCompact ? 'rounded-[1.25rem] p-2 min-h-[82px] border-2 md:rounded-[2rem] md:p-6 md:min-h-[160px]' : 'rounded-[2.5rem] p-10 min-h-[220px] border-2'} text-white shadow-xl flex items-center justify-between w-full h-full border-white/20`}
+      className={`bg-[var(--theme-primary)] ${isCompact ? 'rounded-[1.25rem] p-2 min-h-[82px] border-2 md:rounded-[2rem] md:p-6 md:min-h-[160px]' : 'rounded-[2.5rem] p-10 min-h-[220px] border-2'} text-[var(--theme-primary-label)] shadow-xl flex items-center justify-between w-full h-full border-white/20`}
       aria-label={t('showWeather')}
     >
       <div className="space-y-1">
@@ -455,7 +455,7 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ locality, onLocationResolved,
           <p className="text-xl font-bold">{error}</p>
         ) : (
           <>
-            <p className={`${isCompact ? 'text-xl md:text-4xl text-[#e8a020]' : 'text-6xl'} font-black my-0.5 tracking-tighter md:my-1`}>{weather?.temp}°C</p>
+            <p className={`${isCompact ? 'text-xl md:text-4xl text-[var(--theme-gold-light)]' : 'text-6xl'} font-black my-0.5 tracking-tighter md:my-1`}>{weather?.temp}°C</p>
             <p className={`${isCompact ? 'text-xs md:text-lg' : 'text-xl'} font-bold opacity-80 uppercase leading-tight`}>{weather?.condition}</p>
           </>
         )}

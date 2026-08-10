@@ -215,7 +215,7 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({ language, setLangua
 
   return (
     <label
-      className="relative inline-flex h-12 min-w-[4.75rem] items-center rounded-full border border-white/20 bg-white/10 text-white shadow-sm focus-within:ring-2 focus-within:ring-[#e8a020] sm:min-w-[9.5rem] md:h-12"
+      className="relative inline-flex h-12 min-w-[4.75rem] items-center rounded-full border border-white/20 bg-white/10 text-white shadow-sm focus-within:ring-2 focus-within:ring-[var(--theme-focus)] sm:min-w-[9.5rem] md:h-12"
       title="Vaihda sivun kieli"
     >
       <span className="sr-only">{label}</span>
@@ -520,7 +520,7 @@ const AppContent: React.FC = () => {
     <div className="min-h-screen bg-[var(--theme-bg)] text-[var(--theme-text)] transition-all duration-300 text-base overflow-x-auto">
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-white focus:px-5 focus:py-3 focus:font-black focus:text-slate-950 focus:shadow-2xl focus:outline-none focus:ring-4 focus:ring-[#d09a32]"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-white focus:px-5 focus:py-3 focus:font-black focus:text-slate-950 focus:shadow-2xl focus:outline-none focus:ring-4 focus:ring-[var(--theme-focus)]"
       >
         {t('skipToContent')}
       </a>
@@ -543,7 +543,7 @@ const AppContent: React.FC = () => {
                 'radial-gradient(ellipse 70% 100% at 100% 20%, var(--theme-header-mid) 0%, transparent 55%)',
                 'radial-gradient(ellipse 60% 80% at 50% 100%, var(--theme-header-to) 0%, transparent 60%)',
                 'radial-gradient(ellipse 50% 70% at 80% 60%, var(--theme-header-mid) 0%, transparent 50%)',
-                'radial-gradient(ellipse 40% 60% at 25% 10%, rgba(212,148,10,.08) 0%, transparent 55%)',
+                'radial-gradient(ellipse 40% 60% at 25% 10%, color-mix(in srgb, var(--theme-gold) 8%, transparent) 0%, transparent 55%)',
                 'radial-gradient(ellipse 30% 40% at 70% 5%, rgba(255,255,255,.05) 0%, transparent 50%)',
               ].join(', '),
               animation: 'aurora-shift 18s ease-in-out infinite alternate',
@@ -669,7 +669,7 @@ const AppContent: React.FC = () => {
         {isSettingsOpen && (
           <div
             id="settings-panel"
-              className="fixed inset-x-3 top-3 z-[80] h-[75dvh] overflow-y-auto rounded-[2rem] border-2 border-[rgba(28,82,53,.18)] bg-[var(--theme-surface)] p-5 shadow-[0_16px_64px_rgba(10,26,14,.18)] sm:absolute sm:inset-x-auto sm:right-4 sm:top-[5.5rem] sm:h-auto sm:max-h-[calc(100dvh-7rem)] sm:w-[min(24rem,calc(100vw-2rem))] md:right-8 lg:right-12"
+              className="fixed inset-x-3 top-3 z-[80] h-[75dvh] overflow-y-auto rounded-[2rem] border-2 border-[var(--theme-border)] bg-[var(--theme-surface)] p-5 shadow-[0_16px_64px_rgba(0,0,0,.18)] sm:absolute sm:inset-x-auto sm:right-4 sm:top-[5.5rem] sm:h-auto sm:max-h-[calc(100dvh-7rem)] sm:w-[min(24rem,calc(100vw-2rem))] md:right-8 lg:right-12"
             role="dialog"
             aria-labelledby="settings-panel-title"
           >
@@ -747,7 +747,7 @@ const AppContent: React.FC = () => {
                     type="button"
                     onClick={() => setClockMode(option.value)}
                     aria-pressed={clockMode === option.value}
-                    className={`${clockMode === option.value ? 'bg-[var(--theme-primary)] text-white' : 'bg-[var(--theme-surface)] text-[var(--theme-text)] hover:bg-[var(--theme-pale)]'} min-h-12 rounded-2xl border-2 border-[var(--theme-border)] px-3 py-2 text-sm font-black transition-all`}
+                    className={`${clockMode === option.value ? 'bg-[var(--theme-primary)] text-[var(--theme-primary-label)]' : 'bg-[var(--theme-surface)] text-[var(--theme-text)] hover:bg-[var(--theme-pale)]'} min-h-12 rounded-2xl border-2 border-[var(--theme-border)] px-3 py-2 text-sm font-black transition-all`}
                   >
                     {option.label}
                   </button>
@@ -765,7 +765,7 @@ const AppContent: React.FC = () => {
                   onClick={decreaseFont}
                   disabled={uiScale <= MIN_UI_SCALE}
                   title="Pienennä sivun tekstiä ja painikkeita"
-                  className="flex h-14 w-14 items-center justify-center rounded-full bg-[var(--theme-header-bg)] text-lg font-black text-white shadow-md transition-all hover:bg-[var(--theme-primary)] focus-visible:ring-4 focus-visible:ring-[var(--theme-focus)]/40 active:scale-95 disabled:opacity-40 md:h-12 md:w-12"
+                  className="flex h-14 w-14 items-center justify-center rounded-full bg-[var(--theme-primary)] text-lg font-black text-[var(--theme-primary-label)] shadow-md transition-all hover:bg-[var(--theme-primary-mid)] focus-visible:ring-4 focus-visible:ring-[var(--theme-focus)]/40 active:scale-95 disabled:opacity-40 md:h-12 md:w-12"
                   aria-label={`${t('decreaseText')} (${uiScale}%)`}
                 >
                   A-
@@ -778,7 +778,7 @@ const AppContent: React.FC = () => {
                   onClick={increaseFont}
                   disabled={uiScale >= MAX_UI_SCALE}
                   title="Suurenna sivun tekstiä ja painikkeita"
-                  className="flex h-14 w-14 items-center justify-center rounded-full bg-[var(--theme-header-bg)] text-lg font-black text-white shadow-md transition-all hover:bg-[var(--theme-primary)] focus-visible:ring-4 focus-visible:ring-[var(--theme-focus)]/40 active:scale-95 disabled:opacity-40 md:h-12 md:w-12"
+                  className="flex h-14 w-14 items-center justify-center rounded-full bg-[var(--theme-primary)] text-lg font-black text-[var(--theme-primary-label)] shadow-md transition-all hover:bg-[var(--theme-primary-mid)] focus-visible:ring-4 focus-visible:ring-[var(--theme-focus)]/40 active:scale-95 disabled:opacity-40 md:h-12 md:w-12"
                   aria-label={`${t('increaseText')} (${uiScale}%)`}
                 >
                   A+
@@ -907,7 +907,7 @@ const AppContent: React.FC = () => {
               style={{
                 background: [
                   'radial-gradient(ellipse 60% 80% at 15% 120%, var(--theme-primary) 0%, transparent 55%)',
-                  'radial-gradient(ellipse 40% 60% at 85% -20%, rgba(212,148,10,.12) 0%, transparent 50%)',
+                  'radial-gradient(ellipse 40% 60% at 85% -20%, color-mix(in srgb, var(--theme-gold) 12%, transparent) 0%, transparent 50%)',
                 ].join(', '),
               }}
             />
@@ -969,7 +969,7 @@ const AppContent: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setIsFeedbackOpen(true)}
-                  className="mt-5 inline-flex items-center gap-2 rounded-full bg-[var(--theme-primary)] px-5 py-2.5 text-sm font-black text-white shadow-[0_3px_0_rgba(0,0,0,.28)] hover:bg-[var(--theme-primary-mid)] focus-visible:ring-2 focus-visible:ring-[var(--theme-focus)] active:translate-y-[2px] active:shadow-none"
+                  className="mt-5 inline-flex items-center gap-2 rounded-full bg-[var(--theme-primary)] px-5 py-2.5 text-sm font-black text-[var(--theme-primary-label)] shadow-[0_3px_0_rgba(0,0,0,.28)] hover:bg-[var(--theme-primary-mid)] focus-visible:ring-2 focus-visible:ring-[var(--theme-focus)] active:translate-y-[2px] active:shadow-none"
                 >
                   Anna palautetta
                 </button>
