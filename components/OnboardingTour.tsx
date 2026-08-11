@@ -1,17 +1,25 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
+import { UiVisibilityKey, UiVisibilityOption, UiVisibilityState } from '../uiPreferences';
+import InterestThemeSelector from './InterestThemeSelector';
 
 interface OnboardingTourProps {
   isOpen: boolean;
   onClose: () => void;
   onComplete: () => void;
+  selectedThemeAnchors: string[];
+  onSelectedThemeAnchorsChange: (anchors: string[]) => void;
+  uiVisibility: UiVisibilityState;
+  visibilityOptions: UiVisibilityOption[];
+  onVisibilityChange: (key: UiVisibilityKey, value: boolean) => void;
 }
 
 type TourStep = {
-  target: string;
+  target?: string;
   title: string;
   body: string;
-  contains: string;
+  contains?: string;
+  kind?: 'highlight' | 'preferences';
 };
 
 const steps: TourStep[] = [
@@ -75,6 +83,11 @@ const steps: TourStep[] = [
     body: 'Muuta tekstikokoa, teemaa ja näkyviä osioita.',
     contains: 'Rataspainike, josta avautuvat sivun omat asetukset.',
   },
+  {
+    kind: 'preferences',
+    title: 'Tee sivusta omasi',
+    body: 'Valitse kiinnostavat teemat ja ne osiot, jotka haluat nähdä aloitussivulla.',
+  },
 ];
 
 const isVisibleTourTarget = (target: string) => {
@@ -84,7 +97,16 @@ const isVisibleTourTarget = (target: string) => {
   return rect.width > 0 && rect.height > 0 && window.getComputedStyle(element).display !== 'none';
 };
 
-const OnboardingTour: React.FC<OnboardingTourProps> = ({ isOpen, onClose, onComplete }) => {
+const OnboardingTour: React.FC<OnboardingTourProps> = ({
+  isOpen,
+  onClose,
+  onComplete,
+  selectedThemeAnchors,
+  onSelectedThemeAnchorsChange,
+  uiVisibility,
+  visibilityOptions,
+  onVisibilityChange,
+}) => {
   const [stepIndex, setStepIndex] = useState(0);
   const [targetRect, setTargetRect] = useState<DOMRect | null>(null);
   const [availableSteps, setAvailableSteps] = useState<TourStep[]>(steps);
@@ -113,7 +135,7 @@ const OnboardingTour: React.FC<OnboardingTourProps> = ({ isOpen, onClose, onComp
 
   useEffect(() => {
     if (!isOpen) return;
-    setAvailableSteps(steps.filter((item) => isVisibleTourTarget(item.target)));
+    setAvailableSteps(steps.filter((item) => item.kind === 'preferences' || Boolean(item.target && isVisibleTourTarget(item.target))));
     setStepIndex(0);
   }, [isOpen]);
 
@@ -129,6 +151,10 @@ const OnboardingTour: React.FC<OnboardingTourProps> = ({ isOpen, onClose, onComp
     let settleTimer: number | undefined;
 
     const measureTarget = () => {
+      if (!step.target) {
+        setTargetRect(null);
+        return;
+      }
       const element = document.querySelector<HTMLElement>(`[data-tour="${step.target}"]`);
       if (!element) {
         setTargetRect(null);
@@ -145,7 +171,9 @@ const OnboardingTour: React.FC<OnboardingTourProps> = ({ isOpen, onClose, onComp
       });
     };
 
-    const element = document.querySelector<HTMLElement>(`[data-tour="${step.target}"]`);
+    const element = step.target
+      ? document.querySelector<HTMLElement>(`[data-tour="${step.target}"]`)
+      : null;
     if (element) {
       const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       element.scrollIntoView({
@@ -217,7 +245,7 @@ const OnboardingTour: React.FC<OnboardingTourProps> = ({ isOpen, onClose, onComp
         aria-labelledby="onboarding-title"
         aria-describedby="onboarding-description"
         tabIndex={-1}
-        className="aurora-modal-shell fixed inset-x-4 bottom-4 mx-auto max-h-[42dvh] overflow-y-auto rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-surface)] p-4 text-[var(--theme-text)] shadow-2xl outline-none sm:bottom-6 md:inset-x-1/2 md:bottom-auto md:top-1/2 md:max-h-[80dvh] md:w-[min(44rem,calc(100vw-3rem))] md:max-w-none md:-translate-x-1/2 md:-translate-y-1/2 md:rounded-[2rem] md:p-6"
+        className={`aurora-modal-shell fixed inset-x-4 bottom-4 mx-auto overflow-y-auto rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-surface)] p-4 text-[var(--theme-text)] shadow-2xl outline-none sm:bottom-6 md:inset-x-1/2 md:bottom-auto md:top-1/2 md:max-h-[80dvh] md:w-[min(44rem,calc(100vw-3rem))] md:max-w-none md:-translate-x-1/2 md:-translate-y-1/2 md:rounded-[2rem] md:p-6 ${step.kind === 'preferences' ? 'max-h-[calc(100dvh-2rem)]' : 'max-h-[42dvh]'}`}
       >
         <p className="text-xs font-black uppercase tracking-widest text-[var(--theme-primary)] md:text-sm">
           Vaihe {visibleStepNumber}/{availableSteps.length}
@@ -228,14 +256,47 @@ const OnboardingTour: React.FC<OnboardingTourProps> = ({ isOpen, onClose, onComp
         <p id="onboarding-description" className="mt-2 text-base font-bold leading-snug text-[var(--theme-muted)] md:mt-3 md:text-lg md:leading-relaxed">
           {step.body}
         </p>
-        <div className="mt-4 hidden rounded-2xl border-2 border-[var(--theme-gold)] bg-[var(--theme-gold-pale)] p-4 md:block">
-          <p className="text-sm font-black uppercase tracking-widest text-[var(--theme-primary)]">
-            Korostettu kohta sisältää
-          </p>
-          <p className="mt-1 text-base font-black leading-relaxed text-[var(--theme-text)]">
-            {step.contains}
-          </p>
-        </div>
+        {step.kind === 'preferences' ? (
+          <div className="mt-4 space-y-4">
+            <InterestThemeSelector
+              selectedAnchors={selectedThemeAnchors}
+              onChange={onSelectedThemeAnchorsChange}
+            />
+
+            <fieldset className="rounded-2xl border-2 border-[var(--theme-border)] p-4">
+              <legend className="px-1 font-black text-[var(--theme-text)]">Mitä aloitussivulla näkyy</legend>
+              <p className="mt-1 text-sm font-bold leading-relaxed text-[var(--theme-muted)]">
+                Valinnat tulevat voimaan heti. Ne voi vaihtaa myöhemmin Asetuksista.
+              </p>
+              <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                {visibilityOptions.map((option) => (
+                  <label
+                    key={option.key}
+                    className={`${option.className ?? 'flex'} min-h-14 cursor-pointer items-center justify-between gap-3 rounded-2xl border-2 border-[var(--theme-border)] bg-[var(--theme-surface)] px-4 py-3 font-bold text-[var(--theme-text)]`}
+                  >
+                    <span>{option.label}</span>
+                    <input
+                      type="checkbox"
+                      checked={uiVisibility[option.key]}
+                      onChange={(event) => onVisibilityChange(option.key, event.target.checked)}
+                      className="h-7 w-7 shrink-0 accent-[var(--theme-primary)]"
+                      aria-label={option.label}
+                    />
+                  </label>
+                ))}
+              </div>
+            </fieldset>
+          </div>
+        ) : step.contains ? (
+          <div className="mt-4 hidden rounded-2xl border-2 border-[var(--theme-gold)] bg-[var(--theme-gold-pale)] p-4 md:block">
+            <p className="text-sm font-black uppercase tracking-widest text-[var(--theme-primary)]">
+              Korostettu kohta sisältää
+            </p>
+            <p className="mt-1 text-base font-black leading-relaxed text-[var(--theme-text)]">
+              {step.contains}
+            </p>
+          </div>
+        ) : null}
 
         <div className="mt-4 flex flex-wrap items-center justify-between gap-2 md:mt-5 md:gap-3">
           <button

@@ -2,8 +2,16 @@ import React from 'react';
 import { useI18n } from '../i18n';
 import { shortcutGroups } from './shortcutGroups';
 
-const ZoneToc: React.FC<{ showLocal?: boolean }> = ({ showLocal = false }) => {
+interface ZoneTocProps {
+  showLocal?: boolean;
+  selectedThemeAnchors?: string[];
+}
+
+const ZoneToc: React.FC<ZoneTocProps> = ({ showLocal = false, selectedThemeAnchors = [] }) => {
   const { t, categoryName } = useI18n();
+  const visibleGroups = selectedThemeAnchors.length > 0
+    ? shortcutGroups.filter((group) => selectedThemeAnchors.includes(group.anchor))
+    : shortcutGroups;
 
   return (
     <nav className="toc-card" aria-label={t('whatAreYouLookingFor')}>
@@ -21,7 +29,7 @@ const ZoneToc: React.FC<{ showLocal?: boolean }> = ({ showLocal = false }) => {
             </a>
           </li>
         )}
-        {shortcutGroups.map((group) => (
+        {visibleGroups.map((group) => (
           <li key={group.anchor}>
             <a
               href={`#${group.anchor}`}

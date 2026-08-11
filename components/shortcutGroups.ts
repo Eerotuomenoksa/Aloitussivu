@@ -90,3 +90,14 @@ export const shortcutGroups: ShortcutGroup[] = [
     descriptionKey: 'groupDescVapaa',
   },
 ];
+
+export const MAX_INTEREST_THEMES = 5;
+
+const shortcutGroupAnchors = new Set(shortcutGroups.map((group) => group.anchor));
+
+export const normalizeInterestThemeAnchors = (value: unknown): string[] => {
+  if (!Array.isArray(value)) return [];
+  return [...new Set(value)]
+    .filter((anchor): anchor is string => typeof anchor === 'string' && shortcutGroupAnchors.has(anchor))
+    .slice(0, MAX_INTEREST_THEMES);
+};

@@ -1,5 +1,5 @@
 
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { SHORTCUTS } from '../constants';
 import { getLocalizedShortcuts } from '../localServices';
 import { filterVisibleShortcuts, useLinkVisibilityVersion } from '../linkVisibility';
@@ -16,6 +16,7 @@ interface QuickLinksProps {
   onToggleFavorite: (fav: Favorite) => void;
   locality: LocalityInfo | null;
   onReportLink?: (draft: LinkReportDraft) => void;
+  selectedThemeAnchors?: string[];
 }
 
 type LinkResult = { name: string; url: string; color: string; categoryName: string; categoryIcon: string; phone?: string; phoneUrl?: string };
@@ -34,9 +35,18 @@ const rowColors = [
   'bg-[var(--theme-surface)]',
 ];
 
-const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep = 0, favorites, onToggleFavorite, locality, onReportLink }) => {
+const QuickLinks: React.FC<QuickLinksProps> = ({
+  onSelectCategory,
+  fontSizeStep = 0,
+  favorites,
+  onToggleFavorite,
+  locality,
+  onReportLink,
+  selectedThemeAnchors = [],
+}) => {
   const { t, categoryName, language, speechLocale } = useI18n();
   const [search, setSearch] = useState('');
+  const [showAllThemes, setShowAllThemes] = useState(false);
   const setSpokenSearch = useCallback((text: string) => setSearch(text), []);
   const clearSearchBeforeListen = useCallback(() => setSearch(''), []);
   const { speechState, toggleListening } = useSpeechInput({
@@ -61,6 +71,19 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
     }))
     .filter((group) => group.shortcuts.length > 0);
   const ungroupedShortcuts = sortedShortcuts.filter((shortcut) => !groupedShortcutNames.has(shortcut.name));
+  const selectedThemeKey = selectedThemeAnchors.join('|');
+  const selectedZoneGroups = selectedThemeAnchors
+    .map((anchor) => zoneGroups.find((group) => group.anchor === anchor))
+    .filter((group): group is (typeof zoneGroups)[number] => Boolean(group));
+  const otherZoneGroups = zoneGroups.filter((group) => !selectedThemeAnchors.includes(group.anchor));
+  const hasThemeSelection = selectedZoneGroups.length > 0;
+  const displayedZoneGroups = hasThemeSelection
+    ? (showAllThemes ? [...selectedZoneGroups, ...otherZoneGroups] : selectedZoneGroups)
+    : zoneGroups;
+
+  useEffect(() => {
+    setShowAllThemes(false);
+  }, [selectedThemeKey]);
 
   const iconClasses = [
     'text-[2.25rem] md:text-[2.7rem]',
@@ -382,7 +405,28 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
         /* Värivyöhykkeet */
         <>
           <div className="space-y-8">
-            {zoneGroups.map((group, idx) => (
+            {hasThemeSelection && (
+              <div className="flex flex-col gap-3 rounded-[2rem] border-2 border-[var(--theme-border)] bg-[var(--theme-surface)] p-5 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <p className="text-lg font-black text-[var(--theme-text)]">
+                    {showAllThemes ? 'Kaikki teemat näkyvät' : 'Sinulle valitut teemat'}
+                  </p>
+                  <p className="mt-1 font-bold text-[var(--theme-muted)]">
+                    Palveluhaku etsii aina myös piilossa olevista teemoista.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowAllThemes((current) => !current)}
+                  aria-expanded={showAllThemes}
+                  className="min-h-12 shrink-0 rounded-full bg-[var(--theme-primary)] px-5 py-3 font-black text-[var(--theme-primary-label)] shadow-md transition-all hover:bg-[var(--theme-primary-mid)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--theme-focus)]/40 active:scale-95"
+                >
+                  {showAllThemes ? 'Näytä vain valitut' : `Näytä kaikki ${zoneGroups.length} teemaa`}
+                </button>
+              </div>
+            )}
+
+            {displayedZoneGroups.map((group, idx) => (
               <section
                 key={group.name}
                 id={group.anchor}
@@ -444,7 +488,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({ onSelectCategory, fontSizeStep 
               </section>
             ))}
 
-            {ungroupedShortcuts.length > 0 && (
+            {ungroupedShortcuts.length > 0 && (!hasThemeSelection || showAllThemes) && (
               <section className="zone zone-uutiset" aria-label={t('categories')}>
                 <div className="zone-links-grid">
                   {ungroupedShortcuts.map((shortcut) => {

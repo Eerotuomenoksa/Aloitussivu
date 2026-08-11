@@ -3,6 +3,7 @@ import React, { lazy, Suspense, useState, useCallback, useEffect } from 'react';
 import Clock from './components/Clock';
 import WeatherCard from './components/WeatherCard';
 import ZoneToc from './components/ZoneToc';
+import InterestThemeSelector from './components/InterestThemeSelector';
 import TestFeedbackPrompt from './components/TestFeedbackPrompt';
 import SearchBar from './components/SearchBar';
 import FloatingControls from './components/FloatingControls';
@@ -15,6 +16,8 @@ import { useApprovedLinkSuggestionsVersion } from './approvedLinks';
 import { LanguageCode, LanguageProvider, LANGUAGES, useI18n } from './i18n';
 import { APP_VERSION_LABEL } from './appVersion';
 import { postponeTestFeedbackPrompt, shouldShowTestFeedbackPrompt } from './testFeedbackPromptState';
+import { normalizeInterestThemeAnchors } from './components/shortcutGroups';
+import { defaultUiVisibility, UiVisibilityKey, UiVisibilityOption, UiVisibilityState } from './uiPreferences';
 // Valkoinen logo näytetään tummassa teemassa, värillinen vaaleassa.
 import seniorSurfLogoTummaTeema from './assets/seniorsurf-logo-tumma-teema.png';
 import seniorSurfLogoVaaleaTeema from './assets/seniorsurf-logo-vaalea-teema.png';
@@ -63,6 +66,7 @@ const SECONDARY_TIME_ZONE_KEY = 'secondaryTimeZone';
 const THEME_KEY = 'colorTheme';
 const CLOCK_MODE_KEY = 'clockMode';
 const FAVORITES_KEY = 'favorites';
+const INTEREST_THEMES_KEY = 'interestThemes';
 const TEST_FEEDBACK_PROMPT_DELAY_MS = 2 * 60 * 1000;
 const DEFERRED_CONTENT_DELAY_MS = 900;
 
@@ -161,28 +165,6 @@ const readStoredFavorites = () => {
 
 const writeStoredFavorites = (favorites: Favorite[]) => {
   writeLocalPreference(FAVORITES_KEY, JSON.stringify(favorites));
-};
-
-interface UiVisibilityState {
-  clock: boolean;
-  secondaryClock: boolean;
-  regionalServices: boolean;
-  regionalNews: boolean;
-  scamAlerts: boolean;
-  weather: boolean;
-  assistant: boolean;
-  googleSearch: boolean;
-}
-
-const defaultUiVisibility: UiVisibilityState = {
-  clock: true,
-  secondaryClock: false,
-  regionalServices: true,
-  regionalNews: true,
-  scamAlerts: true,
-  weather: true,
-  assistant: true,
-  googleSearch: true,
 };
 
 const headerBackgrounds: Record<LogoPhase, { light: string; dark: string }> = {
@@ -284,6 +266,13 @@ const AppContent: React.FC = () => {
       return defaultUiVisibility;
     }
   });
+  const [interestThemeAnchors, setInterestThemeAnchors] = useState<string[]>(() => {
+    try {
+      return normalizeInterestThemeAnchors(JSON.parse(readLocalPreference(INTEREST_THEMES_KEY) ?? '[]'));
+    } catch {
+      return [];
+    }
+  });
 
   const [isDarkMode, setIsDarkMode] = useState(() => {
     return readLocalPreference('isDarkMode') === 'true';
@@ -369,6 +358,10 @@ const AppContent: React.FC = () => {
   useEffect(() => {
     writeLocalPreference('uiVisibility', JSON.stringify(uiVisibility));
   }, [uiVisibility]);
+
+  useEffect(() => {
+    writeLocalPreference(INTEREST_THEMES_KEY, JSON.stringify(interestThemeAnchors));
+  }, [interestThemeAnchors]);
 
   useEffect(() => {
     writeLocalPreference(SECONDARY_TIME_ZONE_KEY, secondaryTimeZone);
@@ -499,8 +492,21 @@ const AppContent: React.FC = () => {
       setIsTestFeedbackPromptOpen(true);
     }
   }, [hasTestFeedbackPromptDelayElapsed, isModalOpenWithoutTestFeedbackPrompt, isTestFeedbackPromptOpen]);
-  const updateVisibility = useCallback((key: keyof UiVisibilityState, value: boolean) => {
+  const visibilityOptions: UiVisibilityOption[] = [
+    { key: 'clock', label: t('showClock') },
+    { key: 'secondaryClock', label: t('showSecondaryClock') },
+    { key: 'regionalServices', label: t('showRegionalServices') },
+    { key: 'regionalNews', label: t('showNews') },
+    { key: 'scamAlerts', label: t('showScamAlerts') },
+    { key: 'weather', label: t('showWeather') },
+    { key: 'assistant', label: t('showAssistant'), className: 'hidden md:flex' },
+    { key: 'googleSearch', label: t('showGoogleSearch') },
+  ];
+  const updateVisibility = useCallback((key: UiVisibilityKey, value: boolean) => {
     setUiVisibility(prev => ({ ...prev, [key]: value }));
+  }, []);
+  const updateInterestThemes = useCallback((anchors: string[]) => {
+    setInterestThemeAnchors(normalizeInterestThemeAnchors(anchors));
   }, []);
   const postponeTestFeedback = useCallback(() => {
     postponeTestFeedbackPrompt();
@@ -797,23 +803,22 @@ const AppContent: React.FC = () => {
               </div>
             </div>
 
+            <div className="mb-4">
+              <InterestThemeSelector
+                selectedAnchors={interestThemeAnchors}
+                onChange={updateInterestThemes}
+                compact
+              />
+            </div>
+
             <div className="space-y-3">
-              {[
-                { key: 'clock', label: t('showClock') },
-                { key: 'secondaryClock', label: t('showSecondaryClock') },
-                { key: 'regionalServices', label: t('showRegionalServices') },
-                { key: 'regionalNews', label: t('showNews') },
-                { key: 'scamAlerts', label: t('showScamAlerts') },
-                { key: 'weather', label: t('showWeather') },
-                { key: 'assistant', label: t('showAssistant'), className: 'hidden md:flex' },
-                { key: 'googleSearch', label: t('showGoogleSearch') },
-              ].map((item) => (
+              {visibilityOptions.map((item) => (
                 <label key={item.key} className={`${item.className ?? 'flex'} items-center justify-between gap-4 rounded-2xl border-2 border-[var(--theme-border)] px-4 py-3 cursor-pointer`}>
                   <span className="font-bold text-[var(--theme-text)]">{item.label}</span>
                   <input
                     type="checkbox"
-                    checked={uiVisibility[item.key as keyof UiVisibilityState]}
-                    onChange={(event) => updateVisibility(item.key as keyof UiVisibilityState, event.target.checked)}
+                    checked={uiVisibility[item.key]}
+                    onChange={(event) => updateVisibility(item.key, event.target.checked)}
                     title={`${item.label}: näytä tai piilota tämä osio etusivulta`}
                     className="h-14 w-14 shrink-0 accent-[var(--theme-primary)] md:h-5 md:w-5"
                     aria-label={item.label}
@@ -842,7 +847,7 @@ const AppContent: React.FC = () => {
         )}
 
         <main id="main-content" className="space-y-10 animate-fade-up" style={{ animationDelay: '300ms', marginTop: '-3.5rem' }} tabIndex={-1}>
-          <ZoneToc showLocal={shouldShowRegionalServices} />
+          <ZoneToc showLocal={shouldShowRegionalServices} selectedThemeAnchors={interestThemeAnchors} />
 
           {uiVisibility.scamAlerts && isDeferredContentReady && (
             <Suspense fallback={null}>
@@ -888,6 +893,7 @@ const AppContent: React.FC = () => {
                   onToggleFavorite={toggleFavorite}
                   locality={regionalLocality}
                   onReportLink={openReportModal}
+                  selectedThemeAnchors={interestThemeAnchors}
                 />
               </Suspense>
             ) : (
@@ -1075,6 +1081,11 @@ const AppContent: React.FC = () => {
               isOpen={isOnboardingOpen}
               onClose={() => setIsOnboardingOpen(false)}
               onComplete={completeOnboarding}
+              selectedThemeAnchors={interestThemeAnchors}
+              onSelectedThemeAnchorsChange={updateInterestThemes}
+              uiVisibility={uiVisibility}
+              visibilityOptions={visibilityOptions}
+              onVisibilityChange={updateVisibility}
             />
           )}
           {reportDraft && <LinkReportModal draft={reportDraft} onClose={closeReportModal} />}
