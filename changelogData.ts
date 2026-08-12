@@ -24,18 +24,39 @@ export type ChangelogCommit = {
   tags: string[];
 };
 
-export const CHANGELOG_GENERATED_AT = "23.7.2026 klo 13.43";
+export const CHANGELOG_GENERATED_AT = "12.8.2026 klo 09.16";
 export const CHANGELOG_VERSION = "0.72.0";
-export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
-  "Länsi-Uudenmaan palveluliikennelinkit lisättiin Espoolle, Inkolle, Kauniaisille, Kirkkonummelle ja Siuntiolle; puuttuvien palveluliikennelinkkien määrä väheni 113 kunnasta 108 kuntaan.",
-  "Alueellisten kategorioiden linkkimäärät näytetään nyt käyttäjän valitsemalla kielellä kaikilla seitsemällä tuetulla kielellä.",
-  "Paikallisuutisten lähteet haetaan nyt rinnakkain, ja yhden lähteen virhe ei estä muiden lähteiden tuloksia.",
-  "Linkkien näkyvyystarkistus käyttää välimuistitettua estolistaa, ja hyväksyttyjen sekä estettyjen linkkien Firestore-kuuntelut jaetaan päällekkäisten verkkopyyntöjen välttämiseksi.",
-  "Opastuskierroksen vieritysmittaus rajattiin yhteen päivitykseen animaatiokehystä kohden, ja sen ajastimet sekä tapahtumankuuntelijat siivotaan sulkemisen yhteydessä.",
-  "Paikallisten asetusten tallennusvirheet eivät enää estä etusivun toimintaa, jos selaimen paikallinen tallennustila ei ole käytettävissä."
-];
+export const CHANGELOG_WORKTREE_SUMMARY: string[] = [];
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
+  {
+    "hash": "c1b91fe108606c1cec03a1dc41f2e49e5f74303a",
+    "date": "2026-08-11",
+    "version": "0.97.0",
+    "changeType": "minor",
+    "subject": "Teemojen valinta",
+    "tags": [
+      "Visuaalisuus"
+    ]
+  },
+  {
+    "hash": "b27eca71b708522225391d187a31d51c39bb080d",
+    "date": "2026-08-10",
+    "version": "0.96.1",
+    "changeType": "patch",
+    "subject": "väriteemojen tarkistus",
+    "tags": [
+      "Visuaalisuus"
+    ]
+  },
+  {
+    "hash": "de68231125364f836de45f42f511b8f20d52b1c0",
+    "date": "2026-07-23",
+    "version": "0.96.0",
+    "changeType": "minor",
+    "subject": "lisää suorituskyky- ja aluepäivitysten yhteenvedot",
+    "tags": []
+  },
   {
     "hash": "94213bba529aaaa8864aa40469c2ec21016b678d",
     "date": "2026-07-23",
