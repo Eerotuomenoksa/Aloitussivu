@@ -24,11 +24,31 @@ export type ChangelogCommit = {
   tags: string[];
 };
 
-export const CHANGELOG_GENERATED_AT = "12.8.2026 klo 09.16";
+export const CHANGELOG_GENERATED_AT = "12.8.2026 klo 15.21";
 export const CHANGELOG_VERSION = "0.72.0";
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = [];
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
+  {
+    "hash": "17981e4f343d0e8552c0c503c510b077b3e52948",
+    "date": "2026-08-12",
+    "version": "0.98.0",
+    "changeType": "minor",
+    "subject": "selkeytä typografiaa ja hakutoimintoja palautteen perusteella",
+    "tags": [
+      "Visuaalisuus"
+    ]
+  },
+  {
+    "hash": "f0bfdc15d7eb6eba0680c6bf035f5748ca57f5b4",
+    "date": "2026-08-12",
+    "version": "0.97.1",
+    "changeType": "patch",
+    "subject": "päivitä muutosloki elokuun teemamuutoksilla",
+    "tags": [
+      "Visuaalisuus"
+    ]
+  },
   {
     "hash": "c1b91fe108606c1cec03a1dc41f2e49e5f74303a",
     "date": "2026-08-11",
@@ -1433,7 +1453,9 @@ export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
     "version": "0.5.0",
     "changeType": "minor",
     "subject": "feat: Implement dynamic font size scaling",
-    "tags": []
+    "tags": [
+      "Visuaalisuus"
+    ]
   },
   {
     "hash": "c290e0577010617675a4d01c4ed213df5daba687",

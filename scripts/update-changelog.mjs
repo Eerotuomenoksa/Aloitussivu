@@ -136,7 +136,7 @@ function getCommitTags(commit) {
   const subject = commit.subject.toLocaleLowerCase('fi-FI');
   const paths = commit.paths ?? [];
   const tags = [];
-  const visualSubjectPattern = /(aurora|visuaal|ulkoasu|ilme|teem|väri|vari|värimaailma|varimaailma|sääkortti|saakortti|bento|mobiili|modal|ikkuna)/iu;
+  const visualSubjectPattern = /(aurora|visuaal|ulkoasu|ilme|teem|typograf|font|kuvake|väri|vari|värimaailma|varimaailma|sääkortti|saakortti|bento|mobiili|modal|ikkuna)/iu;
   const visualPathPattern = /^index\.css$/iu;
 
   if (visualSubjectPattern.test(subject) || paths.some((pathName) => visualPathPattern.test(pathName))) {
