@@ -5,6 +5,18 @@ import { useI18n } from '../i18n';
 
 const WORLD_CLOCK_URL = 'https://fi.thetimenow.com/worldclock.php';
 
+const formatClockTime = (value: Date, locale: string, timeZone?: string) => {
+  const parts = new Intl.DateTimeFormat(locale, {
+    hour: '2-digit',
+    minute: '2-digit',
+    hourCycle: 'h23',
+    timeZone,
+  }).formatToParts(value);
+  const hours = parts.find((part) => part.type === 'hour')?.value ?? '00';
+  const minutes = parts.find((part) => part.type === 'minute')?.value ?? '00';
+  return `${hours}:${minutes}`;
+};
+
 interface ClockProps {
   fontSizeStep?: number;
   variant?: 'hero' | 'compact' | 'aurora';
@@ -36,9 +48,9 @@ const Clock: React.FC<ClockProps> = ({ fontSizeStep = 0, variant = 'hero', mode 
     };
   }, []);
 
-  const timeString = time.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' });
+  const timeString = formatClockTime(time, locale);
   const secondaryTimeString = secondaryClock
-    ? time.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit', timeZone: secondaryClock.timeZone })
+    ? formatClockTime(time, locale, secondaryClock.timeZone)
     : '';
   const secondaryDateString = secondaryClock
     ? time.toLocaleDateString(locale, { weekday: 'short', day: 'numeric', month: 'numeric', timeZone: secondaryClock.timeZone })
@@ -124,7 +136,7 @@ const Clock: React.FC<ClockProps> = ({ fontSizeStep = 0, variant = 'hero', mode 
           aria-live="polite"
           className="block font-bold text-white"
           style={{
-            fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+            fontFamily: '"DM Sans", Arial, sans-serif',
             fontSize: 'clamp(3.6rem, 6.5vw, 5rem)',
             letterSpacing: '0',
             lineHeight: '1',

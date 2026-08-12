@@ -11,9 +11,11 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        display: ["'Cormorant Garamond'", 'Georgia', 'serif'],
-        body: ["'Atkinson Hyperlegible'", 'system-ui', 'sans-serif'],
-        sans: ["'Atkinson Hyperlegible'", 'system-ui', 'sans-serif'],
+        display: ["'DM Sans'", 'Arial', 'sans-serif'],
+        body: ["'DM Sans'", 'Arial', 'sans-serif'],
+        sans: ["'DM Sans'", 'Arial', 'sans-serif'],
+        serif: ["'DM Sans'", 'Arial', 'sans-serif'],
+        mono: ["'DM Sans'", 'Arial', 'sans-serif'],
       },
       colors: {
         brand: {

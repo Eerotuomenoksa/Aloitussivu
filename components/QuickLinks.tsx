@@ -8,6 +8,7 @@ import { mergeApprovedLinksIntoShortcuts, useApprovedLinkSuggestionsVersion } fr
 import { useI18n } from '../i18n';
 import { useSpeechInput } from '../hooks/useSpeechInput';
 import { shortcutGroups } from './shortcutGroups';
+import { MicrophoneIcon, SearchIcon } from './icons/SearchIcons';
 
 interface QuickLinksProps {
   onSelectCategory: (shortcut: Shortcut) => void;
@@ -45,10 +46,17 @@ const QuickLinks: React.FC<QuickLinksProps> = ({
   selectedThemeAnchors = [],
 }) => {
   const { t, categoryName, language, speechLocale } = useI18n();
+  const [searchInput, setSearchInput] = useState('');
   const [search, setSearch] = useState('');
   const [showAllThemes, setShowAllThemes] = useState(false);
-  const setSpokenSearch = useCallback((text: string) => setSearch(text), []);
-  const clearSearchBeforeListen = useCallback(() => setSearch(''), []);
+  const setSpokenSearch = useCallback((text: string) => {
+    setSearchInput(text);
+    setSearch(text);
+  }, []);
+  const clearSearchBeforeListen = useCallback(() => {
+    setSearchInput('');
+    setSearch('');
+  }, []);
   const { speechState, toggleListening } = useSpeechInput({
     locale: speechLocale,
     onResult: setSpokenSearch,
@@ -84,6 +92,16 @@ const QuickLinks: React.FC<QuickLinksProps> = ({
   useEffect(() => {
     setShowAllThemes(false);
   }, [selectedThemeKey]);
+
+  const handleSearch = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setSearch(searchInput.trim());
+  };
+
+  const clearSearch = () => {
+    setSearchInput('');
+    setSearch('');
+  };
 
   const iconClasses = [
     'text-[2.25rem] md:text-[2.7rem]',
@@ -210,51 +228,67 @@ const QuickLinks: React.FC<QuickLinksProps> = ({
     <div className="space-y-8 animate-in">
 
       {/* Hakukenttä */}
-      <div className="relative">
-        <span className="pointer-events-none absolute left-5 top-1/2 -translate-y-1/2 text-2xl text-[var(--theme-muted)]">🔎</span>
-        <input
-          type="search"
-          value={search}
-          onChange={e => setSearch(e.target.value)}
-          placeholder={speechState === 'listening' ? t('listeningPlaceholder') : t('searchPlaceholder')}
-          className={`w-full rounded-full border-2 bg-[var(--theme-surface)] py-4 pl-14 font-bold text-[var(--theme-text)] placeholder:text-[var(--theme-muted)] transition-all focus:outline-none focus:ring-4
-            ${speechState === 'listening'
-              ? 'border-red-400 pr-28 focus:border-red-500 focus:ring-red-200'
-              : 'border-[var(--theme-border)] pr-24 focus:border-[var(--theme-gold)] focus:ring-[var(--theme-focus)]/30'
-            } ${inputClasses[fontSizeStep]}`}
-          aria-label={t('searchPlaceholder')}
-          title="Etsi palveluita, kategorioita ja puhelinnumeroita tältä sivulta"
-        />
-        <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2">
-          {search && (
+      <form onSubmit={handleSearch} className="grid gap-3 md:grid-cols-[minmax(0,1fr)_auto]">
+        <div className="relative">
+          <span className="pointer-events-none absolute left-5 top-1/2 -translate-y-1/2 text-[var(--theme-muted)]" aria-hidden="true">
+            <SearchIcon className="h-7 w-7" />
+          </span>
+          <input
+            type="search"
+            value={searchInput}
+            onChange={(event) => {
+              setSearchInput(event.target.value);
+              setSearch('');
+            }}
+            placeholder={speechState === 'listening' ? t('listeningPlaceholder') : t('searchPlaceholder')}
+            className={`w-full rounded-2xl border-2 bg-[var(--theme-surface)] py-4 pl-14 pr-14 font-normal text-[var(--theme-text)] placeholder:text-[var(--theme-muted)] transition-all focus:outline-none focus:ring-4
+              ${speechState === 'listening'
+                ? 'border-red-400 focus:border-red-500 focus:ring-red-200'
+                : 'border-[var(--theme-border)] focus:border-[var(--theme-gold)] focus:ring-[var(--theme-focus)]/30'
+              } ${inputClasses[fontSizeStep]}`}
+            aria-label={t('searchPlaceholder')}
+            title="Etsi palveluita, kategorioita ja puhelinnumeroita tältä sivulta"
+          />
+          {searchInput && (
             <button
-              onClick={() => setSearch('')}
+              type="button"
+              onClick={clearSearch}
               title="Tyhjennä palveluhaku"
-              className="text-2xl font-black text-[var(--theme-muted)] transition-colors hover:text-[var(--theme-text)]"
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-2xl font-semibold text-[var(--theme-muted)] transition-colors hover:text-[var(--theme-text)]"
               aria-label={t('clearSearch')}
             >
               ✕
             </button>
           )}
+        </div>
+        <div className="flex items-stretch gap-3">
           {speechState !== 'unsupported' && (
             <button
+              type="button"
               onClick={toggleListening}
               title={speechState === 'listening' ? 'Lopeta puheentunnistus' : 'Hae palvelua puhumalla'}
-              className={`flex items-center justify-center rounded-full transition-all focus:ring-4 focus:ring-red-300 focus:outline-none active:scale-95
+              className={`flex min-h-14 min-w-14 items-center justify-center rounded-2xl border-2 transition-all focus:ring-4 focus:ring-red-300 focus:outline-none active:scale-95
                 ${speechState === 'listening'
-                  ? 'bg-red-500 text-white animate-pulse w-14 h-14 md:w-12 md:h-12 text-2xl shadow-lg shadow-red-300'
-                  : 'bg-[var(--theme-pale)] hover:bg-red-100 text-[var(--theme-muted)] hover:text-red-600 w-14 h-14 md:w-12 md:h-12 text-2xl'
+                  ? 'border-red-500 bg-red-500 text-white animate-pulse shadow-lg shadow-red-300'
+                  : 'border-[var(--theme-border-strong)] bg-[var(--theme-surface)] text-[var(--theme-primary)] hover:border-red-300 hover:bg-red-50 hover:text-red-700'
                 }`}
               aria-label={speechState === 'listening' ? t('stopListening') : t('startListening')}
             >
-              🎤
+              <MicrophoneIcon className="h-7 w-7" />
             </button>
           )}
+          <button
+            type="submit"
+            className="inline-flex min-h-14 flex-1 items-center justify-center gap-2 rounded-2xl bg-[var(--theme-primary)] px-6 py-3 text-lg font-semibold text-[var(--theme-primary-label)] shadow-md transition-all hover:bg-[var(--theme-primary-mid)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--theme-focus)]/40 active:scale-[.98] md:flex-none"
+          >
+            <SearchIcon className="h-6 w-6" />
+            <span>{t('searchButton')}</span>
+          </button>
         </div>
-      </div>
+      </form>
       {speechState === 'listening' && (
-        <p className={`text-red-500 font-bold text-center animate-pulse ${subTextClasses[fontSizeStep]}`}>
-          🎤 {t('listeningNow')}
+        <p className={`flex items-center justify-center gap-2 text-center font-semibold text-red-500 animate-pulse ${subTextClasses[fontSizeStep]}`}>
+          <MicrophoneIcon className="h-6 w-6" /> {t('listeningNow')}
         </p>
       )}
 
@@ -323,14 +357,14 @@ const QuickLinks: React.FC<QuickLinksProps> = ({
                         aria-label={`${t('goToSite')}: ${link.name}`}
                       >
                         <span className={`flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-2xl bg-[var(--theme-pale)] text-3xl transition-all duration-300 ${iconClasses[fontSizeStep]}`} aria-hidden="true">{link.categoryIcon}</span>
-                        <span className={`link-label-text min-w-0 max-w-full font-black leading-tight tracking-tight transition-all duration-300 ${textClasses[fontSizeStep]}`}>
+                        <span className={`link-label-text min-w-0 max-w-full font-normal leading-snug transition-all duration-300 ${textClasses[fontSizeStep]}`}>
                           {link.name}
                         </span>
-                        <span className={`opacity-75 font-semibold ${subTextClasses[fontSizeStep]}`}>
+                        <span className={`opacity-75 font-normal ${subTextClasses[fontSizeStep]}`}>
                           {categoryName(link.categoryName)}
                         </span>
                         {link.phone && phoneHref && (
-                          <span className={`font-black ${subTextClasses[fontSizeStep]}`}>
+                          <span className={`font-medium ${subTextClasses[fontSizeStep]}`}>
                             ☎ {link.phone}
                           </span>
                         )}
@@ -385,13 +419,13 @@ const QuickLinks: React.FC<QuickLinksProps> = ({
                       aria-label={`Soita: ${phone.name}, ${phone.phone}`}
                     >
                       <span className={`flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-2xl bg-[var(--theme-pale)] text-3xl transition-all duration-300 ${iconClasses[fontSizeStep]}`} aria-hidden="true">☎</span>
-                      <span className={`link-label-text min-w-0 max-w-full font-black leading-tight tracking-tight transition-all duration-300 ${textClasses[fontSizeStep]}`}>
+                      <span className={`link-label-text min-w-0 max-w-full font-normal leading-snug transition-all duration-300 ${textClasses[fontSizeStep]}`}>
                         {phone.name}
                       </span>
-                      <span className={`font-black ${subTextClasses[fontSizeStep]}`}>
+                      <span className={`font-medium ${subTextClasses[fontSizeStep]}`}>
                         {phone.phone}
                       </span>
-                      <span className={`opacity-75 font-semibold ${subTextClasses[fontSizeStep]}`}>
+                      <span className={`opacity-75 font-normal ${subTextClasses[fontSizeStep]}`}>
                         {categoryName(phone.categoryName)}
                       </span>
                     </a>
@@ -436,7 +470,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({
                 <div className="zone-head">
                   <span className="zone-icon" aria-hidden="true">{group.icon}</span>
                   <div className="min-w-0">
-                    <h3 id={`shortcut-group-${idx}`} className="font-display zone-title break-words [overflow-wrap:anywhere]">
+                    <h3 id={`shortcut-group-${idx}`} className="font-display zone-title">
                       {categoryName(group.name)}
                     </h3>
                     <p className="zone-info">{t(group.descriptionKey)}</p>

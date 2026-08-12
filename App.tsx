@@ -933,7 +933,7 @@ const AppContent: React.FC = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   title="Avaa Vanhustyön keskusliiton verkkosivut"
-                  className="font-black text-[var(--theme-footer-text)] underline decoration-[var(--theme-footer-muted)] underline-offset-4 hover:decoration-[var(--theme-footer-text)]"
+                  className="font-normal text-[var(--theme-footer-text)] underline decoration-[var(--theme-footer-muted)] underline-offset-4 hover:decoration-[var(--theme-footer-text)]"
                 >
                   {t('footerVtklLink')}
                 </a>{' '}
@@ -942,7 +942,7 @@ const AppContent: React.FC = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   title="Avaa SeniorSurfin verkkosivut"
-                  className="font-black text-[var(--theme-footer-text)] underline decoration-[var(--theme-footer-muted)] underline-offset-4 hover:decoration-[var(--theme-footer-text)]"
+                  className="font-normal text-[var(--theme-footer-text)] underline decoration-[var(--theme-footer-muted)] underline-offset-4 hover:decoration-[var(--theme-footer-text)]"
                 >
                   {t('footerSeniorSurfLink')}
                 </a>.

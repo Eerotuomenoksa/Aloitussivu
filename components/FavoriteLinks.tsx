@@ -130,7 +130,7 @@ const FavoriteLinks: React.FC<FavoriteLinksProps> = ({ favorites, onToggleFavori
   ];
 
   const basePillStyles =
-    `${isCompact ? 'px-4 py-2' : 'px-5 py-2.5'} inline-flex items-center gap-2 rounded-full border-2 border-[var(--theme-gold)] bg-[var(--theme-surface)] font-black text-[var(--theme-text)] shadow-[0_3px_0_rgba(0,0,0,.24)] transition-all duration-100 hover:-translate-y-0.5 hover:bg-[var(--theme-gold-pale)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--theme-focus)] active:translate-y-0 active:shadow-none`;
+    `${isCompact ? 'px-4 py-2' : 'px-5 py-2.5'} inline-flex items-center gap-2 rounded-full border-2 border-[var(--theme-gold)] bg-[var(--theme-surface)] font-normal text-[var(--theme-text)] shadow-[0_3px_0_rgba(0,0,0,.24)] transition-all duration-100 hover:-translate-y-0.5 hover:bg-[var(--theme-gold-pale)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--theme-focus)] active:translate-y-0 active:shadow-none`;
 
   const renderFavorite = (fav: FavoriteViewItem) => (
     <div key={fav.url} className="group/fav inline-flex items-center gap-2">
@@ -148,7 +148,7 @@ const FavoriteLinks: React.FC<FavoriteLinksProps> = ({ favorites, onToggleFavori
           {fav.name}
         </span>
         {!isCompact && (
-          <span className={`opacity-65 font-semibold ${subTextClasses[fontSizeStep]}`}>
+          <span className={`opacity-65 font-normal ${subTextClasses[fontSizeStep]}`}>
             {fav.categoryLabel}
           </span>
         )}

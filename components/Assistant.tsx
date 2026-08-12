@@ -3,6 +3,7 @@ import React, { useCallback, useState, useRef, useEffect } from 'react';
 import { ChatMessage } from '../types';
 import { useI18n } from '../i18n';
 import { useSpeechInput } from '../hooks/useSpeechInput';
+import { MicrophoneIcon } from './icons/SearchIcons';
 
 interface AssistantProps {
   variant?: 'default' | 'header';
@@ -155,7 +156,7 @@ const Assistant: React.FC<AssistantProps> = ({ variant = 'default' }) => {
             className={`${speechState === 'listening' ? 'bg-red-500 text-white animate-pulse' : 'bg-slate-200 hover:bg-red-100 text-slate-900 dark:bg-slate-700 dark:text-white dark:hover:bg-red-900/40'} flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-xl font-black shadow-md transition-all active:scale-95 focus:outline-none focus:ring-4 focus:ring-red-300`}
             aria-label={speechState === 'listening' ? t('stopListening') : t('startListening')}
           >
-            🎤
+            <MicrophoneIcon className="h-6 w-6" />
           </button>
         )}
         <button 
