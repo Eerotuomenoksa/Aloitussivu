@@ -31,7 +31,7 @@ export const AUGUST_2026_HIGHLIGHTS: ChangelogHighlight[] = [
       'Typografia ja hakutoiminnot yhdenmukaistettiin testauspalautteen perusteella, ja julkaisupäätöksen tueksi koottiin raportit.',
     changes: [
       'Sivuston kirjasimeksi yhtenäistettiin paikallisesti ladattava DM Sans. Liian raskaita lihavointeja, kirjainvälejä ja tavutusta vähennettiin erityisesti palvelukorteissa ja otsikoissa.',
-      'Google-haku ja sivuston palveluhaku erotettiin näkyvillä nimillä ja täsmällisemmillä ohjeteksteillä kaikissa seitsemässä kieliversiossa.',
+      'Google-haku ja sivuston palveluhaku erotettiin täsmällisemmillä ohjeteksteillä kaikissa seitsemässä kieliversiossa. Hakukentän yläpuolinen tarpeeton ”Haku (Google-haku)” -otsikko poistettiin.',
       'Haun emoji-kuvakkeet korvattiin yhtenäisillä SVG-kuvakkeilla, ja hakukenttien, puhehaun, kellon sekä avustajan responsiivista asettelua tarkennettiin.',
       'Testauspalautteesta laadittiin korjaussuunnitelma, julkaisuvalmiuden tiimikoonti sekä VTKL-brändiä koskeva esitys.',
       'Muutoslokin automaattista luokittelua täydennettiin niin, että elokuun teema- ja palautekorjaukset näkyvät historiassa aiempaa kuvaavammin.',

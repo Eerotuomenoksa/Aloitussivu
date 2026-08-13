@@ -38,9 +38,6 @@ const SearchBar: React.FC<SearchBarProps> = ({ fontSizeStep = 0, variant = 'defa
   if (isAurora) {
     return (
       <form onSubmit={handleSearch} className="hero-search relative w-full">
-        <p className="mb-2 text-sm font-medium text-white/90">
-          {t('search')} <span className="text-white/70">({t('googleSearch')})</span>
-        </p>
         <div className="relative">
           <input
             type="text"
@@ -92,9 +89,6 @@ const SearchBar: React.FC<SearchBarProps> = ({ fontSizeStep = 0, variant = 'defa
 
   return (
     <form onSubmit={handleSearch} className={`relative w-full space-y-3 ${isHeader ? 'max-w-5xl' : 'max-w-4xl mx-auto mb-12'}`}>
-      <p className={`${isHeader ? 'text-white/90' : 'text-[var(--theme-text-2)]'} text-sm font-medium`}>
-        {t('search')} <span className={isHeader ? 'text-white/70' : 'text-[var(--theme-text-3)]'}>({t('googleSearch')})</span>
-      </p>
       <div className="relative group">
         <input
           type="text"

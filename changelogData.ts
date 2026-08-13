@@ -24,35 +24,23 @@ export type ChangelogCommit = {
   tags: string[];
 };
 
-export const CHANGELOG_GENERATED_AT = "13.8.2026 klo 12.58";
-export const CHANGELOG_VERSION = "0.73.0";
+export const CHANGELOG_GENERATED_AT = "13.8.2026 klo 13.46";
+export const CHANGELOG_VERSION = "0.73.1";
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
-  "Android-puhelimilla asetuspaneeli pysyy nyt ruudun sisällä ja vierii omana paneelinaan.",
-  "Alueelliset linkit kertovat nyt selvemmin, onko kyse oman kunnan palvelusta, seudullisesta palvelusta, hyvinvointialueesta, naapurikunnan palvelusta vai valtakunnallisesta hausta.",
-  "Suosikkien löydettävyyttä parannettiin pitämällä tähdet näkyvissä, selkeyttämällä Omat suosikkini -ohjetta ja näyttämällä puuttuvista paikallisuutisista oma viesti.",
-  "Huijausvaroitusten etusivunäkymää tiivistettiin niin, että varoitukset vievät vähemmän tilaa mutta avautuvat edelleen lisätietoihin.",
-  "Modaaleihin lisättiin yhteinen fokusloukku, Escape-sulku ja fokuksen palautus, jotta ikkunoita voi käyttää luotettavammin näppäimistöllä ja ruudunlukijalla.",
   "Versionumerointi otettiin käyttöön: nykyinen versio näkyy footerissa ja muutoslokin yläosassa.",
   "Muutoshistoria näyttää versionumeron jokaisen muutoksen yhteydessä.",
-  "Alueellisten linkkien datamalliin lisättiin alkuperätieto oman kunnan, seudun, hyvinvointialueen, naapurikunnan ja valtakunnallisen fallbackin erottamiseen.",
-  "Joukkoliikenteen alueellisia linkkejä täydennettiin Lahden seudulle, Hämeenlinnan seudulle, Vaasaan, Mustasaareen ja Rovaniemelle.",
-  "Loviisan joukkoliikenteen linkki lisättiin alueellisiin palveluihin.",
-  "Paikallisia kirjastolinkkejä täydennettiin Kirkanta/Kirjastot.fi-dataan pohjautuvilla kirjastokimpoilla.",
-  "Alueellisiin palveluihin lisättiin ja laajennettiin palvelualue-mallia, jotta joukkoliikennejärjestäjät, kuten HSL, Nysse, Föli, Linkki ja Vilkku, voidaan jakaa usealle kunnalle yhdestä paikasta.",
-  "Alueellisista linkeistä poistettiin tuplana näkynyt kunnan verkkosivut -linkki, kun kunnan palvelut näyttää saman asian käyttäjälle selkeämmin.",
-  "Puhelinnumerot lisättiin omaksi kategoriakseen ja tärkeimpien palveluiden korteille lisättiin soittopainikkeet.",
-  "Liikunta-kategoriaa täydennettiin Tanssit-ryhmällä, josta löytyy lavatansseja, päivätansseja ja seuratanssia tukevia linkkejä.",
-  "Linkkien tarkistusdata ja ylläpitoloki päivitettiin uusimman buildin yhteydessä.",
-  "Linkkitarkistukseen lisättiin RSS- ja uutisvirtalinkit sekä http-osoitteet, jotta muuttuneet alasivut ja ei-suojatut linkit jäävät heti pois näkyvistä.",
-  "Google-haku, palveluhaku ja tekoälyavustaja toimivat nyt myös omalla äänellä mikrofonipainikkeen kautta.",
-  "Asetuksiin lisättiin mahdollisuus vaihtaa etusivun digitaalinen kello vanhan ajan analogiseen kelloon.",
-  "Digitaalisen kellon päivämäärän välistystä parannettiin ja analogisen kellon numerot sijoitettiin selvästi kellotaulun ulkokehälle.",
-  "Sivuston esittelyyn lisättiin tieto, että robottia, Google-hakua ja palveluhakua voi käyttää myös omalla äänellä.",
-  "Ohje- ja esittelyikkunoiden visuaalinen ilme yhtenäistettiin muun Aurora-ulkoasun kanssa.",
-  "Sivustolle lisättiin kokeiluna Sivua tukemassa -sivu, jossa kerrotaan tukijaperiaatteet ja näytetään ensimmäisenä tukijana Vanhustyön keskusliitto ry."
+  "Google-haku, palveluhaku ja tekoälyavustaja toimivat nyt myös omalla äänellä mikrofonipainikkeen kautta."
 ];
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
+  {
+    "hash": "d89b73f27b4614eab8db5ed797649c365b55f27c",
+    "date": "2026-08-13",
+    "version": "0.98.2",
+    "changeType": "patch",
+    "subject": "viimeistele elokuun päivitykset ja muutosloki",
+    "tags": []
+  },
   {
     "hash": "147bbd2be015b6421b0b24054436479af2ecfc03",
     "date": "2026-08-12",
