@@ -4631,15 +4631,15 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "lng": 23.66912079999999,
     "organizers": [
       {
-        "name": "ATK Seniorit Mukanetti ry",
-        "url": "https://www.mukanetti.net/opastuspaikat/",
+        "name": "Tampereen kaupunginkirjasto",
+        "url": "https://www.tampere.fi/kirjastot/digitukea-kirjastosta",
         "email": null,
         "phone": null,
-        "footnote": ""
+        "footnote": "Ajantasaiset Lielahden kirjaston digiopastusajat."
       },
       {
-        "name": "Tampereen kaupunginkirjasto",
-        "url": "https://www.tampere.fi/kirjastot/asiakkaana-kirjastossa/digitukea-kirjastosta",
+        "name": "ATK Seniorit Mukanetti ry",
+        "url": "https://www.mukanetti.net/opastuspaikat/",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -9008,6 +9008,13 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "lat": 61.50536520000001,
     "lng": 23.62617249999994,
     "organizers": [
+      {
+        "name": "Tampereen kaupunginkirjasto",
+        "url": "https://www.tampere.fi/kirjastot/digitukea-kirjastosta",
+        "email": null,
+        "phone": null,
+        "footnote": "Ajantasaiset Tesoman kirjaston digiopastusajat."
+      },
       {
         "name": "ATK Seniorit Mukanetti ry",
         "url": "https://www.mukanetti.net/opastuspaikat/",

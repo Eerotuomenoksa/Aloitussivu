@@ -33,12 +33,12 @@ export const useModalFocusTrap = (
 
       const initial = initialFocusRef?.current;
       if (initial && container.contains(initial)) {
-        initial.focus();
+        initial.focus({ preventScroll: true });
         return;
       }
 
       const [firstFocusable] = getFocusableElements(container);
-      (firstFocusable ?? container).focus();
+      (firstFocusable ?? container).focus({ preventScroll: true });
     };
 
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -79,7 +79,7 @@ export const useModalFocusTrap = (
     return () => {
       window.cancelAnimationFrame(frame);
       window.removeEventListener('keydown', handleKeyDown);
-      previouslyFocused?.focus();
+      window.requestAnimationFrame(() => previouslyFocused?.focus({ preventScroll: true }));
     };
   }, [containerRef, initialFocusRef, isOpen, onClose]);
 };

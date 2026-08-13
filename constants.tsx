@@ -3,6 +3,7 @@ import { Shortcut, NewsItem } from './types';
 import { LOCAL_NEWSPAPER_LINKS } from './localNewspaperLinks';
 import { MUSEUM_LINKS, PATIENT_ASSOCIATION_LINKS, SENIOR_ASSOCIATION_LINKS } from './communityLinks';
 import { MUNICIPALITY_EXERCISE_LINKS } from './localExerciseLinks';
+import { MUNICIPALITY_SENIOR_LINKS } from './localSeniorLinks';
 
 export const QUOTES = [
   "Jokainen päivä on uusi mahdollisuus.",
@@ -150,7 +151,7 @@ export const SHORTCUTS: Shortcut[] = [
     ]
   },
   { 
-    name: 'Koti', icon: '🏠', color: 'bg-brand-grey',
+    name: 'Asuminen ja kodinhoito', icon: '🏠', color: 'bg-brand-grey',
     providers: [
       { name: 'Martat', url: 'https://www.martat.fi' },
       { name: 'Motiva', url: 'https://www.motiva.fi' },
@@ -471,10 +472,8 @@ export const SHORTCUTS: Shortcut[] = [
     ]
   },
   { 
-    name: 'Tekniikka', icon: '⚙️', color: 'bg-brand-cyan',
+    name: 'Tekniikkauutiset', icon: '⚙️', color: 'bg-brand-cyan',
     providers: [
-      { name: 'Kyberturvallisuuskeskus', url: 'https://www.kyberturvallisuuskeskus.fi' },
-      { name: 'Yle Digitreenit', url: 'https://yle.fi/aihe/digitreenit' },
       { name: 'Tekniikan Maailma', url: 'https://tekniikanmaailma.fi' },
       { name: 'Mikrobitti', url: 'https://www.mikrobitti.fi' },
       { name: 'Tivi', url: 'https://www.tivi.fi' }
@@ -501,6 +500,10 @@ export const SHORTCUTS: Shortcut[] = [
   {
     name: 'Potilasyhdistykset', icon: '🫶', color: 'bg-brand-teal',
     providers: PATIENT_ASSOCIATION_LINKS
+  },
+  {
+    name: 'Senioripalvelut', icon: '🧓', color: 'bg-brand-teal',
+    providers: MUNICIPALITY_SENIOR_LINKS
   },
   { 
     name: 'Tiede', icon: '🧪', color: 'bg-[#173e5f]',
@@ -571,17 +574,6 @@ export const SHORTCUTS: Shortcut[] = [
       { name: 'Sateenkaariseniorit - ryhmätoiminta', url: 'https://www.sateenkaariseniorit.fi/ryhm%C3%A4toiminta', group: 'Sateenkaarisenioreille' },
       { name: 'Seta - tietoa sateenkaarisenioreille', url: 'https://seniorit.seta.fi/tietoa-sateenkaarisenioreille/', group: 'Sateenkaarisenioreille' },
       { name: 'Kuurojen Liitto - senioreille', url: 'https://kuurojenliitto.fi/senioreille/', group: 'Viittomakieliset seniorit' }
-    ]
-  },
-  {
-    name: 'Kotihoito-palvelut', icon: '🤝', color: 'bg-brand-teal',
-    providers: [
-      { name: 'Valkealan Iltatähti ry', url: 'https://www.valkealaniltatahti.fi', group: 'Kouvola' },
-      { name: 'Vanhustyöyhdistys Sofia – Åldringsvårdsföreningen Sofia', url: 'https://www.palvelukotisofia.fi/', group: 'Helsinki' },
-      { name: 'Viola-kotiyhdistys ry', url: 'https://viola-koti.fi', group: 'Tampere' },
-      { name: 'Yrjö ja Hanna-säätiö / Yrjö ja Hanna Kodit', url: 'https://yrjojahanna.fi', group: 'Helsinki' },
-      { name: 'Savonlinnan Hopearanta ry', url: 'https://hopearanta.fi', group: 'Savonlinna' },
-      { name: 'Suomussalmen Vanhustentaloyhdistys ry', url: 'https://vtkl.fi/liitto/jasenpalvelut/jasenyhteisojen-tarjoamat-palvelut/?service-category=kotihoito', group: 'Suomussalmi' }
     ]
   },
   { 

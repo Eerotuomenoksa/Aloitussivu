@@ -1,7 +1,7 @@
 {
   "name": "aloitussivu",
   "private": true,
-  "version": "0.70.0",
+  "version": "0.73.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -16,6 +16,8 @@
     "refresh:newspapers": "npm run newspapers && npm run newspaper-feeds",
     "refresh:data": "npm run refresh:newspapers && npm run regional-coverage && npm run refresh:generated",
     "regional-coverage": "node scripts/update-regional-link-coverage.mjs",
+    "senior-pages": "node scripts/discover-municipality-senior-links.mjs",
+    "senior-coverage": "node scripts/update-senior-page-coverage.mjs",
     "community-coverage": "node scripts/update-community-link-coverage.mjs",
     "population-context": "node scripts/update-municipality-population-context.mjs",
     "changelog": "node scripts/update-changelog.mjs",

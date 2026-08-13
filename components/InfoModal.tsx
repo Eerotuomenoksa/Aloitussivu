@@ -152,6 +152,7 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, fontSizeStep = 0
                 { name: 'Lehdet', count: LOCAL_LINK_STATS.localNewspapers, note: 'suomalaiset paikallislehdet' },
                 { name: 'Uutisvirrat', count: LOCAL_LINK_STATS.localNewsFeeds, note: 'paikallislehtien RSS-syötteet' },
                 { name: 'Ohjattu liikunta', count: LOCAL_LINK_STATS.localExerciseLinks, note: 'kuntien liikuntaryhmät ja soveltava liikunta' },
+                { name: 'Senioripalvelut', count: LOCAL_LINK_STATS.localSeniorLinks, note: 'kuntien omat seniori- ja ikäihmisten sivut' },
                 { name: 'Urheiluseurat', count: LOCAL_LINK_STATS.localSportsClubs, note: 'paikkakunnan omat seurat' },
                 { name: 'Kela-taksien puhelinnumerot', count: LOCAL_LINK_STATS.localKelaTaxiPhones, note: 'alueelliset tilausnumerot' },
               ].map((item) => (

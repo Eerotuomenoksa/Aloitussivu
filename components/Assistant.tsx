@@ -1,5 +1,6 @@
 
 import React, { useCallback, useState, useRef, useEffect } from 'react';
+import ReactDOM from 'react-dom';
 import { ChatMessage } from '../types';
 import { useI18n } from '../i18n';
 import { useSpeechInput } from '../hooks/useSpeechInput';
@@ -7,9 +8,10 @@ import { MicrophoneIcon } from './icons/SearchIcons';
 
 interface AssistantProps {
   variant?: 'default' | 'header';
+  onOpenChange?: (isOpen: boolean) => void;
 }
 
-const Assistant: React.FC<AssistantProps> = ({ variant = 'default' }) => {
+const Assistant: React.FC<AssistantProps> = ({ variant = 'default', onOpenChange }) => {
   const { t, speechLocale } = useI18n();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
@@ -29,6 +31,11 @@ const Assistant: React.FC<AssistantProps> = ({ variant = 'default' }) => {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [messages, isMinimized]);
+
+  useEffect(() => {
+    onOpenChange?.(!isMinimized);
+    return () => onOpenChange?.(false);
+  }, [isMinimized, onOpenChange]);
 
   const handleSend = async () => {
     if (!input.trim() || isLoading) return;
@@ -82,9 +89,9 @@ const Assistant: React.FC<AssistantProps> = ({ variant = 'default' }) => {
     );
   }
 
-  return (
+  const assistantPanel = (
     <section 
-      className={`assistant-card overflow-hidden rounded-[22px] border border-white/10 text-white shadow-[0_16px_64px_rgba(10,26,14,.38)] flex flex-col animate-in slide-in-from-bottom-4 duration-300 ${variant === 'header' ? 'fixed right-6 top-24 z-[9998] h-[min(78dvh,560px)] w-[min(28rem,calc(100vw-3rem))]' : 'relative min-h-[420px] md:min-h-[500px]'}`}
+      className={`assistant-card overflow-hidden rounded-[22px] border border-white/10 text-white shadow-[0_16px_64px_rgba(10,26,14,.38)] flex flex-col animate-in slide-in-from-bottom-4 duration-300 ${variant === 'header' ? 'fixed right-4 top-20 z-[9998] h-[min(78dvh,560px)] w-[min(28rem,calc(100vw-2rem))] sm:right-6 sm:top-24' : 'relative min-h-[420px] md:min-h-[500px]'}`}
       style={{
         background: 'linear-gradient(135deg, #0c1829 0%, #0f2318 60%, #1a3428 100%)',
         animation: 'assistant-glow 4s ease-in-out infinite alternate',
@@ -169,6 +176,10 @@ const Assistant: React.FC<AssistantProps> = ({ variant = 'default' }) => {
       </div>
     </section>
   );
+
+  return variant === 'header' && typeof document !== 'undefined'
+    ? ReactDOM.createPortal(assistantPanel, document.body)
+    : assistantPanel;
 };
 
 export default Assistant;

@@ -21,13 +21,14 @@ interface ClockProps {
   fontSizeStep?: number;
   variant?: 'hero' | 'compact' | 'aurora';
   mode?: 'digital' | 'analog';
+  showNameDays?: boolean;
   secondaryClock?: {
     label: string;
     timeZone: string;
   };
 }
 
-const Clock: React.FC<ClockProps> = ({ fontSizeStep = 0, variant = 'hero', mode = 'digital', secondaryClock }) => {
+const Clock: React.FC<ClockProps> = ({ fontSizeStep = 0, variant = 'hero', mode = 'digital', showNameDays = false, secondaryClock }) => {
   const { locale } = useI18n();
   const [time, setTime] = useState(new Date());
   const [nameDayNames, setNameDayNames] = useState<string[]>([]);
@@ -38,6 +39,10 @@ const Clock: React.FC<ClockProps> = ({ fontSizeStep = 0, variant = 'hero', mode 
   }, []);
 
   useEffect(() => {
+    if (!showNameDays) {
+      setNameDayNames([]);
+      return undefined;
+    }
     let isActive = true;
     fetchNameDayToday().then((result) => {
       if (!isActive || !result) return;
@@ -46,7 +51,7 @@ const Clock: React.FC<ClockProps> = ({ fontSizeStep = 0, variant = 'hero', mode 
     return () => {
       isActive = false;
     };
-  }, []);
+  }, [showNameDays]);
 
   const timeString = formatClockTime(time, locale);
   const secondaryTimeString = secondaryClock

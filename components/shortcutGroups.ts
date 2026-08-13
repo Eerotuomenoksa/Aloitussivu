@@ -28,7 +28,7 @@ export const shortcutGroups: ShortcutGroup[] = [
   {
     name: 'Raha ja ostaminen',
     icon: '🏦',
-    categories: ['Pankit', 'Talous', 'Verkkokaupat', 'Ruoka'],
+    categories: ['Pankit', 'Talous', 'Verkkokaupat', 'Ruoka', 'Asuminen ja kodinhoito'],
     zone: 'zone-raha',
     anchor: 'raha',
     descriptionKey: 'groupDescRaha',
@@ -36,7 +36,7 @@ export const shortcutGroups: ShortcutGroup[] = [
   {
     name: 'Terveys ja hoiva',
     icon: '🏥',
-    categories: ['Terveys', 'Potilasyhdistykset', 'Kotihoito-palvelut', 'Koti'],
+    categories: ['Terveys', 'Senioripalvelut', 'Potilasyhdistykset'],
     zone: 'zone-terveys',
     anchor: 'terveys',
     descriptionKey: 'groupDescTerveys',
@@ -44,7 +44,7 @@ export const shortcutGroups: ShortcutGroup[] = [
   {
     name: 'Digi ja yhteydenpito',
     icon: '💻',
-    categories: ['Apua digiin', 'Hakukoneet', 'Sähköposti', 'Sosiaalinen media', 'Sovellukset', 'Tekniikka'],
+    categories: ['Apua digiin', 'Hakukoneet', 'Sähköposti', 'Sosiaalinen media', 'Sovellukset', 'Tekniikkauutiset'],
     zone: 'zone-digi',
     anchor: 'digi',
     descriptionKey: 'groupDescDigi',

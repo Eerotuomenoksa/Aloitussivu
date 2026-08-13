@@ -499,6 +499,11 @@ const collectLinks = async () => {
     addRow('Paikallinen ohjattu liikunta', match[3], match[1], match[2], 'localExerciseLinks.ts');
   }
 
+  const localSeniorLinks = await readText('localSeniorLinks.ts');
+  for (const match of localSeniorLinks.matchAll(/\{\s*"name":\s*"([^"]+)",\s*"url":\s*"([^"]+)",\s*"group":\s*"([^"]+)"/g)) {
+    addRow('Paikalliset senioripalvelut', match[3], match[1], match[2], 'localSeniorLinks.ts');
+  }
+
   addRow('Sovelluksen omat linkit', 'Footer', 'SeniorSurf', 'https://seniorsurf.fi/', 'App.tsx');
   addRow('Sovelluksen omat linkit', 'Footer', 'SeniorSurf logo', 'https://seniorsurf.fi/wp-content/uploads/SeniorSurf_White-320-x-102-px.svg', 'App.tsx');
   addRow('Sovelluksen omat linkit', 'Sää', 'Ilmatieteen laitos', 'https://www.ilmatieteenlaitos.fi/', 'WeatherCard.tsx');
@@ -523,6 +528,7 @@ const collectLinks = async () => {
       ), 0),
     localSportsClubCount: [...localSportsClubs.matchAll(/\{\s*name:\s*'([^']+)',\s*url:\s*'([^']+)',\s*group:\s*'([^']+)'/g)].length,
     localExerciseLinkCount: [...localExerciseLinks.matchAll(/\{\s*"name":\s*"([^"]+)",\s*"url":\s*"([^"]+)",\s*"group":\s*"([^"]+)"\s*\}/g)].length,
+    localSeniorLinkCount: [...localSeniorLinks.matchAll(/\{\s*"name":\s*"([^"]+)",\s*"url":\s*"([^"]+)",\s*"group":\s*"([^"]+)"/g)].length,
     localKelaTaxiPhoneCount: [...localKelaTaxiNumbers.matchAll(/group:\s*'Kela-taksi'.*?phone:\s*"([^"]+)"/gs)].length,
     phoneLinkCount: phoneLinks.size,
   };
@@ -542,6 +548,7 @@ const main = async () => {
     localNewsFeedCount,
     localSportsClubCount,
     localExerciseLinkCount,
+    localSeniorLinkCount,
     localKelaTaxiPhoneCount,
     phoneLinkCount,
   } = await collectLinks();
@@ -657,6 +664,7 @@ const main = async () => {
     `  localNewsFeeds: ${localNewsFeedCount},`,
     `  localSportsClubs: ${localSportsClubCount},`,
     `  localExerciseLinks: ${localExerciseLinkCount},`,
+    `  localSeniorLinks: ${localSeniorLinkCount},`,
     `  localKelaTaxiPhones: ${localKelaTaxiPhoneCount},`,
     '} as const;',
     '',

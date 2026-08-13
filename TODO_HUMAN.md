@@ -26,6 +26,10 @@ Päätöslista on koottu tiedostoon `docs/julkaisun-paatoslista-2026-07-08.md`. 
 - SEC-009: Firebase Custom Claims on asetettu admin-tileille.
 - SEC-010: Kaksivaiheinen tunnistautuminen on käytössä admin-tileillä.
 - SEC-011: Google Cloud -budjettihälytykset on asetettu.
+- Työtilan siirto: aktiivinen kehitysrepo on `C:\dev\Aloitussivu`, `main` vastaa `origin/main`-haaraa ja vanhasta työtilasta vaaditut tiedostot ovat GitHubissa.
+- Vanhan OneDrive-kansion tyhjä `.git` ei enää muodosta Git-repoa, eikä kansiota käytetä aktiiviseen kehitykseen.
+- Väliaikainen `scripts/set-admin-claims.mjs` ja `C:\temp\aloitussivu-adminsdk.json` on poistettu.
+- Uusi kehityskansio on varmennettu 23.7.2026: salaisuustarkistus, tuotantobuild, Functions-paketin TypeScript-tarkistus ja kaikki 21 ulkoasutarkistusta menivät läpi.
 
 ## SEC-015: Nimipäivätiedosto ja vanhan tokenin poisto
 
@@ -67,108 +71,12 @@ Toteutuksessa huomioitavaa:
 5. Myöhemmin mukaan voi lisätä huijausvaroitusten automaation nollatulokset, nimipäivärajapinnan käyttörajan lähestymisen ja käyttötilastojen päivittymättömyyden.
 6. Jos ilmoituksia tulee paljon, käytä päivittäistä koontia yksittäisten sähköpostien sijaan.
 
-## Nyt tehtävä siivous ennen siirtymistä C:\dev-kansioon
+## Ennen tuotantojulkaisua: manuaaliset integraatiotestit
 
-### 1. Vie vanhan OneDrive-kansion paikallinen työ GitHubiin
+Tila: Testattava ympäristössä, jossa testitunnukset ja palvelinyhteydet ovat käytettävissä
 
-Vanha kansio on vielä `origin/main`-haaraa edellä paikallisilla commiteilla. Älä poista vanhaa kansiota ennen kuin nämä muutokset on viety GitHubiin.
-
-Vanhassa kansiossa:
-
-```powershell
-cd "C:\Users\eero.tuomenoksa\OneDrive - Vanhustyön keskusliitto ry\Tiedostot\GitHub\Aloitussivu"
-git status --short --branch
-```
-
-Tarkista, että mukana ovat vähintään nämä tarkoitukselliset muutokset:
-
-- `TODO_HUMAN.md`
-- `components/QuickLinks.tsx`
-- `i18n.tsx`
-- `docs/paivan-mietelauseet-ehdotus.csv`
-- tietoturva-auditin dokumentit, jos haluat säilyttää ne GitHubissa
-
-Kun muutokset näyttävät oikeilta:
-
-```powershell
-git add TODO_HUMAN.md components/QuickLinks.tsx i18n.tsx docs/paivan-mietelauseet-ehdotus.csv docs/codex-tietoturva-toimenpiteet.md docs/tietoturva-arvio-2026-05-27.md
-git commit -m "chore: update manual security checklist and homepage groups"
-git push origin main
-```
-
-Jos commit ei synny, koska osa muutoksista on jo commitoitu, aja silti:
-
-```powershell
-git push origin main
-```
-
-### 2. Päivitä uusi C:\dev-kansio GitHubista
-
-Kun vanhan kansion push on valmis:
-
-```powershell
-cd C:\dev\Aloitussivu
-git pull origin main
-```
-
-### 3. Poista väliaikainen admin-claims-skripti uudesta kansiosta
-
-Uudessa kansiossa näkyi väliaikainen skripti:
-
-```text
-C:\dev\Aloitussivu\scripts\set-admin-claims.mjs
-```
-
-Poista se, koska sitä ei pidä jättää projektiin:
-
-```powershell
-cd C:\dev\Aloitussivu
-Remove-Item scripts\set-admin-claims.mjs
-```
-
-Varmista myös, että service account -avain on poistettu:
-
-```powershell
-Test-Path C:\temp\aloitussivu-adminsdk.json
-```
-
-Jos komento palauttaa `True`, poista tiedosto:
-
-```powershell
-Remove-Item C:\temp\aloitussivu-adminsdk.json
-```
-
-### 4. Varmista uusi kehityskansio
-
-Uudessa kansiossa:
-
-```powershell
-cd C:\dev\Aloitussivu
-npm run check:secrets
-npm run build
-cd functions
-npx tsc --noEmit
-cd ..
-```
-
-### 5. Testaa selaimessa
-
-Käy läpi:
-
-1. Etusivu aukeaa.
-2. 9 pääkategorian ruudukko näkyy tasaisena.
-3. Gemini-chat vastaa.
-4. Linkkiehdotuksen lähetys toimii.
-5. Huijausvaroitukset latautuvat.
-6. Admin-tili pääsee ylläpitoon.
-7. Ei-admin ei pääse ylläpitoon.
-
-### 6. Käytä jatkossa vain uutta kansiota
-
-Jatkossa aktiivinen kehityskansio on:
-
-```text
-C:\dev\Aloitussivu
-```
-
-Älä tee uusia muutoksia vanhassa OneDrive-kansiossa.
+1. Gemini-chat vastaa.
+2. Linkkiehdotuksen lähetys toimii.
+3. Huijausvaroitukset latautuvat.
+4. Admin-tili pääsee ylläpitoon.
+5. Ei-admin ei pääse ylläpitoon.

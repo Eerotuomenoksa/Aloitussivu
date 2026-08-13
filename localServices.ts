@@ -2182,7 +2182,9 @@ const getRegionalSportsClubProviders = (context: RegionalContext): Provider[] =>
 export const getAllRegionalProviders = (context: RegionalContext, language: LanguageCode = 'fi'): Provider[] => {
   const shortcutRegionalProviders = SHORTCUTS.flatMap((shortcut) => (
     shortcut.providers
-      ?.filter((provider) => isProviderRegionalForContext(provider, context))
+      ?.filter((provider) => shortcut.name === 'Senioripalvelut'
+        ? Boolean(provider.municipality && normalizeMunicipality(provider.municipality) === normalizeMunicipality(context.municipality.name))
+        : isProviderRegionalForContext(provider, context))
       .map((provider) => markRegionalCategory(provider, shortcut.name)) ?? []
   ));
 
@@ -2230,6 +2232,7 @@ const getRegionalCategoryIcon = (category: string) => {
   if (text.includes('teatteri')) return '🎭';
   if (text.includes('musiikki')) return '🎵';
   if (text.includes('liikunta') || text.includes('urheilu')) return '🚶';
+  if (text.includes('seniori') || text.includes('ikäihmi') || text.includes('ikäänty')) return '🧓';
   if (text.includes('yhdistys') || text.includes('yhdistykset')) return '👥';
   if (text.includes('kotihoito')) return '🤝';
   return '📍';
@@ -2269,7 +2272,25 @@ export const getRegionalRssFeeds = (context: RegionalContext, language: Language
 
 export const getLocalizedShortcuts = (shortcuts: Shortcut[], locality: LocalityInfo | null, language: LanguageCode = 'fi'): Shortcut[] => {
   const context = resolveRegionalContext('', locality);
-  if (!context) return shortcuts;
+  if (!context) {
+    return shortcuts.map((shortcut) => {
+      if (!shortcut.providers) return shortcut;
+      if (shortcut.name === 'Liikunta') {
+        return {
+          ...shortcut,
+          providers: shortcut.providers
+            .filter((provider) => provider.group !== 'Alueelliset')
+            .map((provider) => provider.group === 'Valtakunnallinen'
+              ? { ...provider, group: 'Jumpat ja liikuntaohjeet' }
+              : provider),
+        };
+      }
+      if (shortcut.name === 'Senioripalvelut') {
+        return { ...shortcut, providers: [] };
+      }
+      return shortcut;
+    });
+  }
 
   const municipality = context.municipality.name;
   const key = normalizeMunicipality(municipality);
@@ -2347,6 +2368,23 @@ export const getLocalizedShortcuts = (shortcuts: Shortcut[], locality: LocalityI
       return { ...shortcut, providers: uniqueProviders([...getRegionalSportsClubProviders(context), ...shortcut.providers]) };
     }
 
+    if (shortcut.name === 'Liikunta') {
+      const ownMunicipalityExercise = shortcut.providers
+        .filter((provider) => {
+          if (provider.group !== 'Alueelliset') return false;
+          const providerMunicipality = provider.municipality
+            ?? provider.name.split(/\s+[–-]\s+/, 1)[0];
+          return normalizeMunicipality(providerMunicipality) === key;
+        })
+        .map((provider) => ({ ...provider, group: 'Oman kunnan liikunta' }));
+      const generalExercise = shortcut.providers
+        .filter((provider) => provider.group !== 'Alueelliset')
+        .map((provider) => provider.group === 'Valtakunnallinen'
+          ? { ...provider, group: 'Jumpat ja liikuntaohjeet' }
+          : provider);
+      return { ...shortcut, providers: uniqueProviders([...ownMunicipalityExercise, ...generalExercise]) };
+    }
+
     if (shortcut.name === 'Museot' || shortcut.name === 'Teatterit') {
       return { ...shortcut, providers: uniqueProviders(sortProvidersByLocality(shortcut.providers, context)) };
     }
@@ -2371,6 +2409,15 @@ export const getLocalizedShortcuts = (shortcuts: Shortcut[], locality: LocalityI
         ...shortcut,
         providers: shortcut.providers.filter((provider) => (
           provider.group && normalizeMunicipality(provider.group) === key
+        )),
+      };
+    }
+
+    if (shortcut.name === 'Senioripalvelut') {
+      return {
+        ...shortcut,
+        providers: shortcut.providers.filter((provider) => (
+          provider.municipality && normalizeMunicipality(provider.municipality) === key
         )),
       };
     }

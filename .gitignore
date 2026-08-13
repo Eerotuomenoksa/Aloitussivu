@@ -15,9 +15,11 @@ devserver.*
 .vite-current*.log
 visual-check-report/
 tmp/
+.tmp/
 /docs/Lighthouse/
 /outputs/*
 !/outputs/regional-link-coverage.json
 !/outputs/municipality-population-context.json
+!/outputs/municipality-senior-page-coverage.json
 !/outputs/regional-news-feed-coverage.json
 ~$*

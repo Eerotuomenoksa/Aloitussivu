@@ -237,6 +237,7 @@ const AppContent: React.FC = () => {
   const [isDeferredContentReady, setIsDeferredContentReady] = useState(false);
   const [hasSeenOnboarding, setHasSeenOnboarding] = useState(() => readLocalPreference(ONBOARDING_SEEN_KEY) === 'true');
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isAssistantOpen, setIsAssistantOpen] = useState(false);
   const [locality, setLocality] = useState<LocalityInfo | null>(() => {
     try {
       const saved = readLocalPreference(SAVED_LOCALITY_KEY);
@@ -499,6 +500,7 @@ const AppContent: React.FC = () => {
     { key: 'regionalNews', label: t('showNews') },
     { key: 'scamAlerts', label: t('showScamAlerts') },
     { key: 'weather', label: t('showWeather') },
+    { key: 'nameDays', label: t('showNameDays') },
     { key: 'assistant', label: t('showAssistant'), className: 'hidden md:flex' },
     { key: 'googleSearch', label: t('showGoogleSearch') },
   ];
@@ -639,6 +641,7 @@ const AppContent: React.FC = () => {
                     fontSizeStep={fontSizeStep}
                     variant="aurora"
                     mode={clockMode}
+                    showNameDays={uiVisibility.nameDays}
                     secondaryClock={uiVisibility.secondaryClock ? {
                       label: selectedSecondaryTimeZone.label,
                       timeZone: selectedSecondaryTimeZone.value,
@@ -662,7 +665,7 @@ const AppContent: React.FC = () => {
                   {uiVisibility.assistant && (
                     <div className="hero-widget relative z-50 hidden min-w-[220px] flex-1 md:block" data-tour="assistant">
                       <Suspense fallback={<AssistantFallback />}>
-                        <Assistant variant="header" />
+                        <Assistant variant="header" onOpenChange={setIsAssistantOpen} />
                       </Suspense>
                     </div>
                   )}
@@ -855,14 +858,16 @@ const AppContent: React.FC = () => {
             </Suspense>
           )}
 
-          <div data-tour="favorites">
-            <FavoriteLinks
-              favorites={favorites}
-              onToggleFavorite={toggleFavorite}
-              onFavoriteOpen={markFavoriteUsed}
-              fontSizeStep={fontSizeStep}
-            />
-          </div>
+          {favorites.length > 0 && (
+            <div data-tour="favorites">
+              <FavoriteLinks
+                favorites={favorites}
+                onToggleFavorite={toggleFavorite}
+                onFavoriteOpen={markFavoriteUsed}
+                fontSizeStep={fontSizeStep}
+              />
+            </div>
+          )}
 
           {shouldShowRegionalServices && (
             <div data-tour="regional-services">
@@ -1109,7 +1114,7 @@ const AppContent: React.FC = () => {
         canIncrease={uiScale < MAX_UI_SCALE}
         showReset={uiScale !== DEFAULT_UI_SCALE}
         uiScale={uiScale}
-        hidden={isAnyModalOpen}
+        hidden={isAnyModalOpen || isAssistantOpen}
       />
     </div>
   );

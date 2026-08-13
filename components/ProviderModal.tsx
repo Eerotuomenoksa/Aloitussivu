@@ -82,24 +82,34 @@ const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSi
   useModalFocusTrap(modalRef, isOpen, onClose, closeButtonRef);
 
   useEffect(() => {
+    if (!isOpen) return undefined;
+
     const root = document.getElementById('root');
+    const scrollX = window.scrollX;
+    const scrollY = window.scrollY;
     const previousAriaHidden = root?.getAttribute('aria-hidden');
-    const previousDisplay = root?.style.display;
     const previousPointerEvents = root?.style.pointerEvents;
-    if (root && isOpen) {
-      root.setAttribute('aria-hidden', 'true');
-      root.style.display = 'none';
-      root.style.pointerEvents = 'none';
-    }
-    return () => {
-      if (!root) return;
-      if (previousAriaHidden === null) {
-        root.removeAttribute('aria-hidden');
-      } else {
-        root.setAttribute('aria-hidden', previousAriaHidden);
+    const previousInert = root?.inert ?? false;
+    const frame = window.requestAnimationFrame(() => {
+      if (root) {
+        root.setAttribute('aria-hidden', 'true');
+        root.inert = true;
+        root.style.pointerEvents = 'none';
       }
-      root.style.display = previousDisplay ?? '';
-      root.style.pointerEvents = previousPointerEvents ?? '';
+      window.scrollTo(scrollX, scrollY);
+    });
+    return () => {
+      window.cancelAnimationFrame(frame);
+      if (root) {
+        if (previousAriaHidden === null) {
+          root.removeAttribute('aria-hidden');
+        } else {
+          root.setAttribute('aria-hidden', previousAriaHidden);
+        }
+        root.inert = previousInert;
+        root.style.pointerEvents = previousPointerEvents ?? '';
+      }
+      window.requestAnimationFrame(() => window.scrollTo(scrollX, scrollY));
     };
   }, [isOpen]);
 
@@ -120,7 +130,7 @@ const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSi
 
   const modal = (
     <div
-      className="fixed inset-0 z-[9999] isolate flex items-start justify-center bg-black/50 p-3 opacity-100 animate-in fade-in duration-200 backdrop-blur-sm sm:items-center sm:p-4"
+      className="fixed inset-0 z-[9999] isolate flex items-start justify-center overscroll-none bg-black/50 p-3 opacity-100 animate-in fade-in duration-200 backdrop-blur-sm sm:items-center sm:p-4"
       role="dialog"
       aria-modal="true"
       aria-labelledby="modal-title"
@@ -141,7 +151,7 @@ const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSi
           </button>
         </div>
 
-        <div className="aurora-modal-body flex-1 space-y-6 overflow-y-auto p-4 sm:space-y-8 sm:p-6 md:space-y-12 md:p-10">
+        <div className="aurora-modal-body flex-1 space-y-6 overflow-y-auto overscroll-contain p-4 sm:space-y-8 sm:p-6 md:space-y-12 md:p-10">
           {showNearbyGuidance && (
             <NearbyGuidancePlaces
               locality={locality}

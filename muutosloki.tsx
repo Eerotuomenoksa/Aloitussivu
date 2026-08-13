@@ -7,6 +7,7 @@ import {
   CHANGELOG_VERSION,
   type ChangelogCommit,
 } from './changelogData';
+import { AUGUST_2026_HIGHLIGHTS, type ChangelogHighlight } from './changelogHighlights';
 import { APP_VERSION_BASIS } from './appVersion';
 import { installUsageTracking } from './usageTracking';
 
@@ -44,6 +45,39 @@ function CommitCard({ commit }: { commit: ChangelogCommit }) {
       <p className="mt-3 text-base font-bold text-[var(--theme-text-2)] md:text-lg">
         {commit.subject}
       </p>
+    </article>
+  );
+}
+
+function HighlightCard({ highlight }: { highlight: ChangelogHighlight }) {
+  return (
+    <article className="aurora-card space-y-4">
+      <div className="flex flex-wrap items-center gap-3">
+        <span className="rounded-full bg-[var(--theme-primary)] px-3 py-1 text-xs font-bold text-white">
+          {highlight.date}
+        </span>
+        {highlight.tags.map((tag) => (
+          <span
+            key={tag}
+            className="rounded-full border border-[var(--theme-gold)] bg-[var(--theme-gold-pale)] px-3 py-1 text-xs font-bold text-[var(--theme-primary)]"
+          >
+            {tag}
+          </span>
+        ))}
+      </div>
+      <div className="space-y-2">
+        <h3 className="font-display text-xl font-bold text-[var(--theme-text)] md:text-2xl">
+          {highlight.title}
+        </h3>
+        <p className="text-base font-semibold text-[var(--theme-text-2)]">
+          {highlight.summary}
+        </p>
+      </div>
+      <ul className="list-disc space-y-2 pl-5 text-[var(--theme-text-2)] marker:text-[var(--theme-primary)]">
+        {highlight.changes.map((change) => (
+          <li key={change}>{change}</li>
+        ))}
+      </ul>
     </article>
   );
 }
@@ -88,6 +122,22 @@ function App() {
             Päivitetty: <span className="font-bold">{CHANGELOG_GENERATED_AT}</span>
           </p>
         </header>
+
+        <section className="space-y-4" aria-labelledby="august-2026-title">
+          <div className="space-y-2">
+            <h2 id="august-2026-title" className="aurora-section-title text-2xl md:text-3xl">
+              Elokuu 2026
+            </h2>
+            <p className="max-w-3xl text-[var(--theme-text-2)]">
+              Tarkka yhteenveto kuukauden käyttäjille näkyvistä muutoksista, testauspalautteen korjauksista ja ylläpidon aineistoista.
+            </p>
+          </div>
+          <div className="grid gap-4">
+            {AUGUST_2026_HIGHLIGHTS.map((highlight) => (
+              <HighlightCard key={`${highlight.date}-${highlight.title}`} highlight={highlight} />
+            ))}
+          </div>
+        </section>
 
         <section className="space-y-4">
           <div className="flex flex-wrap items-baseline gap-3">

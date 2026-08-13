@@ -5,6 +5,7 @@ export interface UiVisibilityState {
   regionalNews: boolean;
   scamAlerts: boolean;
   weather: boolean;
+  nameDays: boolean;
   assistant: boolean;
   googleSearch: boolean;
 }
@@ -21,9 +22,10 @@ export const defaultUiVisibility: UiVisibilityState = {
   clock: true,
   secondaryClock: false,
   regionalServices: true,
-  regionalNews: true,
+  regionalNews: false,
   scamAlerts: true,
   weather: true,
-  assistant: true,
+  nameDays: false,
+  assistant: false,
   googleSearch: true,
 };
