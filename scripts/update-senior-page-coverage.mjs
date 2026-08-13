@@ -152,7 +152,7 @@ Päivitetty: ${new Intl.DateTimeFormat('fi-FI', { dateStyle: 'short', timeStyle:
 
 ## Laskentatapa ja rajaus
 
-Kuntajoukko tulee raportin \`docs/kuntien-seniorisivut.csv\` 70 korkean varmuuden osumasta, jotka on tuotu tiedostoon \`localSeniorLinks.ts\`. Väestömäärät ovat Tilastokeskuksen vuoden ${payload.dataYear} lopun kuntakohtaisia tietoja. Mukana ovat iät 65–99 sekä Tilastokeskuksen yhdistetty luokka 100 vuotta täyttäneille. Koko Suomen vertailuluku lasketaan samasta taulusta ja samoista ikäluokista.
+Kuntajoukko tulee raportin \`docs/kuntien-seniorisivut.csv\` korkean varmuuden osumista, jotka on tuotu tiedostoon \`localSeniorLinks.ts\`. Väestömäärät ovat Tilastokeskuksen vuoden ${payload.dataYear} lopun kuntakohtaisia tietoja. Mukana ovat iät 65–99 sekä Tilastokeskuksen yhdistetty luokka 100 vuotta täyttäneille. Koko Suomen vertailuluku lasketaan samasta taulusta ja samoista ikäluokista.
 
 Lähde: [Tilastokeskus, Väestö 31.12. iän ja alueen mukaan](${PXWEB_URL})
 
@@ -168,9 +168,16 @@ ${municipalityRows}
 
 const main = async () => {
   const municipalities = await parseMunicipalities();
-  const municipalityByNormalizedName = new Map(
-    municipalities.map((municipality) => [municipality.name.toLocaleLowerCase('fi-FI'), municipality]),
-  );
+  const municipalityByNormalizedName = new Map();
+  for (const municipality of municipalities) {
+    const normalizedName = municipality.name.toLocaleLowerCase('fi-FI');
+    const aliases = [
+      normalizedName,
+      normalizedName.split(' - ')[0],
+      normalizedName.replace(/\s+kunta$/, ''),
+    ];
+    for (const alias of aliases) municipalityByNormalizedName.set(alias, municipality);
+  }
   const seniorMunicipalityNames = [...new Set(await parseSeniorMunicipalityNames())];
   const seniorMunicipalities = seniorMunicipalityNames.map((name) => {
     const municipality = municipalityByNormalizedName.get(name.toLocaleLowerCase('fi-FI'));
@@ -210,8 +217,8 @@ const main = async () => {
     })),
   };
 
-  if (rows.length !== 70) {
-    throw new Error(`Odotettiin 70 seniorisivukuntaa, mutta löytyi ${rows.length}`);
+  if (rows.length !== seniorMunicipalityNames.length) {
+    throw new Error(`Seniorisivukuntien määrä muuttui laskennassa: ${seniorMunicipalityNames.length} -> ${rows.length}`);
   }
   if (!Number.isFinite(finlandPopulation65Plus) || !Number.isFinite(coveredPopulation65Plus)) {
     throw new Error('65 vuotta täyttäneiden väestömäärää ei voitu laskea');

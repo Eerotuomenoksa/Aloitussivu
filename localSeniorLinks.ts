@@ -52,6 +52,14 @@ export const MUNICIPALITY_SENIOR_LINKS: Provider[] = [
     "verifiedAt": "2026-08-13"
   },
   {
+    "name": "Finström – Hemservice och äldreboende",
+    "url": "https://www.finstrom.ax/social-service/hemservice-aldreboende",
+    "group": "Oman kunnan senioripalvelut",
+    "municipality": "finström",
+    "scope": "municipality",
+    "verifiedAt": "2026-08-13"
+  },
+  {
     "name": "Föglö – Äldreomsorg",
     "url": "https://www.foglo.ax/social-service/aldreomsorg",
     "group": "Oman kunnan senioripalvelut",
@@ -84,10 +92,34 @@ export const MUNICIPALITY_SENIOR_LINKS: Provider[] = [
     "verifiedAt": "2026-08-13"
   },
   {
+    "name": "Hanko – Tjänster för äldre",
+    "url": "https://hanko.fi/sv/halsa-och-valmaende/tjanster-for-aldre/",
+    "group": "Oman kunnan senioripalvelut",
+    "municipality": "hanko",
+    "scope": "municipality",
+    "verifiedAt": "2026-08-13"
+  },
+  {
     "name": "Helsinki – Senioripalvelut",
     "url": "https://www.hel.fi/fi/sosiaali-ja-terveyspalvelut/senioripalvelut",
     "group": "Oman kunnan senioripalvelut",
     "municipality": "helsinki",
+    "scope": "municipality",
+    "verifiedAt": "2026-08-13"
+  },
+  {
+    "name": "Huittinen – Seniorit",
+    "url": "https://www.huittinen.fi/vapaa-aika/seniorit/",
+    "group": "Oman kunnan senioripalvelut",
+    "municipality": "huittinen",
+    "scope": "municipality",
+    "verifiedAt": "2026-08-13"
+  },
+  {
+    "name": "Humppila – Seniorit",
+    "url": "https://www.humppila.fi/vapaa-aika-ja-matkailu/seniorit/",
+    "group": "Oman kunnan senioripalvelut",
+    "municipality": "humppila",
     "scope": "municipality",
     "verifiedAt": "2026-08-13"
   },
@@ -140,10 +172,26 @@ export const MUNICIPALITY_SENIOR_LINKS: Provider[] = [
     "verifiedAt": "2026-08-13"
   },
   {
+    "name": "Jyväskylä – Palveluja senioreille",
+    "url": "https://www.jyvaskyla.fi/palveluja-senioreille",
+    "group": "Oman kunnan senioripalvelut",
+    "municipality": "jyväskylä",
+    "scope": "municipality",
+    "verifiedAt": "2026-08-13"
+  },
+  {
     "name": "Järvenpää – Ikäihmiset",
     "url": "https://www.jarvenpaa.fi/hyvinvointi-ja-terveys/ikaihmiset",
     "group": "Oman kunnan senioripalvelut",
     "municipality": "järvenpää",
+    "scope": "municipality",
+    "verifiedAt": "2026-08-13"
+  },
+  {
+    "name": "Kangasala – Ikääntyneille",
+    "url": "https://www.kangasala.fi/kohderyhmat/ikaantyneille/",
+    "group": "Oman kunnan senioripalvelut",
+    "municipality": "kangasala",
     "scope": "municipality",
     "verifiedAt": "2026-08-13"
   },
@@ -156,6 +204,14 @@ export const MUNICIPALITY_SENIOR_LINKS: Provider[] = [
     "verifiedAt": "2026-08-13"
   },
   {
+    "name": "Kannonkoski – Seniorit",
+    "url": "https://kannonkoski.fi/seniorit",
+    "group": "Oman kunnan senioripalvelut",
+    "municipality": "kannonkoski",
+    "scope": "municipality",
+    "verifiedAt": "2026-08-13"
+  },
+  {
     "name": "Kannus – Senioripalvelut",
     "url": "https://kannus.fi/hallinto-ja-paatoksenteko/asiointi/senioripalvelut/",
     "group": "Oman kunnan senioripalvelut",
@@ -164,10 +220,42 @@ export const MUNICIPALITY_SENIOR_LINKS: Provider[] = [
     "verifiedAt": "2026-08-13"
   },
   {
+    "name": "Karstula – Seniorit",
+    "url": "https://karstula.fi/vapaa-aika-ja-matkailu/seniorit/",
+    "group": "Oman kunnan senioripalvelut",
+    "municipality": "karstula",
+    "scope": "municipality",
+    "verifiedAt": "2026-08-13"
+  },
+  {
+    "name": "Kaskinen – Seniorit",
+    "url": "https://kaskinen.fi/fi/seniorit",
+    "group": "Oman kunnan senioripalvelut",
+    "municipality": "kaskinen",
+    "scope": "municipality",
+    "verifiedAt": "2026-08-13"
+  },
+  {
     "name": "Kauhajoki – Ikäihmiset",
     "url": "https://kauhajoki.fi/ikaihmiset/",
     "group": "Oman kunnan senioripalvelut",
     "municipality": "kauhajoki",
+    "scope": "municipality",
+    "verifiedAt": "2026-08-13"
+  },
+  {
+    "name": "Kauhava – Senioreille",
+    "url": "https://kauhava.fi/senioreille/",
+    "group": "Oman kunnan senioripalvelut",
+    "municipality": "kauhava",
+    "scope": "municipality",
+    "verifiedAt": "2026-08-13"
+  },
+  {
+    "name": "Kauniainen – Senioripalvelut ja Villa Breda",
+    "url": "https://www.kauniainen.fi/hyvinvointi/lansi-uudenmaan-hyvinvointialue/villa-breda-ja-seniorit/",
+    "group": "Oman kunnan senioripalvelut",
+    "municipality": "kauniainen",
     "scope": "municipality",
     "verifiedAt": "2026-08-13"
   },
@@ -188,10 +276,58 @@ export const MUNICIPALITY_SENIOR_LINKS: Provider[] = [
     "verifiedAt": "2026-08-13"
   },
   {
+    "name": "Keuruu – Ikääntyneille",
+    "url": "https://keuruu.fi/ikaantyneille/",
+    "group": "Oman kunnan senioripalvelut",
+    "municipality": "keuruu",
+    "scope": "municipality",
+    "verifiedAt": "2026-08-13"
+  },
+  {
+    "name": "Kirkkonummi – Seniorit",
+    "url": "https://kirkkonummi.fi/tietoa-kirkkonummesta/tietoa-kunnasta/lapsiperheet-nuoret-ja-seniorit/seniorit/",
+    "group": "Oman kunnan senioripalvelut",
+    "municipality": "kirkkonummi",
+    "scope": "municipality",
+    "verifiedAt": "2026-08-13"
+  },
+  {
     "name": "Kittilä – Ikäihmiset",
     "url": "https://kittila.fi/ikaihmiset",
     "group": "Oman kunnan senioripalvelut",
     "municipality": "kittilä",
+    "scope": "municipality",
+    "verifiedAt": "2026-08-13"
+  },
+  {
+    "name": "Kotka – Ikääntyneet",
+    "url": "https://www.kotka.fi/ikaantyneet/",
+    "group": "Oman kunnan senioripalvelut",
+    "municipality": "kotka",
+    "scope": "municipality",
+    "verifiedAt": "2026-08-13"
+  },
+  {
+    "name": "Kouvola – Ikääntyneet",
+    "url": "https://www.kouvola.fi/ikaantyneet",
+    "group": "Oman kunnan senioripalvelut",
+    "municipality": "kouvola",
+    "scope": "municipality",
+    "verifiedAt": "2026-08-13"
+  },
+  {
+    "name": "Kumlinge – Äldreomsorg",
+    "url": "https://www.kumlinge.ax/social-omsorg/aldreomsorg",
+    "group": "Oman kunnan senioripalvelut",
+    "municipality": "kumlinge",
+    "scope": "municipality",
+    "verifiedAt": "2026-08-13"
+  },
+  {
+    "name": "Kurikka – Ikäihmiset",
+    "url": "https://kurikka.fi/target_group/ikaihmiset/",
+    "group": "Oman kunnan senioripalvelut",
+    "municipality": "kurikka",
     "scope": "municipality",
     "verifiedAt": "2026-08-13"
   },
@@ -208,6 +344,38 @@ export const MUNICIPALITY_SENIOR_LINKS: Provider[] = [
     "url": "https://karkola.fi/palvelut/hyvinvoinnin-edistaminen/senioripalvelut/",
     "group": "Oman kunnan senioripalvelut",
     "municipality": "kärkölä",
+    "scope": "municipality",
+    "verifiedAt": "2026-08-13"
+  },
+  {
+    "name": "Laihia – Vanhuspalvelut",
+    "url": "https://laihia.fi/palveluhakemisto/vanhuspalvelut-5/",
+    "group": "Oman kunnan senioripalvelut",
+    "municipality": "laihia",
+    "scope": "municipality",
+    "verifiedAt": "2026-08-13"
+  },
+  {
+    "name": "Lapua – Ikäihmiset",
+    "url": "https://lapua.fi/etusivu/vahvuutena-v%C3%A4litt%C3%A4minen/v%C3%A4litt%C3%A4misen-ty%C3%B6kalupakki/ik%C3%A4ihmiset/",
+    "group": "Oman kunnan senioripalvelut",
+    "municipality": "lapua",
+    "scope": "municipality",
+    "verifiedAt": "2026-08-13"
+  },
+  {
+    "name": "Laukaa – Ikäihmiset",
+    "url": "https://www.laukaa.fi/asukkaat/palvelut-kohderyhmittain/ikaihmiset/",
+    "group": "Oman kunnan senioripalvelut",
+    "municipality": "laukaa",
+    "scope": "municipality",
+    "verifiedAt": "2026-08-13"
+  },
+  {
+    "name": "Lemi – Vanhuspalvelut",
+    "url": "https://lemi.fi/palvelut/sosiaali-ja-terveyspalvelut/vanhuspalvelus/",
+    "group": "Oman kunnan senioripalvelut",
+    "municipality": "lemi",
     "scope": "municipality",
     "verifiedAt": "2026-08-13"
   },
@@ -272,6 +440,22 @@ export const MUNICIPALITY_SENIOR_LINKS: Provider[] = [
     "url": "https://larsmo.fi/fi/perusturva/senioripalvelut/aktiiviset-seniorit/",
     "group": "Oman kunnan senioripalvelut",
     "municipality": "luoto",
+    "scope": "municipality",
+    "verifiedAt": "2026-08-13"
+  },
+  {
+    "name": "Maalahti – Aktiva seniorer",
+    "url": "https://www.malax.fi/fritid-och-kultur/aktiva-seniorer/",
+    "group": "Oman kunnan senioripalvelut",
+    "municipality": "maalahti",
+    "scope": "municipality",
+    "verifiedAt": "2026-08-13"
+  },
+  {
+    "name": "Maarianhamina – Äldre och omsorg",
+    "url": "https://www.mariehamn.ax/aldre-och-omsorg",
+    "group": "Oman kunnan senioripalvelut",
+    "municipality": "maarianhamina",
     "scope": "municipality",
     "verifiedAt": "2026-08-13"
   },
@@ -348,6 +532,22 @@ export const MUNICIPALITY_SENIOR_LINKS: Provider[] = [
     "verifiedAt": "2026-08-13"
   },
   {
+    "name": "Oripää – Varhan vanhustenhuollon palvelut",
+    "url": "https://oripaa.fi/asukkaalle/hyvinvointi/varsinais-suomen-hyvinvointialue/vanhuspalvelut/",
+    "group": "Oman kunnan senioripalvelut",
+    "municipality": "oripää",
+    "scope": "municipality",
+    "verifiedAt": "2026-08-13"
+  },
+  {
+    "name": "Oulu – Ikääntyneet",
+    "url": "https://www.ouka.fi/ikaantyneet",
+    "group": "Oman kunnan senioripalvelut",
+    "municipality": "oulu",
+    "scope": "municipality",
+    "verifiedAt": "2026-08-13"
+  },
+  {
     "name": "Outokumpu – Ikäihmisten palvelut",
     "url": "https://www.outokummunkaupunki.fi/hyvinvointi-ja-terveys/ikaihmisten-palvelut/",
     "group": "Oman kunnan senioripalvelut",
@@ -364,6 +564,54 @@ export const MUNICIPALITY_SENIOR_LINKS: Provider[] = [
     "verifiedAt": "2026-08-13"
   },
   {
+    "name": "Parainen – Seniorit",
+    "url": "https://www.pargas.fi/fi/seniorit",
+    "group": "Oman kunnan senioripalvelut",
+    "municipality": "parainen",
+    "scope": "municipality",
+    "verifiedAt": "2026-08-13"
+  },
+  {
+    "name": "Parikkala – Ikääntyneet",
+    "url": "https://parikkala.fi/ikaantyneet/",
+    "group": "Oman kunnan senioripalvelut",
+    "municipality": "parikkala",
+    "scope": "municipality",
+    "verifiedAt": "2026-08-13"
+  },
+  {
+    "name": "Pedersören – Seniorer",
+    "url": "https://www.pedersore.fi/sv/valfard/seniorer/",
+    "group": "Oman kunnan senioripalvelut",
+    "municipality": "pedersören",
+    "scope": "municipality",
+    "verifiedAt": "2026-08-13"
+  },
+  {
+    "name": "Petäjävesi – Senioreille",
+    "url": "https://www.petajavesi.fi/vapaa-aika-ja-hyvinvointi/senioreille/",
+    "group": "Oman kunnan senioripalvelut",
+    "municipality": "petäjävesi",
+    "scope": "municipality",
+    "verifiedAt": "2026-08-13"
+  },
+  {
+    "name": "Pieksämäki – Ikäihmisten palvelut",
+    "url": "https://www.pieksamaki.fi/terveys-ja-hyvinvointi/ikaneuvola/",
+    "group": "Oman kunnan senioripalvelut",
+    "municipality": "pieksämäki",
+    "scope": "municipality",
+    "verifiedAt": "2026-08-13"
+  },
+  {
+    "name": "Pietarsaari – Välfärdstjänster för seniorer",
+    "url": "https://jakobstad.fi/invanare/framjande-av-valfard-och-halsa/valfarstjanster-for-seniorer",
+    "group": "Oman kunnan senioripalvelut",
+    "municipality": "pietarsaari",
+    "scope": "municipality",
+    "verifiedAt": "2026-08-13"
+  },
+  {
     "name": "Pornainen – Ikäihmisten palvelut - Pornainen",
     "url": "https://pornainen.fi/kuntalaiset/terveys-ja-hyvinvointi/ikaihmisten-palvelut/",
     "group": "Oman kunnan senioripalvelut",
@@ -372,10 +620,26 @@ export const MUNICIPALITY_SENIOR_LINKS: Provider[] = [
     "verifiedAt": "2026-08-13"
   },
   {
+    "name": "Porvoo – Seniorernas välmående",
+    "url": "https://www.porvoo.fi/sv/valmaende-och-sakerhet/seniorernas-valmaende/",
+    "group": "Oman kunnan senioripalvelut",
+    "municipality": "porvoo",
+    "scope": "municipality",
+    "verifiedAt": "2026-08-13"
+  },
+  {
     "name": "Posio – Ikäihmiset",
     "url": "https://www.posio.fi/ikaihmiset/",
     "group": "Oman kunnan senioripalvelut",
     "municipality": "posio",
+    "scope": "municipality",
+    "verifiedAt": "2026-08-13"
+  },
+  {
+    "name": "Pudasjärvi – Pudasjärven seniorisivut",
+    "url": "https://www.pudasjarvi.fi/asuminen-ja-ymparisto/seniorit/",
+    "group": "Oman kunnan senioripalvelut",
+    "municipality": "pudasjärvi",
     "scope": "municipality",
     "verifiedAt": "2026-08-13"
   },
@@ -412,6 +676,14 @@ export const MUNICIPALITY_SENIOR_LINKS: Provider[] = [
     "verifiedAt": "2026-08-13"
   },
   {
+    "name": "Pöytyä – Vanhustyö",
+    "url": "https://www.poytya.fi/voi-hyvin/vanhustyo/",
+    "group": "Oman kunnan senioripalvelut",
+    "municipality": "pöytyä",
+    "scope": "municipality",
+    "verifiedAt": "2026-08-13"
+  },
+  {
     "name": "Raahe – Ikäihmiset",
     "url": "https://www.raahe.fi/ikaihmiset",
     "group": "Oman kunnan senioripalvelut",
@@ -428,10 +700,42 @@ export const MUNICIPALITY_SENIOR_LINKS: Provider[] = [
     "verifiedAt": "2026-08-13"
   },
   {
+    "name": "Ranua – Senioreille",
+    "url": "https://ranua.fi/senioreille/",
+    "group": "Oman kunnan senioripalvelut",
+    "municipality": "ranua",
+    "scope": "municipality",
+    "verifiedAt": "2026-08-13"
+  },
+  {
+    "name": "Riihimäki – Avoin senioritoiminta",
+    "url": "https://www.riihimaki.fi/ela-ja-voi-hyvin/hyvinvointi/aktiivisuutta-arkeen/avoin-senioritoiminta/",
+    "group": "Oman kunnan senioripalvelut",
+    "municipality": "riihimäki",
+    "scope": "municipality",
+    "verifiedAt": "2026-08-13"
+  },
+  {
     "name": "Ristijärvi – Vanhuspalvelut",
     "url": "https://www.ristijarvi.fi/perhe-ja-hyvinvointi/vanhuspalvelut.html",
     "group": "Oman kunnan senioripalvelut",
     "municipality": "ristijärvi",
+    "scope": "municipality",
+    "verifiedAt": "2026-08-13"
+  },
+  {
+    "name": "Rovaniemi – Ikäihmiselle",
+    "url": "https://www.rovaniemi.fi/Palvelut-sinulle/Ikaihmiselle",
+    "group": "Oman kunnan senioripalvelut",
+    "municipality": "rovaniemi",
+    "scope": "municipality",
+    "verifiedAt": "2026-08-13"
+  },
+  {
+    "name": "Saarijärvi – Ikäihmiset",
+    "url": "https://saarijarvi.fi/sosiaali-ja-terveyspalvelut/ikaihmiset/",
+    "group": "Oman kunnan senioripalvelut",
+    "municipality": "saarijärvi",
     "scope": "municipality",
     "verifiedAt": "2026-08-13"
   },
@@ -460,6 +764,22 @@ export const MUNICIPALITY_SENIOR_LINKS: Provider[] = [
     "verifiedAt": "2026-08-13"
   },
   {
+    "name": "Sastamala – Toimintakykyä ja osallisuutta ikääntyneille",
+    "url": "https://sastamala.fi/arki-ja-vapaa-aika/hyvinvointi-ja-terveys/ikaantyneiden-hyvinvoinnin-ja-terveyden-edistaminen/toimintakykya-ja-osallisuutta-ikaantyneille/",
+    "group": "Oman kunnan senioripalvelut",
+    "municipality": "sastamala",
+    "scope": "municipality",
+    "verifiedAt": "2026-08-13"
+  },
+  {
+    "name": "Seinäjoki – Ikääntyvien palvelut",
+    "url": "https://www.seinajoki.fi/ikaantyvien-palvelut/",
+    "group": "Oman kunnan senioripalvelut",
+    "municipality": "seinäjoki",
+    "scope": "municipality",
+    "verifiedAt": "2026-08-13"
+  },
+  {
     "name": "Sievi – Ikäihmiset",
     "url": "https://www.sievi.fi/ikaihmiset",
     "group": "Oman kunnan senioripalvelut",
@@ -476,10 +796,58 @@ export const MUNICIPALITY_SENIOR_LINKS: Provider[] = [
     "verifiedAt": "2026-08-13"
   },
   {
+    "name": "Suonenjoki – Seniorit",
+    "url": "https://suonenjoki.fi/seniorit/",
+    "group": "Oman kunnan senioripalvelut",
+    "municipality": "suonenjoki",
+    "scope": "municipality",
+    "verifiedAt": "2026-08-13"
+  },
+  {
+    "name": "Sysmä – Senioreille",
+    "url": "https://sysma.fi/senioreille/",
+    "group": "Oman kunnan senioripalvelut",
+    "municipality": "sysmä",
+    "scope": "municipality",
+    "verifiedAt": "2026-08-13"
+  },
+  {
+    "name": "Taivassalo – Vanhustyö",
+    "url": "https://taivassalo.fi/sote/vanhustyo",
+    "group": "Oman kunnan senioripalvelut",
+    "municipality": "taivassalo",
+    "scope": "municipality",
+    "verifiedAt": "2026-08-13"
+  },
+  {
+    "name": "Tampere – Ikääntyneet",
+    "url": "https://www.tampere.fi/ikaantyneet",
+    "group": "Oman kunnan senioripalvelut",
+    "municipality": "tampere",
+    "scope": "municipality",
+    "verifiedAt": "2026-08-13"
+  },
+  {
+    "name": "Teuva – Ikääntyneet",
+    "url": "https://teuva.fi/ikaantyneet/",
+    "group": "Oman kunnan senioripalvelut",
+    "municipality": "teuva",
+    "scope": "municipality",
+    "verifiedAt": "2026-08-13"
+  },
+  {
     "name": "Toivakka – Ikäihmisten palvelut ja senioritoiminta",
     "url": "https://www.toivakka.fi/sosiaali-ja-terveyspalvelut/ikaihmisten-palvelut/",
     "group": "Oman kunnan senioripalvelut",
     "municipality": "toivakka",
+    "scope": "municipality",
+    "verifiedAt": "2026-08-13"
+  },
+  {
+    "name": "Turku – Seniorit",
+    "url": "https://www.turku.fi/seniorit",
+    "group": "Oman kunnan senioripalvelut",
+    "municipality": "turku",
     "scope": "municipality",
     "verifiedAt": "2026-08-13"
   },
@@ -500,10 +868,42 @@ export const MUNICIPALITY_SENIOR_LINKS: Provider[] = [
     "verifiedAt": "2026-08-13"
   },
   {
+    "name": "Urjala – Ikäihmiset",
+    "url": "https://www.urjala.fi/ikaihmiset/",
+    "group": "Oman kunnan senioripalvelut",
+    "municipality": "urjala",
+    "scope": "municipality",
+    "verifiedAt": "2026-08-13"
+  },
+  {
     "name": "Utajärvi – Senioripalvelut",
     "url": "https://www.utajarvi.fi/fi/hyvinvointi_ja_vapaa-aika/senioripalvelut/",
     "group": "Oman kunnan senioripalvelut",
     "municipality": "utajärvi",
+    "scope": "municipality",
+    "verifiedAt": "2026-08-13"
+  },
+  {
+    "name": "Uurainen – Ikäihmiset",
+    "url": "https://uurainen.fi/sosiaali-ja-terveyspalvelut/ikaihmiset/",
+    "group": "Oman kunnan senioripalvelut",
+    "municipality": "uurainen",
+    "scope": "municipality",
+    "verifiedAt": "2026-08-13"
+  },
+  {
+    "name": "Vaasa – Ikäihmisille",
+    "url": "https://www.vaasa.fi/asu-ja-ela/palvelut-kohderyhmittain/ikaihmisille/",
+    "group": "Oman kunnan senioripalvelut",
+    "municipality": "vaasa",
+    "scope": "municipality",
+    "verifiedAt": "2026-08-13"
+  },
+  {
+    "name": "Vantaa – Palvelut senioreille",
+    "url": "https://www.vantaa.fi/fi/tukea-ja-apua-arkeen/senioreille",
+    "group": "Oman kunnan senioripalvelut",
+    "municipality": "vantaa",
     "scope": "municipality",
     "verifiedAt": "2026-08-13"
   },
@@ -532,6 +932,14 @@ export const MUNICIPALITY_SENIOR_LINKS: Provider[] = [
     "verifiedAt": "2026-08-13"
   },
   {
+    "name": "Virrat – Ikäihmisten palvelut",
+    "url": "https://www.virrat.fi/hyvinvoinnin-toimiala134460894/hyvinvoinnin-ja-terveyden-edistaminen/elintapaohjaus/ikaihmisten-palvelut/",
+    "group": "Oman kunnan senioripalvelut",
+    "municipality": "virrat",
+    "scope": "municipality",
+    "verifiedAt": "2026-08-13"
+  },
+  {
     "name": "Vårdö – Äldreomsorg",
     "url": "https://www.vardo.ax/aldreomsorg",
     "group": "Oman kunnan senioripalvelut",
@@ -556,10 +964,26 @@ export const MUNICIPALITY_SENIOR_LINKS: Provider[] = [
     "verifiedAt": "2026-08-13"
   },
   {
+    "name": "Ylöjärvi – Ikäihmiset",
+    "url": "https://www.ylojarvi.fi/ikaihmiset/",
+    "group": "Oman kunnan senioripalvelut",
+    "municipality": "ylöjärvi",
+    "scope": "municipality",
+    "verifiedAt": "2026-08-13"
+  },
+  {
     "name": "Ähtäri – Ikäihmisten palvelut",
     "url": "https://www.ahtari.fi/index.php/sosiaali-ja-terveyspalvelut/ikaeihmisten-palvelut",
     "group": "Oman kunnan senioripalvelut",
     "municipality": "ähtäri",
+    "scope": "municipality",
+    "verifiedAt": "2026-08-13"
+  },
+  {
+    "name": "Äänekoski – Ikääntyneet",
+    "url": "https://www.aanekoski.fi/ikaantyneet",
+    "group": "Oman kunnan senioripalvelut",
+    "municipality": "äänekoski",
     "scope": "municipality",
     "verifiedAt": "2026-08-13"
   },

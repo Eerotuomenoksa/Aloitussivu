@@ -46,4 +46,14 @@ export const VERIFIED_LINKS: VerifiedLinkEntry[] = [
     evidence: 'Virallinen Ajankohtaista-sivu löytyi haulla ja listasi Etelä-Pohjanmaan hyvinvointialueen uutisia.',
     notes: 'Automaattinen linkkitarkistus on aiemmin saanut HTTP 500 -vastauksen, mutta sivu on virallinen hyvinvointialueen uutis- ja tiedotesivu.',
   },
+  {
+    url: 'https://www.riihimaki.fi/ela-ja-voi-hyvin/hyvinvointi/aktiivisuutta-arkeen/avoin-senioritoiminta/',
+    status: 'verified',
+    confidence: 'A',
+    verifiedAt: '2026-08-13',
+    verifiedBy: 'Codex',
+    organization: 'Riihimäen kaupunki',
+    evidence: 'Virallisen kaupungin sivun otsikko on "Avoin senioritoiminta" ja sisältö kuvaa Riihimäen kaupungin kaikille avointa senioritoimintaa.',
+    notes: 'Automaattinen linkkitarkistus sai tilapäisen HTTP 500 -vastauksen, mutta sivu löytyi ja sen sisältö varmennettiin erikseen.',
+  },
 ];

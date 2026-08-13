@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-08-13T09:57:42.522Z",
+  "generatedAt": "2026-08-13T11:30:36.616Z",
   "dataYear": 2025,
   "ageRange": "65+",
-  "municipalityCount": 70,
-  "coveredPopulation65Plus": 364275,
+  "municipalityCount": 123,
+  "coveredPopulation65Plus": 786391,
   "finlandPopulation65Plus": 1347494,
-  "coveragePercent": 27.03351554812118,
+  "coveragePercent": 58.35951774182296,
   "source": {
     "name": "Tilastokeskus, Väestörakenne",
     "apiUrl": "https://pxdata.stat.fi/PXWeb/api/v1/fi/StatFin/vaerak/11re.px",
@@ -19,421 +19,739 @@
       "code": "091",
       "name": "Helsinki",
       "population65Plus": 122784,
-      "shareOfCoveredPopulationPercent": 33.70640312950381
+      "shareOfCoveredPopulationPercent": 15.613606971595557
     },
     {
       "code": "049",
       "name": "Espoo",
       "population65Plus": 49992,
-      "shareOfCoveredPopulationPercent": 13.723697755816348
+      "shareOfCoveredPopulationPercent": 6.357142947973718
+    },
+    {
+      "code": "837",
+      "name": "Tampere",
+      "population65Plus": 49961,
+      "shareOfCoveredPopulationPercent": 6.353200888616477
+    },
+    {
+      "code": "853",
+      "name": "Turku",
+      "population65Plus": 42325,
+      "shareOfCoveredPopulationPercent": 5.3821826546845015
+    },
+    {
+      "code": "092",
+      "name": "Vantaa",
+      "population65Plus": 40494,
+      "shareOfCoveredPopulationPercent": 5.149346826197146
+    },
+    {
+      "code": "564",
+      "name": "Oulu",
+      "population65Plus": 38900,
+      "shareOfCoveredPopulationPercent": 4.946648677311923
+    },
+    {
+      "code": "179",
+      "name": "Jyväskylä",
+      "population65Plus": 29708,
+      "shareOfCoveredPopulationPercent": 3.77776449628747
+    },
+    {
+      "code": "286",
+      "name": "Kouvola",
+      "population65Plus": 24256,
+      "shareOfCoveredPopulationPercent": 3.084470702233367
     },
     {
       "code": "167",
       "name": "Joensuu",
       "population65Plus": 18927,
-      "shareOfCoveredPopulationPercent": 5.195799876466955
+      "shareOfCoveredPopulationPercent": 2.4068179824031555
     },
     {
       "code": "734",
       "name": "Salo",
       "population65Plus": 15275,
-      "shareOfCoveredPopulationPercent": 4.193260586095669
+      "shareOfCoveredPopulationPercent": 1.9424179574791676
+    },
+    {
+      "code": "285",
+      "name": "Kotka",
+      "population65Plus": 14881,
+      "shareOfCoveredPopulationPercent": 1.8923156546806867
+    },
+    {
+      "code": "905",
+      "name": "Vaasa",
+      "population65Plus": 14577,
+      "shareOfCoveredPopulationPercent": 1.853658040338712
+    },
+    {
+      "code": "698",
+      "name": "Rovaniemi",
+      "population65Plus": 14338,
+      "shareOfCoveredPopulationPercent": 1.8232660343264355
+    },
+    {
+      "code": "743",
+      "name": "Seinäjoki",
+      "population65Plus": 14287,
+      "shareOfCoveredPopulationPercent": 1.8167807108677487
+    },
+    {
+      "code": "638",
+      "name": "Porvoo",
+      "population65Plus": 12280,
+      "shareOfCoveredPopulationPercent": 1.5615641582876711
     },
     {
       "code": "106",
       "name": "Hyvinkää",
       "population65Plus": 11744,
-      "shareOfCoveredPopulationPercent": 3.2239379589595774
+      "shareOfCoveredPopulationPercent": 1.4934046803689258
     },
     {
       "code": "186",
       "name": "Järvenpää",
       "population65Plus": 9851,
-      "shareOfCoveredPopulationPercent": 2.7042756159494887
+      "shareOfCoveredPopulationPercent": 1.2526847331670885
     },
     {
       "code": "543",
       "name": "Nurmijärvi",
       "population65Plus": 8501,
-      "shareOfCoveredPopulationPercent": 2.333676480680804
+      "shareOfCoveredPopulationPercent": 1.0810144063195026
     },
     {
       "code": "858",
       "name": "Tuusula",
       "population65Plus": 8250,
-      "shareOfCoveredPopulationPercent": 2.2647724933086266
+      "shareOfCoveredPopulationPercent": 1.0490964418463589
+    },
+    {
+      "code": "257",
+      "name": "Kirkkonummi",
+      "population65Plus": 7745,
+      "shareOfCoveredPopulationPercent": 0.9848790232848545
+    },
+    {
+      "code": "790",
+      "name": "Sastamala",
+      "population65Plus": 7594,
+      "shareOfCoveredPopulationPercent": 0.9656773793189393
+    },
+    {
+      "code": "211",
+      "name": "Kangasala",
+      "population65Plus": 7366,
+      "shareOfCoveredPopulationPercent": 0.9366841685624581
+    },
+    {
+      "code": "694",
+      "name": "Riihimäki",
+      "population65Plus": 7264,
+      "shareOfCoveredPopulationPercent": 0.9237135216450849
+    },
+    {
+      "code": "980",
+      "name": "Ylöjärvi",
+      "population65Plus": 7081,
+      "shareOfCoveredPopulationPercent": 0.9004426551168567
     },
     {
       "code": "678",
       "name": "Raahe",
       "population65Plus": 6710,
-      "shareOfCoveredPopulationPercent": 1.8420149612243495
+      "shareOfCoveredPopulationPercent": 0.8532651060350385
+    },
+    {
+      "code": "301",
+      "name": "Kurikka",
+      "population65Plus": 6404,
+      "shareOfCoveredPopulationPercent": 0.8143531652829191
     },
     {
       "code": "075",
       "name": "Hamina",
       "population65Plus": 6231,
-      "shareOfCoveredPopulationPercent": 1.710520897673461
+      "shareOfCoveredPopulationPercent": 0.7923539308054136
+    },
+    {
+      "code": "593",
+      "name": "Pieksämäki",
+      "population65Plus": 6167,
+      "shareOfCoveredPopulationPercent": 0.7842154856807874
     },
     {
       "code": "240",
       "name": "Kemi",
       "population65Plus": 6037,
-      "shareOfCoveredPopulationPercent": 1.657264429345961
+      "shareOfCoveredPopulationPercent": 0.7676842690213901
     },
     {
       "code": "529",
       "name": "Naantali",
       "population65Plus": 5872,
-      "shareOfCoveredPopulationPercent": 1.6119689794797887
+      "shareOfCoveredPopulationPercent": 0.7467023401844629
+    },
+    {
+      "code": "992",
+      "name": "Äänekoski",
+      "population65Plus": 5463,
+      "shareOfCoveredPopulationPercent": 0.694692589309898
+    },
+    {
+      "code": "598",
+      "name": "Pietarsaari",
+      "population65Plus": 5091,
+      "shareOfCoveredPopulationPercent": 0.6473878770230077
+    },
+    {
+      "code": "233",
+      "name": "Kauhava",
+      "population65Plus": 4732,
+      "shareOfCoveredPopulationPercent": 0.601736286402057
     },
     {
       "code": "505",
       "name": "Mäntsälä",
       "population65Plus": 4556,
-      "shareOfCoveredPopulationPercent": 1.2507034520623157
+      "shareOfCoveredPopulationPercent": 0.5793555623093347
     },
     {
       "code": "418",
       "name": "Lempäälä",
       "population65Plus": 4541,
-      "shareOfCoveredPopulationPercent": 1.2465856838926637
+      "shareOfCoveredPopulationPercent": 0.5774481142332504
+    },
+    {
+      "code": "445",
+      "name": "Parainen",
+      "population65Plus": 4481,
+      "shareOfCoveredPopulationPercent": 0.5698183219289132
     },
     {
       "code": "423",
       "name": "Lieto",
       "population65Plus": 4409,
-      "shareOfCoveredPopulationPercent": 1.2103493239997254
+      "shareOfCoveredPopulationPercent": 0.5606625711637087
     },
     {
       "code": "560",
       "name": "Orimattila",
       "population65Plus": 4331,
-      "shareOfCoveredPopulationPercent": 1.1889369295175347
+      "shareOfCoveredPopulationPercent": 0.5507438411680703
     },
     {
       "code": "020",
       "name": "Akaa",
       "population65Plus": 4291,
-      "shareOfCoveredPopulationPercent": 1.1779562143984628
+      "shareOfCoveredPopulationPercent": 0.5456573129651788
+    },
+    {
+      "code": "410",
+      "name": "Laukaa",
+      "population65Plus": 4270,
+      "shareOfCoveredPopulationPercent": 0.5429868856586609
     },
     {
       "code": "232",
       "name": "Kauhajoki",
       "population65Plus": 3900,
-      "shareOfCoveredPopulationPercent": 1.0706197241095328
+      "shareOfCoveredPopulationPercent": 0.4959364997819151
+    },
+    {
+      "code": "408",
+      "name": "Lapua",
+      "population65Plus": 3719,
+      "shareOfCoveredPopulationPercent": 0.4729199596638313
     },
     {
       "code": "977",
       "name": "Ylivieska",
       "population65Plus": 3511,
-      "shareOfCoveredPopulationPercent": 0.9638322695765561
+      "shareOfCoveredPopulationPercent": 0.4464700130087959
     },
     {
       "code": "886",
       "name": "Ulvila",
       "population65Plus": 3475,
-      "shareOfCoveredPopulationPercent": 0.9539496259693911
+      "shareOfCoveredPopulationPercent": 0.44189213762619356
+    },
+    {
+      "code": "249",
+      "name": "Keuruu",
+      "population65Plus": 3403,
+      "shareOfCoveredPopulationPercent": 0.432736386860989
     },
     {
       "code": "050",
       "name": "Eura",
       "population65Plus": 3355,
-      "shareOfCoveredPopulationPercent": 0.9210074806121747
+      "shareOfCoveredPopulationPercent": 0.42663255301751923
+    },
+    {
+      "code": "729",
+      "name": "Saarijärvi",
+      "population65Plus": 3297,
+      "shareOfCoveredPopulationPercent": 0.41925708712332665
+    },
+    {
+      "code": "478",
+      "name": "Maarianhamina - Mariehamn",
+      "population65Plus": 3187,
+      "shareOfCoveredPopulationPercent": 0.4052691345653753
     },
     {
       "code": "420",
       "name": "Leppävirta",
       "population65Plus": 3077,
-      "shareOfCoveredPopulationPercent": 0.8446915105346237
+      "shareOfCoveredPopulationPercent": 0.3912811820074238
+    },
+    {
+      "code": "102",
+      "name": "Huittinen",
+      "population65Plus": 3061,
+      "shareOfCoveredPopulationPercent": 0.38924657072626717
     },
     {
       "code": "426",
       "name": "Liperi",
       "population65Plus": 3048,
-      "shareOfCoveredPopulationPercent": 0.8367304920732963
+      "shareOfCoveredPopulationPercent": 0.3875934490603275
     },
     {
       "code": "016",
       "name": "Asikkala",
       "population65Plus": 2821,
-      "shareOfCoveredPopulationPercent": 0.774414933772562
+      "shareOfCoveredPopulationPercent": 0.35872740150891863
+    },
+    {
+      "code": "078",
+      "name": "Hanko",
+      "population65Plus": 2727,
+      "shareOfCoveredPopulationPercent": 0.3467740602321237
+    },
+    {
+      "code": "615",
+      "name": "Pudasjärvi",
+      "population65Plus": 2685,
+      "shareOfCoveredPopulationPercent": 0.3414332056190877
+    },
+    {
+      "code": "235",
+      "name": "Kauniainen",
+      "population65Plus": 2458,
+      "shareOfCoveredPopulationPercent": 0.31256715806767876
+    },
+    {
+      "code": "936",
+      "name": "Virrat",
+      "population65Plus": 2376,
+      "shareOfCoveredPopulationPercent": 0.30213977525175134
     },
     {
       "code": "139",
       "name": "Ii",
       "population65Plus": 2309,
-      "shareOfCoveredPopulationPercent": 0.6338617802484386
+      "shareOfCoveredPopulationPercent": 0.2936198405119082
     },
     {
       "code": "931",
       "name": "Viitasaari",
       "population65Plus": 2309,
-      "shareOfCoveredPopulationPercent": 0.6338617802484386
+      "shareOfCoveredPopulationPercent": 0.2936198405119082
+    },
+    {
+      "code": "778",
+      "name": "Suonenjoki",
+      "population65Plus": 2293,
+      "shareOfCoveredPopulationPercent": 0.29158522923075164
     },
     {
       "code": "309",
       "name": "Outokumpu",
       "population65Plus": 2273,
-      "shareOfCoveredPopulationPercent": 0.6239791366412738
+      "shareOfCoveredPopulationPercent": 0.2890419651293059
     },
     {
       "code": "500",
       "name": "Muurame",
       "population65Plus": 2234,
-      "shareOfCoveredPopulationPercent": 0.6132729394001785
+      "shareOfCoveredPopulationPercent": 0.28408260013148673
+    },
+    {
+      "code": "599",
+      "name": "Pedersören kunta",
+      "population65Plus": 2215,
+      "shareOfCoveredPopulationPercent": 0.28166649923511333
+    },
+    {
+      "code": "636",
+      "name": "Pöytyä",
+      "population65Plus": 2210,
+      "shareOfCoveredPopulationPercent": 0.2810306832097519
     },
     {
       "code": "503",
       "name": "Mynämäki",
       "population65Plus": 2205,
-      "shareOfCoveredPopulationPercent": 0.6053119209388512
+      "shareOfCoveredPopulationPercent": 0.28039486718439044
     },
     {
       "code": "213",
       "name": "Kangasniemi",
       "population65Plus": 1983,
-      "shareOfCoveredPopulationPercent": 0.5443689520280008
+      "shareOfCoveredPopulationPercent": 0.25216463565834296
+    },
+    {
+      "code": "399",
+      "name": "Laihia",
+      "population65Plus": 1947,
+      "shareOfCoveredPopulationPercent": 0.2475867602757407
+    },
+    {
+      "code": "580",
+      "name": "Parikkala",
+      "population65Plus": 1890,
+      "shareOfCoveredPopulationPercent": 0.2403384575866204
     },
     {
       "code": "989",
       "name": "Ähtäri",
       "population65Plus": 1889,
-      "shareOfCoveredPopulationPercent": 0.5185642714981813
+      "shareOfCoveredPopulationPercent": 0.24021129438154812
     },
     {
       "code": "494",
       "name": "Muhos",
       "population65Plus": 1842,
-      "shareOfCoveredPopulationPercent": 0.5056619312332715
+      "shareOfCoveredPopulationPercent": 0.23423462374315066
     },
     {
       "code": "946",
       "name": "Vöyri",
       "population65Plus": 1786,
-      "shareOfCoveredPopulationPercent": 0.49028893006657054
+      "shareOfCoveredPopulationPercent": 0.22711348425910266
     },
     {
       "code": "172",
       "name": "Joutsa",
       "population65Plus": 1732,
-      "shareOfCoveredPopulationPercent": 0.4754649646558232
+      "shareOfCoveredPopulationPercent": 0.2202466711851992
+    },
+    {
+      "code": "846",
+      "name": "Teuva",
+      "population65Plus": 1676,
+      "shareOfCoveredPopulationPercent": 0.2131255317011512
+    },
+    {
+      "code": "475",
+      "name": "Maalahti",
+      "population65Plus": 1619,
+      "shareOfCoveredPopulationPercent": 0.20587722901203093
+    },
+    {
+      "code": "781",
+      "name": "Sysmä",
+      "population65Plus": 1595,
+      "shareOfCoveredPopulationPercent": 0.20282531209029606
+    },
+    {
+      "code": "887",
+      "name": "Urjala",
+      "population65Plus": 1590,
+      "shareOfCoveredPopulationPercent": 0.20218949606493464
     },
     {
       "code": "261",
       "name": "Kittilä",
       "population65Plus": 1541,
-      "shareOfCoveredPopulationPercent": 0.4230320499622538
+      "shareOfCoveredPopulationPercent": 0.1959584990163926
     },
     {
       "code": "169",
       "name": "Jokioinen",
       "population65Plus": 1484,
-      "shareOfCoveredPopulationPercent": 0.407384530917576
+      "shareOfCoveredPopulationPercent": 0.18871019632727232
     },
     {
       "code": "217",
       "name": "Kannus",
       "population65Plus": 1452,
-      "shareOfCoveredPopulationPercent": 0.39859995882231836
+      "shareOfCoveredPopulationPercent": 0.18464097376495917
     },
     {
       "code": "624",
       "name": "Pyhtää",
       "population65Plus": 1442,
-      "shareOfCoveredPopulationPercent": 0.39585478004255026
+      "shareOfCoveredPopulationPercent": 0.1833693417142363
+    },
+    {
+      "code": "226",
+      "name": "Karstula",
+      "population65Plus": 1394,
+      "shareOfCoveredPopulationPercent": 0.1772655078707666
     },
     {
       "code": "732",
       "name": "Salla",
       "population65Plus": 1394,
-      "shareOfCoveredPopulationPercent": 0.3826779218996637
+      "shareOfCoveredPopulationPercent": 0.1772655078707666
     },
     {
       "code": "152",
       "name": "Isokyrö",
       "population65Plus": 1314,
-      "shareOfCoveredPopulationPercent": 0.3607164916615195
+      "shareOfCoveredPopulationPercent": 0.16709245146498372
     },
     {
       "code": "614",
       "name": "Posio",
       "population65Plus": 1303,
-      "shareOfCoveredPopulationPercent": 0.3576967950037746
+      "shareOfCoveredPopulationPercent": 0.16569365620918855
     },
     {
       "code": "316",
       "name": "Kärkölä",
       "population65Plus": 1244,
-      "shareOfCoveredPopulationPercent": 0.34150024020314323
+      "shareOfCoveredPopulationPercent": 0.1581910271099237
     },
     {
       "code": "681",
       "name": "Rantasalmi",
       "population65Plus": 1242,
-      "shareOfCoveredPopulationPercent": 0.3409512044471896
+      "shareOfCoveredPopulationPercent": 0.1579367006997791
+    },
+    {
+      "code": "683",
+      "name": "Ranua",
+      "population65Plus": 1209,
+      "shareOfCoveredPopulationPercent": 0.15374031493239368
     },
     {
       "code": "576",
       "name": "Padasjoki",
       "population65Plus": 1185,
-      "shareOfCoveredPopulationPercent": 0.3253036854025118
+      "shareOfCoveredPopulationPercent": 0.1506883980106588
     },
     {
       "code": "484",
       "name": "Merikarvia",
       "population65Plus": 1063,
-      "shareOfCoveredPopulationPercent": 0.29181250428934186
+      "shareOfCoveredPopulationPercent": 0.13517448699183995
     },
     {
       "code": "935",
       "name": "Virolahti",
       "population65Plus": 1046,
-      "shareOfCoveredPopulationPercent": 0.28714570036373616
+      "shareOfCoveredPopulationPercent": 0.13301271250561109
     },
     {
       "code": "746",
       "name": "Sievi",
       "population65Plus": 994,
-      "shareOfCoveredPopulationPercent": 0.27287077070894245
+      "shareOfCoveredPopulationPercent": 0.1264002258418522
     },
     {
       "code": "611",
       "name": "Pornainen",
       "population65Plus": 984,
-      "shareOfCoveredPopulationPercent": 0.2701255919291744
+      "shareOfCoveredPopulationPercent": 0.12512859379112937
+    },
+    {
+      "code": "592",
+      "name": "Petäjävesi",
+      "population65Plus": 948,
+      "shareOfCoveredPopulationPercent": 0.12055071840852706
     },
     {
       "code": "922",
       "name": "Vesilahti",
       "population65Plus": 932,
-      "shareOfCoveredPopulationPercent": 0.2558506622743806
+      "shareOfCoveredPopulationPercent": 0.11851610712737047
     },
     {
       "code": "625",
       "name": "Pyhäjoki",
       "population65Plus": 894,
-      "shareOfCoveredPopulationPercent": 0.24541898291126207
+      "shareOfCoveredPopulationPercent": 0.11368390533462362
     },
     {
       "code": "440",
       "name": "Luoto",
       "population65Plus": 856,
-      "shareOfCoveredPopulationPercent": 0.23498730354814357
+      "shareOfCoveredPopulationPercent": 0.10885170354187676
     },
     {
       "code": "239",
       "name": "Keitele",
       "population65Plus": 842,
-      "shareOfCoveredPopulationPercent": 0.23114405325646833
+      "shareOfCoveredPopulationPercent": 0.10707141867086474
     },
     {
       "code": "889",
       "name": "Utajärvi",
       "population65Plus": 841,
-      "shareOfCoveredPopulationPercent": 0.23086953537849153
+      "shareOfCoveredPopulationPercent": 0.10694425546579248
+    },
+    {
+      "code": "416",
+      "name": "Lemi",
+      "population65Plus": 790,
+      "shareOfCoveredPopulationPercent": 0.10045893200710589
+    },
+    {
+      "code": "892",
+      "name": "Uurainen",
+      "population65Plus": 782,
+      "shareOfCoveredPopulationPercent": 0.09944162636652759
+    },
+    {
+      "code": "103",
+      "name": "Humppila",
+      "population65Plus": 697,
+      "shareOfCoveredPopulationPercent": 0.0886327539353833
     },
     {
       "code": "850",
       "name": "Toivakka",
       "population65Plus": 690,
-      "shareOfCoveredPopulationPercent": 0.18941733580399425
+      "shareOfCoveredPopulationPercent": 0.08774261149987729
+    },
+    {
+      "code": "833",
+      "name": "Taivassalo",
+      "population65Plus": 636,
+      "shareOfCoveredPopulationPercent": 0.08087579842597385
+    },
+    {
+      "code": "060",
+      "name": "Finström",
+      "population65Plus": 611,
+      "shareOfCoveredPopulationPercent": 0.0776967182991667
     },
     {
       "code": "631",
       "name": "Pyhäranta",
       "population65Plus": 595,
-      "shareOfCoveredPopulationPercent": 0.16333813739619793
+      "shareOfCoveredPopulationPercent": 0.07566210701801013
     },
     {
       "code": "504",
       "name": "Myrskylä",
       "population65Plus": 544,
-      "shareOfCoveredPopulationPercent": 0.14933772561938097
+      "shareOfCoveredPopulationPercent": 0.06917678355932355
     },
     {
       "code": "697",
       "name": "Ristijärvi",
       "population65Plus": 509,
-      "shareOfCoveredPopulationPercent": 0.13972959989019285
+      "shareOfCoveredPopulationPercent": 0.06472607138179354
+    },
+    {
+      "code": "231",
+      "name": "Kaskinen",
+      "population65Plus": 500,
+      "shareOfCoveredPopulationPercent": 0.06358160253614296
     },
     {
       "code": "736",
       "name": "Saltvik",
       "population65Plus": 494,
-      "shareOfCoveredPopulationPercent": 0.13561183172054078
+      "shareOfCoveredPopulationPercent": 0.06281862330570925
     },
     {
       "code": "312",
       "name": "Kyyjärvi",
       "population65Plus": 466,
-      "shareOfCoveredPopulationPercent": 0.1279253311371903
+      "shareOfCoveredPopulationPercent": 0.059258053563685235
+    },
+    {
+      "code": "216",
+      "name": "Kannonkoski",
+      "population65Plus": 459,
+      "shareOfCoveredPopulationPercent": 0.05836791112817924
     },
     {
       "code": "616",
       "name": "Pukkila",
       "population65Plus": 451,
-      "shareOfCoveredPopulationPercent": 0.12380756296753825
+      "shareOfCoveredPopulationPercent": 0.05735060548760095
     },
     {
       "code": "417",
       "name": "Lemland",
       "population65Plus": 434,
-      "shareOfCoveredPopulationPercent": 0.11914075904193261
+      "shareOfCoveredPopulationPercent": 0.05518883100137209
     },
     {
       "code": "076",
       "name": "Hammarland",
       "population65Plus": 398,
-      "shareOfCoveredPopulationPercent": 0.10925811543476768
+      "shareOfCoveredPopulationPercent": 0.05061095561876979
+    },
+    {
+      "code": "561",
+      "name": "Oripää",
+      "population65Plus": 358,
+      "shareOfCoveredPopulationPercent": 0.04552442741587836
     },
     {
       "code": "435",
       "name": "Luhanka",
       "population65Plus": 304,
-      "shareOfCoveredPopulationPercent": 0.08345343490494819
+      "shareOfCoveredPopulationPercent": 0.03865761434197492
     },
     {
       "code": "043",
       "name": "Eckerö",
       "population65Plus": 289,
-      "shareOfCoveredPopulationPercent": 0.07933566673529613
+      "shareOfCoveredPopulationPercent": 0.03675016626589063
     },
     {
       "code": "771",
       "name": "Sund",
       "population65Plus": 284,
-      "shareOfCoveredPopulationPercent": 0.07796307734541212
+      "shareOfCoveredPopulationPercent": 0.036114350240529204
     },
     {
       "code": "062",
       "name": "Föglö",
       "population65Plus": 165,
-      "shareOfCoveredPopulationPercent": 0.04529544986617253
+      "shareOfCoveredPopulationPercent": 0.020981928836927177
     },
     {
       "code": "035",
       "name": "Brändö",
       "population65Plus": 161,
-      "shareOfCoveredPopulationPercent": 0.04419737835426532
+      "shareOfCoveredPopulationPercent": 0.020473276016638033
     },
     {
       "code": "065",
       "name": "Geta",
       "population65Plus": 143,
-      "shareOfCoveredPopulationPercent": 0.039256056550682865
+      "shareOfCoveredPopulationPercent": 0.018184338325336887
     },
     {
       "code": "941",
       "name": "Vårdö",
       "population65Plus": 134,
-      "shareOfCoveredPopulationPercent": 0.03678539564889163
+      "shareOfCoveredPopulationPercent": 0.017039869479686314
+    },
+    {
+      "code": "295",
+      "name": "Kumlinge",
+      "population65Plus": 119,
+      "shareOfCoveredPopulationPercent": 0.015132421403602027
     },
     {
       "code": "438",
       "name": "Lumparland",
       "population65Plus": 110,
-      "shareOfCoveredPopulationPercent": 0.03019696657744836
+      "shareOfCoveredPopulationPercent": 0.013987952557951452
     }
   ]
 }
