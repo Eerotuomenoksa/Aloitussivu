@@ -80,11 +80,11 @@ const writeLocalPreference = (key: string, value: string) => {
 type ColorTheme = 'vihrea' | 'violetti' | 'sininen' | 'oranssi';
 type ClockMode = 'digital' | 'analog';
 
-const THEMES: { id: ColorTheme; labelKey: 'themeGreen' | 'themeViolet' | 'themeBlue' | 'themeOrange'; shortLabel: string; swatch: string; accent: string }[] = [
-  { id: 'vihrea', labelKey: 'themeGreen', shortLabel: 'Metsä', swatch: '#0f2318', accent: '#d4940a' },
-  { id: 'violetti', labelKey: 'themeViolet', shortLabel: 'VTKL', swatch: '#2a0a52', accent: '#f49638' },
-  { id: 'sininen', labelKey: 'themeBlue', shortLabel: 'Talvi', swatch: '#0e1f3b', accent: '#c8922a' },
-  { id: 'oranssi', labelKey: 'themeOrange', shortLabel: 'Aurinko', swatch: '#4a1808', accent: '#28aa58' },
+const THEMES: { id: ColorTheme; labelKey: 'themeGreen' | 'themeViolet' | 'themeBlue' | 'themeBrown'; primaryColor: string }[] = [
+  { id: 'vihrea', labelKey: 'themeGreen', primaryColor: '#1c5235' },
+  { id: 'violetti', labelKey: 'themeViolet', primaryColor: '#5c1a9e' },
+  { id: 'sininen', labelKey: 'themeBlue', primaryColor: '#1a3a6a' },
+  { id: 'oranssi', labelKey: 'themeBrown', primaryColor: '#8a3010' },
 ];
 
 const SECONDARY_TIME_ZONE_OPTIONS = [
@@ -662,9 +662,9 @@ const AppContent: React.FC = () => {
                     <span
                       className="relative block h-10 w-10 overflow-hidden rounded-[12px]"
                       style={{
-                        background: `linear-gradient(135deg, ${theme.swatch} 0%, ${theme.accent} 100%)`,
+                        backgroundColor: theme.primaryColor,
                         boxShadow: colorTheme === theme.id
-                          ? `0 0 0 3px var(--theme-bg), 0 0 0 5px ${theme.swatch}`
+                          ? `0 0 0 3px var(--theme-bg), 0 0 0 5px ${theme.primaryColor}`
                           : '0 2px 8px rgba(0,0,0,.2)',
                       }}
                       aria-hidden="true"
@@ -676,7 +676,7 @@ const AppContent: React.FC = () => {
                       )}
                     </span>
                     <span className="max-w-[3.6rem] text-[.65rem] font-bold leading-none text-[var(--theme-text-3)]">
-                      {theme.shortLabel}
+                      {t(theme.labelKey)}
                     </span>
                   </button>
                 ))}
