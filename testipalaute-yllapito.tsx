@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import type { User } from 'firebase/auth';
 import './index.css';
 import {
+  TEST_FEEDBACK_FORM_VERSION,
   subscribeTestFeedbackResponses,
   type TestFeatureKey,
   type TestFeedbackResponse,
@@ -67,10 +68,17 @@ const localUsefulnessLabels: LabelMap = {
 };
 
 const localNewsLabels: LabelMap = {
-  yes: 'Kyllä',
-  partly: 'Osittain',
-  no: 'Ei',
-  notSeen: 'Ei huomannut',
+  yes: 'Mukaan julkaisuun',
+  partly: 'Vain asetuksista valittavana',
+  no: 'Pois julkaisusta',
+  notSeen: 'Ei testannut',
+};
+
+const seniorPageLabels: LabelMap = {
+  opened: 'Linkki löytyi ja avautui',
+  broken: 'Linkki ei avautunut oikein',
+  notFound: 'Seniorilinkkiä ei löytynyt',
+  notTested: 'Ei testannut',
 };
 
 const textSizeLabels: LabelMap = {
@@ -109,11 +117,11 @@ const recommendLabels: LabelMap = {
 const featureLabels: Record<TestFeatureKey, string> = {
   weather: 'Sää',
   assistant: 'Tekoäly',
-  internetSearch: 'Internet-haku',
+  internetSearch: 'Google-haku',
   scamAlerts: 'Huijausvaroitukset',
-  nearby: 'Lähelläsi',
+  nearby: 'Lähelläsi ja kuntien senioripalvelut',
   favorites: 'Suosikit',
-  categorySearch: 'Kategoriahaku',
+  categorySearch: 'Linkkihaku',
   namedays: 'Nimipäivät',
   localNews: 'Paikalliset uutiset',
 };
@@ -427,6 +435,10 @@ function TestFeedbackAdminPage() {
     };
   }, [responses]);
 
+  const releaseCandidateResponses = useMemo(() => (
+    responses.filter((response) => response.formVersion === TEST_FEEDBACK_FORM_VERSION)
+  ), [responses]);
+
   const signIn = async () => {
     setAuthError('');
     setIsSigningIn(true);
@@ -506,8 +518,9 @@ function TestFeedbackAdminPage() {
 
         {canView ? (
           <>
-            <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4" aria-label="Yhteenveto">
+            <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5" aria-label="Yhteenveto">
               <SummaryCard label="Vastauksia" value={summary.total} />
+              <SummaryCard label="Uusi julkaisulomake" value={releaseCandidateResponses.length} />
               <SummaryCard label="Hyödyllisyys" value={formatAverage(summary.usefulnessAverage)} hint="asteikko 1-5" />
               <SummaryCard label="Helppokäyttöisyys" value={formatAverage(summary.easeAverage)} hint="asteikko 1-5" />
               <SummaryCard label="Uusin vastaus" value={summary.latest ? formatDateTime(summary.latest) : '-'} />
@@ -544,6 +557,11 @@ function TestFeedbackAdminPage() {
                 total={responses.length}
               />
               <Distribution
+                title="Yläosan kello, sää ja Google-haku löytyivät"
+                items={countSingle(releaseCandidateResponses, (response) => response.headerClarity, yesPartlyNoLabels)}
+                total={releaseCandidateResponses.length}
+              />
+              <Distribution
                 title="Löysikö etsimänsä palvelut?"
                 items={countSingle(responses, (response) => response.foundServices, yesPartlyNoLabels)}
                 total={responses.length}
@@ -564,14 +582,19 @@ function TestFeedbackAdminPage() {
                 total={responses.length}
               />
               <Distribution
-                title="Paikalliset palvelut hyödyllisiä"
+                title="Lähelläsi-osion palvelut hyödyllisiä"
                 items={countSingle(responses, (response) => response.localServicesUseful, localUsefulnessLabels)}
                 total={responses.length}
               />
               <Distribution
-                title="Paikallisuutisista hyötyä"
-                items={countSingle(responses, (response) => response.localNewsUseful, localNewsLabels)}
-                total={responses.length}
+                title="Kunnan senioripalvelusivu"
+                items={countSingle(releaseCandidateResponses, (response) => response.seniorPageStatus, seniorPageLabels)}
+                total={releaseCandidateResponses.length}
+              />
+              <Distribution
+                title="Paikallisuutiset ensimmäisessä julkaisussa"
+                items={countSingle(releaseCandidateResponses, (response) => response.localNewsUseful, localNewsLabels)}
+                total={releaseCandidateResponses.length}
               />
               <Distribution
                 title="Tekstin koko"
@@ -607,7 +630,7 @@ function TestFeedbackAdminPage() {
               <TextResponses title="Mikä sivulla oli erityisen hyvää" responses={responses} getter={(response) => response.bestThing} />
               <TextResponses title="Mitä yritettiin löytää" responses={responses} getter={(response) => response.searchedFor} />
               <TextResponses title="Mikä jäi löytymättä" responses={responses} getter={(response) => response.missingService} />
-              <TextResponses title="Puuttuvat paikalliset linkit" responses={responses} getter={(response) => response.missingLocalLink} />
+              <TextResponses title="Testattu kunta ja paikallisten linkkien puutteet" responses={responses} getter={(response) => response.missingLocalLink} />
               <TextResponses title="Puuttuvat toiminnot" responses={responses} getter={(response) => response.missingFeature} />
               <TextResponses title="Vaikeat kohdat" responses={responses} getter={(response) => response.difficultPart} />
               <TextResponses title="Esittelykierroksen palaute" responses={responses} getter={(response) => response.tourFeedback} />

@@ -52,12 +52,6 @@ function App() {
             <a href="./tietosuoja.html" className={pageNavLinkClass}>
               Tietosuoja
             </a>
-            <a href="./sivua-tukemassa.html" className={pageNavLinkClass}>
-              Sivua tukemassa
-            </a>
-            <a href="./muutosloki.html" className={pageNavLinkClass}>
-              Muutosloki
-            </a>
           </nav>
 
           <div className="space-y-4">
@@ -120,7 +114,7 @@ function App() {
               <li>rauhallista visuaalista rakennetta</li>
               <li>näppäimistökäyttöä</li>
               <li>ruudunlukijan ymmärrettävää rakennetta</li>
-              <li>mahdollisuutta käyttää hakua ja avustajaa myös puheella, jos selain tukee sitä</li>
+              <li>mahdollisuutta käyttää hakuja myös puheella, jos selain tukee sitä</li>
             </ul>
           </AccessibilitySection>
 
@@ -130,7 +124,7 @@ function App() {
               <li>suurentaa tai pienentää tekstin kokoa</li>
               <li>vaihtaa tumman ja vaalean tilan välillä</li>
               <li>piilottaa osioita, joita ei tarvitse</li>
-              <li>näyttää tai piilottaa sääkortin, kellon, uutiset, huijausvaroitukset ja tekoälyavustajan</li>
+              <li>näyttää tai piilottaa sääkortin, kellon, paikallisuutiset ja huijausvaroitukset</li>
               <li>valita toisen kellon aikavyöhykkeen</li>
             </ul>
             <p className={paragraphClass}>Nämä asetukset tallennetaan käyttäjän omaan selaimeen.</p>
@@ -158,7 +152,7 @@ function App() {
               <li>linkkiluettelosivu sisältää suuren määrän linkkejä, vaikka sivulle on lisätty haku, välilehdet ja ohituslinkki</li>
               <li>kaikkien kieliversioiden tekstit eivät ole yhtä viimeisteltyjä kuin suomi</li>
               <li>osa ulkopuolisista palveluista ei ole sivuston hallinnassa</li>
-              <li>kartta-, sää-, tekoäly- ja puhetoiminnot voivat toimia eri tavoin eri selaimissa</li>
+              <li>kartta-, sää- ja puhetoiminnot voivat toimia eri tavoin eri selaimissa</li>
               <li>automaattista saavutettavuusauditointia ja käsin tehtyä ruudunlukijatestausta pitää vielä täydentää ennen laajaa julkaisua</li>
             </ul>
           </AccessibilitySection>
@@ -171,7 +165,6 @@ function App() {
             <ul className={listClass}>
               <li>Aloitussivu</li>
               <li>linkkiluettelo</li>
-              <li>sivun tukijat</li>
               <li>linkkiehdotusten ylläpitosivu</li>
               <li>muutosloki</li>
             </ul>

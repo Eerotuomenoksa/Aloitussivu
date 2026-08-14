@@ -1,8 +1,10 @@
 # Julkaisun päätöslista 8.7.2026
 
+> Päivitetty 13.8.2026: julkaisun tavoite on 3.9.2026. Julkaisu tehdään Cloudcityn webhotellissa osoitteeseen `https://seniorsurf.fi/aloitussivu/` ilman erillistä domainia. Nimipäivät ja tekoälyavustaja jätetään ensimmäisestä julkaisusta pois, paikallisuutiset ovat oletuksena piilossa, Sivua tukemassa -sivu poistetaan ja sisäiset beta-, testaus-, ylläpito- sekä muutoslokilinkit piilotetaan julkisesta navigaatiosta. Ajantasainen avoin lista on tiedostossa `TODO_HUMAN.md`.
+
 Tämä lista kokoaa päätökset, jotka kannattaa lukita ennen elokuun varsinaista viimeistelyä ja ennen syyskuun palvelin- tai staging-työtä.
 
-## Päätettävät asiat
+## Alkuperäinen päätöslista
 
 | Päätös | Miksi tarvitaan | Suositeltu linja | Viimeistään |
 | --- | --- | --- | --- |

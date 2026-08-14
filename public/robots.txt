@@ -1,8 +1,11 @@
 User-agent: *
 Allow: /
-Disallow: /yllapito.html
-Disallow: /ehdotukset.html
-Disallow: /linkit.html
-Disallow: /muutosloki.html
+Disallow: /aloitussivu/yllapito.html
+Disallow: /aloitussivu/ehdotukset.html
+Disallow: /aloitussivu/linkit.html
+Disallow: /aloitussivu/muutosloki.html
+Disallow: /aloitussivu/kehitysjono.html
+Disallow: /aloitussivu/testipalaute.html
+Disallow: /aloitussivu/testipalaute-yllapito.html
 
-Sitemap: https://eerotuomenoksa.github.io/Aloitussivu/sitemap.xml
+Sitemap: https://seniorsurf.fi/aloitussivu/sitemap.xml

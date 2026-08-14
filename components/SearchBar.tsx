@@ -52,6 +52,13 @@ const SearchBar: React.FC<SearchBarProps> = ({ fontSizeStep = 0, variant = 'defa
             <SearchIcon className="h-5 w-5" />
           </span>
           <div className="absolute right-[.45rem] top-1/2 flex -translate-y-1/2 items-center gap-2">
+            <button
+              type="submit"
+              title="Avaa hakutulos Googlessa"
+              className="rounded-[24px] bg-[var(--theme-primary)] px-[1.1rem] py-[.55rem] text-sm font-bold text-[var(--theme-primary-label)] shadow-[0_2px_12px_rgba(0,0,0,.28)] transition-all hover:bg-[var(--theme-primary-mid)] hover:shadow-[0_4px_20px_rgba(0,0,0,.32)] active:scale-95"
+            >
+              {t('searchButton')}
+            </button>
             {canListen && (
               <button
                 type="button"
@@ -63,13 +70,6 @@ const SearchBar: React.FC<SearchBarProps> = ({ fontSizeStep = 0, variant = 'defa
                 <MicrophoneIcon className="h-5 w-5" />
               </button>
             )}
-            <button
-              type="submit"
-              title="Avaa hakutulos Googlessa"
-              className="rounded-[24px] bg-[var(--theme-primary)] px-[1.1rem] py-[.55rem] text-sm font-bold text-[var(--theme-primary-label)] shadow-[0_2px_12px_rgba(0,0,0,.28)] transition-all hover:bg-[var(--theme-primary-mid)] hover:shadow-[0_4px_20px_rgba(0,0,0,.32)] active:scale-95"
-            >
-              {t('searchButton')}
-            </button>
           </div>
         </div>
         {speechState === 'listening' && (
@@ -103,6 +103,13 @@ const SearchBar: React.FC<SearchBarProps> = ({ fontSizeStep = 0, variant = 'defa
           <SearchIcon className={isHeader ? 'h-6 w-6 sm:h-8 sm:w-8' : 'h-8 w-8'} />
         </div>
         <div className={`absolute ${isHeader ? 'right-3 sm:right-4' : 'right-4'} top-1/2 -translate-y-1/2 flex items-center gap-2`}>
+          <button
+            type="submit"
+            title="Avaa hakutulos Googlessa"
+            className={`${isHeader ? 'px-4 py-2 text-base sm:px-7 sm:py-3 sm:text-xl' : 'px-8 py-3 text-xl'} rounded-full bg-[var(--theme-primary)] font-black text-[var(--theme-primary-label)] shadow-lg transition-all hover:bg-[var(--theme-primary-mid)] active:scale-95 focus:outline-none focus:ring-4 focus:ring-[var(--theme-focus)]/40`}
+          >
+            {t('searchButton')}
+          </button>
           {canListen && (
             <button
               type="button"
@@ -114,13 +121,6 @@ const SearchBar: React.FC<SearchBarProps> = ({ fontSizeStep = 0, variant = 'defa
               <MicrophoneIcon className="h-6 w-6" />
             </button>
           )}
-          <button
-            type="submit"
-            title="Avaa hakutulos Googlessa"
-            className={`${isHeader ? 'px-4 py-2 text-base sm:px-7 sm:py-3 sm:text-xl' : 'px-8 py-3 text-xl'} rounded-full bg-[var(--theme-primary)] font-black text-[var(--theme-primary-label)] shadow-lg transition-all hover:bg-[var(--theme-primary-mid)] active:scale-95 focus:outline-none focus:ring-4 focus:ring-[var(--theme-focus)]/40`}
-          >
-            {t('searchButton')}
-          </button>
         </div>
       </div>
       {speechState === 'listening' && (

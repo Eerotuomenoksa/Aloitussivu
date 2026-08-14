@@ -16,7 +16,6 @@ export default defineConfig({
         testFeedbackAdmin: 'testipalaute-yllapito.html',
         links: 'linkit.html',
         admin: 'yllapito.html',
-        supporters: 'sivua-tukemassa.html',
         privacy: 'tietosuoja.html',
         accessibility: 'saavutettavuus.html',
       },

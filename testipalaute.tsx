@@ -70,11 +70,18 @@ const localUsefulnessOptions: ChoiceOption[] = [
   { value: 'notUsed', label: 'En käyttänyt niitä' },
 ];
 
+const seniorPageOptions: ChoiceOption[] = [
+  { value: 'opened', label: 'Kyllä, linkki löytyi ja avautui' },
+  { value: 'broken', label: 'Linkki näkyi, mutta ei avautunut oikein' },
+  { value: 'notFound', label: 'Kuntani seniorilinkkiä ei löytynyt' },
+  { value: 'notTested', label: 'En testannut tätä' },
+];
+
 const localNewsOptions: ChoiceOption[] = [
-  { value: 'yes', label: 'Kyllä' },
-  { value: 'partly', label: 'Osittain' },
-  { value: 'no', label: 'Ei' },
-  { value: 'notSeen', label: 'En huomannut niitä' },
+  { value: 'yes', label: 'Pidä mukana ensimmäisessä julkaisussa' },
+  { value: 'partly', label: 'Pidä mukana vain asetuksista valittavana' },
+  { value: 'no', label: 'Jätä pois ensimmäisestä julkaisusta' },
+  { value: 'notSeen', label: 'En testannut paikallisuutisia' },
 ];
 
 const textSizeOptions: ChoiceOption[] = [
@@ -112,14 +119,12 @@ const recommendOptions: ChoiceOption[] = [
 
 const featureOptions: { key: TestFeatureKey; label: string }[] = [
   { key: 'weather', label: 'Sää' },
-  { key: 'assistant', label: 'Tekoäly' },
-  { key: 'internetSearch', label: 'Internet-haku' },
+  { key: 'internetSearch', label: 'Google-haku' },
   { key: 'scamAlerts', label: 'Huijausvaroitukset' },
-  { key: 'nearby', label: 'Lähelläsi' },
+  { key: 'nearby', label: 'Lähelläsi ja kuntasi senioripalvelut' },
   { key: 'favorites', label: 'Suosikit' },
-  { key: 'categorySearch', label: 'Kategoriahaku' },
-  { key: 'namedays', label: 'Nimipäivät (ei näy heinäkuussa)' },
-  { key: 'localNews', label: 'Paikalliset uutiset' },
+  { key: 'categorySearch', label: 'Linkkihaku' },
+  { key: 'localNews', label: 'Paikalliset uutiset (asetuksista)' },
 ];
 
 const initialDraft: TestFeedbackDraft = {
@@ -127,6 +132,7 @@ const initialDraft: TestFeedbackDraft = {
   useMode: '',
   webExperience: '',
   purposeClear: '',
+  headerClarity: '',
   firstImpression: '',
   pageFeelings: [],
   foundServices: '',
@@ -136,6 +142,7 @@ const initialDraft: TestFeedbackDraft = {
   unclearCategory: '',
   municipalityCorrect: '',
   localServicesUseful: '',
+  seniorPageStatus: '',
   missingLocalLink: '',
   localNewsUseful: '',
   featureRatings: {},
@@ -517,8 +524,8 @@ function TestFeedbackPage() {
       const result = await submitTestFeedback(draft);
       setSubmitted(true);
       setNotice(result.storage === 'cloud'
-        ? 'Kiitos. Vastaus tallennettiin anonyymisti.'
-        : 'Kiitos. Vastaus tallennettiin tähän selaimeen. Yritämme siirtää selaimeen jääneet vastaukset tietokantaan, kun yhteys toimii.');
+        ? 'Kiitos. Vastaus tallennettiin anonyymisti ja huomioidaan julkaisun viimeistelyssä.'
+        : 'Kiitos. Vastaus tallennettiin tähän selaimeen ja huomioidaan julkaisun viimeistelyssä. Yritämme siirtää selaimeen jääneet vastaukset tietokantaan, kun yhteys toimii.');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch {
       setError('Vastauksen tallennus ei onnistunut. Yritä hetken päästä uudelleen.');
@@ -541,16 +548,26 @@ function TestFeedbackPage() {
       <div className="aurora-shell max-w-5xl space-y-8">
         <header className="aurora-subpage-hero space-y-4">
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <span className="aurora-kicker">Testaus</span>
+            <span className="aurora-kicker">Julkaisua edeltävä testaus</span>
             <HomeLink />
           </div>
           <h1 className="font-display text-4xl font-bold tracking-tight md:text-6xl">
-            Testipalautelomake
+            Testaa uusi julkaisuversio
           </h1>
           <p className="max-w-3xl text-base font-semibold text-white/80 md:text-lg">
-            Kiitos, että testaat aloitussivua. Vastaaminen vie noin 5-10 minuuttia. Vastaukset tallennetaan anonyymisti ja niitä käytetään sivun viimeistelyyn.
+            Kiitos, että testaat aloitussivun 3.9.2026 tavoitejulkaisua. Tekoälyavustaja ja nimipäivät eivät kuulu tähän versioon. Vastaaminen vie noin 5-10 minuuttia, ja vastaukset tallennetaan anonyymisti sivun viimeistelyä varten.
           </p>
         </header>
+
+        <section className="aurora-panel space-y-4" aria-labelledby="testaa-ensin">
+          <h2 id="testaa-ensin" className="aurora-section-title text-2xl">Testaa ainakin nämä ennen vastaamista</h2>
+          <ol className="list-decimal space-y-2 pl-6 font-semibold text-[var(--theme-text-2)] marker:font-black marker:text-[var(--theme-primary)]">
+            <li>Katso, löydätkö yläosasta helposti kellon, sään ja Google-haun.</li>
+            <li>Etsi yksi tarvitsemasi palvelu kategorioista tai linkkihaulla.</li>
+            <li>Valitse Lähelläsi-osiossa oma kuntasi ja avaa kunnan senioripalvelulinkki, jos sellainen näkyy.</li>
+            <li>Avaa Asetukset ja ota paikallisuutiset käyttöön. Vastausten perusteella päätetään, jäävätkö ne ensimmäiseen julkaisuun.</li>
+          </ol>
+        </section>
 
         <section className="aurora-soft-panel space-y-3" aria-label="Tärkeää ennen vastaamista">
           <p className="font-black text-[var(--theme-text)]">
@@ -621,6 +638,13 @@ function TestFeedbackPage() {
               options={yesPartlyNoOptions}
               onChange={(value) => updateDraft('purposeClear', value)}
             />
+            <ChoiceGroup
+              label="Löysitkö yläosasta helposti kellon, sään ja Google-haun?"
+              name="headerClarity"
+              value={draft.headerClarity}
+              options={yesPartlyNoOptions}
+              onChange={(value) => updateDraft('headerClarity', value)}
+            />
             <TextQuestion
               label="Mikä oli ensivaikutelmasi sivusta?"
               value={draft.firstImpression}
@@ -648,7 +672,7 @@ function TestFeedbackPage() {
               label="Mitä yritit löytää?"
               value={draft.searchedFor}
               onChange={(value) => updateDraft('searchedFor', value)}
-              placeholder="Esimerkiksi Kela, Omakanta, kirjasto, paikallisuutiset tai huijausvaroitukset."
+              placeholder="Esimerkiksi Kela, Omakanta, kirjasto, oman kunnan senioripalvelut tai huijausvaroitukset."
             />
             <TextQuestion
               label="Mikä jäi löytymättä?"
@@ -678,19 +702,27 @@ function TestFeedbackPage() {
               onChange={(value) => updateDraft('municipalityCorrect', value)}
             />
             <ChoiceGroup
-              label="Oliko paikallisista palveluista hyötyä?"
+              label="Oliko Lähelläsi-osion paikallisista palveluista hyötyä?"
               name="localServicesUseful"
               value={draft.localServicesUseful}
               options={localUsefulnessOptions}
               onChange={(value) => updateDraft('localServicesUseful', value)}
             />
+            <ChoiceGroup
+              label="Löytyikö Lähelläsi-osiosta kuntasi senioripalvelusivu?"
+              name="seniorPageStatus"
+              value={draft.seniorPageStatus}
+              options={seniorPageOptions}
+              onChange={(value) => updateDraft('seniorPageStatus', value)}
+            />
             <TextQuestion
-              label="Puuttuiko paikkakunnaltasi jokin tärkeä linkki?"
+              label="Minkä kunnan valitsit, ja puuttuiko tai toimiko jokin paikallinen linkki väärin?"
               value={draft.missingLocalLink}
               onChange={(value) => updateDraft('missingLocalLink', value)}
+              placeholder="Esimerkiksi Mäntsälä – senioripalvelujen linkki avautui väärälle sivulle."
             />
             <ChoiceGroup
-              label="Oliko paikallisuutisista hyötyä?"
+              label="Pitäisikö paikallisuutisten olla mukana ensimmäisessä julkaisussa?"
               name="localNewsUseful"
               value={draft.localNewsUseful}
               options={localNewsOptions}

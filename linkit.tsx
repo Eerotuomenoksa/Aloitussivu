@@ -318,12 +318,6 @@ function App() {
             <a href="./index.html" className={pageNavLinkClass}>
               Takaisin aloitussivulle
             </a>
-            <a href="./muutosloki.html" className={pageNavLinkClass}>
-              Muutosloki
-            </a>
-            <a href="./sivua-tukemassa.html" className={pageNavLinkClass}>
-              Sivua tukemassa
-            </a>
           </div>
           <div className="space-y-3">
             <span className="aurora-kicker">

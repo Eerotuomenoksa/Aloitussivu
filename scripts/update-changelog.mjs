@@ -286,10 +286,6 @@ function summarizeWorktree(changes) {
     notes.push('Linkkiluettelon taulukot ja apupalkit päivitettiin käyttämään Aurora-teeman pintoja ja värejä.');
   }
 
-  if (paths.some((pathName) => ['sivua-tukemassa.html', 'sivuaTukemassa.tsx', 'App.tsx', 'vite.config.ts'].includes(pathName) || pathName.startsWith('assets/'))) {
-    notes.push('Sivustolle lisättiin kokeiluna Sivua tukemassa -sivu, jossa kerrotaan tukijaperiaatteet ja näytetään ensimmäisenä tukijana Vanhustyön keskusliitto ry.');
-  }
-
   if (notes.length === 0) {
     notes.push('Työpuussa on paikallisia muutoksia, mutta niistä ei löytynyt vielä valmista yhteenvetokategoriaa.');
   }

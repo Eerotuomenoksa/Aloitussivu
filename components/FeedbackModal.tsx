@@ -282,7 +282,7 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose }) => {
                   value={title}
                   onChange={(event) => setTitle(event.target.value)}
                   className="aurora-input w-full rounded-2xl px-4 py-3 font-bold"
-                  placeholder="Esim. Nimipäivä ei näy kellon alla"
+                  placeholder="Esim. Hakupainike jää puhelimella piiloon"
                   minLength={3}
                   maxLength={140}
                   required
@@ -365,15 +365,7 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose }) => {
             ) : null}
           </div>
 
-          <div className="flex shrink-0 flex-wrap items-center justify-between gap-3 border-t-2 border-[var(--theme-border)] bg-[var(--theme-surface)] p-4 sm:p-5">
-            <a
-              href="./kehitysjono.html"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-black text-[var(--theme-primary)] no-underline hover:underline"
-            >
-              Katso kehitysjono
-            </a>
+          <div className="flex shrink-0 flex-wrap items-center justify-end gap-3 border-t-2 border-[var(--theme-border)] bg-[var(--theme-surface)] p-4 sm:p-5">
             <div className="flex flex-wrap items-center justify-end gap-3">
               <button type="button" onClick={onClose} className="aurora-secondary-button px-6 py-3">
                 Peruuta

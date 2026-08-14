@@ -8,14 +8,27 @@ export type ChangelogHighlight = {
 
 export const AUGUST_2026_HIGHLIGHTS: ChangelogHighlight[] = [
   {
+    date: '14.8.2026',
+    title: 'Julkaisunäkymän viimeistely',
+    summary:
+      'Ensimmäisen julkaisun sisältö rajattiin, yläosa viimeisteltiin ja testausaineistot päivitettiin vastaamaan julkaisutilannetta.',
+    changes: [
+      'Julkaisun rajaus lukittiin 3.9.2026 tavoitetta varten: julkaisu tehdään Cloudcityn webhotellissa osoitteeseen seniorsurf.fi/aloitussivu ilman erillistä domainia.',
+      'Nimipäivät ja AI-avustaja poistettiin ensimmäisen julkaisun käyttöliittymästä. Paikallisuutiset jätettiin oletuksena piiloon ja niiden lopullinen mukanaolo päätetään lisätestauksen perusteella.',
+      'Yläosa suunniteltiin uudelleen: kello ja sää ovat rinnakkain vasemmalla ja Google-haku oikealla. Toinen kello sijoitettiin työpöytänäkymässä pääkellon viereen, ja sääkorttiin lisättiin nykyisen sään rinnalle huomisen säätila sekä alin ja ylin lämpötila. Google-haun painike on nimeltään Hae, palveluhaun painike Linkkihaku, ja molemmissa hakupainike on ennen mikrofonia. Työpöytänäkymän tyhjää pystysuuntaista tilaa tiivistettiin vaakaviivan, sisältörivin ja Mitä etsit tänään? -osion väliltä.',
+      'Julkaisua edeltävä testipalautelomake päivitettiin uuteen rajaukseen: arvioitavana ovat nyt uusi yläosa, Lähelläsi-osion kuntakohtaiset senioripalvelulinkit sekä paikallisuutisten mukanaolo ensimmäisessä julkaisussa. AI- ja nimipäiväkysymykset poistettiin.',
+      'Sivua tukemassa -kokeilusivu poistettiin. Beta-, testaus-, ylläpito-, kehitysjono-, linkkiluettelo- ja muutoslokilinkit poistettiin julkisesta navigaatiosta. Canonical-osoitteet, jakometatiedot, sitemap ja robots päivitettiin seniorsurf.fi/aloitussivu-polulle.',
+    ],
+    tags: ['Julkaisu', 'Yläosa', 'Testauspalaute', 'Saavutettavuus'],
+  },
+  {
     date: '13.8.2026',
     title: 'Testauspalautteen korjaukset ja kuntien senioripalvelut',
     summary:
       'Avoimen testauksen havainnot vietiin käyttöliittymään, aluepalveluihin ja ylläpidon aineistoihin.',
     changes: [
-      'AI-avustaja avautuu nyt muun sisällön yläpuolelle. Tekstikoon A+ ja A− -säätimet piilotetaan avustajan käytön ajaksi, joten ne eivät peitä keskustelua.',
       'Palveluikkunoiden avaaminen ei enää piilota sivua tai siirrä lukukohtaa. Kohdistus, taustasivun lukitus ja vierityksen palautus toimivat hallitusti myös näppäimistöllä.',
-      'Etusivun oletusnäkymää rauhoitettiin: alueuutiset, nimipäivät ja AI-avustaja ovat uusille käyttäjille oletuksena piilossa, nimipäiville lisättiin oma asetus ja tyhjä suosikkialue jätetään näyttämättä.',
+      'Etusivun oletusnäkymää rauhoitettiin: alueuutiset ovat uusille käyttäjille oletuksena piilossa ja tyhjä suosikkialue jätetään näyttämättä.',
       'Kaikkien 308 kunnan virallisille sivuille tehtiin seniori- ja ikäihmissisältöjen syvätarkistus. Laajennettu haku käy läpi myös sivukartat, palveluosiot ja kuntien oman haun sekä erottaa koontisivut uutisista, tapahtumista, neuvostoista ja muista viitesivuista. Lähelläsi-osioon tuotiin 123 varmennettua kuntakohtaista senioripalvelulinkkiä, jotka näytetään vain valitun kunnan yhteydessä.',
       'Tilastokeskuksen vuoden 2025 ikärakenteella laskettuna näissä 123 kunnassa asuu 786 391 vähintään 65-vuotiasta. Se on 58,4 % koko Suomen 1 347 494 henkilön 65+ väestöstä.',
       'Senioripalvelut ja liikuntalinkit rajattiin valittuun kotikuntaan. Liikunnassa oman kunnan tarjontaa täydentävät valtakunnalliset harjoitteluohjeet ja tanssipalvelut.',

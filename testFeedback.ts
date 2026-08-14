@@ -14,7 +14,7 @@ export {
 } from './testFeedbackPromptState';
 import { markTestFeedbackAnswered } from './testFeedbackPromptState';
 
-export const TEST_FEEDBACK_FORM_VERSION = '2026-06';
+export const TEST_FEEDBACK_FORM_VERSION = '2026-08-release-candidate';
 const TEST_FEEDBACK_COLLECTION = 'testFeedbackResponses';
 const TEST_FEEDBACK_STORAGE_KEY = 'testFeedbackResponses';
 const TEST_FEEDBACK_CHANGE_EVENT = 'testfeedbackresponseschange';
@@ -38,6 +38,7 @@ export interface TestFeedbackDraft {
   useMode: string;
   webExperience: string;
   purposeClear: string;
+  headerClarity: string;
   firstImpression: string;
   pageFeelings: string[];
   foundServices: string;
@@ -47,6 +48,7 @@ export interface TestFeedbackDraft {
   unclearCategory: string;
   municipalityCorrect: string;
   localServicesUseful: string;
+  seniorPageStatus: string;
   missingLocalLink: string;
   localNewsUseful: string;
   featureRatings: TestFeatureRatings;
@@ -85,6 +87,7 @@ const normalizeDraft = (draft: TestFeedbackDraft): TestFeedbackDraft => ({
   useMode: draft.useMode,
   webExperience: draft.webExperience,
   purposeClear: draft.purposeClear,
+  headerClarity: draft.headerClarity,
   firstImpression: trimText(draft.firstImpression, 1200),
   pageFeelings: [...new Set(draft.pageFeelings)].slice(0, 8),
   foundServices: draft.foundServices,
@@ -94,6 +97,7 @@ const normalizeDraft = (draft: TestFeedbackDraft): TestFeedbackDraft => ({
   unclearCategory: trimText(draft.unclearCategory, 900),
   municipalityCorrect: draft.municipalityCorrect,
   localServicesUseful: draft.localServicesUseful,
+  seniorPageStatus: draft.seniorPageStatus,
   missingLocalLink: trimText(draft.missingLocalLink, 900),
   localNewsUseful: draft.localNewsUseful,
   featureRatings: Object.fromEntries(

@@ -2,6 +2,7 @@ const DEFAULT_ALLOWED_ORIGINS = [
   'http://localhost:5173',
   'http://127.0.0.1:5173',
   'https://eerotuomenoksa.github.io',
+  'https://seniorsurf.fi',
 ];
 
 export const getAllowedOrigins = () => {

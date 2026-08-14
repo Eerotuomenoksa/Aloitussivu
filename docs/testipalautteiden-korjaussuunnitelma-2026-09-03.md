@@ -1,6 +1,6 @@
 # Neljän testipalautteen korjaussuunnitelma
 
-Tavoitejulkaisu: **3.9.2026** osoitteessa `seniorsurf.fi/aloitussivu`.
+Tavoitejulkaisu: **3.9.2026** Cloudcityn webhotellissa osoitteessa `https://seniorsurf.fi/aloitussivu/`. Ensimmäiselle julkaisulle ei oteta erillistä domainia.
 
 ## Lähtötilanne
 
@@ -79,7 +79,7 @@ Korjaus:
 4. Valmistellaan kaksi oletusnäkymää senioritestaukseen:
    - suppea: kello, Google-haku, sää, kategoriahaku, Lähelläsi ja huijausvaroitukset;
    - laaja: lisäksi suosikit, paikallisuutiset ja muut toiminnot.
-5. Tekoäly ja nimipäivät eivät ole ensimmäisen julkaisun oletustoimintoja.
+5. Tekoäly ja nimipäivät poistetaan ensimmäisen julkaisun käyttöliittymästä. Paikallisuutiset ovat oletuksena piilossa, ja niiden lopullinen mukanaolo päätetään lisätestauksen perusteella.
 
 Hyväksymisehto:
 
@@ -87,7 +87,7 @@ Hyväksymisehto:
 - Oletusnäkymä valitaan tehtävien onnistumisen ja koetun selkeyden perusteella, ei yksittäisen mielipiteen perusteella.
 - Yksikään pääkategoria ei vaadi selitystä ennen avaamista.
 
-Tila: **suunniteltu**.
+Tila: **osittain toteutettu 13.8.** Kategorioita on selkeytetty, yläosa on rakennettu uudelleen ilman tekoälyä ja nimipäiviä ja oletusnäkymä on rauhoitettu. Viiden uuden senioritestauksen kierros ja paikallisuutisten lopullinen päätös ovat avoinna.
 
 ## 4. Paikalliset linkit, paluu ja näppäimistökäyttö
 
@@ -110,7 +110,7 @@ Hyväksymisehto:
 - Käyttäjä palaa sulkemisen jälkeen samaan kohtaan ja näkyvä fokus palautuu.
 - Kriittisissä linkeissä ei ole automaattisen tarkistuksen virheitä ennen julkaisua.
 
-Tila: **suunniteltu**.
+Tila: **toteutettu nimetylle palautteelle 13.8.** Lielahden ja Tesoman järjestys, Mäntsälän suorat linkit, palveluikkunoiden fokus ja vierityksen palautus sekä 123 kunnan varmennetut seniorilinkit on toteutettu. Julkaisuportin lopullinen automaattinen linkkitarkistus ja näppäimistöpolku ovat avoinna.
 
 ## Emoji- ja kuvakelinjaus
 

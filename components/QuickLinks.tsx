@@ -262,6 +262,13 @@ const QuickLinks: React.FC<QuickLinksProps> = ({
           )}
         </div>
         <div className="flex items-stretch gap-3">
+          <button
+            type="submit"
+            className="inline-flex min-h-14 flex-1 items-center justify-center gap-2 rounded-2xl bg-[var(--theme-primary)] px-6 py-3 text-lg font-semibold text-[var(--theme-primary-label)] shadow-md transition-all hover:bg-[var(--theme-primary-mid)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--theme-focus)]/40 active:scale-[.98] md:flex-none"
+          >
+            <SearchIcon className="h-6 w-6" />
+            <span>{t('linkSearchButton')}</span>
+          </button>
           {speechState !== 'unsupported' && (
             <button
               type="button"
@@ -277,13 +284,6 @@ const QuickLinks: React.FC<QuickLinksProps> = ({
               <MicrophoneIcon className="h-7 w-7" />
             </button>
           )}
-          <button
-            type="submit"
-            className="inline-flex min-h-14 flex-1 items-center justify-center gap-2 rounded-2xl bg-[var(--theme-primary)] px-6 py-3 text-lg font-semibold text-[var(--theme-primary-label)] shadow-md transition-all hover:bg-[var(--theme-primary-mid)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--theme-focus)]/40 active:scale-[.98] md:flex-none"
-          >
-            <SearchIcon className="h-6 w-6" />
-            <span>{t('searchButton')}</span>
-          </button>
         </div>
       </form>
       {speechState === 'listening' && (

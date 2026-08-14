@@ -1,5 +1,7 @@
 # Julkaisuroadmap 6.10.2026
 
+> Tämä aikataulu on korvattu 13.8.2026 päätetyllä rajatulla julkaisulla. Uusi tavoite on 3.9.2026 Cloudcityn webhotellissa osoitteessa `https://seniorsurf.fi/aloitussivu/`. Ajantasainen rajaus ja avoimet julkaisuportin tehtävät ovat tiedostossa `TODO_HUMAN.md`; tämän dokumentin pidempi aikataulu säilytetään tausta-aineistona.
+
 Tämä roadmap kokoaa aloitussivu -sivun työn pilotista vakaaksi julkaisuksi. Suunniteltu julkaisupäivä on tiistai 6.10.2026.
 
 Roadmap täydentää elokuun julkaisusuunnitelmaa. Tähän dokumenttiin kootaan päätöspisteet, keskeneräiset asiat ja julkaisuun vaadittavat hyväksynnät.

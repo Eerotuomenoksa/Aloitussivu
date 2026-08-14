@@ -15,6 +15,19 @@ interface WeatherData {
   hour?: number;
 }
 
+interface DailyWeatherData {
+  minTemp: number;
+  maxTemp: number;
+  condition: string;
+  icon: string;
+  code: number;
+}
+
+interface WeatherResult {
+  current: WeatherData;
+  tomorrow: DailyWeatherData | null;
+}
+
 interface WeatherCardProps {
   locality?: LocalityInfo | null;
   onLocationResolved?: (location: LocalityInfo) => void;
@@ -116,6 +129,7 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ locality, onLocationResolved,
   useLinkVisibilityVersion();
   const [locationName, setLocationName] = useState<string>(t('location'));
   const [weather, setWeather] = useState<WeatherData | null>(null);
+  const [tomorrowWeather, setTomorrowWeather] = useState<DailyWeatherData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -180,12 +194,13 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ locality, onLocationResolved,
   useEffect(() => {
     let isActive = true;
 
-    const fetchCurrentWeather = async (lat: number, lon: number): Promise<WeatherData> => {
+    const fetchWeatherData = async (lat: number, lon: number): Promise<WeatherResult> => {
       const weatherRes = await fetch(
         `https://api.open-meteo.com/v1/forecast` +
         `?latitude=${lat}&longitude=${lon}` +
         `&current=temperature_2m,apparent_temperature,relative_humidity_2m,windspeed_10m,weathercode` +
-        `&timezone=auto`,
+        `&daily=weathercode,temperature_2m_max,temperature_2m_min` +
+        `&forecast_days=2&timezone=auto`,
         { cache: 'no-cache' }
       );
       if (!weatherRes.ok) {
@@ -197,16 +212,32 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ locality, onLocationResolved,
 
       const code: number = cur.weathercode ?? 0;
       const hour: number = cur.time ? new Date(cur.time).getHours() : new Date().getHours();
+      const daily = weatherData.daily;
+      const tomorrowCode = Number(daily?.weathercode?.[1]);
+      const tomorrowMin = Number(daily?.temperature_2m_min?.[1]);
+      const tomorrowMax = Number(daily?.temperature_2m_max?.[1]);
+      const tomorrow = Number.isFinite(tomorrowCode) && Number.isFinite(tomorrowMin) && Number.isFinite(tomorrowMax)
+        ? {
+            minTemp: Math.round(tomorrowMin),
+            maxTemp: Math.round(tomorrowMax),
+            condition: getWeatherText(tomorrowCode),
+            icon: getWeatherIcon(tomorrowCode),
+            code: tomorrowCode,
+          }
+        : null;
 
       return {
-        temp: Math.round(cur.temperature_2m ?? 0),
-        condition: getWeatherText(code),
-        icon: getWeatherIcon(code),
-        windspeed: cur.windspeed_10m !== undefined ? Math.round(cur.windspeed_10m * 10) / 10 : undefined,
-        feelsLike: cur.apparent_temperature !== undefined ? Math.round(cur.apparent_temperature) : undefined,
-        humidity: cur.relative_humidity_2m !== undefined ? Math.round(cur.relative_humidity_2m) : undefined,
-        code,
-        hour,
+        current: {
+          temp: Math.round(cur.temperature_2m ?? 0),
+          condition: getWeatherText(code),
+          icon: getWeatherIcon(code),
+          windspeed: cur.windspeed_10m !== undefined ? Math.round(cur.windspeed_10m * 10) / 10 : undefined,
+          feelsLike: cur.apparent_temperature !== undefined ? Math.round(cur.apparent_temperature) : undefined,
+          humidity: cur.relative_humidity_2m !== undefined ? Math.round(cur.relative_humidity_2m) : undefined,
+          code,
+          hour,
+        },
+        tomorrow,
       };
     };
 
@@ -215,7 +246,7 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ locality, onLocationResolved,
         if (isActive) {
           setLoading(true);
         }
-        const currentWeather = await fetchCurrentWeather(lat, lon);
+        const weatherResult = await fetchWeatherData(lat, lon);
         
         const geoRes = await fetch(
           `https://nominatim.openstreetmap.org/reverse?format=json&addressdetails=1&accept-language=fi&lat=${lat}&lon=${lon}&zoom=12`
@@ -237,7 +268,8 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ locality, onLocationResolved,
 
         if (!isActive) return;
 
-        setWeather(currentWeather);
+        setWeather(weatherResult.current);
+        setTomorrowWeather(weatherResult.tomorrow);
         setLocationName(shouldLocalizeLinks ? (isInFinland ? localizedMunicipality : city) : fallbackMunicipality);
         if (shouldLocalizeLinks) {
           onLocationResolved?.({ municipality, displayName: city, lat, lon, countryCode, isInFinland });
@@ -246,6 +278,7 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ locality, onLocationResolved,
       } catch (err) {
         if (isActive) {
           setError(t('weatherUnavailable'));
+          setTomorrowWeather(null);
         }
       } finally {
         if (isActive) {
@@ -267,9 +300,10 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ locality, onLocationResolved,
         setLocationName(displayName);
 
         if (typeof nextLocality.lat === 'number' && typeof nextLocality.lon === 'number') {
-          const currentWeather = await fetchCurrentWeather(nextLocality.lat, nextLocality.lon);
+          const weatherResult = await fetchWeatherData(nextLocality.lat, nextLocality.lon);
           if (!isActive) return;
-          setWeather(currentWeather);
+          setWeather(weatherResult.current);
+          setTomorrowWeather(weatherResult.tomorrow);
           setError(null);
           setLoading(false);
           return;
@@ -298,15 +332,17 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ locality, onLocationResolved,
           isInFinland: true,
         });
 
-        const currentWeather = await fetchCurrentWeather(lat, lon);
+        const weatherResult = await fetchWeatherData(lat, lon);
         if (!isActive) return;
 
-        setWeather(currentWeather);
+        setWeather(weatherResult.current);
+        setTomorrowWeather(weatherResult.tomorrow);
         setError(null);
         setLoading(false);
       } catch (err) {
         if (isActive) {
           setError(t('weatherUnavailable'));
+          setTomorrowWeather(null);
           setLoading(false);
         }
       }
@@ -420,22 +456,47 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ locality, onLocationResolved,
   }
 
   if (variant === 'chip') {
+    const ariaLabel = loading
+      ? t('weatherLoading')
+      : error
+        ? error
+        : `${t('weatherNow')}: ${weather?.temp}°C, ${weather?.condition}, ${locationName}.${tomorrowWeather ? ` ${t('weatherTomorrow')}: ${tomorrowWeather.minTemp}–${tomorrowWeather.maxTemp}°C, ${tomorrowWeather.condition}.` : ''}`;
+
     return (
-      <div className="flex w-full items-center gap-4 text-white" aria-label={t('showWeather')}>
-        <span className="flex-shrink-0 text-[2rem] leading-none md:text-[2.35rem]" aria-hidden="true">
-          {loading ? '⏳' : weather?.icon || '🌤️'}
-        </span>
-        <div className="min-w-0 flex-1 leading-tight">
-          <strong className="block min-h-[1.25rem] text-[1.05rem] font-black leading-tight text-white md:min-h-[1.45rem] md:text-[1.2rem]">
-            {loading ? t('weatherLoading') : error ? error : `${weather?.temp}°C · ${locationName}`}
-          </strong>
-          <span
-            className={`mt-1 block min-h-[1.05rem] text-[.9rem] font-bold leading-tight text-white/80 md:min-h-[1.2rem] md:text-[1rem] ${loading || error ? 'invisible' : ''}`}
-            aria-hidden={loading || error ? 'true' : undefined}
-          >
-            {weather?.condition || t('weatherVariable')}
+      <div className="grid w-full gap-3 text-white" aria-label={ariaLabel}>
+        <div className="flex min-w-0 items-center gap-3">
+          <span className="flex-shrink-0 text-[2rem] leading-none md:text-[2.35rem]" aria-hidden="true">
+            {loading ? '⏳' : weather?.icon || '🌤️'}
           </span>
+          <div className="min-w-0 flex-1 leading-tight">
+            <span className="block text-xs font-black uppercase tracking-wide text-white/70">{t('weatherNow')}</span>
+            <strong className="mt-0.5 block min-h-[1.25rem] text-[1.05rem] font-black leading-tight text-white md:min-h-[1.45rem] md:text-[1.2rem]">
+              {loading ? t('weatherLoading') : error ? error : `${weather?.temp}°C · ${locationName}`}
+            </strong>
+            <span
+              className={`mt-1 block min-h-[1.05rem] text-[.9rem] font-bold leading-tight text-white/80 md:min-h-[1.2rem] md:text-[1rem] ${loading || error ? 'invisible' : ''}`}
+              aria-hidden={loading || error ? 'true' : undefined}
+            >
+              {weather?.condition || t('weatherVariable')}
+            </span>
+          </div>
         </div>
+        {!loading && !error && tomorrowWeather && (
+          <div className="flex min-w-0 items-center gap-3 border-t border-white/15 pt-3">
+            <span className="flex-shrink-0 text-[1.75rem] leading-none md:text-[2rem]" aria-hidden="true">
+              {tomorrowWeather.icon}
+            </span>
+            <div className="min-w-0 flex-1 leading-tight">
+              <span className="block text-xs font-black uppercase tracking-wide text-white/70">{t('weatherTomorrow')}</span>
+              <strong className="mt-0.5 block text-[1.05rem] font-black leading-tight text-white md:text-[1.15rem]">
+                {tomorrowWeather.minTemp}–{tomorrowWeather.maxTemp}°C
+              </strong>
+              <span className="mt-1 block text-[.9rem] font-bold leading-tight text-white/80 md:text-[1rem]">
+                {tomorrowWeather.condition}
+              </span>
+            </div>
+          </div>
+        )}
       </div>
     );
   }

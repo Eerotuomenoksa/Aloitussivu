@@ -36,16 +36,10 @@ const steps: TourStep[] = [
     contains: 'Hakukenttä, mikrofonipainike ja hakupainike internetistä etsimistä varten.',
   },
   {
-    target: 'assistant',
-    title: 'Tekoälyavustaja',
-    body: 'Voit kysyä apua kirjoittamalla tai painamalla mikrofonia ja puhumalla kysymyksen ääneen.',
-    contains: 'Painike, josta avautuu keskusteluavustaja kysymyksiä varten. Avustajalle voi myös puhua.',
-  },
-  {
     target: 'weather',
     title: 'Sää',
-    body: 'Näet paikallisen sään ja linkin tarkempaan ennusteeseen.',
-    contains: 'Paikkakunnan sää, lämpötila ja linkki tarkempaan sääennusteeseen.',
+    body: 'Näet paikallisen sään nyt, huomisen ennusteen ja linkin tarkempiin säätietoihin.',
+    contains: 'Paikkakunnan nykyinen sää ja lämpötila, huomisen säätila ja lämpötilaväli sekä linkki tarkempaan sääennusteeseen.',
   },
   {
     target: 'regional-services',

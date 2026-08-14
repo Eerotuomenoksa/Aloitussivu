@@ -4,19 +4,31 @@ Tässä tiedostossa on jäljellä oleva siivous- ja tarkistuslista. Varsinaiset 
 
 Älä kirjoita salasanoja, API-avaimia, tokeneita tai service account -avainten sisältöjä tähän tiedostoon.
 
-## Heinäkuu 2026: päätökset ennen elokuun viimeistelyä
+## Julkaisu 3.9.2026
 
-Tila: Päätettävä ennen elokuun aloituspakettia
+Tila: Julkaisun rajaus päätetty 13.8.2026. Avoimet julkaisuportin tehtävät on lueteltu alla.
 
-Päätöslista on koottu tiedostoon `docs/julkaisun-paatoslista-2026-07-08.md`. Käy vähintään nämä läpi ennen varsinaista viimeistelyä:
+### Päätetty
 
-1. Virallinen nimi.
-2. Lopullinen osoite tai julkaisupolku.
-3. Palvelinmalli: Cloudcity, Firebase Hosting välivaiheena tai muu tuotantomalli.
-4. Ylläpidon sähköposti-ilmoitusten vastaanottajat ja toteutustapa.
-5. Nimipäivätoiminnon tuotantomalli: tiedostopohjainen data tai piilotus.
-6. Julkaisuun kuulumattomien linkkien ja ylläpitolinkkien kohtalo.
-7. Päätös siitä, mitkä Office- ja muut päätösaineistot lisätään versionhallintaan. Lighthouse-aineisto pidetään paikallisena eikä viedä GitHubiin.
+- Julkaisunimi on toistaiseksi `Aloitussivu`. Jos nimi myöhemmin vaihtuu, nimi ja osoite päivitetään samalla.
+- Julkaisu tehdään Cloudcityn webhotelliin osoitteeseen `https://seniorsurf.fi/aloitussivu/`. Erillistä domainia ei hankita tässä vaiheessa.
+- Nimipäivät ja tekoälyavustaja eivät kuulu 3.9. julkaisuun.
+- Paikallisuutiset ovat oletuksena piilossa. Lopullinen päätös niiden mukanaolosta tehdään viimeistään ennen julkaisukandidaattia.
+- Sivua tukemassa -kokeilusivu poistetaan.
+- Beta-, testaus-, kehitysjono-, ylläpito-, linkkiluettelo- ja muutoslokilinkit eivät näy julkisessa navigaatiossa. Testi- ja ylläpitosivut säilyvät suorilla osoitteilla ja niissä käytetään `noindex`-rajausta.
+- Ennen julkaisua hankitaan lisää senioritestaajia. Heidän löytämänsä P1/P2-korjaukset tehdään heti ja testataan uudelleen.
+
+### Avoinna ennen julkaisua
+
+1. **Paikallisuutisten lopullinen rajaus:** jätetäänkö asetus käyttöön vai poistetaanko paikallisuutiset kokonaan ensimmäisestä julkaisusta.
+2. **Cloudcity-staging:** siirrä `dist` testipolkuun, varmista että `seniorsurf.fi/aloitussivu/` ja kaikki suhteelliset resurssit toimivat alihakemistossa.
+3. **Tuotanto-originin ulkoiset asetukset:** lisää `seniorsurf.fi` Firebase Authenticationin sallittuihin domaineihin, selaimen Firebase API -avaimen HTTP-referrer-rajoituksiin ja App Checkiin. CORS-oletus on lisätty koodiin.
+4. **Cloudcityn palvelinasetukset:** varmista HTTPS, 404-käsittely, suojausotsikot, HTML:n lyhyt välimuisti, hashattujen resurssien pitkä välimuisti sekä gzip- tai Brotli-pakkaus.
+5. **Selosteiden viimeistely:** lisää tietosuoja- ja saavutettavuusselosteisiin lopullinen yhteystieto ja vahvista vastuuhenkilö.
+6. **Lisätestaus:** vähintään viisi uutta senioritestausta, joista vähintään kaksi puhelimella ja kaksi tietokoneella. Kirjaa P1/P2-havainnot ja korjaa ne ennen sisältöjäädytystä.
+7. **Julkaisuportin käyttöliittymätesti:** 320, 375, 768 ja 1280 pikselin leveydet, tekstikoko 100–200 %, näppäimistöpolku, ruudunlukijan perusrakenne, teemat ja tärkeimmät modaalit.
+8. **Linkki- ja integraatiotesti:** tärkeimmät palvelulinkit, linkki-ilmoitus, huijausvaroitukset, karkea käyttötilasto ja suojattu ylläpito testataan Cloudcity-osoitteessa.
+9. **Julkaisupäivän tarkistus:** canonical-, Open Graph-, sitemap- ja robots-tiedostot, etusivu, tietosuoja, saavutettavuus sekä mobiili- ja työpöytänäkymä tarkistetaan tuotannossa.
 
 ## Tehty
 
@@ -31,30 +43,14 @@ Päätöslista on koottu tiedostoon `docs/julkaisun-paatoslista-2026-07-08.md`. 
 - Väliaikainen `scripts/set-admin-claims.mjs` ja `C:\temp\aloitussivu-adminsdk.json` on poistettu.
 - Uusi kehityskansio on varmennettu 23.7.2026: salaisuustarkistus, tuotantobuild, Functions-paketin TypeScript-tarkistus ja kaikki 21 ulkoasutarkistusta menivät läpi.
 
-## SEC-015: Nimipäivätiedosto ja vanhan tokenin poisto
+## SEC-015: Nimipäiväintegraation jälkisiivous
 
-Tila: Siirretty myöhemmäksi, aikaisintaan elokuussa 2026
+Tila: Ei estä 3.9. julkaisua. Nimipäivät on poistettu julkaisun käyttöliittymästä.
 
-Nykyinen nimipäivätoteutus ja nykyinen `NAMEDAY_API_TOKEN` pidetään käytössä siihen asti. Älä poista tokenia vielä.
-
-Elokuussa 2026 tai myöhemmin:
-
-1. Hanki vuoden 2026 nimipäivädata CSV- tai JSON-muodossa.
-2. Muunna data muotoon, jossa avain on `KK-PP`:
-
-   ```json
-   {
-     "01-01": ["Uudenvuodenpäivä"],
-     "01-02": ["Aapeli"],
-     "01-03": ["Elma", "Elmeri"]
-   }
-   ```
-
-3. Tallenna tiedosto polkuun `assets/namedays-2026.json`.
-4. Testaa, että tämän päivän nimipäivä näkyy etusivulla oikein.
-5. Peruuta vanha `NAMEDAY_API_TOKEN` nimipaivarajapinta.fi-palvelussa.
-6. Poista Firestoresta `adminStats/namedayApi`, jos sitä ei enää päivitetä.
-7. Lisää muistutus joulukuulle 2026: päivitä `assets/namedays-2026.json` -> `assets/namedays-2027.json`.
+1. Varmista tuotantobundlesta ja verkkolokeista, ettei nimipäivärajapintaa enää kutsuta.
+2. Peruuta sen jälkeen vanha `NAMEDAY_API_TOKEN` nimipaivarajapinta.fi-palvelussa.
+3. Poista Firestoresta `adminStats/namedayApi`, jos tietoa ei enää tarvita historiatietona.
+4. Jos nimipäivät palautetaan myöhemmin, tee toiminto tiedostopohjaisella vuosidatalla ja lisää vuosittainen päivitysvastuu.
 
 ## Elokuu 2026: ylläpidon sähköposti-ilmoitukset
 
@@ -75,8 +71,9 @@ Toteutuksessa huomioitavaa:
 
 Tila: Testattava ympäristössä, jossa testitunnukset ja palvelinyhteydet ovat käytettävissä
 
-1. Gemini-chat vastaa.
+1. Julkinen etusivu toimii Cloudcityn `aloitussivu`-alihakemistossa.
 2. Linkkiehdotuksen lähetys toimii.
 3. Huijausvaroitukset latautuvat.
-4. Admin-tili pääsee ylläpitoon.
-5. Ei-admin ei pääse ylläpitoon.
+4. Karkea käyttötilasto päivittyy.
+5. Admin-tili pääsee ylläpitoon suoralla osoitteella.
+6. Ei-admin ei pääse ylläpitoon.

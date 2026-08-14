@@ -1,5 +1,7 @@
 # Elokuun julkaisusuunnitelma: aloitussivu
 
+> Päätös 13.8.2026: rajattu julkaisu tehdään viimeistään 3.9.2026 Cloudcityn webhotellissa osoitteeseen `https://seniorsurf.fi/aloitussivu/`. Erillistä domainia ei oteta tässä vaiheessa. Nimipäivät ja tekoälyavustaja jäävät pois, paikallisuutiset ovat oletuksena piilossa ja niiden lopullinen mukanaolo ratkaistaan lisätestauksella. Julkisen navigaation beta-, testaus-, ylläpito- ja muutoslokilinkit piilotetaan, ja Sivua tukemassa -kokeilusivu poistetaan. Ajantasainen avoin lista on `TODO_HUMAN.md`.
+
 Tämä suunnitelma kokoaa julkisen testauksen jälkeiset työt, Cloudcity-siirron valmistelun ja lopullisen julkaisun vaiheet. Lähtökohtana on, että julkinen testaus alkaa 1.6. ja kestää noin kuukauden, heinäkuu on lomakuukausi, ja elokuun alussa aloitetaan testitulosten läpikäynti sekä julkaisun viimeistely.
 
 ## 1. Tavoite

@@ -1,6 +1,6 @@
-# Palautelomakkeen suunnitelma 1.6. alkavaan testaukseen
+# Palautelomakkeen suunnitelma julkaisua edeltävään testaukseen
 
-Tämä dokumentti kuvaa aloitussivun julkisen testauksen palautelomakkeen rakenteen. Testaus alkaa 1.6. ja kestää noin kuukauden. Palautteet käydään läpi elokuun alussa ennen julkaisun viimeistelyä.
+Päivitetty 13.8.2026 vastaamaan 3.9.2026 tavoitejulkaisua. Uudessa testikierroksessa arvioidaan rajattua julkaisuversiota, josta tekoälyavustaja ja nimipäivät on poistettu. Paikallisuutiset ovat oletuksena piilossa, ja niiden mukanaolo ratkaistaan uusien testivastausten perusteella.
 
 ## Tavoite
 
@@ -10,6 +10,9 @@ Palautelomakkeen tarkoitus on selvittää:
 - onko sivun tarkoitus ymmärrettävä
 - toimivatko kategoriat ja alakategoriat
 - ovatko paikalliset palvelut hyödyllisiä
+- löytyvätkö uuden yläosan kello, verkkohaku ja sää helposti
+- löytyvätkö ja avautuvatko kuntakohtaiset senioripalvelulinkit Lähelläsi-osiossa
+- haluavatko testaajat paikallisuutiset ensimmäiseen julkaisuun
 - huomaavatko käyttäjät tärkeät toiminnot
 - onko mobiilikäyttö riittävän helppoa
 - ovatko värit, tekstikoko ja kontrastit sopivia
@@ -22,8 +25,17 @@ Lomakkeen pitää olla riittävän lyhyt, jotta vastauskynnys pysyy matalana. Ka
 ```text
 Kiitos, että testaat aloitussivua.
 
-Palautteen avulla korjaamme sivua ennen varsinaista julkaisua. Lomakkeeseen vastaaminen vie noin 5-10 minuuttia. Voit vastata itse tai yhdessä digiopastajan kanssa.
+Palautteen avulla viimeistelemme 3.9.2026 tavoitejulkaisua. Tekoälyavustaja ja nimipäivät eivät kuulu tähän testattavaan versioon. Lomakkeeseen vastaaminen vie noin 5-10 minuuttia. Voit vastata itse tai yhdessä digiopastajan kanssa.
 ```
+
+## Ennen lomakkeeseen vastaamista
+
+Testaajaa pyydetään tekemään neljä tehtävää:
+
+1. Etsi yläosasta kello, sää ja Google-haku.
+2. Etsi yksi tarvitsemasi palvelu kategorioista tai linkkihaulla.
+3. Valitse Lähelläsi-osiossa oma kunta ja avaa kunnan senioripalvelulinkki, jos se näkyy.
+4. Avaa Asetukset, ota paikallisuutiset käyttöön ja arvioi niiden paikka ensimmäisessä julkaisussa.
 
 ## Pakolliset kysymykset
 
@@ -78,6 +90,16 @@ Vaihtoehdot:
 ## 2. Ensivaikutelma
 
 ### Oliko sivun tarkoitus selvä?
+
+Tyyppi: monivalinta
+
+Vaihtoehdot:
+
+- Kyllä
+- Osittain
+- Ei
+
+### Löysitkö yläosasta helposti kellon, sään ja Google-haun?
 
 Tyyppi: monivalinta
 
@@ -164,20 +186,31 @@ Vaihtoehdot:
 - Ei
 - En käyttänyt niitä
 
-### Puuttuiko paikkakunnaltasi jokin tärkeä linkki?
-
-Tyyppi: avoin tekstikenttä
-
-### Oliko paikallisuutisista hyötyä?
+### Löytyikö Lähelläsi-osiosta kuntasi senioripalvelusivu?
 
 Tyyppi: monivalinta
 
 Vaihtoehdot:
 
-- Kyllä
-- Osittain
-- Ei
-- En huomannut niitä
+- Kyllä, linkki löytyi ja avautui
+- Linkki näkyi, mutta ei avautunut oikein
+- Kuntani seniorilinkkiä ei löytynyt
+- En testannut tätä
+
+### Minkä kunnan valitsit, ja puuttuiko tai toimiko jokin paikallinen linkki väärin?
+
+Tyyppi: avoin tekstikenttä
+
+### Pitäisikö paikallisuutisten olla mukana ensimmäisessä julkaisussa?
+
+Tyyppi: monivalinta
+
+Vaihtoehdot:
+
+- Pidä mukana ensimmäisessä julkaisussa
+- Pidä mukana vain asetuksista valittavana
+- Jätä pois ensimmäisestä julkaisusta
+- En testannut paikallisuutisia
 
 ## 5. Toiminnot
 
@@ -200,14 +233,12 @@ Asteikko:
 Arvioitavat toiminnot:
 
 - Sää
-- Tekoäly
-- Internet-haku
+- Google-haku
 - Huijausvaroitukset
-- Lähelläsi
+- Lähelläsi ja kuntasi senioripalvelut
 - Suosikit
-- Kategoria haku
-- Nimipäivät (ei näy heinäkuussa)
-- Paikalliset uutiset
+- Linkkihaku
+- Paikalliset uutiset (asetuksista)
 
 Suositus: vapaaehtoinen, mutta pidetään yhtenä isona kysymyksenä.
 

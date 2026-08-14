@@ -16,7 +16,6 @@ const tocItems = [
   ['selaimen-asetukset', 'Selaimeen tallennettavat asetukset'],
   ['kayttotilasto', 'Karkea käyttötilasto'],
   ['linkki-ilmoitukset', 'Linkki-ilmoitukset ja ylläpito'],
-  ['tekoaly-ja-palvelut', 'Tekoälyavustaja ja ulkopuoliset palvelut'],
   ['paikalliset-palvelut', 'Paikalliset palvelut ja sää'],
   ['yllapitajan-kirjautuminen', 'Ylläpitäjän kirjautuminen'],
   ['sailytys-ja-poistaminen', 'Tietojen säilytys ja poistaminen'],
@@ -51,14 +50,8 @@ function App() {
             <a href="./index.html" className={pageNavLinkClass}>
               Takaisin aloitussivulle
             </a>
-            <a href="./sivua-tukemassa.html" className={pageNavLinkClass}>
-              Sivua tukemassa
-            </a>
             <a href="./saavutettavuus.html" className={pageNavLinkClass}>
               Saavutettavuus
-            </a>
-            <a href="./muutosloki.html" className={pageNavLinkClass}>
-              Muutosloki
             </a>
           </nav>
 
@@ -173,15 +166,6 @@ function App() {
               <li>ilmoituksen käsittelytila</li>
             </ul>
             <p className={paragraphClass}>Linkki-ilmoituksia käytetään vain sivun ylläpitoon.</p>
-          </PrivacySection>
-
-          <PrivacySection id="tekoaly-ja-palvelut" title="Tekoälyavustaja ja ulkopuoliset palvelut">
-            <p className={paragraphClass}>
-              Sivustolla voi olla tekoälyavustaja, joka vastaa käyttäjän kirjoittamaan tai sanelemaan kysymykseen. Käyttäjän ei pidä kirjoittaa avustajalle arkaluonteisia henkilötietoja, pankkitunnuksia, salasanoja tai terveystietoja.
-            </p>
-            <p className={paragraphClass}>
-              Tekoälyavustajan tekninen toteutus voi käyttää ulkopuolista tekoälypalvelua. Kysymys lähetetään käsiteltäväksi vain silloin, kun käyttäjä käyttää avustajaa.
-            </p>
           </PrivacySection>
 
           <PrivacySection id="paikalliset-palvelut" title="Paikalliset palvelut ja sää">

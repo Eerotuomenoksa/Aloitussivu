@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { getTodayEvents } from '../services/holidayService';
-import { fetchNameDayToday } from '../services/nameDayService';
 import { useI18n } from '../i18n';
 
 const WORLD_CLOCK_URL = 'https://fi.thetimenow.com/worldclock.php';
@@ -21,37 +20,20 @@ interface ClockProps {
   fontSizeStep?: number;
   variant?: 'hero' | 'compact' | 'aurora';
   mode?: 'digital' | 'analog';
-  showNameDays?: boolean;
   secondaryClock?: {
     label: string;
     timeZone: string;
   };
 }
 
-const Clock: React.FC<ClockProps> = ({ fontSizeStep = 0, variant = 'hero', mode = 'digital', showNameDays = false, secondaryClock }) => {
+const Clock: React.FC<ClockProps> = ({ fontSizeStep = 0, variant = 'hero', mode = 'digital', secondaryClock }) => {
   const { locale } = useI18n();
   const [time, setTime] = useState(new Date());
-  const [nameDayNames, setNameDayNames] = useState<string[]>([]);
 
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
-
-  useEffect(() => {
-    if (!showNameDays) {
-      setNameDayNames([]);
-      return undefined;
-    }
-    let isActive = true;
-    fetchNameDayToday().then((result) => {
-      if (!isActive || !result) return;
-      setNameDayNames(result.names);
-    });
-    return () => {
-      isActive = false;
-    };
-  }, [showNameDays]);
 
   const timeString = formatClockTime(time, locale);
   const secondaryTimeString = secondaryClock
@@ -67,7 +49,6 @@ const Clock: React.FC<ClockProps> = ({ fontSizeStep = 0, variant = 'hero', mode 
     month: 'long', 
     year: 'numeric' 
   });
-  const nameDayLabel = nameDayNames.length > 0 ? `Nimipäivä: ${nameDayNames.join(', ')}` : '';
   const hours = time.getHours();
   const minutes = time.getMinutes();
   const seconds = time.getSeconds();
@@ -79,50 +60,91 @@ const Clock: React.FC<ClockProps> = ({ fontSizeStep = 0, variant = 'hero', mode 
     if (mode === 'analog') {
       return (
         <div className="text-left">
-          <div className="aurora-analog-clock" aria-label={`${timeString}, ${dateString}`} role="img">
-            <div className="aurora-analog-face" aria-hidden="true">
-              {Array.from({ length: 12 }, (_, index) => {
-                const hour = index + 1;
-                const angle = hour * 30;
-                return (
-                  <span
-                    key={hour}
-                    className="aurora-analog-hour"
-                    style={{ transform: `rotate(${angle}deg) translateY(calc(-1 * var(--analog-number-radius))) rotate(-${angle}deg)` }}
-                  >
-                    {hour}
-                  </span>
-                );
-              })}
-              {Array.from({ length: 60 }, (_, index) => (
-                <span
-                  key={index}
-                  className={index % 5 === 0 ? 'aurora-analog-tick aurora-analog-tick-hour' : 'aurora-analog-tick'}
-                  style={{ transform: `rotate(${index * 6}deg) translateY(calc(-1 * var(--analog-tick-radius)))` }}
-                />
-              ))}
-              <span className="aurora-analog-hand aurora-analog-hour-hand" style={{ transform: `rotate(${hourAngle}deg)` }} />
-              <span className="aurora-analog-hand aurora-analog-minute-hand" style={{ transform: `rotate(${minuteAngle}deg)` }} />
-              <span className="aurora-analog-hand aurora-analog-second-hand" style={{ transform: `rotate(${secondAngle}deg)` }} />
-              <span className="aurora-analog-pin" />
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:gap-5">
+            <div className="min-w-0">
+              <div className="aurora-analog-clock" aria-label={`${timeString}, ${dateString}`} role="img">
+                <div className="aurora-analog-face" aria-hidden="true">
+                  {Array.from({ length: 12 }, (_, index) => {
+                    const hour = index + 1;
+                    const angle = hour * 30;
+                    return (
+                      <span
+                        key={hour}
+                        className="aurora-analog-hour"
+                        style={{ transform: `rotate(${angle}deg) translateY(calc(-1 * var(--analog-number-radius))) rotate(-${angle}deg)` }}
+                      >
+                        {hour}
+                      </span>
+                    );
+                  })}
+                  {Array.from({ length: 60 }, (_, index) => (
+                    <span
+                      key={index}
+                      className={index % 5 === 0 ? 'aurora-analog-tick aurora-analog-tick-hour' : 'aurora-analog-tick'}
+                      style={{ transform: `rotate(${index * 6}deg) translateY(calc(-1 * var(--analog-tick-radius)))` }}
+                    />
+                  ))}
+                  <span className="aurora-analog-hand aurora-analog-hour-hand" style={{ transform: `rotate(${hourAngle}deg)` }} />
+                  <span className="aurora-analog-hand aurora-analog-minute-hand" style={{ transform: `rotate(${minuteAngle}deg)` }} />
+                  <span className="aurora-analog-hand aurora-analog-second-hand" style={{ transform: `rotate(${secondAngle}deg)` }} />
+                  <span className="aurora-analog-pin" />
+                </div>
+              </div>
+              <div className="mt-6">
+                <p className="font-body text-[clamp(1.15rem,1.6vw,1.35rem)] font-bold capitalize leading-snug text-[#cfe7d6]">
+                  {dateString}
+                </p>
+              </div>
             </div>
-          </div>
-          <div className="mt-6">
-            <p className="font-body text-[clamp(1.15rem,1.6vw,1.35rem)] font-bold capitalize leading-snug text-[#cfe7d6]">
-              {dateString}
-            </p>
-            {nameDayLabel && (
-              <p className="mt-1 font-body text-[clamp(.95rem,1.2vw,1.05rem)] font-bold text-white/75">
-                {nameDayLabel}
-              </p>
+            {secondaryClock && (
+              <a
+                href={WORLD_CLOCK_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex max-w-full flex-wrap items-baseline gap-x-2 gap-y-1 self-start rounded-full border border-white/15 bg-white/10 px-4 py-2 text-white backdrop-blur transition-colors hover:bg-white/20 lg:mt-2 lg:w-[7.5rem] lg:flex-col lg:items-start lg:rounded-3xl"
+                aria-label={`${secondaryClock.label} ${secondaryTimeString}. Avaa maailmankello`}
+              >
+                <span className="text-xs font-black uppercase tracking-wide text-white/80">{secondaryClock.label}</span>
+                <span className="font-display text-2xl font-semibold leading-none text-white">{secondaryTimeString}</span>
+                <span className="text-xs font-bold text-white/75">{secondaryDateString}</span>
+              </a>
             )}
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className="text-left">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:gap-5">
+          <div className="min-w-0">
+            <time
+              dateTime={time.toISOString()}
+              aria-live="polite"
+              className="block font-bold text-white"
+              style={{
+                fontFamily: '"DM Sans", Arial, sans-serif',
+                fontSize: 'clamp(3.6rem, 6.5vw, 5rem)',
+                letterSpacing: '0',
+                lineHeight: '1',
+                fontVariantNumeric: 'tabular-nums',
+                textShadow: '0 2px 60px rgba(61,184,112,.2)',
+              }}
+            >
+              {timeString}
+            </time>
+            <div className="mt-3">
+              <p className="font-body text-[clamp(1.15rem,1.6vw,1.35rem)] font-bold capitalize leading-snug text-[#cfe7d6]">
+                {dateString}
+              </p>
+            </div>
           </div>
           {secondaryClock && (
             <a
               href={WORLD_CLOCK_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-4 inline-flex max-w-full flex-wrap items-baseline gap-x-2 gap-y-1 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-white backdrop-blur transition-colors hover:bg-white/20"
+              className="inline-flex max-w-full flex-wrap items-baseline gap-x-2 gap-y-1 self-start rounded-full border border-white/15 bg-white/10 px-4 py-2 text-white backdrop-blur transition-colors hover:bg-white/20 lg:mt-2 lg:w-[7.5rem] lg:flex-col lg:items-start lg:rounded-3xl"
               aria-label={`${secondaryClock.label} ${secondaryTimeString}. Avaa maailmankello`}
             >
               <span className="text-xs font-black uppercase tracking-wide text-white/80">{secondaryClock.label}</span>
@@ -131,49 +153,6 @@ const Clock: React.FC<ClockProps> = ({ fontSizeStep = 0, variant = 'hero', mode 
             </a>
           )}
         </div>
-      );
-    }
-
-    return (
-      <div className="text-left">
-        <time
-          dateTime={time.toISOString()}
-          aria-live="polite"
-          className="block font-bold text-white"
-          style={{
-            fontFamily: '"DM Sans", Arial, sans-serif',
-            fontSize: 'clamp(3.6rem, 6.5vw, 5rem)',
-            letterSpacing: '0',
-            lineHeight: '1',
-            fontVariantNumeric: 'tabular-nums',
-            textShadow: '0 2px 60px rgba(61,184,112,.2)',
-          }}
-        >
-          {timeString}
-        </time>
-        <div className="mt-3">
-          <p className="font-body text-[clamp(1.15rem,1.6vw,1.35rem)] font-bold capitalize leading-snug text-[#cfe7d6]">
-            {dateString}
-          </p>
-          {nameDayLabel && (
-            <p className="mt-1 font-body text-[clamp(.95rem,1.2vw,1.05rem)] font-bold text-white/75">
-              {nameDayLabel}
-            </p>
-          )}
-        </div>
-        {secondaryClock && (
-          <a
-            href={WORLD_CLOCK_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-4 inline-flex max-w-full flex-wrap items-baseline gap-x-2 gap-y-1 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-white backdrop-blur transition-colors hover:bg-white/20"
-            aria-label={`${secondaryClock.label} ${secondaryTimeString}. Avaa maailmankello`}
-          >
-            <span className="text-xs font-black uppercase tracking-wide text-white/80">{secondaryClock.label}</span>
-            <span className="font-display text-2xl font-semibold leading-none text-white">{secondaryTimeString}</span>
-            <span className="text-xs font-bold text-white/75">{secondaryDateString}</span>
-          </a>
-        )}
       </div>
     );
   }
@@ -216,11 +195,6 @@ const Clock: React.FC<ClockProps> = ({ fontSizeStep = 0, variant = 'hero', mode 
             <span className="text-xs font-bold text-white/75">{secondaryDateString}</span>
           </a>
         )}
-        {nameDayNames.length > 0 && (
-          <p className="text-sm md:text-base font-black text-white/90 leading-snug">
-            Nimipäivä: {nameDayNames.join(', ')}
-          </p>
-        )}
         {todayEvents.length > 0 && (
           <div className="flex flex-wrap xl:justify-end gap-2 pt-1">
             {todayEvents.map((event) => (
@@ -259,11 +233,6 @@ const Clock: React.FC<ClockProps> = ({ fontSizeStep = 0, variant = 'hero', mode 
           <span className="text-3xl md:text-5xl font-black leading-none">{secondaryTimeString}</span>
           <span className="text-sm md:text-lg font-bold text-slate-500 dark:text-slate-300">{secondaryDateString}</span>
         </a>
-      )}
-      {nameDayNames.length > 0 && (
-        <p className="text-slate-700 dark:text-slate-300 text-base md:text-2xl font-black">
-          Nimipäivä: {nameDayNames.join(', ')}
-        </p>
       )}
       {todayEvents.length > 0 && (
         <div className="space-y-2 pt-2">

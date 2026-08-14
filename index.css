@@ -533,26 +533,26 @@ html.dark .glass-chip {
   max-width: 34rem;
 }
 
-.hero-body-grid {
-  min-height: 14rem;
+.hero-launch-grid {
+  min-height: 11rem;
+  align-items: center;
+  grid-template-columns: 1fr;
 }
 
-.hero-tool-stack {
-  max-width: 54rem;
-  margin-left: auto;
-  width: 100%;
+.hero-launch-info {
+  display: grid;
+  min-width: 0;
+  align-items: stretch;
+  gap: 1rem;
+}
+
+.hero-launch-search,
+.hero-launch-weather {
+  min-width: 0;
 }
 
 .hero-search input {
   min-height: 3.75rem;
-}
-
-.hero-widget-row {
-  align-items: stretch;
-}
-
-.hero-widget {
-  display: flex;
 }
 
 .hero-chip {
@@ -565,10 +565,6 @@ html.dark .glass-chip {
   border-radius: 24px;
   background: rgba(255,255,255,.1);
   border: 1px solid rgba(255,255,255,.18);
-}
-
-.hero-widget > * {
-  width: 100%;
 }
 
 .aurora-modal-shell {
@@ -1034,16 +1030,30 @@ html.dark .aurora-modal-shell {
   }
 }
 
-@media (max-width: 900px) {
-  .hero-body-grid { grid-template-columns: 1fr !important; }
-  .hero-clock-panel,
-  .hero-tool-stack {
-    max-width: none;
-    margin-left: 0;
+@media (min-width: 901px) {
+  .hero-launch-grid {
+    grid-template-columns: minmax(0, 1.1fr) minmax(20rem, .9fr);
   }
-  .hero-widget-row {
-    display: grid !important;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .hero-launch-info {
+    grid-template-columns: minmax(0, 1.1fr) minmax(12.5rem, .9fr);
+  }
+  .hero-launch-search {
+    align-self: center;
+  }
+}
+
+@media (min-width: 1101px) {
+  .hero-launch-grid {
+    grid-template-columns: minmax(34rem, 1.1fr) minmax(25rem, .9fr);
+  }
+  .hero-launch-info {
+    grid-template-columns: minmax(18rem, 1.15fr) minmax(14rem, .85fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .hero-clock-panel {
+    max-width: none;
   }
   .footer-inner-grid { grid-template-columns: 1fr 1fr !important; }
 }
@@ -1067,7 +1077,6 @@ html.dark .aurora-modal-shell {
   .hero-search button[type="submit"] {
     padding-inline: .85rem !important;
   }
-  .hero-widget-row,
   .glass-chip-row {
     display: flex !important;
     flex-direction: column;

@@ -4,7 +4,6 @@ import Clock from './components/Clock';
 import WeatherCard from './components/WeatherCard';
 import ZoneToc from './components/ZoneToc';
 import InterestThemeSelector from './components/InterestThemeSelector';
-import TestFeedbackPrompt from './components/TestFeedbackPrompt';
 import SearchBar from './components/SearchBar';
 import FloatingControls from './components/FloatingControls';
 import FavoriteLinks from './components/FavoriteLinks';
@@ -14,15 +13,12 @@ import { Shortcut, Favorite, LocalityInfo, LinkReportDraft } from './types';
 import { mergeApprovedLinksIntoShortcuts } from './approvedLinks';
 import { useApprovedLinkSuggestionsVersion } from './approvedLinks';
 import { LanguageCode, LanguageProvider, LANGUAGES, useI18n } from './i18n';
-import { APP_VERSION_LABEL } from './appVersion';
-import { postponeTestFeedbackPrompt, shouldShowTestFeedbackPrompt } from './testFeedbackPromptState';
 import { normalizeInterestThemeAnchors } from './components/shortcutGroups';
 import { defaultUiVisibility, UiVisibilityKey, UiVisibilityOption, UiVisibilityState } from './uiPreferences';
 // Valkoinen logo näytetään tummassa teemassa, värillinen vaaleassa.
 import seniorSurfLogoTummaTeema from './assets/seniorsurf-logo-tumma-teema.png';
 import seniorSurfLogoVaaleaTeema from './assets/seniorsurf-logo-vaalea-teema.png';
 
-const Assistant = lazy(() => import('./components/Assistant'));
 const ProviderModal = lazy(() => import('./components/ProviderModal'));
 const InfoModal = lazy(() => import('./components/InfoModal'));
 const HomepageModal = lazy(() => import('./components/HomepageModal'));
@@ -32,10 +28,6 @@ const OnboardingTour = lazy(() => import('./components/OnboardingTour'));
 const RegionalServicesPanel = lazy(() => import('./components/RegionalServicesPanel'));
 const ScamAlertsBanner = lazy(() => import('./components/ScamAlertsBanner'));
 const QuickLinks = lazy(() => import('./components/QuickLinks'));
-
-const AssistantFallback = () => (
-  <div className="hero-chip h-full min-h-[5.5rem]" aria-hidden="true" />
-);
 
 const RegionalServicesFallback = () => (
   <section
@@ -67,7 +59,6 @@ const THEME_KEY = 'colorTheme';
 const CLOCK_MODE_KEY = 'clockMode';
 const FAVORITES_KEY = 'favorites';
 const INTEREST_THEMES_KEY = 'interestThemes';
-const TEST_FEEDBACK_PROMPT_DELAY_MS = 2 * 60 * 1000;
 const DEFERRED_CONTENT_DELAY_MS = 900;
 
 const readLocalPreference = (key: string) => {
@@ -232,12 +223,9 @@ const AppContent: React.FC = () => {
   const [isHomepageOpen, setIsHomepageOpen] = useState(false);
   const [isOnboardingOpen, setIsOnboardingOpen] = useState(false);
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
-  const [isTestFeedbackPromptOpen, setIsTestFeedbackPromptOpen] = useState(false);
-  const [hasTestFeedbackPromptDelayElapsed, setHasTestFeedbackPromptDelayElapsed] = useState(false);
   const [isDeferredContentReady, setIsDeferredContentReady] = useState(false);
   const [hasSeenOnboarding, setHasSeenOnboarding] = useState(() => readLocalPreference(ONBOARDING_SEEN_KEY) === 'true');
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [isAssistantOpen, setIsAssistantOpen] = useState(false);
   const [locality, setLocality] = useState<LocalityInfo | null>(() => {
     try {
       const saved = readLocalPreference(SAVED_LOCALITY_KEY);
@@ -470,29 +458,14 @@ const AppContent: React.FC = () => {
     const nextUrl = `${window.location.pathname}${nextSearch ? `?${nextSearch}` : ''}${window.location.hash}`;
     window.history.replaceState(null, '', nextUrl);
   }, []);
-  useEffect(() => {
-    if (typeof window === 'undefined' || !shouldShowTestFeedbackPrompt()) return undefined;
-    const timer = window.setTimeout(() => {
-      setHasTestFeedbackPromptDelayElapsed(true);
-    }, TEST_FEEDBACK_PROMPT_DELAY_MS);
-
-    return () => window.clearTimeout(timer);
-  }, []);
   const openReportModal = useCallback((draft: LinkReportDraft) => setReportDraft(draft), []);
   const closeReportModal = useCallback(() => setReportDraft(null), []);
   const selectedShortcut = selectedCategory ? mergeApprovedLinksIntoShortcuts([selectedCategory])[0] ?? selectedCategory : null;
   const isFinnishLocality = locality?.isInFinland !== false;
   const regionalLocality = isFinnishLocality ? locality : null;
   const selectedSecondaryTimeZone = SECONDARY_TIME_ZONE_OPTIONS.find((option) => option.value === secondaryTimeZone) ?? SECONDARY_TIME_ZONE_OPTIONS[0];
-  const isModalOpenWithoutTestFeedbackPrompt = Boolean(selectedShortcut || isInfoOpen || isHomepageOpen || isOnboardingOpen || isFeedbackOpen || reportDraft || isSettingsOpen);
-  const isAnyModalOpen = isModalOpenWithoutTestFeedbackPrompt || isTestFeedbackPromptOpen;
+  const isAnyModalOpen = Boolean(selectedShortcut || isInfoOpen || isHomepageOpen || isOnboardingOpen || isFeedbackOpen || reportDraft || isSettingsOpen);
   const shouldShowRegionalServices = uiVisibility.regionalServices && isFinnishLocality;
-  useEffect(() => {
-    if (!hasTestFeedbackPromptDelayElapsed || isModalOpenWithoutTestFeedbackPrompt || isTestFeedbackPromptOpen) return;
-    if (shouldShowTestFeedbackPrompt()) {
-      setIsTestFeedbackPromptOpen(true);
-    }
-  }, [hasTestFeedbackPromptDelayElapsed, isModalOpenWithoutTestFeedbackPrompt, isTestFeedbackPromptOpen]);
   const visibilityOptions: UiVisibilityOption[] = [
     { key: 'clock', label: t('showClock') },
     { key: 'secondaryClock', label: t('showSecondaryClock') },
@@ -500,8 +473,6 @@ const AppContent: React.FC = () => {
     { key: 'regionalNews', label: t('showNews') },
     { key: 'scamAlerts', label: t('showScamAlerts') },
     { key: 'weather', label: t('showWeather') },
-    { key: 'nameDays', label: t('showNameDays') },
-    { key: 'assistant', label: t('showAssistant'), className: 'hidden md:flex' },
     { key: 'googleSearch', label: t('showGoogleSearch') },
   ];
   const updateVisibility = useCallback((key: UiVisibilityKey, value: boolean) => {
@@ -509,10 +480,6 @@ const AppContent: React.FC = () => {
   }, []);
   const updateInterestThemes = useCallback((anchors: string[]) => {
     setInterestThemeAnchors(normalizeInterestThemeAnchors(anchors));
-  }, []);
-  const postponeTestFeedback = useCallback(() => {
-    postponeTestFeedbackPrompt();
-    setIsTestFeedbackPromptOpen(false);
   }, []);
   const startOnboarding = useCallback(() => {
     setIsInfoOpen(false);
@@ -571,7 +538,7 @@ const AppContent: React.FC = () => {
             }}
           />
           <div className="relative z-[5] mx-auto max-w-[1380px] px-5 pt-6 md:px-8">
-            <nav className="mb-8 flex flex-wrap items-center gap-4 border-b border-white/[.08] pb-5" aria-label={t('topArea')}>
+            <nav className="mb-8 flex flex-wrap items-center gap-3 border-b border-white/[.08] pb-5 lg:mb-5 lg:flex-nowrap" aria-label={t('topArea')}>
               <div className="mr-auto flex flex-col gap-1">
                 <h1 className="font-display text-[clamp(1.5rem,3vw,2.2rem)] font-semibold leading-none tracking-tight text-white">
                   {t('pageTitle')}
@@ -580,97 +547,80 @@ const AppContent: React.FC = () => {
                   {t('pageTagline')}
                 </p>
               </div>
-              <div className="inline-flex min-h-[2.75rem] items-center gap-2 rounded-full border border-white/[.18] bg-white/10 px-3 py-1.5 text-white/80">
-                <span className="text-[.7rem] font-bold uppercase tracking-[.12em]">
-                  {t('beta')}
-                </span>
-                <span className="h-4 w-px bg-white/20" aria-hidden="true" />
+              <div className="flex w-full flex-wrap items-center gap-2 sm:w-auto sm:justify-end">
                 <button
                   type="button"
                   onClick={() => setIsFeedbackOpen(true)}
                   title="Anna palautetta sivusta"
-                  className="rounded-full bg-white/10 px-3 py-1 text-xs font-black text-white transition-colors hover:bg-white/20 focus-visible:ring-2 focus-visible:ring-white"
+                  className="inline-flex min-h-[2.75rem] items-center rounded-full border border-white/[.16] bg-white/[.09] px-[1.1rem] py-[.55rem] text-[.95rem] font-bold text-white/85 transition-all hover:bg-white/[.18] hover:text-white"
                 >
                   Palaute
                 </button>
-                <a
-                  href="./testipalaute.html"
-                  title="Avaa testipalautelomake"
-                  className="rounded-full bg-white/10 px-3 py-1 text-xs font-black text-white no-underline transition-colors hover:bg-white/20 focus-visible:ring-2 focus-visible:ring-white"
+                <LanguageSelector language={language} setLanguage={setLanguage} label={t('language')} />
+                <button
+                  onClick={() => setIsHomepageOpen(true)}
+                  title="Avaa ohje aloitussivuksi asettamiseen"
+                  className="inline-flex min-h-[2.75rem] items-center gap-1.5 rounded-full border border-white/20 bg-[var(--theme-gold)] px-[1.1rem] py-[.55rem] text-[.95rem] font-extrabold text-[var(--theme-cta-label)] transition-all hover:bg-[var(--theme-gold-light)] active:scale-[.97]"
+                  aria-label={t('openHomepageHelp')}
                 >
-                  Testaus
-                </a>
+                  🏠 {t('help')}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setIsInfoOpen(true)}
+                  title="Katso mitä Aloitussivu sisältää ja miten sitä ylläpidetään"
+                  className="inline-flex min-h-[2.75rem] items-center gap-1.5 rounded-full border border-white/[.16] bg-white/[.09] px-[1.1rem] py-[.55rem] text-[.95rem] font-bold text-white/85 transition-all hover:bg-white/[.18] hover:text-white"
+                >
+                  ℹ️ {t('info')}
+                </button>
+                <button
+                  ref={settingsButtonRef}
+                  type="button"
+                  onClick={() => setIsSettingsOpen(prev => !prev)}
+                  data-tour="settings"
+                  title="Avaa asetukset: värit, tekstikoko ja etusivun osiot"
+                  className="inline-flex min-h-[2.75rem] items-center gap-1.5 rounded-full border border-white/[.16] bg-white/[.09] px-[1.1rem] py-[.55rem] text-[.95rem] font-bold text-white/85 transition-all hover:bg-white/[.18] hover:text-white"
+                  aria-label={t('openSettings')}
+                  aria-expanded={isSettingsOpen}
+                  aria-haspopup="dialog"
+                  aria-controls={isSettingsOpen ? 'settings-panel' : undefined}
+                >
+                  ⚙️
+                </button>
               </div>
-              <LanguageSelector language={language} setLanguage={setLanguage} label={t('language')} />
-              <button
-                onClick={() => setIsHomepageOpen(true)}
-                title="Avaa ohje aloitussivuksi asettamiseen"
-                className="inline-flex min-h-[2.75rem] items-center gap-1.5 rounded-full border border-white/20 bg-[var(--theme-gold)] px-[1.1rem] py-[.55rem] text-[.95rem] font-extrabold text-[var(--theme-cta-label)] transition-all hover:bg-[var(--theme-gold-light)] active:scale-[.97]"
-                aria-label={t('openHomepageHelp')}
-              >
-                🏠 {t('help')}
-              </button>
-              <button
-                type="button"
-                onClick={() => setIsInfoOpen(true)}
-                title="Katso mitä Aloitussivu sisältää ja miten sitä ylläpidetään"
-                className="inline-flex min-h-[2.75rem] items-center gap-1.5 rounded-full border border-white/[.16] bg-white/[.09] px-[1.1rem] py-[.55rem] text-[.95rem] font-bold text-white/85 transition-all hover:bg-white/[.18] hover:text-white"
-              >
-                ℹ️ {t('info')}
-              </button>
-              <button
-                ref={settingsButtonRef}
-                type="button"
-                onClick={() => setIsSettingsOpen(prev => !prev)}
-                data-tour="settings"
-                title="Avaa asetukset: värit, tekstikoko ja etusivun osiot"
-                className="inline-flex min-h-[2.75rem] items-center gap-1.5 rounded-full border border-white/[.16] bg-white/[.09] px-[1.1rem] py-[.55rem] text-[.95rem] font-bold text-white/85 transition-all hover:bg-white/[.18] hover:text-white"
-                aria-label={t('openSettings')}
-                aria-expanded={isSettingsOpen}
-                aria-haspopup="dialog"
-                aria-controls={isSettingsOpen ? 'settings-panel' : undefined}
-              >
-                ⚙️
-              </button>
             </nav>
 
-            <div className="hero-body-grid grid gap-5 pb-7 md:gap-6" style={{ gridTemplateColumns: 'minmax(18rem, .9fr) minmax(0, 1.55fr)', alignItems: 'center' }}>
-              {uiVisibility.clock && (
-                <div className="flex flex-col gap-2 hero-clock-panel" data-tour="clock">
-                  <Clock
-                    fontSizeStep={fontSizeStep}
-                    variant="aurora"
-                    mode={clockMode}
-                    showNameDays={uiVisibility.nameDays}
-                    secondaryClock={uiVisibility.secondaryClock ? {
-                      label: selectedSecondaryTimeZone.label,
-                      timeZone: selectedSecondaryTimeZone.value,
-                    } : undefined}
-                  />
-                  <p className="text-lg font-bold text-[var(--theme-gold-light)]">
-                    {t(logoPhase === 'dawn' ? 'greetingMorning' : logoPhase === 'day' ? 'greetingDay' : 'greetingEvening')}
-                  </p>
-                </div>
-              )}
-              <div className="flex flex-col gap-3 hero-tool-stack" data-tour="google-search">
-                {uiVisibility.googleSearch && (
-                  <SearchBar fontSizeStep={fontSizeStep} variant="aurora" />
-                )}
-                <div className="glass-chip-row hero-widget-row flex flex-wrap gap-3" role="region" aria-label={t('currentInfo')}>
+            <div className="hero-launch-grid grid gap-4 pb-7 md:gap-5 lg:pb-3">
+              {(uiVisibility.clock || uiVisibility.weather) && (
+                <div className="hero-launch-info">
+                  {uiVisibility.clock && (
+                    <div className="flex flex-col gap-2 hero-clock-panel" data-tour="clock">
+                      <Clock
+                        fontSizeStep={fontSizeStep}
+                        variant="aurora"
+                        mode={clockMode}
+                        secondaryClock={uiVisibility.secondaryClock ? {
+                          label: selectedSecondaryTimeZone.label,
+                          timeZone: selectedSecondaryTimeZone.value,
+                        } : undefined}
+                      />
+                      <p className="text-lg font-bold text-[var(--theme-gold-light)]">
+                        {t(logoPhase === 'dawn' ? 'greetingMorning' : logoPhase === 'day' ? 'greetingDay' : 'greetingEvening')}
+                      </p>
+                    </div>
+                  )}
                   {uiVisibility.weather && (
-                    <div className="hero-widget hero-chip min-w-[240px] flex-1">
+                    <div className="hero-launch-weather hero-chip min-w-0" data-tour="weather" role="region" aria-label={t('currentInfo')}>
                       <WeatherCard locality={regionalLocality} onLocationResolved={updateLocality} variant="chip" />
                     </div>
                   )}
-                  {uiVisibility.assistant && (
-                    <div className="hero-widget relative z-50 hidden min-w-[220px] flex-1 md:block" data-tour="assistant">
-                      <Suspense fallback={<AssistantFallback />}>
-                        <Assistant variant="header" onOpenChange={setIsAssistantOpen} />
-                      </Suspense>
-                    </div>
-                  )}
                 </div>
-              </div>
+              )}
+              {uiVisibility.googleSearch && (
+                <div className="hero-launch-search" data-tour="google-search">
+                  <SearchBar fontSizeStep={fontSizeStep} variant="aurora" />
+                </div>
+              )}
             </div>
           </div>
         </header>
@@ -971,12 +921,6 @@ const AppContent: React.FC = () => {
                 </a>
               )}
               <div className="flex flex-wrap gap-3">
-                <a
-                  href="./testipalaute.html"
-                  className="mt-5 inline-flex items-center gap-2 rounded-full bg-[var(--theme-gold)] px-5 py-2.5 text-sm font-black text-[var(--theme-cta-label)] no-underline shadow-[0_3px_0_rgba(0,0,0,.28)] hover:bg-[var(--theme-gold-light)] focus-visible:ring-2 focus-visible:ring-[var(--theme-focus)] active:translate-y-[2px] active:shadow-none"
-                >
-                  Vastaa testauslomakkeeseen
-                </a>
                 <button
                   type="button"
                   onClick={() => setIsFeedbackOpen(true)}
@@ -1006,13 +950,8 @@ const AppContent: React.FC = () => {
                 {t('footerNavSite')}
               </p>
               {[
-                { href: './linkit.html', label: t('linkList') },
-                { href: './sivua-tukemassa.html', label: t('supporters') },
                 { href: './tietosuoja.html', label: t('privacyNotice') },
                 { href: './saavutettavuus.html', label: t('accessibilityStatement') },
-                { href: './muutosloki.html', label: t('changelog') },
-                { href: './kehitysjono.html', label: 'Kehitysjono' },
-                { href: './testipalaute.html', label: 'Testauslomake' },
               ].map((link) => (
                 <a
                   key={link.href}
@@ -1030,25 +969,7 @@ const AppContent: React.FC = () => {
             <p className="text-xs font-semibold text-[var(--theme-footer-muted)]">
               Aloitussivu {new Date().getFullYear()}
             </p>
-            <div className="flex flex-wrap items-center gap-5">
-              <a
-                href="./yllapito.html"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs font-black uppercase tracking-[.15em] text-[var(--theme-footer-muted)] no-underline hover:text-[var(--theme-footer-text)]"
-              >
-                {t('admin')}
-              </a>
-              <a
-                href="./muutosloki.html"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs font-black uppercase tracking-[.15em] text-[var(--theme-footer-muted)] no-underline hover:text-[var(--theme-footer-text)]"
-                aria-label={`${t('changelog')}: ${APP_VERSION_LABEL}`}
-              >
-                {APP_VERSION_LABEL}
-              </a>
-            </div>
+            <p className="text-xs font-semibold text-[var(--theme-footer-muted)]">seniorsurf.fi/aloitussivu</p>
           </div>
         </footer>
 
@@ -1096,11 +1017,6 @@ const AppContent: React.FC = () => {
           {reportDraft && <LinkReportModal draft={reportDraft} onClose={closeReportModal} />}
           {isFeedbackOpen && <FeedbackModal isOpen={isFeedbackOpen} onClose={() => setIsFeedbackOpen(false)} />}
         </Suspense>
-        <TestFeedbackPrompt
-          isOpen={isTestFeedbackPromptOpen}
-          onClose={postponeTestFeedback}
-          onPostpone={postponeTestFeedback}
-        />
       </div>
       <FloatingControls
         decreaseLabel={t('decreaseText')}
@@ -1114,7 +1030,7 @@ const AppContent: React.FC = () => {
         canIncrease={uiScale < MAX_UI_SCALE}
         showReset={uiScale !== DEFAULT_UI_SCALE}
         uiScale={uiScale}
-        hidden={isAnyModalOpen || isAssistantOpen}
+        hidden={isAnyModalOpen}
       />
     </div>
   );

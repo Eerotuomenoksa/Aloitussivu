@@ -18,7 +18,7 @@ const TRANSIENT_STATUS_CODES = new Set([408, 425, 429, 500, 502, 503, 504]);
 
 const fetchRemote = async (url) => fetch(url, {
   headers: {
-    'user-agent': 'Mozilla/5.0 (compatible; SeniorinAloitussivu/1.0; +https://eerotuomenoksa.github.io/Aloitussivu/)',
+    'user-agent': 'Mozilla/5.0 (compatible; SeniorinAloitussivu/1.0; +https://seniorsurf.fi/aloitussivu/)',
     accept: 'application/json,text/html;q=0.9,*/*;q=0.8',
   },
 });
