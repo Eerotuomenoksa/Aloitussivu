@@ -1,6 +1,6 @@
 # Alueellisten uutisfeedien kattavuus
 
-Päivitetty: 13.7.2026
+Päivitetty: 14.8.2026
 
 Tämä raportti erottaa kolme uutislähdetyyppiä:
 
@@ -25,10 +25,10 @@ Kuntakohtainen CSV-taulukko: `docs/alueelliset-uutisfeedit-kattavuus.csv`
 | Mittari | Kuntia |
 | --- | ---: |
 | Kuntia yhteensä | 308 |
-| Paikallislehden uutisfeed | 68 |
+| Paikallislehden uutisfeed | 120 |
 | Kunnan oma uutisvirta | 170 |
-| Jokin oma uutisvirta, eli paikallislehti tai kunta | 224 |
-| Ei omaa uutisvirtaa, mutta hyvinvointialueen uutislinkki on saatavilla | 84 |
+| Jokin oma uutisvirta, eli paikallislehti tai kunta | 271 |
+| Ei omaa uutisvirtaa, mutta hyvinvointialueen uutislinkki on saatavilla | 37 |
 | Ei mitään uutislähdettä datassa | 0 |
 
 ## Kunnat, joilla on paikallislehden uutisfeed
@@ -37,12 +37,26 @@ Kuntakohtainen CSV-taulukko: `docs/alueelliset-uutisfeedit-kattavuus.csv`
 | --- | --- | --- |
 | Akaa | Pirkanmaan hyvinvointialue | [Akaan Seutu](https://akaanseutu.fi/feed/) |
 | Aura | Varsinais-Suomen hyvinvointialue | [Auranmaan Viikkolehti](https://www.avl.fi/feed/) |
+| Eckerö | Ahvenanmaa | [Nya Åland](https://www.nyan.ax/feed/rss/) |
 | Enonkoski | Etelä-Savon hyvinvointialue | [Puruvesi](https://www.puruvesi.net/feed/rss/) |
-| Haapavesi | Pohjois-Pohjanmaan hyvinvointialue | [Haapavesi (lehti)](https://www.haapavesi-lehti.fi/feed) |
+| Espoo | Länsi-Uudenmaan hyvinvointialue | [Länsiväylä](https://www.lansivayla.fi/feed/rss/) |
+| Forssa | Kanta-Hämeen hyvinvointialue | [Forssan Lehti](https://www.forssanlehti.fi/feed/rss) |
+| Föglö | Ahvenanmaa | [Nya Åland](https://www.nyan.ax/feed/rss/) |
+| Geta | Ahvenanmaa | [Nya Åland](https://www.nyan.ax/feed/rss/) |
+| Hammarland | Ahvenanmaa | [Nya Åland](https://www.nyan.ax/feed/rss/) |
+| Hausjärvi | Kanta-Hämeen hyvinvointialue | [Aamuposti](https://www.aamuposti.fi/feed/rss/) |
 | Heinävesi | Pohjois-Karjalan hyvinvointialue | [Heinäveden Lehti](https://www.heinavedenlehti.fi/feed/rss) |
+| Helsinki | Helsingin kaupunki | [Helsingin Uutiset](https://www.helsinginuutiset.fi/feed/rss/) |
+| Hollola | Päijät-Hämeen hyvinvointialue | [Etelä-Suomen Sanomat](https://www.ess.fi/feed/rss/) |
+| Humppila | Kanta-Hämeen hyvinvointialue | [Forssan Lehti](https://www.forssanlehti.fi/feed/rss/) |
+| Hyvinkää | Keski-Uudenmaan hyvinvointialue | [Aamuposti](https://www.aamuposti.fi/feed/rss/) |
 | Hämeenkyrö | Pirkanmaan hyvinvointialue | [Hämeenkyrön Sanomat](https://hameenkyronsanomat.fi/feed/) |
+| Iitti | Päijät-Hämeen hyvinvointialue | [Etelä-Suomen Sanomat](https://www.ess.fi/feed/rss/) |
 | Ilmajoki | Etelä-Pohjanmaan hyvinvointialue | [Ilmajoki-lehti](https://www.ilmajoki-lehti.fi/feed/) |
+| Jokioinen | Kanta-Hämeen hyvinvointialue | [Forssan Lehti](https://www.forssanlehti.fi/feed/rss/) |
+| Jomala | Ahvenanmaa | [Nya Åland](https://www.nyan.ax/feed/rss/) |
 | Juva | Etelä-Savon hyvinvointialue | [Juvan Lehti](https://www.juvanlehti.fi/feed/rss) |
+| Jämsä | Keski-Suomen hyvinvointialue | [Keskisuomalainen](https://www.ksml.fi/feed/rss/) |
 | Kaarina | Varsinais-Suomen hyvinvointialue | [Kaarina-lehti](https://www.kaarina-lehti.fi/feed/)<br>[Kunnallislehti Paimio-Sauvo-Kaarina](https://www.kuntsari.fi/feed/) |
 | Kaavi | Pohjois-Savon hyvinvointialue | [Koillis-Savo](https://www.koillis-savo.fi/feed/rss/) |
 | Kalajoki | Pohjois-Pohjanmaan hyvinvointialue | [Kalajoen Seutu](https://kalajoenseutu.net/feed/) |
@@ -52,23 +66,37 @@ Kuntakohtainen CSV-taulukko: `docs/alueelliset-uutisfeedit-kattavuus.csv`
 | Karkkila | Länsi-Uudenmaan hyvinvointialue | [Karkkilan Tienoo](https://www.karkkilalainen.fi/feed/rss) |
 | Keitele | Pohjois-Savon hyvinvointialue | [Pielavesi-Keitele](https://www.pielavesi-keitele.fi/feed/rss) |
 | Kemiönsaari | Varsinais-Suomen hyvinvointialue | [Annonsbladet](https://annonsbladet.fi/feed/) |
+| Kerava | Vantaan ja Keravan hyvinvointialue | [Keski-Uusimaa](https://www.keski-uusimaa.fi/feed/rss/) |
 | Kitee | Pohjois-Karjalan hyvinvointialue | [Puruvesi](https://www.puruvesi.net/feed/rss/) |
 | Kiuruvesi | Pohjois-Savon hyvinvointialue | [Kiuruvesi-lehti](https://kiuruvesilehti.fi/feed/) |
 | Kokemäki | Satakunnan hyvinvointialue | [Kokemäkeläinen](http://kokemakelainen.net/feed/) |
 | Konnevesi | Keski-Suomen hyvinvointialue | [Laukaa-Konnevesi](https://www.laukaa-konnevesi.fi/feed/rss) |
 | Koski Tl | Varsinais-Suomen hyvinvointialue | [Auranmaan Viikkolehti](https://www.avl.fi/feed/) |
+| Kruunupyy | Pohjanmaan hyvinvointialue | [Österbottens Tidning](https://www.osterbottenstidning.fi/feed/) |
 | Kuhmo | Kainuun hyvinvointialue | [Kuhmolainen](https://www.kuhmolainen.fi/feed) |
+| Kuhmoinen | Pirkanmaan hyvinvointialue | [Kuhmoisten Sanomat](https://kuhmoistensanomat.fi/feed/) |
+| Kumlinge | Ahvenanmaa | [Nya Åland](https://www.nyan.ax/feed/rss/) |
+| Kärsämäki | Pohjois-Pohjanmaan hyvinvointialue | [Pyhäjokiseutu](https://www.pyhajokiseutu.fi/feedit/rss/managed-listing/uusimmat/) |
 | Laitila | Varsinais-Suomen hyvinvointialue | [Laitilan Sanomat](https://www.laitilansanomat.fi/feed/) |
+| Lapinlahti | Pohjois-Savon hyvinvointialue | [Matti ja Liisa](https://www.mattijaliisa.fi/feed/rss/) |
+| Lappeenranta | Etelä-Karjalan hyvinvointialue | [Uutisvuoksi](https://www.uutisvuoksi.fi/feed/rss/) |
 | Laukaa | Keski-Suomen hyvinvointialue | [Laukaa-Konnevesi](https://www.laukaa-konnevesi.fi/feed/rss) |
+| Lemland | Ahvenanmaa | [Nya Åland](https://www.nyan.ax/feed/rss/) |
 | Lempäälä | Pirkanmaan hyvinvointialue | [Lempäälän-Vesilahden Sanomat](https://lvs.fi/feed/) |
 | Lieksa | Pohjois-Karjalan hyvinvointialue | [Lieksan Lehti](https://www.lieksanlehti.fi/feed/rss) |
 | Liperi | Pohjois-Karjalan hyvinvointialue | [Kotiseutu-uutiset](https://kotiseutu-uutiset.com/feed/) |
 | Loimaa | Varsinais-Suomen hyvinvointialue | [Loimaan Lehti](https://www.loimaanlehti.fi/feed/) |
 | Loppi | Kanta-Hämeen hyvinvointialue | [Lopen Lehti](https://www.lopenlehti.fi/feed/rss) |
 | Loviisa | Itä-Uudenmaan hyvinvointialue | [Nya Östis](https://www.nyaostis.fi/feed/)<br>[Loviisan Sanomat](https://www.loviisansanomat.fi/feed/rss) |
+| Lumparland | Ahvenanmaa | [Nya Åland](https://www.nyan.ax/feed/rss/) |
+| Luumäki | Etelä-Karjalan hyvinvointialue | [Luumäen Lehti](https://www.luumaenlehti.fi/feed/rss/) |
+| Maalahti | Pohjanmaan hyvinvointialue | [Vasabladet](https://www.vasabladet.fi/feed/) |
+| Maarianhamina - Mariehamn | Ahvenanmaa | [Nya Åland](https://www.nyan.ax/feed/rss/) |
 | Marttila | Varsinais-Suomen hyvinvointialue | [Auranmaan Viikkolehti](https://www.avl.fi/feed/) |
+| Merijärvi | Pohjois-Pohjanmaan hyvinvointialue | [Pyhäjokiseutu](https://www.pyhajokiseutu.fi/feedit/rss/managed-listing/uusimmat/) |
 | Miehikkälä | Kymenlaakson hyvinvointialue | [Kaakonkulma](https://www.kaakonkulma.fi/feed/rss/) |
-| Nivala | Pohjois-Pohjanmaan hyvinvointialue | [Nivala (lehti)](https://www.nivala-lehti.fi/feed) |
+| Mäntsälä | Keski-Uudenmaan hyvinvointialue | [Mäntsälän Uutiset](https://www.mantsalanuutiset.fi/feed/rss) |
+| Mänttä-Vilppula | Pirkanmaan hyvinvointialue | [Keskisuomalainen](https://www.ksml.fi/feed/rss/) |
 | Oripää | Varsinais-Suomen hyvinvointialue | [Auranmaan Viikkolehti](https://www.avl.fi/feed/) |
 | Orivesi | Pirkanmaan hyvinvointialue | [Oriveden Sanomat](https://orivedensanomat.fi/feed/) |
 | Oulu | Pohjois-Pohjanmaan hyvinvointialue | [Kaleva: Oulun seutu](https://kaleva.fi/feedit/rss/managed-listing/oulun-seutu/) |
@@ -76,33 +104,57 @@ Kuntakohtainen CSV-taulukko: `docs/alueelliset-uutisfeedit-kattavuus.csv`
 | Paimio | Varsinais-Suomen hyvinvointialue | [Kunnallislehti Paimio-Sauvo-Kaarina](https://www.kuntsari.fi/feed/) |
 | Parainen | Varsinais-Suomen hyvinvointialue | [Pargas Kungörelser - Paraisten Kuulutukset](https://www.pku.fi/feed/) |
 | Parikkala | Etelä-Karjalan hyvinvointialue | [Parikkalan-Rautjärven Sanomat](https://www.prsanomat.fi/feed/rss) |
+| Pedersören kunta | Pohjanmaan hyvinvointialue | [Österbottens Tidning](https://www.osterbottenstidning.fi/feed/) |
 | Pielavesi | Pohjois-Savon hyvinvointialue | [Pielavesi-Keitele](https://www.pielavesi-keitele.fi/feed/rss) |
 | Pietarsaari | Pohjanmaan hyvinvointialue | [Pietarsaaren Sanomat](https://www.pietarsaarensanomat.fi/feed) |
 | Pirkkala | Pirkanmaan hyvinvointialue | [Pirkkalainen](https://pirkkalainen.fi/feed/) |
+| Polvijärvi | Pohjois-Karjalan hyvinvointialue | [Outokummun Seutu](https://www.outokummunseutu.fi/feed/rss) |
+| Pudasjärvi | Pohjois-Pohjanmaan hyvinvointialue | [Iijokiseutu](https://www.iijokiseutu.fi/feedit/rss/managed-listing/uusimmat/) |
+| Pukkila | Itä-Uudenmaan hyvinvointialue | [Mäntsälän Uutiset](https://www.mantsalanuutiset.fi/feed/rss/) |
 | Pyhäjärvi | Pohjois-Pohjanmaan hyvinvointialue | [Pyhäjärven Sanomat](https://pyhajarvensanomat.fi/feed/) |
 | Pälkäne | Pirkanmaan hyvinvointialue | [Sydän-Hämeen Lehti](https://shl.fi/feed/) |
 | Pöytyä | Varsinais-Suomen hyvinvointialue | [Auranmaan Viikkolehti](https://www.avl.fi/feed/) |
 | Rautalampi | Pohjois-Savon hyvinvointialue | [Paikallislehti Sisä-Savo](https://www.sisa-savolehti.fi/feed/rss/) |
+| Rautavaara | Pohjois-Savon hyvinvointialue | [Pitäjäläinen](https://www.pitajalainen.fi/feed/rss/) |
 | Rautjärvi | Etelä-Karjalan hyvinvointialue | [Parikkalan-Rautjärven Sanomat](https://www.prsanomat.fi/feed/rss) |
+| Riihimäki | Kanta-Hämeen hyvinvointialue | [Aamuposti](https://www.aamuposti.fi/feed/rss/) |
+| Ruokolahti | Etelä-Karjalan hyvinvointialue | [Uutisvuoksi](https://www.uutisvuoksi.fi/feed/rss/) |
 | Rääkkylä | Pohjois-Karjalan hyvinvointialue | [Kotiseutu-uutiset](https://kotiseutu-uutiset.com/feed/) |
 | Saarijärvi | Keski-Suomen hyvinvointialue | [Sampo](https://www.sampolehti.fi/feed/rss/) |
 | Salo | Varsinais-Suomen hyvinvointialue | [Perniönseudun Lehti](https://www.pernionseudunlehti.fi/feed/rss/) |
+| Saltvik | Ahvenanmaa | [Nya Åland](https://www.nyan.ax/feed/rss/) |
 | Sauvo | Varsinais-Suomen hyvinvointialue | [Kunnallislehti Paimio-Sauvo-Kaarina](https://www.kuntsari.fi/feed/) |
+| Savitaipale | Etelä-Karjalan hyvinvointialue | [Etelä-Saimaa](https://www.esaimaa.fi/feed/rss/) |
 | Savonlinna | Etelä-Savon hyvinvointialue | [Puruvesi](https://www.puruvesi.net/feed/rss/) |
 | Somero | Varsinais-Suomen hyvinvointialue | [Somero (lehti)](https://www.somerolehti.fi/feed/) |
-| Sotkamo | Kainuun hyvinvointialue | [Sotkamo-lehti](https://www.sotkamolehti.fi/feed) |
+| Sonkajärvi | Pohjois-Savon hyvinvointialue | [Miilu](https://www.miilu.fi/feed/rss/) |
+| Sottunga | Ahvenanmaa | [Nya Åland](https://www.nyan.ax/feed/rss/) |
 | Sulkava | Etelä-Savon hyvinvointialue | [Sulkava-lehti](https://sulkavalehti.fi/feed/) |
+| Sund | Ahvenanmaa | [Nya Åland](https://www.nyan.ax/feed/rss/) |
 | Suonenjoki | Pohjois-Savon hyvinvointialue | [Paikallislehti Sisä-Savo](https://www.sisa-savolehti.fi/feed/rss/) |
+| Taipalsaari | Etelä-Karjalan hyvinvointialue | [Etelä-Saimaa](https://www.esaimaa.fi/feed/rss/) |
+| Taivassalo | Varsinais-Suomen hyvinvointialue | [Uudenkaupungin Sanomat](https://www.uudenkaupunginsanomat.fi/feed/) |
+| Tampere | Pirkanmaan hyvinvointialue | [Tamperelainen](https://www.tamperelainen.fi/feed/rss/) |
 | Tervo | Pohjois-Savon hyvinvointialue | [Paikallislehti Sisä-Savo](https://www.sisa-savolehti.fi/feed/rss/) |
+| Tohmajärvi | Pohjois-Karjalan hyvinvointialue | [Karjalan Heili](https://www.heili.fi/feed/rss/) |
+| Turku | Varsinais-Suomen hyvinvointialue | [Turkulainen](https://www.turkulainen.fi/feed/rss/) |
 | Tuusniemi | Pohjois-Savon hyvinvointialue | [Koillis-Savo](https://www.koillis-savo.fi/feed/rss/) |
+| Tyrnävä | Pohjois-Pohjanmaan hyvinvointialue | [Rantalakeus](https://www.rantalakeus.fi/feedit/rss/managed-listing/uusimmat/) |
 | Urjala | Pirkanmaan hyvinvointialue | [Urjalan Sanomat](https://urjalansanomat.fi/feed/) |
+| Uurainen | Keski-Suomen hyvinvointialue | [Keskisuomalainen](https://www.ksml.fi/feed/rss/) |
+| Uusikaarlepyy | Pohjanmaan hyvinvointialue | [Österbottens Tidning](https://www.osterbottenstidning.fi/feed/) |
 | Uusikaupunki | Varsinais-Suomen hyvinvointialue | [Uudenkaupungin Sanomat](https://www.uudenkaupunginsanomat.fi/feed/) |
+| Vantaa | Vantaan ja Keravan hyvinvointialue | [Vantaan Sanomat](https://www.vantaansanomat.fi/feed/rss/) |
 | Varkaus | Pohjois-Savon hyvinvointialue | [Warkauden Lehti](https://www.warkaudenlehti.fi/feed/rss) |
+| Vehmaa | Varsinais-Suomen hyvinvointialue | [Uudenkaupungin Sanomat](https://www.uudenkaupunginsanomat.fi/feed/) |
 | Vesanto | Pohjois-Savon hyvinvointialue | [Paikallislehti Sisä-Savo](https://www.sisa-savolehti.fi/feed/rss/) |
 | Vesilahti | Pirkanmaan hyvinvointialue | [Lempäälän-Vesilahden Sanomat](https://lvs.fi/feed/) |
 | Viitasaari | Keski-Suomen hyvinvointialue | [Viitasaaren Seutu](https://www.viitasaarenseutu.fi/feed/rss) |
 | Virolahti | Kymenlaakson hyvinvointialue | [Kaakonkulma](https://www.kaakonkulma.fi/feed/rss/) |
+| Vårdö | Ahvenanmaa | [Nya Åland](https://www.nyan.ax/feed/rss/) |
+| Vöyri | Pohjanmaan hyvinvointialue | [Vasabladet](https://www.vasabladet.fi/feed/) |
 | Ylöjärvi | Pirkanmaan hyvinvointialue | [Ylöjärven Uutiset](https://ylojarvenuutiset.fi/feed/) |
+| Äänekoski | Keski-Suomen hyvinvointialue | [Sisä-Suomen Lehti](https://www.sisasuomenlehti.fi/feed/rss/) |
 
 ## Kunnat, joilla on kunnan oma uutisvirta
 
@@ -126,7 +178,7 @@ Kuntakohtainen CSV-taulukko: `docs/alueelliset-uutisfeedit-kattavuus.csv`
 | Hartola | Päijät-Hämeen hyvinvointialue | [Hartola uutiset](https://hartola.fi/feed/) |
 | Hattula | Kanta-Hämeen hyvinvointialue | [Hattula uutiset](https://hattula.fi/feed/) |
 | Heinola | Päijät-Hämeen hyvinvointialue | [Heinola uutiset](https://www.heinola.fi/feed/) |
-| Helsinki | Helsingin kaupunki | [Helsingin uutiset](https://www.hel.fi/fi/uutiset) |
+| Helsinki | Helsingin kaupunki | [Helsingin kaupungin uutiset](https://www.hel.fi/fi/uutiset) |
 | Hirvensalmi | Etelä-Savon hyvinvointialue | [Hirvensalmi uutiset](https://www.hirvensalmi.fi/feed/) |
 | Huittinen | Satakunnan hyvinvointialue | [Huittinen uutiset](https://www.huittinen.fi/feed/) |
 | Hyrynsalmi | Kainuun hyvinvointialue | [Hyrynsalmi uutiset](https://hyrynsalmi.fi/feed/) |
@@ -285,24 +337,14 @@ Näissä kunnissa ei ole datassa paikallislehden feediä eikä kunnan omaa uutis
 
 | Hyvinvointialue | Kuntia | Hyvinvointialueen uutislinkki | Kunnat ilman omaa uutisvirtaa |
 | --- | --- | --- | --- |
-| Ahvenanmaa | 13 | [Hyvinvointialueen uutiset](https://www.ahs.ax/nyheter) | Eckerö, Föglö, Geta, Hammarland, Jomala, Kumlinge, Lemland, Lumparland, Maarianhamina - Mariehamn, Saltvik, Sottunga, Sund, Vårdö |
-| Etelä-Karjalan hyvinvointialue | 5 | [Hyvinvointialueen uutiset](https://www.ekhva.fi/hyvinvointialue/ajankohtaista/) | Lappeenranta, Luumäki, Ruokolahti, Savitaipale, Taipalsaari |
 | Etelä-Pohjanmaan hyvinvointialue | 7 | [Hyvinvointialueen uutiset](https://www.hyvaep.fi/ajankohtaista/) | Alajärvi, Alavus, Evijärvi, Isokyrö, Lapua, Soini, Ähtäri |
-| Itä-Uudenmaan hyvinvointialue | 1 | [Hyvinvointialueen uutiset](https://itauusimaa.fi/ajankohtaista/) | Pukkila |
-| Kainuun hyvinvointialue | 3 | [Hyvinvointialueen uutiset](https://hyvinvointialue.kainuu.fi/tiedotteet) | Paltamo, Ristijärvi, Suomussalmi |
-| Kanta-Hämeen hyvinvointialue | 5 | [Hyvinvointialueen uutiset](https://omahame.fi/uutiset) | Forssa, Hausjärvi, Humppila, Jokioinen, Riihimäki |
-| Keski-Suomen hyvinvointialue | 5 | [Hyvinvointialueen uutiset](https://www.hyvaks.fi/uutiset) | Jämsä, Kinnula, Multia, Uurainen, Äänekoski |
-| Keski-Uudenmaan hyvinvointialue | 1 | [Hyvinvointialueen uutiset](https://www.keusote.fi/ajankohtaista/) | Hyvinkää |
+| Kainuun hyvinvointialue | 4 | [Hyvinvointialueen uutiset](https://hyvinvointialue.kainuu.fi/tiedotteet) | Paltamo, Ristijärvi, Sotkamo, Suomussalmi |
+| Keski-Suomen hyvinvointialue | 2 | [Hyvinvointialueen uutiset](https://www.hyvaks.fi/uutiset) | Kinnula, Multia |
 | Lapin hyvinvointialue | 12 | [Hyvinvointialueen uutiset](https://lapha.fi/ajankohtaista) | Enontekiö, Inari, Keminmaa, Kolari, Muonio, Pello, Rovaniemi, Savukoski, Simo, Sodankylä, Tervola, Utsjoki |
-| Pirkanmaan hyvinvointialue | 6 | [Hyvinvointialueen uutiset](https://www.pirha.fi/ajankohtaista/pirha-nyt) | Kihniö, Kuhmoinen, Mänttä-Vilppula, Punkalaidun, Valkeakoski, Virrat |
-| Pohjanmaan hyvinvointialue | 6 | [Hyvinvointialueen uutiset](https://pohjanmaanhyvinvointi.fi/tietoa-meista/ajankohtaista/uutiset/) | Kristiinankaupunki, Kruunupyy, Maalahti, Pedersören kunta, Uusikaarlepyy, Vöyri |
-| Pohjois-Karjalan hyvinvointialue | 2 | [Hyvinvointialueen uutiset](https://www.siunsote.fi/ajankohtaista/) | Polvijärvi, Tohmajärvi |
-| Pohjois-Pohjanmaan hyvinvointialue | 6 | [Hyvinvointialueen uutiset](https://pohde.fi/ajankohtaista/) | Kuusamo, Kärsämäki, Merijärvi, Pudasjärvi, Tyrnävä, Utajärvi |
-| Pohjois-Savon hyvinvointialue | 3 | [Hyvinvointialueen uutiset](https://pshyvinvointialue.fi/fi/ajankohtaiset) | Lapinlahti, Rautavaara, Sonkajärvi |
-| Päijät-Hämeen hyvinvointialue | 2 | [Hyvinvointialueen uutiset](https://paijatha.fi/ajankohtaista/) | Hollola, Iitti |
+| Pirkanmaan hyvinvointialue | 4 | [Hyvinvointialueen uutiset](https://www.pirha.fi/ajankohtaista/pirha-nyt) | Kihniö, Punkalaidun, Valkeakoski, Virrat |
+| Pohjanmaan hyvinvointialue | 1 | [Hyvinvointialueen uutiset](https://pohjanmaanhyvinvointi.fi/tietoa-meista/ajankohtaista/uutiset/) | Kristiinankaupunki |
+| Pohjois-Pohjanmaan hyvinvointialue | 4 | [Hyvinvointialueen uutiset](https://pohde.fi/ajankohtaista/) | Haapavesi, Kuusamo, Nivala, Utajärvi |
 | Satakunnan hyvinvointialue | 3 | [Hyvinvointialueen uutiset](https://sata.fi/ajankohtaista/) | Eurajoki, Jämijärvi, Nakkila |
-| Vantaan ja Keravan hyvinvointialue | 1 | [Hyvinvointialueen uutiset](https://vakehyva.fi/fi/ajankohtaista) | Kerava |
-| Varsinais-Suomen hyvinvointialue | 3 | [Hyvinvointialueen uutiset](https://www.varha.fi/fi/ajankohtaista) | Taivassalo, Turku, Vehmaa |
 
 ## Seuraava tarkistus
 

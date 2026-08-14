@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-07-13T05:48:32.795Z",
+  "generatedAt": "2026-08-14T10:10:10.762Z",
   "municipalityCount": 308,
   "counts": {
-    "localNewspaperFeedMunicipalities": 68,
+    "localNewspaperFeedMunicipalities": 120,
     "municipalityNewsFlowMunicipalities": 170,
-    "ownNewsFlowMunicipalities": 224,
-    "wellbeingAreaNewsOnlyMunicipalities": 84,
+    "ownNewsFlowMunicipalities": 271,
+    "wellbeingAreaNewsOnlyMunicipalities": 37,
     "municipalitiesWithoutAnyNewsSource": 0
   },
   "municipalities": [
@@ -195,11 +195,17 @@
       "key": "eckerö",
       "wellbeingAreaCode": "91",
       "wellbeingAreaName": "Ahvenanmaa",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Nya Åland",
+          "url": "https://www.nyan.ax/feed/rss/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Ahvenanmaa",
@@ -262,10 +268,16 @@
       "wellbeingAreaCode": "03",
       "wellbeingAreaName": "Länsi-Uudenmaan hyvinvointialue",
       "sourceStatus": "own-news-flow",
-      "hasLocalNewspaperFeed": false,
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": true,
       "hasOwnNewsFlow": true,
-      "localNewspaperSources": [],
+      "localNewspaperSources": [
+        {
+          "name": "Länsiväylä",
+          "url": "https://www.lansivayla.fi/feed/rss/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [
         {
           "name": "Espoon uutiset",
@@ -374,11 +386,17 @@
       "key": "forssa",
       "wellbeingAreaCode": "07",
       "wellbeingAreaName": "Kanta-Hämeen hyvinvointialue",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Forssan Lehti",
+          "url": "https://www.forssanlehti.fi/feed/rss",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Kanta-Hämeen hyvinvointialue",
@@ -392,11 +410,17 @@
       "key": "föglö",
       "wellbeingAreaCode": "91",
       "wellbeingAreaName": "Ahvenanmaa",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Nya Åland",
+          "url": "https://www.nyan.ax/feed/rss/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Ahvenanmaa",
@@ -410,11 +434,17 @@
       "key": "geta",
       "wellbeingAreaCode": "91",
       "wellbeingAreaName": "Ahvenanmaa",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Nya Åland",
+          "url": "https://www.nyan.ax/feed/rss/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Ahvenanmaa",
@@ -452,17 +482,11 @@
       "key": "haapavesi",
       "wellbeingAreaCode": "19",
       "wellbeingAreaName": "Pohjois-Pohjanmaan hyvinvointialue",
-      "sourceStatus": "own-news-flow",
-      "hasLocalNewspaperFeed": true,
+      "sourceStatus": "wellbeing-area-news-only",
+      "hasLocalNewspaperFeed": false,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": true,
-      "localNewspaperSources": [
-        {
-          "name": "Haapavesi (lehti)",
-          "url": "https://www.haapavesi-lehti.fi/feed",
-          "sourceType": "local-newspaper-feed"
-        }
-      ],
+      "hasOwnNewsFlow": false,
+      "localNewspaperSources": [],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Pohjois-Pohjanmaan hyvinvointialue",
@@ -548,11 +572,17 @@
       "key": "hammarland",
       "wellbeingAreaCode": "91",
       "wellbeingAreaName": "Ahvenanmaa",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Nya Åland",
+          "url": "https://www.nyan.ax/feed/rss/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Ahvenanmaa",
@@ -686,11 +716,17 @@
       "key": "hausjärvi",
       "wellbeingAreaCode": "07",
       "wellbeingAreaName": "Kanta-Hämeen hyvinvointialue",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Aamuposti",
+          "url": "https://www.aamuposti.fi/feed/rss/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Kanta-Hämeen hyvinvointialue",
@@ -753,13 +789,19 @@
       "wellbeingAreaCode": "90",
       "wellbeingAreaName": "Helsingin kaupunki",
       "sourceStatus": "own-news-flow",
-      "hasLocalNewspaperFeed": false,
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": true,
       "hasOwnNewsFlow": true,
-      "localNewspaperSources": [],
+      "localNewspaperSources": [
+        {
+          "name": "Helsingin Uutiset",
+          "url": "https://www.helsinginuutiset.fi/feed/rss/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [
         {
-          "name": "Helsingin uutiset",
+          "name": "Helsingin kaupungin uutiset",
           "url": "https://www.hel.fi/fi/uutiset",
           "sourceType": "municipality-news-flow"
         }
@@ -800,11 +842,17 @@
       "key": "hollola",
       "wellbeingAreaCode": "09",
       "wellbeingAreaName": "Päijät-Hämeen hyvinvointialue",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Etelä-Suomen Sanomat",
+          "url": "https://www.ess.fi/feed/rss/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Päijät-Hämeen hyvinvointialue",
@@ -842,11 +890,17 @@
       "key": "humppila",
       "wellbeingAreaCode": "07",
       "wellbeingAreaName": "Kanta-Hämeen hyvinvointialue",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Forssan Lehti",
+          "url": "https://www.forssanlehti.fi/feed/rss/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Kanta-Hämeen hyvinvointialue",
@@ -884,11 +938,17 @@
       "key": "hyvinkää",
       "wellbeingAreaCode": "02",
       "wellbeingAreaName": "Keski-Uudenmaan hyvinvointialue",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Aamuposti",
+          "url": "https://www.aamuposti.fi/feed/rss/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Keski-Uudenmaan hyvinvointialue",
@@ -998,11 +1058,17 @@
       "key": "iitti",
       "wellbeingAreaCode": "09",
       "wellbeingAreaName": "Päijät-Hämeen hyvinvointialue",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Etelä-Suomen Sanomat",
+          "url": "https://www.ess.fi/feed/rss/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Päijät-Hämeen hyvinvointialue",
@@ -1244,11 +1310,17 @@
       "key": "jokioinen",
       "wellbeingAreaCode": "07",
       "wellbeingAreaName": "Kanta-Hämeen hyvinvointialue",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Forssan Lehti",
+          "url": "https://www.forssanlehti.fi/feed/rss/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Kanta-Hämeen hyvinvointialue",
@@ -1262,11 +1334,17 @@
       "key": "jomala",
       "wellbeingAreaCode": "91",
       "wellbeingAreaName": "Ahvenanmaa",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Nya Åland",
+          "url": "https://www.nyan.ax/feed/rss/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Ahvenanmaa",
@@ -1442,11 +1520,17 @@
       "key": "jämsä",
       "wellbeingAreaCode": "15",
       "wellbeingAreaName": "Keski-Suomen hyvinvointialue",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Keskisuomalainen",
+          "url": "https://www.ksml.fi/feed/rss/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Keski-Suomen hyvinvointialue",
@@ -2076,11 +2160,17 @@
       "key": "kerava",
       "wellbeingAreaCode": "04",
       "wellbeingAreaName": "Vantaan ja Keravan hyvinvointialue",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Keski-Uusimaa",
+          "url": "https://www.keski-uusimaa.fi/feed/rss/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Vantaan ja Keravan hyvinvointialue",
@@ -2508,11 +2598,17 @@
       "key": "kruunupyy",
       "wellbeingAreaCode": "17",
       "wellbeingAreaName": "Pohjanmaan hyvinvointialue",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Österbottens Tidning",
+          "url": "https://www.osterbottenstidning.fi/feed/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Pohjanmaan hyvinvointialue",
@@ -2550,11 +2646,17 @@
       "key": "kuhmoinen",
       "wellbeingAreaCode": "08",
       "wellbeingAreaName": "Pirkanmaan hyvinvointialue",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Kuhmoisten Sanomat",
+          "url": "https://kuhmoistensanomat.fi/feed/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Pirkanmaan hyvinvointialue",
@@ -2568,11 +2670,17 @@
       "key": "kumlinge",
       "wellbeingAreaCode": "91",
       "wellbeingAreaName": "Ahvenanmaa",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Nya Åland",
+          "url": "https://www.nyan.ax/feed/rss/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Ahvenanmaa",
@@ -2748,11 +2856,17 @@
       "key": "kärsämäki",
       "wellbeingAreaCode": "19",
       "wellbeingAreaName": "Pohjois-Pohjanmaan hyvinvointialue",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Pyhäjokiseutu",
+          "url": "https://www.pyhajokiseutu.fi/feedit/rss/managed-listing/uusimmat/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Pohjois-Pohjanmaan hyvinvointialue",
@@ -2886,11 +3000,17 @@
       "key": "lapinlahti",
       "wellbeingAreaCode": "13",
       "wellbeingAreaName": "Pohjois-Savon hyvinvointialue",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Matti ja Liisa",
+          "url": "https://www.mattijaliisa.fi/feed/rss/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Pohjois-Savon hyvinvointialue",
@@ -2928,11 +3048,17 @@
       "key": "lappeenranta",
       "wellbeingAreaCode": "11",
       "wellbeingAreaName": "Etelä-Karjalan hyvinvointialue",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Uutisvuoksi",
+          "url": "https://www.uutisvuoksi.fi/feed/rss/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Etelä-Karjalan hyvinvointialue",
@@ -3012,11 +3138,17 @@
       "key": "lemland",
       "wellbeingAreaCode": "91",
       "wellbeingAreaName": "Ahvenanmaa",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Nya Åland",
+          "url": "https://www.nyan.ax/feed/rss/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Ahvenanmaa",
@@ -3353,11 +3485,17 @@
       "key": "lumparland",
       "wellbeingAreaCode": "91",
       "wellbeingAreaName": "Ahvenanmaa",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Nya Åland",
+          "url": "https://www.nyan.ax/feed/rss/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Ahvenanmaa",
@@ -3395,11 +3533,17 @@
       "key": "luumäki",
       "wellbeingAreaCode": "11",
       "wellbeingAreaName": "Etelä-Karjalan hyvinvointialue",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Luumäen Lehti",
+          "url": "https://www.luumaenlehti.fi/feed/rss/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Etelä-Karjalan hyvinvointialue",
@@ -3413,11 +3557,17 @@
       "key": "maalahti",
       "wellbeingAreaCode": "17",
       "wellbeingAreaName": "Pohjanmaan hyvinvointialue",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Vasabladet",
+          "url": "https://www.vasabladet.fi/feed/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Pohjanmaan hyvinvointialue",
@@ -3431,11 +3581,17 @@
       "key": "maarianhamina mariehamn",
       "wellbeingAreaCode": "91",
       "wellbeingAreaName": "Ahvenanmaa",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Nya Åland",
+          "url": "https://www.nyan.ax/feed/rss/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Ahvenanmaa",
@@ -3497,11 +3653,17 @@
       "key": "merijärvi",
       "wellbeingAreaCode": "19",
       "wellbeingAreaName": "Pohjois-Pohjanmaan hyvinvointialue",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Pyhäjokiseutu",
+          "url": "https://www.pyhajokiseutu.fi/feedit/rss/managed-listing/uusimmat/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Pohjois-Pohjanmaan hyvinvointialue",
@@ -3744,10 +3906,16 @@
       "wellbeingAreaCode": "02",
       "wellbeingAreaName": "Keski-Uudenmaan hyvinvointialue",
       "sourceStatus": "own-news-flow",
-      "hasLocalNewspaperFeed": false,
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": true,
       "hasOwnNewsFlow": true,
-      "localNewspaperSources": [],
+      "localNewspaperSources": [
+        {
+          "name": "Mäntsälän Uutiset",
+          "url": "https://www.mantsalanuutiset.fi/feed/rss",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [
         {
           "name": "Mäntsälä uutiset",
@@ -3767,11 +3935,17 @@
       "key": "mänttä vilppula",
       "wellbeingAreaCode": "08",
       "wellbeingAreaName": "Pirkanmaan hyvinvointialue",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Keskisuomalainen",
+          "url": "https://www.ksml.fi/feed/rss/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Pirkanmaan hyvinvointialue",
@@ -3851,17 +4025,11 @@
       "key": "nivala",
       "wellbeingAreaCode": "19",
       "wellbeingAreaName": "Pohjois-Pohjanmaan hyvinvointialue",
-      "sourceStatus": "own-news-flow",
-      "hasLocalNewspaperFeed": true,
+      "sourceStatus": "wellbeing-area-news-only",
+      "hasLocalNewspaperFeed": false,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": true,
-      "localNewspaperSources": [
-        {
-          "name": "Nivala (lehti)",
-          "url": "https://www.nivala-lehti.fi/feed",
-          "sourceType": "local-newspaper-feed"
-        }
-      ],
+      "hasOwnNewsFlow": false,
+      "localNewspaperSources": [],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Pohjois-Pohjanmaan hyvinvointialue",
@@ -4289,11 +4457,17 @@
       "key": "pedersören",
       "wellbeingAreaCode": "17",
       "wellbeingAreaName": "Pohjanmaan hyvinvointialue",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Österbottens Tidning",
+          "url": "https://www.osterbottenstidning.fi/feed/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Pohjanmaan hyvinvointialue",
@@ -4517,11 +4691,17 @@
       "key": "polvijärvi",
       "wellbeingAreaCode": "14",
       "wellbeingAreaName": "Pohjois-Karjalan hyvinvointialue",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Outokummun Seutu",
+          "url": "https://www.outokummunseutu.fi/feed/rss",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Pohjois-Karjalan hyvinvointialue",
@@ -4655,11 +4835,17 @@
       "key": "pudasjärvi",
       "wellbeingAreaCode": "19",
       "wellbeingAreaName": "Pohjois-Pohjanmaan hyvinvointialue",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Iijokiseutu",
+          "url": "https://www.iijokiseutu.fi/feedit/rss/managed-listing/uusimmat/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Pohjois-Pohjanmaan hyvinvointialue",
@@ -4673,11 +4859,17 @@
       "key": "pukkila",
       "wellbeingAreaCode": "01",
       "wellbeingAreaName": "Itä-Uudenmaan hyvinvointialue",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Mäntsälän Uutiset",
+          "url": "https://www.mantsalanuutiset.fi/feed/rss/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Itä-Uudenmaan hyvinvointialue",
@@ -5105,11 +5297,17 @@
       "key": "rautavaara",
       "wellbeingAreaCode": "13",
       "wellbeingAreaName": "Pohjois-Savon hyvinvointialue",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Pitäjäläinen",
+          "url": "https://www.pitajalainen.fi/feed/rss/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Pohjois-Savon hyvinvointialue",
@@ -5171,11 +5369,17 @@
       "key": "riihimäki",
       "wellbeingAreaCode": "07",
       "wellbeingAreaName": "Kanta-Hämeen hyvinvointialue",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Aamuposti",
+          "url": "https://www.aamuposti.fi/feed/rss/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Kanta-Hämeen hyvinvointialue",
@@ -5225,11 +5429,17 @@
       "key": "ruokolahti",
       "wellbeingAreaCode": "11",
       "wellbeingAreaName": "Etelä-Karjalan hyvinvointialue",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Uutisvuoksi",
+          "url": "https://www.uutisvuoksi.fi/feed/rss/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Etelä-Karjalan hyvinvointialue",
@@ -5393,11 +5603,17 @@
       "key": "saltvik",
       "wellbeingAreaCode": "91",
       "wellbeingAreaName": "Ahvenanmaa",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Nya Åland",
+          "url": "https://www.nyan.ax/feed/rss/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Ahvenanmaa",
@@ -5459,11 +5675,17 @@
       "key": "savitaipale",
       "wellbeingAreaCode": "11",
       "wellbeingAreaName": "Etelä-Karjalan hyvinvointialue",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Etelä-Saimaa",
+          "url": "https://www.esaimaa.fi/feed/rss/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Etelä-Karjalan hyvinvointialue",
@@ -5795,11 +6017,17 @@
       "key": "sonkajärvi",
       "wellbeingAreaCode": "13",
       "wellbeingAreaName": "Pohjois-Savon hyvinvointialue",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Miilu",
+          "url": "https://www.miilu.fi/feed/rss/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Pohjois-Savon hyvinvointialue",
@@ -5813,17 +6041,11 @@
       "key": "sotkamo",
       "wellbeingAreaCode": "20",
       "wellbeingAreaName": "Kainuun hyvinvointialue",
-      "sourceStatus": "own-news-flow",
-      "hasLocalNewspaperFeed": true,
+      "sourceStatus": "wellbeing-area-news-only",
+      "hasLocalNewspaperFeed": false,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": true,
-      "localNewspaperSources": [
-        {
-          "name": "Sotkamo-lehti",
-          "url": "https://www.sotkamolehti.fi/feed",
-          "sourceType": "local-newspaper-feed"
-        }
-      ],
+      "hasOwnNewsFlow": false,
+      "localNewspaperSources": [],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Kainuun hyvinvointialue",
@@ -5837,11 +6059,17 @@
       "key": "sottunga",
       "wellbeingAreaCode": "91",
       "wellbeingAreaName": "Ahvenanmaa",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Nya Åland",
+          "url": "https://www.nyan.ax/feed/rss/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Ahvenanmaa",
@@ -5879,11 +6107,17 @@
       "key": "sund",
       "wellbeingAreaCode": "91",
       "wellbeingAreaName": "Ahvenanmaa",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Nya Åland",
+          "url": "https://www.nyan.ax/feed/rss/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Ahvenanmaa",
@@ -5993,11 +6227,17 @@
       "key": "taipalsaari",
       "wellbeingAreaCode": "11",
       "wellbeingAreaName": "Etelä-Karjalan hyvinvointialue",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Etelä-Saimaa",
+          "url": "https://www.esaimaa.fi/feed/rss/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Etelä-Karjalan hyvinvointialue",
@@ -6035,11 +6275,17 @@
       "key": "taivassalo",
       "wellbeingAreaCode": "05",
       "wellbeingAreaName": "Varsinais-Suomen hyvinvointialue",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Uudenkaupungin Sanomat",
+          "url": "https://www.uudenkaupunginsanomat.fi/feed/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Varsinais-Suomen hyvinvointialue",
@@ -6078,10 +6324,16 @@
       "wellbeingAreaCode": "08",
       "wellbeingAreaName": "Pirkanmaan hyvinvointialue",
       "sourceStatus": "own-news-flow",
-      "hasLocalNewspaperFeed": false,
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": true,
       "hasOwnNewsFlow": true,
-      "localNewspaperSources": [],
+      "localNewspaperSources": [
+        {
+          "name": "Tamperelainen",
+          "url": "https://www.tamperelainen.fi/feed/rss/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [
         {
           "name": "Tampereen uutiset",
@@ -6177,11 +6429,17 @@
       "key": "tohmajärvi",
       "wellbeingAreaCode": "14",
       "wellbeingAreaName": "Pohjois-Karjalan hyvinvointialue",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Karjalan Heili",
+          "url": "https://www.heili.fi/feed/rss/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Pohjois-Karjalan hyvinvointialue",
@@ -6267,11 +6525,17 @@
       "key": "turku",
       "wellbeingAreaCode": "05",
       "wellbeingAreaName": "Varsinais-Suomen hyvinvointialue",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Turkulainen",
+          "url": "https://www.turkulainen.fi/feed/rss/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Varsinais-Suomen hyvinvointialue",
@@ -6333,11 +6597,17 @@
       "key": "tyrnävä",
       "wellbeingAreaCode": "19",
       "wellbeingAreaName": "Pohjois-Pohjanmaan hyvinvointialue",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Rantalakeus",
+          "url": "https://www.rantalakeus.fi/feedit/rss/managed-listing/uusimmat/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Pohjois-Pohjanmaan hyvinvointialue",
@@ -6435,11 +6705,17 @@
       "key": "uurainen",
       "wellbeingAreaCode": "15",
       "wellbeingAreaName": "Keski-Suomen hyvinvointialue",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Keskisuomalainen",
+          "url": "https://www.ksml.fi/feed/rss/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Keski-Suomen hyvinvointialue",
@@ -6453,11 +6729,17 @@
       "key": "uusikaarlepyy",
       "wellbeingAreaCode": "17",
       "wellbeingAreaName": "Pohjanmaan hyvinvointialue",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Österbottens Tidning",
+          "url": "https://www.osterbottenstidning.fi/feed/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Pohjanmaan hyvinvointialue",
@@ -6562,10 +6844,16 @@
       "wellbeingAreaCode": "04",
       "wellbeingAreaName": "Vantaan ja Keravan hyvinvointialue",
       "sourceStatus": "own-news-flow",
-      "hasLocalNewspaperFeed": false,
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": true,
       "hasOwnNewsFlow": true,
-      "localNewspaperSources": [],
+      "localNewspaperSources": [
+        {
+          "name": "Vantaan Sanomat",
+          "url": "https://www.vantaansanomat.fi/feed/rss/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [
         {
           "name": "Vantaan uutiset",
@@ -6614,11 +6902,17 @@
       "key": "vehmaa",
       "wellbeingAreaCode": "05",
       "wellbeingAreaName": "Varsinais-Suomen hyvinvointialue",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Uudenkaupungin Sanomat",
+          "url": "https://www.uudenkaupunginsanomat.fi/feed/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Varsinais-Suomen hyvinvointialue",
@@ -6854,11 +7148,17 @@
       "key": "vårdö",
       "wellbeingAreaCode": "91",
       "wellbeingAreaName": "Ahvenanmaa",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Nya Åland",
+          "url": "https://www.nyan.ax/feed/rss/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Ahvenanmaa",
@@ -6872,11 +7172,17 @@
       "key": "vöyri",
       "wellbeingAreaCode": "17",
       "wellbeingAreaName": "Pohjanmaan hyvinvointialue",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Vasabladet",
+          "url": "https://www.vasabladet.fi/feed/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Pohjanmaan hyvinvointialue",
@@ -7004,11 +7310,17 @@
       "key": "äänekoski",
       "wellbeingAreaCode": "15",
       "wellbeingAreaName": "Keski-Suomen hyvinvointialue",
-      "sourceStatus": "wellbeing-area-news-only",
-      "hasLocalNewspaperFeed": false,
+      "sourceStatus": "own-news-flow",
+      "hasLocalNewspaperFeed": true,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": false,
-      "localNewspaperSources": [],
+      "hasOwnNewsFlow": true,
+      "localNewspaperSources": [
+        {
+          "name": "Sisä-Suomen Lehti",
+          "url": "https://www.sisasuomenlehti.fi/feed/rss/",
+          "sourceType": "local-newspaper-feed"
+        }
+      ],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Keski-Suomen hyvinvointialue",

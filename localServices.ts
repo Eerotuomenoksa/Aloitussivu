@@ -1283,7 +1283,7 @@ const localServiceMap: Record<string, LocalServiceConfig> = {
     library: { name: 'Helmet-kirjastot', url: 'https://www.helmet.fi/', group: 'Kirjastot' },
     municipality: { name: 'Helsingin palvelut', url: 'https://www.hel.fi/fi', group: 'Paikalliset palvelut' },
     rssFeeds: [
-      { name: 'Helsingin uutiset', url: 'https://www.hel.fi/fi/uutiset' },
+      { name: 'Helsingin kaupungin uutiset', url: 'https://www.hel.fi/fi/uutiset' },
     ],
   },
   espoo: {

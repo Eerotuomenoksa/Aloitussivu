@@ -11,6 +11,281 @@ const MISSING_DOC = path.join(DOCS_DIR, 'paikallisuutiset-puuttuvat-kunnat.md');
 const SCAN_CONCURRENCY = 6;
 const MANUAL_NEWSPAPER_FEEDS = [
   {
+    municipality: 'Espoo',
+    name: 'Länsiväylä',
+    url: 'https://www.lansivayla.fi/feed/rss/',
+  },
+  {
+    municipality: 'Helsinki',
+    name: 'Helsingin Uutiset',
+    url: 'https://www.helsinginuutiset.fi/feed/rss/',
+  },
+  {
+    municipality: 'Oulu',
+    name: 'Kaleva: Oulun seutu',
+    url: 'https://kaleva.fi/feedit/rss/managed-listing/oulun-seutu/',
+  },
+  {
+    municipality: 'Tampere',
+    name: 'Tamperelainen',
+    url: 'https://www.tamperelainen.fi/feed/rss/',
+  },
+  {
+    municipality: 'Turku',
+    name: 'Turkulainen',
+    url: 'https://www.turkulainen.fi/feed/rss/',
+  },
+  {
+    municipality: 'Vantaa',
+    name: 'Vantaan Sanomat',
+    url: 'https://www.vantaansanomat.fi/feed/rss/',
+  },
+  {
+    municipality: 'Eckerö',
+    name: 'Nya Åland',
+    url: 'https://www.nyan.ax/feed/rss/',
+  },
+  {
+    municipality: 'Forssa',
+    name: 'Forssan Lehti',
+    url: 'https://www.forssanlehti.fi/feed/rss/',
+  },
+  {
+    municipality: 'Föglö',
+    name: 'Nya Åland',
+    url: 'https://www.nyan.ax/feed/rss/',
+  },
+  {
+    municipality: 'Geta',
+    name: 'Nya Åland',
+    url: 'https://www.nyan.ax/feed/rss/',
+  },
+  {
+    municipality: 'Hammarland',
+    name: 'Nya Åland',
+    url: 'https://www.nyan.ax/feed/rss/',
+  },
+  {
+    municipality: 'Hausjärvi',
+    name: 'Aamuposti',
+    url: 'https://www.aamuposti.fi/feed/rss/',
+  },
+  {
+    municipality: 'Hollola',
+    name: 'Etelä-Suomen Sanomat',
+    url: 'https://www.ess.fi/feed/rss/',
+  },
+  {
+    municipality: 'Humppila',
+    name: 'Forssan Lehti',
+    url: 'https://www.forssanlehti.fi/feed/rss/',
+  },
+  {
+    municipality: 'Hyvinkää',
+    name: 'Aamuposti',
+    url: 'https://www.aamuposti.fi/feed/rss/',
+  },
+  {
+    municipality: 'Iitti',
+    name: 'Etelä-Suomen Sanomat',
+    url: 'https://www.ess.fi/feed/rss/',
+  },
+  {
+    municipality: 'Jokioinen',
+    name: 'Forssan Lehti',
+    url: 'https://www.forssanlehti.fi/feed/rss/',
+  },
+  {
+    municipality: 'Jomala',
+    name: 'Nya Åland',
+    url: 'https://www.nyan.ax/feed/rss/',
+  },
+  {
+    municipality: 'Jämsä',
+    name: 'Keskisuomalainen',
+    url: 'https://www.ksml.fi/feed/rss/',
+  },
+  {
+    municipality: 'Kerava',
+    name: 'Keski-Uusimaa',
+    url: 'https://www.keski-uusimaa.fi/feed/rss/',
+  },
+  {
+    municipality: 'Kruunupyy',
+    name: 'Österbottens Tidning',
+    url: 'https://www.osterbottenstidning.fi/feed/',
+  },
+  {
+    municipality: 'Kuhmoinen',
+    name: 'Kuhmoisten Sanomat',
+    url: 'https://kuhmoistensanomat.fi/feed/',
+  },
+  {
+    municipality: 'Kumlinge',
+    name: 'Nya Åland',
+    url: 'https://www.nyan.ax/feed/rss/',
+  },
+  {
+    municipality: 'Kärsämäki',
+    name: 'Pyhäjokiseutu',
+    url: 'https://www.pyhajokiseutu.fi/feedit/rss/managed-listing/uusimmat/',
+  },
+  {
+    municipality: 'Lapinlahti',
+    name: 'Matti ja Liisa',
+    url: 'https://www.mattijaliisa.fi/feed/rss/',
+  },
+  {
+    municipality: 'Lemland',
+    name: 'Nya Åland',
+    url: 'https://www.nyan.ax/feed/rss/',
+  },
+  {
+    municipality: 'Luumäki',
+    name: 'Luumäen Lehti',
+    url: 'https://www.luumaenlehti.fi/feed/rss/',
+  },
+  {
+    municipality: 'Lumparland',
+    name: 'Nya Åland',
+    url: 'https://www.nyan.ax/feed/rss/',
+  },
+  {
+    municipality: 'Lappeenranta',
+    name: 'Uutisvuoksi',
+    url: 'https://www.uutisvuoksi.fi/feed/rss/',
+  },
+  {
+    municipality: 'Maalahti',
+    name: 'Vasabladet',
+    url: 'https://www.vasabladet.fi/feed/',
+  },
+  {
+    municipality: 'Maarianhamina - Mariehamn',
+    name: 'Nya Åland',
+    url: 'https://www.nyan.ax/feed/rss/',
+  },
+  {
+    municipality: 'Merijärvi',
+    name: 'Pyhäjokiseutu',
+    url: 'https://www.pyhajokiseutu.fi/feedit/rss/managed-listing/uusimmat/',
+  },
+  {
+    municipality: 'Mänttä-Vilppula',
+    name: 'Keskisuomalainen',
+    url: 'https://www.ksml.fi/feed/rss/',
+  },
+  {
+    municipality: 'Pedersören kunta',
+    name: 'Österbottens Tidning',
+    url: 'https://www.osterbottenstidning.fi/feed/',
+  },
+  {
+    municipality: 'Polvijärvi',
+    name: 'Outokummun Seutu',
+    url: 'https://www.outokummunseutu.fi/feed/rss',
+  },
+  {
+    municipality: 'Pudasjärvi',
+    name: 'Iijokiseutu',
+    url: 'https://www.iijokiseutu.fi/feedit/rss/managed-listing/uusimmat/',
+  },
+  {
+    municipality: 'Pukkila',
+    name: 'Mäntsälän Uutiset',
+    url: 'https://www.mantsalanuutiset.fi/feed/rss/',
+  },
+  {
+    municipality: 'Rautavaara',
+    name: 'Pitäjäläinen',
+    url: 'https://www.pitajalainen.fi/feed/rss/',
+  },
+  {
+    municipality: 'Riihimäki',
+    name: 'Aamuposti',
+    url: 'https://www.aamuposti.fi/feed/rss/',
+  },
+  {
+    municipality: 'Ruokolahti',
+    name: 'Uutisvuoksi',
+    url: 'https://www.uutisvuoksi.fi/feed/rss/',
+  },
+  {
+    municipality: 'Saltvik',
+    name: 'Nya Åland',
+    url: 'https://www.nyan.ax/feed/rss/',
+  },
+  {
+    municipality: 'Savitaipale',
+    name: 'Etelä-Saimaa',
+    url: 'https://www.esaimaa.fi/feed/rss/',
+  },
+  {
+    municipality: 'Sonkajärvi',
+    name: 'Miilu',
+    url: 'https://www.miilu.fi/feed/rss/',
+  },
+  {
+    municipality: 'Sottunga',
+    name: 'Nya Åland',
+    url: 'https://www.nyan.ax/feed/rss/',
+  },
+  {
+    municipality: 'Sund',
+    name: 'Nya Åland',
+    url: 'https://www.nyan.ax/feed/rss/',
+  },
+  {
+    municipality: 'Taipalsaari',
+    name: 'Etelä-Saimaa',
+    url: 'https://www.esaimaa.fi/feed/rss/',
+  },
+  {
+    municipality: 'Taivassalo',
+    name: 'Uudenkaupungin Sanomat',
+    url: 'https://www.uudenkaupunginsanomat.fi/feed/',
+  },
+  {
+    municipality: 'Tohmajärvi',
+    name: 'Karjalan Heili',
+    url: 'https://www.heili.fi/feed/rss/',
+  },
+  {
+    municipality: 'Tyrnävä',
+    name: 'Rantalakeus',
+    url: 'https://www.rantalakeus.fi/feedit/rss/managed-listing/uusimmat/',
+  },
+  {
+    municipality: 'Uurainen',
+    name: 'Keskisuomalainen',
+    url: 'https://www.ksml.fi/feed/rss/',
+  },
+  {
+    municipality: 'Uusikaarlepyy',
+    name: 'Österbottens Tidning',
+    url: 'https://www.osterbottenstidning.fi/feed/',
+  },
+  {
+    municipality: 'Vehmaa',
+    name: 'Uudenkaupungin Sanomat',
+    url: 'https://www.uudenkaupunginsanomat.fi/feed/',
+  },
+  {
+    municipality: 'Vårdö',
+    name: 'Nya Åland',
+    url: 'https://www.nyan.ax/feed/rss/',
+  },
+  {
+    municipality: 'Vöyri',
+    name: 'Vasabladet',
+    url: 'https://www.vasabladet.fi/feed/',
+  },
+  {
+    municipality: 'Äänekoski',
+    name: 'Sisä-Suomen Lehti',
+    url: 'https://www.sisasuomenlehti.fi/feed/rss/',
+  },
+  {
     municipality: 'Aura',
     name: 'Auranmaan Viikkolehti',
     url: 'https://www.avl.fi/feed/',
@@ -397,10 +672,10 @@ const discoverFeedLinks = async (siteUrl) => {
       const response = await fetchWithTimeout(absolute, 7000);
       if (!response.ok) continue;
       if (comparableHost(response.url) !== comparableHost(home.toString())) continue;
-      const contentType = response.headers.get('content-type') ?? '';
       const text = await response.text();
-      const looksLikeFeed = /application\/(rss|atom)\+xml/i.test(contentType)
-        || /^\s*(?:<\?xml[^>]*>\s*)?(?:<\?xml-stylesheet[^>]*>\s*)?<(rss|feed|rdf:RDF)\b/i.test(text);
+      const hasFeedRoot = /^\s*(?:<\?xml[^>]*>\s*)?(?:<\?xml-stylesheet[^>]*>\s*)?<(rss|feed|rdf:RDF)\b/i.test(text);
+      const hasFeedItems = /<(item|entry)\b/i.test(text);
+      const looksLikeFeed = hasFeedRoot && hasFeedItems;
       if (looksLikeFeed) {
         found.add(response.url);
       }

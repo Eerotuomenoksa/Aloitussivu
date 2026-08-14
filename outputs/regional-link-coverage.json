@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-23T08:42:30.756Z",
+  "generatedAt": "2026-08-14T10:10:10.495Z",
   "municipalityCount": 308,
   "counts": {
     "publicTransport": {
@@ -12,8 +12,8 @@
       "missing": 108
     },
     "localNewsFeed": {
-      "ok-own": 219,
-      "missing": 89
+      "ok-own": 271,
+      "missing": 37
     }
   },
   "municipalities": [
@@ -176,7 +176,7 @@
         "status": "missing"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -230,7 +230,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -320,7 +320,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -338,7 +338,7 @@
         "status": "missing"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -356,7 +356,7 @@
         "status": "missing"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -392,7 +392,7 @@
         "status": "missing"
       },
       "localNewsFeed": {
-        "status": "ok-own"
+        "status": "missing"
       }
     },
     {
@@ -464,7 +464,7 @@
         "status": "missing"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -572,7 +572,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -626,7 +626,7 @@
         "status": "missing"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -662,7 +662,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -698,7 +698,7 @@
         "status": "missing"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -734,7 +734,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -824,7 +824,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -1022,7 +1022,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -1040,7 +1040,7 @@
         "status": "missing"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -1184,7 +1184,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -1652,7 +1652,7 @@
         "status": "missing"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -1994,7 +1994,7 @@
         "status": "missing"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -2030,7 +2030,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -2048,7 +2048,7 @@
         "status": "missing"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -2192,7 +2192,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -2300,7 +2300,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -2336,7 +2336,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -2408,7 +2408,7 @@
         "status": "missing"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -2660,7 +2660,7 @@
         "status": "missing"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -2696,7 +2696,7 @@
         "status": "missing"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -2714,7 +2714,7 @@
         "status": "missing"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -2732,7 +2732,7 @@
         "status": "missing"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -2786,7 +2786,7 @@
         "status": "missing"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -3002,7 +3002,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -3074,7 +3074,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "ok-own"
+        "status": "missing"
       }
     },
     {
@@ -3254,7 +3254,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -3398,7 +3398,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -3578,7 +3578,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -3686,7 +3686,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -3704,7 +3704,7 @@
         "status": "missing"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -4028,7 +4028,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -4082,7 +4082,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -4136,7 +4136,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -4262,7 +4262,7 @@
         "status": "missing"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -4316,7 +4316,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -4586,7 +4586,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -4604,7 +4604,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "ok-own"
+        "status": "missing"
       }
     },
     {
@@ -4622,7 +4622,7 @@
         "status": "missing"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -4658,7 +4658,7 @@
         "status": "missing"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -4748,7 +4748,7 @@
         "status": "missing"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -4784,7 +4784,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -4820,7 +4820,7 @@
         "status": "missing"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -4892,7 +4892,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -4964,7 +4964,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -5018,7 +5018,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -5108,7 +5108,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -5126,7 +5126,7 @@
         "status": "missing"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -5216,7 +5216,7 @@
         "status": "missing"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -5252,7 +5252,7 @@
         "status": "missing"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -5432,7 +5432,7 @@
         "status": "missing"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -5450,7 +5450,7 @@
         "status": "missing"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     },
     {
@@ -5558,7 +5558,7 @@
         "status": "ok-own"
       },
       "localNewsFeed": {
-        "status": "missing"
+        "status": "ok-own"
       }
     }
   ]

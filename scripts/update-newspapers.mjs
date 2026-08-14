@@ -15,6 +15,31 @@ const EXCLUDE_HOSTS = [
 ];
 
 const TRANSIENT_STATUS_CODES = new Set([408, 425, 429, 500, 502, 503, 504]);
+const MANUAL_NEWSPAPER_LINKS = [
+  { name: 'Aamuposti', url: 'https://www.aamuposti.fi/' },
+  { name: 'Etelä-Saimaa', url: 'https://www.esaimaa.fi/' },
+  { name: 'Etelä-Suomen Sanomat', url: 'https://www.ess.fi/' },
+  { name: 'Forssan Lehti', url: 'https://www.forssanlehti.fi/' },
+  { name: 'Helsingin Uutiset', url: 'https://www.helsinginuutiset.fi/' },
+  { name: 'Karjalan Heili', url: 'https://www.heili.fi/' },
+  { name: 'Kaleva: Oulun seutu', url: 'https://www.kaleva.fi/oulun-seutu/' },
+  { name: 'Keski-Uusimaa', url: 'https://www.keski-uusimaa.fi/' },
+  { name: 'Keskisuomalainen', url: 'https://www.ksml.fi/' },
+  { name: 'Kuhmoisten Sanomat', url: 'https://kuhmoistensanomat.fi/' },
+  { name: 'Luumäen Lehti', url: 'https://www.luumaenlehti.fi/' },
+  { name: 'Länsiväylä', url: 'https://www.lansivayla.fi/' },
+  { name: 'Matti ja Liisa', url: 'https://www.mattijaliisa.fi/' },
+  { name: 'Miilu', url: 'https://www.miilu.fi/' },
+  { name: 'Mäntsälän Uutiset', url: 'https://www.mantsalanuutiset.fi/' },
+  { name: 'Nya Åland', url: 'https://www.nyan.ax/' },
+  { name: 'Sisä-Suomen Lehti', url: 'https://www.sisasuomenlehti.fi/' },
+  { name: 'Tamperelainen', url: 'https://www.tamperelainen.fi/' },
+  { name: 'Turkulainen', url: 'https://www.turkulainen.fi/' },
+  { name: 'Uutisvuoksi', url: 'https://www.uutisvuoksi.fi/' },
+  { name: 'Vantaan Sanomat', url: 'https://www.vantaansanomat.fi/' },
+  { name: 'Vasabladet', url: 'https://www.vasabladet.fi/' },
+  { name: 'Österbottens Tidning', url: 'https://www.osterbottenstidning.fi/' },
+];
 
 const fetchRemote = async (url) => fetch(url, {
   headers: {
@@ -196,7 +221,10 @@ const refreshNewspaperLinks = async () => {
     }
   }
 
-  const deduped = resolved.filter((item, index, all) => all.findIndex((candidate) => candidate.url === item.url) === index);
+  const combined = [...MANUAL_NEWSPAPER_LINKS, ...resolved];
+  const deduped = combined.filter((item, index, all) => all.findIndex((candidate) => (
+    candidate.url === item.url || candidate.name === item.name
+  )) === index);
   deduped.sort((a, b) => a.name.localeCompare(b.name, 'fi'));
 
   const content = `export const LOCAL_NEWSPAPER_LINKS = ${JSON.stringify(deduped, null, 2)} as const;\n`;

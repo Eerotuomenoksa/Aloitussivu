@@ -178,6 +178,7 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
   const regionalCategories = useMemo(() => context ? getRegionalCategoryShortcuts(context, language) : [], [context, language]);
   const newsFallbacks = useMemo(() => context ? filterVisibleProviders(getRegionalNewsProviders(context, language)) ?? [] : [], [context, language]);
   const rssFeeds = useMemo(() => context ? getRegionalRssFeeds(context, language) : [], [context, language]);
+  const hasOwnLocalNewsSource = rssFeeds.some((feed) => feed.sourceType === 'local-newspaper' || feed.sourceType === 'municipality');
   const fallbackNewsUrl = newsFallbacks[0]?.url ?? '';
   const localizedMunicipalityName = context ? getLocalizedMunicipalityName(context.municipality, language) : '';
   const detectedMunicipality = locality?.municipality ? findMunicipality(locality.municipality) : null;
@@ -335,6 +336,30 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
                 <span aria-hidden="true">📰</span>
                 {t('localNews')}
               </h3>
+              {!hasOwnLocalNewsSource && (
+                <div
+                  role="note"
+                  className={`rounded-2xl border-2 border-[var(--zone-border)] bg-[var(--theme-surface)] p-4 font-semibold text-[var(--theme-text)] ${smallTextClasses[fontSizeStep]}`}
+                >
+                  <p>
+                    {t('localNewsSourceMissing').replace('{municipality}', localizedMunicipalityName || context.municipality.name)}
+                  </p>
+                  {onReportLink && (
+                    <button
+                      type="button"
+                      onClick={() => onReportLink({
+                        name: `${localizedMunicipalityName || context.municipality.name} paikallinen uutislähde`,
+                        url: '',
+                        category: 'Paikalliset uutiset',
+                        source: 'RegionalServicesPanelMissingNews',
+                      })}
+                      className="mt-2 inline-flex min-h-11 items-center rounded-full bg-[var(--theme-primary)] px-5 py-2 font-black text-white transition-colors hover:bg-[var(--theme-primary-mid)] focus:outline-none focus:ring-4 focus:ring-[var(--theme-focus)]/30"
+                    >
+                      {t('suggestLocalNewsSource')}
+                    </button>
+                  )}
+                </div>
+              )}
               <LocalNewsHeadlines feeds={rssFeeds} fallbackUrl={fallbackNewsUrl} fontSizeStep={fontSizeStep} compact />
               {fallbackNewsUrl && (
                 <a

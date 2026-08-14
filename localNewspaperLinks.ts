@@ -1,5 +1,9 @@
 export const LOCAL_NEWSPAPER_LINKS = [
   {
+    "name": "Aamuposti",
+    "url": "https://www.aamuposti.fi/"
+  },
+  {
     "name": "Akaan Seutu",
     "url": "https://akaanseutu.fi/"
   },
@@ -13,11 +17,23 @@ export const LOCAL_NEWSPAPER_LINKS = [
   },
   {
     "name": "Auranmaan Viikkolehti",
-    "url": "https://www.avl.fi/"
+    "url": "http://www.auranmaanviikkolehti.fi"
   },
   {
     "name": "Elimäen Sanomat",
     "url": "http://www.elimaensanomat.fi/index.html"
+  },
+  {
+    "name": "Etelä-Saimaa",
+    "url": "https://www.esaimaa.fi/"
+  },
+  {
+    "name": "Etelä-Suomen Sanomat",
+    "url": "https://www.ess.fi/"
+  },
+  {
+    "name": "Forssan Lehti",
+    "url": "https://www.forssanlehti.fi/"
   },
   {
     "name": "Haapavesi (lehti)",
@@ -26,6 +42,14 @@ export const LOCAL_NEWSPAPER_LINKS = [
   {
     "name": "Heinäveden lehti",
     "url": "http://www.heinavedenlehti.fi"
+  },
+  {
+    "name": "Helsingin Uutiset",
+    "url": "https://www.helsinginuutiset.fi/"
+  },
+  {
+    "name": "Hämeenkyrön Lehti",
+    "url": "https://www.mediawiki.org/"
   },
   {
     "name": "Hämeenkyrön Sanomat",
@@ -104,6 +128,10 @@ export const LOCAL_NEWSPAPER_LINKS = [
     "url": "http://www.kalajokilaakso.fi/"
   },
   {
+    "name": "Kaleva: Oulun seutu",
+    "url": "https://www.kaleva.fi/oulun-seutu/"
+  },
+  {
     "name": "Kangasalan Sanomat",
     "url": "https://kangasalansanomat.fi"
   },
@@ -114,6 +142,10 @@ export const LOCAL_NEWSPAPER_LINKS = [
   {
     "name": "Kankaanpään Seutu",
     "url": "https://www.kankaanpaanseutu.fi/"
+  },
+  {
+    "name": "Karjalan Heili",
+    "url": "https://www.heili.fi/"
   },
   {
     "name": "Karkkilan Tienoo",
@@ -128,8 +160,16 @@ export const LOCAL_NEWSPAPER_LINKS = [
     "url": "https://www.keski-hame.fi"
   },
   {
+    "name": "Keski-Uusimaa",
+    "url": "https://www.keski-uusimaa.fi/"
+  },
+  {
     "name": "Keskilaakso",
     "url": "http://www.keskilaakso.fi/"
+  },
+  {
+    "name": "Keskisuomalainen",
+    "url": "https://www.ksml.fi/"
   },
   {
     "name": "Kiuruvesi-lehti",
@@ -160,6 +200,10 @@ export const LOCAL_NEWSPAPER_LINKS = [
     "url": "http://kotiseutu-uutiset.com/"
   },
   {
+    "name": "Kuhmoisten Sanomat",
+    "url": "https://kuhmoistensanomat.fi/"
+  },
+  {
     "name": "Kuhmolainen",
     "url": "http://www.kuhmolainen.fi"
   },
@@ -182,6 +226,10 @@ export const LOCAL_NEWSPAPER_LINKS = [
   {
     "name": "Laitilan Sanomat",
     "url": "https://www.laitilansanomat.fi/"
+  },
+  {
+    "name": "Lakeuden Joutsen",
+    "url": "http://www.lakeudenjoutsen.fi"
   },
   {
     "name": "Lakeuden Lehti",
@@ -228,8 +276,20 @@ export const LOCAL_NEWSPAPER_LINKS = [
     "url": "http://www.loviisansanomat.net/"
   },
   {
+    "name": "Luumäen Lehti",
+    "url": "https://www.luumaenlehti.fi/"
+  },
+  {
+    "name": "Länsiväylä",
+    "url": "https://www.lansivayla.fi/"
+  },
+  {
     "name": "Maaselkä (lehti)",
     "url": "http://www.maaselkalehti.fi"
+  },
+  {
+    "name": "Matti ja Liisa",
+    "url": "https://www.mattijaliisa.fi/"
   },
   {
     "name": "Merikarvia-lehti",
@@ -240,12 +300,24 @@ export const LOCAL_NEWSPAPER_LINKS = [
     "url": "https://www.meantornionlaakso.fi/"
   },
   {
+    "name": "Miilu",
+    "url": "https://www.miilu.fi/"
+  },
+  {
+    "name": "Mäntsälän Uutiset",
+    "url": "https://www.mantsalanuutiset.fi/"
+  },
+  {
     "name": "Nivala (lehti)",
     "url": "https://www.nivala-lehti.fi/"
   },
   {
     "name": "Nokian Uutiset",
     "url": "https://www.nokianuutiset.fi/"
+  },
+  {
+    "name": "Nya Åland",
+    "url": "https://www.nyan.ax/"
   },
   {
     "name": "Nya Östis",
@@ -364,6 +436,10 @@ export const LOCAL_NEWSPAPER_LINKS = [
     "url": "http://www.siikkis.fi"
   },
   {
+    "name": "Sisä-Suomen Lehti",
+    "url": "https://www.sisasuomenlehti.fi/"
+  },
+  {
     "name": "Soisalon Seutu",
     "url": "http://www.soisalonseutu.fi"
   },
@@ -396,6 +472,10 @@ export const LOCAL_NEWSPAPER_LINKS = [
     "url": "https://www.sydansatakunta.fi/"
   },
   {
+    "name": "Tamperelainen",
+    "url": "https://www.tamperelainen.fi/"
+  },
+  {
     "name": "Teisko-Aitolahti",
     "url": "http://www.ruovesi-lehti.fi/"
   },
@@ -410,6 +490,10 @@ export const LOCAL_NEWSPAPER_LINKS = [
   {
     "name": "Topikki",
     "url": "https://topikki.fi/"
+  },
+  {
+    "name": "Turkulainen",
+    "url": "https://www.turkulainen.fi/"
   },
   {
     "name": "Turun Tienoo",
@@ -436,12 +520,24 @@ export const LOCAL_NEWSPAPER_LINKS = [
     "url": "https://www.oivaseutu.fi/"
   },
   {
+    "name": "Uutisvuoksi",
+    "url": "https://www.uutisvuoksi.fi/"
+  },
+  {
     "name": "Vaarojen Sanomat",
     "url": "http://www.vaarojensanomat.fi"
   },
   {
     "name": "Vakka-Suomen Sanomat",
     "url": "https://www.vakka.fi/"
+  },
+  {
+    "name": "Vantaan Sanomat",
+    "url": "https://www.vantaansanomat.fi/"
+  },
+  {
+    "name": "Vasabladet",
+    "url": "https://www.vasabladet.fi/"
   },
   {
     "name": "Viiskunta",
@@ -474,5 +570,9 @@ export const LOCAL_NEWSPAPER_LINKS = [
   {
     "name": "Ähtärinjärven Uutisnuotta",
     "url": "http://www.ahtarinjarvenuutisnuotta.net/"
+  },
+  {
+    "name": "Österbottens Tidning",
+    "url": "https://www.osterbottenstidning.fi/"
   }
 ] as const;

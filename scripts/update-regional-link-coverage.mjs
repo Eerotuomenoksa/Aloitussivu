@@ -74,6 +74,21 @@ const parseMunicipalityEntries = (filePath) => {
     .map((match) => normalizeMunicipality(match.groups.municipality)));
 };
 
+const parseLocalServiceMapRssFeedMunicipalities = () => {
+  const source = readSource('localServices.ts');
+  const municipalities = new Set();
+  const mapMatch = source.match(/const localServiceMap:[\s\S]*?=\s*\{(?<body>[\s\S]*?)\n\};/);
+  if (!mapMatch?.groups?.body) return municipalities;
+
+  for (const match of mapMatch.groups.body.matchAll(/\n\s{2}(?<key>[a-zåäöé]+):\s*\{(?<body>[\s\S]*?)(?=\n\s{2}[a-zåäöé]+:\s*\{|\n$)/g)) {
+    if (/rssFeeds:\s*\[/.test(match.groups.body)) {
+      municipalities.add(normalizeMunicipality(match.groups.key));
+    }
+  }
+
+  return municipalities;
+};
+
 const statusCounts = (items, key) => items.reduce((acc, item) => {
   acc[item[key]] = (acc[item[key]] ?? 0) + 1;
   return acc;
@@ -110,9 +125,11 @@ const ownPublicTransport = parseLocalServiceMapPublicTransport();
 const serviceTransportMunicipalities = parseMunicipalityEntries('localServiceTransportLinks.ts');
 const newspaperFeedMunicipalities = parseMunicipalityEntries('localNewspaperFeeds.ts');
 const municipalityNewsFeedMunicipalities = parseMunicipalityEntries('municipalityNewsFeeds.ts');
+const localServiceMapRssFeedMunicipalities = parseLocalServiceMapRssFeedMunicipalities();
 const newsFeedMunicipalities = new Set([
   ...newspaperFeedMunicipalities,
   ...municipalityNewsFeedMunicipalities,
+  ...localServiceMapRssFeedMunicipalities,
 ]);
 
 const regionalPublicTransportByMunicipality = new Map();

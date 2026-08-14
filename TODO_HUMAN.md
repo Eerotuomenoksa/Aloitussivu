@@ -32,6 +32,7 @@ Tila: Julkaisun rajaus päätetty 13.8.2026. Avoimet julkaisuportin tehtävät o
 
 ## Tehty
 
+- Paikallisuutislähteiden uusintahaku on käsitelty 14.8.2026: 49 aiemmin puuttunutta kuntaa sai varmennetun lähteen, tyhjät syötteet poistettiin kattavuudesta ja lähteettömille kunnille lisättiin uutislähteen ehdotuslomake.
 - SEC-001: Gemini- ja admin-salaisuudet on uusittu ja `npm run check:secrets` on mennyt läpi.
 - SEC-002: Repo on kloonattu OneDriven ulkopuolelle kansioon `C:\dev\Aloitussivu`.
 - SEC-003: Selainpuolen Firebase API -avain on rajattu.

@@ -15,7 +15,7 @@
     "refresh:generated": "npm run links && npm run changelog",
     "refresh:newspapers": "npm run newspapers && npm run newspaper-feeds",
     "refresh:data": "npm run refresh:newspapers && npm run regional-coverage && npm run refresh:generated",
-    "regional-coverage": "node scripts/update-regional-link-coverage.mjs",
+    "regional-coverage": "node scripts/update-regional-link-coverage.mjs && node scripts/update-news-feed-coverage.mjs",
     "senior-pages": "node scripts/discover-municipality-senior-links.mjs",
     "senior-coverage": "node scripts/update-senior-page-coverage.mjs",
     "community-coverage": "node scripts/update-community-link-coverage.mjs",
