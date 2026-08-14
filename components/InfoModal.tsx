@@ -1,5 +1,6 @@
 
 import React, { useRef } from 'react';
+import ReactDOM from 'react-dom';
 import { SHORTCUTS } from '../constants';
 import { LINK_STATS } from '../linkStats';
 import { LOCAL_LINK_STATS } from '../localStats';
@@ -40,34 +41,39 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, fontSizeStep = 0
 
   const totalLinks = LINK_STATS.visibleLinks;
 
-  return (
+  const scopeSummary = t('infoScopeSummary')
+    .replace('{categories}', String(categoryStats.length))
+    .replace('{links}', String(totalLinks));
+
+  return ReactDOM.createPortal(
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/50 p-4 text-[var(--theme-text)] backdrop-blur-sm animate-in fade-in duration-200"
+      className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden bg-black/50 p-3 text-[var(--theme-text)] backdrop-blur-sm animate-in fade-in duration-200 md:p-6"
       role="dialog"
       aria-modal="true"
       aria-labelledby="info-modal-title"
     >
-      <div ref={modalRef} tabIndex={-1} className="aurora-modal-shell my-8 w-full max-w-4xl overflow-hidden">
-        <div className="aurora-modal-header sticky top-0 z-10 flex items-center justify-between p-8 text-white">
-          <div className="flex items-center gap-4">
+      <div ref={modalRef} tabIndex={-1} className="aurora-modal-shell flex max-h-[calc(100dvh-1.5rem)] w-full max-w-4xl flex-col overflow-hidden md:max-h-[calc(100dvh-3rem)]">
+        <div className="aurora-modal-header z-10 flex shrink-0 items-center justify-between gap-4 p-5 text-white md:p-8">
+          <div className="flex min-w-0 items-center gap-4">
             <span className={`rounded-[1.5rem] bg-white/10 p-3 transition-all duration-300 ${headerIconClasses[fontSizeStep]}`}>ℹ️</span>
             <h2 id="info-modal-title" className={`font-display font-bold transition-all duration-300 ${titleClasses[fontSizeStep]}`}>{t('infoTitle')}</h2>
           </div>
-          <button 
+          <button
+            type="button"
             ref={closeButtonRef}
             onClick={onClose}
-            className="aurora-close-button flex h-12 w-12 text-3xl"
+            className="aurora-close-button flex h-12 w-12 shrink-0 text-3xl"
             aria-label={t('close')}
           >
             ✕
           </button>
         </div>
         
-        <div className="aurora-modal-body max-h-[75vh] space-y-10 overflow-y-auto p-8 md:p-12">
+        <div className="aurora-modal-body min-h-0 flex-1 space-y-10 overflow-y-auto p-6 md:p-10">
           <section className="space-y-4">
             <h3 className="aurora-section-title text-2xl underline decoration-[var(--theme-gold)] underline-offset-8">{t('infoWhatTitle')}</h3>
             <p className="text-xl leading-relaxed text-[var(--theme-text-2)]">
-              {t('infoWhatBody')} {categoryStats.length} {t('categories').toLocaleLowerCase('fi-FI')} ja {totalLinks} {t('links').toLocaleLowerCase('fi-FI')}.
+              {t('infoWhatBody')} {scopeSummary}
             </p>
           </section>
 
@@ -190,8 +196,9 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, fontSizeStep = 0
           </section>
         </div>
         
-        <div className="sticky bottom-0 z-10 border-t border-[var(--theme-border)] bg-[var(--theme-surface)] p-6 text-center">
-          <button 
+        <div className="z-10 shrink-0 border-t border-[var(--theme-border)] bg-[var(--theme-surface)] p-4 text-center md:p-6">
+          <button
+            type="button"
             onClick={onClose}
             className="aurora-secondary-button px-5 py-2.5 text-xl"
             aria-label={t('close')}
@@ -200,7 +207,8 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, fontSizeStep = 0
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 };
 

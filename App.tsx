@@ -950,6 +950,8 @@ const AppContent: React.FC = () => {
                 {t('footerNavSite')}
               </p>
               {[
+                { href: './linkit.html', label: t('linkList') },
+                { href: './muutosloki.html', label: t('changelog') },
                 { href: './tietosuoja.html', label: t('privacyNotice') },
                 { href: './saavutettavuus.html', label: t('accessibilityStatement') },
               ].map((link) => (
@@ -966,10 +968,25 @@ const AppContent: React.FC = () => {
             </nav>
           </div>
           <div className="relative mx-auto flex max-w-[1400px] flex-wrap items-center justify-between gap-2 border-t border-[var(--theme-footer-border)] px-6 py-3">
-            <p className="text-xs font-semibold text-[var(--theme-footer-muted)]">
-              Aloitussivu {new Date().getFullYear()}
-            </p>
-            <p className="text-xs font-semibold text-[var(--theme-footer-muted)]">seniorsurf.fi/aloitussivu</p>
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+              <p className="text-xs font-semibold text-[var(--theme-footer-muted)]">
+                Aloitussivu {new Date().getFullYear()}
+              </p>
+              <p className="text-xs font-black uppercase tracking-[.12em] text-[var(--theme-footer-text)]">
+                {t('beta')}
+              </p>
+            </div>
+            <div className="flex flex-wrap items-center gap-5">
+              <a
+                href="./yllapito.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs font-black uppercase tracking-[.15em] text-[var(--theme-footer-muted)] no-underline hover:text-[var(--theme-footer-text)]"
+              >
+                {t('admin')}
+              </a>
+              <p className="text-xs font-semibold text-[var(--theme-footer-muted)]">seniorsurf.fi/aloitussivu</p>
+            </div>
           </div>
         </footer>
 
