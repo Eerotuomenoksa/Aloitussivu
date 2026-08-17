@@ -4,6 +4,7 @@ import Clock from './components/Clock';
 import WeatherCard from './components/WeatherCard';
 import ZoneToc from './components/ZoneToc';
 import InterestThemeSelector from './components/InterestThemeSelector';
+import TestFeedbackPrompt from './components/TestFeedbackPrompt';
 import SearchBar from './components/SearchBar';
 import FloatingControls from './components/FloatingControls';
 import FavoriteLinks from './components/FavoriteLinks';
@@ -13,6 +14,7 @@ import { Shortcut, Favorite, LocalityInfo, LinkReportDraft } from './types';
 import { mergeApprovedLinksIntoShortcuts } from './approvedLinks';
 import { useApprovedLinkSuggestionsVersion } from './approvedLinks';
 import { LanguageCode, LanguageProvider, LANGUAGES, useI18n } from './i18n';
+import { postponeTestFeedbackPrompt, shouldShowTestFeedbackPrompt } from './testFeedbackPromptState';
 import { normalizeInterestThemeAnchors } from './components/shortcutGroups';
 import { defaultUiVisibility, UiVisibilityKey, UiVisibilityOption, UiVisibilityState } from './uiPreferences';
 // Valkoinen logo näytetään tummassa teemassa, värillinen vaaleassa.
@@ -59,6 +61,7 @@ const THEME_KEY = 'colorTheme';
 const CLOCK_MODE_KEY = 'clockMode';
 const FAVORITES_KEY = 'favorites';
 const INTEREST_THEMES_KEY = 'interestThemes';
+const TEST_FEEDBACK_PROMPT_DELAY_MS = 2 * 60 * 1000;
 const DEFERRED_CONTENT_DELAY_MS = 900;
 
 const readLocalPreference = (key: string) => {
@@ -223,6 +226,8 @@ const AppContent: React.FC = () => {
   const [isHomepageOpen, setIsHomepageOpen] = useState(false);
   const [isOnboardingOpen, setIsOnboardingOpen] = useState(false);
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
+  const [isTestFeedbackPromptOpen, setIsTestFeedbackPromptOpen] = useState(false);
+  const [hasTestFeedbackPromptDelayElapsed, setHasTestFeedbackPromptDelayElapsed] = useState(false);
   const [isDeferredContentReady, setIsDeferredContentReady] = useState(false);
   const [hasSeenOnboarding, setHasSeenOnboarding] = useState(() => readLocalPreference(ONBOARDING_SEEN_KEY) === 'true');
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -458,14 +463,29 @@ const AppContent: React.FC = () => {
     const nextUrl = `${window.location.pathname}${nextSearch ? `?${nextSearch}` : ''}${window.location.hash}`;
     window.history.replaceState(null, '', nextUrl);
   }, []);
+  useEffect(() => {
+    if (typeof window === 'undefined' || !shouldShowTestFeedbackPrompt()) return undefined;
+    const timer = window.setTimeout(() => {
+      setHasTestFeedbackPromptDelayElapsed(true);
+    }, TEST_FEEDBACK_PROMPT_DELAY_MS);
+
+    return () => window.clearTimeout(timer);
+  }, []);
   const openReportModal = useCallback((draft: LinkReportDraft) => setReportDraft(draft), []);
   const closeReportModal = useCallback(() => setReportDraft(null), []);
   const selectedShortcut = selectedCategory ? mergeApprovedLinksIntoShortcuts([selectedCategory])[0] ?? selectedCategory : null;
   const isFinnishLocality = locality?.isInFinland !== false;
   const regionalLocality = isFinnishLocality ? locality : null;
   const selectedSecondaryTimeZone = SECONDARY_TIME_ZONE_OPTIONS.find((option) => option.value === secondaryTimeZone) ?? SECONDARY_TIME_ZONE_OPTIONS[0];
-  const isAnyModalOpen = Boolean(selectedShortcut || isInfoOpen || isHomepageOpen || isOnboardingOpen || isFeedbackOpen || reportDraft || isSettingsOpen);
+  const isModalOpenWithoutTestFeedbackPrompt = Boolean(selectedShortcut || isInfoOpen || isHomepageOpen || isOnboardingOpen || isFeedbackOpen || reportDraft || isSettingsOpen);
+  const isAnyModalOpen = isModalOpenWithoutTestFeedbackPrompt || isTestFeedbackPromptOpen;
   const shouldShowRegionalServices = uiVisibility.regionalServices && isFinnishLocality;
+  useEffect(() => {
+    if (!hasTestFeedbackPromptDelayElapsed || isModalOpenWithoutTestFeedbackPrompt || isTestFeedbackPromptOpen) return;
+    if (shouldShowTestFeedbackPrompt()) {
+      setIsTestFeedbackPromptOpen(true);
+    }
+  }, [hasTestFeedbackPromptDelayElapsed, isModalOpenWithoutTestFeedbackPrompt, isTestFeedbackPromptOpen]);
   const visibilityOptions: UiVisibilityOption[] = [
     { key: 'clock', label: t('showClock') },
     { key: 'secondaryClock', label: t('showSecondaryClock') },
@@ -480,6 +500,10 @@ const AppContent: React.FC = () => {
   }, []);
   const updateInterestThemes = useCallback((anchors: string[]) => {
     setInterestThemeAnchors(normalizeInterestThemeAnchors(anchors));
+  }, []);
+  const postponeTestFeedback = useCallback(() => {
+    postponeTestFeedbackPrompt();
+    setIsTestFeedbackPromptOpen(false);
   }, []);
   const startOnboarding = useCallback(() => {
     setIsInfoOpen(false);
@@ -556,6 +580,13 @@ const AppContent: React.FC = () => {
                 >
                   Palaute
                 </button>
+                <a
+                  href="./testipalaute.html"
+                  title="Avaa testauspalautelomake"
+                  className="inline-flex min-h-[2.75rem] items-center rounded-full border border-white/[.16] bg-white/[.09] px-[1.1rem] py-[.55rem] text-[.95rem] font-bold text-white/85 no-underline transition-all hover:bg-white/[.18] hover:text-white"
+                >
+                  Testauspalaute
+                </a>
                 <LanguageSelector language={language} setLanguage={setLanguage} label={t('language')} />
                 <button
                   onClick={() => setIsHomepageOpen(true)}
@@ -1034,6 +1065,11 @@ const AppContent: React.FC = () => {
           {reportDraft && <LinkReportModal draft={reportDraft} onClose={closeReportModal} />}
           {isFeedbackOpen && <FeedbackModal isOpen={isFeedbackOpen} onClose={() => setIsFeedbackOpen(false)} />}
         </Suspense>
+        <TestFeedbackPrompt
+          isOpen={isTestFeedbackPromptOpen}
+          onClose={postponeTestFeedback}
+          onPostpone={postponeTestFeedback}
+        />
       </div>
       <FloatingControls
         decreaseLabel={t('decreaseText')}

@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { submitFeedback } from '../feedback';
 import type { FeedbackClientInfo, FeedbackScreenshotDraft, FeedbackType } from '../feedback';
 import { useModalFocusTrap } from '../hooks/useModalFocusTrap';
@@ -145,7 +146,7 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose }) => {
     };
   }, [isOpen]);
 
-  if (!isOpen) return null;
+  if (!isOpen || typeof document === 'undefined') return null;
 
   const chooseScreenshot = async (event: React.ChangeEvent<HTMLInputElement>) => {
     setScreenshotError('');
@@ -228,14 +229,14 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose }) => {
     }
   };
 
-  return (
+  return createPortal(
     <div
-      className="fixed inset-0 z-[60] flex items-start justify-center overflow-y-auto bg-black/55 p-3 backdrop-blur-lg sm:items-center sm:p-4"
+      className="fixed inset-0 z-[60] flex items-stretch justify-center overflow-hidden bg-black/55 backdrop-blur-lg sm:items-center sm:p-4"
       role="dialog"
       aria-modal="true"
       aria-labelledby="feedback-modal-title"
     >
-      <div ref={modalRef} tabIndex={-1} className="aurora-modal-shell flex max-h-[calc(100dvh-1.5rem)] w-full max-w-3xl flex-col overflow-hidden sm:max-h-[calc(100dvh-2rem)] sm:rounded-[2.5rem]">
+      <div ref={modalRef} tabIndex={-1} className="aurora-modal-shell flex h-[100dvh] max-h-[100dvh] w-full max-w-3xl flex-col overflow-hidden rounded-none border-0 sm:h-auto sm:max-h-[calc(100dvh-2rem)] sm:rounded-[2.5rem] sm:border">
         <div className="aurora-modal-header flex shrink-0 items-center justify-between gap-4 p-5 text-white md:p-8">
           <div className="space-y-1">
             <p className="text-sm font-black uppercase tracking-widest text-white/70">Testipalaute</p>
@@ -252,7 +253,7 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose }) => {
         </div>
 
         <form onSubmit={submit} className="flex min-h-0 flex-1 flex-col">
-          <div className="aurora-modal-body min-h-0 flex-1 space-y-5 overflow-y-auto p-5 md:p-8">
+          <div className="aurora-modal-body min-h-0 flex-1 space-y-5 overflow-y-auto overscroll-contain p-5 md:p-8">
             <p className="rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-pale)] p-4 font-bold text-[var(--theme-text-2)]">
               Palaute näkyy julkisessa kehitysjonossa. Älä kirjoita henkilötietoja, terveystietoja, salasanoja tai muuta arkaluonteista tietoa. Kuvakaappaus tallennetaan vain ylläpidon tarkistusta varten.
             </p>
@@ -375,13 +376,14 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose }) => {
                 disabled={isSubmitting}
                 className="rounded-full bg-[var(--theme-primary)] px-8 py-3 font-black text-white transition-all hover:bg-[var(--theme-primary-mid)] active:scale-95 disabled:cursor-not-allowed disabled:opacity-60"
               >
-                {isSubmitting ? 'Tallennetaan...' : 'Tallenna palaute'}
+                {isSubmitting ? 'Lähetetään...' : 'Lähetä palaute'}
               </button>
             </div>
           </div>
         </form>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 };
 
