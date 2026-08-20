@@ -146,6 +146,7 @@ service cloud.firestore {
           'useMode',
           'webExperience',
           'purposeClear',
+          'headerClarity',
           'firstImpression',
           'pageFeelings',
           'foundServices',
@@ -155,6 +156,7 @@ service cloud.firestore {
           'unclearCategory',
           'municipalityCorrect',
           'localServicesUseful',
+          'seniorPageStatus',
           'missingLocalLink',
           'localNewsUseful',
           'featureRatings',
@@ -208,7 +210,7 @@ service cloud.firestore {
         ])
         && request.resource.data.id == responseId
         && request.resource.data.id is string
-        && request.resource.data.formVersion == '2026-06'
+        && request.resource.data.formVersion in ['2026-06', '2026-08-release-candidate']
         && request.resource.data.createdAt is string
         && request.resource.data.deviceTypes is list
         && request.resource.data.deviceTypes.size() >= 1
@@ -217,6 +219,12 @@ service cloud.firestore {
         && request.resource.data.useMode in ['', 'self', 'withSomeone', 'guidance']
         && request.resource.data.webExperience in ['', 'often', 'sometimes', 'needsHelp', 'observer']
         && request.resource.data.purposeClear in ['', 'yes', 'partly', 'no']
+        && (
+          (request.resource.data.formVersion == '2026-06'
+            && !('headerClarity' in request.resource.data))
+          || (request.resource.data.formVersion == '2026-08-release-candidate'
+            && request.resource.data.headerClarity in ['', 'yes', 'partly', 'no'])
+        )
         && request.resource.data.firstImpression is string
         && request.resource.data.firstImpression.size() <= 1200
         && request.resource.data.pageFeelings is list
@@ -232,6 +240,12 @@ service cloud.firestore {
         && request.resource.data.unclearCategory.size() <= 900
         && request.resource.data.municipalityCorrect in ['', 'yes', 'no', 'notSeen']
         && request.resource.data.localServicesUseful in ['', 'yes', 'partly', 'no', 'notUsed']
+        && (
+          (request.resource.data.formVersion == '2026-06'
+            && !('seniorPageStatus' in request.resource.data))
+          || (request.resource.data.formVersion == '2026-08-release-candidate'
+            && request.resource.data.seniorPageStatus in ['', 'opened', 'broken', 'notFound', 'notTested'])
+        )
         && request.resource.data.missingLocalLink is string
         && request.resource.data.missingLocalLink.size() <= 900
         && request.resource.data.localNewsUseful in ['', 'yes', 'partly', 'no', 'notSeen']

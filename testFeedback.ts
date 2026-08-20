@@ -134,10 +134,11 @@ const readLocalResponses = () => {
 
 const writeLocalResponses = (responses: TestFeedbackResponse[]) => {
   try {
-    if (typeof localStorage === 'undefined') return;
+    if (typeof localStorage === 'undefined') return false;
     localStorage.setItem(TEST_FEEDBACK_STORAGE_KEY, JSON.stringify(responses));
+    return true;
   } catch {
-    // Local fallback is best-effort only.
+    return false;
   }
 };
 
@@ -148,7 +149,10 @@ const emitTestFeedbackChange = () => {
 };
 
 const saveLocalResponse = (response: TestFeedbackResponse) => {
-  writeLocalResponses([response, ...readLocalResponses()].slice(0, 1000));
+  const saved = writeLocalResponses([response, ...readLocalResponses()].slice(0, 1000));
+  if (!saved) {
+    throw new Error('Vastausta ei voitu tallentaa selaimeen.');
+  }
   emitTestFeedbackChange();
 };
 
@@ -181,14 +185,14 @@ export const submitTestFeedback = async (draft: TestFeedbackDraft): Promise<Test
       emitTestFeedbackChange();
       return { response, storage: 'cloud' };
     } catch {
-      markTestFeedbackAnswered();
       saveLocalResponse(response);
+      markTestFeedbackAnswered();
       return { response, storage: 'local' };
     }
   }
 
-  markTestFeedbackAnswered();
   saveLocalResponse(response);
+  markTestFeedbackAnswered();
   return { response, storage: 'local' };
 };
 

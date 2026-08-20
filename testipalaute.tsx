@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import {
@@ -454,8 +454,23 @@ function TestFeedbackPage() {
   const [notice, setNotice] = useState('');
   const [syncNotice, setSyncNotice] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [submissionStorage, setSubmissionStorage] = useState<'cloud' | 'local' | null>(null);
+  const confirmationRef = useRef<HTMLElement>(null);
+  const errorRef = useRef<HTMLElement>(null);
 
   useEffect(() => installUsageTracking('testipalaute'), []);
+
+  useEffect(() => {
+    if (!submitted) return;
+    confirmationRef.current?.focus();
+    confirmationRef.current?.scrollIntoView({ block: 'center', behavior: 'smooth' });
+  }, [submitted]);
+
+  useEffect(() => {
+    if (!error) return;
+    errorRef.current?.focus();
+    errorRef.current?.scrollIntoView({ block: 'center', behavior: 'smooth' });
+  }, [error]);
 
   useEffect(() => {
     let isActive = true;
@@ -496,25 +511,21 @@ function TestFeedbackPage() {
 
     if (draft.deviceTypes.length === 0) {
       setError('Valitse vähintään yksi laite.');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
 
     if (!draft.foundServices) {
       setError('Vastaa kohtaan "Löysitkö etsimäsi palvelut?".');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
 
     if (draft.usefulnessRating < 1) {
       setError('Anna sivulle hyödyllisyysarvio asteikolla 1-5.');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
 
     if (draft.mostImportantFix.trim().length < 3) {
       setError('Kirjoita tärkein korjattava asia ennen lähetystä.');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
 
@@ -522,11 +533,11 @@ function TestFeedbackPage() {
 
     try {
       const result = await submitTestFeedback(draft);
+      setSubmissionStorage(result.storage);
       setSubmitted(true);
       setNotice(result.storage === 'cloud'
-        ? 'Kiitos. Vastaus tallennettiin anonyymisti ja huomioidaan julkaisun viimeistelyssä.'
-        : 'Kiitos. Vastaus tallennettiin tähän selaimeen ja huomioidaan julkaisun viimeistelyssä. Yritämme siirtää selaimeen jääneet vastaukset tietokantaan, kun yhteys toimii.');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+        ? 'Kiitos. Vastaus tallennettiin anonyymisti tietokantaan ja huomioidaan julkaisun viimeistelyssä.'
+        : 'Kiitos. Vastaus tallennettiin onnistuneesti tämän laitteen selaimeen. Se siirretään tietokantaan automaattisesti, kun lomake avataan seuraavan kerran toimivalla yhteydellä.');
     } catch {
       setError('Vastauksen tallennus ei onnistunut. Yritä hetken päästä uudelleen.');
     } finally {
@@ -537,6 +548,7 @@ function TestFeedbackPage() {
   const startAnotherResponse = () => {
     setDraft(initialDraft);
     setSubmitted(false);
+    setSubmissionStorage(null);
     setNotice('');
     setSyncNotice('');
     setError('');
@@ -578,18 +590,35 @@ function TestFeedbackPage() {
           </p>
         </section>
 
-        {notice ? (
-          <section role="status" className="rounded-2xl border-4 border-emerald-200 bg-emerald-50 p-5 font-black text-emerald-900 dark:border-emerald-900 dark:bg-emerald-900/20 dark:text-emerald-100">
-            <p>{notice}</p>
-            {submitted ? (
+        {submitted ? (
+          <section
+            ref={confirmationRef}
+            tabIndex={-1}
+            role="status"
+            aria-labelledby="submission-confirmation-title"
+            className="rounded-2xl border-4 border-emerald-300 bg-emerald-50 p-6 text-emerald-950 shadow-lg outline-none focus-visible:ring-4 focus-visible:ring-[var(--theme-focus)]/40 dark:border-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-50 md:p-8"
+          >
+            <h2 id="submission-confirmation-title" className="font-display text-3xl font-bold md:text-4xl">
+              {submissionStorage === 'cloud'
+                ? 'Vastaus lähetettiin onnistuneesti'
+                : 'Vastaus tallennettiin tähän selaimeen'}
+            </h2>
+            <p className="mt-3 text-lg font-bold">{notice}</p>
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+              <a
+                href="./index.html"
+                className="inline-flex min-h-14 items-center justify-center rounded-full bg-[var(--theme-primary)] px-6 py-3 text-center font-black text-white transition-all hover:bg-[var(--theme-primary-mid)] active:scale-95"
+              >
+                Palaa aloitussivulle
+              </a>
               <button
                 type="button"
                 onClick={startAnotherResponse}
-                className="mt-4 rounded-full bg-[var(--theme-primary)] px-5 py-3 font-black text-white"
+                className="min-h-14 rounded-full border-2 border-emerald-700 bg-white px-6 py-3 font-black text-emerald-900 transition-all hover:bg-emerald-100 active:scale-95 dark:border-emerald-300 dark:bg-transparent dark:text-emerald-50 dark:hover:bg-emerald-900/50"
               >
                 Lähetä toinen vastaus
               </button>
-            ) : null}
+            </div>
           </section>
         ) : null}
 
@@ -600,12 +629,17 @@ function TestFeedbackPage() {
         ) : null}
 
         {error ? (
-          <section role="alert" className="rounded-2xl border-4 border-rose-200 bg-rose-50 p-5 font-black text-rose-900 dark:border-rose-900 dark:bg-rose-900/20 dark:text-rose-100">
+          <section
+            ref={errorRef}
+            tabIndex={-1}
+            role="alert"
+            className="rounded-2xl border-4 border-rose-200 bg-rose-50 p-5 font-black text-rose-900 outline-none focus-visible:ring-4 focus-visible:ring-[var(--theme-focus)]/40 dark:border-rose-900 dark:bg-rose-900/20 dark:text-rose-100"
+          >
             {error}
           </section>
         ) : null}
 
-        <form onSubmit={submit} className="space-y-6">
+        {!submitted ? <form onSubmit={submit} aria-busy={isSubmitting} className="space-y-6">
           <Section number="1" title="Taustatieto">
             <CheckboxGroup
               label="Millä laitteella testasit?"
@@ -833,18 +867,23 @@ function TestFeedbackPage() {
           </Section>
 
           <div className="aurora-panel flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <p className="font-semibold text-[var(--theme-text-2)]">
-              Lähettämällä vastauksen hyväksyt, että anonyymi palaute tallennetaan sivun kehittämistä varten.
-            </p>
+            <div>
+              <p className="font-semibold text-[var(--theme-text-2)]">
+                Lähettämällä vastauksen hyväksyt, että anonyymi palaute tallennetaan sivun kehittämistä varten.
+              </p>
+              <p className="mt-2 min-h-6 font-black text-[var(--theme-primary)]" role="status" aria-live="polite">
+                {isSubmitting ? 'Tallennetaan vastausta. Odota hetki...' : ''}
+              </p>
+            </div>
             <button
               type="submit"
-              disabled={isSubmitting || submitted}
+              disabled={isSubmitting}
               className="min-h-14 rounded-full bg-[var(--theme-primary)] px-8 py-3 font-black text-white transition-all hover:bg-[var(--theme-primary-mid)] active:scale-95 disabled:cursor-not-allowed disabled:opacity-60"
             >
-              {submitted ? 'Vastaus lähetetty' : isSubmitting ? 'Tallennetaan...' : 'Lähetä vastaus'}
+              {isSubmitting ? 'Tallennetaan...' : 'Lähetä vastaus'}
             </button>
           </div>
-        </form>
+        </form> : null}
       </div>
     </main>
   );
