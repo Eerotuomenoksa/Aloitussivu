@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://seniorsurf.fi/aloitussivu/</loc>
-    <lastmod>2026-08-13</lastmod>
+    <loc>https://seniorsurf.fi/aloitus/</loc>
+    <lastmod>2026-08-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://seniorsurf.fi/aloitussivu/saavutettavuus.html</loc>
-    <lastmod>2026-08-13</lastmod>
+    <loc>https://seniorsurf.fi/aloitus/saavutettavuus.html</loc>
+    <lastmod>2026-08-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://seniorsurf.fi/aloitussivu/tietosuoja.html</loc>
-    <lastmod>2026-08-13</lastmod>
+    <loc>https://seniorsurf.fi/aloitus/tietosuoja.html</loc>
+    <lastmod>2026-08-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

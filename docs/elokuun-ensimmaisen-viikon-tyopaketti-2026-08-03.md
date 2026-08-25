@@ -258,7 +258,7 @@ Viikon lopussa pitaisi syntya ainakin nama:
 Naita ei kannata jattaa Codexin arvattavaksi:
 
 1. Virallinen nimi: jatketaanko nimella `Aloitussivu`.
-2. Osoite: `seniorsurf.fi/aloitussivu`, oma domain vai valiaikainen julkaisuosoite.
+2. Osoite: `seniorsurf.fi/aloitus`, oma domain vai valiaikainen julkaisuosoite.
 3. Yllapitolinkit: nakyvatko `Ylläpito`, `Kehitysjono`, `Linkkiluettelo` ja `Muutosloki` julkisessa navigaatiossa.
 4. Tietosuoja: rekisterinpitäjä ja yhteydenotto-osoite.
 5. Saavutettavuus: palautekanava ja vastuuhenkilo.

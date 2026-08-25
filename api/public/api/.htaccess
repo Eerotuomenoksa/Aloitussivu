@@ -1,0 +1,17 @@
+Options -Indexes -MultiViews
+DirectoryIndex index.php
+
+RewriteEngine On
+RewriteCond %{HTTP:Authorization} .
+RewriteRule ^ - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+RewriteRule ^ index.php [QSA,L]
+
+<IfModule mod_headers.c>
+  Header always unset Cache-Control
+  Header always set Cache-Control "no-store"
+  Header always set Pragma "no-cache"
+  Header always set Expires "0"
+</IfModule>

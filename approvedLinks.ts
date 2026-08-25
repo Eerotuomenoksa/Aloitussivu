@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { getDataProvider } from './services/data';
 import { Shortcut } from './types';
 
 export interface ApprovedLinkSuggestion {
@@ -13,25 +14,6 @@ export interface ApprovedLinkSuggestion {
 
 const APPROVED_LINKS_KEY = 'approvedLinkSuggestions';
 const APPROVED_LINKS_CHANGE_EVENT = 'approvedlinkchange';
-const APPROVED_LINKS_COLLECTION = 'approvedLinks';
-const REMOTE_SYNC_DELAY_MS = 12000;
-
-const hasFirebaseConfig = Boolean(
-  import.meta.env.VITE_FIREBASE_API_KEY?.trim()
-  && import.meta.env.VITE_FIREBASE_AUTH_DOMAIN?.trim()
-  && import.meta.env.VITE_FIREBASE_PROJECT_ID?.trim()
-);
-
-const loadRemoteFirestore = async () => {
-  if (!hasFirebaseConfig) return null;
-  const [client, firestore] = await Promise.all([
-    import('./firebaseClient'),
-    import('firebase/firestore'),
-  ]);
-  if (!client.isFirebaseConfigured) return null;
-  const db = client.getFirebaseDb();
-  return db ? { db, firestore } : null;
-};
 
 const normalizeText = (value: string) => value.trim().toLocaleLowerCase('fi-FI').replace(/\s+/g, ' ');
 const normalizeUrl = (url: string) => {
@@ -86,32 +68,17 @@ export const getApprovedLinkSuggestions = () => approvedLinksCache;
 
 const startApprovedLinksRemoteSync = () => {
   let cancelled = false;
-  let unsubscribeRemote: (() => void) | undefined;
-  const timer = window.setTimeout(() => {
-    void loadRemoteFirestore().then((remote) => {
-      if (cancelled || !remote) return;
-      const { db, firestore } = remote;
-      unsubscribeRemote = firestore.onSnapshot(
-        firestore.query(
-          firestore.collection(db, APPROVED_LINKS_COLLECTION),
-          firestore.orderBy('createdAt', 'desc')
-        ),
-        (snapshot) => {
-          const links = snapshot.docs.map((document) => ({
-            id: document.id,
-            ...document.data(),
-          })) as ApprovedLinkSuggestion[];
-          setApprovedLinksCache(links);
-        },
-        () => {}
-      );
+  void getDataProvider()
+    .then((provider) => provider.listPublic<ApprovedLinkSuggestion>('approved-links'))
+    .then((links) => {
+      if (!cancelled) setApprovedLinksCache(links);
+    })
+    .catch(() => {
+      // Säilytä viimeisin paikallinen välimuisti verkkovirheessä.
     });
-  }, REMOTE_SYNC_DELAY_MS);
 
   return () => {
     cancelled = true;
-    window.clearTimeout(timer);
-    unsubscribeRemote?.();
   };
 };
 
@@ -150,13 +117,24 @@ export const subscribeApprovedLinkSuggestions = (callback: (links: ApprovedLinkS
 };
 
 export const approveLinkSuggestion = async (suggestion: Omit<ApprovedLinkSuggestion, 'id' | 'createdAt'> & Partial<Pick<ApprovedLinkSuggestion, 'id' | 'createdAt'>>) => {
-  const next: ApprovedLinkSuggestion = {
-    id: suggestion.id ?? crypto.randomUUID(),
-    createdAt: suggestion.createdAt ?? new Date().toISOString(),
+  const id = suggestion.id ?? crypto.randomUUID();
+  const source = suggestion.source.trim() || 'Ylläpito';
+  const provider = await getDataProvider();
+  const receipt = await provider.createAdmin('approved-links', {
+    id,
     name: suggestion.name.trim(),
     url: suggestion.url.trim(),
     category: suggestion.category.trim(),
-    source: suggestion.source,
+    source,
+    note: suggestion.note?.trim() || '',
+  });
+  const next: ApprovedLinkSuggestion = {
+    id,
+    createdAt: receipt.createdAt ?? suggestion.createdAt ?? new Date().toISOString(),
+    name: suggestion.name.trim(),
+    url: suggestion.url.trim(),
+    category: suggestion.category.trim(),
+    source,
     note: suggestion.note?.trim() || '',
   };
 
@@ -167,22 +145,21 @@ export const approveLinkSuggestion = async (suggestion: Omit<ApprovedLinkSuggest
     ...existing.filter((item) => item.id !== next.id && normalizeUrl(item.url) !== normalizedNextUrl),
   ];
 
-  const remote = await loadRemoteFirestore();
-  if (remote) {
-    await remote.firestore.setDoc(remote.firestore.doc(remote.db, APPROVED_LINKS_COLLECTION, next.id), next);
-  }
-
   setApprovedLinksCache(merged);
+  void provider.listPublic<ApprovedLinkSuggestion>('approved-links', { fresh: true })
+    .then(setApprovedLinksCache)
+    .catch(() => {});
   return next;
 };
 
 export const removeApprovedLinkSuggestion = async (id: string) => {
   const next = getApprovedLinkSuggestions().filter((item) => item.id !== id);
-  const remote = await loadRemoteFirestore();
-  if (remote) {
-    await remote.firestore.deleteDoc(remote.firestore.doc(remote.db, APPROVED_LINKS_COLLECTION, id));
-  }
+  const provider = await getDataProvider();
+  await provider.deleteAdmin('approved-links', id);
   setApprovedLinksCache(next);
+  void provider.listPublic<ApprovedLinkSuggestion>('approved-links', { fresh: true })
+    .then(setApprovedLinksCache)
+    .catch(() => {});
 };
 
 export const useApprovedLinkSuggestionsVersion = () => {

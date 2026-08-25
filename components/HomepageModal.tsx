@@ -119,7 +119,7 @@ const HomepageModal: React.FC<HomepageModalProps> = ({ isOpen, onClose, fontSize
             <div className="aurora-panel space-y-4 md:rounded-[2rem] md:p-8 md:space-y-6">
               <p className="text-lg font-bold text-[var(--theme-text-2)] md:text-xl">{t('useThisAddress')}</p>
               <div className={`select-all rounded-2xl border-2 border-[var(--theme-border)] bg-[var(--theme-surface)] p-4 text-center font-mono text-[var(--theme-primary)] shadow-inner transition-all duration-300 hover:bg-[var(--theme-pale)] md:p-6 ${urlClasses[fontSizeStep]}`}>
-                seniorsurf.fi/aloitussivu
+                seniorsurf.fi/aloitus
               </div>
             </div>
 

@@ -17,7 +17,7 @@ export const LOCAL_NEWSPAPER_LINKS = [
   },
   {
     "name": "Auranmaan Viikkolehti",
-    "url": "http://www.auranmaanviikkolehti.fi"
+    "url": "https://www.avl.fi/"
   },
   {
     "name": "Elimäen Sanomat",
@@ -557,11 +557,11 @@ export const LOCAL_NEWSPAPER_LINKS = [
   },
   {
     "name": "Ylä-Kainuu",
-    "url": "http://www.ylakainuu.fi"
+    "url": "https://www.ylakainuu.fi/"
   },
   {
     "name": "Ylä-Karjala (lehti)",
-    "url": "http://www.ylakarjala.com"
+    "url": "https://www.ylakarjala.fi/"
   },
   {
     "name": "Ylöjärven Uutiset",

@@ -15,6 +15,7 @@ const INCLUDED_EXTENSIONS = new Set([
   '.js',
   '.jsx',
   '.mjs',
+  '.php',
   '.ts',
   '.tsx',
   '.yaml',
@@ -23,6 +24,7 @@ const INCLUDED_EXTENSIONS = new Set([
 
 const EXCLUDED_DIRECTORIES = new Set([
   '.git',
+  '.tmp',
   'dist',
   'docs',
   'node_modules',

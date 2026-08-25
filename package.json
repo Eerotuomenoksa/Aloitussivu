@@ -6,6 +6,11 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:cloudcity": "vite build --mode cloudcity",
+    "build:staging": "vite build --mode staging",
+    "build:firebase-rollback": "vite build --mode firebase-rollback",
+    "build:local-provider": "vite build --mode local-provider",
+    "package:production-path": "powershell -ExecutionPolicy Bypass -File scripts/build-production-path-package.ps1",
     "links": "node scripts/update-links.mjs",
     "visual-check": "node scripts/visual-check.mjs",
     "municipality-locales": "node scripts/update-municipality-website-locales.mjs",
@@ -24,6 +29,9 @@
     "version:bump": "node scripts/bump-version.mjs",
     "release:prepare": "npm run version:bump && npm run changelog",
     "check:secrets": "node scripts/check-no-hardcoded-secrets.mjs",
+    "rel08:test": "node scripts/rel08-migration-test.mjs",
+    "rel08:export": "node scripts/rel08-export-firestore.mjs",
+    "rel08:build-import": "node scripts/rel08-build-import.mjs",
     "preview": "vite preview"
   },
   "dependencies": {

@@ -1,6 +1,6 @@
 # Neljän testipalautteen korjaussuunnitelma
 
-Tavoitejulkaisu: **3.9.2026** Cloudcityn webhotellissa osoitteessa `https://seniorsurf.fi/aloitussivu/`. Ensimmäiselle julkaisulle ei oteta erillistä domainia.
+Tavoitejulkaisu: **1.9.2026**, ehdoton takaraja **3.9.2026**, Cloudcityn webhotellissa osoitteessa `https://seniorsurf.fi/aloitus/`. Ensimmäiselle julkaisulle ei oteta erillistä domainia. Ajantasainen työpakettijako on dokumentissa `docs/julkaisun-tyopaketit-2026-09-01.md`.
 
 ## Lähtötilanne
 
@@ -79,7 +79,7 @@ Korjaus:
 4. Valmistellaan kaksi oletusnäkymää senioritestaukseen:
    - suppea: kello, Google-haku, sää, kategoriahaku, Lähelläsi ja huijausvaroitukset;
    - laaja: lisäksi suosikit, paikallisuutiset ja muut toiminnot.
-5. Tekoäly ja nimipäivät poistetaan ensimmäisen julkaisun käyttöliittymästä. Paikallisuutiset ovat oletuksena piilossa, ja niiden lopullinen mukanaolo päätetään lisätestauksen perusteella.
+5. Tekoäly ja nimipäivät poistetaan ensimmäisen julkaisun käyttöliittymästä. Paikallisuutiset säilytetään ensimmäisessä julkaisussa oletuksena piilotettuina ja käyttäjän asetuksista avattavina.
 
 Hyväksymisehto:
 
@@ -87,7 +87,7 @@ Hyväksymisehto:
 - Oletusnäkymä valitaan tehtävien onnistumisen ja koetun selkeyden perusteella, ei yksittäisen mielipiteen perusteella.
 - Yksikään pääkategoria ei vaadi selitystä ennen avaamista.
 
-Tila: **osittain toteutettu 13.8.** Kategorioita on selkeytetty, yläosa on rakennettu uudelleen ilman tekoälyä ja nimipäiviä ja oletusnäkymä on rauhoitettu. Viiden uuden senioritestauksen kierros ja paikallisuutisten lopullinen päätös ovat avoinna.
+Tila: **osittain toteutettu 14.8.** Kategorioita on selkeytetty, yläosa on rakennettu uudelleen ilman tekoälyä ja nimipäiviä ja oletusnäkymä on rauhoitettu. Paikallisuutiset päätettiin säilyttää oletuksena piilotettuina. Viiden uuden senioritestauksen kierros on avoinna.
 
 ## 4. Paikalliset linkit, paluu ja näppäimistökäyttö
 
@@ -125,18 +125,19 @@ Lisenssiviitteet:
 - DM Sans: https://github.com/googlefonts/dm-fonts (SIL Open Font License).
 - Unicode-emojien kuvat ja oikeudet: https://unicode.org/emoji/images.html. Sivusto käyttää merkkejä, ei Unicode-sivuston tai laitevalmistajien kuvatiedostoja.
 
-## Aikataulu julkaisuun 3.9.2026
+## Aikataulu julkaisuun 1.–3.9.2026
 
-- **12.–14.8.** Typografia, kellon aikamuoto, hakujen nimeäminen, haku- ja mikrofonipainikkeet.
-- **17.–21.8.** Kategorioiden nimeämis- ja sisältöauditointi sekä nimetyt paikallislinkit.
-- **24.–28.8.** Vähintään viisi uutta senioritestausta kahdella oletusnäkymällä.
-- **31.8.–1.9.** Testipalautteen kiireelliset korjaukset, näppäimistö- ja saavutettavuustestit sekä linkkiraportti.
-- **2.9.** Sisältöjäädytys ja julkaise/älä julkaise -päätös.
-- **3.9.** Rajattu julkaisu osoitteessa `seniorsurf.fi/aloitussivu` ja ensimmäisen viikon seurannan käynnistys.
+- **14.8.** Työjonon lukitus, avoimien palautteiden luokittelu, Fakiirimedia-yhteydenotto ja julkaisuun kuulumattomien töiden siirto jatkoon.
+- **17.–21.8.** P2-tason lisätestaus: tavoitteena vähintään viisi uutta senioritestausta, paikallisuutisten toimivuuden arviointi ja P2-korjauslistan lukitus. Testaajien tavoitemäärän pieni alitus ei yksin estä julkaisua.
+- **17.–21.8. ja 24.–27.8.** P1-tason Cloudcity-staging, saman originin API, MariaDB, Firestore-datan migraatio, ylläpidon tunnistus ja palvelinasetukset. Aloitussivu eristetään WordPressistä ja jokaisen ympäristömuutoksen yhteydessä tehdään WordPressin ennen/jälkeen-savukoe.
+- **24.–27.8.** Kiireelliset korjaukset, P1-tason tietosuoja- ja saavutettavuusselosteiden viimeistely, linkkiraportti ja sisältöjäädytys.
+- **28. ja 31.8.** Julkaisukandidaatti, P1-tason näppäimistö-, saavutettavuus-, teema-, ruutukoko-, linkki- ja integraatiotestit sekä julkaise/älä julkaise -päätös.
+- **1.9.** Tavoitejulkaisu osoitteessa `seniorsurf.fi/aloitus`, P1-tason tuotannon smoke-testi ja ensimmäisen viikon seurannan käynnistys.
+- **2.–3.9.** Varapäivät vain P1-korjauksille; julkaisu viimeistään 3.9.
 
 ## Julkaisuportti
 
-Julkaisu voidaan tehdä 3.9., kun:
+Julkaisu voidaan tehdä 1.9. ja viimeistään 3.9., kun:
 
 - neljän palautekokonaisuuden kriittiset korjaukset on tehty tai rajattu näkyvästi jatkokehitykseen;
 - oletusnäkymä on valittu lisätestauksen perusteella;

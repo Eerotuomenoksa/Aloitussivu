@@ -317,14 +317,26 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
                   </h3>
                 </div>
                 <div className="zone-links-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 20rem), 1fr))', alignContent: 'start' }}>
-                  {regionalCategories.map((shortcut) => (
-                    <CategoryLink
-                      key={shortcut.name}
-                      shortcut={shortcut}
-                      fontSizeStep={fontSizeStep}
-                      onSelectCategory={onSelectCategory}
-                    />
-                  ))}
+                  {regionalCategories.map((shortcut) => {
+                    const onlyProvider = shortcut.providers?.length === 1 ? shortcut.providers[0] : null;
+                    return onlyProvider ? (
+                      <ServiceLink
+                        key={`${shortcut.name}-${onlyProvider.url}`}
+                        provider={onlyProvider}
+                        index={0}
+                        fontSizeStep={fontSizeStep}
+                        context={context}
+                        onReportLink={onReportLink}
+                      />
+                    ) : (
+                      <CategoryLink
+                        key={shortcut.name}
+                        shortcut={shortcut}
+                        fontSizeStep={fontSizeStep}
+                        onSelectCategory={onSelectCategory}
+                      />
+                    );
+                  })}
                 </div>
               </section>
             )}

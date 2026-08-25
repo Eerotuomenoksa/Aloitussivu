@@ -11,14 +11,17 @@ const listClass = 'mt-4 space-y-2 text-base font-bold leading-relaxed text-[var(
 
 const tocItems = [
   ['mita-sivu-kertoo', 'Mitä tämä sivu kertoo'],
+  ['rekisterinpitaja', 'Rekisterinpitäjä'],
   ['mita-kasitellaan', 'Mitä tietoja käsitellään'],
   ['mita-ei-kerata', 'Mitä ei kerätä'],
   ['selaimen-asetukset', 'Selaimeen tallennettavat asetukset'],
   ['kayttotilasto', 'Karkea käyttötilasto'],
-  ['linkki-ilmoitukset', 'Linkki-ilmoitukset ja ylläpito'],
+  ['palautteet', 'Palautteet ja linkki-ilmoitukset'],
   ['paikalliset-palvelut', 'Paikalliset palvelut ja sää'],
+  ['palveluntarjoajat', 'Tekniset palveluntarjoajat'],
   ['yllapitajan-kirjautuminen', 'Ylläpitäjän kirjautuminen'],
   ['sailytys-ja-poistaminen', 'Tietojen säilytys ja poistaminen'],
+  ['oikeudet', 'Käyttäjän oikeudet'],
   ['yhteydenotto', 'Yhteydenotto'],
 ];
 
@@ -61,7 +64,7 @@ function App() {
             </span>
             <h1 className="font-display text-4xl font-bold tracking-tight md:text-6xl">Tietosuoja</h1>
             <p className="max-w-3xl text-lg font-bold leading-relaxed text-white/75">
-              Aloitussivu-sivua voi käyttää ilman kirjautumista ja ilman evästeisiin perustuvaa seurantaa. Sivusto tallentaa käyttäjän omia asetuksia pääosin käyttäjän omaan selaimeen.
+              Seniorin aloitussivua voi käyttää ilman kirjautumista ja ilman evästeisiin perustuvaa seurantaa. Sivusto tallentaa käyttäjän omia asetuksia pääosin käyttäjän omaan selaimeen.
             </p>
           </div>
         </header>
@@ -92,7 +95,16 @@ function App() {
         <div className="mt-8 space-y-6">
           <PrivacySection id="mita-sivu-kertoo" title="Mitä tämä sivu kertoo">
             <p className={paragraphClass}>
-              Tämä tietosuojasivu kertoo, mitä tietoja Aloitussivu käsittelee ja mihin tarkoitukseen. Sivun tarkoitus on olla selkeä myös käyttäjälle, joka ei tunne tietosuojatermejä.
+              Tämä tietosuojasivu kertoo, mitä tietoja Seniorin aloitussivu käsittelee ja mihin tarkoitukseen. Sivun tarkoitus on olla selkeä myös käyttäjälle, joka ei tunne tietosuojatermejä.
+            </p>
+          </PrivacySection>
+
+          <PrivacySection id="rekisterinpitaja" title="Rekisterinpitäjä">
+            <p className={paragraphClass}>
+              Seniorin aloitussivun rekisterinpitäjä on Vanhustyön keskusliitto – Centralförbundet för de gamlas väl ry (Y-tunnus 0215403–8), Malmin kauppatie 26, 00700 Helsinki.
+            </p>
+            <p className={paragraphClass}>
+              Tietosuojan yhteyshenkilö on Nina Ziessler, vastaava asiantuntija. Hänet tavoittaa sähköpostilla osoitteesta <a className="underline" href="mailto:nina.ziessler@vtkl.fi">nina.ziessler@vtkl.fi</a> ja puhelimitse numerosta 050 468 0171.
             </p>
           </PrivacySection>
 
@@ -103,8 +115,9 @@ function App() {
               <li>käyttäjän suosikit</li>
               <li>tekstikoko, väriteema ja näkyvien osioiden asetukset</li>
               <li>karkea käyttötilasto sivulatauksista ja linkkien klikkauksista</li>
-              <li>käyttäjän lähettämä linkki-ilmoitus, jos käyttäjä itse täyttää lomakkeen</li>
-              <li>ylläpitäjän Google-kirjautumistieto ylläpitonäkymässä</li>
+              <li>käyttäjän lähettämä palaute, testipalaute tai linkki-ilmoitus, jos käyttäjä itse täyttää lomakkeen</li>
+              <li>palautteeseen vapaaehtoisesti liitetty kuvakaappaus ja rajatut tekniset tiedot laitetyypistä, selaimesta ja sivusta</li>
+              <li>ylläpitäjän Google-kirjautumistieto, käyttöoikeus ja ylläpidon muutosten auditointitiedot</li>
             </ul>
           </PrivacySection>
 
@@ -149,37 +162,51 @@ function App() {
               <li>klikattujen linkkien osoite ja näkyvä nimi ylläpidon raportointia varten</li>
             </ul>
             <p className={paragraphClass}>
-              Tilasto ei käytä evästeitä, käyttäjätunnisteita, selaimen sormenjälkeä eikä IP-osoitteen tallennusta. Cloud Function näkee HTTP-pyynnön teknisen IP-tiedon pyynnön käsittelyn aikana, mutta sitä ei kirjoiteta tietokantaan.
+              Tilasto lähetetään saman sivuston Cloudcity-API:in ja tallennetaan päiväkohtaisina koosteina MariaDB-tietokantaan. Tilasto ei käytä evästeitä, käyttäjätunnisteita tai selaimen sormenjälkeä, eikä raakaa IP-osoitetta tallenneta käyttötilastoon. API käsittelee pyynnön teknistä verkko-osoitetta väärinkäytön estämiseksi ja muodostaa siitä palvelinsalaisuudella suojatun, lyhytikäiseen pyyntörajoitukseen käytettävän tunnisteen.
             </p>
           </PrivacySection>
 
-          <PrivacySection id="linkki-ilmoitukset" title="Linkki-ilmoitukset ja ylläpito">
+          <PrivacySection id="palautteet" title="Palautteet, testipalaute ja linkki-ilmoitukset">
             <p className={paragraphClass}>
-              Käyttäjä voi ilmoittaa uuden linkin, rikkinäisen linkin tai väärään paikkaan vievän linkin. Lomakkeeseen tallennetaan vain käyttäjän itse antamat tiedot.
+              Käyttäjä voi lähettää yleistä palautetta, vastata julkaisua edeltävään testikyselyyn tai ilmoittaa uuden, rikkinäisen tai väärään paikkaan vievän linkin. Lomakkeisiin tallennetaan käyttäjän itse antamat tiedot ja palautteen käsittelyssä tarvittavat rajatut tekniset tiedot.
             </p>
             <ul className={listClass}>
+              <li>palautteen tyyppi, otsikko, kuvaus ja sivu, jota palaute koskee</li>
+              <li>testipalautelomakkeessa annetut vastaukset</li>
               <li>linkin nimi</li>
               <li>osoite</li>
               <li>kategoria tai lähde, jos se on mukana</li>
               <li>käyttäjän kirjoittama lisähuomio</li>
               <li>ilmoituksen ajankohta</li>
               <li>ilmoituksen käsittelytila</li>
+              <li>vapaaehtoinen kuvakaappaus</li>
             </ul>
-            <p className={paragraphClass}>Linkki-ilmoituksia käytetään vain sivun ylläpitoon.</p>
+            <p className={paragraphClass}>
+              Tietoja käytetään vain Seniorin aloitussivun ylläpitoon, virheiden korjaamiseen, testaamiseen ja kehittämiseen. Lomakkeisiin tai kuvakaappauksiin ei pidä kirjoittaa henkilötietoja, terveystietoja, salasanoja tai muuta arkaluonteista tietoa. Kuvakaappaukset säilytetään suojattuina julkisen verkkohakemiston ulkopuolella.
+            </p>
           </PrivacySection>
 
           <PrivacySection id="paikalliset-palvelut" title="Paikalliset palvelut ja sää">
             <p className={paragraphClass}>
-              Paikallisia palveluja voidaan näyttää käyttäjän valitseman tai selaimen paikantaman paikkakunnan perusteella. Paikkakunnan voi vaihtaa käsin.
+              Paikallisia palveluja voidaan näyttää käyttäjän valitseman tai käyttäjän luvalla selaimen paikantaman paikkakunnan perusteella. Paikkakunnan voi vaihtaa käsin. Tarkkaa sijaintia ei tallenneta Seniorin aloitussivun palvelimelle.
             </p>
             <p className={paragraphClass}>
               Sääkortti käyttää säätietoa tarjoavaa ulkopuolista rajapintaa. Sää haetaan paikkakunnan koordinaattien perusteella. Tarkkaa käyttäjäprofiilia ei tallenneta.
             </p>
           </PrivacySection>
 
+          <PrivacySection id="palveluntarjoajat" title="Tekniset palveluntarjoajat">
+            <p className={paragraphClass}>
+              Seniorin aloitussivun verkkopalvelu, PHP-API, suojatut liitteet ja MariaDB-tietokanta sijaitsevat Cloudcityn palvelinympäristössä. Ylläpitäjien Google-kirjautuminen varmennetaan väliaikaisesti Firebase Authentication -palvelulla. Firebase ei ole Seniorin aloitussivun varsinaisen sisällön tai palautteiden ensisijainen tietovarasto.
+            </p>
+            <p className={paragraphClass}>
+              Sää-, paikannus- ja osoitehakutoiminnot voivat tehdä pyynnön ulkopuoliseen sää- tai paikkatietopalveluun vain toimintoa käytettäessä. Ulkoisen linkin tai Google-haun avaamisen jälkeen käyttäjä siirtyy kyseisen palveluntarjoajan palveluun ja sen tietosuojakäytännöt koskevat käyttöä.
+            </p>
+          </PrivacySection>
+
           <PrivacySection id="yllapitajan-kirjautuminen" title="Ylläpitäjän kirjautuminen">
             <p className={paragraphClass}>
-              Ylläpitonäkymä on rajattu ylläpitäjille. Ylläpitäjä kirjautuu Google-tunnuksella. Tavallinen käyttäjä ei tarvitse kirjautumista.
+              Ylläpitonäkymä on rajattu ennalta hyväksytyille ylläpitäjille. Ylläpitäjä kirjautuu Google-tunnuksella Firebase Authentication -palvelun kautta. Cloudcity-API tarkistaa kirjautumistunnisteen ja hyväksyy vain aktiivisen ylläpitoroolin. Tavallinen käyttäjä ei tarvitse kirjautumista.
             </p>
           </PrivacySection>
 
@@ -188,16 +215,31 @@ function App() {
               Selaimeen tallennetut asetukset säilyvät käyttäjän omalla laitteella, kunnes käyttäjä poistaa sivuston tiedot tai vaihtaa selainta.
             </p>
             <p className={paragraphClass}>
-              Ylläpidon tiedot, kuten linkki-ilmoitukset ja käyttötilastot, säilytetään niin kauan kuin niitä tarvitaan sivun ylläpitoon ja kehittämiseen.
+              Palautteet ja linkki-ilmoitukset poistetaan viimeistään 12 kuukauden kuluttua vastaanottamisesta. Palautteiden kuvakaappaukset poistetaan heti, kun niitä ei enää tarvita, ja viimeistään 90 päivän kuluttua vastaanottamisesta.
+            </p>
+            <p className={paragraphClass}>
+              Julkaisua edeltävä testipalaute poistetaan viimeistään kuuden kuukauden kuluttua testatun version julkaisemisesta. Jos versiota ei julkaista, määräaika lasketaan testauksen päättymisestä. Tunnisteettomat päiväkohtaiset käyttötilastokoosteet poistetaan viimeistään 24 kuukauden kuluttua.
+            </p>
+            <p className={paragraphClass}>
+              Tiedot voidaan poistaa aikaisemmin, jos niitä ei enää tarvita. Ylläpitäjän tunniste- ja käyttöoikeustietoja säilytetään vain ylläpitotehtävän edellyttämän ajan.
+            </p>
+          </PrivacySection>
+
+          <PrivacySection id="oikeudet" title="Käyttäjän oikeudet">
+            <p className={paragraphClass}>
+              Jos käyttäjän lähettämässä palautteessa tai kuvakaappauksessa on häntä koskevia henkilötietoja, hän voi pyytää tietojen tarkastamista, oikaisemista tai poistamista sekä käsittelyn rajoittamista soveltuvan tietosuojalainsäädännön mukaisesti. Pyynnössä pitää antaa riittävät tiedot oikean palautteen tunnistamiseksi ilman, että viestiin lisätään tarpeettomia henkilötietoja.
+            </p>
+            <p className={paragraphClass}>
+              Käyttäjällä on myös oikeus tehdä valitus Tietosuojavaltuutetun toimistolle, jos hän katsoo, että henkilötietoja on käsitelty lainvastaisesti.
             </p>
           </PrivacySection>
 
           <PrivacySection id="yhteydenotto" title="Yhteydenotto">
             <p className={paragraphClass}>
-              Tietosuojaan liittyvät kysymykset ohjataan sivun ylläpidolle tai Vanhustyön keskusliiton sovittuun yhteyshenkilöön. Lopullinen yhteystieto lisätään ennen julkaisua.
+              Tietosuojaan liittyvät kysymykset ja pyynnöt voi lähettää Nina Ziesslerille osoitteeseen <a className="underline" href="mailto:nina.ziessler@vtkl.fi">nina.ziessler@vtkl.fi</a>. Yleiset SeniorSurf-yhteydenotot voi lähettää osoitteeseen <a className="underline" href="mailto:seniorsurf@vtkl.fi">seniorsurf@vtkl.fi</a>.
             </p>
             <p className="aurora-soft-panel mt-4 text-sm font-black leading-relaxed">
-              Päivitetty 31.5.2026. Tämä sivu on käyttöönoton luonnos, jota täydennetään lopullisella yhteystiedolla ja rekisterinpitäjätiedolla ennen laajaa julkaisua.
+              Päivitetty 25.8.2026. Selostetta päivitetään, kun palvelun tietovirrat, säilytysajat tai yhteystiedot muuttuvat.
             </p>
           </PrivacySection>
         </div>

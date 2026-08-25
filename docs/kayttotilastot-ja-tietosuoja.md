@@ -1,6 +1,6 @@
 # Karkea käyttötilasto ja tietosuoja
 
-Tarkistuspaiva: 2026-05-26
+Tarkistuspäivä: 2026-08-25
 
 ## Mitä kerätään
 
@@ -10,7 +10,7 @@ Sivustolla voidaan kerätä erittäin karkeaa käyttötilastoa palvelun kehittä
 - linkkiklikkausten määrä päiväkohtaisesti
 - klikattujen linkkien osoite ja näkyvä nimi ylläpidon raportointia varten
 
-Tilasto tallennetaan Firestore-kokoelmaan `usageStats`, jossa yksi dokumentti vastaa yhtä päivää.
+Selain lähettää `pageview`- ja `linkClick`-tapahtumat saman originin Cloudcity-API:in. API tallentaa vain päiväkohtaiset koosteet MariaDB-tauluihin `usage_daily`, `usage_page_daily` ja `usage_link_daily`. Firestore ei ole julkaistavan version käyttötilaston tietovarasto.
 
 ## Mitä ei kerätä
 
@@ -24,7 +24,7 @@ Toteutus ei käytä:
 - IP-osoitteen tallennusta
 - tarkkaa maantieteellistä sijaintia
 
-Cloud Function näkee HTTP-pyynnön teknisen IP-tiedon pyynnön käsittelyn aikana, mutta sitä ei kirjoiteta tietokantaan.
+Cloudcity-API käsittelee HTTP-pyynnön teknistä verkko-osoitetta pyynnön aikana, mutta raakaa IP-osoitetta ei kirjoiteta käyttötilastoon. Väärinkäytön estävä pyyntörajoitus käyttää palvelinsalaisuudella muodostettua HMAC-SHA-256-tiivistettä ja lyhyttä aikaikkunaa.
 
 ## Maakohtainen tilastointi
 
@@ -46,4 +46,8 @@ Ylläpidon `ehdotukset.html`-näkymä näyttää:
 - oman päivämäärävälin
 - klikatuimmat linkit valitulla aikavälillä
 
-Tilaston luku on rajattu Firestore-säännöillä ylläpitäjille.
+Tilaston luku on rajattu Cloudcity-API:ssa hyväksytyille ylläpitäjille. Ylläpitäjä tunnistetaan väliaikaisesti Firebase Authenticationin Google-kirjautumisella, minkä lisäksi API vaatii aktiivisen MariaDB-roolin.
+
+## Säilytysaika
+
+Tunnisteettomat päiväkohtaiset käyttötilastokoosteet säilytetään enintään 24 kuukautta. Vanhemmat koosteet poistetaan määräaikaisessa ylläpidossa. Säilytysaika ja toteutunut poistokäytäntö tarkistetaan osana julkaisun jälkeistä tietosuojaseurantaa.

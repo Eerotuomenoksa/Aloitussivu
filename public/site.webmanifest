@@ -1,6 +1,6 @@
 {
-  "name": "Aloitussivu",
-  "short_name": "Aloitussivu",
+  "name": "Seniorin aloitussivu",
+  "short_name": "Seniorin aloitussivu",
   "description": "Selkeä ja turvallinen linkkihakemisto ikääntyneille.",
   "lang": "fi-FI",
   "start_url": "./",

@@ -290,7 +290,7 @@ Elokuussa on tarkoitus:
 - päättää julkaisualustan jatkosta
 - suunnitella ylläpidon pysyvä toimintamalli
 
-Todennäköinen lopullinen osoite on `seniorsurf.fi/aloitussivu`, ellei sivulle löydy omaa selkeää nimeä ja domainia.
+Todennäköinen lopullinen osoite on `seniorsurf.fi/aloitus`, ellei sivulle löydy omaa selkeää nimeä ja domainia.
 
 ## Mitä resursseja jatkossa tarvitaan
 

@@ -25,15 +25,9 @@ type TourStep = {
 const steps: TourStep[] = [
   {
     target: 'logo',
-    title: 'Aloitussivu',
+    title: 'Seniorin aloitussivu',
     body: 'Täältä löytyvät arjen tärkeät verkkopalvelut.',
-    contains: 'Sivun nimi ja tunnus. Tästä tunnistaa, että olet Aloitussivu-sivulla.',
-  },
-  {
-    target: 'google-search',
-    title: 'Google-haku',
-    body: 'Kirjoita hakusana tai paina mikrofonia ja sano hakusana ääneen. Paina lopuksi Hae.',
-    contains: 'Hakukenttä, mikrofonipainike ja hakupainike internetistä etsimistä varten.',
+    contains: 'Sivun nimi ja tunnus. Tästä tunnistaa, että olet Seniorin aloitussivulla.',
   },
   {
     target: 'weather',
@@ -42,16 +36,10 @@ const steps: TourStep[] = [
     contains: 'Paikkakunnan nykyinen sää ja lämpötila, huomisen säätila ja lämpötilaväli sekä linkki tarkempaan sääennusteeseen.',
   },
   {
-    target: 'regional-services',
-    title: 'Paikalliset palvelut',
-    body: 'Valitse paikkakunta, niin saat paikalliset linkit.',
-    contains: 'Kuntavalinta sekä oman alueen palvelu-, uutis- ja varoitusnostot.',
-  },
-  {
-    target: 'local-news',
-    title: 'Paikalliset uutiset',
-    body: 'Paikalliset otsikot vievät alkuperäisen lehden sivulle.',
-    contains: 'Otsikoita paikallisista uutislähteistä ja linkki lehden sivulle.',
+    target: 'google-search',
+    title: 'Google-haku',
+    body: 'Kirjoita hakusana tai paina mikrofonia ja sano hakusana ääneen. Paina lopuksi Hae.',
+    contains: 'Hakukenttä, mikrofonipainike ja hakupainike internetistä etsimistä varten.',
   },
   {
     target: 'scam-alerts',
@@ -66,21 +54,33 @@ const steps: TourStep[] = [
     contains: 'Omat tallennetut linkit. Jos suosikkeja ei vielä ole, alue voi olla tyhjä.',
   },
   {
+    target: 'regional-services',
+    title: 'Paikalliset palvelut',
+    body: 'Valitse paikkakunta, niin saat paikalliset linkit.',
+    contains: 'Kuntavalinta sekä oman alueen palvelu-, uutis- ja varoitusnostot.',
+  },
+  {
+    target: 'local-news',
+    title: 'Paikalliset uutiset',
+    body: 'Paikalliset otsikot vievät alkuperäisen lehden sivulle.',
+    contains: 'Otsikoita paikallisista uutislähteistä ja linkki lehden sivulle.',
+  },
+  {
     target: 'quick-links',
     title: 'Kategoriat',
     body: 'Avaa aihealue ja valitse tarvitsemasi palvelu. Palveluhaussa voit myös painaa mikrofonia ja sanoa hakusanan ääneen.',
     contains: 'Pääkategoriat, palveluhaku ja alakategoriat, joista palvelulinkit avautuvat.',
   },
   {
+    kind: 'preferences',
+    title: 'Tee sivusta omasi',
+    body: 'Valitse kiinnostavat teemat ja ne osiot, jotka haluat nähdä aloitussivulla.',
+  },
+  {
     target: 'settings',
     title: 'Asetukset',
     body: 'Muuta tekstikokoa, teemaa ja näkyviä osioita.',
     contains: 'Rataspainike, josta avautuvat sivun omat asetukset.',
-  },
-  {
-    kind: 'preferences',
-    title: 'Tee sivusta omasi',
-    body: 'Valitse kiinnostavat teemat ja ne osiot, jotka haluat nähdä aloitussivulla.',
   },
 ];
 

@@ -78,9 +78,9 @@ const seniorPageOptions: ChoiceOption[] = [
 ];
 
 const localNewsOptions: ChoiceOption[] = [
-  { value: 'yes', label: 'Pidä mukana ensimmäisessä julkaisussa' },
-  { value: 'partly', label: 'Pidä mukana vain asetuksista valittavana' },
-  { value: 'no', label: 'Jätä pois ensimmäisestä julkaisusta' },
+  { value: 'yes', label: 'Toimivat hyvin ja olivat hyödyllisiä' },
+  { value: 'partly', label: 'Hyödyllisiä, mutta kaipaavat vielä parannuksia' },
+  { value: 'no', label: 'Eivät olleet minulle hyödyllisiä' },
   { value: 'notSeen', label: 'En testannut paikallisuutisia' },
 ];
 
@@ -567,7 +567,7 @@ function TestFeedbackPage() {
             Testaa uusi julkaisuversio
           </h1>
           <p className="max-w-3xl text-base font-semibold text-white/80 md:text-lg">
-            Kiitos, että testaat aloitussivun 3.9.2026 tavoitejulkaisua. Tekoälyavustaja ja nimipäivät eivät kuulu tähän versioon. Vastaaminen vie noin 5-10 minuuttia, ja vastaukset tallennetaan anonyymisti sivun viimeistelyä varten.
+            Kiitos, että testaat aloitussivun 1.9.2026 tavoitejulkaisua, joka tehdään viimeistään 3.9.2026. Tekoälyavustaja ja nimipäivät eivät kuulu tähän versioon. Vastaaminen vie noin 5-10 minuuttia, ja vastaukset tallennetaan anonyymisti sivun viimeistelyä varten.
           </p>
         </header>
 
@@ -577,7 +577,7 @@ function TestFeedbackPage() {
             <li>Katso, löydätkö yläosasta helposti kellon, sään ja Google-haun.</li>
             <li>Etsi yksi tarvitsemasi palvelu kategorioista tai linkkihaulla.</li>
             <li>Valitse Lähelläsi-osiossa oma kuntasi ja avaa kunnan senioripalvelulinkki, jos sellainen näkyy.</li>
-            <li>Avaa Asetukset ja ota paikallisuutiset käyttöön. Vastausten perusteella päätetään, jäävätkö ne ensimmäiseen julkaisuun.</li>
+            <li>Avaa Asetukset ja ota paikallisuutiset käyttöön. Arvioi, löytyvätkö oman alueesi uutiset ja ovatko ne hyödyllisiä.</li>
           </ol>
         </section>
 
@@ -756,7 +756,7 @@ function TestFeedbackPage() {
               placeholder="Esimerkiksi Mäntsälä – senioripalvelujen linkki avautui väärälle sivulle."
             />
             <ChoiceGroup
-              label="Pitäisikö paikallisuutisten olla mukana ensimmäisessä julkaisussa?"
+              label="Kuinka hyödyllisinä pidit paikallisuutisia?"
               name="localNewsUseful"
               value={draft.localNewsUseful}
               options={localNewsOptions}

@@ -1,6 +1,6 @@
 # Elokuun julkaisusuunnitelma: aloitussivu
 
-> Päätös 13.8.2026: rajattu julkaisu tehdään viimeistään 3.9.2026 Cloudcityn webhotellissa osoitteeseen `https://seniorsurf.fi/aloitussivu/`. Erillistä domainia ei oteta tässä vaiheessa. Nimipäivät ja tekoälyavustaja jäävät pois, paikallisuutiset ovat oletuksena piilossa ja niiden lopullinen mukanaolo ratkaistaan lisätestauksella. Julkisen navigaation beta-, testaus-, ylläpito- ja muutoslokilinkit piilotetaan, ja Sivua tukemassa -kokeilusivu poistetaan. Ajantasainen avoin lista on `TODO_HUMAN.md`.
+> Päivitetty 25.8.2026: palvelun virallinen nimi on `Seniorin aloitussivu`. Rajatun julkaisun tavoite on 1.9.2026 ja ehdoton takaraja 3.9.2026. Julkaisu tehdään Cloudcityn webhotellissa osoitteeseen `https://seniorsurf.fi/aloitus/`. Erillistä domainia ei oteta tässä vaiheessa. Cloudcityn MariaDB, saman originin API ja Firestore-datan migraatio ovat P1-julkaisuehtoja; yksityiskohtainen toteutus on dokumentissa `docs/cloudcity-tietokanta-p1-suunnitelma-2026-08-14.md`. WordPress-eristys, Fakiirimedia-yhteydenotto sekä arkipäivien pakettijärjestys ovat dokumentissa `docs/julkaisun-paivakohtaiset-tyopaketit-2026-08-14.md`. Nimipäivät ja tekoälyavustaja jäävät pois. Paikallisuutiset säilytetään ensimmäisessä julkaisussa oletuksena piilotettuina ja käyttäjän asetuksista avattavina. Beta-merkintä sekä testi-, kehitysjono-, ylläpito- ja muutoslokilinkit piilotetaan julkaisukandidaatista viimeistään 31.8. Sivua tukemassa -kokeilusivu poistetaan. Ajantasainen avoin lista on `TODO_HUMAN.md`.
 
 Tämä suunnitelma kokoaa julkisen testauksen jälkeiset työt, Cloudcity-siirron valmistelun ja lopullisen julkaisun vaiheet. Lähtökohtana on, että julkinen testaus alkaa 1.6. ja kestää noin kuukauden, heinäkuu on lomakuukausi, ja elokuun alussa aloitetaan testitulosten läpikäynti sekä julkaisun viimeistely.
 
@@ -8,10 +8,10 @@ Tämä suunnitelma kokoaa julkisen testauksen jälkeiset työt, Cloudcity-siirro
 
 Tavoitteena on viedä aloitussivu julkiseen, vakaaseen tuotantokäyttöön elo-syyskuussa. Lopullinen osoite on joko oma selkeä domain tai SeniorSurfin alla oleva polku:
 
-- `seniorsurf.fi/aloitussivu`
+- `seniorsurf.fi/aloitus`
 - vaihtoehtoisesti erillinen oma domain, jos sivustolle päätetään antaa itsenäinen nimi
 
-Tässä suunnitelmassa oletetaan ensisijaisesti vaihtoehto `seniorsurf.fi/aloitussivu`, koska se on käyttäjälle ymmärrettävä, luotettava ja sopii SeniorSurf-kokonaisuuteen.
+Tässä suunnitelmassa oletetaan ensisijaisesti vaihtoehto `seniorsurf.fi/aloitus`, koska se on käyttäjälle ymmärrettävä, luotettava ja sopii SeniorSurf-kokonaisuuteen.
 
 ## 2. Aikajana
 
@@ -87,7 +87,7 @@ Ensimmäinen työpaketti:
 
 Toinen työpaketti:
 
-- päätetään lopullinen julkaisumalli: oma domain vai `seniorsurf.fi/aloitussivu`
+- päätetään lopullinen julkaisumalli: oma domain vai `seniorsurf.fi/aloitus`
 - varmistetaan Cloudcityn tekniset reunaehdot
 - suunnitellaan tietokanta ja API
 - päätetään, siirretäänkö Firebase kokonaan pois vai jääkö se väliaikaisesti käyttöön
@@ -167,7 +167,7 @@ Tavoitemalli:
 
 ```text
 komponentti -> data provider -> Firebase nyt
-                         -> Cloudcity API myöhemmin
+                         -> Cloudcity API P1-julkaisupolulla
                          -> mock-data tarvittaessa
 ```
 
@@ -229,7 +229,7 @@ updateScamAlertActiveState(id, active)
 
 ### `apiDataProvider.ts`
 
-Tuleva Cloudcity API -toteutus.
+P1-julkaisupolulla toteutettava Cloudcity API -toteutus.
 
 Esimerkiksi:
 
@@ -418,7 +418,7 @@ Onboardingin läpikäyntiä ei suositella sidottavaksi IP-osoitteeseen. IP-pohja
 
 ## 12. Domain- ja polkupäätös
 
-Vaihtoehto A: `seniorsurf.fi/aloitussivu`
+Vaihtoehto A: `seniorsurf.fi/aloitus`
 
 Hyödyt:
 
@@ -448,7 +448,7 @@ Huomiot:
 
 Suositus:
 
-Ensisijaisesti `seniorsurf.fi/aloitussivu`, ellei löydy erittäin selkeää omaa nimeä.
+Ensisijaisesti `seniorsurf.fi/aloitus`, ellei löydy erittäin selkeää omaa nimeä.
 
 ## 13. Julkaisua edeltävä tarkistuslista
 
@@ -496,6 +496,20 @@ Ensisijaisesti `seniorsurf.fi/aloitussivu`, ellei löydy erittäin selkeää oma
 - automaation ajoloki on luettavissa
 
 ## 14. Elokuun työpaketit
+
+14.8.2026 alkaen julkaisuun johtava työ on koottu dokumenttiin `docs/julkaisun-tyopaketit-2026-09-01.md`. Nykyinen etenemisjärjestys on:
+
+1. **WP0 14.8.:** rajaus, työjonon lukitus ja Fakiirimedia-yhteydenotto.
+2. **WP1 17.–21.8.:** lisätestaus ja sisältöpäätökset.
+3. **WP2 17.–21.8. ja 24.–27.8.:** P1-tason Cloudcity-staging, API, MariaDB ja Firestore-migraatio.
+4. **WP3 24.–27.8.:** selosteet, korjaukset ja sisältöjäädytys.
+5. **WP4 28. ja 31.8.:** julkaisukandidaatti ja julkaisuportti.
+6. **WP5 1.9.:** tavoitejulkaisu.
+7. **2.–3.9.:** varapäivät vain P1-esteille; julkaisu viimeistään 3.9.
+
+Alla oleva alkuperäinen laajempi työpakettijako säilyy tausta-aineistona. Sen Firebase Hosting -välivaihe ja laajempi ylläpitoautomaatio eivät ole rajatun 1.–3.9. julkaisun ehtoja. Cloudcity API, MariaDB, tekninen provider-rajapinta ja Firestore-migraatio on 14.8.2026 tehdyllä päätöksellä nostettu P1-julkaisupolulle; ajantasainen toteutus on dokumentissa `docs/cloudcity-tietokanta-p1-suunnitelma-2026-08-14.md`.
+
+### Alkuperäinen laajempi työpakettijako
 
 Tarkempi elokuun ensimmäisen viikon suunnitelma on tiedostossa `docs/elokuun-ensimmaisen-viikon-tyopaketti-2026-08-03.md`. Se yhdistää WP1-testitulosten koonnin ja WP2-julkaisun rajauksen käytännön päiväkohtaiseksi työpaketiksi viikolle 3.-9.8.2026.
 
@@ -669,7 +683,7 @@ Hallinta:
 
 Riski:
 
-Alihakemisto `seniorsurf.fi/aloitussivu` voi vaatia build- ja reititysmuutoksia.
+Alihakemisto `seniorsurf.fi/aloitus` voi vaatia build- ja reititysmuutoksia.
 
 Hallinta:
 
@@ -692,7 +706,7 @@ Hallinta:
 
 Ennen elokuun toteutusta pitää päättää:
 
-- lopullinen osoite: oma domain vai `seniorsurf.fi/aloitussivu`
+- lopullinen osoite: oma domain vai `seniorsurf.fi/aloitus`
 - virallinen nimi: jääkö Aloitussivu käyttöön vai valitaanko muu nimi
 - mikä sähköposti tai jakelulista vastaanottaa ylläpidon ilmoitukset
 - mitkä testilinkit, ylläpitolinkit ja keskeneräiset palvelulinkit poistetaan tai piilotetaan ennen julkaisua

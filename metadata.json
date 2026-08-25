@@ -2,6 +2,6 @@
   "requestFramePermissions": [
     "geolocation"
   ],
-  "name": "Aloitussivu",
+  "name": "Seniorin aloitussivu",
   "description": "Selkeä ja turvallinen linkkihakemisto ikääntyneille."
 }

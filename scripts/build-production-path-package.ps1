@@ -1,0 +1,131 @@
+[CmdletBinding()]
+param()
+
+$ErrorActionPreference = 'Stop'
+
+$workspaceRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
+$temporaryRoot = [IO.Path]::GetFullPath((Join-Path $workspaceRoot '.tmp'))
+$packageRoot = [IO.Path]::GetFullPath((Join-Path $temporaryRoot 'rel10-production-path-package'))
+$zipPath = [IO.Path]::GetFullPath((Join-Path $temporaryRoot 'aloitussivu-rel10-production-path.zip'))
+$pathPrefix = $temporaryRoot.TrimEnd([IO.Path]::DirectorySeparatorChar) + [IO.Path]::DirectorySeparatorChar
+
+if (-not $packageRoot.StartsWith($pathPrefix, [StringComparison]::OrdinalIgnoreCase)) {
+    throw 'Tuotantopaketin kohde ei ole työtilan .tmp-hakemistossa.'
+}
+
+Push-Location $workspaceRoot
+try {
+    $previousApiBase = $env:VITE_API_BASE
+    $previousProvider = $env:VITE_DATA_PROVIDER
+    try {
+        $env:VITE_API_BASE = '/aloitus/api/v1'
+        $env:VITE_DATA_PROVIDER = 'cloudcity'
+        & npm.cmd run build:cloudcity
+        if ($LASTEXITCODE -ne 0) {
+            throw "Cloudcity-build epäonnistui koodilla $LASTEXITCODE."
+        }
+    }
+    finally {
+        $env:VITE_API_BASE = $previousApiBase
+        $env:VITE_DATA_PROVIDER = $previousProvider
+    }
+
+    if (Test-Path -LiteralPath $packageRoot) {
+        Remove-Item -LiteralPath $packageRoot -Recurse -Force
+    }
+    if (Test-Path -LiteralPath $zipPath) {
+        Remove-Item -LiteralPath $zipPath -Force
+    }
+
+    $publicRoot = New-Item -ItemType Directory -Path (Join-Path $packageRoot 'wordpress_aloitus') -Force
+    $privateRoot = New-Item -ItemType Directory -Path (Join-Path $packageRoot 'private_root') -Force
+    $secretsRoot = New-Item -ItemType Directory -Path (Join-Path $privateRoot.FullName 'secrets') -Force
+    foreach ($directory in @('logs', 'cache', 'protected_uploads')) {
+        $null = New-Item -ItemType Directory -Path (Join-Path $privateRoot.FullName $directory) -Force
+    }
+
+    Get-ChildItem -LiteralPath (Join-Path $workspaceRoot 'dist') -Force |
+        Copy-Item -Destination $publicRoot.FullName -Recurse -Force
+    Copy-Item -LiteralPath (Join-Path $workspaceRoot 'deploy/cloudcity/production-subdir.htaccess') -Destination (Join-Path $publicRoot.FullName '.htaccess') -Force
+    Copy-Item -LiteralPath (Join-Path $workspaceRoot 'api/public/api') -Destination $publicRoot.FullName -Recurse -Force
+
+    Copy-Item -LiteralPath (Join-Path $workspaceRoot 'api/bootstrap.php') -Destination $privateRoot.FullName -Force
+    Copy-Item -LiteralPath (Join-Path $workspaceRoot 'api/src') -Destination $privateRoot.FullName -Recurse -Force
+    Copy-Item -LiteralPath (Join-Path $workspaceRoot 'api/cron') -Destination $privateRoot.FullName -Recurse -Force
+    Copy-Item -LiteralPath (Join-Path $workspaceRoot 'deploy/cloudcity/production-config.example.php') -Destination (Join-Path $secretsRoot.FullName 'config.production.example.php') -Force
+    Copy-Item -LiteralPath (Join-Path $workspaceRoot 'docs/rel10-wordpress-esittely-ja-ohjaus.md') -Destination (Join-Path $packageRoot 'DEPLOY_INSTRUCTIONS.md') -Force
+
+    foreach ($directory in @('logs', 'cache', 'protected_uploads')) {
+        $null = New-Item -ItemType File -Path (Join-Path $privateRoot.FullName "$directory/.keep") -Force
+    }
+
+    $builtJavaScript = Get-ChildItem -LiteralPath (Join-Path $publicRoot.FullName 'assets') -Filter '*.js' -File |
+        Get-Content -Raw
+    if (-not ($builtJavaScript -match '/aloitus/api/v1')) {
+        throw 'Tuotantobundlesta puuttuu odotettu /aloitus/api/v1-polku.'
+    }
+
+    $packageJson = Get-Content -LiteralPath (Join-Path $workspaceRoot 'package.json') -Raw | ConvertFrom-Json
+    $commit = (& git rev-parse --short=12 HEAD).Trim()
+    if ($LASTEXITCODE -ne 0 -or -not $commit) {
+        $commit = 'unknown'
+    }
+    $workingTreeDirty = [bool](& git status --porcelain)
+    [ordered]@{
+        package = 'REL-10-production-path'
+        mode = 'cloudcity'
+        publicUrl = 'https://seniorsurf.fi/aloitus/'
+        publicApiBase = '/aloitus/api/v1'
+        publicUploadTarget = '/website.wp33403/aloitus/'
+        privateUploadTarget = '/aloitus-production/'
+        version = [string]$packageJson.version
+        commit = $commit
+        workingTreeDirty = $workingTreeDirty
+        builtAtUtc = [DateTime]::UtcNow.ToString('o')
+        schemaMigrations = @('001_initial_schema', '002_add_link_reports_triage_index')
+        backgroundJobs = @('ncsc')
+    } | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $packageRoot 'build-info.json') -Encoding utf8
+
+    Add-Type -AssemblyName System.IO.Compression
+    Add-Type -AssemblyName System.IO.Compression.FileSystem
+    $archive = [IO.Compression.ZipFile]::Open($zipPath, [IO.Compression.ZipArchiveMode]::Create)
+    try {
+        Get-ChildItem -LiteralPath $packageRoot -Recurse -Force -File | ForEach-Object {
+            $relativePath = $_.FullName.Substring($packageRoot.Length).TrimStart('\', '/').Replace('\', '/')
+            $null = [IO.Compression.ZipFileExtensions]::CreateEntryFromFile(
+                $archive,
+                $_.FullName,
+                $relativePath,
+                [IO.Compression.CompressionLevel]::Optimal
+            )
+        }
+    }
+    finally {
+        $archive.Dispose()
+    }
+
+    $sha256 = [Security.Cryptography.SHA256]::Create()
+    try {
+        $zipStream = [IO.File]::OpenRead($zipPath)
+        try {
+            $hashBytes = $sha256.ComputeHash($zipStream)
+        }
+        finally {
+            $zipStream.Dispose()
+        }
+    }
+    finally {
+        $sha256.Dispose()
+    }
+    $hash = ([BitConverter]::ToString($hashBytes)).Replace('-', '').ToLowerInvariant()
+    [pscustomobject]@{
+        PackageDirectory = $packageRoot
+        PublicUploadDirectory = $publicRoot.FullName
+        PrivateUploadDirectory = $privateRoot.FullName
+        Zip = $zipPath
+        Sha256 = $hash
+    } | Format-List
+}
+finally {
+    Pop-Location
+}

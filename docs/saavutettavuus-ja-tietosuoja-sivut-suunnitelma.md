@@ -1,6 +1,6 @@
 # Saavutettavuus- ja tietosuojasivujen suunnitelma
 
-Päivitetty: 31.5.2026
+Päivitetty: 25.8.2026
 
 Tämä dokumentti suunnittelee kaksi julkista lisäsivua aloitussivulle:
 
@@ -357,9 +357,12 @@ Selostetta päivitetään aina, kun palveluun tehdään saavutettavuuteen vaikut
 8. Tarkista build.
 9. Tarkista mobiilinäkymä ja näppäimistökäyttö.
 
-## Avoimet päätökset
+## Hyväksytyt päätökset 25.8.2026
 
-- Mikä on virallinen yhteystieto tietosuoja- ja saavutettavuuspalautteelle?
-- Merkitäänkö rekisterinpitäjäksi Vanhustyön keskusliitto ry vai jokin SeniorSurf-kokonaisuuden nimetty taho?
-- Halutaanko tietosuojasivulle lyhyt käyttäjäystävällinen versio ja sen alle tarkempi seloste?
-- Tehdäänkö saavutettavuussivu virallisen saavutettavuusselosteen muotoon jo pilotissa vai vasta ennen varsinaista julkaisua?
+- Rekisterinpitäjä on Vanhustyön keskusliitto – Centralförbundet för de gamlas väl ry (Y-tunnus 0215403–8), Malmin kauppatie 26, 00700 Helsinki.
+- Tietosuojan yhteyshenkilö on SeniorSurf-toiminnan nykyisessä virallisessa tietosuojaselosteessa nimetty vastaava asiantuntija.
+- Saavutettavuuspalaute vastaanotetaan osoitteessa `seniorsurf@vtkl.fi`.
+- Tietosuojasivu säilyy käyttäjäystävällisenä, mutta siinä kuvataan toteutunut Cloudcity-API, MariaDB, suojattu liitetallennus ja ylläpitäjien väliaikainen Firebase Authentication.
+- Palautteiden ja linkki-ilmoitusten enimmäissäilytysaika on 12 kuukautta, liitteiden 90 päivää, testipalautteen kuusi kuukautta testatun version julkaisusta tai testauksen päättymisestä ja tunnisteettomien käyttötilastokoosteiden 24 kuukautta.
+- Saavutettavuussivu julkaistaan osittain vaatimukset täyttävänä selosteena. Tunnetut puutteet pidetään näkyvissä ja selostetta päivitetään REL-11:n kattavan saavutettavuustarkistuksen jälkeen.
+- Valvontaviranomaisena kuvataan 2026 ajantasaisesti Liikenne- ja viestintävirasto Traficomin Digitaalisen esteettömyyden ja saavutettavuuden valvontayksikkö.

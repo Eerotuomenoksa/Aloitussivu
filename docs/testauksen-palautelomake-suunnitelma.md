@@ -1,6 +1,6 @@
 # Palautelomakkeen suunnitelma julkaisua edeltävään testaukseen
 
-Päivitetty 13.8.2026 vastaamaan 3.9.2026 tavoitejulkaisua. Uudessa testikierroksessa arvioidaan rajattua julkaisuversiota, josta tekoälyavustaja ja nimipäivät on poistettu. Paikallisuutiset ovat oletuksena piilossa, ja niiden mukanaolo ratkaistaan uusien testivastausten perusteella.
+Päivitetty 14.8.2026 vastaamaan 1.9.2026 tavoitejulkaisua ja 3.9.2026 ehdotonta takarajaa. Uudessa testikierroksessa arvioidaan rajattua julkaisuversiota, josta tekoälyavustaja ja nimipäivät on poistettu. Paikallisuutiset säilytetään ensimmäisessä julkaisussa oletuksena piilotettuina ja käyttäjän asetuksista avattavina.
 
 ## Tavoite
 
@@ -12,7 +12,7 @@ Palautelomakkeen tarkoitus on selvittää:
 - ovatko paikalliset palvelut hyödyllisiä
 - löytyvätkö uuden yläosan kello, verkkohaku ja sää helposti
 - löytyvätkö ja avautuvatko kuntakohtaiset senioripalvelulinkit Lähelläsi-osiossa
-- haluavatko testaajat paikallisuutiset ensimmäiseen julkaisuun
+- löytyvätkö oman alueen paikallisuutiset ja ovatko ne hyödyllisiä
 - huomaavatko käyttäjät tärkeät toiminnot
 - onko mobiilikäyttö riittävän helppoa
 - ovatko värit, tekstikoko ja kontrastit sopivia
@@ -25,7 +25,7 @@ Lomakkeen pitää olla riittävän lyhyt, jotta vastauskynnys pysyy matalana. Ka
 ```text
 Kiitos, että testaat aloitussivua.
 
-Palautteen avulla viimeistelemme 3.9.2026 tavoitejulkaisua. Tekoälyavustaja ja nimipäivät eivät kuulu tähän testattavaan versioon. Lomakkeeseen vastaaminen vie noin 5-10 minuuttia. Voit vastata itse tai yhdessä digiopastajan kanssa.
+Palautteen avulla viimeistelemme 1.9.2026 tavoitejulkaisua, joka tehdään viimeistään 3.9.2026. Tekoälyavustaja ja nimipäivät eivät kuulu tähän testattavaan versioon. Lomakkeeseen vastaaminen vie noin 5-10 minuuttia. Voit vastata itse tai yhdessä digiopastajan kanssa.
 ```
 
 ## Ennen lomakkeeseen vastaamista
@@ -35,7 +35,7 @@ Testaajaa pyydetään tekemään neljä tehtävää:
 1. Etsi yläosasta kello, sää ja Google-haku.
 2. Etsi yksi tarvitsemasi palvelu kategorioista tai linkkihaulla.
 3. Valitse Lähelläsi-osiossa oma kunta ja avaa kunnan senioripalvelulinkki, jos se näkyy.
-4. Avaa Asetukset, ota paikallisuutiset käyttöön ja arvioi niiden paikka ensimmäisessä julkaisussa.
+4. Avaa Asetukset, ota paikallisuutiset käyttöön ja arvioi, löytyvätkö oman alueesi uutiset ja ovatko ne hyödyllisiä.
 
 ## Pakolliset kysymykset
 
@@ -201,15 +201,15 @@ Vaihtoehdot:
 
 Tyyppi: avoin tekstikenttä
 
-### Pitäisikö paikallisuutisten olla mukana ensimmäisessä julkaisussa?
+### Kuinka hyödyllisinä pidit paikallisuutisia?
 
 Tyyppi: monivalinta
 
 Vaihtoehdot:
 
-- Pidä mukana ensimmäisessä julkaisussa
-- Pidä mukana vain asetuksista valittavana
-- Jätä pois ensimmäisestä julkaisusta
+- Toimivat hyvin ja olivat hyödyllisiä
+- Hyödyllisiä, mutta kaipaavat vielä parannuksia
+- Eivät olleet minulle hyödyllisiä
 - En testannut paikallisuutisia
 
 ## 5. Toiminnot

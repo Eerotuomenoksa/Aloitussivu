@@ -1,3 +1,6 @@
+import { getFirebaseAuth } from './firebaseClient';
+import { adminPollIntervalMs, dataProviderKind, getDataProvider, subscribeWithPolling } from './services/data';
+
 export type ScamAlertSeverity = 'info' | 'warning' | 'danger';
 
 export interface ScamAlertEntry {
@@ -26,108 +29,52 @@ export interface NcscScrapeLogEntry {
   structureVersion: '2026' | '2025' | 'news' | 'unknown';
 }
 
-const SCAM_ALERTS_COLLECTION = 'scamAlerts';
-const NCSC_SCRAPE_LOG_COLLECTION = 'ncscScrapeLog';
-const REMOTE_SYNC_DELAY_MS = 12000;
-
-const hasFirebaseConfig = Boolean(
-  import.meta.env.VITE_FIREBASE_API_KEY?.trim()
-  && import.meta.env.VITE_FIREBASE_AUTH_DOMAIN?.trim()
-  && import.meta.env.VITE_FIREBASE_PROJECT_ID?.trim()
-);
-
-const loadRemoteFirestore = async () => {
-  if (!hasFirebaseConfig) return null;
-  const [client, firestore] = await Promise.all([
-    import('./firebaseClient'),
-    import('firebase/firestore'),
-  ]);
-  if (!client.isFirebaseConfigured) return null;
-  const db = client.getFirebaseDb();
-  return db ? { client, db, firestore } : null;
-};
-
 const getScrapeLogReadErrorMessage = (error: { code?: string; message: string }) => (
-  error.code === 'permission-denied'
-    ? 'Ajolokin lukeminen epäonnistui: kirjaudu ylläpitäjän Google-tunnuksella, jolla on oikeus Firestore-sääntöihin.'
+  error.code === 'permission-denied' || error.code === 'admin_forbidden'
+    ? 'Ajolokin lukeminen epäonnistui: tunnuksella ei ole ylläpito-oikeutta.'
     : `Ajolokin lukeminen epäonnistui: ${error.message}`
 );
 
-export const subscribeScamAlerts = (callback: (alerts: ScamAlertEntry[]) => void) => {
+export const subscribeScamAlerts = (
+  callback: (alerts: ScamAlertEntry[]) => void,
+  admin = false,
+  onError?: (error: unknown) => void,
+) => {
   callback([]);
-  let cancelled = false;
-  let unsubscribeRemote: (() => void) | undefined;
-  const timer = window.setTimeout(() => {
-    void loadRemoteFirestore().then((remote) => {
-      if (cancelled || !remote) return;
-      const { db, firestore } = remote;
-      unsubscribeRemote = firestore.onSnapshot(
-        firestore.query(
-          firestore.collection(db, SCAM_ALERTS_COLLECTION),
-          firestore.orderBy('createdAt', 'desc')
-        ),
-        (snapshot) => {
-          callback(snapshot.docs.map((document) => ({
-            id: document.id,
-            ...document.data(),
-          })) as ScamAlertEntry[]);
-        },
-        () => callback([])
-      );
-    });
-  }, REMOTE_SYNC_DELAY_MS);
-
-  return () => {
-    cancelled = true;
-    window.clearTimeout(timer);
-    unsubscribeRemote?.();
-  };
+  return subscribeWithPolling(
+    async () => {
+      const provider = await getDataProvider();
+      return admin
+        ? provider.listAdmin<ScamAlertEntry[]>('scam-alerts')
+        : provider.listPublic<ScamAlertEntry>('scam-alerts');
+    },
+    callback,
+    onError,
+    admin ? adminPollIntervalMs : 300000,
+  );
 };
 
 export const subscribeNcscScrapeLogs = (
   callback: (logs: NcscScrapeLogEntry[]) => void,
   onError?: (message: string, error?: { code?: string; message: string }) => void
 ) => {
-  let unsubscribeRemote: (() => void) | undefined;
-  let cancelled = false;
-  void loadRemoteFirestore().then((remote) => {
-    if (cancelled) return;
-    if (!remote) {
+  return subscribeWithPolling(
+    async () => (await getDataProvider()).listAdmin<NcscScrapeLogEntry[]>('ncsc-logs'),
+    (logs) => {
+      onError?.('');
+      callback(logs.slice(0, 10));
+    },
+    (error) => {
       callback([]);
-      onError?.('Firebase-asetukset puuttuvat, joten ajolokia ei voi lukea.');
-      return;
-    }
-
-    const { db, firestore } = remote;
-    unsubscribeRemote = firestore.onSnapshot(
-      firestore.query(firestore.collection(db, NCSC_SCRAPE_LOG_COLLECTION), firestore.orderBy('processedAt', 'desc')),
-      (snapshot) => {
-        onError?.('');
-        callback(snapshot.docs.slice(0, 10).map((document) => ({
-          id: document.id,
-          ...document.data(),
-        })) as NcscScrapeLogEntry[]);
-      },
-      (error) => {
-        callback([]);
-        onError?.(getScrapeLogReadErrorMessage(error), error);
-      }
-    );
-  });
-
-  return () => {
-    cancelled = true;
-    unsubscribeRemote?.();
-  };
+      const normalized = error instanceof Error ? error : new Error('Tuntematon virhe');
+      onError?.(getScrapeLogReadErrorMessage(normalized), normalized);
+    },
+    adminPollIntervalMs,
+  );
 };
 
 export const updateScamAlertActiveState = async (id: string, active: boolean) => {
-  const remote = await loadRemoteFirestore();
-  if (!remote) return;
-  await remote.firestore.updateDoc(remote.firestore.doc(remote.db, SCAM_ALERTS_COLLECTION, id), {
-    active,
-    updatedAt: new Date().toISOString(),
-  });
+  await (await getDataProvider()).updateAdmin('scam-alerts', id, { active });
 };
 
 export const getNcscScrapeNowUrl = () => {
@@ -140,9 +87,18 @@ export const getNcscScrapeNowUrl = () => {
 };
 
 export const runNcscScrapeNow = async () => {
+  if (dataProviderKind === 'cloudcity') {
+    return (await getDataProvider()).runAdminAction<{
+      status: 'completed' | 'skipped';
+      alertsCreated: number;
+      targetsProcessed: number;
+      targetsSkipped: number;
+      errors: number;
+      url: string | null;
+    }>('ncsc-run');
+  }
   const url = getNcscScrapeNowUrl();
-  const remote = await loadRemoteFirestore();
-  const user = remote?.client.getFirebaseAuth()?.currentUser;
+  const user = getFirebaseAuth()?.currentUser;
 
   if (!user) {
     throw new Error('Kirjaudu ylläpitäjänä ennen Kyberturvallisuuskeskuksen ajon käynnistämistä.');

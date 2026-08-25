@@ -1,17 +1,5 @@
-import {
-  collection,
-  doc,
-  getDoc,
-  onSnapshot,
-  orderBy,
-  query,
-  setDoc,
-  updateDoc,
-} from 'firebase/firestore';
-import { getFirebaseDb, isFirebaseConfigured } from './firebaseClient';
+import { adminPollIntervalMs, getDataProvider, subscribeWithPolling } from './services/data';
 
-const FEEDBACK_COLLECTION = 'feedbackItems';
-const FEEDBACK_ATTACHMENT_COLLECTION = 'feedbackAttachments';
 const FEEDBACK_STORAGE_KEY = 'feedbackItems';
 const FEEDBACK_ATTACHMENT_STORAGE_KEY = 'feedbackAttachments';
 const FEEDBACK_CHANGE_EVENT = 'feedbackitemschange';
@@ -127,6 +115,20 @@ const saveLocalAttachment = (attachment: FeedbackAttachment) => {
   }
 };
 
+const removeLocalFeedback = (ids: string[]) => {
+  if (ids.length === 0) return;
+  writeLocalFeedback(readLocalFeedback().filter((item) => !ids.includes(item.id)));
+  try {
+    localStorage.setItem(
+      FEEDBACK_ATTACHMENT_STORAGE_KEY,
+      JSON.stringify(readLocalAttachments().filter((attachment) => !ids.includes(attachment.feedbackId))),
+    );
+  } catch {
+    // Säilytä liite, jos selaintallennuksen siivous epäonnistuu.
+  }
+  emitFeedbackChange();
+};
+
 const emitFeedbackChange = () => {
   if (typeof window !== 'undefined') {
     window.dispatchEvent(new Event(FEEDBACK_CHANGE_EVENT));
@@ -155,69 +157,98 @@ export const submitFeedback = async (draft: FeedbackDraft): Promise<FeedbackSubm
     createdAt: now,
   } : null;
 
-  if (isFirebaseConfigured) {
-    const db = getFirebaseDb();
-    if (db) {
-      try {
-        await setDoc(doc(db, FEEDBACK_COLLECTION, item.id), item);
-        if (attachment) {
-          await setDoc(doc(db, FEEDBACK_ATTACHMENT_COLLECTION, item.id), attachment);
-        }
-        emitFeedbackChange();
-        return { item, storage: 'cloud' };
-      } catch (error) {
-        saveLocalFeedback(item);
-        if (attachment) saveLocalAttachment(attachment);
-        return { item, storage: 'local' };
-      }
-    }
+  try {
+    const provider = await getDataProvider();
+    await provider.submitPublic('feedback', {
+      id: item.id,
+      type: item.type,
+      title: item.title,
+      description: item.description,
+      page: item.page,
+      ...(item.client ? { client: item.client } : {}),
+      ...(draft.screenshot ? { screenshot: draft.screenshot } : {}),
+      website: '',
+    });
+    emitFeedbackChange();
+    return { item, storage: provider.kind === 'local' ? 'local' : 'cloud' };
+  } catch {
+    saveLocalFeedback(item);
+    if (attachment) saveLocalAttachment(attachment);
+    return { item, storage: 'local' };
+  }
+};
+
+export const syncLocalFeedbackItems = async () => {
+  const localItems = readLocalFeedback();
+  const provider = await getDataProvider();
+  if (provider.kind === 'local') {
+    return { total: localItems.length, synced: 0, remaining: localItems.length };
   }
 
-  saveLocalFeedback(item);
-  if (attachment) saveLocalAttachment(attachment);
-  return { item, storage: 'local' };
+  const attachments = readLocalAttachments();
+  const syncedIds: string[] = [];
+  for (const item of [...localItems].reverse()) {
+    const screenshot = attachments.find((attachment) => attachment.feedbackId === item.id)?.screenshot;
+    try {
+      await provider.submitPublic('feedback', {
+        id: item.id,
+        type: item.type,
+        title: item.title,
+        description: item.description,
+        page: item.page,
+        ...(item.client ? { client: item.client } : {}),
+        ...(screenshot ? { screenshot } : {}),
+        website: '',
+      });
+      syncedIds.push(item.id);
+    } catch {
+      break;
+    }
+  }
+  removeLocalFeedback(syncedIds);
+  return {
+    total: localItems.length,
+    synced: syncedIds.length,
+    remaining: localItems.length - syncedIds.length,
+  };
 };
 
 export const getFeedbackAttachment = async (feedbackId: string): Promise<FeedbackAttachment | null> => {
-  if (isFirebaseConfigured) {
-    const db = getFirebaseDb();
-    if (db) {
-      const snapshot = await getDoc(doc(db, FEEDBACK_ATTACHMENT_COLLECTION, feedbackId));
-      return snapshot.exists() ? snapshot.data() as FeedbackAttachment : null;
-    }
+  const provider = await getDataProvider();
+  const remote = await provider.getFeedbackAttachment(feedbackId);
+  if (remote) {
+    return {
+      id: feedbackId,
+      feedbackId,
+      screenshot: remote,
+      createdAt: '',
+    };
   }
 
   return readLocalAttachments().find((attachment) => attachment.feedbackId === feedbackId) ?? null;
 };
 
-export const subscribeFeedbackItems = (callback: (items: FeedbackItem[]) => void) => {
-  if (!isFirebaseConfigured) {
-    const handleChange = () => callback(readLocalFeedback());
-    callback(readLocalFeedback());
-    window.addEventListener('storage', handleChange);
-    window.addEventListener(FEEDBACK_CHANGE_EVENT, handleChange);
-    return () => {
-      window.removeEventListener('storage', handleChange);
-      window.removeEventListener(FEEDBACK_CHANGE_EVENT, handleChange);
-    };
-  }
-
-  const db = getFirebaseDb();
-  if (!db) {
-    callback(readLocalFeedback());
-    return () => {};
-  }
-
-  return onSnapshot(
-    query(collection(db, FEEDBACK_COLLECTION), orderBy('createdAt', 'desc')),
-    (snapshot) => {
-      callback(snapshot.docs.map((document) => ({
-        id: document.id,
-        ...document.data(),
-      })) as FeedbackItem[]);
+export const subscribeFeedbackItems = (
+  callback: (items: FeedbackItem[]) => void,
+  onError?: (error: unknown) => void,
+) => {
+  const handleChange = () => callback(readLocalFeedback());
+  window.addEventListener('storage', handleChange);
+  window.addEventListener(FEEDBACK_CHANGE_EVENT, handleChange);
+  const stopPolling = subscribeWithPolling(
+    async () => (await getDataProvider()).listAdmin<FeedbackItem[]>('feedback'),
+    callback,
+    (error) => {
+      callback(readLocalFeedback());
+      onError?.(error);
     },
-    () => callback(readLocalFeedback())
+    adminPollIntervalMs,
   );
+  return () => {
+    stopPolling();
+    window.removeEventListener('storage', handleChange);
+    window.removeEventListener(FEEDBACK_CHANGE_EVENT, handleChange);
+  };
 };
 
 export const updateFeedbackItem = async (
@@ -242,20 +273,10 @@ export const updateFeedbackItem = async (
     emitFeedbackChange();
   };
 
-  if (isFirebaseConfigured) {
-    const db = getFirebaseDb();
-    if (db) {
-      try {
-        await updateDoc(doc(db, FEEDBACK_COLLECTION, id), patch);
-        emitFeedbackChange();
-        return;
-      } catch (error) {
-        if (!import.meta.env.DEV) throw error;
-        updateLocalFeedback();
-        return;
-      }
-    }
-  }
-
+  const provider = await getDataProvider();
+  await provider.updateAdmin('feedback', id, {
+    status,
+    publicNote: publicNote.trim(),
+  });
   updateLocalFeedback();
 };

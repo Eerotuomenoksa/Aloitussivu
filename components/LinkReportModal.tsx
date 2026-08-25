@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { normalizeReportUrl, submitLinkReport } from '../linkVisibility';
+import { normalizeReportUrl, submitLinkReport, syncLocalLinkReports } from '../linkVisibility';
 import { LinkReportDraft, LinkReportEntry, LinkReportType } from '../types';
 import { useI18n } from '../i18n';
 import { useModalFocusTrap } from '../hooks/useModalFocusTrap';
@@ -18,6 +18,8 @@ const LinkReportModal: React.FC<LinkReportModalProps> = ({ draft, onClose }) => 
   const [note, setNote] = useState('');
   const [website, setWebsite] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [submitNotice, setSubmitNotice] = useState('');
+  const [syncNotice, setSyncNotice] = useState('');
   const [submitError, setSubmitError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const closeTimerRef = useRef<number | null>(null);
@@ -35,8 +37,17 @@ const LinkReportModal: React.FC<LinkReportModalProps> = ({ draft, onClose }) => 
     setNote('');
     setWebsite('');
     setSubmitted(false);
+    setSubmitNotice('');
+    setSyncNotice('');
     setSubmitError('');
     setIsSubmitting(false);
+    void syncLocalLinkReports().then((result) => {
+      if (result.synced > 0) {
+        setSyncNotice(`${result.synced} aiemmin tallennettua linkki-ilmoitusta lähetettiin tietokantaan.`);
+      } else if (result.remaining > 0) {
+        setSyncNotice(`${result.remaining} linkki-ilmoitusta odottaa toimivaa verkkoyhteyttä.`);
+      }
+    }).catch(() => {});
   }, [draft]);
 
   useEffect(() => {
@@ -89,13 +100,16 @@ const LinkReportModal: React.FC<LinkReportModalProps> = ({ draft, onClose }) => 
     };
 
     try {
-      await submitLinkReport(entry);
+      const result = await submitLinkReport(entry);
 
       setSubmitted(true);
+      setSubmitNotice(result.storage === 'cloud'
+        ? t('reportSaved')
+        : 'Ilmoitus tallennettiin tähän selaimeen. Lähetä se myöhemmin uudelleen, kun verkkoyhteys toimii.');
       if (closeTimerRef.current !== null) {
         window.clearTimeout(closeTimerRef.current);
       }
-      closeTimerRef.current = window.setTimeout(onClose, 900);
+      closeTimerRef.current = window.setTimeout(onClose, result.storage === 'cloud' ? 900 : 3500);
     } catch {
       setSubmitError(t('reportSaveFailed'));
     } finally {
@@ -199,7 +213,13 @@ const LinkReportModal: React.FC<LinkReportModalProps> = ({ draft, onClose }) => 
 
             {submitted ? (
               <p role="status" className="rounded-2xl bg-green-50 dark:bg-green-900/20 border-4 border-green-200 dark:border-green-900 p-4 font-black text-green-800 dark:text-green-200">
-                {t('reportSaved')}
+                {submitNotice || t('reportSaved')}
+              </p>
+            ) : null}
+
+            {syncNotice ? (
+              <p role="status" className="rounded-2xl border-2 border-amber-300 bg-amber-50 p-4 font-bold text-amber-900 dark:border-amber-800 dark:bg-amber-900/20 dark:text-amber-100">
+                {syncNotice}
               </p>
             ) : null}
 

@@ -15,11 +15,11 @@ import type {
 } from './feedback';
 import {
   getUserEmail,
-  isAdminUser,
   signInWithGoogle,
   signOutAdmin,
   subscribeToAuth,
 } from './firebaseClient';
+import { getVerifiedAdminSession, isAdminAccessError, type AdminSession } from './services/data';
 import { installUsageTracking } from './usageTracking';
 
 const typeLabels: Record<FeedbackType, string> = {
@@ -93,7 +93,7 @@ function AdminEditor({
     try {
       await updateFeedbackItem(item.id, status, publicNote, userEmail);
     } catch {
-      setError('Päivitys ei onnistunut. Tarkista kirjautuminen ja Firestore-säännöt.');
+      setError('Päivitys ei onnistunut. Tarkista kirjautuminen ja ylläpito-oikeus.');
     } finally {
       setIsSaving(false);
     }
@@ -263,23 +263,55 @@ function DevelopmentQueuePage() {
   const [authReady, setAuthReady] = useState(false);
   const [authError, setAuthError] = useState('');
   const [isSigningIn, setIsSigningIn] = useState(false);
+  const [adminSession, setAdminSession] = useState<AdminSession | null>(null);
+  const [adminAccessReady, setAdminAccessReady] = useState(false);
+  const [loadError, setLoadError] = useState('');
 
   useEffect(() => installUsageTracking('kehitysjono'), []);
-
-  useEffect(() => subscribeFeedbackItems(setItems), []);
 
   useEffect(() => subscribeToAuth((nextUser) => {
     setUser(nextUser);
     setAuthReady(true);
   }), []);
 
+  useEffect(() => {
+    let current = true;
+    setAdminSession(null);
+    setAdminAccessReady(!user);
+    if (!user) return () => { current = false; };
+    void getVerifiedAdminSession()
+      .then((session) => {
+        if (current) setAdminSession(session);
+      })
+      .catch((error) => {
+        if (current) setAuthError(error instanceof Error ? error.message : 'Ylläpito-oikeutta ei voitu vahvistaa.');
+      })
+      .finally(() => {
+        if (current) setAdminAccessReady(true);
+      });
+    return () => { current = false; };
+  }, [user]);
+
+  const canEdit = adminSession !== null;
+
+  useEffect(() => {
+    if (!canEdit) {
+      setItems([]);
+      return () => {};
+    }
+    setLoadError('');
+    return subscribeFeedbackItems(setItems, (error) => {
+      if (isAdminAccessError(error)) setAdminSession(null);
+      setLoadError(error instanceof Error ? error.message : 'Palautteita ei voitu ladata.');
+    });
+  }, [canEdit]);
+
   const counts = useMemo(() => statusOrder.map((status) => ({
     status,
     count: items.filter((item) => item.status === status).length,
   })), [items]);
 
-  const userEmail = getUserEmail(user);
-  const canEdit = isAdminUser(user);
+  const userEmail = adminSession?.email || getUserEmail(user);
 
   const signIn = async () => {
     setAuthError('');
@@ -307,7 +339,7 @@ function DevelopmentQueuePage() {
             <div>
               <h1 className="font-display text-4xl font-bold tracking-tight md:text-6xl">Kehitysjono</h1>
               <p className="mt-3 max-w-3xl text-lg font-semibold leading-relaxed text-[var(--theme-text-2)]">
-                Tällä sivulla näkyy sivuilta lähetetty palaute ja sen käsittelyn tila. Palaute on julkista, joten lomakkeessa ei kerätä henkilötietoja.
+                Tällä sivulla ylläpitäjä käsittelee sivuilta lähetettyä palautetta. Palautteet eivät ole luettavissa julkisesta rajapinnasta.
               </p>
             </div>
             <a
@@ -333,7 +365,7 @@ function DevelopmentQueuePage() {
             <div>
               <h2 className="font-display text-2xl font-bold">Ylläpidon käsittely</h2>
               <p className="mt-1 font-semibold text-[var(--theme-muted)]">
-                Kaikki voivat lukea jonon. Tilan voi päivittää vain ylläpitäjä.
+                Jonon lukeminen ja tilan päivittäminen vaativat palvelimen vahvistaman ylläpito-oikeuden.
               </p>
             </div>
             {authReady && canEdit ? (
@@ -355,7 +387,8 @@ function DevelopmentQueuePage() {
             )}
           </div>
           {authError && <p className="mt-4 rounded-2xl bg-rose-50 p-4 font-bold text-rose-800 dark:bg-rose-900/20 dark:text-rose-200">{authError}</p>}
-          {authReady && user && !canEdit && (
+          {loadError && <p className="mt-4 rounded-2xl bg-rose-50 p-4 font-bold text-rose-800 dark:bg-rose-900/20 dark:text-rose-200">{loadError}</p>}
+          {authReady && user && adminAccessReady && !canEdit && (
             <p className="mt-4 rounded-2xl bg-amber-50 p-4 font-bold text-amber-900 dark:bg-amber-900/20 dark:text-amber-100">
               Olet kirjautunut, mutta tällä tunnuksella ei ole ylläpito-oikeutta.
             </p>

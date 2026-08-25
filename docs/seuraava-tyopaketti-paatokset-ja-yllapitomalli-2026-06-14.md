@@ -48,7 +48,7 @@ SeniorSurf-nimen käyttö:
 
 Päätä:
 
-- tavoitellaanko ensisijaisesti osoitetta `seniorsurf.fi/aloitussivu`
+- tavoitellaanko ensisijaisesti osoitetta `seniorsurf.fi/aloitus`
 - käytetäänkö välivaiheessa Firebase Hostingia
 - jääkö GitHub Pages vain testiosoitteeksi
 - tarvitaanko oma domain
@@ -56,7 +56,7 @@ Päätä:
 Tarkista:
 
 - kuka voi päättää SeniorSurf-sivuston polusta
-- saadaanko `seniorsurf.fi/aloitussivu` käyttöön ennen lokakuun julkaisua
+- saadaanko `seniorsurf.fi/aloitus` käyttöön ennen lokakuun julkaisua
 - pitääkö nykyiseen testiosoitteeseen lisätä selkeä “testiversio” -merkintä
 - mitä osoitetta käytetään testaajien viestinnässä nyt
 

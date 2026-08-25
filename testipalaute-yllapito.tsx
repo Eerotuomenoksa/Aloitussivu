@@ -10,12 +10,12 @@ import {
 } from './testFeedback';
 import {
   getUserEmail,
-  isAdminUser,
   isFirebaseConfigured,
   signInWithGoogle,
   signOutAdmin,
   subscribeToAuth,
 } from './firebaseClient';
+import { getVerifiedAdminSession, isAdminAccessError, type AdminSession } from './services/data';
 import { installUsageTracking } from './usageTracking';
 
 type LabelMap = Record<string, string>;
@@ -395,6 +395,8 @@ function TestFeedbackAdminPage() {
   const [authError, setAuthError] = useState('');
   const [loadError, setLoadError] = useState('');
   const [isSigningIn, setIsSigningIn] = useState(false);
+  const [adminSession, setAdminSession] = useState<AdminSession | null>(null);
+  const [adminAccessReady, setAdminAccessReady] = useState(false);
 
   useEffect(() => installUsageTracking('testipalaute-yllapito'), []);
 
@@ -403,12 +405,30 @@ function TestFeedbackAdminPage() {
     setAuthReady(true);
   }), []);
 
-  const canView = !isFirebaseConfigured || isAdminUser(user);
-  const userEmail = getUserEmail(user);
+  useEffect(() => {
+    let current = true;
+    setAdminSession(null);
+    setAdminAccessReady(!user);
+    if (!user) return () => { current = false; };
+    void getVerifiedAdminSession()
+      .then((session) => {
+        if (current) setAdminSession(session);
+      })
+      .catch((error) => {
+        if (current) setAuthError(error instanceof Error ? error.message : 'Ylläpito-oikeutta ei voitu vahvistaa.');
+      })
+      .finally(() => {
+        if (current) setAdminAccessReady(true);
+      });
+    return () => { current = false; };
+  }, [user]);
+
+  const canView = adminSession !== null;
+  const userEmail = adminSession?.email || getUserEmail(user);
 
   useEffect(() => {
     if (!authReady) return undefined;
-    if (isFirebaseConfigured && !canView) {
+    if (!canView) {
       setResponses([]);
       return undefined;
     }
@@ -417,10 +437,11 @@ function TestFeedbackAdminPage() {
     return subscribeTestFeedbackResponses(
       setResponses,
       (error) => {
+        if (isAdminAccessError(error)) setAdminSession(null);
         const code = getErrorCode(error);
         setLoadError(code
-          ? `Vastauksia ei voitu lukea Firestoresta. Virhe: ${code}.`
-          : 'Vastauksia ei voitu lukea Firestoresta.');
+          ? `Vastauksia ei voitu lukea palvelimelta. Virhe: ${code}.`
+          : 'Vastauksia ei voitu lukea palvelimelta.');
       }
     );
   }, [authReady, canView]);
@@ -473,7 +494,7 @@ function TestFeedbackAdminPage() {
             <div>
               <h2 className="aurora-section-title text-2xl">Kirjautuminen</h2>
               <p className="mt-1 font-semibold text-[var(--theme-muted)]">
-                Firestore-vastauksia voi tarkastella vain ylläpitäjän Google-tunnuksella.
+                Vastauksia voi tarkastella vain palvelimen hyväksymällä ylläpitäjän Google-tunnuksella.
               </p>
             </div>
             {authReady && canView && isFirebaseConfigured ? (
@@ -496,7 +517,7 @@ function TestFeedbackAdminPage() {
           </div>
           {!isFirebaseConfigured ? (
             <p className="mt-4 rounded-2xl bg-amber-50 p-4 font-bold text-amber-900 dark:bg-amber-900/20 dark:text-amber-100">
-              Firebase ei ole määritetty. Näytetään tämän selaimen paikalliset testivastaukset.
+              Firebase Authentication ei ole määritetty, joten ylläpito-oikeutta ei voida vahvistaa.
             </p>
           ) : null}
           {authError ? (
@@ -504,7 +525,7 @@ function TestFeedbackAdminPage() {
               {authError}
             </p>
           ) : null}
-          {authReady && isFirebaseConfigured && user && !canView ? (
+          {authReady && isFirebaseConfigured && user && adminAccessReady && !canView ? (
             <p className="mt-4 rounded-2xl bg-amber-50 p-4 font-bold text-amber-900 dark:bg-amber-900/20 dark:text-amber-100">
               Olet kirjautunut, mutta tällä tunnuksella ei ole ylläpito-oikeutta.
             </p>

@@ -6,6 +6,7 @@ const ROOT = process.cwd();
 const CHECK_TIMEOUT_MS = 10_000;
 const CHECK_CONCURRENCY = 12;
 const CONTENT_CHECK_BYTES = 65_536;
+const PHONE_SOURCE_CHECK_BYTES = 1_048_576;
 const MANUALLY_VERIFIED_URLS = new Set([
   'http://kuopionkaupunginteatteri.fi',
   'https://haapavesi.fi',
@@ -23,7 +24,7 @@ const MANUALLY_VERIFIED_URLS = new Set([
   'https://www.imatra.fi',
   'https://www.inari.fi',
   'https://www.inga.fi',
-  'https://www.vapaaehtoistyö.fi',
+  'https://vapaaehtoistyo.fi/fi',
   'https://www.gutenberg.org',
   'https://www.kirjasampo.fi',
   'https://nyaostis.fi',
@@ -47,6 +48,12 @@ const addRow = (section, category, name, url, source) => {
 
 const csvEscape = (value) => `"${String(value ?? '').replace(/\s*\r?\n\s*/g, ' ').trim().replace(/"/g, '""')}"`;
 const jsString = (value) => JSON.stringify(value);
+const formatIsoDate = (date) => date.toISOString().slice(0, 10);
+const addDays = (date, days) => {
+  const result = new Date(date);
+  result.setUTCDate(result.getUTCDate() + days);
+  return result;
+};
 
 const normalizeHost = (host) => host.toLowerCase().replace(/\.$/, '');
 const normalizeUrlForComparison = (url) => url.trim().replace(/\/+$/, '');
@@ -235,16 +242,35 @@ const fetchWithTimeout = async (url, options) => {
 };
 
 const checkHttp = async (url) => {
-  try {
-    let response = await fetchWithTimeout(url, { method: 'HEAD' });
+  let response = null;
+  let headError = null;
 
-    if ([405, 403, 400].includes(response.status)) {
+  try {
+    response = await fetchWithTimeout(url, { method: 'HEAD' });
+  } catch (error) {
+    headError = error;
+  }
+
+  if (!response || response.status < 200 || response.status >= 400) {
+    try {
       response = await fetchWithTimeout(url, {
         method: 'GET',
         headers: { range: 'bytes=0-2048' },
       });
+    } catch (error) {
+      if (!response) {
+        const finalError = error ?? headError;
+        return {
+          check: 'virhe',
+          status: '',
+          finalUrl: '',
+          notes: [finalError?.name === 'AbortError' ? 'Tarkistus aikakatkaistiin' : finalError?.message ?? 'HTTP-tarkistus epäonnistui'],
+        };
+      }
     }
+  }
 
+  try {
     const reachable = response.status >= 200 && response.status < 400;
     return {
       check: reachable ? 'ok' : 'huomio',
@@ -277,6 +303,122 @@ const decodeHtmlEntities = (value) => value
   .replace(/&#39;/g, "'");
 
 const extractHtmlField = (html, pattern) => decodeHtmlEntities(html.match(pattern)?.[1]?.trim() ?? '');
+
+const normalizePhoneDigits = (value) => String(value ?? '').replace(/\D/g, '');
+
+const getPhoneNumberVariants = (digits) => {
+  const variants = new Set([digits]);
+  if (digits.startsWith('0') && digits.length > 1) {
+    variants.add(`358${digits.slice(1)}`);
+    variants.add(`3580${digits.slice(1)}`);
+  }
+  return [...variants].filter(Boolean);
+};
+
+const phoneNumberAppearsInText = (text, digits) => getPhoneNumberVariants(digits).some((variant) => {
+  const pattern = [...variant]
+    .map((digit) => digit.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+    .join('[^0-9]{0,12}');
+  return new RegExp(`(?<![0-9])${pattern}(?![0-9])`).test(text);
+});
+
+const phoneSourcePageCache = new Map();
+
+const readPhoneSourcePage = async (rawUrl) => {
+  let sourceUrl;
+  try {
+    sourceUrl = new URL(rawUrl);
+    sourceUrl.hash = '';
+  } catch {
+    return { check: 'virhe', finalUrl: '', contentType: '', text: '', note: 'Virheellinen lähde-URL' };
+  }
+
+  const cacheKey = sourceUrl.toString();
+  if (!phoneSourcePageCache.has(cacheKey)) {
+    phoneSourcePageCache.set(cacheKey, (async () => {
+      try {
+        const response = await fetchWithTimeout(cacheKey, {
+          method: 'GET',
+          headers: { range: `bytes=0-${PHONE_SOURCE_CHECK_BYTES - 1}` },
+        });
+        const contentType = response.headers.get('content-type') ?? '';
+        if (!response.ok) {
+          return {
+            check: 'virhe',
+            finalUrl: response.url,
+            contentType,
+            text: '',
+            note: `Lähde palautti HTTP ${response.status}`,
+          };
+        }
+        if (/pdf/i.test(contentType)) {
+          return {
+            check: 'manuaalinen',
+            finalUrl: response.url,
+            contentType,
+            text: '',
+            note: 'PDF-lähde vaatii manuaalisen numerotarkistuksen',
+          };
+        }
+        const rawText = (await response.text()).slice(0, PHONE_SOURCE_CHECK_BYTES);
+        return {
+          check: 'ok',
+          finalUrl: response.url,
+          contentType,
+          text: stripHtml(decodeHtmlEntities(rawText)),
+          note: '',
+        };
+      } catch (error) {
+        return {
+          check: 'virhe',
+          finalUrl: '',
+          contentType: '',
+          text: '',
+          note: error.name === 'AbortError' ? 'Lähdetarkistus aikakatkaistiin' : `Lähdetarkistus epäonnistui: ${error.message}`,
+        };
+      }
+    })());
+  }
+  return phoneSourcePageCache.get(cacheKey);
+};
+
+const inspectPhoneRecord = async (record) => {
+  const displayDigits = normalizePhoneDigits(record.phone);
+  const phoneUrlIsValid = /^tel:\+?[0-9 ()-]+$/i.test(record.phoneUrl);
+  const telDigits = normalizePhoneDigits(record.phoneUrl.replace(/^tel:/i, ''));
+  const formatStatus = phoneUrlIsValid && displayDigits && displayDigits === telDigits ? 'ok' : 'virhe';
+  const sourcePage = await readPhoneSourcePage(record.url);
+  const sourceContainsPhone = sourcePage.check === 'ok' && phoneNumberAppearsInText(sourcePage.text, displayDigits);
+  const sourceStatus = sourcePage.check === 'ok'
+    ? sourceContainsPhone ? 'numero löytyi lähteestä' : 'numeroa ei löytynyt lähteestä'
+    : sourcePage.check === 'manuaalinen' ? 'tarkista lähde käsin' : 'lähdettä ei voitu tarkistaa';
+  const sourceDomain = getUrlDetails(record.url).registeredDomain;
+  const sourceType = sourceDomain === 'seniorsurf.fi' ? 'oma koontisivu' : 'palveluntarjoajan sivu';
+  const critical = /hätä|päivystys|myrkytys|sulku|taksi/iu.test(`${record.name} ${record.category}`);
+  const status = formatStatus === 'ok' && sourceContainsPhone && sourceType === 'palveluntarjoajan sivu'
+    ? 'ok'
+    : 'tarkista';
+  const notes = [];
+  if (formatStatus !== 'ok') notes.push('Näkyvä numero ja tel-linkki eivät vastaa toisiaan');
+  if (sourceType !== 'palveluntarjoajan sivu') notes.push('Vaihda lähteeksi palveluntarjoajan virallinen sivu');
+  if (!sourceContainsPhone && sourcePage.note) notes.push(sourcePage.note);
+  if (!sourceContainsPhone && !sourcePage.note) notes.push('Varmista numero viralliselta sivulta käsin');
+  if (record.category === 'Kela-taksi') notes.push('Tarkista tiedot uudelleen ennen 1.1.2027');
+
+  return {
+    ...record,
+    displayDigits,
+    telDigits,
+    formatStatus,
+    sourceStatus,
+    sourceType,
+    sourceDomain,
+    finalUrl: sourcePage.finalUrl,
+    critical: critical ? 'kyllä' : 'ei',
+    status,
+    notes: notes.join('; '),
+  };
+};
 
 const contentMatchesExpected = (row, contentText) => {
   const haystack = normalizeText(contentText);
@@ -362,13 +504,18 @@ const scoreLinkRisk = ({ row, safety, http, content, verification }) => {
     riskReasons.push(`Manuaalinen tila: ${verification.status}`);
   }
 
+  const hasAcceptedException = verification?.status === 'exception';
+  const mustHide = safety.safety === 'virhe'
+    || (http.check === 'virhe' && !hasAcceptedException)
+    || riskScore >= 50;
+
   return {
     originalDomain: original.registeredDomain,
     finalDomain: final.registeredDomain,
     domainChanged: domainChanged ? 'kyllä' : 'ei',
     riskScore,
     riskReasons,
-    recommendedAction: riskScore >= 50 || safety.safety === 'virhe' || http.check === 'virhe' ? 'piilota' : riskScore > 0 ? 'tarkista' : 'pidä näkyvissä',
+    recommendedAction: mustHide ? 'piilota' : riskScore > 0 ? 'tarkista' : 'pidä näkyvissä',
   };
 };
 
@@ -406,12 +553,15 @@ const collectLinks = async () => {
       addRow('Palvelukategoriat', category, providerMatch[1], providerMatch[2], 'constants.tsx');
     }
 
-    const phoneMatch = line.match(/\{\s*name:\s*'([^']+)',\s*url:\s*'([^']+)'.*?\bphone:\s*'([^']+)'/);
+    const phoneMatch = line.match(/\{\s*name:\s*'([^']+)',\s*url:\s*'([^']+)'.*?\bphone:\s*'([^']+)'\s*,\s*phoneUrl:\s*'([^']+)'/);
     if (phoneMatch) {
-      phoneLinks.set(`${phoneMatch[1]}|${phoneMatch[2]}|${phoneMatch[3]}`, {
+      phoneLinks.set(`${phoneMatch[1]}|${phoneMatch[2]}|${phoneMatch[3]}|${phoneMatch[4]}`, {
+        category,
         name: phoneMatch[1],
         url: phoneMatch[2],
         phone: phoneMatch[3],
+        phoneUrl: phoneMatch[4],
+        source: 'constants.tsx',
       });
     }
   }
@@ -452,12 +602,15 @@ const collectLinks = async () => {
     addRow('Uutisvirrat', match[1], match[2], match[3], 'municipalityNewsFeeds.ts');
   }
 
-  for (const match of localKelaTaxiNumbers.matchAll(/name:\s*"([^"]+)",\s*url:\s*"([^"]+)".*?group:\s*'Kela-taksi'.*?phone:\s*"([^"]+)"/gs)) {
+  for (const match of localKelaTaxiNumbers.matchAll(/name:\s*"([^"]+)",\s*url:\s*"([^"]+)".*?group:\s*'Kela-taksi'.*?phone:\s*"([^"]+)"\s*,\s*phoneUrl:\s*'([^']+)'/gs)) {
     addRow('Alueelliset puhelinnumerot', 'Kela-taksi', match[1], match[2], 'localKelaTaxiNumbers.ts');
-    phoneLinks.set(`${match[1]}|${match[2]}|${match[3]}`, {
+    phoneLinks.set(`${match[1]}|${match[2]}|${match[3]}|${match[4]}`, {
+      category: 'Kela-taksi',
       name: match[1],
       url: match[2],
       phone: match[3],
+      phoneUrl: match[4],
+      source: 'localKelaTaxiNumbers.ts',
     });
   }
 
@@ -531,6 +684,7 @@ const collectLinks = async () => {
     localSeniorLinkCount: [...localSeniorLinks.matchAll(/\{\s*"name":\s*"([^"]+)",\s*"url":\s*"([^"]+)",\s*"group":\s*"([^"]+)"/g)].length,
     localKelaTaxiPhoneCount: [...localKelaTaxiNumbers.matchAll(/group:\s*'Kela-taksi'.*?phone:\s*"([^"]+)"/gs)].length,
     phoneLinkCount: phoneLinks.size,
+    phoneLinks: [...phoneLinks.values()],
   };
 };
 
@@ -551,6 +705,7 @@ const main = async () => {
     localSeniorLinkCount,
     localKelaTaxiPhoneCount,
     phoneLinkCount,
+    phoneLinks,
   } = await collectLinks();
   const verifiedLinks = await readVerifiedLinks();
 
@@ -633,11 +788,92 @@ const main = async () => {
   const adminRows = checkedRows.filter((row) => row.recommendedAction !== 'pidä näkyvissä');
   const blockedRows = checkedRows.filter((row) => row.recommendedAction === 'piilota');
   const blockedUrls = [...new Set(blockedRows.map((row) => row.url))].sort((a, b) => a.localeCompare(b, 'fi-FI'));
+  const generatedDate = new Date();
   const generatedAt = new Intl.DateTimeFormat('fi-FI', {
     dateStyle: 'short',
     timeStyle: 'short',
     timeZone: 'Europe/Helsinki',
-  }).format(new Date());
+  }).format(generatedDate);
+  const generatedIsoDate = formatIsoDate(generatedDate);
+
+  console.log(`Tarkistetaan ${phoneLinks.length} puhelinnumeron lähteet...`);
+  const checkedPhoneRows = await runLimited(phoneLinks, inspectPhoneRecord, Math.min(8, CHECK_CONCURRENCY));
+  const sortedPhoneRows = [...checkedPhoneRows].sort((a, b) => (
+    b.critical.localeCompare(a.critical, 'fi-FI')
+    || `${a.category}|${a.name}|${a.phone}`.localeCompare(`${b.category}|${b.name}|${b.phone}`, 'fi-FI')
+  ));
+  const uniquePhoneNumbers = new Set(checkedPhoneRows.map((row) => row.telDigits).filter(Boolean));
+  const phoneFormatErrors = checkedPhoneRows.filter((row) => row.formatStatus !== 'ok');
+  const phoneSourceMatches = checkedPhoneRows.filter((row) => row.sourceStatus === 'numero löytyi lähteestä');
+  const phoneManualReviews = checkedPhoneRows.filter((row) => row.status !== 'ok');
+  const phoneSecondarySources = checkedPhoneRows.filter((row) => row.sourceType !== 'palveluntarjoajan sivu');
+  const phoneCsvHeader = [
+    'Tarkistettu',
+    'Seuraava tarkistus',
+    'Kriittinen numero',
+    'Kategoria',
+    'Nimi',
+    'Näkyvä numero',
+    'tel-linkki',
+    'Lähde-URL',
+    'Lopullinen lähde-URL',
+    'Lähdedomain',
+    'Lähdetyyppi',
+    'Muototarkistus',
+    'Lähdetarkistus',
+    'Kokonaistila',
+    'Lähdetiedosto',
+    'Huomiot',
+  ];
+  const phoneCsvRows = sortedPhoneRows.map((row) => {
+    const nextReviewAt = row.status !== 'ok'
+      ? 'heti'
+      : row.category === 'Kela-taksi'
+        ? '2026-12-01'
+        : formatIsoDate(addDays(generatedDate, row.critical === 'kyllä' ? 90 : 180));
+    return [
+      generatedIsoDate,
+      nextReviewAt,
+      row.critical,
+      row.category,
+      row.name,
+      row.phone,
+      row.phoneUrl,
+      row.url,
+      row.finalUrl,
+      row.sourceDomain,
+      row.sourceType,
+      row.formatStatus,
+      row.sourceStatus,
+      row.status,
+      row.source,
+      row.notes,
+    ].map(csvEscape).join(',');
+  });
+  await writeFile(path.join(ROOT, 'docs', 'puhelinnumerot.csv'), `${phoneCsvHeader.map(csvEscape).join(',')}\n${phoneCsvRows.join('\n')}\n`, 'utf8');
+
+  const phoneMarkdown = [
+    '# Puhelinnumeroiden tarkistus',
+    '',
+    `Päivitetty: ${generatedAt}`,
+    '',
+    'Raportti syntyy automaattisesti komennolla `npm run links`. Tarkistus ei soita numeroihin.',
+    '',
+    `Numeroesiintymiä raportissa: ${checkedPhoneRows.length}.`,
+    `Eri puhelinnumeroita: ${uniquePhoneNumbers.size}.`,
+    `Näkyvän numeron ja tel-linkin muotovirheitä: ${phoneFormatErrors.length}.`,
+    `Numero löytyi automaattisesti lähdesivulta: ${phoneSourceMatches.length}.`,
+    `Käsin tarkistettavia rivejä: ${phoneManualReviews.length}.`,
+    `Omaan koontisivuun perustuvia rivejä: ${phoneSecondarySources.length}.`,
+    `Kela-taksinumeroita: ${localKelaTaxiPhoneCount}.`,
+    '',
+    'Automaattinen löytyminen tarkoittaa, että sama numerosarja löytyi lähdesivun tekstistä. Se ei yksin todista numeron käyttötarkoitusta, joten kriittiset hätä-, terveys-, taksi- ja sulkupalvelunumerot tarkistetaan lisäksi palveluntarjoajan viralliselta sivulta.',
+    '',
+    'Kela-taksien nykyiset palveluntuottajat jatkavat vuoden 2026 loppuun. Kaikki Kela-taksinumerot tarkistetaan uudelleen viimeistään 1.12.2026 ennen 1.1.2027 muutosta.',
+    '',
+    'Rivikohtainen raportti: `docs/puhelinnumerot.csv`.',
+  ];
+  await writeFile(path.join(ROOT, 'docs', 'puhelinnumerot.md'), `${phoneMarkdown.join('\n')}\n`, 'utf8');
 
   const linkHealth = [
     '// Generated by scripts/update-links.mjs.',
@@ -778,6 +1014,8 @@ const main = async () => {
     `Yhteensä: ${checkedRows.length} linkkiä.`,
     `Puhelinnumeroita yhteensä: ${phoneLinkCount}.`,
     `Näistä alueellisia Kela-taksien tilausnumeroita: ${localKelaTaxiPhoneCount}.`,
+    `Puhelinnumeroiden muotovirheitä: ${phoneFormatErrors.length}; lähteestä automaattisesti löytymättömiä tai käsin tarkistettavia: ${phoneManualReviews.length}.`,
+    'Puhelinnumeroiden rivikohtainen tarkistus on tiedostossa `docs/puhelinnumerot.csv` ja yhteenveto tiedostossa `docs/puhelinnumerot.md`.',
     `Uutisvirtoja ja RSS-syötteitä tarkistuksessa: ${localNewsFeedCount}.`,
     '',
     `Tarkistusvirheitä: ${failed.length}.`,
@@ -794,7 +1032,7 @@ const main = async () => {
 
   await writeFile(path.join(ROOT, 'docs', 'linkit.md'), `${markdown.join('\n')}\n`, 'utf8');
 
-  console.log(`Valmis. Linkkejä: ${checkedRows.length}, virheitä: ${failed.length}, huomioita: ${warnings.length}, piilotettu: ${blockedUrls.length}.`);
+  console.log(`Valmis. Linkkejä: ${checkedRows.length}, virheitä: ${failed.length}, huomioita: ${warnings.length}, piilotettu: ${blockedUrls.length}, puhelinrivejä käsin tarkistettavana: ${phoneManualReviews.length}.`);
 };
 
 main().catch((error) => {

@@ -18,6 +18,7 @@ const tocItems = [
   ['puutteet', 'Tunnetut puutteet'],
   ['testaus', 'Miten saavutettavuutta on testattu'],
   ['palaute', 'Palaute ja yhteydenotto'],
+  ['valvonta', 'Täytäntöönpanomenettely'],
   ['paivitys', 'Selosteen päivitys'],
 ];
 
@@ -60,7 +61,7 @@ function App() {
             </span>
             <h1 className="font-display text-4xl font-bold tracking-tight md:text-6xl">Saavutettavuusseloste</h1>
             <p className="max-w-3xl text-lg font-bold leading-relaxed text-white/75">
-              Aloitussivu on suunniteltu ikääntyneille käyttäjille. Selkeä rakenne, isot painikkeet, tekstikoon säätö ja rauhallinen näkymä ovat palvelun peruslähtökohtia.
+              Seniorin aloitussivu on suunniteltu ikääntyneille käyttäjille. Selkeä rakenne, isot painikkeet, tekstikoon säätö ja rauhallinen näkymä ovat palvelun peruslähtökohtia.
             </p>
           </div>
         </header>
@@ -68,7 +69,7 @@ function App() {
         <section className="aurora-soft-panel mt-10" aria-labelledby="accessibility-summary-heading">
           <h2 id="accessibility-summary-heading" className="aurora-section-title text-2xl">Lyhyesti</h2>
           <p className="mt-4 text-base font-bold leading-relaxed text-[var(--theme-text-2)]">
-            Aloitussivu täyttää saavutettavuuden tavoitteet osittain. Sivustolla on jo paljon saavutettavuutta tukevia ratkaisuja, mutta ruudunlukija-, näppäimistö-, kontrasti- ja käyttäjätestausta täydennetään ennen laajempaa julkaisua.
+            Seniorin aloitussivu täyttää saavutettavuuden tavoitteet osittain. Sivustolla on jo paljon saavutettavuutta tukevia ratkaisuja, mutta ruudunlukija-, näppäimistö-, kontrasti- ja käyttäjätestausta täydennetään ennen laajempaa julkaisua.
           </p>
         </section>
 
@@ -88,7 +89,7 @@ function App() {
         <div className="mt-8 space-y-6">
           <AccessibilitySection id="tarkoitus" title="Saavutettavuusselosteen tarkoitus">
             <p className={paragraphClass}>
-              Tämä saavutettavuusseloste koskee Aloitussivu-sivua. Seloste kertoo, miten saavutettavuus on huomioitu, mitä puutteita on tunnistettu ja miten käyttäjä voi antaa palautetta.
+              Tämä saavutettavuusseloste koskee Seniorin aloitussivua. Seloste kertoo, miten saavutettavuus on huomioitu, mitä puutteita on tunnistettu ja miten käyttäjä voi antaa palautetta.
             </p>
             <p className={paragraphClass}>
               Seloste on laadittu kehitysvaiheen tarkistuksen perusteella. Sitä päivitetään ennen laajempaa julkaisua, kun näppäimistö-, kontrasti- ja ruudunlukijatestausta on täydennetty.
@@ -97,7 +98,7 @@ function App() {
 
           <AccessibilitySection id="tila" title="Palvelun saavutettavuuden tila">
             <p className={paragraphClass}>
-              Aloitussivu täyttää saavutettavuuden tavoitteet osittain.
+              Seniorin aloitussivu täyttää saavutettavuuden tavoitteet osittain.
             </p>
             <p className={paragraphClass}>
               Sivustolla on jo paljon saavutettavuutta tukevia ratkaisuja, kuten suuret painikkeet, selkeä rakenne, tekstikoon säätö, pääsisältöön hyppäämisen linkki ja kuvaavat nimet painikkeille. Kaikkia kohtia ei ole kuitenkaan vielä testattu riittävän kattavasti ruudunlukijalla ja pelkällä näppäimistöllä.
@@ -106,7 +107,7 @@ function App() {
 
           <AccessibilitySection id="tavoite" title="Saavutettavuuden tavoite">
             <p className={paragraphClass}>
-              Aloitussivu-sivun tavoitteena on olla mahdollisimman helppo käyttää myös silloin, kun näkö, motoriikka, muisti tai digitaidot aiheuttavat haasteita.
+              Seniorin aloitussivun tavoitteena on olla mahdollisimman helppo käyttää myös silloin, kun näkö, motoriikka, muisti tai digitaidot aiheuttavat haasteita.
             </p>
             <ul className={listClass}>
               <li>suurta ja selkeää tekstiä</li>
@@ -163,7 +164,7 @@ function App() {
             </p>
             <p className={paragraphClass}>Tarkistuksessa käytiin läpi:</p>
             <ul className={listClass}>
-              <li>Aloitussivu</li>
+              <li>Seniorin aloitussivu</li>
               <li>linkkiluettelo</li>
               <li>linkkiehdotusten ylläpitosivu</li>
               <li>muutosloki</li>
@@ -192,7 +193,16 @@ function App() {
               <li>haittasiko ongelma sivun käyttöä vai oliko kyse pienemmästä häiriöstä</li>
             </ul>
             <p className={paragraphClass}>
-              Saavutettavuuspalautteelle lisätään ennen julkaisua yhteydenottotapa. Vaihtoehtoina ovat sähköpostiosoite, lomake tai SeniorSurfin yleinen yhteydenottokanava.
+              Saavutettavuuspalautteen voi lähettää sähköpostilla osoitteeseen <a className="underline" href="mailto:seniorsurf@vtkl.fi">seniorsurf@vtkl.fi</a>. Palautteeseen vastataan mahdollisimman pian; vastauksessa voi mennä 14 päivää. Palautteiden käsittelystä vastaa Vanhustyön keskusliiton SeniorSurf-toiminta.
+            </p>
+          </AccessibilitySection>
+
+          <AccessibilitySection id="valvonta" title="Täytäntöönpanomenettely">
+            <p className={paragraphClass}>
+              Jos huomaat palvelussa saavutettavuusongelman, anna ensin palautetta sivuston ylläpitäjälle. Jos et ole tyytyväinen vastaukseen tai et saa vastausta kahden viikon aikana, voit antaa palautteen valvovalle viranomaiselle.
+            </p>
+            <p className={paragraphClass}>
+              Valvontaviranomainen on Liikenne- ja viestintävirasto Traficomin Digitaalisen esteettömyyden ja saavutettavuuden valvontayksikkö. Ohjeet löytyvät osoitteesta <a className="underline" href="https://www.saavutettavuusvaatimukset.fi/" rel="noreferrer" target="_blank">saavutettavuusvaatimukset.fi</a>. Sähköposti on <a className="underline" href="mailto:saavutettavuus@traficom.fi">saavutettavuus@traficom.fi</a> ja Traficomin vaihteen numero 029 534 5000.
             </p>
           </AccessibilitySection>
 
@@ -201,7 +211,7 @@ function App() {
               Selostetta päivitetään aina, kun palveluun tehdään saavutettavuuteen vaikuttavia muutoksia tai kun käyttäjätestauksessa löytyy uusia havaintoja.
             </p>
             <p className="aurora-soft-panel mt-4 text-sm font-black leading-relaxed">
-              Päivitetty 31.5.2026. Tämä seloste on käyttöönoton luonnos, jota täydennetään lopullisella palautekanavalla ennen laajaa julkaisua.
+              Seloste on laadittu kehitysvaiheen itsearvioinnin perusteella 31.5.2026 ja päivitetty 25.8.2026. Selostetta päivitetään seuraavan kattavan saavutettavuustarkistuksen ja olennaisten palvelumuutosten yhteydessä.
             </p>
           </AccessibilitySection>
         </div>

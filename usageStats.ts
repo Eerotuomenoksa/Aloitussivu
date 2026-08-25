@@ -1,5 +1,4 @@
-import { doc, getDoc } from 'firebase/firestore';
-import { getFirebaseDb, isFirebaseConfigured } from './firebaseClient';
+import { getDataProvider } from './services/data';
 
 export type UsageLinkStats = {
   count: number;
@@ -17,13 +16,14 @@ export type UsageDailyStats = {
   linkClicks: Record<string, UsageLinkStats>;
 };
 
-const USAGE_STATS_COLLECTION = 'usageStats';
-
 const toNumber = (value: unknown) => (typeof value === 'number' && Number.isFinite(value) ? value : 0);
 const toString = (value: unknown) => (typeof value === 'string' ? value : '');
 export const getUsageStatsErrorMessage = (error: unknown) => {
-  if (typeof error === 'object' && error !== null && 'code' in error && (error as { code?: unknown }).code === 'permission-denied') {
-    return 'Käyttötilastojen lukeminen epäonnistui: kirjaudu ylläpitäjän Google-tunnuksella, jolla on oikeus Firestore-sääntöihin.';
+  if (typeof error === 'object' && error !== null && 'code' in error) {
+    const code = (error as { code?: unknown }).code;
+    if (code === 'permission-denied' || code === 'admin_forbidden') {
+      return 'Käyttötilastojen lukeminen epäonnistui: tunnuksella ei ole ylläpito-oikeutta.';
+    }
   }
   return error instanceof Error ? error.message : 'Käyttötilastojen haku epäonnistui.';
 };
@@ -84,21 +84,57 @@ const normalizePageviews = (value: unknown) => {
 };
 
 export const fetchUsageStats = async (startDate: string, endDate: string): Promise<UsageDailyStats[]> => {
-  if (!isFirebaseConfigured) return [];
-  const db = getFirebaseDb();
-  if (!db) return [];
-
   const dates = getDateKeysBetween(startDate, endDate);
-  const snapshots = await Promise.all(dates.map((date) => getDoc(doc(db, USAGE_STATS_COLLECTION, date))));
+  if (dates.length === 0) return [];
+  type CloudcityUsageStats = {
+    daily: Array<{ date: string; pageviews: number; linkClicks: number }>;
+    pages: Array<{ date: string; page: string; count: number }>;
+    links: Array<{ date: string; url: string; label: string; category: string; page: string; count: number }>;
+  };
+  const raw = await (await getDataProvider()).listAdmin<UsageDailyStats[] | CloudcityUsageStats>('usage-stats');
+  if (Array.isArray(raw)) {
+    const byDate = new Map(raw.map((day) => [day.date, day]));
+    return dates.map((date) => {
+      const data = byDate.get(date);
+      return {
+        date,
+        totalPageviews: toNumber(data?.totalPageviews),
+        totalLinkClicks: toNumber(data?.totalLinkClicks),
+        pageviews: normalizePageviews(data?.pageviews),
+        linkClicks: normalizeLinkClicks(data?.linkClicks),
+      };
+    });
+  }
 
-  return snapshots.map((snapshot, index) => {
-    const data = snapshot.exists() ? snapshot.data() : {};
-    return {
-      date: dates[index],
-      totalPageviews: toNumber(data.totalPageviews),
-      totalLinkClicks: toNumber(data.totalLinkClicks),
-      pageviews: normalizePageviews(data.pageviews),
-      linkClicks: normalizeLinkClicks(data.linkClicks),
+  const allowedDates = new Set(dates);
+  const byDate = new Map<string, UsageDailyStats>(dates.map((date) => [date, {
+    date,
+    totalPageviews: 0,
+    totalLinkClicks: 0,
+    pageviews: {},
+    linkClicks: {},
+  }]));
+  raw.daily.forEach((day) => {
+    const target = byDate.get(day.date);
+    if (!target) return;
+    target.totalPageviews = toNumber(day.pageviews);
+    target.totalLinkClicks = toNumber(day.linkClicks);
+  });
+  raw.pages.forEach((page, index) => {
+    if (!allowedDates.has(page.date)) return;
+    const target = byDate.get(page.date)!;
+    target.pageviews[`page-${index}`] = { count: toNumber(page.count), page: toString(page.page) };
+  });
+  raw.links.forEach((link, index) => {
+    if (!allowedDates.has(link.date)) return;
+    const target = byDate.get(link.date)!;
+    target.linkClicks[`link-${index}`] = {
+      count: toNumber(link.count),
+      url: toString(link.url),
+      label: toString(link.label),
+      category: toString(link.category),
+      page: toString(link.page),
     };
   });
+  return dates.map((date) => byDate.get(date)!);
 };

@@ -1,12 +1,4 @@
-import {
-  collection,
-  doc,
-  onSnapshot,
-  orderBy,
-  query,
-  setDoc,
-} from 'firebase/firestore';
-import { getFirebaseDb, isFirebaseConfigured } from './firebaseClient';
+import { adminPollIntervalMs, getDataProvider, subscribeWithPolling } from './services/data';
 export {
   markTestFeedbackAnswered,
   postponeTestFeedbackPrompt,
@@ -15,7 +7,6 @@ export {
 import { markTestFeedbackAnswered } from './testFeedbackPromptState';
 
 export const TEST_FEEDBACK_FORM_VERSION = '2026-08-release-candidate';
-const TEST_FEEDBACK_COLLECTION = 'testFeedbackResponses';
 const TEST_FEEDBACK_STORAGE_KEY = 'testFeedbackResponses';
 const TEST_FEEDBACK_CHANGE_EVENT = 'testfeedbackresponseschange';
 
@@ -163,10 +154,9 @@ const removeLocalResponses = (ids: string[]) => {
 };
 
 const uploadResponse = async (response: TestFeedbackResponse) => {
-  if (!isFirebaseConfigured) throw new Error('Firebase ei ole määritetty.');
-  const db = getFirebaseDb();
-  if (!db) throw new Error('Firestore-yhteyttä ei voitu avata.');
-  await setDoc(doc(db, TEST_FEEDBACK_COLLECTION, response.id), response);
+  const provider = await getDataProvider();
+  await provider.submitPublic('test-feedback', { ...response, website: '' });
+  return provider.kind;
 };
 
 export const submitTestFeedback = async (draft: TestFeedbackDraft): Promise<TestFeedbackSubmitResult> => {
@@ -178,26 +168,24 @@ export const submitTestFeedback = async (draft: TestFeedbackDraft): Promise<Test
     ...normalizeDraft(draft),
   };
 
-  if (isFirebaseConfigured) {
-    try {
-      await uploadResponse(response);
-      markTestFeedbackAnswered();
-      emitTestFeedbackChange();
-      return { response, storage: 'cloud' };
-    } catch {
-      saveLocalResponse(response);
-      markTestFeedbackAnswered();
-      return { response, storage: 'local' };
-    }
+  try {
+    const providerKind = await uploadResponse(response);
+    markTestFeedbackAnswered();
+    emitTestFeedbackChange();
+    return { response, storage: providerKind === 'local' ? 'local' : 'cloud' };
+  } catch {
+    saveLocalResponse(response);
+    markTestFeedbackAnswered();
+    return { response, storage: 'local' };
   }
-
-  saveLocalResponse(response);
-  markTestFeedbackAnswered();
-  return { response, storage: 'local' };
 };
 
 export const syncLocalTestFeedbackResponses = async () => {
   const localResponses = readLocalResponses();
+  const provider = await getDataProvider();
+  if (provider.kind === 'local') {
+    return { total: localResponses.length, synced: 0, remaining: localResponses.length };
+  }
   const syncedIds: string[] = [];
 
   for (const response of localResponses) {
@@ -221,34 +209,32 @@ export const subscribeTestFeedbackResponses = (
   callback: (responses: TestFeedbackResponse[]) => void,
   onError?: (error: unknown) => void
 ) => {
-  if (!isFirebaseConfigured) {
-    const handleChange = () => callback(readLocalResponses());
-    callback(readLocalResponses());
-    window.addEventListener('storage', handleChange);
-    window.addEventListener(TEST_FEEDBACK_CHANGE_EVENT, handleChange);
-    return () => {
-      window.removeEventListener('storage', handleChange);
-      window.removeEventListener(TEST_FEEDBACK_CHANGE_EVENT, handleChange);
-    };
-  }
-
-  const db = getFirebaseDb();
-  if (!db) {
-    callback(readLocalResponses());
-    return () => {};
-  }
-
-  return onSnapshot(
-    query(collection(db, TEST_FEEDBACK_COLLECTION), orderBy('createdAt', 'desc')),
-    (snapshot) => {
-      callback(snapshot.docs.map((document) => ({
-        id: document.id,
-        ...document.data(),
-      })) as TestFeedbackResponse[]);
-    },
+  type AdminTestFeedbackItem = {
+    id: string;
+    formVersion: string;
+    createdAt: string;
+    response?: TestFeedbackDraft;
+  };
+  const normalize = (items: Array<TestFeedbackResponse | AdminTestFeedbackItem>) => items.map((item) => (
+    'response' in item && item.response
+      ? { ...item.response, id: item.id, formVersion: item.formVersion, createdAt: item.createdAt }
+      : item as TestFeedbackResponse
+  ));
+  const handleChange = () => callback(readLocalResponses());
+  window.addEventListener('storage', handleChange);
+  window.addEventListener(TEST_FEEDBACK_CHANGE_EVENT, handleChange);
+  const stopPolling = subscribeWithPolling(
+    async () => normalize(await (await getDataProvider()).listAdmin<Array<TestFeedbackResponse | AdminTestFeedbackItem>>('test-feedback')),
+    callback,
     (error) => {
       callback(readLocalResponses());
       onError?.(error);
-    }
+    },
+    adminPollIntervalMs,
   );
+  return () => {
+    stopPolling();
+    window.removeEventListener('storage', handleChange);
+    window.removeEventListener(TEST_FEEDBACK_CHANGE_EVENT, handleChange);
+  };
 };

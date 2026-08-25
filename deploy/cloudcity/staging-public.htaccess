@@ -1,0 +1,29 @@
+Options -Indexes -MultiViews
+DirectoryIndex index.html
+ErrorDocument 404 /404.html
+
+RewriteEngine On
+RewriteCond %{HTTPS} !=on
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+<IfModule mod_headers.c>
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set X-Frame-Options "DENY"
+  Header always set Permissions-Policy "camera=(), microphone=(self), geolocation=(self)"
+  Header always set X-Robots-Tag "noindex, nofollow, noarchive"
+  Header always set Content-Security-Policy "default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' https://apis.google.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob: https://seniorsurf.fi; connect-src 'self' https://www.googleapis.com https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://firebaseinstallations.googleapis.com https://firebaseappcheck.googleapis.com https://content-firebaseappcheck.googleapis.com https://securetoken.googleapis.com https://api.rss2json.com https://api.allorigins.win https://api.open-meteo.com https://geocoding-api.open-meteo.com https://nominatim.openstreetmap.org; frame-src 'self' https://accounts.google.com https://www.google.com https://aloitussivu-5d50c.firebaseapp.com; frame-ancestors 'none'; form-action 'self' https://www.google.com https://www.google.fi; manifest-src 'self'; worker-src 'self' blob:; upgrade-insecure-requests"
+
+  <FilesMatch "\.(?:html|xml|webmanifest)$">
+    Header set Cache-Control "no-cache, max-age=0, must-revalidate"
+  </FilesMatch>
+
+  <FilesMatch "-[A-Za-z0-9_-]{8,}\.(?:css|js|png|jpe?g|gif|webp|svg|woff2?|ttf)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+</IfModule>
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/css text/javascript application/javascript application/json application/manifest+json application/xml image/svg+xml
+</IfModule>

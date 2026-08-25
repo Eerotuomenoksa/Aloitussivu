@@ -9,7 +9,6 @@ import {
   type Auth,
   type User,
 } from 'firebase/auth';
-import { getFirestore, type Firestore } from 'firebase/firestore';
 import {
   getToken,
   initializeAppCheck,
@@ -42,7 +41,7 @@ export const isFirebaseConfigured = Boolean(
 
 let app: FirebaseApp | null = null;
 let auth: Auth | null = null;
-let db: Firestore | null = null;
+let db: import('firebase/firestore').Firestore | null = null;
 let appCheck: AppCheck | null = null;
 
 type StoredAdminEmail = {
@@ -105,11 +104,12 @@ export const getFirebaseAuth = () => {
   return auth;
 };
 
-export const getFirebaseDb = () => {
+export const getFirebaseDb = async () => {
   const initializedApp = getApp();
   if (!initializedApp) return null;
   ensureAppCheck(initializedApp);
   if (!db) {
+    const { getFirestore } = await import('firebase/firestore');
     db = getFirestore(initializedApp);
   }
   return db;

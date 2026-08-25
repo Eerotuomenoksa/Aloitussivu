@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { submitFeedback } from '../feedback';
+import { submitFeedback, syncLocalFeedbackItems } from '../feedback';
 import type { FeedbackClientInfo, FeedbackScreenshotDraft, FeedbackType } from '../feedback';
 import { useModalFocusTrap } from '../hooks/useModalFocusTrap';
 
@@ -110,6 +110,7 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose }) => {
   const [submitted, setSubmitted] = useState(false);
   const [submitNotice, setSubmitNotice] = useState('');
   const [submitError, setSubmitError] = useState('');
+  const [syncNotice, setSyncNotice] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [clientInfo, setClientInfo] = useState<FeedbackClientInfo | undefined>(() => collectClientInfo());
   const [screenshot, setScreenshot] = useState<FeedbackScreenshotDraft | null>(null);
@@ -130,11 +131,19 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose }) => {
     setSubmitted(false);
     setSubmitNotice('');
     setSubmitError('');
+    setSyncNotice('');
     setIsSubmitting(false);
     setClientInfo(collectClientInfo());
     setScreenshot(null);
     setScreenshotError('');
     if (fileInputRef.current) fileInputRef.current.value = '';
+    void syncLocalFeedbackItems().then((result) => {
+      if (result.synced > 0) {
+        setSyncNotice(`${result.synced} aiemmin selaimeen tallennettua palautetta lähetettiin tietokantaan.`);
+      } else if (result.remaining > 0) {
+        setSyncNotice(`${result.remaining} aiemmin tallennettua palautetta odottaa toimivaa verkkoyhteyttä.`);
+      }
+    }).catch(() => {});
   }, [isOpen]);
 
   useEffect(() => {
@@ -217,7 +226,7 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose }) => {
       setSubmitted(true);
       setSubmitNotice(result.storage === 'cloud'
         ? 'Kiitos. Palaute lisättiin kehitysjonoon.'
-        : 'Kiitos. Palaute tallennettiin tähän selaimeen, mutta julkiseen kehitysjonoon ei juuri nyt saatu yhteyttä.');
+        : 'Kiitos. Palaute tallennettiin tähän selaimeen, mutta tietokantaan ei juuri nyt saatu yhteyttä.');
       if (closeTimerRef.current !== null) {
         window.clearTimeout(closeTimerRef.current);
       }
@@ -255,7 +264,7 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose }) => {
         <form onSubmit={submit} className="flex min-h-0 flex-1 flex-col">
           <div className="aurora-modal-body min-h-0 flex-1 space-y-5 overflow-y-auto overscroll-contain p-5 md:p-8">
             <p className="rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-pale)] p-4 font-bold text-[var(--theme-text-2)]">
-              Palaute näkyy julkisessa kehitysjonossa. Älä kirjoita henkilötietoja, terveystietoja, salasanoja tai muuta arkaluonteista tietoa. Kuvakaappaus tallennetaan vain ylläpidon tarkistusta varten.
+              Palaute näkyy vain hyväksytylle ylläpidolle. Älä kirjoita henkilötietoja, terveystietoja, salasanoja tai muuta arkaluonteista tietoa. Kuvakaappaus tallennetaan vain ylläpidon tarkistusta varten.
             </p>
             <p className="rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-surface)] p-4 font-bold text-[var(--theme-text-2)]">
               Kirjoita mieluiten vain yksi palautekokonaisuus kerrallaan. Se auttaa kehittäjää käsittelemään palautteen nopeammin ja merkitsemään sen valmiiksi selkeämmin.
@@ -356,6 +365,12 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose }) => {
             {submitted ? (
               <p role="status" className="rounded-2xl border-4 border-green-200 bg-green-50 p-4 font-black text-green-800 dark:border-green-900 dark:bg-green-900/20 dark:text-green-200">
                 {submitNotice}
+              </p>
+            ) : null}
+
+            {syncNotice ? (
+              <p role="status" className="rounded-2xl border-2 border-amber-300 bg-amber-50 p-4 font-bold text-amber-900 dark:border-amber-800 dark:bg-amber-900/20 dark:text-amber-100">
+                {syncNotice}
               </p>
             ) : null}
 

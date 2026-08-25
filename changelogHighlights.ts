@@ -8,18 +8,44 @@ export type ChangelogHighlight = {
 
 export const AUGUST_2026_HIGHLIGHTS: ChangelogHighlight[] = [
   {
+    date: '25.8.2026',
+    title: 'Julkaisukandidaatin linkit tarkistettu',
+    summary:
+      'Koko linkkivalikoima tarkistettiin ennen sisältöjäädytystä ja keskeisten palveluiden vanhentuneet osoitteet korjattiin.',
+    changes: [
+      'Automaattinen raportti tarkisti 2 123 yksilöllistä linkkiä ja päivitti linkkiluettelon, ylläpitolokin, manuaalisen tarkistusjonon sekä julkaistavan estolistan.',
+      'Vanhentuneita uudelleenohjauksia korvattiin suorilla nykyosoitteilla muun muassa Teuvan liikenteessä, Vapaaehtoistyö.fi-palvelussa, Kansallisarkistossa, Helmetissä, Oulun seudun liikenteessä, Kuluttajaliiton Huijausinfossa sekä useissa media- ja kulttuuripalveluissa.',
+      'Kuluttajaneuvonnan kaksoislinkki poistettiin. Automaattisen tarkistimen bottisuoja- ja aikakatkaisupoikkeukset dokumentoitiin viikon mittaisina tarkistuspoikkeuksina, eikä keskeisiin palvelukategorioihin jäänyt piilotettuja linkkejä.',
+    ],
+    tags: ['Linkit', 'Julkaisu', 'Laadunvarmistus'],
+  },
+  {
+    date: '25.8.2026',
+    title: 'Seniorin aloitussivu ja lyhyempi julkaisuosoite',
+    summary:
+      'Palvelun nimi ja käyttäjille viestittävä osoite vahvistettiin ennen julkaisukandidaatin rakentamista.',
+    changes: [
+      'Palvelun viralliseksi nimeksi vahvistettiin Seniorin aloitussivu.',
+      'Kanoniseksi ja käyttäjille viestittäväksi osoitteeksi vahvistettiin seniorsurf.fi/aloitus.',
+      'Nimi päivitettiin käyttöliittymään, ohjeteksteihin, selosteisiin, manifestiin ja jakometatietoihin. Uusi osoite päivitettiin canonical-tietoihin, Open Graph -tietoihin, sitemap-tiedostoon ja robots-ohjeisiin.',
+    ],
+    tags: ['Julkaisu', 'Nimi', 'Metatiedot'],
+  },
+  {
     date: '14.8.2026',
     title: 'Julkaisunäkymän viimeistely',
     summary:
       'Ensimmäisen julkaisun sisältö rajattiin, yläosa viimeisteltiin ja testausaineistot päivitettiin vastaamaan julkaisutilannetta.',
     changes: [
-      'Julkaisun rajaus lukittiin 3.9.2026 tavoitetta varten: julkaisu tehdään Cloudcityn webhotellissa osoitteeseen seniorsurf.fi/aloitussivu ilman erillistä domainia.',
-      'Nimipäivät ja AI-avustaja poistettiin ensimmäisen julkaisun käyttöliittymästä. Paikallisuutiset jätettiin oletuksena piiloon ja niiden lopullinen mukanaolo päätetään lisätestauksen perusteella.',
+      'Julkaisun rajaus ja työpaketit lukittiin: tavoitejulkaisu on 1.9.2026 ja ehdoton takaraja 3.9.2026. Julkaisu tehdään Cloudcityn webhotellissa osoitteeseen seniorsurf.fi/aloitus ilman erillistä domainia.',
+      'Cloudcityn MariaDB, saman originin palvelin-API ja julkaisuun kuuluvien Firestore-tietojen migraatio nostettiin P1-julkaisuehdoksi. Suunnitelma kattaa tietomallin, API-reitit, ylläpidon tunnistuksen, migraation, varmistuksesta palautuksen, hätäpalautuksen ja arkipäivien toteutusaikataulun 17.–31.8.',
+      'Julkaisua edeltävä työ jaettiin päiväkohtaisiin arkipäivien paketteihin 14.8.–3.9. Jokaisella paketilla on omistaja, riippuvuudet, hyväksymisehdot, dokumentointivaatimus ja luovutus seuraavalle paketille. Fakiirimedialle valmisteltiin yhteydenotto WordPress-eristyksen, Cloudcity-oikeuksien, varmistusten, reitityksen, välimuistin ja muutosikkunoiden sopimiseksi.',
+      'Nimipäivät ja AI-avustaja poistettiin ensimmäisen julkaisun käyttöliittymästä. Paikallisuutiset päätettiin säilyttää ensimmäisessä julkaisussa oletuksena piilotettuina ja käyttäjän asetuksista avattavina.',
       'Yläosa suunniteltiin uudelleen: kello ja sää ovat rinnakkain vasemmalla ja Google-haku oikealla. Toinen kello sijoitettiin työpöytänäkymässä pääkellon viereen, ja sääkorttiin lisättiin nykyisen sään rinnalle huomisen säätila sekä alin ja ylin lämpötila. Molempien hakujen painike on nimeltään Hae ja sijaitsee ennen mikrofonia; palveluhaun painikkeesta poistettiin lisäksi suurennuslasikuvake. Työpöytänäkymän tyhjää pystysuuntaista tilaa tiivistettiin vaakaviivan, sisältörivin ja Mitä etsit tänään? -osion väliltä.',
       'Aihealueiden alalinkkiruudukkoa tiivistettiin responsiivisesti: neljä linkkiä mahtuu leveällä työpöytänäytöllä samalle riville, pienemmällä läppärillä ja vaakasuuntaisella tabletilla ruudukko mukautuu kahteen sarakkeeseen ja pystysuuntaisella tabletilla yhteen sarakkeeseen.',
       'Asetusten värimaailmavalintojen kuvakkeet muutettiin liukuväreistä teemojen todellisiksi pääväreiksi ja valinnat nimettiin väreittäin: Vihreä, Violetti, Sininen ja Ruskea.',
-      'Julkaisua edeltävä testipalautelomake päivitettiin uuteen rajaukseen: arvioitavana ovat nyt uusi yläosa, Lähelläsi-osion kuntakohtaiset senioripalvelulinkit sekä paikallisuutisten mukanaolo ensimmäisessä julkaisussa. AI- ja nimipäiväkysymykset poistettiin.',
-      'Sivua tukemassa -kokeilusivu poistettiin. Testaus- ja kehitysjonolinkit poistettiin julkisesta navigaatiosta. Beta-merkintä sekä Linkkiluettelo-, Ylläpito- ja Muutosloki-linkit palautettiin toistaiseksi alatunnisteeseen. Tietoa-ikkunan vanhentunut AI-maininta poistettiin ja työpöytänäkymän sulkeminen korjattiin: otsakkeen ja alareunan sulkupainikkeet pysyvät näkyvissä sisällön vieriessä, ja ikkunan voi sulkea myös Esc-näppäimellä. Canonical-osoitteet, jakometatiedot, sitemap ja robots päivitettiin seniorsurf.fi/aloitussivu-polulle.',
+      'Julkaisua edeltävä testipalautelomake päivitettiin uuteen rajaukseen: arvioitavana ovat nyt uusi yläosa, Lähelläsi-osion kuntakohtaiset senioripalvelulinkit sekä paikallisuutisten hyödyllisyys ja toimivuus. AI- ja nimipäiväkysymykset poistettiin.',
+      'Sivua tukemassa -kokeilusivu poistettiin. Testaus- ja kehitysjonolinkit poistettiin julkisesta navigaatiosta. Beta-merkintä sekä Linkkiluettelo-, Ylläpito- ja Muutosloki-linkit palautettiin toistaiseksi alatunnisteeseen. Tietoa-ikkunan vanhentunut AI-maininta poistettiin ja työpöytänäkymän sulkeminen korjattiin: otsakkeen ja alareunan sulkupainikkeet pysyvät näkyvissä sisällön vieriessä, ja ikkunan voi sulkea myös Esc-näppäimellä. Canonical-osoitteet, jakometatiedot, sitemap ja robots päivitettiin seniorsurf.fi/aloitus-polulle.',
     ],
     tags: ['Julkaisu', 'Yläosa', 'Testauspalaute', 'Saavutettavuus'],
   },

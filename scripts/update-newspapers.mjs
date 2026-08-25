@@ -43,7 +43,7 @@ const MANUAL_NEWSPAPER_LINKS = [
 
 const fetchRemote = async (url) => fetch(url, {
   headers: {
-    'user-agent': 'Mozilla/5.0 (compatible; SeniorinAloitussivu/1.0; +https://seniorsurf.fi/aloitussivu/)',
+    'user-agent': 'Mozilla/5.0 (compatible; SeniorinAloitussivu/1.0; +https://seniorsurf.fi/aloitus/)',
     accept: 'application/json,text/html;q=0.9,*/*;q=0.8',
   },
 });

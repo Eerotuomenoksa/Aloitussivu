@@ -1506,9 +1506,9 @@ const localServiceMap: Record<string, LocalServiceConfig> = {
   teuva: {
     publicTransport: {
       name: 'Teuvan liikenne',
-      url: 'https://site.teuva.fi/e/site?node_id=81',
+      url: 'https://teuva.fi/kasvatus-ja-opetus/koulukuljetukset-ja-avoin-ostoliikenne/',
       group: 'Julkinen liikenne',
-      sourceNote: 'Teuvan kunnan liikennesivu kokoaa linja-autoliikenteen, Matkahuollon, seutulipun ja muut liikenneyhteydet.',
+      sourceNote: 'Teuvan kunnan sivu kokoaa kaikille avoimen ostoliikenteen reitit, aikataulut ja liikennöitsijät.',
       verifiedAt: '2026-07-09',
     },
   },

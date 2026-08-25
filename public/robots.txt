@@ -1,11 +1,11 @@
 User-agent: *
 Allow: /
-Disallow: /aloitussivu/yllapito.html
-Disallow: /aloitussivu/ehdotukset.html
-Disallow: /aloitussivu/linkit.html
-Disallow: /aloitussivu/muutosloki.html
-Disallow: /aloitussivu/kehitysjono.html
-Disallow: /aloitussivu/testipalaute.html
-Disallow: /aloitussivu/testipalaute-yllapito.html
+Disallow: /aloitus/yllapito.html
+Disallow: /aloitus/ehdotukset.html
+Disallow: /aloitus/linkit.html
+Disallow: /aloitus/muutosloki.html
+Disallow: /aloitus/kehitysjono.html
+Disallow: /aloitus/testipalaute.html
+Disallow: /aloitus/testipalaute-yllapito.html
 
-Sitemap: https://seniorsurf.fi/aloitussivu/sitemap.xml
+Sitemap: https://seniorsurf.fi/aloitus/sitemap.xml

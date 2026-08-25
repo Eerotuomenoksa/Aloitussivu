@@ -1028,7 +1028,7 @@ export const MUSEUM_LINKS: RegionalProvider[] = [
   },
   {
     name: "Lappeenrannan taidemuseo",
-    url: "https://www.lappeenranta.fi/taidemuseo",
+    url: "https://www.lappeenranta.fi/fi/kulttuuri-ja-liikunta/lappeenrannan-museot/museot/lappeenrannan-taidemuseo",
     group: "Lappeenranta",
     type: "Alueellinen vastuumuseo",
     area: "Etelä-Karjala ja Kymenlaakso",

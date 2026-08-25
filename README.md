@@ -2,7 +2,7 @@
 <img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
 </div>
 
-# Aloitussivu
+# Seniorin aloitussivu
 
 SeniorSurf-kayttoon rakennettu React/Vite-sovellus, joka kokoaa helppokayttoisia yleisia ja alueellisia linkkeja, palautteenkeruuta, yllapitotoimintoja ja kevyita Firebase-taustapalveluja.
 
@@ -13,6 +13,10 @@ SeniorSurf-kayttoon rakennettu React/Vite-sovellus, joka kokoaa helppokayttoisia
 1. Asenna riippuvuudet: `npm install`
 2. Kopioi tarvittaessa `.env.example` tiedostoksi `.env.local` ja tayta vain julkiset `VITE_*`-arvot.
 3. Kaynnista kehityspalvelin: `npm run dev`
+
+Cloudcityn PHP-API:n paikallinen rakenne, turvallinen asetusten sijoittelu ja testikomennot on kuvattu tiedostossa `api/README.md`. API-kehityksessa ei kayteta tuotantotietokantaa tai tuotannon tunnuksia.
+
+Frontendin Cloudcity-, staging-, Firebase-palautus- ja local-providerien valinta seka build-komennot on kuvattu tiedostossa `services/data/README.md`.
 
 Frontendin `VITE_*`-arvot paatyvat selaimen JavaScriptiin, joten niihin ei saa laittaa Gemini-avaimia, admin-salaisuuksia, Firebase service account -tietoja tai muita salaisuuksia. Cloud Functions -salaisuudet asetetaan Firebase Secret Manageriin tai turvalliseen deploy-ymparistoon.
 
@@ -31,7 +35,7 @@ Kayta ennen julkaisua tai isompaa muutosta ainakin:
 
 ## Tietoturvan peruslinja
 
-- Firestore-saannot ovat ensisijainen kirjoitus- ja yllapito-oikeuksien valvontapaikka.
+- Cloudcity-API ja MariaDB:n `admin_users`-roolit ovat julkaisuympariston ensisijainen kirjoitus- ja yllapito-oikeuksien valvontapaikka. Firestore-saannot koskevat vain maaraikaista palautusbuildia.
 - Yllapito-oikeus ei saa nojata selaimen `localStorage`-arvoihin; niita saa kayttaa vain kayttoliittyman apuna.
 - Kayttajien kirjoittama palaute ja linkki-ilmoitukset validoidaan seka clientissa etta Firestore-saannoissa.
 - Kuvakaappaukset rajataan sallittuihin kuvatyyppeihin ja kokoon ennen tallennusta.

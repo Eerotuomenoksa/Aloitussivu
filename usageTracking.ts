@@ -1,18 +1,11 @@
+import { getDataProvider } from './services/data';
+
 type UsageEvent = {
   type: 'pageview' | 'linkClick';
   page: string;
   url?: string;
   label?: string;
   category?: string;
-};
-
-const getUsageTrackUrl = () => {
-  const explicitUrl = import.meta.env.VITE_USAGE_TRACK_URL?.trim();
-  if (explicitUrl) return explicitUrl;
-
-  const projectId = import.meta.env.VITE_FIREBASE_PROJECT_ID?.trim();
-  if (!projectId) return '';
-  return `https://europe-west1-${projectId}.cloudfunctions.net/trackUsage`;
 };
 
 const USAGE_TRACKING_DISABLED_KEY = 'seniorSurfUsageTrackingDisabled';
@@ -54,26 +47,13 @@ const getPageName = () => {
 };
 
 const sendUsageEvent = async (event: UsageEvent) => {
-  const url = getUsageTrackUrl();
-  if (!url || typeof navigator === 'undefined') return;
+  if (typeof navigator === 'undefined') return;
   if (isUsageTrackingDisabled()) return;
-
-  const body = JSON.stringify(event);
-  const { getFirebaseAppCheckToken } = await import('./firebaseClient');
-  const appCheckToken = await getFirebaseAppCheckToken();
-  if (!appCheckToken) return;
-
-  fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Firebase-AppCheck': appCheckToken,
-    },
-    body,
-    keepalive: true,
-  }).catch(() => {
+  getDataProvider()
+    .then((provider) => provider.submitPublic('usage-events', event as Record<string, unknown>))
+    .catch(() => {
     // Usage tracking is optional and must not disturb the user.
-  });
+    });
 };
 
 export const trackPageView = (page = getPageName()) => {

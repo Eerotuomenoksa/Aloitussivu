@@ -18,12 +18,12 @@ import {
 import {
   getUserAuthDebugInfo,
   getUserEmail,
-  isAdminUser,
   isFirebaseConfigured,
   signInWithGoogle,
   signOutAdmin,
   subscribeToAuth,
 } from './firebaseClient';
+import { getVerifiedAdminSession, isAdminAccessError, type AdminSession } from './services/data';
 import {
   NcscScrapeLogEntry,
   ScamAlertEntry,
@@ -202,7 +202,7 @@ const getSignInErrorMessage = (error: unknown) => {
   const details = getErrorDetails(error);
 
   if (code === 'auth/unauthorized-domain') {
-    return 'Kirjautuminen ei onnistu tästä osoitteesta. Lisää Firebase Authenticationin Authorized domains -listaan 127.0.0.1 ja GitHub Pages -domain, tai avaa paikallinen sivu osoitteella localhost:5173.';
+    return 'Kirjautuminen ei onnistu tästä osoitteesta. Lisää nykyinen verkkotunnus Firebase Authenticationin Authorized domains -listaan.';
   }
 
   if (code === 'auth/operation-not-allowed') {
@@ -222,7 +222,7 @@ const getSignInErrorMessage = (error: unknown) => {
   }
 
   if (code === 'auth/internal-error') {
-    return `Firebase palautti sisäisen kirjautumisvirheen. Tarkista Firebase Consolesta, että Google provider on käytössä, GitHub Pages -domain on Authorized domains -listalla ja API-avaimen HTTP referrer -rajoitus sallii https://eerotuomenoksa.github.io/*.${details}`;
+    return `Firebase palautti sisäisen kirjautumisvirheen. Tarkista Google-provider, Authorized domains, API-avaimen HTTP referrer -rajaus ja selaimen konsolin mahdolliset CSP-estot.${details}`;
   }
 
   return code
@@ -253,13 +253,13 @@ function App() {
   const [usageStatsBusy, setUsageStatsBusy] = useState(false);
   const [usageStatsError, setUsageStatsError] = useState('');
   const [usageTrackingDisabled, setUsageTrackingDisabledState] = useState(() => isUsageTrackingDisabled());
+  const [adminSession, setAdminSession] = useState<AdminSession | null>(null);
+  const [adminAccessReady, setAdminAccessReady] = useState(false);
 
-  const hasAdminAccess = isAdminUser(user);
-  const userEmail = getUserEmail(user);
+  const hasAdminAccess = adminSession !== null;
+  const userEmail = adminSession?.email || getUserEmail(user);
   const authDebugInfo = getUserAuthDebugInfo(user);
-  const adminPermissionHint = user
-    ? `Nykyinen Firebase UID: ${user.uid}. Lisää tämä UID Firestore-sääntöjen admin-listaan, jos sähköposticlaim ei riitä.`
-    : '';
+  const adminPermissionHint = adminSession ? `Palvelimen vahvistama rooli: ${adminSession.role}.` : '';
 
   useEffect(() => installUsageTracking('ehdotukset'), [usageTrackingDisabled]);
 
@@ -276,6 +276,29 @@ function App() {
     return unsubscribe;
   }, []);
 
+  useEffect(() => {
+    let current = true;
+    setAdminSession(null);
+    setAdminAccessReady(!user);
+    if (!user) return () => { current = false; };
+
+    void getVerifiedAdminSession()
+      .then((session) => {
+        if (!current) return;
+        setAdminSession(session);
+        setAuthError('');
+      })
+      .catch((error) => {
+        if (!current) return;
+        setAdminSession(null);
+        setAuthError(error instanceof Error ? error.message : 'Ylläpito-oikeutta ei voitu vahvistaa.');
+      })
+      .finally(() => {
+        if (current) setAdminAccessReady(true);
+      });
+    return () => { current = false; };
+  }, [user]);
+
   useEffect(() => subscribeApprovedLinkSuggestions(setApprovedLinks), []);
 
   useEffect(() => {
@@ -283,7 +306,10 @@ function App() {
       setReports([]);
       return () => {};
     }
-    return subscribeLinkReports(setReports);
+    return subscribeLinkReports(setReports, (error) => {
+      if (isAdminAccessError(error)) setAdminSession(null);
+      setAuthError(error instanceof Error ? error.message : 'Linkki-ilmoituksia ei voitu ladata.');
+    });
   }, [hasAdminAccess]);
 
   useEffect(() => {
@@ -298,7 +324,9 @@ function App() {
       return () => {};
     }
 
-    const unsubscribeAlerts = subscribeScamAlerts(setScamAlerts);
+    const unsubscribeAlerts = subscribeScamAlerts(setScamAlerts, true, (error) => {
+      if (isAdminAccessError(error)) setAdminSession(null);
+    });
     const addPermissionHint = (message: string, error?: { code?: string }) => (
       error?.code === 'permission-denied' && adminPermissionHint
         ? `${message} ${adminPermissionHint}`
@@ -306,7 +334,10 @@ function App() {
     );
     const unsubscribeLogs = subscribeNcscScrapeLogs(
       setNcscLogs,
-      (message, error) => setNcscLogError(addPermissionHint(message, error))
+      (message, error) => {
+        if (isAdminAccessError(error)) setAdminSession(null);
+        setNcscLogError(addPermissionHint(message, error));
+      }
     );
     const unsubscribeNameDayUsage = subscribeNameDayApiUsageStats(
       setNameDayApiUsage,
@@ -336,6 +367,7 @@ function App() {
       })
       .catch((error) => {
         if (isCurrent) {
+          if (isAdminAccessError(error)) setAdminSession(null);
           setUsageStats([]);
           setUsageStatsError(`${getUsageStatsErrorMessage(error)} ${adminPermissionHint}`.trim());
         }
@@ -569,7 +601,7 @@ function App() {
           <section className="aurora-soft-panel max-w-3xl space-y-3 p-6 shadow-sm">
             <h2 className="aurora-section-title text-2xl">Firebase-asetukset puuttuvat</h2>
             <p className="font-bold text-[var(--theme-text-2)]">
-              Lisää GitHub Pages -julkaisuun Firebase-ympäristömuuttujat ja ota Google-kirjautuminen sekä Firestore käyttöön. Ilman niitä sivu voi toimia vain paikallisella selaintallennuksella.
+              Lisää julkaisuun Firebase Authenticationin julkiset ympäristömuuttujat. Firebasea käytetään ylläpitäjän kirjautumiseen, ja palvelin ratkaisee käyttöoikeuden.
             </p>
           </section>
         ) : !authReady ? (
@@ -589,12 +621,15 @@ function App() {
               Kirjaudu Googlella
             </button>
           </section>
+        ) : !adminAccessReady ? (
+          <p className="font-black text-[var(--theme-text-3)]">Vahvistetaan ylläpito-oikeutta palvelimelta...</p>
         ) : !hasAdminAccess ? (
           <section className="aurora-panel max-w-2xl space-y-4 p-8">
             <h2 className="aurora-section-title text-3xl">Ei käyttöoikeutta</h2>
             <p className="font-bold text-[var(--theme-text-2)]">
               Olet kirjautunut osoitteella {userEmail || 'tuntematon sähköposti'}. Ylläpitoon pääsee vain ylläpitäjän tunnuksella.
             </p>
+            {authError && <p className="font-bold text-rose-600">{authError}</p>}
             {authDebugInfo && (
               <p className="rounded-xl bg-[var(--theme-pale)] p-3 text-sm font-bold text-[var(--theme-text-2)]">
                 {authDebugInfo}

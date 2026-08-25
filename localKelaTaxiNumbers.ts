@@ -1,12 +1,13 @@
 import type { RegionalProvider } from './communityLinks';
 
-export const KELA_TAXI_SOURCE_URL = 'https://www.kela.fi/documents/20124/410312/Kela-taksin-tilausnumerot-kunnittain.pdf/dcccfb7a-4baa-edd4-64c8-0e4280360d38?t=1638453233868';
+export const KELA_TAXI_SOURCE_URL = 'https://www.kela.fi/taksimatkat#tilausnumerot-maakunnittain';
 
-// Generated from Kela PDF: Kela-taksin tilausnumerot maakunnittain 1.1.2022.
+// Tarkistettu Kelan ajantasaiselta taksimatkasivulta 25.8.2026.
+// Nykyiset palveluntuottajat jatkavat vuoden 2026 loppuun; tarkista tiedot ennen 1.1.2027.
 export const KELA_TAXI_PROVIDERS: RegionalProvider[] = [
   {
     name: "Kela-taksi: DRide Oy",
-    url: "https://www.kela.fi/documents/20124/410312/Kela-taksin-tilausnumerot-kunnittain.pdf/dcccfb7a-4baa-edd4-64c8-0e4280360d38?t=1638453233868#kela-taksi-1",
+    url: "https://www.kela.fi/taksimatkat#tilausnumerot-maakunnittain",
     group: 'Kela-taksi',
     phone: "0800 101 010",
     phoneUrl: 'tel:0800101010',
@@ -30,7 +31,7 @@ export const KELA_TAXI_PROVIDERS: RegionalProvider[] = [
   },
   {
     name: "Kela-taksi: DRide Oy",
-    url: "https://www.kela.fi/documents/20124/410312/Kela-taksin-tilausnumerot-kunnittain.pdf/dcccfb7a-4baa-edd4-64c8-0e4280360d38?t=1638453233868#kela-taksi-2",
+    url: "https://www.kela.fi/taksimatkat#tilausnumerot-maakunnittain",
     group: 'Kela-taksi',
     phone: "0800 415 700",
     phoneUrl: 'tel:0800415700',
@@ -52,7 +53,7 @@ export const KELA_TAXI_PROVIDERS: RegionalProvider[] = [
   },
   {
     name: "Kela-taksi: DRide Oy",
-    url: "https://www.kela.fi/documents/20124/410312/Kela-taksin-tilausnumerot-kunnittain.pdf/dcccfb7a-4baa-edd4-64c8-0e4280360d38?t=1638453233868#kela-taksi-3",
+    url: "https://www.kela.fi/taksimatkat#tilausnumerot-maakunnittain",
     group: 'Kela-taksi',
     phone: "0800 415 750",
     phoneUrl: 'tel:0800415750',
@@ -69,7 +70,7 @@ export const KELA_TAXI_PROVIDERS: RegionalProvider[] = [
   },
   {
     name: "Kela-taksi: Joensuun Taksi Oy",
-    url: "https://www.kela.fi/documents/20124/410312/Kela-taksin-tilausnumerot-kunnittain.pdf/dcccfb7a-4baa-edd4-64c8-0e4280360d38?t=1638453233868#kela-taksi-4",
+    url: "https://www.kela.fi/taksimatkat#tilausnumerot-maakunnittain",
     group: 'Kela-taksi',
     phone: "0800 102 000",
     phoneUrl: 'tel:0800102000',
@@ -99,7 +100,7 @@ export const KELA_TAXI_PROVIDERS: RegionalProvider[] = [
   },
   {
     name: "Kela-taksi: Kainuun Taksivälitys Oy",
-    url: "https://www.kela.fi/documents/20124/410312/Kela-taksin-tilausnumerot-kunnittain.pdf/dcccfb7a-4baa-edd4-64c8-0e4280360d38?t=1638453233868#kela-taksi-5",
+    url: "https://www.kela.fi/taksimatkat#tilausnumerot-maakunnittain",
     group: 'Kela-taksi',
     phone: "0800 933 99",
     phoneUrl: 'tel:080093399',
@@ -118,7 +119,7 @@ export const KELA_TAXI_PROVIDERS: RegionalProvider[] = [
   },
   {
     name: "Kela-taksi: Keskustaksi Oy",
-    url: "https://www.kela.fi/documents/20124/410312/Kela-taksin-tilausnumerot-kunnittain.pdf/dcccfb7a-4baa-edd4-64c8-0e4280360d38?t=1638453233868#kela-taksi-6",
+    url: "https://www.kela.fi/taksimatkat#tilausnumerot-maakunnittain",
     group: 'Kela-taksi',
     phone: "0800 924 40",
     phoneUrl: 'tel:080092440',
@@ -147,7 +148,7 @@ export const KELA_TAXI_PROVIDERS: RegionalProvider[] = [
   },
   {
     name: "Kela-taksi: Keskustaksi Oy",
-    url: "https://www.kela.fi/documents/20124/410312/Kela-taksin-tilausnumerot-kunnittain.pdf/dcccfb7a-4baa-edd4-64c8-0e4280360d38?t=1638453233868#kela-taksi-7",
+    url: "https://www.kela.fi/taksimatkat#tilausnumerot-maakunnittain",
     group: 'Kela-taksi',
     phone: "0800 924 42",
     phoneUrl: 'tel:080092442',
@@ -174,7 +175,7 @@ export const KELA_TAXI_PROVIDERS: RegionalProvider[] = [
   },
   {
     name: "Kela-taksi: Keskustaksi Oy",
-    url: "https://www.kela.fi/documents/20124/410312/Kela-taksin-tilausnumerot-kunnittain.pdf/dcccfb7a-4baa-edd4-64c8-0e4280360d38?t=1638453233868#kela-taksi-8",
+    url: "https://www.kela.fi/taksimatkat#tilausnumerot-maakunnittain",
     group: 'Kela-taksi',
     phone: "0800 924 44",
     phoneUrl: 'tel:080092444',
@@ -199,7 +200,7 @@ export const KELA_TAXI_PROVIDERS: RegionalProvider[] = [
   },
   {
     name: "Kela-taksi: Lahden Aluetaksi Oy",
-    url: "https://www.kela.fi/documents/20124/410312/Kela-taksin-tilausnumerot-kunnittain.pdf/dcccfb7a-4baa-edd4-64c8-0e4280360d38?t=1638453233868#kela-taksi-9",
+    url: "https://www.kela.fi/taksimatkat#tilausnumerot-maakunnittain",
     group: 'Kela-taksi',
     phone: "0800 301 23",
     phoneUrl: 'tel:080030123',
@@ -220,7 +221,7 @@ export const KELA_TAXI_PROVIDERS: RegionalProvider[] = [
   },
   {
     name: "Kela-taksi: Menevä Oy",
-    url: "https://www.kela.fi/documents/20124/410312/Kela-taksin-tilausnumerot-kunnittain.pdf/dcccfb7a-4baa-edd4-64c8-0e4280360d38?t=1638453233868#kela-taksi-10",
+    url: "https://www.kela.fi/taksimatkat#tilausnumerot-maakunnittain",
     group: 'Kela-taksi',
     phone: "0800 021 80",
     phoneUrl: 'tel:080002180',
@@ -258,7 +259,7 @@ export const KELA_TAXI_PROVIDERS: RegionalProvider[] = [
   },
   {
     name: "Kela-taksi: Menevä Oy",
-    url: "https://www.kela.fi/documents/20124/410312/Kela-taksin-tilausnumerot-kunnittain.pdf/dcccfb7a-4baa-edd4-64c8-0e4280360d38?t=1638453233868#kela-taksi-11",
+    url: "https://www.kela.fi/taksimatkat#tilausnumerot-maakunnittain",
     group: 'Kela-taksi',
     phone: "0800 021 83",
     phoneUrl: 'tel:080002183',
@@ -291,7 +292,7 @@ export const KELA_TAXI_PROVIDERS: RegionalProvider[] = [
   },
   {
     name: "Kela-taksi: Menevä Oy",
-    url: "https://www.kela.fi/documents/20124/410312/Kela-taksin-tilausnumerot-kunnittain.pdf/dcccfb7a-4baa-edd4-64c8-0e4280360d38?t=1638453233868#kela-taksi-12",
+    url: "https://www.kela.fi/taksimatkat#tilausnumerot-maakunnittain",
     group: 'Kela-taksi',
     phone: "0800 021 85",
     phoneUrl: 'tel:080002185',
@@ -315,7 +316,7 @@ export const KELA_TAXI_PROVIDERS: RegionalProvider[] = [
   },
   {
     name: "Kela-taksi: Menevä Oy",
-    url: "https://www.kela.fi/documents/20124/410312/Kela-taksin-tilausnumerot-kunnittain.pdf/dcccfb7a-4baa-edd4-64c8-0e4280360d38?t=1638453233868#kela-taksi-13",
+    url: "https://www.kela.fi/taksimatkat#tilausnumerot-maakunnittain",
     group: 'Kela-taksi',
     phone: "0800 021 89",
     phoneUrl: 'tel:080002189',
@@ -334,7 +335,7 @@ export const KELA_TAXI_PROVIDERS: RegionalProvider[] = [
   },
   {
     name: "Kela-taksi: Pohjois-Suomen Taksi Oy",
-    url: "https://www.kela.fi/documents/20124/410312/Kela-taksin-tilausnumerot-kunnittain.pdf/dcccfb7a-4baa-edd4-64c8-0e4280360d38?t=1638453233868#kela-taksi-14",
+    url: "https://www.kela.fi/taksimatkat#tilausnumerot-maakunnittain",
     group: 'Kela-taksi',
     phone: "0800 933 77",
     phoneUrl: 'tel:080093377',
@@ -383,7 +384,7 @@ export const KELA_TAXI_PROVIDERS: RegionalProvider[] = [
   },
   {
     name: "Kela-taksi: Suomen Lähilogistiikka Oy",
-    url: "https://www.kela.fi/documents/20124/410312/Kela-taksin-tilausnumerot-kunnittain.pdf/dcccfb7a-4baa-edd4-64c8-0e4280360d38?t=1638453233868#kela-taksi-15",
+    url: "https://www.kela.fi/taksimatkat#tilausnumerot-maakunnittain",
     group: 'Kela-taksi',
     phone: "0800 051 50",
     phoneUrl: 'tel:080005150',
@@ -420,7 +421,7 @@ export const KELA_TAXI_PROVIDERS: RegionalProvider[] = [
   },
   {
     name: "Kela-taksi: Suomen Lähilogistiikka Oy",
-    url: "https://www.kela.fi/documents/20124/410312/Kela-taksin-tilausnumerot-kunnittain.pdf/dcccfb7a-4baa-edd4-64c8-0e4280360d38?t=1638453233868#kela-taksi-16",
+    url: "https://www.kela.fi/taksimatkat#tilausnumerot-maakunnittain",
     group: 'Kela-taksi',
     phone: "0800 051 54",
     phoneUrl: 'tel:080005154',
@@ -452,7 +453,7 @@ export const KELA_TAXI_PROVIDERS: RegionalProvider[] = [
   },
   {
     name: "Kela-taksi: Suomen Lähilogistiikka Oy",
-    url: "https://www.kela.fi/documents/20124/410312/Kela-taksin-tilausnumerot-kunnittain.pdf/dcccfb7a-4baa-edd4-64c8-0e4280360d38?t=1638453233868#kela-taksi-17",
+    url: "https://www.kela.fi/taksimatkat#tilausnumerot-maakunnittain",
     group: 'Kela-taksi',
     phone: "0800 051 57",
     phoneUrl: 'tel:080005157',
@@ -474,7 +475,7 @@ export const KELA_TAXI_PROVIDERS: RegionalProvider[] = [
   },
   {
     name: "Kela-taksi: Suomen Lähilogistiikka Oy",
-    url: "https://www.kela.fi/documents/20124/410312/Kela-taksin-tilausnumerot-kunnittain.pdf/dcccfb7a-4baa-edd4-64c8-0e4280360d38?t=1638453233868#kela-taksi-18",
+    url: "https://www.kela.fi/taksimatkat#tilausnumerot-maakunnittain",
     group: 'Kela-taksi',
     phone: "0800 051 60",
     phoneUrl: 'tel:080005160',
@@ -495,7 +496,7 @@ export const KELA_TAXI_PROVIDERS: RegionalProvider[] = [
   },
   {
     name: "Kela-taksi: Suomen Lähilogistiikka Oy",
-    url: "https://www.kela.fi/documents/20124/410312/Kela-taksin-tilausnumerot-kunnittain.pdf/dcccfb7a-4baa-edd4-64c8-0e4280360d38?t=1638453233868#kela-taksi-19",
+    url: "https://www.kela.fi/taksimatkat#tilausnumerot-maakunnittain",
     group: 'Kela-taksi',
     phone: "0800 051 63",
     phoneUrl: 'tel:080005163',
@@ -512,7 +513,7 @@ export const KELA_TAXI_PROVIDERS: RegionalProvider[] = [
   },
   {
     name: "Kela-taksi: Taksi Helsinki Oy",
-    url: "https://www.kela.fi/documents/20124/410312/Kela-taksin-tilausnumerot-kunnittain.pdf/dcccfb7a-4baa-edd4-64c8-0e4280360d38?t=1638453233868#kela-taksi-20",
+    url: "https://www.kela.fi/taksimatkat#tilausnumerot-maakunnittain",
     group: 'Kela-taksi',
     phone: "0800 414 600",
     phoneUrl: 'tel:0800414600',
@@ -549,7 +550,7 @@ export const KELA_TAXI_PROVIDERS: RegionalProvider[] = [
   },
   {
     name: "Kela-taksi: Taksi Helsinki Oy",
-    url: "https://www.kela.fi/documents/20124/410312/Kela-taksin-tilausnumerot-kunnittain.pdf/dcccfb7a-4baa-edd4-64c8-0e4280360d38?t=1638453233868#kela-taksi-21",
+    url: "https://www.kela.fi/taksimatkat#tilausnumerot-maakunnittain",
     group: 'Kela-taksi',
     phone: "0800 414 603",
     phoneUrl: 'tel:0800414603',
@@ -587,7 +588,7 @@ export const KELA_TAXI_PROVIDERS: RegionalProvider[] = [
   },
   {
     name: "Kela-taksi: Taksi Helsinki Oy",
-    url: "https://www.kela.fi/documents/20124/410312/Kela-taksin-tilausnumerot-kunnittain.pdf/dcccfb7a-4baa-edd4-64c8-0e4280360d38?t=1638453233868#kela-taksi-22",
+    url: "https://www.kela.fi/taksimatkat#tilausnumerot-maakunnittain",
     group: 'Kela-taksi',
     phone: "0800 414 606",
     phoneUrl: 'tel:0800414606',
@@ -621,7 +622,7 @@ export const KELA_TAXI_PROVIDERS: RegionalProvider[] = [
   },
   {
     name: "Kela-taksi: Taksi Helsinki Oy",
-    url: "https://www.kela.fi/documents/20124/410312/Kela-taksin-tilausnumerot-kunnittain.pdf/dcccfb7a-4baa-edd4-64c8-0e4280360d38?t=1638453233868#kela-taksi-23",
+    url: "https://www.kela.fi/taksimatkat#tilausnumerot-maakunnittain",
     group: 'Kela-taksi',
     phone: "0800 414 608",
     phoneUrl: 'tel:0800414608',
@@ -654,7 +655,7 @@ export const KELA_TAXI_PROVIDERS: RegionalProvider[] = [
   },
   {
     name: "Kela-taksi: Taksi Helsinki Oy",
-    url: "https://www.kela.fi/documents/20124/410312/Kela-taksin-tilausnumerot-kunnittain.pdf/dcccfb7a-4baa-edd4-64c8-0e4280360d38?t=1638453233868#kela-taksi-24",
+    url: "https://www.kela.fi/taksimatkat#tilausnumerot-maakunnittain",
     group: 'Kela-taksi',
     phone: "0800 414 610",
     phoneUrl: 'tel:0800414610',
@@ -686,7 +687,7 @@ export const KELA_TAXI_PROVIDERS: RegionalProvider[] = [
   },
   {
     name: "Kela-taksi: Taksi Helsinki Oy",
-    url: "https://www.kela.fi/documents/20124/410312/Kela-taksin-tilausnumerot-kunnittain.pdf/dcccfb7a-4baa-edd4-64c8-0e4280360d38?t=1638453233868#kela-taksi-25",
+    url: "https://www.kela.fi/taksimatkat#tilausnumerot-maakunnittain",
     group: 'Kela-taksi',
     phone: "0800 414 612",
     phoneUrl: 'tel:0800414612',
@@ -713,7 +714,7 @@ export const KELA_TAXI_PROVIDERS: RegionalProvider[] = [
   },
   {
     name: "Kela-taksi: Taksi Helsinki Oy",
-    url: "https://www.kela.fi/documents/20124/410312/Kela-taksin-tilausnumerot-kunnittain.pdf/dcccfb7a-4baa-edd4-64c8-0e4280360d38?t=1638453233868#kela-taksi-26",
+    url: "https://www.kela.fi/taksimatkat#tilausnumerot-maakunnittain",
     group: 'Kela-taksi',
     phone: "0800 414 614",
     phoneUrl: 'tel:0800414614',
@@ -743,7 +744,7 @@ export const KELA_TAXI_PROVIDERS: RegionalProvider[] = [
   },
   {
     name: "Kela-taksi: Taksi Helsinki Oy",
-    url: "https://www.kela.fi/documents/20124/410312/Kela-taksin-tilausnumerot-kunnittain.pdf/dcccfb7a-4baa-edd4-64c8-0e4280360d38?t=1638453233868#kela-taksi-27",
+    url: "https://www.kela.fi/taksimatkat#tilausnumerot-maakunnittain",
     group: 'Kela-taksi',
     phone: "0800 414 616",
     phoneUrl: 'tel:0800414616',
@@ -765,7 +766,7 @@ export const KELA_TAXI_PROVIDERS: RegionalProvider[] = [
   },
   {
     name: "Kela-taksi: Taksi Päijänne Oy",
-    url: "https://www.kela.fi/documents/20124/410312/Kela-taksin-tilausnumerot-kunnittain.pdf/dcccfb7a-4baa-edd4-64c8-0e4280360d38?t=1638453233868#kela-taksi-28",
+    url: "https://www.kela.fi/taksimatkat#tilausnumerot-maakunnittain",
     group: 'Kela-taksi',
     phone: "0800 021 87",
     phoneUrl: 'tel:080002187',
@@ -785,7 +786,7 @@ export const KELA_TAXI_PROVIDERS: RegionalProvider[] = [
   },
   {
     name: "Kela-taksi: Taksi Saimaa Oy",
-    url: "https://www.kela.fi/documents/20124/410312/Kela-taksin-tilausnumerot-kunnittain.pdf/dcccfb7a-4baa-edd4-64c8-0e4280360d38?t=1638453233868#kela-taksi-29",
+    url: "https://www.kela.fi/taksimatkat#tilausnumerot-maakunnittain",
     group: 'Kela-taksi',
     phone: "0800 555 123",
     phoneUrl: 'tel:0800555123',
@@ -805,7 +806,7 @@ export const KELA_TAXI_PROVIDERS: RegionalProvider[] = [
   },
   {
     name: "Kela-taksi: Tampereen Aluetaksi Oy",
-    url: "https://www.kela.fi/documents/20124/410312/Kela-taksin-tilausnumerot-kunnittain.pdf/dcccfb7a-4baa-edd4-64c8-0e4280360d38?t=1638453233868#kela-taksi-30",
+    url: "https://www.kela.fi/taksimatkat#tilausnumerot-maakunnittain",
     group: 'Kela-taksi',
     phone: "0800 306 600",
     phoneUrl: 'tel:0800306600',
@@ -827,7 +828,7 @@ export const KELA_TAXI_PROVIDERS: RegionalProvider[] = [
   },
   {
     name: "Kela-taksi: Tampereen Aluetaksi Oy",
-    url: "https://www.kela.fi/documents/20124/410312/Kela-taksin-tilausnumerot-kunnittain.pdf/dcccfb7a-4baa-edd4-64c8-0e4280360d38?t=1638453233868#kela-taksi-31",
+    url: "https://www.kela.fi/taksimatkat#tilausnumerot-maakunnittain",
     group: 'Kela-taksi',
     phone: "0800 415 710",
     phoneUrl: 'tel:0800415710',
@@ -861,7 +862,7 @@ export const KELA_TAXI_PROVIDERS: RegionalProvider[] = [
   },
   {
     name: "Kela-taksi: Tampereen Aluetaksi Oy",
-    url: "https://www.kela.fi/documents/20124/410312/Kela-taksin-tilausnumerot-kunnittain.pdf/dcccfb7a-4baa-edd4-64c8-0e4280360d38?t=1638453233868#kela-taksi-32",
+    url: "https://www.kela.fi/taksimatkat#tilausnumerot-maakunnittain",
     group: 'Kela-taksi',
     phone: "0800 415 720",
     phoneUrl: 'tel:0800415720',
@@ -910,7 +911,7 @@ export const KELA_TAXI_PROVIDERS: RegionalProvider[] = [
   },
   {
     name: "Kela-taksi: Vaasan Ulataksi Oy",
-    url: "https://www.kela.fi/documents/20124/410312/Kela-taksin-tilausnumerot-kunnittain.pdf/dcccfb7a-4baa-edd4-64c8-0e4280360d38?t=1638453233868#kela-taksi-33",
+    url: "https://www.kela.fi/taksimatkat#tilausnumerot-maakunnittain",
     group: 'Kela-taksi',
     phone: "0800 500 100",
     phoneUrl: 'tel:0800500100',
@@ -939,7 +940,7 @@ export const KELA_TAXI_PROVIDERS: RegionalProvider[] = [
   },
   {
     name: "Kela-taksi: Vaasan Ulataksi Oy",
-    url: "https://www.kela.fi/documents/20124/410312/Kela-taksin-tilausnumerot-kunnittain.pdf/dcccfb7a-4baa-edd4-64c8-0e4280360d38?t=1638453233868#kela-taksi-34",
+    url: "https://www.kela.fi/taksimatkat#tilausnumerot-maakunnittain",
     group: 'Kela-taksi',
     phone: "0800 500 500",
     phoneUrl: 'tel:0800500500',
@@ -964,7 +965,7 @@ export const KELA_TAXI_PROVIDERS: RegionalProvider[] = [
   },
   {
     name: "Kela-taksi ruotsiksi: Keskustaksi Oy",
-    url: "https://www.kela.fi/documents/20124/410312/Kela-taksin-tilausnumerot-kunnittain.pdf/dcccfb7a-4baa-edd4-64c8-0e4280360d38?t=1638453233868#kela-taksi-35",
+    url: "https://www.kela.fi/taksimatkat#tilausnumerot-maakunnittain",
     group: 'Kela-taksi',
     phone: "0800 924 46",
     phoneUrl: 'tel:080092446',
@@ -989,7 +990,7 @@ export const KELA_TAXI_PROVIDERS: RegionalProvider[] = [
   },
   {
     name: "Kela-taksi ruotsiksi: Menevä Oy",
-    url: "https://www.kela.fi/documents/20124/410312/Kela-taksin-tilausnumerot-kunnittain.pdf/dcccfb7a-4baa-edd4-64c8-0e4280360d38?t=1638453233868#kela-taksi-36",
+    url: "https://www.kela.fi/taksimatkat#tilausnumerot-maakunnittain",
     group: 'Kela-taksi',
     phone: "0800 021 82",
     phoneUrl: 'tel:080002182',
@@ -1027,7 +1028,7 @@ export const KELA_TAXI_PROVIDERS: RegionalProvider[] = [
   },
   {
     name: "Kela-taksi ruotsiksi: Pohjois-Suomen Taksi Oy",
-    url: "https://www.kela.fi/documents/20124/410312/Kela-taksin-tilausnumerot-kunnittain.pdf/dcccfb7a-4baa-edd4-64c8-0e4280360d38?t=1638453233868#kela-taksi-37",
+    url: "https://www.kela.fi/taksimatkat#tilausnumerot-maakunnittain",
     group: 'Kela-taksi',
     phone: "0800 933 11",
     phoneUrl: 'tel:080093311',
@@ -1076,7 +1077,7 @@ export const KELA_TAXI_PROVIDERS: RegionalProvider[] = [
   },
   {
     name: "Kela-taksi ruotsiksi: Suomen Lähilogistiikka Oy",
-    url: "https://www.kela.fi/documents/20124/410312/Kela-taksin-tilausnumerot-kunnittain.pdf/dcccfb7a-4baa-edd4-64c8-0e4280360d38?t=1638453233868#kela-taksi-38",
+    url: "https://www.kela.fi/taksimatkat#tilausnumerot-maakunnittain",
     group: 'Kela-taksi',
     phone: "0800 051 51",
     phoneUrl: 'tel:080005151',
@@ -1113,7 +1114,7 @@ export const KELA_TAXI_PROVIDERS: RegionalProvider[] = [
   },
   {
     name: "Kela-taksi ruotsiksi: Taksi Helsinki Oy",
-    url: "https://www.kela.fi/documents/20124/410312/Kela-taksin-tilausnumerot-kunnittain.pdf/dcccfb7a-4baa-edd4-64c8-0e4280360d38?t=1638453233868#kela-taksi-39",
+    url: "https://www.kela.fi/taksimatkat#tilausnumerot-maakunnittain",
     group: 'Kela-taksi',
     phone: "0800 414 601",
     phoneUrl: 'tel:0800414601',
@@ -1150,7 +1151,7 @@ export const KELA_TAXI_PROVIDERS: RegionalProvider[] = [
   },
   {
     name: "Kela-taksi ruotsiksi: Taksi Helsinki Oy",
-    url: "https://www.kela.fi/documents/20124/410312/Kela-taksin-tilausnumerot-kunnittain.pdf/dcccfb7a-4baa-edd4-64c8-0e4280360d38?t=1638453233868#kela-taksi-40",
+    url: "https://www.kela.fi/taksimatkat#tilausnumerot-maakunnittain",
     group: 'Kela-taksi',
     phone: "0800 414 604",
     phoneUrl: 'tel:0800414604',
@@ -1188,7 +1189,7 @@ export const KELA_TAXI_PROVIDERS: RegionalProvider[] = [
   },
   {
     name: "Kela-taksi ruotsiksi: Tampereen Aluetaksi Oy",
-    url: "https://www.kela.fi/documents/20124/410312/Kela-taksin-tilausnumerot-kunnittain.pdf/dcccfb7a-4baa-edd4-64c8-0e4280360d38?t=1638453233868#kela-taksi-41",
+    url: "https://www.kela.fi/taksimatkat#tilausnumerot-maakunnittain",
     group: 'Kela-taksi',
     phone: "0800 415 730",
     phoneUrl: 'tel:0800415730',
@@ -1237,7 +1238,7 @@ export const KELA_TAXI_PROVIDERS: RegionalProvider[] = [
   },
   {
     name: "Kela-taksi ruotsiksi: Vaasan Ulataksi Oy",
-    url: "https://www.kela.fi/documents/20124/410312/Kela-taksin-tilausnumerot-kunnittain.pdf/dcccfb7a-4baa-edd4-64c8-0e4280360d38?t=1638453233868#kela-taksi-42",
+    url: "https://www.kela.fi/taksimatkat#tilausnumerot-maakunnittain",
     group: 'Kela-taksi',
     phone: "0800 500 600",
     phoneUrl: 'tel:0800500600',

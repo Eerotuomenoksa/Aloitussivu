@@ -1,6 +1,6 @@
 # Julkaisuroadmap 6.10.2026
 
-> Tämä aikataulu on korvattu 13.8.2026 päätetyllä rajatulla julkaisulla. Uusi tavoite on 3.9.2026 Cloudcityn webhotellissa osoitteessa `https://seniorsurf.fi/aloitussivu/`. Ajantasainen rajaus ja avoimet julkaisuportin tehtävät ovat tiedostossa `TODO_HUMAN.md`; tämän dokumentin pidempi aikataulu säilytetään tausta-aineistona.
+> Tämä aikataulu on korvattu 14.8.2026 päivitetyllä rajatulla julkaisulla. Palvelun viralliseksi nimeksi vahvistettiin 25.8.2026 `Seniorin aloitussivu`. Tavoitejulkaisu on 1.9.2026 ja ehdoton takaraja 3.9.2026 Cloudcityn webhotellissa osoitteessa `https://seniorsurf.fi/aloitus/`. Ajantasainen työpakettijako on tiedostossa `docs/julkaisun-tyopaketit-2026-09-01.md` ja avoimet julkaisuportin tehtävät tiedostossa `TODO_HUMAN.md`; tämän dokumentin pidempi aikataulu säilytetään tausta-aineistona.
 
 Tämä roadmap kokoaa aloitussivu -sivun työn pilotista vakaaksi julkaisuksi. Suunniteltu julkaisupäivä on tiistai 6.10.2026.
 
@@ -559,7 +559,7 @@ Päätettävä viimeistään 16.8.2026.
 
 Päävaihtoehdot:
 
-- `seniorsurf.fi/aloitussivu`
+- `seniorsurf.fi/aloitus`
 - oma domain
 - Cloudcityn tarjoama osoite ohjattuna selkeään domainiin
 - väliaikainen Firebase Hosting -osoite ennen Cloudcity-siirtoa
