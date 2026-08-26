@@ -183,10 +183,10 @@ Näissä testeissä ei muuteta WordPressin pääjuuren `.htaccess`-tiedostoa, te
 
 | ID | P | Testi | Hyväksymisehto | Tulos | Todiste tai havainto |
 | --- | --- | --- | --- | --- | --- |
-| WP-01 | P1 | WordPress-etusivu | HTTP 200, otsikko ja näkyvä rakenne vastaavat REL-01:n lähtötasoa. |  |  |
-| WP-02 | P1 | Etäopastus, Ajankohtaista ja Yhteystiedot | Kaikki palauttavat HTTP 200:n ja keskeinen sisältö näkyy. |  |  |
-| WP-03 | P1 | Julkinen WordPress-haku | Tunnettu `digiopastus`-haku näyttää hakutulossivun. |  |  |
-| WP-04 | P1 | Kirjautuminen ja vertailumedia | `/wp-admin/` ohjaa kirjautumiseen; kirjautumissivu ja sovittu media toimivat muuttumattomina. |  |  |
+| WP-01 | P1 | WordPress-etusivu | HTTP 200, otsikko ja näkyvä rakenne vastaavat REL-01:n lähtötasoa. | PASS (tuotanto, vain luku) | 26.8.2026 HTTP 200. Selainotsikko `SeniorSurf vahvistaa seniorien digiosallisuutta`, näkyvä H1 `SeniorSurf` sekä päävalikko, pääsisältö ja alatunniste vastasivat REL-01:n lähtötasoa. |
+| WP-02 | P1 | Etäopastus, Ajankohtaista ja Yhteystiedot | Kaikki palauttavat HTTP 200:n ja keskeinen sisältö näkyy. | PASS (tuotanto, vain luku) | 26.8.2026 kaikki kolme URLia palauttivat HTTP 200. Selainotsikot vastasivat REL-01:n lähtötasoa ja näkyvät H1-otsikot olivat `Etäopastus`, `Ajankohtaista` ja `Yhteystiedot`. |
+| WP-03 | P1 | Julkinen WordPress-haku | Tunnettu `digiopastus`-haku näyttää hakutulossivun. | PASS (tuotanto, vain luku) | 26.8.2026 `https://seniorsurf.fi/?s=digiopastus` palautti HTTP 200, säilytti hakukyselyn ja näytti H1-otsikon `Hakutulokset`. |
+| WP-04 | P1 | Kirjautuminen ja vertailumedia | `/wp-admin/` ohjaa kirjautumiseen; kirjautumissivu ja sovittu media toimivat muuttumattomina. | PASS (tuotanto, vain luku) | 26.8.2026 `/wp-admin/` palautti HTTP 302:n kirjautumissivulle, jonka otsikko oli `Kirjaudu sisään ‹ SeniorSurf — WordPress`; kirjautumista ei tehty. Vertailumedia palautti HTTP 200, `image/jpeg`, 152080 tavua ja näkyi 1800 × 630 px:n kuvana. |
 | WP-05 | P1 | Esittelysivu | `/aloitussivu-palvelu/` palauttaa 200:n, sisältö on hyväksytty, mobiilinäkymä toimii ja linkki osoittaa suoraan `/aloitus/`-osoitteeseen. |  |  |
 | WP-06 | P1 | `/aloitus/` loppukauttaviivalla | HTTP 200 ilman ulkoista ohjausta; osoitepalkki säilyy `seniorsurf.fi/aloitus/`-muodossa. |  |  |
 | WP-07 | P1 | `/aloitus` ilman loppukauttaviivaa | Ohjaus päätyy kerran kanoniseen `/aloitus/`-osoitteeseen ilman silmukkaa tai alidomainia. |  |  |

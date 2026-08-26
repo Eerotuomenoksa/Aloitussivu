@@ -598,3 +598,17 @@ Ehdokkaan `REL-11-v0.74.2-ee6f9ebf1f3d` pääbundle `assets/main-CamQDfot.js` va
 **Lisähavainto `REL11-A11Y-07` (P1):** huijausvaroituksen dialogi sai alkufokuksen Sulje-painikkeeseen ja sulkeutui Escillä, mutta fokus putosi sulkemisen jälkeen sivun `BODY`-elementtiin eikä palannut avanneeseen varoitukseen. Havainto kirjattiin uutena A11Y-10-rivinä.
 
 **Porttipäätös:** NO-GO ehdokkaalle `0.74.2`, kunnes `REL11-A11Y-05`, `REL11-A11Y-06`, `REL11-A11Y-07` ja `REL11-CORE-01` on korjattu, rakennettu uuteen yksilöityyn ehdokkaaseen ja uusintatestattu stagingissa. Tehtävä 5/10 jää kesken. WordPressiin tai tuotannon `/aloitus/`-polkuun ei koskettu tässä testissä.
+
+## 26.8.2026 — REL-11 tehtävä 5/10: WordPress-lähtötason savukoe
+
+WordPressin tuotantosivustolle tehtiin vain lukeva WP-01–WP-04-savukoe ennen Aloitussivun esittelysivun ja suoran `/aloitus/`-polun myöhempiä muutoksia. WordPressiin ei kirjauduttu eikä sen tiedostoja, tietokantaa, teemaa, lisäosia tai asetuksia muutettu.
+
+**WP-01 PASS:** `https://seniorsurf.fi/` palautti HTTP 200:n. Selainotsikko `SeniorSurf vahvistaa seniorien digiosallisuutta`, näkyvä `SeniorSurf`-pääotsikko sekä päävalikko, pääsisältö ja alatunniste vastasivat REL-01:n lähtötasoa.
+
+**WP-02 PASS:** Etäopastus-, Ajankohtaista- ja Yhteystiedot-sivut palauttivat HTTP 200:n. Selainotsikot vastasivat REL-01:n lähtötasoa, ja näkyvät H1-otsikot olivat `Etäopastus`, `Ajankohtaista` ja `Yhteystiedot`.
+
+**WP-03 PASS:** `https://seniorsurf.fi/?s=digiopastus` palautti HTTP 200:n, säilytti hakukyselyn ja näytti `Hakutulokset`-otsikon.
+
+**WP-04 PASS:** `/wp-admin/` palautti HTTP 302:n WordPressin kirjautumissivulle. Lopullinen osoite sisälsi alkuperäisen `/wp-admin/`-kohteen `redirect_to`-parametrissa, kirjautumissivun otsikko oli `Kirjaudu sisään ‹ SeniorSurf — WordPress` ja käyttäjätunnus- sekä salasanakentät näkyivät. Sovittu vertailumedia palautti HTTP 200:n, sisältötyypin `image/jpeg` ja aiemman 152080 tavun koon; selain näytti kuvan koossa 1800 × 630 px.
+
+**Porttitila:** WordPressin ennen-savukoe WP-01–WP-04 on hyväksytty ilman havaittua regressiota. WP-05–WP-11 jäävät avoimiksi, koska esittelysivua ja tuotannonkaltaista suoraa `/aloitus/`-polkua ei vielä testattu eikä WordPressin jälkeen-savukoetta voitu siksi tehdä. Ehdokkaan kokonaispäätös säilyy NO-GO-tilassa myös avoimien `REL11-A11Y-05`, `REL11-A11Y-06`, `REL11-A11Y-07` ja `REL11-CORE-01` P1-havaintojen vuoksi.
