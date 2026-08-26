@@ -628,3 +628,11 @@ Korjausversioksi asetettiin `0.74.3`. Patch-nosto valittiin, koska muutos korjaa
 **Paikalliset porttitestit:** `npx tsc --noEmit` läpäisi, staging-tuotantokäännös valmistui, kaikki 45 API:n PHP-tiedostoa läpäisivät PHP 8.4.24 -lintin ja sopimussarja läpäisi 44/44. Uudet regressiotestit vahvistavat sananrajakatkaisun, yli 300 merkin lopullisen toimintaohjeen säilymisen sekä vanhan tietokantarivin rajatun uudelleenhaun. Paikallisen RSS-selaintestin CORS-merkinnät johtuivat ulkoisten uutislähteiden suorista pyynnöistä localhost-originista; lataustilan semantiikka ehdittiin varmentaa ennen hallittua varapolkua eikä merkintöjä tulkittu sovellusregressioksi.
 
 **Porttitila:** neljä P1-havaintoa ovat korjattu paikallisesti, mutta niitä ei vielä suljeta. Seuraavaksi rakennetaan puhtaasta commitista yksilöity version 0.74.3 staging-ehdokas, viedään se stagingiin ja uusintatestataan A11Y-07, A11Y-08, A11Y-10 sekä CORE-07 oikeaa MariaDB/API-provideria vasten.
+
+## 26.8.2026 — REL-11 tehtävä 5/10: version 0.74.3 stagingpaketti
+
+Puhtaasta commitista `394ba2687cb8` rakennettiin ehdokas `REL-11-v0.74.3-394ba2687cb8`. ZIPissä on 115 tiedostoa, sen koko on 835 856 tavua, SHA-256 `a8797eedf094c4edee7a53353b3c925346cdbbc3b8a641f043b10e907bf24bba` ja pääbundle `assets/main-BpDCsx27.js`.
+
+Kaikki 115 ZIP-merkintää avautuivat, vaarallisia polkuja tai lukuvirheitä ei löytynyt. Paketin palvelinkoodi sisältää 800 merkin NCSC-rajan ja vanhojen 300-merkkisten rivien rajatun päivitysehdon. Valmis selainbundle sisältää uudet `aria-invalid`- ja `aria-busy`-semantiikat. Pakettikohtainen tunnistetarkistus löysi ainoastaan selaimeen tarkoituksella sisältyvän Firebase Web API -avaimen; projektin ohjeen mukaan se ei ole salaisuus, ja staging- sekä tuotantodomainien HTTP-referrer-rajaukset on vahvistettu aiemmin. Gemini-, FCM-, Nimipäivä- tai ylläpitotunnisteita ei löytynyt.
+
+**Porttitila:** paketti on valmis siirrettäväksi Cloudcity-stagingiin. Neljä P1-havaintoa pysyvät avoimina, kunnes sama build on asennettu, etusivu, pääbundle ja API-health ovat läpäisseet smoken sekä A11Y-07, A11Y-08, A11Y-10 ja CORE-07 on uusintatestattu. CORE-07 vaatii lisäksi NCSC-ajon ja tietokantaan päivittyneen varoitustekstin tarkistuksen. Tuotantoon tai WordPressiin ei tehty muutoksia.

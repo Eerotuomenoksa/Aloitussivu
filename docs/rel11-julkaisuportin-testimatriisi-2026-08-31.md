@@ -7,10 +7,10 @@ Tämä matriisi suoritetaan jäädytetylle Cloudcity-staging-ehdokkaalle. Testit
 | Kenttä | Arvo |
 | --- | --- |
 | Staging | `https://staging.aloitussivu.seniorsurf.fi/` |
-| Julkaisukandidaatti | `REL-11-v0.74.2-ee6f9ebf1f3d` |
-| Sovellusversio | `0.74.2` |
-| Sovelluscommit | `ee6f9ebf1f3d` |
-| Staging-ZIP SHA-256 | `4205860a745f8ba561b34f304e1e689fdf5f12bb2679d3879cf15cb554848c25` |
+| Julkaisukandidaatti | `REL-11-v0.74.3-394ba2687cb8` (rakennettu paikallisesti, staging-vienti avoin) |
+| Sovellusversio | `0.74.3` |
+| Sovelluscommit | `394ba2687cb8` |
+| Staging-ZIP SHA-256 | `a8797eedf094c4edee7a53353b3c925346cdbbc3b8a641f043b10e907bf24bba` |
 | Skeemamigraatiot | `001_initial_schema`, `002_add_link_reports_triage_index` |
 | Testipäivä | 31.8.2026 |
 | Testauksen aloittaja ja aika | täytetään |
@@ -36,10 +36,10 @@ Yksikin avoin P1 tarkoittaa päätöstä **NO-GO**. Jäädytettyä ehdokasta muu
 
 | ID | P | Tarkistus | Hyväksymisehto | Tulos | Todiste tai havainto |
 | --- | --- | --- | --- | --- | --- |
-| PRE-01 | P1 | Stagingin `build-info.json` | Build ID, commit ja `workingTreeDirty: false` vastaavat yllä olevaa testikohdetta. | PASS | Eero vahvisti SSH:lla 26.8.2026: build ID `REL-11-v0.74.2-ee6f9ebf1f3d`, commit `ee6f9ebf1f3d`, `workingTreeDirty: false`. |
-| PRE-02 | P1 | API-health ja MariaDB | `/api/v1/health` palauttaa `status: ok`, `database: up` ja `version: v1`. | PASS | Eeron PowerShell-smoke 26.8.2026 uudelle ehdokkaalle: etusivu HTTP 200, pääbundle `assets/main-CamQDfot.js` HTTP 200 ja health `ok/up/v1`. Pyyntötunnistetta ei tallennettu. |
-| PRE-03 | P1 | Muuttumaton ehdokas | Stagingin pääbundle on `assets/main-CamQDfot.js`; jäädytyksen jälkeen ei ole tehty sovellus- tai palvelinasetusmuutosta. | PASS | Pääbundle vahvistettiin SSH:ssa ja HTTP 200 -pyynnöllä. Asennuksen jälkeen tehty A11Y-03-vaikutusaluetesti ja Tietoa-ikkunan testaajakiitoksen tarkistus kohdistuivat samaan buildiin. Sovellustiedostoja tai palvelinasetuksia ei muutettu testin aikana. |
-| PRE-04 | P1 | Stagingin palautuspiste | Tiedostopalautuspaketti ja tuore tietokantavarmistus ovat olemassa yksityisessä sijainnissa. | PASS | Ennen version 0.74.2 purkua luotiin `/home/seniorsurffi/rel11-v0740-predeploy-files-20260826.tar.gz`, koko noin 2,0 Mt. Tuore erillinen MariaDB-varmistus on vahvistettu OPS-02:ssa. |
+| PRE-01 | P1 | Stagingin `build-info.json` | Build ID, commit ja `workingTreeDirty: false` vastaavat yllä olevaa testikohdetta. | Ei testattu (uusi ehdokas) | Paikallisen paketin `build-info.json` vastaa buildia `REL-11-v0.74.3-394ba2687cb8`, commitia `394ba2687cb8` ja arvoa `workingTreeDirty: false`. Cloudcity-staging varmennetaan purun jälkeen. |
+| PRE-02 | P1 | API-health ja MariaDB | `/api/v1/health` palauttaa `status: ok`, `database: up` ja `version: v1`. | Ei testattu (uusi ehdokas) | Version 0.74.2 smoke oli PASS. Uuden 0.74.3-ehdokkaan etusivu, pääbundle `assets/main-BpDCsx27.js` ja health tarkistetaan staging-viennin jälkeen. |
+| PRE-03 | P1 | Muuttumaton ehdokas | Stagingin pääbundle on `assets/main-BpDCsx27.js`; jäädytyksen jälkeen ei ole tehty sovellus- tai palvelinasetusmuutosta. | Ei testattu (uusi ehdokas) | Paikallisen ehdokkaan ZIP ja commit on yksilöity. Stagingin bundle ja muuttumattomuus vahvistetaan vasta viennin jälkeen. |
+| PRE-04 | P1 | Stagingin palautuspiste | Tiedostopalautuspaketti ja tuore tietokantavarmistus ovat olemassa yksityisessä sijainnissa. | Osittain PASS | Tuore erillinen MariaDB-varmistus on vahvistettu OPS-02:ssa. Nykyisestä staging-versiosta 0.74.2 tehdään vielä yksilöity tiedostopalautuspaketti ennen version 0.74.3 purkua. |
 | PRE-05 | P1 | WordPress-esittelysivu | `/aloitussivu-palvelu/` on julkaistu hyväksytyllä sisällöllä ja suoralla `/aloitus/`-linkillä. |  |  |
 | PRE-06 | P1 | Tuotannonkaltainen `/aloitus/`-koe | Suora polku, API-entrypoint ja resurssit voidaan testata WordPressin rinnalla ilman pääjuuren `.htaccess`-muutosta tai Redirection-sääntöä. |  |  |
 | PRE-07 | P1 | Vastuut ja muutosikkuna | Varmistus-, vaihto-, smoke- ja palautusvastuut sekä tuotannon kellonaika on vahvistettu. |  |  |
@@ -223,15 +223,15 @@ Havaintoon ei kopioida yksityisen lomakevastauksen, ylläpitotietueen tai liitte
 
 | Portti | Vaatimus | Tulos |
 | --- | --- | --- |
-| Testikattavuus | Kaikki P1-rivit ovat PASS tai perustellusti N/A; yksikään P1 ei ole BLOCKED. | Kesken: stagingin näkymämatriisi 12/12 PASS, A11Y-02 ja A11Y-04 PASS, mutta A11Y-03 FAIL; lisäksi muita P1-rivejä on avoinna. |
-| Avoimet P1-havainnot | 0 | 1 staging-varmistusta odottava (`REL11-A11Y-04`); korjaus ja paikallinen vaikutusaluetesti ovat PASS. `REL11-UI-01` ja `REL11-A11Y-01` suljettiin staging-uusintatestillä 26.8.2026. |
+| Testikattavuus | Kaikki P1-rivit ovat PASS tai perustellusti N/A; yksikään P1 ei ole BLOCKED. | Kesken: neljän version 0.74.2 stagingissa löytyneen P1-havainnon korjaukset ovat paikallisesti PASS, mutta uusi ehdokas odottaa staging-vientiä ja vaikutusalueen uusintaa. Lisäksi WordPressin ja `/aloitus/`-polun P1-rivejä on avoinna. |
+| Avoimet P1-havainnot | 0 | 4 staging-varmistusta odottavaa: `REL11-A11Y-05`, `REL11-A11Y-06`, `REL11-A11Y-07` ja `REL11-CORE-01`. Kaikille on version 0.74.3 paikallinen korjaus ja kohdennettu testi. |
 | P2/P3-poikkeamat | Jokainen on kirjallisesti hyväksytty, omistettu ja aikataulutettu. |  |
 | WordPress | Ennen- ja jälkeen-savukoe läpäisty ilman regressiota. |  |
 | Suora tuotantopolku | `/aloitus/`, `/aloitus/api/v1` ja resurssit on testattu ilman alidomainiin siirtymistä. |  |
 | Sama ehdokas | Tuotantoon vietävä commit, versio, skeema ja paketti vastaavat testattua ehdokasta. |  |
 | Palautusvalmius | Varmistukset, käyttöoikeudet, omistajat ja pysäytysehto on vahvistettu. |  |
 
-- **Päätös:** NO-GO 26.8.2026 — paikallinen `REL11-A11Y-04`-korjaus ja vaikutusaluetesti ovat PASS, mutta ehdokasta ei jäädytetä ennen uuden paketin staging-vientiä, smokea ja A11Y-03-uusintatestiä.
+- **Päätös:** NO-GO 26.8.2026 — version 0.74.3 neljä paikallista P1-korjausta ja pakettitarkistukset ovat PASS, mutta ehdokasta ei jäädytetä ennen staging-vientiä, smokea sekä A11Y-07-, A11Y-08-, A11Y-10- ja CORE-07-uusintatestejä.
 - **Hyväksyjä:** täytetään
 - **Päivämäärä ja kellonaika:** täytetään
 - **Hyväksytyt P2/P3-poikkeamat:** täytetään tai `ei ole`
