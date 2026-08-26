@@ -24,12 +24,11 @@ export type ChangelogCommit = {
   tags: string[];
 };
 
-export const CHANGELOG_GENERATED_AT = "13.8.2026 klo 13.46";
-export const CHANGELOG_VERSION = "0.73.1";
+export const CHANGELOG_GENERATED_AT = "26.8.2026 klo 06.02";
+export const CHANGELOG_VERSION = "0.74.0";
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
-  "Versionumerointi otettiin käyttöön: nykyinen versio näkyy footerissa ja muutoslokin yläosassa.",
-  "Muutoshistoria näyttää versionumeron jokaisen muutoksen yhteydessä.",
-  "Google-haku, palveluhaku ja tekoälyavustaja toimivat nyt myös omalla äänellä mikrofonipainikkeen kautta."
+  "Asetukset-ikkuna ei enää leikkaudu 768 px:n leveydellä suuremmilla tekstikoilla (REL11-UI-01), eikä pisin sana tai otsikko leikkaudu 320 px:n leveydellä 200 % tekstikoolla (REL11-UI-02).",
+  "Asetukset-ikkuna sai fokuksenhallinnan: avattaessa fokus siirtyy ikkunaan, sarkain pysyy ikkunan sisällä, ja Esc tai Sulje palauttaa fokuksen avauspainikkeeseen (REL11-A11Y-01)."
 ];
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [

@@ -1,5 +1,6 @@
 
 import React, { lazy, Suspense, useState, useCallback, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import Clock from './components/Clock';
 import WeatherCard from './components/WeatherCard';
 import ZoneToc from './components/ZoneToc';
@@ -218,6 +219,7 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({ language, setLangua
 const AppContent: React.FC = () => {
   const { language, setLanguage, t } = useI18n();
   const settingsButtonRef = React.useRef<HTMLButtonElement>(null);
+  const settingsPanelRef = React.useRef<HTMLDivElement>(null);
   const [selectedCategory, setSelectedCategory] = useState<Shortcut | null>(null);
   const [isInfoOpen, setIsInfoOpen] = useState(false);
   const [isHomepageOpen, setIsHomepageOpen] = useState(false);
@@ -403,6 +405,58 @@ const AppContent: React.FC = () => {
     };
     window.addEventListener('keydown', handleEsc);
     return () => window.removeEventListener('keydown', handleEsc);
+  }, [isSettingsOpen]);
+
+  // Asetukset-paneeli renderöidään portaalilla document.bodyyn, joten se on
+  // DOM-järjestyksessä sivun lopussa. Ilman fokuksen siirtoa ja rajausta
+  // näppäimistökäyttäjä joutuisi sarkaamaan koko sivun läpi päästäkseen
+  // paneeliin. Fokus siirretään paneeliin avattaessa ja pidetään siellä;
+  // Esc ja Sulje palauttavat fokuksen avauspainikkeeseen.
+  useEffect(() => {
+    if (!isSettingsOpen) return;
+    const panel = settingsPanelRef.current;
+    if (!panel) return;
+
+    const focusableSelector = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+    const getFocusable = () => Array.from(panel.querySelectorAll<HTMLElement>(focusableSelector))
+      .filter(el => el.getClientRects().length > 0);
+
+    const frame = window.requestAnimationFrame(() => {
+      const [first] = getFocusable();
+      (first ?? panel).focus();
+    });
+
+    const handleTabTrap = (event: KeyboardEvent) => {
+      if (event.key !== 'Tab') return;
+      const focusable = getFocusable();
+      if (focusable.length === 0) {
+        event.preventDefault();
+        panel.focus();
+        return;
+      }
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      const active = document.activeElement as HTMLElement | null;
+
+      if (!active || !panel.contains(active)) {
+        event.preventDefault();
+        (event.shiftKey ? last : first).focus();
+        return;
+      }
+      if (event.shiftKey && active === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && active === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener('keydown', handleTabTrap, true);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      document.removeEventListener('keydown', handleTabTrap, true);
+    };
   }, [isSettingsOpen]);
 
   const toggleDarkMode = useCallback(() => setIsDarkMode(prev => !prev), []);
@@ -625,14 +679,17 @@ const AppContent: React.FC = () => {
           </div>
         </header>
 
-        {isSettingsOpen && (
+        {isSettingsOpen && createPortal(
           <div
             id="settings-panel"
-              className="fixed inset-x-3 top-3 z-[80] h-[75dvh] overflow-y-auto rounded-[2rem] border-2 border-[var(--theme-border)] bg-[var(--theme-surface)] p-5 shadow-[0_16px_64px_rgba(0,0,0,.18)] sm:absolute sm:inset-x-auto sm:right-4 sm:top-[5.5rem] sm:h-auto sm:max-h-[calc(100dvh-7rem)] sm:w-[min(24rem,calc(100vw-2rem))] md:right-8 lg:right-12"
+            ref={settingsPanelRef}
+            tabIndex={-1}
+              className="settings-panel-responsive fixed inset-x-3 top-3 z-[80] h-[75dvh] overflow-y-auto rounded-[2rem] border-2 border-[var(--theme-border)] bg-[var(--theme-surface)] p-5 shadow-[0_16px_64px_rgba(0,0,0,.18)] sm:inset-x-auto sm:right-4 sm:top-[5.5rem] sm:h-auto md:right-8 lg:right-12"
+            style={{ '--settings-ui-zoom': uiZoom, zoom: uiZoom } as React.CSSProperties}
             role="dialog"
             aria-labelledby="settings-panel-title"
           >
-            <div className="flex items-center justify-between gap-4 mb-4">
+            <div className="settings-panel-header mb-4 flex items-center justify-between gap-4">
               <h2 id="settings-panel-title" className="font-display font-bold text-[var(--theme-text)] text-xl">{t('settings')}</h2>
               <button
                 type="button"
@@ -690,13 +747,13 @@ const AppContent: React.FC = () => {
                 className="mb-4 flex w-full items-center justify-between gap-4 rounded-2xl border-2 border-[var(--theme-border)] px-4 py-3 text-left font-bold text-[var(--theme-text)] hover:bg-[var(--theme-pale)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--theme-focus)]/40"
                 aria-label={isDarkMode ? t('lightTheme') : t('darkTheme')}
             >
-              <span>{isDarkMode ? t('lightTheme') : t('darkTheme')}</span>
+              <span className="min-w-0 [overflow-wrap:anywhere]">{isDarkMode ? t('lightTheme') : t('darkTheme')}</span>
               <span aria-hidden="true">{isDarkMode ? '☀️' : '🌙'}</span>
             </button>
 
-            <fieldset className="mb-4 rounded-2xl border-2 border-[var(--theme-border)] p-4">
+            <fieldset className="mb-4 min-w-0 rounded-2xl border-2 border-[var(--theme-border)] p-4">
               <legend className="px-1 font-black text-[var(--theme-text)]">{t('clockStyle')}</legend>
-              <div className="mt-3 grid grid-cols-2 gap-2">
+              <div className="settings-clock-grid mt-3 grid grid-cols-2 gap-2">
                 {[
                   { value: 'digital' as ClockMode, label: t('clockDigital') },
                   { value: 'analog' as ClockMode, label: t('clockAnalog') },
@@ -766,8 +823,8 @@ const AppContent: React.FC = () => {
 
             <div className="space-y-3">
               {visibilityOptions.map((item) => (
-                <label key={item.key} className={`${item.className ?? 'flex'} items-center justify-between gap-4 rounded-2xl border-2 border-[var(--theme-border)] px-4 py-3 cursor-pointer`}>
-                  <span className="font-bold text-[var(--theme-text)]">{item.label}</span>
+                <label key={item.key} className={`${item.className ?? 'flex'} flex-wrap items-center justify-between gap-4 rounded-2xl border-2 border-[var(--theme-border)] px-4 py-3 cursor-pointer`}>
+                  <span className="min-w-0 font-bold text-[var(--theme-text)] [overflow-wrap:anywhere]">{item.label}</span>
                   <input
                     type="checkbox"
                     checked={uiVisibility[item.key]}
@@ -796,7 +853,8 @@ const AppContent: React.FC = () => {
                 </select>
               </label>
             )}
-          </div>
+          </div>,
+          document.body,
         )}
 
         <main id="main-content" className="space-y-10 animate-fade-up" style={{ animationDelay: '300ms', marginTop: '-3.5rem' }} tabIndex={-1}>

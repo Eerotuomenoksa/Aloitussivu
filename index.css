@@ -588,6 +588,80 @@ html.dark .glass-chip {
   color: var(--theme-text);
 }
 
+/*
+ * The application content is enlarged with CSS zoom. From the sm breakpoint
+ * onward the settings panel has a fixed design width and a scaled right
+ * offset, so both must be included when fitting it inside the real viewport.
+ */
+@media (min-width: 640px) {
+  .settings-panel-responsive {
+    --settings-panel-inline-room: 2rem;
+    max-height: calc((100dvh / var(--settings-ui-zoom)) - 7rem);
+    width: min(
+      24rem,
+      calc((100vw / var(--settings-ui-zoom)) - var(--settings-panel-inline-room))
+    );
+  }
+}
+
+@media (min-width: 768px) {
+  .settings-panel-responsive {
+    --settings-panel-inline-room: 4rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .settings-panel-responsive {
+    --settings-panel-inline-room: 6rem;
+  }
+}
+
+.settings-panel-responsive fieldset {
+  min-width: 0;
+}
+
+/*
+ * <legend> mitoittuu max-content-leveyteen eikä kutistu fieldsetin mukana,
+ * joten pitkä suomenkielinen otsikko ("Kiinnostavat teemat") työntyy paneelin
+ * reunan yli suurimmilla tekstikoilla. Rajataan leveys ja sallitaan rivitys.
+ */
+.settings-panel-responsive legend {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 639px) {
+  .settings-panel-responsive {
+    inset-inline: calc(.75rem / var(--settings-ui-zoom));
+    top: calc(.75rem / var(--settings-ui-zoom));
+    height: calc(75dvh / var(--settings-ui-zoom));
+    padding: calc(1.25rem / var(--settings-ui-zoom));
+  }
+
+  .settings-panel-header {
+    flex-wrap: wrap;
+  }
+
+  .settings-clock-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .settings-panel-responsive button,
+  .settings-panel-responsive input,
+  .settings-panel-responsive select {
+    max-width: 100%;
+  }
+
+  /* Yksittäinen pitkä sana ("Digitaalinen") ei mahdu 320 px:n näkymään
+     200 %:n tekstikoolla, joten se saa katketa. */
+  .settings-panel-responsive button,
+  .settings-panel-responsive legend,
+  .settings-panel-responsive label,
+  .settings-panel-responsive p {
+    overflow-wrap: anywhere;
+  }
+}
+
 .aurora-close-button,
 .aurora-secondary-button {
   display: inline-flex;

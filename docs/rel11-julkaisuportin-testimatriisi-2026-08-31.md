@@ -70,6 +70,20 @@ Hyväksymisehto kaikille riveille: ei vaakasuuntaista sivuvieritystä, leikkautu
 
 Rivit UI-01–UI-12 suoritettiin 26.8.2026 HTTP Basic Auth -suojatussa Cloudcity-stagingissa selaimen zoomilla 100 prosenttia ja jäädytetyllä ehdokkaalla `REL-10-v0.73.1-b28578557e5a`. Testitunnuksia ei tallennettu matriisiin tai projektin tiedostoihin. Tulos: 10 PASS ja 2 FAIL; UI-08 ja UI-09 ovat samaan Asetukset-ikkunan leveyteen liittyvä avoin P1-havainto.
 
+### Korjauskierros 26.8.2026 (paikallinen varmennus, ei staging)
+
+Havainnon `REL11-UI-01` korjaus varmennettiin paikallisesti rakennetulla korjatulla buildilla. Tarkistus tehtiin Chromiumilla suomenkielisessä käyttöliittymässä tekstirivien tarkkuudella: jokaisen paneelin tekstirivin ja ohjaimen suorakulmio verrattiin näkymän reunoihin, minkä lisäksi tarkistettiin sivun vaakaylivuoto sekä paneelin pysty- ja vaakavieritys.
+
+| Vaihe | Tulos |
+| --- | --- |
+| Lähtötaso ilman korjausta, tiukka tarkistus | 2 PASS / 10 FAIL |
+| Codexin leveyskorjaus, tiukka tarkistus | 11 PASS / 1 FAIL (UI-03) |
+| Leveyskorjaus + fokuksenhallinta + `legend`-rajaus | 12 PASS / 0 FAIL |
+
+Näppäimistökoe korjatulla buildilla 768 px / 150 %: fokus siirtyy avattaessa `Sulje`-painikkeeseen, 40 peräkkäistä sarkainpainallusta ja vaihto-sarkain pysyivät paneelin sisällä, Esc sulki paneelin ja palautti fokuksen `Avaa asetukset` -painikkeeseen.
+
+Nämä tulokset **eivät** korvaa stagingissa ajettavia rivejä. Korjaus muuttaa pääbundlen tiivistettä, joten UI-01–UI-12 sekä A11Y-02 ja A11Y-04 ajetaan uudelleen uudella jäädytetyllä ehdokkaalla, ja PRE-01 sekä PRE-03 päivitetään sen tunnisteilla.
+
 ## 5. Teemat ja asetusten säilyminen
 
 | ID | P | Testi | Hyväksymisehto | Tulos | Todiste tai havainto |
@@ -180,7 +194,9 @@ Näissä testeissä ei muuteta WordPressin pääjuuren `.htaccess`-tiedostoa, te
 
 | Havainto | Testi-ID | P1/P2/P3 | Kuvaus ja toistaminen | Vaikutus | Omistaja | Tila | Päätös tai jatkoaika |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| REL11-UI-01 | UI-08, UI-09 | P1 | Aseta näkymäksi 768 px, selaimen zoomiksi 100 % ja sovelluksen tekstikooksi 150 tai 200 %. Avaa Asetukset. Ikkuna skaalautuu 150 %:ssa noin 720 px ja 200 %:ssa noin 960 px leveäksi, jolloin vasen reuna jää näkymän ulkopuolelle. | Osa otsikosta ja ohjaimista leikkautuu; 200 %:ssa Asetukset eivät ole luotettavasti käytettävissä. | kehitys | avoin | Korjattava ja UI-08/UI-09 uusintatestattava ennen REL-11-portin hyväksyntää; korjaus edellyttää uutta ehdokasbuildia ja jäädytystä. |
+| REL11-UI-01 | UI-08, UI-09 | P1 | Aseta näkymäksi 768 px, selaimen zoomiksi 100 % ja sovelluksen tekstikooksi 150 tai 200 %. Avaa Asetukset. Ikkuna skaalautuu 150 %:ssa noin 720 px ja 200 %:ssa noin 960 px leveäksi, jolloin vasen reuna jää näkymän ulkopuolelle. | Osa otsikosta ja ohjaimista leikkautuu; 200 %:ssa Asetukset eivät ole luotettavasti käytettävissä. | kehitys | korjattu paikallisesti 26.8.2026 | Paikallinen tiukka matriisi 12/12 PASS. Uusintatesti stagingissa vaaditaan uudella ehdokasbuildilla ennen portin hyväksyntää. |
+| REL11-UI-02 | UI-03 | P2 | Aseta näkymäksi 320 px ja tekstikooksi 200 %. Avaa Asetukset ja vieritä kellotyyliin ja teemavalintaan. Painikkeen teksti `Digitaalinen` ylitti oikean reunan 6 px ja fieldsetin otsikko `Kiinnostavat teemat` 21 px. | Kapeimmassa näkymässä suurimmalla tekstikoolla osa tekstistä leikkautui. | kehitys | korjattu paikallisesti 26.8.2026 | `legend` sai `max-width: 100%` ja alle 640 px:n näkymissä sallittiin pitkien sanojen katkaisu. Uusintatesti stagingissa uudella ehdokkaalla. |
+| REL11-A11Y-01 | A11Y-02, A11Y-04 | P1 | Avaa Asetukset näppäimistöllä 768 px / 150 %. Korjauksen ensimmäisessä versiossa paneeli renderöitiin portaalilla `document.body`-elementin loppuun ilman alkufokusta ja fokuksen rajausta, joten paneelin ensimmäiseen ohjaimeen pääsi vasta 66 sarkainpainalluksella (lähtötaso 4). | Näppäimistökäyttäjä ei käytännössä pääse Asetuksiin. | kehitys | korjattu paikallisesti 26.8.2026 | Paneeli sai alkufokuksen, sarkainrajauksen ja fokuksen palautuksen. Uusintatesti stagingissa uudella ehdokkaalla. |
 
 Havaintoon ei kopioida yksityisen lomakevastauksen, ylläpitotietueen tai liitteen sisältöä.
 
@@ -188,8 +204,8 @@ Havaintoon ei kopioida yksityisen lomakevastauksen, ylläpitotietueen tai liitte
 
 | Portti | Vaatimus | Tulos |
 | --- | --- | --- |
-| Testikattavuus | Kaikki P1-rivit ovat PASS tai perustellusti N/A; yksikään P1 ei ole BLOCKED. | Kesken: näkymämatriisi 10 PASS / 2 FAIL; muut P1-rivit avoinna. |
-| Avoimet P1-havainnot | 0 | 1 (`REL11-UI-01`, testit UI-08 ja UI-09) |
+| Testikattavuus | Kaikki P1-rivit ovat PASS tai perustellusti N/A; yksikään P1 ei ole BLOCKED. | Kesken: stagingin näkymämatriisi 10 PASS / 2 FAIL; korjattu koodi läpäisi paikallisen tiukan matriisin 12/12; muut P1-rivit avoinna. |
+| Avoimet P1-havainnot | 0 | 2 (`REL11-UI-01`, `REL11-A11Y-01`); molemmat korjattu paikallisesti 26.8.2026, mutta avoinna kunnes uusi ehdokas on jäädytetty ja uusintatestattu stagingissa |
 | P2/P3-poikkeamat | Jokainen on kirjallisesti hyväksytty, omistettu ja aikataulutettu. |  |
 | WordPress | Ennen- ja jälkeen-savukoe läpäisty ilman regressiota. |  |
 | Suora tuotantopolku | `/aloitus/`, `/aloitus/api/v1` ja resurssit on testattu ilman alidomainiin siirtymistä. |  |
