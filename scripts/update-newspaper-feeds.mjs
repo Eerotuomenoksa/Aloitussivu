@@ -421,11 +421,6 @@ const MANUAL_NEWSPAPER_FEEDS = [
     url: 'https://www.kangasniemenlehti.fi/feed/rss',
   },
   {
-    municipality: 'Kalajoki',
-    name: 'Kalajoen Seutu',
-    url: 'https://kalajoenseutu.net/feed/',
-  },
-  {
     municipality: 'Karkkila',
     name: 'Karkkilan Tienoo',
     url: 'https://www.karkkilalainen.fi/feed/rss',
@@ -434,11 +429,6 @@ const MANUAL_NEWSPAPER_FEEDS = [
     municipality: 'Keitele',
     name: 'Pielavesi-Keitele',
     url: 'https://www.pielavesi-keitele.fi/feed/rss',
-  },
-  {
-    municipality: 'Kokemäki',
-    name: 'Kokemäkeläinen',
-    url: 'http://kokemakelainen.net/feed/',
   },
   {
     municipality: 'Kuhmo',
@@ -621,7 +611,7 @@ const normalizeFeedUrl = (url) => cleanUrl(url).replace(/\/+$/g, '');
 const isCandidateUrl = (url) => {
   try {
     const parsed = new URL(cleanUrl(url));
-    if (!['http:', 'https:'].includes(parsed.protocol)) return false;
+    if (parsed.protocol !== 'https:') return false;
     if (['mediawiki.org', 'wikimedia.org', 'wikipedia.org', 'creativecommons.org', 'donate.wikimedia.org', 'web.archive.org', 'archive.org', 'tools.wmflabs.org', 'wikimediafoundation.org', 'kansalliskirjasto.fi'].some((host) => parsed.hostname.includes(host))) return false;
     return true;
   } catch {

@@ -68,7 +68,7 @@ Järvenpää,Keski-Uudenmaan hyvinvointialue,kyllä,,Järvenpää uutiset (https
 Kaarina,Varsinais-Suomen hyvinvointialue,kyllä,"Kaarina-lehti (https://www.kaarina-lehti.fi/feed/); Kunnallislehti Paimio-Sauvo-Kaarina (https://www.kuntsari.fi/feed/)",,Hyvinvointialueen uutiset: Varsinais-Suomen hyvinvointialue (https://www.varha.fi/fi/ajankohtaista),own-news-flow
 Kaavi,Pohjois-Savon hyvinvointialue,kyllä,Koillis-Savo (https://www.koillis-savo.fi/feed/rss/),Kaavi uutiset (https://kaavi.fi/feed/),Hyvinvointialueen uutiset: Pohjois-Savon hyvinvointialue (https://pshyvinvointialue.fi/fi/ajankohtaiset),own-news-flow
 Kajaani,Kainuun hyvinvointialue,kyllä,,Kajaani uutiset (https://kajaani.fi/feed/),Hyvinvointialueen uutiset: Kainuun hyvinvointialue (https://hyvinvointialue.kainuu.fi/tiedotteet),own-news-flow
-Kalajoki,Pohjois-Pohjanmaan hyvinvointialue,kyllä,Kalajoen Seutu (https://kalajoenseutu.net/feed/),,Hyvinvointialueen uutiset: Pohjois-Pohjanmaan hyvinvointialue (https://pohde.fi/ajankohtaista/),own-news-flow
+Kalajoki,Pohjois-Pohjanmaan hyvinvointialue,ei,,,Hyvinvointialueen uutiset: Pohjois-Pohjanmaan hyvinvointialue (https://pohde.fi/ajankohtaista/),wellbeing-area-news-only
 Kangasala,Pirkanmaan hyvinvointialue,kyllä,"Kangasalan Sanomat (https://kangasalansanomat.fi/feed/); Sydän-Hämeen Lehti (https://shl.fi/feed/)",,Hyvinvointialueen uutiset: Pirkanmaan hyvinvointialue (https://www.pirha.fi/ajankohtaista/pirha-nyt),own-news-flow
 Kangasniemi,Etelä-Savon hyvinvointialue,kyllä,Kangasniemen Kunnallislehti (https://www.kangasniemenlehti.fi/feed/rss),,Hyvinvointialueen uutiset: Etelä-Savon hyvinvointialue (https://etelasavonha.fi/eloisa/uutiset/),own-news-flow
 Kankaanpää,Satakunnan hyvinvointialue,kyllä,,Kankaanpää uutiset (https://www.kankaanpaa.fi/feed/),Hyvinvointialueen uutiset: Satakunnan hyvinvointialue (https://sata.fi/ajankohtaista/),own-news-flow
@@ -98,7 +98,7 @@ Kitee,Pohjois-Karjalan hyvinvointialue,kyllä,Puruvesi (https://www.puruvesi.net
 Kittilä,Lapin hyvinvointialue,kyllä,,Kittilä uutiset (https://kittila.fi/rss.xml),Hyvinvointialueen uutiset: Lapin hyvinvointialue (https://lapha.fi/ajankohtaista),own-news-flow
 Kiuruvesi,Pohjois-Savon hyvinvointialue,kyllä,Kiuruvesi-lehti (https://kiuruvesilehti.fi/feed/),,Hyvinvointialueen uutiset: Pohjois-Savon hyvinvointialue (https://pshyvinvointialue.fi/fi/ajankohtaiset),own-news-flow
 Kivijärvi,Keski-Suomen hyvinvointialue,kyllä,,Kivijärvi uutiset (https://www.kivijarvi.fi/rss.xml),Hyvinvointialueen uutiset: Keski-Suomen hyvinvointialue (https://www.hyvaks.fi/uutiset),own-news-flow
-Kokemäki,Satakunnan hyvinvointialue,kyllä,Kokemäkeläinen (http://kokemakelainen.net/feed/),,Hyvinvointialueen uutiset: Satakunnan hyvinvointialue (https://sata.fi/ajankohtaista/),own-news-flow
+Kokemäki,Satakunnan hyvinvointialue,ei,,,Hyvinvointialueen uutiset: Satakunnan hyvinvointialue (https://sata.fi/ajankohtaista/),wellbeing-area-news-only
 Kokkola,Keski-Pohjanmaan hyvinvointialue,kyllä,,Kokkola uutiset (https://www.kokkola.fi/feed/),Hyvinvointialueen uutiset: Keski-Pohjanmaan hyvinvointialue (https://soite.fi/soite/ajankohtaista/),own-news-flow
 Kolari,Lapin hyvinvointialue,ei,,,Hyvinvointialueen uutiset: Lapin hyvinvointialue (https://lapha.fi/ajankohtaista),wellbeing-area-news-only
 Konnevesi,Keski-Suomen hyvinvointialue,kyllä,Laukaa-Konnevesi (https://www.laukaa-konnevesi.fi/feed/rss),,Hyvinvointialueen uutiset: Keski-Suomen hyvinvointialue (https://www.hyvaks.fi/uutiset),own-news-flow

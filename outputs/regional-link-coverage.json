@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-14T10:10:10.495Z",
+  "generatedAt": "2026-08-26T09:18:47.012Z",
   "municipalityCount": 308,
   "counts": {
     "publicTransport": {
@@ -12,8 +12,8 @@
       "missing": 108
     },
     "localNewsFeed": {
-      "ok-own": 271,
-      "missing": 37
+      "ok-own": 269,
+      "missing": 39
     }
   },
   "municipalities": [
@@ -1274,7 +1274,7 @@
         "status": "missing"
       },
       "localNewsFeed": {
-        "status": "ok-own"
+        "status": "missing"
       }
     },
     {
@@ -1814,7 +1814,7 @@
         "status": "missing"
       },
       "localNewsFeed": {
-        "status": "ok-own"
+        "status": "missing"
       }
     },
     {

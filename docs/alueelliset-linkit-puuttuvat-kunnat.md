@@ -1,6 +1,6 @@
 # Alueellisten linkkien kattavuus ja puuttuvat kuntalinkit
 
-Päivitetty: 14.8.2026
+Päivitetty: 26.8.2026
 
 Tämä raportti tukee puuttuvien alueellisten linkkien täydentämistä. Se ei vielä todista, ettei kunnassa ole palvelua, vaan kertoo missä Aloitussivun datassa ei ole omaa tai seudullista linkkiä.
 
@@ -35,8 +35,8 @@ Tulkinta:
 
 | Tila | Kuntia |
 | --- | ---: |
-| missing | 37 |
-| ok-own | 271 |
+| missing | 39 |
+| ok-own | 269 |
 
 ## Julkinen liikenne: valtakunnallisen fallbackin varassa
 
@@ -226,13 +226,13 @@ Kihniö, Punkalaidun, Valkeakoski, Virrat
 
 Kristiinankaupunki
 
-### Pohjois-Pohjanmaan hyvinvointialue, 4 kuntaa
+### Pohjois-Pohjanmaan hyvinvointialue, 5 kuntaa
 
-Haapavesi, Kuusamo, Nivala, Utajärvi
+Haapavesi, Kalajoki, Kuusamo, Nivala, Utajärvi
 
-### Satakunnan hyvinvointialue, 3 kuntaa
+### Satakunnan hyvinvointialue, 4 kuntaa
 
-Eurajoki, Jämijärvi, Nakkila
+Eurajoki, Jämijärvi, Kokemäki, Nakkila
 
 
 

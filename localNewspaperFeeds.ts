@@ -125,11 +125,6 @@ export const LOCAL_NEWSPAPER_FEEDS = [
     "url": "https://www.koillis-savo.fi/feed/rss/"
   },
   {
-    "municipality": "Kalajoki",
-    "name": "Kalajoen Seutu",
-    "url": "https://kalajoenseutu.net/feed/"
-  },
-  {
     "municipality": "Kangasala",
     "name": "Kangasalan Sanomat",
     "url": "https://kangasalansanomat.fi/feed/"
@@ -178,11 +173,6 @@ export const LOCAL_NEWSPAPER_FEEDS = [
     "municipality": "Kiuruvesi",
     "name": "Kiuruvesi-lehti",
     "url": "https://kiuruvesilehti.fi/feed/"
-  },
-  {
-    "municipality": "Kokemäki",
-    "name": "Kokemäkeläinen",
-    "url": "http://kokemakelainen.net/feed/"
   },
   {
     "municipality": "Konnevesi",

@@ -17,6 +17,50 @@ const EXCLUDE_HOSTS = [
 const TRANSIENT_STATUS_CODES = new Set([408, 425, 429, 500, 502, 503, 504]);
 const MANUAL_NEWSPAPER_LINKS = [
   { name: 'Aamuposti', url: 'https://www.aamuposti.fi/' },
+  { name: 'Heinäveden lehti', url: 'https://www.heinavedenlehti.fi/' },
+  { name: 'Hämeenkyrön Sanomat', url: 'https://hameenkyronsanomat.fi/' },
+  { name: 'Ilmajoki-lehti', url: 'https://www.ilmajoki-lehti.fi' },
+  { name: 'Inarilainen', url: 'https://www.inarilainen.fi/' },
+  { name: 'Joutsan Seutu', url: 'https://www.joutsanseutu.fi/' },
+  { name: 'Joutseno (sanomalehti)', url: 'https://www.joutsenolehti.fi/' },
+  { name: 'JP-Kunnallissanomat', url: 'https://www.jp-kunnallissanomat.fi/' },
+  { name: 'Kaakonkulma (lehti)', url: 'https://www.kaakonkulma.fi/' },
+  { name: 'Kalajokilaakso (lehti)', url: 'https://www.kalajokilaakso.fi/' },
+  { name: 'Keskilaakso', url: 'https://www.keskilaakso.fi/' },
+  { name: 'Kiuruvesi-lehti', url: 'https://kiuruvesilehti.fi/' },
+  { name: 'Koillis-Savo (lehti)', url: 'https://www.koillis-savo.fi/' },
+  { name: 'Komiat', url: 'https://www.komiat.fi/' },
+  { name: 'Koti-Karjala', url: 'https://www.kotikarjala.fi/' },
+  { name: 'Kotiseutu-uutiset', url: 'https://kotiseutu-uutiset.com/' },
+  { name: 'Kuhmolainen', url: 'https://www.kuhmolainen.fi/' },
+  { name: 'Kunnallislehti Paimio-Sauvo-Kaarina', url: 'https://www.kuntsari.fi/' },
+  { name: 'Kurikka-lehti', url: 'https://www.kurikka-lehti.fi/' },
+  { name: 'Kyrönmaa (lehti)', url: 'https://www.kyronmaa-lehti.fi/' },
+  { name: 'Lapuan Sanomat', url: 'https://www.lapuansanomat.fi/' },
+  { name: 'Lauttakylä-lehti', url: 'https://lauttakyla.fi/' },
+  { name: 'Lieksan Lehti', url: 'https://www.lieksanlehti.fi/' },
+  { name: 'Loviisan Sanomat', url: 'https://www.loviisansanomat.fi/' },
+  { name: 'Nya Östis', url: 'https://www.nyaostis.fi/' },
+  { name: 'Orimattilan Sanomat', url: 'https://www.orimattilansanomat.fi/' },
+  { name: 'Paikallislehti Sisä-Savo', url: 'https://www.sisa-savolehti.fi/' },
+  { name: 'Pargas Kungörelser – Paraisten Kuulutukset', url: 'https://www.pku.fi/' },
+  { name: 'Perniönseudun Lehti', url: 'https://www.pernionseudunlehti.fi/' },
+  { name: 'Pohjankyrö-lehti', url: 'https://www.pohjankyro-lehti.fi/' },
+  { name: 'Rannikkoseutu', url: 'https://www.rannikkoseutu.fi/' },
+  { name: 'Reisjärvi (lehti)', url: 'https://reisjarvilehti.fi/' },
+  { name: 'Ruovesi (lehti)', url: 'https://www.ruovesi-lehti.fi/' },
+  { name: 'Siikajokilaakso (sanomalehti)', url: 'https://www.siikajokilaakso.fi/' },
+  { name: 'Somero (lehti)', url: 'https://www.somerolehti.fi/' },
+  { name: 'Suupohjan Sanomat', url: 'https://www.suupohjansanomat.fi/' },
+  { name: 'Tejuka', url: 'https://www.tejuka-lehti.fi/' },
+  { name: 'Turun Tienoo', url: 'https://www.turuntienoo.fi/' },
+  { name: 'Tyrvään Sanomat', url: 'https://www.tyrvaansanomat.fi/' },
+  { name: 'Urjalan Sanomat', url: 'https://urjalansanomat.fi/' },
+  { name: 'Uudenkaupungin Sanomat', url: 'https://www.uudenkaupunginsanomat.fi/' },
+  { name: 'Vaarojen Sanomat', url: 'https://www.vaarojensanomat.fi/' },
+  { name: 'Viiskunta', url: 'https://www.viiskunta.fi/' },
+  { name: 'Viitasaaren Seutu', url: 'https://www.viitasaarenseutu.fi/' },
+  { name: 'Ähtärinjärven Uutisnuotta', url: 'https://www.ahtarinjarvenuutisnuotta.net/' },
   { name: 'Etelä-Saimaa', url: 'https://www.esaimaa.fi/' },
   { name: 'Etelä-Suomen Sanomat', url: 'https://www.ess.fi/' },
   { name: 'Forssan Lehti', url: 'https://www.forssanlehti.fi/' },
@@ -40,6 +84,25 @@ const MANUAL_NEWSPAPER_LINKS = [
   { name: 'Vasabladet', url: 'https://www.vasabladet.fi/' },
   { name: 'Österbottens Tidning', url: 'https://www.osterbottenstidning.fi/' },
 ];
+
+const EXCLUDED_NEWSPAPER_NAMES = new Set([
+  'Elimäen Sanomat',
+  'Jaakkiman Sanomat',
+  'Kalajoen Seutu',
+  'Kokemäkeläinen',
+  'Kylänraitti',
+  'Lakeuden Joutsen',
+  'Lakeuden Lehti',
+  'Lakeuden portti',
+  'Maaselkä (lehti)',
+  'Pietarsaaren Sanomat',
+  'Pohjois-Satakunta',
+  'Punkalaitumen Sanomat',
+  'Soisalon Seutu',
+  'Teisko-Aitolahti',
+  'Topikki',
+  'Ykkössanomat',
+]);
 
 const fetchRemote = async (url) => fetch(url, {
   headers: {
@@ -80,7 +143,7 @@ const cleanUrl = (url) => url.replace(/&amp;/g, '&').replace(/[)\].,;]+$/g, '');
 const isCandidateUrl = (url) => {
   try {
     const parsed = new URL(cleanUrl(url));
-    if (!['http:', 'https:'].includes(parsed.protocol)) return false;
+    if (parsed.protocol !== 'https:') return false;
     if (EXCLUDE_HOSTS.some((host) => parsed.hostname.includes(host))) return false;
     return true;
   } catch {
@@ -221,7 +284,8 @@ const refreshNewspaperLinks = async () => {
     }
   }
 
-  const combined = [...MANUAL_NEWSPAPER_LINKS, ...resolved];
+  const combined = [...MANUAL_NEWSPAPER_LINKS, ...resolved]
+    .filter((item) => !EXCLUDED_NEWSPAPER_NAMES.has(item.name));
   const deduped = combined.filter((item, index, all) => all.findIndex((candidate) => (
     candidate.url === item.url || candidate.name === item.name
   )) === index);

@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-08-14T10:10:10.762Z",
+  "generatedAt": "2026-08-26T09:18:47.112Z",
   "municipalityCount": 308,
   "counts": {
-    "localNewspaperFeedMunicipalities": 120,
+    "localNewspaperFeedMunicipalities": 118,
     "municipalityNewsFlowMunicipalities": 170,
-    "ownNewsFlowMunicipalities": 271,
-    "wellbeingAreaNewsOnlyMunicipalities": 37,
+    "ownNewsFlowMunicipalities": 269,
+    "wellbeingAreaNewsOnlyMunicipalities": 39,
     "municipalitiesWithoutAnyNewsSource": 0
   },
   "municipalities": [
@@ -1651,17 +1651,11 @@
       "key": "kalajoki",
       "wellbeingAreaCode": "19",
       "wellbeingAreaName": "Pohjois-Pohjanmaan hyvinvointialue",
-      "sourceStatus": "own-news-flow",
-      "hasLocalNewspaperFeed": true,
+      "sourceStatus": "wellbeing-area-news-only",
+      "hasLocalNewspaperFeed": false,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": true,
-      "localNewspaperSources": [
-        {
-          "name": "Kalajoen Seutu",
-          "url": "https://kalajoenseutu.net/feed/",
-          "sourceType": "local-newspaper-feed"
-        }
-      ],
+      "hasOwnNewsFlow": false,
+      "localNewspaperSources": [],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Pohjois-Pohjanmaan hyvinvointialue",
@@ -2364,17 +2358,11 @@
       "key": "kokemäki",
       "wellbeingAreaCode": "06",
       "wellbeingAreaName": "Satakunnan hyvinvointialue",
-      "sourceStatus": "own-news-flow",
-      "hasLocalNewspaperFeed": true,
+      "sourceStatus": "wellbeing-area-news-only",
+      "hasLocalNewspaperFeed": false,
       "hasMunicipalityNewsFlow": false,
-      "hasOwnNewsFlow": true,
-      "localNewspaperSources": [
-        {
-          "name": "Kokemäkeläinen",
-          "url": "http://kokemakelainen.net/feed/",
-          "sourceType": "local-newspaper-feed"
-        }
-      ],
+      "hasOwnNewsFlow": false,
+      "localNewspaperSources": [],
       "municipalityNewsSources": [],
       "wellbeingAreaNews": {
         "name": "Hyvinvointialueen uutiset: Satakunnan hyvinvointialue",

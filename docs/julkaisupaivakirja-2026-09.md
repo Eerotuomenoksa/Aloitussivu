@@ -499,3 +499,13 @@ Ajoin `npm run rel08:test` (`scripts/rel08-migration-test.mjs`) pilvikontissa No
 **Merkitty matriisiin "Osittain PASS"** samalla kaavalla kuin ERR-07. Suositus: jos Eero haluaa täyden vahvistuksen, hän voi ajaa `npm run rel08:export` ja `npm run rel08:build-import -- --input <export.json> --output-dir <hakemisto>` itse (paikallisesti tai SSH:n kautta) ja jakaa `reconciliation-report.json`-tulosteen rivimäärä-/tiivistevertailua varten.
 
 **Tila:** OPS-01/02 PASS, OPS-03 osittain PASS (logiikka vahvistettu, oikea deltavienti vaatii Eeron oman ajon). OPS-04/06/07 avoinna, OPS-05 tunnetusti vanhentunut.
+
+## 26.8.2026 — REL-11 tehtävä 3/10: paikallislehtien käsintarkistettu linkkisiivous
+
+Tuotevastuu tarkisti paikallislehtien poikkeamalistan käsin ja toimitti 46 toimivaksi havaittua osoitetta sekä erillisen poistoluettelon. Hyväksytyistä osoitteista 45 käyttää HTTPS-yhteyttä; ne löytyvät nyt aktiivisesta aineistosta. Punkalaitumen Sanomien toimiva osoite käyttää vain HTTP-yhteyttä, joten se poistettiin näkyvistä turvallisuuslinjauksen mukaisesti.
+
+Aktiivisen `localNewspaperLinks.ts`-tiedoston 128 osoitetta käyttävät kaikki HTTPS-yhteyttä. Viisitoista HTTP-lehtiosoitetta, Kokemäkeläisen HTTP-RSS-virta ja kaksi muuta käsin poistettavaksi merkittyä HTTPS-lähdettä siirrettiin pois aktiivisista lähteistä. Kalajoen Seudun ja Kokemäkeläisen uutisvirrat eivät enää lataudu taustalla; kattavuusraporteissa Kalajoki ja Kokemäki käyttävät nyt hyvinvointialueen uutislinkkiä. Poistetut HTTP-osoitteet ja päätösperusteet on koottu tiedostoon `docs/paikallislehtien-http-osoitteet-2026-08-26.md`.
+
+`linkVisibility.ts` estää jatkossa automaattisesti jokaisen `http://`-osoitteen käyttäjänäkymästä riippumatta siitä, missä linkkilähteessä osoite on. Tämä ei estä `https:`, `tel:`- tai muita sovelluksen käyttämiä linkkityyppejä. Vanha staattinen estolista jää lisäksi turvaverkoksi.
+
+Tarkistukset: 45/45 käsin hyväksyttyä HTTPS-osoitetta löytyi lähteistä, poistetuista nimistä 0 jäi aktiiviseen paikallislehtilistaan ja paikallislehti- sekä RSS-lähteiden `http://`-osumia oli 0. `npx tsc --noEmit`, `npm run build:staging`, `npm run check:secrets`, `npm run regional-coverage` ja `git diff --check` läpäisivät. Muutos täydentää REL-11:n tehtävää 3/10 eikä avaa uutta tehtävänumeroa. Sisältö- ja bundelimuutokset on sisällytettävä samaan uuteen ehdokkaaseen asetuspaneelin P1-korjausten kanssa ennen staging-uusintatestejä.
