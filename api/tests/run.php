@@ -1466,7 +1466,8 @@ test('NCSC job refreshes a recently processed legacy alert truncated at 300 char
 
     $refreshQuery = array_values(array_filter(
         $database->executions,
-        static fn (array $execution): bool => str_contains($execution['sql'], 'CHAR_LENGTH(body) = 300'),
+        static fn (array $execution): bool => str_contains($execution['sql'], 'CHAR_LENGTH(body) = 300')
+            && isset($execution['parameters']['source_url']),
     ))[0];
     assertSameValue($url, $refreshQuery['parameters']['source_url']);
     $alertUpdate = array_values(array_filter(
@@ -1475,6 +1476,57 @@ test('NCSC job refreshes a recently processed legacy alert truncated at 300 char
     ))[0];
     assertTrue(strlen((string) $alertUpdate['parameters']['body']) > 300);
     assertTrue(str_ends_with((string) $alertUpdate['parameters']['body'], 'Älä anna pankkitunnuksia tai avaa viestin linkkiä.'));
+});
+
+test('NCSC job refreshes an active legacy alert no longer present in the RSS feed', static function (): void {
+    $legacyUrl = 'https://www.kyberturvallisuuskeskus.fi/ajankohtaista/viikkokatsaus-332026';
+    $source = new FakeNcscSource();
+    $fullAlertBody = str_repeat('Tarkista viestin lähettäjä rauhallisesti. ', 12)
+        . 'Sulje viesti ja ota tarvittaessa yhteyttä omaan pankkiisi.';
+    $source->scrapeValues[$legacyUrl] = new NcscScrapeResult(
+        $legacyUrl,
+        '33/2026',
+        new DateTimeImmutable('2026-08-13T08:00:00Z'),
+        [new NcscScrapeItem('Vanha aktiivinen huijausvaroitus', $fullAlertBody)],
+        '2026',
+    );
+    $database = new FakeDatabase();
+    $database->fetchAllResults = [[[
+        'source_url' => $legacyUrl,
+        'title' => 'Vanha aktiivinen huijausvaroitus',
+        'structure_version' => '2026',
+    ]]];
+    $database->fetchOneResults = [
+        ['acquired' => 1],
+        ['week_label' => '33/2026', 'structure_version' => '2026'],
+        ['id' => 'legacy-truncated-alert'],
+        ['id' => 'legacy-truncated-alert'],
+        ['released' => 1],
+    ];
+    $database->executeResults = [2, 1];
+
+    $result = (new NcscJob($database, $source))->run(new DateTimeImmutable('2026-08-26T18:00:00Z'));
+    assertSameValue('completed', $result->status);
+    assertSameValue(1, $result->targetsProcessed);
+    assertSameValue(0, $result->targetsSkipped);
+    assertSameValue([$legacyUrl], $source->scrapedUrls);
+
+    $legacyTargetQuery = array_values(array_filter(
+        $database->executions,
+        static fn (array $execution): bool => str_contains($execution['sql'], 'MAX_LEGACY_TARGETS')
+            || (str_contains($execution['sql'], 'GROUP BY source_url')
+                && str_contains($execution['sql'], 'expires_at >= :now')),
+    ))[0];
+    assertTrue(isset($legacyTargetQuery['parameters']['now']));
+    $alertUpdate = array_values(array_filter(
+        $database->executions,
+        static fn (array $execution): bool => str_contains($execution['sql'], 'INSERT INTO scam_alerts'),
+    ))[0];
+    assertTrue(strlen((string) $alertUpdate['parameters']['body']) > 300);
+    assertTrue(str_ends_with(
+        (string) $alertUpdate['parameters']['body'],
+        'Sulje viesti ja ota tarvittaessa yhteyttä omaan pankkiisi.',
+    ));
 });
 
 test('NCSC source failures create a safe run log and a failed result', static function (): void {

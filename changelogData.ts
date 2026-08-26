@@ -24,16 +24,30 @@ export type ChangelogCommit = {
   tags: string[];
 };
 
-export const CHANGELOG_GENERATED_AT = "26.8.2026 klo 20.47";
-export const CHANGELOG_VERSION = "0.74.3";
+export const CHANGELOG_GENERATED_AT = "26.8.2026 klo 21.18";
+export const CHANGELOG_VERSION = "0.74.4";
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
-  "Virheellinen kuntanimi välittyy nyt ruudunlukijalle kentän virhetilana ja siihen yhdistettynä ohjetekstinä.",
-  "Paikallisuutisten lataus ilmoitetaan ruudunlukijalle kohteliaana ja varattuna tilaviestinä.",
-  "Huijausvaroituksen sulkeminen palauttaa näppäimistöfokuksen varoituksen avauspainikkeeseen.",
-  "Kyberturvallisuuskeskuksen varoitusteksti säilyttää enintään 800 merkkiä, katkeaa vain sananrajalla ja päivittää myös aiemmat kesken jääneet 300 merkin varoitukset."
+  "Aktiiviset 300 merkkiin katkenneet Kyberturvallisuuskeskuksen varoitukset haetaan uudelleen myös silloin, kun niiden lähdesivu ei enää ole nykyisessä RSS-syötteessä.",
+  "Korjaus rajaa yhden ajon enintään 20 vanhaan lähdesivuun, käyttää vain Kyberturvallisuuskeskuksen HTTPS-osoitteita ja poistaa päällekkäiset hakukohteet."
 ];
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
+  {
+    "hash": "f6dcae73cb5ea2e4eaa64d60a7678de5393558f8",
+    "date": "2026-08-26",
+    "version": "0.109.6",
+    "changeType": "patch",
+    "subject": "Kirjaa REL-11 version 0.74.3 stagingpaketti",
+    "tags": []
+  },
+  {
+    "hash": "394ba2687cb89bde859d15bfd7e7020a2458a448",
+    "date": "2026-08-26",
+    "version": "0.109.5",
+    "changeType": "patch",
+    "subject": "Korjaa REL-11 neljä stagingin P1-havaintoa",
+    "tags": []
+  },
   {
     "hash": "5781e4f8ab9e766c5988b87d9c243bd9a3e3042e",
     "date": "2026-08-26",

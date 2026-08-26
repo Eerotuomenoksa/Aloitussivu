@@ -14,6 +14,7 @@ final class NcscJob
     private const LOCK_NAME = 'aloitussivu:ncsc-scrape';
     private const RECENT_DAYS = 6;
     private const ALERT_TTL_DAYS = 28;
+    private const MAX_LEGACY_TARGETS = 20;
     private const EMPTY_URL = 'internal:ncsc-rss-empty';
 
     public function __construct(
@@ -64,6 +65,8 @@ final class NcscJob
             );
             return new NcscRunResult('failed', 0, 0, 0, 1, null);
         }
+
+        $targets = $this->mergeTargets($targets, $this->legacyTruncatedTargets($now));
 
         if ($targets === []) {
             $this->writeLog(self::EMPTY_URL, 'RSS-syöte tyhjä', null, $now, 0, 'unknown', 'no_targets');
@@ -119,6 +122,52 @@ final class NcscJob
             $errors,
             $firstUrl,
         );
+    }
+
+    /** @return list<NcscTarget> */
+    private function legacyTruncatedTargets(DateTimeImmutable $now): array
+    {
+        $rows = $this->database->fetchAll(
+            'SELECT source_url, MAX(original_heading) AS title, MAX(structure_version) AS structure_version '
+            . 'FROM scam_alerts '
+            . "WHERE source = 'ncsc-auto' AND active = 1 AND expires_at >= :now "
+            . "AND CHAR_LENGTH(body) = 300 AND body NOT REGEXP '[.!?…]$' "
+            . "AND source_url LIKE 'https://www.kyberturvallisuuskeskus.fi/%' "
+            . 'GROUP BY source_url ORDER BY MAX(updated_at) DESC LIMIT ' . self::MAX_LEGACY_TARGETS,
+            ['now' => self::databaseDate($now)],
+        );
+
+        return array_map(static function (array $row): NcscTarget {
+            $structureVersion = (string) ($row['structure_version'] ?? 'unknown');
+            return new NcscTarget(
+                (string) ($row['source_url'] ?? ''),
+                (string) ($row['title'] ?? 'Kyberturvallisuuskeskuksen varoitus'),
+                null,
+                $structureVersion === 'news' ? 'news' : 'review',
+            );
+        }, array_values(array_filter(
+            $rows,
+            static fn (array $row): bool => trim((string) ($row['source_url'] ?? '')) !== '',
+        )));
+    }
+
+    /**
+     * @param list<NcscTarget> $primary
+     * @param list<NcscTarget> $additional
+     * @return list<NcscTarget>
+     */
+    private function mergeTargets(array $primary, array $additional): array
+    {
+        $merged = [];
+        $seen = [];
+        foreach ([...$primary, ...$additional] as $target) {
+            if (isset($seen[$target->url])) {
+                continue;
+            }
+            $seen[$target->url] = true;
+            $merged[] = $target;
+        }
+        return $merged;
     }
 
     /** @return array{week_label?: mixed, structure_version?: mixed}|null */
