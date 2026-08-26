@@ -4,13 +4,13 @@ Tämä ohje koskee vain seuraavaa yksilöityä staging-ehdokasta:
 
 | Kenttä | Arvo |
 | --- | --- |
-| Build ID | `REL-11-v0.74.0-375efac68d1d` |
-| Commit | `375efac68d1d` |
+| Build ID | `REL-11-v0.74.1-fe313d8ee3e5` |
+| Commit | `fe313d8ee3e5` |
 | ZIP | `C:\dev\Aloitussivu\.tmp\aloitussivu-rel11-staging.zip` |
-| Koko | 830 298 tavua |
-| SHA-256 | `0fbac326abd866f63bc8c518d3ac39d72173cd9cb7e4bda8b3610e46eb223d9a` |
+| Koko | 833 070 tavua |
+| SHA-256 | `f7d78cb3bc6cebf958ab5e895f99ff650746f108ad39d7a5c6240377c3bd1521` |
 | Tiedostoja | 115 |
-| Pääbundle | `assets/main-CbpUtkYy.js` |
+| Pääbundle | `assets/main-DjnTJ0pM.js` |
 
 Paketti korvaa stagingin sovellustiedostot mutta ei sisällä eikä korvaa palvelimen yksityistä `secrets/config.php`-tiedostoa. ZIP siirretään käyttäjän kotihakemistoon, ei `public_html`-hakemistoon.
 
@@ -23,7 +23,7 @@ Get-FileHash -Algorithm SHA256 -LiteralPath 'C:\dev\Aloitussivu\.tmp\aloitussivu
 Tuloksen pitää olla:
 
 ```text
-0fbac326abd866f63bc8c518d3ac39d72173cd9cb7e4bda8b3610e46eb223d9a
+f7d78cb3bc6cebf958ab5e895f99ff650746f108ad39d7a5c6240377c3bd1521
 ```
 
 ## 2. Siirrä ZIP paikallisessa PowerShellissä
@@ -50,8 +50,8 @@ Odotetut arvot ovat käyttäjä `seniorsurffi` ja staging-hakemisto `/home/senio
 Seuraava komento kieltäytyy korvaamasta samannimistä aiempaa varmistusta:
 
 ```bash
-test ! -e /home/seniorsurffi/rel11-predeploy-files-20260826.tar.gz && tar -C /home/seniorsurffi/website.aloitussivu-staging -czf /home/seniorsurffi/rel11-predeploy-files-20260826.tar.gz bootstrap.php src cron public_html build-info.json
-ls -lh /home/seniorsurffi/rel11-predeploy-files-20260826.tar.gz
+test ! -e /home/seniorsurffi/rel11-v0740-predeploy-files-20260826.tar.gz && tar -C /home/seniorsurffi/website.aloitussivu-staging -czf /home/seniorsurffi/rel11-v0740-predeploy-files-20260826.tar.gz bootstrap.php src cron public_html build-info.json
+ls -lh /home/seniorsurffi/rel11-v0740-predeploy-files-20260826.tar.gz
 ```
 
 Jos ensimmäinen komento ei tulosta mitään eikä varmistustiedostoa synny, pysähdy: samanniminen tiedosto on jo olemassa tai jokin varmistettava kohde puuttuu.
@@ -83,30 +83,30 @@ stat -c '%a %n' /home/seniorsurffi/website.aloitussivu-staging/public_html/index
 
 Odotukset:
 
-- build ID `REL-11-v0.74.0-375efac68d1d`
-- commit `375efac68d1d`
+- build ID `REL-11-v0.74.1-fe313d8ee3e5`
+- commit `fe313d8ee3e5`
 - `workingTreeDirty` on `false`
-- pääbundle `assets/main-CbpUtkYy.js`
+- pääbundle `assets/main-DjnTJ0pM.js`
 - keskeisten tiedostojen oikeudet `644`
 
 ## 8. Tee smoke-tarkistus
 
-Avaa selaimella `https://staging.aloitussivu.seniorsurf.fi/` ja tarkista etusivu. API-healthin voi tarkistaa SSH-istunnossa ilman salasanan kirjoittamista komentohistoriaan näin:
+Avaa selaimella `https://staging.aloitussivu.seniorsurf.fi/` ja tarkista etusivu. Stagingin Basic Auth on tällä testikierroksella väliaikaisesti poissa käytöstä, joten API-healthin voi tarkistaa SSH-istunnossa näin:
 
 ```bash
-curl -sS -u surf https://staging.aloitussivu.seniorsurf.fi/api/v1/health
+curl -sS https://staging.aloitussivu.seniorsurf.fi/api/v1/health
 ```
 
-`curl` pyytää Basic Auth -salasanan erikseen. Vastauksen pitää sisältää `status: ok`, `database: up` ja `version: v1`.
+Vastauksen pitää sisältää `status: ok`, `database: up` ja `version: v1`.
 
-Tämän jälkeen uusintatestataan ainakin UI-01–UI-12 sekä A11Y-02, A11Y-03 ja A11Y-04. Ehdokasta ei jäädytetä ennen näiden hyväksyntää.
+Tämän jälkeen uusintatestataan A11Y-03 kaikissa kahdeksassa väriteema/vaalea–tumma-yhdistelmässä ja tehdään P1-smoke. Aiemmat UI-01–UI-12-, A11Y-02- ja A11Y-04-tulokset säilyvät, koska muutos rajautuu Google-haun mikrofonipainikkeen fokusrenkaaseen. Ehdokasta ei jäädytetä ennen uuden ehdokkaan hyväksyntää.
 
 ## 9. Palautus tarvittaessa
 
 Jos build-tunniste, etusivu tai health-tarkistus epäonnistuu, palauta edellinen staging-sisältö:
 
 ```bash
-tar -C /home/seniorsurffi/website.aloitussivu-staging -xzf /home/seniorsurffi/rel11-predeploy-files-20260826.tar.gz
+tar -C /home/seniorsurffi/website.aloitussivu-staging -xzf /home/seniorsurffi/rel11-v0740-predeploy-files-20260826.tar.gz
 ```
 
 Tarkista palautuksen jälkeen uudelleen etusivu, `build-info.json` ja API-health.
