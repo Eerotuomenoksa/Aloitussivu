@@ -119,6 +119,12 @@ Versioon `0.74.1` lisättiin Google-haun ylätunnisteversion `Puhu hakusana` -pa
 
 Vaikutusaluetesti läpäisi myös 1280 ja 360 pikselin näkymät: hakukenttä, Hae-painike ja mikrofonipainike pysyivät vaakasuunnassa näkymän sisällä eikä sivulle syntynyt vaakavieritystä. `npx tsc --noEmit`, `npm run check:secrets` ja `npm run build:staging` läpäisivät. Korjauksesta rakennettiin yksilöity ehdokas `REL-11-v0.74.1-fe313d8ee3e5`, jonka ZIP-tarkistussumma on `f7d78cb3bc6cebf958ab5e895f99ff650746f108ad39d7a5c6240377c3bd1521` ja pääbundle `assets/main-DjnTJ0pM.js`. Paketin 115 tiedostoa avautuivat, 43/43 PHP-tiedostoa läpäisi lintin ja API-sopimustestit olivat 42/42 PASS. Tulos on **PASS paikallisessa korjausbuildissa**, mutta A11Y-03:n staging-tulos säilyy FAIL-tilassa, kunnes uusi ehdokas on viety stagingiin ja uusintatesti on läpäissyt.
 
+### Tietoa-ikkunan testaajakiitos 26.8.2026
+
+Tuotevastuun pyynnöstä Tietoa-ikkunaan lisättiin kiitos testaajille sekä pelkät etunimet aakkosjärjestyksessä: Ari, Eija-Riitta, Jaana, Marianne, Minna, Pertti ja Tapani. Otsikko ja kiitosteksti ovat suomeksi, ruotsiksi ja englanniksi; muut kielivalinnat käyttävät sovelluksen nykyistä englanninkielistä varatekstiä. Sisältömuutos nostaa version `0.74.2`:een ja korvaa ennen staging-vientiä rakennetun `0.74.1`-ehdokkaan.
+
+Paikallinen selainkoe varmisti nimien järjestyksen, semanttisen listarakenteen ja käännökset. Osio pysyi kokonaan vaakasuunnassa näkymän sisällä 1280 ja 360 pikselin leveyksillä, eikä osioon tai sivulle syntynyt vaakavieritystä. Vaalea työpöytä- ja mobiilinäkymä tarkistettiin lisäksi kuvista. `npx tsc --noEmit`, `npm run check:secrets` ja `npm run build:staging` läpäisivät.
+
 ## 7. Julkiset ydintoiminnot ja linkit
 
 | ID | P | Testi | Hyväksymisehto | Tulos | Todiste tai havainto |

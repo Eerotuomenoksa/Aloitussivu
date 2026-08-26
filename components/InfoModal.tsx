@@ -16,6 +16,16 @@ interface InfoModalProps {
   onStartOnboarding?: () => void;
 }
 
+const TESTER_FIRST_NAMES = [
+  'Ari',
+  'Eija-Riitta',
+  'Jaana',
+  'Marianne',
+  'Minna',
+  'Pertti',
+  'Tapani',
+] as const;
+
 const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, fontSizeStep = 0, showOnboardingOffer = false, onStartOnboarding }) => {
   const { t } = useI18n();
   useLinkVisibilityVersion();
@@ -115,6 +125,23 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, fontSizeStep = 0
             <p className="text-xl leading-relaxed text-[var(--theme-text-2)]">
               {t('usageStatsBody')}
             </p>
+          </section>
+
+          <section className="aurora-soft-panel space-y-4 rounded-3xl p-6">
+            <h3 className="aurora-section-title text-2xl">{t('testerThanksTitle')}</h3>
+            <p className="text-lg font-bold leading-relaxed text-[var(--theme-text-2)]">
+              {t('testerThanksBody')}
+            </p>
+            <ul className="flex flex-wrap gap-2" aria-label={t('testerThanksTitle')}>
+              {TESTER_FIRST_NAMES.map((name) => (
+                <li
+                  key={name}
+                  className="rounded-full border border-[var(--theme-border)] bg-[var(--theme-surface)] px-4 py-2 text-lg font-black text-[var(--theme-primary)]"
+                >
+                  {name}
+                </li>
+              ))}
+            </ul>
           </section>
 
           <section className="aurora-panel space-y-4 rounded-3xl p-6">

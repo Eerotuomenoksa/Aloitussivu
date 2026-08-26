@@ -24,10 +24,10 @@ export type ChangelogCommit = {
   tags: string[];
 };
 
-export const CHANGELOG_GENERATED_AT = "26.8.2026 klo 13.25";
-export const CHANGELOG_VERSION = "0.74.1";
+export const CHANGELOG_GENERATED_AT = "26.8.2026 klo 13.48";
+export const CHANGELOG_VERSION = "0.74.2";
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
-  "Google-haun mikrofonipainike näyttää nyt selkeän näppäimistökohdistuksen kaikissa väriteemoissa sekä vaaleassa ja tummassa tilassa."
+  "Tietoa-ikkunaan lisättiin kiitokset Seniorin aloitussivun testaajille ja testaajien etunimet aakkosjärjestyksessä."
 ];
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
