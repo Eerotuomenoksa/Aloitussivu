@@ -509,3 +509,18 @@ Aktiivisen `localNewspaperLinks.ts`-tiedoston 128 osoitetta käyttävät kaikki 
 `linkVisibility.ts` estää jatkossa automaattisesti jokaisen `http://`-osoitteen käyttäjänäkymästä riippumatta siitä, missä linkkilähteessä osoite on. Tämä ei estä `https:`, `tel:`- tai muita sovelluksen käyttämiä linkkityyppejä. Vanha staattinen estolista jää lisäksi turvaverkoksi.
 
 Tarkistukset: 45/45 käsin hyväksyttyä HTTPS-osoitetta löytyi lähteistä, poistetuista nimistä 0 jäi aktiiviseen paikallislehtilistaan ja paikallislehti- sekä RSS-lähteiden `http://`-osumia oli 0. `npx tsc --noEmit`, `npm run build:staging`, `npm run check:secrets`, `npm run regional-coverage` ja `git diff --check` läpäisivät. Muutos täydentää REL-11:n tehtävää 3/10 eikä avaa uutta tehtävänumeroa. Sisältö- ja bundelimuutokset on sisällytettävä samaan uuteen ehdokkaaseen asetuspaneelin P1-korjausten kanssa ennen staging-uusintatestejä.
+
+
+## 26.8.2026 — OPS-04: tuotantotietokanta, ja korjaus aiempaan REL11-OPS-01-havaintoon
+
+Eero pyysi jatkamaan OPS-04:ään. Ennen testausta löysin repon juuresta `database/migrations/`-hakemiston (`001_initial_schema.sql`, `002_add_link_reports_triage_index.sql`, `database/README.md`) — tätä ei ollut aiemmin löydetty, koska DATA/ADMIN/ERR-kierroksella haku kohdistui vain `api/`-hakemistoon. **Tämä kumoaa aiemman `REL11-OPS-01`-havainnon** ("repossa ei ole skeemaa") — skeema on ollut koko ajan olemassa, vain eri hakemistossa. Korjasin havaintolokin rivin merkitsemään sen suljetuksi/virheeksi.
+
+Asensin pilvikonttiin puhtaan MariaDB 10.11 -palvelimen ja testasin OPS-04:n kaikki kolme osa-aluetta oikealla tietokannalla (ei feikatuilla ajureilla):
+
+1. **Migraatiot tyhjää kohdetta vasten:** ajoin molemmat migraatiotiedostot järjestyksessä erillisellä migraatio-oikeuksin varustetulla tunnuksella. Molemmat onnistuivat (exit 0), `schema_migrations`-taulu kirjasi molemmat versiot, kaikki 14 sovellustaulua syntyivät oikein.
+2. **Vähimmän oikeuden käyttäjä:** loin erillisen API-ajotunnuksen `database/README.md`:n ohjeen mukaisesti (vain `SELECT/INSERT/UPDATE/DELETE`, ei `CREATE/ALTER/DROP/GRANT`). Kokeilin suoraan: `CREATE TABLE` ja `DROP TABLE` hylättiin (`ERROR 1142 command denied`), normaali luku/kirjoitus toimi.
+3. **Elävä API-pyyntö oikeaa skeemaa vasten:** käynnistin `php -S` -palvelimen tätä MariaDB-kantaa vasten. `POST /api/v1/link-reports` loi oikean rivin (201), kaksoiskappaleen tunnistus `url_hash`-uniikkiavaimella toimi (200, `duplicate:true`), terveystarkistus näytti `"database":"up"`. Ei yhtään palvelinvirhettä lokissa — täysin erilainen tulos kuin aiemmalla tyhjällä SQLite-kannalla (silloin 500-virheitä).
+
+**Merkitty "Osittain PASS":** logiikka, skeema ja oikeusrajaus on nyt todistetusti kunnossa, mutta todiste tulee pilvikontin kertakäyttöisestä testikannasta — ei oikeasta Cloudcity-tuotantokohteesta. Puuttuu vielä Eeron vahvistus: onko tuotannon MariaDB-kohde juuri nyt tyhjä/valmis, ja onko sama migraatiotunnus/ajotunnus-erottelu käytössä siellä. Palautuspolku (rollback) tietokannalle nojaa jo OPS-02:ssa vahvistettuun erilliseen MariaDB-varmistukseen.
+
+**Tila:** OPS-01/02 PASS, OPS-03 osittain PASS, OPS-04 osittain PASS (odottaa Eeron vahvistusta tuotantokohteen tyhjyydestä). REL11-OPS-01-löydös suljettu virheenä. OPS-05 tunnetusti vanhentunut, OPS-06/07 avoinna.
