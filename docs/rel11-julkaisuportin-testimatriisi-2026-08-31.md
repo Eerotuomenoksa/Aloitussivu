@@ -7,10 +7,10 @@ Tämä matriisi suoritetaan jäädytetylle Cloudcity-staging-ehdokkaalle. Testit
 | Kenttä | Arvo |
 | --- | --- |
 | Staging | `https://staging.aloitussivu.seniorsurf.fi/` |
-| Julkaisukandidaatti | `REL-10-v0.73.1-b28578557e5a` |
-| Sovellusversio | `0.73.1` |
-| Sovelluscommit | `b28578557e5a` |
-| Staging-ZIP SHA-256 | `8d8fdabf6b7a575fc8ac059c11ceb34694ee268c24be00259e276f7b378e7044` |
+| Julkaisukandidaatti | `REL-11-v0.74.0-375efac68d1d` |
+| Sovellusversio | `0.74.0` |
+| Sovelluscommit | `375efac68d1d` |
+| Staging-ZIP SHA-256 | `0fbac326abd866f63bc8c518d3ac39d72173cd9cb7e4bda8b3610e46eb223d9a` |
 | Skeemamigraatiot | `001_initial_schema`, `002_add_link_reports_triage_index` |
 | Testipäivä | 31.8.2026 |
 | Testauksen aloittaja ja aika | täytetään |
@@ -36,10 +36,10 @@ Yksikin avoin P1 tarkoittaa päätöstä **NO-GO**. Jäädytettyä ehdokasta muu
 
 | ID | P | Tarkistus | Hyväksymisehto | Tulos | Todiste tai havainto |
 | --- | --- | --- | --- | --- | --- |
-| PRE-01 | P1 | Stagingin `build-info.json` | Build ID, commit ja `workingTreeDirty: false` vastaavat yllä olevaa testikohdetta. |  |  |
-| PRE-02 | P1 | API-health ja MariaDB | `/api/v1/health` palauttaa `status: ok`, `database: up` ja `version: v1`. |  |  |
-| PRE-03 | P1 | Muuttumaton ehdokas | Stagingin pääbundle on `assets/main-DW1uN0JW.js`; jäädytyksen jälkeen ei ole tehty sovellus- tai palvelinasetusmuutosta. |  |  |
-| PRE-04 | P1 | Stagingin palautuspiste | Tiedostopalautuspaketti ja tuore tietokantavarmistus ovat olemassa yksityisessä sijainnissa. |  |  |
+| PRE-01 | P1 | Stagingin `build-info.json` | Build ID, commit ja `workingTreeDirty: false` vastaavat yllä olevaa testikohdetta. | PASS | Eero vahvisti SSH:lla 26.8.2026: build ID `REL-11-v0.74.0-375efac68d1d`, commit `375efac68d1d`, `workingTreeDirty: false`. |
+| PRE-02 | P1 | API-health ja MariaDB | `/api/v1/health` palauttaa `status: ok`, `database: up` ja `version: v1`. | PASS | Eeron PowerShell-smoke 26.8.2026: etusivu HTTP 200, pääbundle HTTP 200 ja health `ok/up/v1`. Pyyntötunnistetta ei tallennettu. |
+| PRE-03 | P1 | Muuttumaton ehdokas | Stagingin pääbundle on `assets/main-CbpUtkYy.js`; jäädytyksen jälkeen ei ole tehty sovellus- tai palvelinasetusmuutosta. | Osittain PASS | Oikea pääbundle vahvistettiin sekä SSH:ssa että HTTP 200 -pyynnöllä. Ehdokasta ei vielä jäädytetä ennen UI- ja A11Y-uusintatestejä. |
+| PRE-04 | P1 | Stagingin palautuspiste | Tiedostopalautuspaketti ja tuore tietokantavarmistus ovat olemassa yksityisessä sijainnissa. | PASS | Ennen REL-11-purkua luotiin `/home/seniorsurffi/rel11-predeploy-files-20260826.tar.gz`, koko noin 1,7 Mt, SHA-256 `5a23bc8f253332527a695fe298871834cf4e79536651618dd2c21469f7378605`. Tuore erillinen MariaDB-varmistus on vahvistettu OPS-02:ssa. |
 | PRE-05 | P1 | WordPress-esittelysivu | `/aloitussivu-palvelu/` on julkaistu hyväksytyllä sisällöllä ja suoralla `/aloitus/`-linkillä. |  |  |
 | PRE-06 | P1 | Tuotannonkaltainen `/aloitus/`-koe | Suora polku, API-entrypoint ja resurssit voidaan testata WordPressin rinnalla ilman pääjuuren `.htaccess`-muutosta tai Redirection-sääntöä. |  |  |
 | PRE-07 | P1 | Vastuut ja muutosikkuna | Varmistus-, vaihto-, smoke- ja palautusvastuut sekä tuotannon kellonaika on vahvistettu. |  |  |

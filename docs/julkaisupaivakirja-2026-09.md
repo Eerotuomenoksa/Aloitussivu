@@ -532,3 +532,13 @@ Asensin pilvikonttiin puhtaan MariaDB 10.11 -palvelimen ja testasin OPS-04:n kai
 **Merkitty "Osittain PASS":** logiikka, skeema ja oikeusrajaus on nyt todistetusti kunnossa, mutta todiste tulee pilvikontin kertakäyttöisestä testikannasta — ei oikeasta Cloudcity-tuotantokohteesta. Puuttuu vielä Eeron vahvistus: onko tuotannon MariaDB-kohde juuri nyt tyhjä/valmis, ja onko sama migraatiotunnus/ajotunnus-erottelu käytössä siellä. Palautuspolku (rollback) tietokannalle nojaa jo OPS-02:ssa vahvistettuun erilliseen MariaDB-varmistukseen.
 
 **Tila:** OPS-01/02 PASS, OPS-03 osittain PASS, OPS-04 osittain PASS (odottaa Eeron vahvistusta tuotantokohteen tyhjyydestä). REL11-OPS-01-löydös suljettu virheenä. OPS-05 tunnetusti vanhentunut, OPS-06/07 avoinna.
+
+## 26.8.2026 — REL-11-ehdokkaan staging-vienti ja smoke
+
+Eero siirsi paketin `aloitussivu-rel11-staging.zip` paikallisesta PowerShellistä Cloudcity-palvelimelle. Paikallinen ja palvelimella laskettu SHA-256 täsmäsivät arvoon `0fbac326abd866f63bc8c518d3ac39d72173cd9cb7e4bda8b3610e46eb223d9a`, ja `unzip -tq` ilmoitti pakatun datan virheettömäksi.
+
+Ennen purkua nykyisestä stagingista tehtiin palautuspaketti `/home/seniorsurffi/rel11-predeploy-files-20260826.tar.gz`. Sen koko oli noin 1,7 Mt ja SHA-256 `5a23bc8f253332527a695fe298871834cf4e79536651618dd2c21469f7378605`. Paketti sisältää aiemmat `bootstrap.php`-, `src`-, `cron`-, `public_html`- ja `build-info.json`-kohteet; yksityinen `secrets/config.php` jäi sekä varmistus- että purkukomentojen ulkopuolelle.
+
+Purun jälkeen SSH-tarkistus vahvisti build ID:n `REL-11-v0.74.0-375efac68d1d`, commitin `375efac68d1d`, arvon `workingTreeDirty: false`, pääbundlen `assets/main-CbpUtkYy.js` ja keskeisten tiedostojen oikeudet `644`. PowerShell-smoke palautti etusivulle HTTP 200:n, pääbundlelle HTTP 200:n ja API-healthille arvot `status: ok`, `database: up`, `version: v1`. Pyyntötunnistetta ei tallennettu päiväkirjaan.
+
+Stagingin Basic Auth on tuotevastuun päätöksellä väliaikaisesti poissa käytöstä testikierroksen nopeuttamiseksi ja palautetaan tuotannon valmistuttua. Ehdokasta ei vielä jäädytetä: seuraavaksi uusintatestataan UI-01–UI-12 sekä A11Y-02, A11Y-03 ja A11Y-04 oikeassa stagingissa.
