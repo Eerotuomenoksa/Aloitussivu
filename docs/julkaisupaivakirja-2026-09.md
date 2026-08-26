@@ -510,6 +510,14 @@ Aktiivisen `localNewspaperLinks.ts`-tiedoston 128 osoitetta käyttävät kaikki 
 
 Tarkistukset: 45/45 käsin hyväksyttyä HTTPS-osoitetta löytyi lähteistä, poistetuista nimistä 0 jäi aktiiviseen paikallislehtilistaan ja paikallislehti- sekä RSS-lähteiden `http://`-osumia oli 0. `npx tsc --noEmit`, `npm run build:staging`, `npm run check:secrets`, `npm run regional-coverage` ja `git diff --check` läpäisivät. Muutos täydentää REL-11:n tehtävää 3/10 eikä avaa uutta tehtävänumeroa. Sisältö- ja bundelimuutokset on sisällytettävä samaan uuteen ehdokkaaseen asetuspaneelin P1-korjausten kanssa ennen staging-uusintatestejä.
 
+## 26.8.2026 — REL-11:n uusi staging-ehdokas rakennettu
+
+Puhtaasta commitista `375efac68d1d` ja versiosta `0.74.0` rakennettiin ehdokas `REL-11-v0.74.0-375efac68d1d`. ZIP on paikallisesti polussa `C:\dev\Aloitussivu\.tmp\aloitussivu-rel11-staging.zip`, sen koko on 830 298 tavua ja SHA-256 `0fbac326abd866f63bc8c518d3ac39d72173cd9cb7e4bda8b3610e46eb223d9a`. Paketissa on 115 tiedostoa ja pääbundle on `assets/main-CbpUtkYy.js`.
+
+Paketin kaikki ZIP-merkinnät avattiin ja luettiin onnistuneesti; vaarallisia suhteellisia tai absoluuttisia polkuja ei ollut. Varsinaista `secrets/config.php`-tiedostoa, `.env`-tiedostoja tai palvelutiliavaimia ei ollut mukana. Paketti sisälsi vain malliasetuksen `secrets/config.staging.example.php`. Build-tiedot ilmoittavat oikean tunnisteen ja commitin sekä `workingTreeDirty: false`. Staging-bundle käyttää juuritason `/api/v1`-polkua eikä tuotannon `/aloitus/api/v1`-polkua; stagingin `noindex, nofollow, noarchive` säilyi.
+
+`npx tsc --noEmit`, `npm run check:secrets`, staging-build, 43 pakettiin sisältyvän PHP-tiedoston lint ja kaikki 42 API-sopimustestiä läpäisivät. Ehdokasta ei ole vielä viety stagingiin eikä jäädytetty. Pakettikohtaiset siirto-, varmennus-, smoke- ja palautusohjeet ovat tiedostossa `docs/rel11-staging-vienti-2026-08-26.md`.
+
 
 ## 26.8.2026 — OPS-04: tuotantotietokanta, ja korjaus aiempaan REL11-OPS-01-havaintoon
 
