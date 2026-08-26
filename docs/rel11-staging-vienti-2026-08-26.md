@@ -4,14 +4,14 @@ Tämä ohje koskee vain seuraavaa yksilöityä staging-ehdokasta:
 
 | Kenttä | Arvo |
 | --- | --- |
-| Build ID | `REL-11-v0.74.1-fe313d8ee3e5` |
-| Commit | `fe313d8ee3e5` |
+| Build ID | `REL-11-v0.74.2-ee6f9ebf1f3d` |
+| Commit | `ee6f9ebf1f3d` |
 | ZIP | `C:\dev\Aloitussivu\.tmp\aloitussivu-rel11-staging.zip` |
-| ZIP palvelimella | `/home/seniorsurffi/aloitussivu-rel11-v0741-staging.zip` |
-| Koko | 833 070 tavua |
-| SHA-256 | `f7d78cb3bc6cebf958ab5e895f99ff650746f108ad39d7a5c6240377c3bd1521` |
+| ZIP palvelimella | `/home/seniorsurffi/aloitussivu-rel11-v0742-staging.zip` |
+| Koko | 833 781 tavua |
+| SHA-256 | `4205860a745f8ba561b34f304e1e689fdf5f12bb2679d3879cf15cb554848c25` |
 | Tiedostoja | 115 |
-| Pääbundle | `assets/main-DjnTJ0pM.js` |
+| Pääbundle | `assets/main-CamQDfot.js` |
 
 Paketti korvaa stagingin sovellustiedostot mutta ei sisällä eikä korvaa palvelimen yksityistä `secrets/config.php`-tiedostoa. ZIP siirretään käyttäjän kotihakemistoon, ei `public_html`-hakemistoon.
 
@@ -24,13 +24,13 @@ Get-FileHash -Algorithm SHA256 -LiteralPath 'C:\dev\Aloitussivu\.tmp\aloitussivu
 Tuloksen pitää olla:
 
 ```text
-f7d78cb3bc6cebf958ab5e895f99ff650746f108ad39d7a5c6240377c3bd1521
+4205860a745f8ba561b34f304e1e689fdf5f12bb2679d3879cf15cb554848c25
 ```
 
 ## 2. Siirrä ZIP paikallisessa PowerShellissä
 
 ```powershell
-scp 'C:\dev\Aloitussivu\.tmp\aloitussivu-rel11-staging.zip' seniorsurffi@staging.aloitussivu.seniorsurf.fi:/home/seniorsurffi/aloitussivu-rel11-v0741-staging.zip
+scp 'C:\dev\Aloitussivu\.tmp\aloitussivu-rel11-staging.zip' seniorsurffi@staging.aloitussivu.seniorsurf.fi:/home/seniorsurffi/aloitussivu-rel11-v0742-staging.zip
 ```
 
 ## 3. Vahvista kohde nykyisessä SSH-istunnossa
@@ -60,8 +60,8 @@ Jos ensimmäinen komento ei tulosta mitään eikä varmistustiedostoa synny, pys
 ## 5. Varmista siirretty ZIP
 
 ```bash
-sha256sum /home/seniorsurffi/aloitussivu-rel11-v0741-staging.zip
-unzip -tq /home/seniorsurffi/aloitussivu-rel11-v0741-staging.zip
+sha256sum /home/seniorsurffi/aloitussivu-rel11-v0742-staging.zip
+unzip -tq /home/seniorsurffi/aloitussivu-rel11-v0742-staging.zip
 ```
 
 SHA-256:n pitää olla täsmälleen sama kuin yllä, ja `unzip`-testin pitää ilmoittaa, ettei pakatussa datassa ole virheitä.
@@ -69,7 +69,7 @@ SHA-256:n pitää olla täsmälleen sama kuin yllä, ja `unzip`-testin pitää i
 ## 6. Pura ehdokas stagingiin
 
 ```bash
-unzip -oq /home/seniorsurffi/aloitussivu-rel11-v0741-staging.zip -d /home/seniorsurffi/website.aloitussivu-staging
+unzip -oq /home/seniorsurffi/aloitussivu-rel11-v0742-staging.zip -d /home/seniorsurffi/website.aloitussivu-staging
 ```
 
 Komento ei koske `secrets/config.php`-tiedostoon, koska sitä ei ole ZIPissä.
@@ -84,10 +84,10 @@ stat -c '%a %n' /home/seniorsurffi/website.aloitussivu-staging/public_html/index
 
 Odotukset:
 
-- build ID `REL-11-v0.74.1-fe313d8ee3e5`
-- commit `fe313d8ee3e5`
+- build ID `REL-11-v0.74.2-ee6f9ebf1f3d`
+- commit `ee6f9ebf1f3d`
 - `workingTreeDirty` on `false`
-- pääbundle `assets/main-DjnTJ0pM.js`
+- pääbundle `assets/main-CamQDfot.js`
 - keskeisten tiedostojen oikeudet `644`
 
 ## 8. Tee smoke-tarkistus

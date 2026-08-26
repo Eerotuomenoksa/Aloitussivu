@@ -123,7 +123,7 @@ Vaikutusaluetesti läpäisi myös 1280 ja 360 pikselin näkymät: hakukenttä, H
 
 Tuotevastuun pyynnöstä Tietoa-ikkunaan lisättiin kiitos testaajille sekä pelkät etunimet aakkosjärjestyksessä: Ari, Eija-Riitta, Jaana, Marianne, Minna, Pertti ja Tapani. Otsikko ja kiitosteksti ovat suomeksi, ruotsiksi ja englanniksi; muut kielivalinnat käyttävät sovelluksen nykyistä englanninkielistä varatekstiä. Sisältömuutos nostaa version `0.74.2`:een ja korvaa ennen staging-vientiä rakennetun `0.74.1`-ehdokkaan.
 
-Paikallinen selainkoe varmisti nimien järjestyksen, semanttisen listarakenteen ja käännökset. Osio pysyi kokonaan vaakasuunnassa näkymän sisällä 1280 ja 360 pikselin leveyksillä, eikä osioon tai sivulle syntynyt vaakavieritystä. Vaalea työpöytä- ja mobiilinäkymä tarkistettiin lisäksi kuvista. `npx tsc --noEmit`, `npm run check:secrets` ja `npm run build:staging` läpäisivät.
+Paikallinen selainkoe varmisti nimien järjestyksen, semanttisen listarakenteen ja käännökset. Osio pysyi kokonaan vaakasuunnassa näkymän sisällä 1280 ja 360 pikselin leveyksillä, eikä osioon tai sivulle syntynyt vaakavieritystä. Vaalea työpöytä- ja mobiilinäkymä tarkistettiin lisäksi kuvista. `npx tsc --noEmit`, `npm run check:secrets` ja `npm run build:staging` läpäisivät. Puhtaasta commitista `ee6f9ebf1f3d` rakennettiin ehdokas `REL-11-v0.74.2-ee6f9ebf1f3d`, jonka ZIPin SHA-256 on `4205860a745f8ba561b34f304e1e689fdf5f12bb2679d3879cf15cb554848c25` ja pääbundle `assets/main-CamQDfot.js`. ZIPin 115 tiedostoa avautuivat, PHP-lint oli 43/43 ja API-sopimustestit 42/42 PASS.
 
 ## 7. Julkiset ydintoiminnot ja linkit
 
