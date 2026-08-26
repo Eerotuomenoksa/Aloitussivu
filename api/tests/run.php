@@ -1332,16 +1332,37 @@ HTML;
     assertTrue(!str_contains(serialize($result->items), 'Tekninen tiedote'));
 });
 
+test('NCSC parser truncates long source text at a whole word', static function (): void {
+    $source = new HttpNcscSource();
+    $target = new NcscTarget(
+        'https://www.kyberturvallisuuskeskus.fi/ajankohtaista/viikkokatsaus-352026',
+        'Viikkokatsaus 35/2026',
+        new DateTimeImmutable('2026-08-24T08:00:00Z'),
+        'review',
+    );
+    $longBody = trim(str_repeat('turvallinen ', 100));
+    $html = '<!doctype html><html><body><main>'
+        . '<h1>Kyberturvallisuuskeskuksen viikkokatsaus 35/2026</h1>'
+        . '<h2>Ajankohtaiset huijaukset</h2>'
+        . '<h3>Pankin nimissä lähetetty kalasteluviesti</h3><p>' . $longBody . '</p>'
+        . '</main></body></html>';
+    $result = $source->resultFromHtml($html, $target, new DateTimeImmutable('2026-08-25T12:00:00Z'));
+    assertSameValue(1, count($result->items));
+    assertTrue(str_ends_with($result->items[0]->body, 'turvallinen…'));
+});
+
 test('NCSC job locks execution, stores deterministic alerts and releases the lock', static function (): void {
     $url = 'https://www.kyberturvallisuuskeskus.fi/ajankohtaista/viikkokatsaus-352026';
     $publishedAt = new DateTimeImmutable('2026-08-24T08:00:00Z');
     $source = new FakeNcscSource();
     $source->targetValues = [new NcscTarget($url, 'Viikkokatsaus 35/2026', $publishedAt, 'review')];
+    $fullAlertBody = str_repeat('Huijausviesti voi näyttää aidolta. ', 14)
+        . 'Älä anna pankkitunnuksia tai avaa viestin linkkiä.';
     $source->scrapeValues[$url] = new NcscScrapeResult(
         $url,
         '35/2026',
         $publishedAt,
-        [new NcscScrapeItem('Pankkihuijaus', 'Älä luovuta pankkitunnuksia.')],
+        [new NcscScrapeItem('Pankkihuijaus', $fullAlertBody)],
         '2026',
     );
     $database = new FakeDatabase();
@@ -1359,6 +1380,8 @@ test('NCSC job locks execution, stores deterministic alerts and releases the loc
     assertTrue(preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-5[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/D', (string) $alertInsert['parameters']['id']) === 1);
     assertTrue(str_contains($alertInsert['sql'], 'ON DUPLICATE KEY UPDATE'));
     assertSameValue('ncsc-auto', $alertInsert['parameters']['source']);
+    assertTrue(strlen((string) $alertInsert['parameters']['body']) > 300);
+    assertTrue(str_ends_with((string) $alertInsert['parameters']['body'], 'Älä anna pankkitunnuksia tai avaa viestin linkkiä.'));
     assertTrue((bool) array_filter(
         $database->executions,
         static fn (array $execution): bool => str_contains($execution['sql'], 'RELEASE_LOCK'),
@@ -1396,6 +1419,7 @@ test('NCSC job skips overlapping and recently processed runs without scraping', 
     $recentDatabase->fetchOneResults = [
         ['acquired' => 1],
         ['week_label' => '35/2026', 'structure_version' => '2026'],
+        null,
         ['released' => 1],
     ];
     $recent = (new NcscJob($recentDatabase, $source))->run(new DateTimeImmutable('2026-08-25T12:00:00Z'));
@@ -1409,6 +1433,48 @@ test('NCSC job skips overlapping and recently processed runs without scraping', 
     assertSameValue('35/2026', $skipLog['parameters']['week_label']);
     assertSameValue('2026', $skipLog['parameters']['structure_version']);
     assertSameValue('recently_processed', $skipLog['parameters']['message']);
+});
+
+test('NCSC job refreshes a recently processed legacy alert truncated at 300 characters', static function (): void {
+    $url = 'https://www.kyberturvallisuuskeskus.fi/ajankohtaista/viikkokatsaus-352026';
+    $publishedAt = new DateTimeImmutable('2026-08-24T08:00:00Z');
+    $source = new FakeNcscSource();
+    $source->targetValues = [new NcscTarget($url, 'Viikkokatsaus 35/2026', $publishedAt, 'review')];
+    $fullAlertBody = str_repeat('Huijausviesti voi näyttää aidolta. ', 14)
+        . 'Älä anna pankkitunnuksia tai avaa viestin linkkiä.';
+    $source->scrapeValues[$url] = new NcscScrapeResult(
+        $url,
+        '35/2026',
+        $publishedAt,
+        [new NcscScrapeItem('Pankkihuijaus', $fullAlertBody)],
+        '2026',
+    );
+    $database = new FakeDatabase();
+    $database->fetchOneResults = [
+        ['acquired' => 1],
+        ['week_label' => '35/2026', 'structure_version' => '2026'],
+        ['id' => 'legacy-truncated-alert'],
+        ['id' => 'legacy-truncated-alert'],
+        ['released' => 1],
+    ];
+    $database->executeResults = [2, 1];
+    $result = (new NcscJob($database, $source))->run(new DateTimeImmutable('2026-08-25T12:00:00Z'));
+    assertSameValue('completed', $result->status);
+    assertSameValue(1, $result->targetsProcessed);
+    assertSameValue(0, $result->targetsSkipped);
+    assertSameValue([$url], $source->scrapedUrls);
+
+    $refreshQuery = array_values(array_filter(
+        $database->executions,
+        static fn (array $execution): bool => str_contains($execution['sql'], 'CHAR_LENGTH(body) = 300'),
+    ))[0];
+    assertSameValue($url, $refreshQuery['parameters']['source_url']);
+    $alertUpdate = array_values(array_filter(
+        $database->executions,
+        static fn (array $execution): bool => str_contains($execution['sql'], 'INSERT INTO scam_alerts'),
+    ))[0];
+    assertTrue(strlen((string) $alertUpdate['parameters']['body']) > 300);
+    assertTrue(str_ends_with((string) $alertUpdate['parameters']['body'], 'Älä anna pankkitunnuksia tai avaa viestin linkkiä.'));
 });
 
 test('NCSC source failures create a safe run log and a failed result', static function (): void {

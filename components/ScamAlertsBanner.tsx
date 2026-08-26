@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { ScamAlertEntry, subscribeScamAlerts } from '../scamAlerts';
 import { useI18n } from '../i18n';
@@ -52,6 +52,21 @@ const ScamAlertsBanner: React.FC<ScamAlertsBannerProps> = ({ compact = false, fr
   const [alerts, setAlerts] = useState<ScamAlertEntry[]>([]);
   const [selectedAlert, setSelectedAlert] = useState<ScamAlertEntry | null>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const alertOpenerRef = useRef<HTMLButtonElement | null>(null);
+
+  const openAlert = useCallback((alert: ScamAlertEntry, opener: HTMLButtonElement) => {
+    alertOpenerRef.current = opener;
+    setSelectedAlert(alert);
+  }, []);
+
+  const closeAlert = useCallback(() => {
+    const opener = alertOpenerRef.current;
+    setSelectedAlert(null);
+    window.requestAnimationFrame(() => {
+      if (opener?.isConnected) opener.focus();
+      alertOpenerRef.current = null;
+    });
+  }, []);
 
   useEffect(() => subscribeScamAlerts(setAlerts), []);
 
@@ -69,7 +84,7 @@ const ScamAlertsBanner: React.FC<ScamAlertsBannerProps> = ({ compact = false, fr
 
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        setSelectedAlert(null);
+        closeAlert();
       }
     };
 
@@ -79,7 +94,7 @@ const ScamAlertsBanner: React.FC<ScamAlertsBannerProps> = ({ compact = false, fr
       document.body.style.overflow = previousOverflow;
       window.removeEventListener('keydown', onKeyDown);
     };
-  }, [selectedAlert]);
+  }, [closeAlert, selectedAlert]);
 
   if (visibleAlerts.length === 0) return null;
 
@@ -89,7 +104,7 @@ const ScamAlertsBanner: React.FC<ScamAlertsBannerProps> = ({ compact = false, fr
       role="presentation"
       onMouseDown={(event) => {
         if (event.target === event.currentTarget) {
-          setSelectedAlert(null);
+          closeAlert();
         }
       }}
     >
@@ -109,7 +124,7 @@ const ScamAlertsBanner: React.FC<ScamAlertsBannerProps> = ({ compact = false, fr
           <button
             ref={closeButtonRef}
             type="button"
-            onClick={() => setSelectedAlert(null)}
+            onClick={closeAlert}
             className="min-h-14 rounded-full bg-[var(--theme-pale)] px-6 py-3 text-lg font-black text-[var(--theme-text)] transition-all hover:bg-[var(--theme-gold-pale)] focus:outline-none focus:ring-4 focus:ring-[var(--theme-focus)]/30"
           >
             {t('close')}
@@ -161,7 +176,7 @@ const ScamAlertsBanner: React.FC<ScamAlertsBannerProps> = ({ compact = false, fr
             <button
               key={alert.id}
               type="button"
-              onClick={() => setSelectedAlert(alert)}
+              onClick={(event) => openAlert(alert, event.currentTarget)}
               className={`${severityStyles[alert.severity]} flex min-h-[5.75rem] flex-col justify-between gap-2 rounded-2xl border-2 p-3 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md active:scale-[.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--theme-focus)]`}
               aria-haspopup="dialog"
             >
@@ -180,7 +195,7 @@ const ScamAlertsBanner: React.FC<ScamAlertsBannerProps> = ({ compact = false, fr
             <button
               key={alert.id}
               type="button"
-              onClick={() => setSelectedAlert(alert)}
+              onClick={(event) => openAlert(alert, event.currentTarget)}
               className={`${severityStyles[alert.severity]} flex min-h-[130px] flex-col justify-between gap-3 rounded-2xl border-2 p-4 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md active:scale-[.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--theme-focus)]`}
               aria-haspopup="dialog"
             >

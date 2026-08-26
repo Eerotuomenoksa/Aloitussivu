@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { findMunicipality, getLocalizedMunicipalityName, getRegionalCategoryShortcuts, getRegionalLibraryProviders, getRegionalNewsProviders, getRegionalProviderScopeInfo, getRegionalProviders, getRegionalRssFeeds, normalizeMunicipality, resolveRegionalContext } from '../localServices';
 import { filterVisibleProviders } from '../linkVisibility';
 import { LocalityInfo, Provider, LinkReportDraft, RegionalContext, Shortcut } from '../types';
@@ -162,6 +162,8 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
   const [query, setQuery] = useState('');
   const [isManualQuery, setIsManualQuery] = useState(false);
   const municipalityInputRef = useRef<HTMLInputElement>(null);
+  const municipalityHelpId = useId();
+  const municipalityErrorId = useId();
 
   useEffect(() => {
     if (!locality?.municipality || isManualQuery) return;
@@ -185,6 +187,7 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
   const detectedMunicipalityName = detectedMunicipality ? getLocalizedMunicipalityName(detectedMunicipality, language) : '';
   const detectedLocationLabel = detectedMunicipalityName || locality?.municipality || '';
   const displayedQuery = !isManualQuery && localizedMunicipalityName ? localizedMunicipalityName : query;
+  const hasInvalidMunicipality = isManualQuery && Boolean(query.trim()) && !context;
 
   useEffect(() => {
     if (!isManualQuery || !context) return;
@@ -251,6 +254,8 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
                   placeholder={localizedMunicipalityName ? localizedMunicipalityName : t('municipalityPlaceholder')}
                   className={`min-h-12 w-full rounded-full border-2 border-[var(--zone-border)] bg-[var(--theme-surface)] px-5 py-2 font-black text-[var(--theme-text)] placeholder:text-[var(--theme-muted)] focus:border-[var(--theme-gold)] focus:outline-none focus:ring-4 focus:ring-[var(--theme-focus)]/30 ${textClasses[fontSizeStep]}`}
                   aria-label={t('municipality')}
+                  aria-invalid={hasInvalidMunicipality ? 'true' : undefined}
+                  aria-describedby={`${municipalityHelpId}${hasInvalidMunicipality ? ` ${municipalityErrorId}` : ''}`}
                   enterKeyHint="done"
                 />
               </label>
@@ -282,12 +287,17 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
               Sijaintisi on {detectedLocationLabel}.
             </p>
           )}
-          {!context && isManualQuery && query.trim() && (
-            <p className={`mt-2 font-semibold text-[var(--theme-muted)] ${smallTextClasses[fontSizeStep]}`}>
+          {hasInvalidMunicipality && (
+            <p
+              id={municipalityErrorId}
+              role="alert"
+              aria-atomic="true"
+              className={`mt-2 font-semibold text-[var(--theme-muted)] ${smallTextClasses[fontSizeStep]}`}
+            >
               Kirjoita kunnan nimi kokonaan, esimerkiksi Helsinki, Akaa tai Alajärvi.
             </p>
           )}
-          <p className="sr-only">
+          <p id={municipalityHelpId} className="sr-only">
             {t('changeMunicipalityHint')}
           </p>
         </div>

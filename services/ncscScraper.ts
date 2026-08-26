@@ -96,13 +96,26 @@ const TECHNICAL_KEYWORDS = [
   'rekisteri',
 ];
 
+const truncateAtWord = (value: string, maxLength: number) => {
+  if (value.length <= maxLength) return value;
+  const ellipsis = '…';
+  const limit = Math.max(0, maxLength - ellipsis.length);
+  let prefix = value.slice(0, limit).trimEnd();
+  const nextCharacter = value.slice(limit, limit + 1);
+  if (nextCharacter && !/\s/u.test(nextCharacter)) {
+    const wordSafePrefix = prefix.replace(/\s+\S*$/u, '');
+    if (wordSafePrefix) prefix = wordSafePrefix.trimEnd();
+  }
+  return `${prefix}${ellipsis}`;
+};
+
 const cleanText = (value: string, maxLength = 800) => {
   const cleaned = value
     .replace(/<[^>]*>/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();
 
-  return cleaned.length > maxLength ? `${cleaned.slice(0, maxLength - 3).trim()}...` : cleaned;
+  return truncateAtWord(cleaned, maxLength);
 };
 
 const normalizeText = (value: string) => cleanText(value, Number.MAX_SAFE_INTEGER).toLocaleLowerCase('fi-FI');
@@ -412,8 +425,8 @@ export async function parseNcscNews(
 
 export async function simplifyForSeniors(item: NcscScamItem): Promise<SimplifiedScam> {
   const fallback: SimplifiedScam = {
-    title: item.heading.slice(0, 80),
-    body: item.bodyText.slice(0, 300),
+    title: cleanText(item.heading, 80),
+    body: cleanText(item.bodyText, 800),
     severity: 'warning',
   };
 

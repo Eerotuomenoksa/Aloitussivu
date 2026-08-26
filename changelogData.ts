@@ -24,13 +24,82 @@ export type ChangelogCommit = {
   tags: string[];
 };
 
-export const CHANGELOG_GENERATED_AT = "26.8.2026 klo 13.48";
-export const CHANGELOG_VERSION = "0.74.2";
+export const CHANGELOG_GENERATED_AT = "26.8.2026 klo 20.47";
+export const CHANGELOG_VERSION = "0.74.3";
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
-  "Tietoa-ikkunaan lisättiin kiitokset Seniorin aloitussivun testaajille ja testaajien etunimet aakkosjärjestyksessä."
+  "Virheellinen kuntanimi välittyy nyt ruudunlukijalle kentän virhetilana ja siihen yhdistettynä ohjetekstinä.",
+  "Paikallisuutisten lataus ilmoitetaan ruudunlukijalle kohteliaana ja varattuna tilaviestinä.",
+  "Huijausvaroituksen sulkeminen palauttaa näppäimistöfokuksen varoituksen avauspainikkeeseen.",
+  "Kyberturvallisuuskeskuksen varoitusteksti säilyttää enintään 800 merkkiä, katkeaa vain sananrajalla ja päivittää myös aiemmat kesken jääneet 300 merkin varoitukset."
 ];
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
+  {
+    "hash": "5781e4f8ab9e766c5988b87d9c243bd9a3e3042e",
+    "date": "2026-08-26",
+    "version": "0.109.4",
+    "changeType": "patch",
+    "subject": "Kirjaa REL-11 WordPressin lähtötason savukoe",
+    "tags": []
+  },
+  {
+    "hash": "cf9218f1eb8cb65ec7ab793c368a8e4f4eea4d1a",
+    "date": "2026-08-26",
+    "version": "0.109.3",
+    "changeType": "patch",
+    "subject": "Kirjaa REL-11 stagingin seuraavat P1-testit",
+    "tags": []
+  },
+  {
+    "hash": "546694259ccc7d37571eea269c864ac59bd8ee93",
+    "date": "2026-08-26",
+    "version": "0.109.2",
+    "changeType": "patch",
+    "subject": "Kirjaa REL-11 version 0.74.2 stagingvarmennus",
+    "tags": []
+  },
+  {
+    "hash": "e046759056d094c6c8aeb71031f442d20ae5855a",
+    "date": "2026-08-26",
+    "version": "0.109.1",
+    "changeType": "patch",
+    "subject": "Kirjaa REL-11 testaajakiitoksen stagingpaketti",
+    "tags": []
+  },
+  {
+    "hash": "ee6f9ebf1f3dfd369dff0af6184ffc9b940a67fa",
+    "date": "2026-08-26",
+    "version": "0.109.0",
+    "changeType": "minor",
+    "subject": "Lisää Tietoa-ikkunaan kiitokset testaajille",
+    "tags": [
+      "Visuaalisuus"
+    ]
+  },
+  {
+    "hash": "bfc12a9f916136a3634a2335154b1e229f10fed1",
+    "date": "2026-08-26",
+    "version": "0.108.19",
+    "changeType": "patch",
+    "subject": "Erota REL-11 korjauspaketti palvelimella",
+    "tags": []
+  },
+  {
+    "hash": "d4353d8aa9167a29f5d04dbfa5f241f20d159eca",
+    "date": "2026-08-26",
+    "version": "0.108.18",
+    "changeType": "patch",
+    "subject": "Kirjaa REL-11 fokuskorjauksen stagingpaketti",
+    "tags": []
+  },
+  {
+    "hash": "fe313d8ee3e5b392654b924890c0a10b4862600d",
+    "date": "2026-08-26",
+    "version": "0.108.17",
+    "changeType": "patch",
+    "subject": "Korjaa Google-haun mikrofonin näkyvä fokus",
+    "tags": []
+  },
   {
     "hash": "59b08311e16d10d986786ec5018b11400a6a90f9",
     "date": "2026-08-26",

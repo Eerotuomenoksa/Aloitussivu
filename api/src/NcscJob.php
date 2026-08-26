@@ -78,7 +78,7 @@ final class NcscJob
         foreach ($targets as $target) {
             $firstUrl ??= $target->url;
             $recent = $this->recentlyProcessed($target->url, $now);
-            if ($recent !== null) {
+            if ($recent !== null && !$this->hasLegacyTruncatedAlert($target->url)) {
                 $skipped += 1;
                 $this->writeLog(
                     $target->url,
@@ -137,6 +137,16 @@ final class NcscJob
         );
     }
 
+    private function hasLegacyTruncatedAlert(string $url): bool
+    {
+        return $this->database->fetchOne(
+            'SELECT id FROM scam_alerts '
+            . "WHERE source_url = :source_url AND source = 'ncsc-auto' AND CHAR_LENGTH(body) = 300 "
+            . "AND body NOT REGEXP '[.!?…]$' LIMIT 1",
+            ['source_url' => $url],
+        ) !== null;
+    }
+
     private function storeResult(NcscScrapeResult $result, DateTimeImmutable $now): int
     {
         return $this->database->transaction(function (DatabaseConnection $database) use ($result, $now): int {
@@ -162,7 +172,7 @@ final class NcscJob
                     [
                         'id' => $id,
                         'title' => self::shorten($item->heading, 80),
-                        'body' => self::shorten($item->body, 300),
+                        'body' => self::shorten($item->body, 800),
                         'severity' => 'warning',
                         'source' => 'ncsc-auto',
                         'source_url' => $result->url,
@@ -257,16 +267,38 @@ final class NcscJob
 
     private static function shorten(string $value, int $maxLength): string
     {
-        if (function_exists('mb_strlen') && function_exists('mb_substr')) {
-            return mb_strlen($value, 'UTF-8') <= $maxLength
-                ? $value
-                : mb_substr($value, 0, $maxLength, 'UTF-8');
-        }
-        $length = iconv_strlen($value, 'UTF-8');
-        if ($length !== false && $length <= $maxLength) {
+        if (self::textLength($value) <= $maxLength) {
             return $value;
         }
-        $substring = iconv_substr($value, 0, $maxLength, 'UTF-8');
-        return $substring === false ? substr($value, 0, $maxLength) : $substring;
+
+        $ellipsis = '…';
+        $limit = max(0, $maxLength - self::textLength($ellipsis));
+        $prefix = rtrim(self::textSubstring($value, 0, $limit));
+        $nextCharacter = self::textSubstring($value, $limit, 1);
+        if ($nextCharacter !== '' && preg_match('/\s/u', $nextCharacter) !== 1) {
+            $wordSafePrefix = preg_replace('/\s+\S*$/u', '', $prefix);
+            if (is_string($wordSafePrefix) && $wordSafePrefix !== '') {
+                $prefix = rtrim($wordSafePrefix);
+            }
+        }
+        return $prefix . $ellipsis;
+    }
+
+    private static function textLength(string $value): int
+    {
+        if (function_exists('mb_strlen')) {
+            return mb_strlen($value, 'UTF-8');
+        }
+        $length = iconv_strlen($value, 'UTF-8');
+        return $length === false ? strlen($value) : $length;
+    }
+
+    private static function textSubstring(string $value, int $start, int $length): string
+    {
+        if (function_exists('mb_substr')) {
+            return mb_substr($value, $start, $length, 'UTF-8');
+        }
+        $substring = iconv_substr($value, $start, $length, 'UTF-8');
+        return $substring === false ? substr($value, $start, $length) : $substring;
     }
 }

@@ -522,7 +522,17 @@ final class HttpNcscSource implements NcscSource
         if (self::length($cleaned) <= $maxLength) {
             return $cleaned;
         }
-        return rtrim(self::substring($cleaned, 0, max(0, $maxLength - 3))) . '...';
+        $ellipsis = '…';
+        $limit = max(0, $maxLength - self::length($ellipsis));
+        $prefix = rtrim(self::substring($cleaned, 0, $limit));
+        $nextCharacter = self::substring($cleaned, $limit, 1);
+        if ($nextCharacter !== '' && preg_match('/\s/u', $nextCharacter) !== 1) {
+            $wordSafePrefix = preg_replace('/\s+\S*$/u', '', $prefix);
+            if (is_string($wordSafePrefix) && $wordSafePrefix !== '') {
+                $prefix = rtrim($wordSafePrefix);
+            }
+        }
+        return $prefix . $ellipsis;
     }
 
     private static function lower(string $value): string

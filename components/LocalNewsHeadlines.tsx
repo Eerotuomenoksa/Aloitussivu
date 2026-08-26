@@ -108,13 +108,23 @@ const LocalNewsHeadlines: React.FC<LocalNewsHeadlinesProps> = ({ feeds, fallback
 
   if (loading) {
     return (
-      <div className={compact ? 'space-y-3' : 'grid grid-cols-1 md:grid-cols-3 gap-4'} aria-label="Ladataan paikallisia uutisia">
-        {[0, 1, 2].map((item) => (
-          <div key={item} className={`rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-surface)] p-5 shadow-sm animate-pulse ${compact ? 'min-h-[72px]' : 'min-h-[130px]'}`}>
-            <div className="mb-4 h-5 w-3/4 rounded bg-[var(--theme-pale)]" />
-            <div className="h-5 w-full rounded bg-[var(--theme-pale)]" />
-          </div>
-        ))}
+      <div
+        className={compact ? 'space-y-3' : 'grid grid-cols-1 md:grid-cols-3 gap-4'}
+        role="status"
+        aria-live="polite"
+        aria-busy="true"
+        aria-atomic="true"
+        aria-label="Ladataan paikallisia uutisia"
+      >
+        <span className="sr-only">Ladataan paikallisia uutisia.</span>
+        <div className="contents" aria-hidden="true">
+          {[0, 1, 2].map((item) => (
+            <div key={item} className={`rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-surface)] p-5 shadow-sm animate-pulse ${compact ? 'min-h-[72px]' : 'min-h-[130px]'}`}>
+              <div className="mb-4 h-5 w-3/4 rounded bg-[var(--theme-pale)]" />
+              <div className="h-5 w-full rounded bg-[var(--theme-pale)]" />
+            </div>
+          ))}
+        </div>
       </div>
     );
   }

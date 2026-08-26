@@ -612,3 +612,19 @@ WordPressin tuotantosivustolle tehtiin vain lukeva WP-01–WP-04-savukoe ennen A
 **WP-04 PASS:** `/wp-admin/` palautti HTTP 302:n WordPressin kirjautumissivulle. Lopullinen osoite sisälsi alkuperäisen `/wp-admin/`-kohteen `redirect_to`-parametrissa, kirjautumissivun otsikko oli `Kirjaudu sisään ‹ SeniorSurf — WordPress` ja käyttäjätunnus- sekä salasanakentät näkyivät. Sovittu vertailumedia palautti HTTP 200:n, sisältötyypin `image/jpeg` ja aiemman 152080 tavun koon; selain näytti kuvan koossa 1800 × 630 px.
 
 **Porttitila:** WordPressin ennen-savukoe WP-01–WP-04 on hyväksytty ilman havaittua regressiota. WP-05–WP-11 jäävät avoimiksi, koska esittelysivua ja tuotannonkaltaista suoraa `/aloitus/`-polkua ei vielä testattu eikä WordPressin jälkeen-savukoetta voitu siksi tehdä. Ehdokkaan kokonaispäätös säilyy NO-GO-tilassa myös avoimien `REL11-A11Y-05`, `REL11-A11Y-06`, `REL11-A11Y-07` ja `REL11-CORE-01` P1-havaintojen vuoksi.
+
+## 26.8.2026 — REL-11 tehtävä 5/10: neljän P1-havainnon paikalliset korjaukset
+
+Korjausversioksi asetettiin `0.74.3`. Patch-nosto valittiin, koska muutos korjaa neljä version 0.74.2 staging-testissä löytynyttä virhettä eikä lisää uutta käyttäjäominaisuutta.
+
+**`REL11-A11Y-05` korjattu paikallisesti:** virheellinen Kunta-kenttä saa `aria-invalid="true"`-arvon. `aria-describedby` yhdistää kenttään sekä yleisen kunnanvaihto-ohjeen että oman tunnisteen saaneen `role="alert"`-virheen. Paikallinen oikean selaimen koe vahvisti, että molemmat viitatut elementit ovat olemassa ja virhe näkyy saavutettavuuspuussa alert-tilana.
+
+**`REL11-A11Y-06` korjattu paikallisesti:** paikallisuutisten lataus on nimetty `role="status"` -alue, jolla ovat `aria-live="polite"`, `aria-busy="true"` ja `aria-atomic="true"`. Luurangot piilotetaan saavutettavuuspuulta ja varsinainen latausteksti säilyy ruudunlukijalle. Paikallinen selainkoe vahvisti kaikki arvot latauksen aikana.
+
+**`REL11-A11Y-07` korjattu paikallisesti:** huijausvaroitusdialogi tallentaa avauspainikkeen ja käyttää yhteistä sulkutoimintoa Escille, Sulje-painikkeelle ja taustan napsautukselle. Paikallisessa selainkokeessa Esc sulki dialogin ja `document.activeElement` palautui täsmälleen avanneeseen varoituspainikkeeseen.
+
+**`REL11-CORE-01` korjattu paikallisesti:** NCSC-varoituksen enimmäispituus nostettiin PHP- ja TypeScript-polussa 300 merkistä 800 merkkiin ja katkaisu muutettiin sananrajalle. Palvelinajo tunnistaa lisäksi saman lähteen aiemman automaattisen täsmälleen 300-merkkisen, ilman loppuvälimerkkiä jääneen varoituksen ja hakee sen uudelleen kuuden päivän uusintaestosta huolimatta. Näin stagingin jo tallennetut virherivit voidaan korjata seuraavalla NCSC-ajolla ilman käsin tehtävää SQL-muutosta.
+
+**Paikalliset porttitestit:** `npx tsc --noEmit` läpäisi, staging-tuotantokäännös valmistui, kaikki 45 API:n PHP-tiedostoa läpäisivät PHP 8.4.24 -lintin ja sopimussarja läpäisi 44/44. Uudet regressiotestit vahvistavat sananrajakatkaisun, yli 300 merkin lopullisen toimintaohjeen säilymisen sekä vanhan tietokantarivin rajatun uudelleenhaun. Paikallisen RSS-selaintestin CORS-merkinnät johtuivat ulkoisten uutislähteiden suorista pyynnöistä localhost-originista; lataustilan semantiikka ehdittiin varmentaa ennen hallittua varapolkua eikä merkintöjä tulkittu sovellusregressioksi.
+
+**Porttitila:** neljä P1-havaintoa ovat korjattu paikallisesti, mutta niitä ei vielä suljeta. Seuraavaksi rakennetaan puhtaasta commitista yksilöity version 0.74.3 staging-ehdokas, viedään se stagingiin ja uusintatestataan A11Y-07, A11Y-08, A11Y-10 sekä CORE-07 oikeaa MariaDB/API-provideria vasten.
