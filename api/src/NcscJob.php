@@ -237,6 +237,15 @@ final class NcscJob
                     $created += 1;
                 }
             }
+            $database->execute(
+                'UPDATE scam_alerts SET active = 0, updated_at = :updated_at '
+                . "WHERE source_url = :source_url AND source = 'ncsc-auto' AND active = 1 "
+                . "AND CHAR_LENGTH(body) = 300 AND body NOT REGEXP '[.!?…]$'",
+                [
+                    'source_url' => $result->url,
+                    'updated_at' => self::databaseDate($now),
+                ],
+            );
             $this->writeLogWithDatabase(
                 $database,
                 $result->url,

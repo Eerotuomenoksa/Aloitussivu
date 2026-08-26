@@ -1527,6 +1527,48 @@ test('NCSC job refreshes an active legacy alert no longer present in the RSS fee
         (string) $alertUpdate['parameters']['body'],
         'Sulje viesti ja ota tarvittaessa yhteyttä omaan pankkiisi.',
     ));
+    $legacyCleanup = array_values(array_filter(
+        $database->executions,
+        static fn (array $execution): bool => str_contains($execution['sql'], 'UPDATE scam_alerts SET active = 0'),
+    ))[0];
+    assertSameValue($legacyUrl, $legacyCleanup['parameters']['source_url']);
+});
+
+test('NCSC job hides a legacy truncated alert when the source yields no matching content', static function (): void {
+    $legacyUrl = 'https://www.kyberturvallisuuskeskus.fi/fi/uutiset/vanha-huijausvaroitus';
+    $source = new FakeNcscSource();
+    $source->scrapeValues[$legacyUrl] = new NcscScrapeResult(
+        $legacyUrl,
+        'Uutinen',
+        new DateTimeImmutable('2026-08-13T08:00:00Z'),
+        [],
+        'unknown',
+    );
+    $database = new FakeDatabase();
+    $database->fetchAllResults = [[[
+        'source_url' => $legacyUrl,
+        'title' => 'Vanha huijausvaroitus',
+        'structure_version' => 'news',
+    ]]];
+    $database->fetchOneResults = [
+        ['acquired' => 1],
+        ['week_label' => 'Uutinen', 'structure_version' => 'news'],
+        ['id' => 'legacy-truncated-alert'],
+        ['released' => 1],
+    ];
+
+    $result = (new NcscJob($database, $source))->run(new DateTimeImmutable('2026-08-26T18:00:00Z'));
+    assertSameValue('completed', $result->status);
+    assertSameValue(1, $result->targetsProcessed);
+    assertSameValue(0, $result->errors);
+    assertSameValue([$legacyUrl], $source->scrapedUrls);
+
+    $legacyCleanup = array_values(array_filter(
+        $database->executions,
+        static fn (array $execution): bool => str_contains($execution['sql'], 'UPDATE scam_alerts SET active = 0'),
+    ))[0];
+    assertSameValue($legacyUrl, $legacyCleanup['parameters']['source_url']);
+    assertTrue(isset($legacyCleanup['parameters']['updated_at']));
 });
 
 test('NCSC source failures create a safe run log and a failed result', static function (): void {

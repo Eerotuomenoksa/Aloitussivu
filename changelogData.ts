@@ -24,14 +24,30 @@ export type ChangelogCommit = {
   tags: string[];
 };
 
-export const CHANGELOG_GENERATED_AT = "26.8.2026 klo 21.18";
-export const CHANGELOG_VERSION = "0.74.4";
+export const CHANGELOG_GENERATED_AT = "26.8.2026 klo 21.34";
+export const CHANGELOG_VERSION = "0.74.5";
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
-  "Aktiiviset 300 merkkiin katkenneet Kyberturvallisuuskeskuksen varoitukset haetaan uudelleen myös silloin, kun niiden lähdesivu ei enää ole nykyisessä RSS-syötteessä.",
-  "Korjaus rajaa yhden ajon enintään 20 vanhaan lähdesivuun, käyttää vain Kyberturvallisuuskeskuksen HTTPS-osoitteita ja poistaa päällekkäiset hakukohteet."
+  "Onnistuneen NCSC-lähdesivuhaun jälkeen kesken lauseen 300 merkkiin jäänyt vanha automaattivaroitus piilotetaan julkisesta näkymästä, jos lähdesivulta ei saatu korvaavaa tekstiä.",
+  "Piilotus ei poista tietuetta tietokannasta, ja myöhempi onnistunut automaattipäivitys voi aktivoida varoituksen uudelleen."
 ];
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
+  {
+    "hash": "e57a67b9a964b4a6058f781903ed073bcdd59d8f",
+    "date": "2026-08-26",
+    "version": "0.109.8",
+    "changeType": "patch",
+    "subject": "Kirjaa REL-11 version 0.74.4 stagingehdokas",
+    "tags": []
+  },
+  {
+    "hash": "7491266c4b25d01e76c2ef0cbb5395057afaa4f9",
+    "date": "2026-08-26",
+    "version": "0.109.7",
+    "changeType": "patch",
+    "subject": "Korjaa REL-11 vanhojen NCSC-rivien päivitys",
+    "tags": []
+  },
   {
     "hash": "f6dcae73cb5ea2e4eaa64d60a7678de5393558f8",
     "date": "2026-08-26",
