@@ -35,11 +35,13 @@ Luo WordPressiin tavallinen julkinen sivu seuraavilla tiedoilla:
 - julkinen osoite: `https://seniorsurf.fi/aloitussivu-palvelu/`
 - hakukonenäkyvyys: sallittu
 
-### Hyväksytty sisältö
+### Hyväksytty sisältö 26.8.2026
 
 > ## Seniorin aloitussivu
 >
 > Seniorin aloitussivu kokoaa arjen tärkeät verkkopalvelut yhteen selkeään näkymään. Palvelu on tarkoitettu erityisesti ikääntyneille ja digiopastuksen tueksi.
+>
+> Seniorin aloitussivun voi tallentaa selaimen aloitussivuksi tai asettaa selaimen asetuksista avautumaan automaattisesti selainta käynnistettäessä.
 >
 > Sivulta löytyvät Google-haku ja palveluhaku, julkisia ja muita arjen palveluita, tärkeitä puhelinnumeroita sekä käyttäjän valitseman kotikunnan paikallisia palveluita.
 >
@@ -50,6 +52,8 @@ Luo WordPressiin tavallinen julkinen sivu seuraavilla tiedoilla:
 > **[Avaa Seniorin aloitussivu](https://seniorsurf.fi/aloitus/)**
 
 Linkin näkyvän tekstin pitää kuvata kohde. Älä käytä pelkkää tekstiä ”Klikkaa tästä”.
+
+SeniorSurf-tuotevastuu hyväksyi sisällön 26.8.2026. Eero Tuomenoksa luo ja julkaisee esittelysivun itse WordPressissä ennen REL-11-julkaisuporttia.
 
 ## Valinnaiset kirjoitusvirheosoitteet
 
