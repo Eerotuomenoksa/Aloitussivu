@@ -11,6 +11,7 @@
     "build:firebase-rollback": "vite build --mode firebase-rollback",
     "build:local-provider": "vite build --mode local-provider",
     "package:rel10-staging": "powershell -ExecutionPolicy Bypass -File scripts/build-rel10-staging-package.ps1",
+    "package:rel11-staging": "powershell -ExecutionPolicy Bypass -File scripts/build-rel11-staging-package.ps1",
     "package:production-path": "powershell -ExecutionPolicy Bypass -File scripts/build-production-path-package.ps1",
     "links": "node scripts/update-links.mjs",
     "visual-check": "node scripts/visual-check.mjs",
