@@ -474,3 +474,18 @@ Tähän tiedostoon kirjataan päiväkohtaisten työpakettien tila. Salaisuuksia,
 - **Kaikki yhdeksän ERR-riviä (ERR-01–09) ovat nyt PASS tai osittain PASS** — vain ERR-07 jäi osittaiseksi (dokumentoitu palautuspolku puuttuu).
 - **Muistutus:** staging on yhä ilman Basic Auth -suojausta — Eero palauttaa sen tämän testauskierroksen jälkeen.
 - **Tila:** testaus jatkuu ennakkoon (paikallinen build); DATA/ADMIN 11 riviä + kaikki 9 ERR-riviä vahvistettu (ERR-05/08/09 elävällä stagingilla, muut sopimustasolla), ERR-07 osittain; OPS-01–07 avoinna (vaatii palvelin-/SSH-tason pääsyn, ei pelkkää web-pääsyä — selvitetään onko Eeron SSH-yhteys riittävä); WP-savukoe siirretty; staging-uusintatestaus ja PREF-02-tuotepäätös avoinna
+
+
+## 26.8.2026 — OPS-01/OPS-02: staging-tiedosto- ja tietokantavarmistukset (elävä SSH-yhteys)
+
+Eerolla oli edelleen auki SSH-yhteys PowerShellissä Cloudcity-palvelimelle (`tornado.cloudcity.fi`, käyttäjä `seniorsurffi`). Hän ajoi antamani tarkistuskomennot ja liitti tulosteet, joiden perusteella OPS-01 ja OPS-02 voitiin vahvistaa PASS:
+
+- **OPS-01 PASS (staging-tiedostovarmistus):** kaksi riippumatonta tasoa löytyi.
+  1. Manuaalinen palautuspaketti `/home/seniorsurffi/rel10-predeploy-files-20260826.tar.gz` (1 395 266 t, luotu 2026-08-26 07:23:03 +0300, SHA-256 `ec64944759dd797e17c03ca20ab22ef5ccdbbf76c05b80fa8cbac80865947759`), otettu ennen REL-10-julkaisuvientiä.
+  2. Automaattinen Borg-varmistus (`~/.borgrc`: `BORG_REPO=ccb_33378@cc-cust-backup1.cloudcity.fi:ccbackup`, borg 1.2.9, avain `~/.ssh/ccbackup_rsa`) sisältää tuoreen arkiston `website.aloitussivu-staging@2026-08-25-194724` (Tue, 2026-08-25 19:47:24, n. 15 h vanha tarkistushetkellä) sekä vastaavan WP-tuotantoarkiston `website.wp33403@2026-08-25-194725`.
+  - Sisältöä ei luettu palvelimelta, vain metatiedot (`ls -la`, `sha256sum`, `borg list`).
+  - Palautusoikeus vahvistettu käytännössä: Eeron oma SSH-pääsy palvelimelle ja Borg-repositorioon toimii.
+- **OPS-02 PASS (staging-tietokantavarmistus):** Eero vahvisti suoraan, että erillinen MariaDB-varmistus (Borgista riippumaton mekanismi) on otettu samana päivänä (26.8.2026), 15 taulua. Tuore (alle vuorokauden vanha). Koko ja SHA-256 pidetty Eeron pyynnöstä yksityisinä eikä kirjattu tähän git-seurattuun testimatriisiin — ne säilyvät Eeron omassa ylläpitolokissa.
+- **Havainto:** tämä oli ensimmäinen kerta tällä testauskierroksella, kun OPS-tason (palvelin-/SSH-tason) rivi saatiin oikeasti todennettua eikä vain merkittyä "ei testattu, vaatii ylläpitopääsyn" -tilaan. Ratkaisu syntyi siitä, että Eerolla oli jo oma elävä SSH-istunto auki — minulla itselläni ei ole suoraa pääsyä Cloudcity-palvelimelle.
+- **Muistutus:** staging on yhä ilman Basic Auth -suojausta (Eero ei ole vielä palauttanut salasanaa) — palautus tehtävä testauskierroksen päätyttyä.
+- **Tila:** OPS-01 ja OPS-02 PASS. OPS-03 (Firestore-deltan kuivaharjoitus), OPS-04 (tuotantotietokannan valmius), OPS-05 (vanhentunut viittaus, tunnettu ongelma), OPS-06 (puhdas ihmisen hyväksyntä, ei teknisesti testattavissa) ja OPS-07 (julkaisuviestien valmius, tuotepäätös) avoinna.
