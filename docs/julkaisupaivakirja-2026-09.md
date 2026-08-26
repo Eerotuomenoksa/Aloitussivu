@@ -27,7 +27,7 @@ Tähän tiedostoon kirjataan päiväkohtaisten työpakettien tila. Salaisuuksia,
 | REL-08 | ke 26.8. | kehitys + tietosuojavastuu | valmis ennakkoon | kyllä |  | Täysi Firestore-vienti, idempotentit täys- ja delta-tuonnit, rivimäärä-, aikaväli- ja tiivistetäsmäytykset sekä yksityisyyskokeet valmistuivat 24.–25.8. Väliaikainen Admin SDK -avain mitätöitiin ja paikallinen avaintiedosto poistettiin. |
 | REL-09 | to 27.8. | kehitys + Fakiirimedia | valmis ennakkoon | kyllä |  | Tausta-ajot, staging-cron, käyttötilasto, erillinen tietokantapalautus, luku-/kirjoituskoe, frontend-palautusharjoitus, WordPress-savukoe sekä CONTENT-P1-selosteet ja säilytysajat ovat valmiit. |
 | REL-10 | pe 28.8. | kehitys + tuotevastuu | valmis ennakkoon | kyllä | Eero Tuomenoksa | Julkaisukandidaatti `REL-10-v0.73.1-b28578557e5a` on rakennettu puhtaasta `main`-haarasta, viety Cloudcity-stagingiin ja jäädytetty. Etusivu, API-health, tietokanta, metatiedot ja pääbundle on varmennettu. |
-| REL-11 | ma 31.8. | testaajat + kehitys + tuotevastuu + Fakiirimedia | odottaa | ei |  |  |
+| REL-11 | ma 31.8. | testaajat + kehitys + tuotevastuu + Fakiirimedia | valmistelussa ennakkoon | ei |  | Täytettävä testimatriisi on valmis. Avoimina riippuvuuksina ovat WordPress-esittelysivun julkaisu, tuotannonkaltaisen `/aloitus/`-polun koejärjestely, lopulliset varmistukset ja hyväksyjäroolit. |
 | REL-12 | ti 1.9. | julkaisija + Fakiirimedia + viestintä | odottaa | ei |  |  |
 | REL-13 | ke 2.9. | kehitys + testaaja | varapäivä | ei |  |  |
 | REL-14 | to 3.9. | tuotevastuu + julkaisija | odottaa | ei |  |  |
@@ -417,3 +417,14 @@ Tähän tiedostoon kirjataan päiväkohtaisten työpakettien tila. Salaisuuksia,
 - **Seuraavalle paketille luovutettu:** REL-11 saa muuttumattoman Cloudcity-stagingin, yksilöidyn commit- ja build-tunnisteen, läpäisseet tekniset porttitestit, toimivan API- ja MariaDB-healthin sekä palvelimella säilytettävän palautuspaketin. Ennen REL-11:n WordPress-testejä Eero Tuomenoksa julkaisee hyväksytyn `/aloitussivu-palvelu/`-esittelysivun WordPressiin sovitusti.
 - **Avoimet tehtävät:** ei REL-10:n avoimia tehtäviä.
 - **Tila:** valmis ennakkoon
+
+## Paketti: REL-11
+
+- **Päivämäärä:** 26.8.2026 (ennakkovalmistelu; suunniteltu testipäivä 31.8.2026)
+- **Omistaja:** Eero Tuomenoksa / testaajat + kehitys + SeniorSurf-tuotevastuu + Fakiirimedia
+- **Tarkistaja:** avoin
+- **Riippuvuudet tarkistettu:** osittain; REL-10 on valmis ja jäädytetty. WordPress-esittelysivu, tuotannonkaltaisen suoran `/aloitus/`-polun testi, viimeiset varmistukset, tuotannon muutosikkuna ja hyväksyjäroolit ovat vielä avoimia.
+- **Testimatriisin valmistelu 26.8.2026:** tiedostoon `docs/rel11-julkaisuportin-testimatriisi-2026-08-31.md` luotiin täytettävä julkaisuportti. Se sisältää ennakkoehdot, 12 näkymä- ja tekstikokoyhdistelmää, kaikki neljä väriteemaa vaaleassa ja tummassa tilassa, näppäimistö- ja ruudunlukijakokeet, julkiset ydintoiminnot, lomakkeet, käyttötilaston, ylläpidon oikeudet, virhe- ja suojaustestit, WordPress-savukokeen, suoran `/aloitus/`-polun, varmistukset, Firestore-deltan kuivaharjoituksen, havaintolokin ja go/no-go-päätöksen.
+- **Rajaus:** valmistelu ei merkitse yhtään testiä läpäistyksi. PRE-05:n WordPress-esittelysivu ja PRE-06:n tuotannonkaltainen `/aloitus/`-koe pysyvät avoimina, kunnes ne on oikeasti toteutettu ja testattu.
+- **Avoimet tehtävät:** nimeä testaajat ja hyväksyjä, julkaise WordPress-esittelysivu, sovi suoran `/aloitus/`-polun turvallinen koejärjestely, vahvista tuotannon muutosikkuna ja suorita koko matriisi jäädytetylle ehdokkaalle.
+- **Tila:** valmistelussa ennakkoon
