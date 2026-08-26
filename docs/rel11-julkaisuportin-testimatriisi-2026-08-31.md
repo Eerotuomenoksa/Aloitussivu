@@ -55,18 +55,20 @@ Hyväksymisehto kaikille riveille: ei vaakasuuntaista sivuvieritystä, leikkautu
 
 | ID | P | Leveys | Tekstikoko | Tulos | Todiste tai havainto |
 | --- | --- | ---: | ---: | --- | --- |
-| UI-01 | P1 | 320 px | 100 % |  |  |
-| UI-02 | P1 | 320 px | 150 % |  |  |
-| UI-03 | P1 | 320 px | 200 % |  |  |
-| UI-04 | P1 | 375 px | 100 % |  |  |
-| UI-05 | P1 | 375 px | 150 % |  |  |
-| UI-06 | P1 | 375 px | 200 % |  |  |
-| UI-07 | P1 | 768 px | 100 % |  |  |
-| UI-08 | P1 | 768 px | 150 % |  |  |
-| UI-09 | P1 | 768 px | 200 % |  |  |
-| UI-10 | P1 | 1280 px | 100 % |  |  |
-| UI-11 | P1 | 1280 px | 150 % |  |  |
-| UI-12 | P1 | 1280 px | 200 % |  |  |
+| UI-01 | P1 | 320 px | 100 % | PASS | Ei vaakaylivuotoa; ydinosat sekä Asetukset- ja Palaute-ikkunat näkyivät ja olivat pystysuunnassa vieritettävissä. |
+| UI-02 | P1 | 320 px | 150 % | PASS | Ei vaakaylivuotoa; ydinosat sekä Asetukset- ja Palaute-ikkunat näkyivät ja olivat pystysuunnassa vieritettävissä. |
+| UI-03 | P1 | 320 px | 200 % | PASS | Ei vaakaylivuotoa; ydinosat sekä Asetukset- ja Palaute-ikkunat näkyivät ja olivat pystysuunnassa vieritettävissä. |
+| UI-04 | P1 | 375 px | 100 % | PASS | Ei vaakaylivuotoa; ydinosat sekä Asetukset- ja Palaute-ikkunat näkyivät ja olivat pystysuunnassa vieritettävissä. |
+| UI-05 | P1 | 375 px | 150 % | PASS | Ei vaakaylivuotoa; ydinosat sekä Asetukset- ja Palaute-ikkunat näkyivät ja olivat pystysuunnassa vieritettävissä. |
+| UI-06 | P1 | 375 px | 200 % | PASS | Ei vaakaylivuotoa; ydinosat sekä Asetukset- ja Palaute-ikkunat näkyivät ja olivat pystysuunnassa vieritettävissä. |
+| UI-07 | P1 | 768 px | 100 % | PASS | Ei vaakaylivuotoa; ydinosat sekä Asetukset- ja Palaute-ikkunat näkyivät kokonaan ja olivat pystysuunnassa vieritettävissä. |
+| UI-08 | P1 | 768 px | 150 % | FAIL | Sivulla ei ole vaakaylivuotoa, mutta Asetukset-ikkuna leikkautuu vasemmalta: leveys noin 720 px ja vasen reuna noin 27 px näkymän ulkopuolella. |
+| UI-09 | P1 | 768 px | 200 % | FAIL | Asetukset-ikkuna on noin 960 px leveä ja sen vasen reuna noin 287 px näkymän ulkopuolella; otsikkoa ja vasemman reunan ohjaimia leikkautuu. |
+| UI-10 | P1 | 1280 px | 100 % | PASS | Ei vaakaylivuotoa; ydinosat sekä Asetukset- ja Palaute-ikkunat näkyivät kokonaan ja olivat pystysuunnassa vieritettävissä. |
+| UI-11 | P1 | 1280 px | 150 % | PASS | Ei vaakaylivuotoa; ydinosat sekä Asetukset- ja Palaute-ikkunat näkyivät kokonaan ja olivat pystysuunnassa vieritettävissä. |
+| UI-12 | P1 | 1280 px | 200 % | PASS | Ei vaakaylivuotoa; ydinosat sekä Asetukset- ja Palaute-ikkunat näkyivät kokonaan ja olivat pystysuunnassa vieritettävissä. |
+
+Rivit UI-01–UI-12 suoritettiin 26.8.2026 HTTP Basic Auth -suojatussa Cloudcity-stagingissa selaimen zoomilla 100 prosenttia ja jäädytetyllä ehdokkaalla `REL-10-v0.73.1-b28578557e5a`. Testitunnuksia ei tallennettu matriisiin tai projektin tiedostoihin. Tulos: 10 PASS ja 2 FAIL; UI-08 ja UI-09 ovat samaan Asetukset-ikkunan leveyteen liittyvä avoin P1-havainto.
 
 ## 5. Teemat ja asetusten säilyminen
 
@@ -178,7 +180,7 @@ Näissä testeissä ei muuteta WordPressin pääjuuren `.htaccess`-tiedostoa, te
 
 | Havainto | Testi-ID | P1/P2/P3 | Kuvaus ja toistaminen | Vaikutus | Omistaja | Tila | Päätös tai jatkoaika |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-|  |  |  |  |  |  |  |  |
+| REL11-UI-01 | UI-08, UI-09 | P1 | Aseta näkymäksi 768 px, selaimen zoomiksi 100 % ja sovelluksen tekstikooksi 150 tai 200 %. Avaa Asetukset. Ikkuna skaalautuu 150 %:ssa noin 720 px ja 200 %:ssa noin 960 px leveäksi, jolloin vasen reuna jää näkymän ulkopuolelle. | Osa otsikosta ja ohjaimista leikkautuu; 200 %:ssa Asetukset eivät ole luotettavasti käytettävissä. | kehitys | avoin | Korjattava ja UI-08/UI-09 uusintatestattava ennen REL-11-portin hyväksyntää; korjaus edellyttää uutta ehdokasbuildia ja jäädytystä. |
 
 Havaintoon ei kopioida yksityisen lomakevastauksen, ylläpitotietueen tai liitteen sisältöä.
 
@@ -186,8 +188,8 @@ Havaintoon ei kopioida yksityisen lomakevastauksen, ylläpitotietueen tai liitte
 
 | Portti | Vaatimus | Tulos |
 | --- | --- | --- |
-| Testikattavuus | Kaikki P1-rivit ovat PASS tai perustellusti N/A; yksikään P1 ei ole BLOCKED. |  |
-| Avoimet P1-havainnot | 0 |  |
+| Testikattavuus | Kaikki P1-rivit ovat PASS tai perustellusti N/A; yksikään P1 ei ole BLOCKED. | Kesken: näkymämatriisi 10 PASS / 2 FAIL; muut P1-rivit avoinna. |
+| Avoimet P1-havainnot | 0 | 1 (`REL11-UI-01`, testit UI-08 ja UI-09) |
 | P2/P3-poikkeamat | Jokainen on kirjallisesti hyväksytty, omistettu ja aikataulutettu. |  |
 | WordPress | Ennen- ja jälkeen-savukoe läpäisty ilman regressiota. |  |
 | Suora tuotantopolku | `/aloitus/`, `/aloitus/api/v1` ja resurssit on testattu ilman alidomainiin siirtymistä. |  |
