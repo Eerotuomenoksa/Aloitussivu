@@ -580,3 +580,21 @@ Stagingin Tietoa-ikkunassa näkyivät **Kiitokset testaajille** -osio sekä nime
 A11Y-03:n staging-uusinta läpäisi kaikki kahdeksan väriteema/vaalea–tumma-yhdistelmää. Jokaisessa yhdistelmässä Google-haun `Puhu hakusana` -painike sai näppäimistökohdistuksen, `:focus-visible` aktivoitui, neljän pikselin rengas erosi kohdistamattomasta tilasta ja renkaan väri vastasi aktiivisen teeman `--theme-focus`-arvoa. Testin jälkeen selain palautettiin vihreään vaaleaan teemaan. Havainto `REL11-A11Y-04` suljettiin ja A11Y-03 päivitettiin PASS-tilaan.
 
 **Porttitila:** version 0.74.2 asennus, smoke, testaajakiitos ja A11Y-03-vaikutusalue ovat hyväksytty stagingissa. REL-11:n kokonaisportti ei ole vielä GO, koska matriisissa on muita avoimia P1-rivejä, muun muassa WordPress-esittelysivu ja tuotannonkaltaisen `/aloitus/`-polun koe. Tehtävä 5/10 jatkuu niiden parissa. Stagingin Basic Auth pysyy tuotevastuun päätöksellä väliaikaisesti poissa käytöstä ja palautetaan tuotannon valmistuttua.
+
+## 26.8.2026 — REL-11 tehtävä 5/10: seuraavat stagingin P1-testit
+
+Ehdokkaan `REL-11-v0.74.2-ee6f9ebf1f3d` pääbundle `assets/main-CamQDfot.js` varmennettiin vielä ennen testejä. Lähtötilassa ei ollut avoimia dialogeja, vaakaylivuotoa tai selaimen virhe- ja varoituslokimerkintöjä.
+
+**PREF-04 PASS:** paikallisuutiset otettiin käyttöön ja kunnaksi valittiin Tampere. Lataustila tuli näkyviin ja valmistui noin 34 sekunnissa kolmeen otsikkoon kolmesta eri lähteestä: Tamperelainen, Tampereen uutiset ja Tampereen ilmoitukset. Otsikot, lähteet, julkaisuajat ja linkit vastasivat valittua kuntaa. Latauksen hitaus on suorituskykyhuomio, mutta ei tämän toiminnallisen testin P1-este.
+
+**A11Y-05 PASS:** Tietoa-, palaute-, linkki-ilmoitus-, palveluvalinta- ja aloitussivuohjemodaali testattiin stagingissa. Kaikissa alkufokus oli dialogin sisällä, Tab ja Shift+Tab kiersivät rajoissa, Esc sulki ikkunan ja fokus palasi avaajaan. Testissä ei lähetetty palautetta tai linkki-ilmoitusta palvelimelle.
+
+**A11Y-07 FAIL — `REL11-A11Y-05` (P1):** palaute- ja linkki-ilmoituslomakkeiden kenttien nimet ja pakollisuus toimivat. Tyhjän palautelomakkeen selainvalidointi esti lähetyksen ja kohdisti ensimmäisen puuttuvan pakollisen kentän. Virheellisen kunnan dynaaminen ohje ei kuitenkaan välity ruudunlukijalle: Kunta-kentältä puuttuvat `aria-invalid` ja `aria-describedby`, eikä ohjeella ole tunnistetta, `role`- tai `aria-live`-merkintää.
+
+**A11Y-08 FAIL — `REL11-A11Y-06` (P1):** palveluhaun nollatulos ilmoitettiin oikein `aria-live="polite"` -alueella ja tekstikoon 100 → 110 → 100 prosentin muutos päivitti painikkeiden nimet ilman fokuksen siirtymistä. Paikallisuutisten lataustilalla on kuitenkin vain `aria-label="Ladataan paikallisia uutisia"`; siltä puuttuvat `role="status"`, `aria-live` ja `aria-busy`.
+
+**CORE-07 FAIL — `REL11-CORE-01` (P1):** stagingin MariaDB/API-provider palautti kaksi aktiivista Kyberturvallisuuskeskuksen varoitusta. Otsikot, lähteet, ajat ja lähdelinkit olivat kunnossa, mutta molemmat tekstit katkesivat täsmälleen 300 merkissä kesken sanan ja ennen toimintaohjeen loppua. Katkaisu tulee sekä palvelinajon `shorten($item->body, 300)`-rajauksesta että TypeScript-polun `slice(0, 300)`-rajauksesta.
+
+**Lisähavainto `REL11-A11Y-07` (P1):** huijausvaroituksen dialogi sai alkufokuksen Sulje-painikkeeseen ja sulkeutui Escillä, mutta fokus putosi sulkemisen jälkeen sivun `BODY`-elementtiin eikä palannut avanneeseen varoitukseen. Havainto kirjattiin uutena A11Y-10-rivinä.
+
+**Porttipäätös:** NO-GO ehdokkaalle `0.74.2`, kunnes `REL11-A11Y-05`, `REL11-A11Y-06`, `REL11-A11Y-07` ja `REL11-CORE-01` on korjattu, rakennettu uuteen yksilöityyn ehdokkaaseen ja uusintatestattu stagingissa. Tehtävä 5/10 jää kesken. WordPressiin tai tuotannon `/aloitus/`-polkuun ei koskettu tässä testissä.
