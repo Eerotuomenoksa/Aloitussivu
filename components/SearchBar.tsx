@@ -64,7 +64,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ fontSizeStep = 0, variant = 'defa
                 type="button"
                 onClick={toggleListening}
                 title={speechState === 'listening' ? 'Lopeta puheentunnistus' : 'Hae puhumalla'}
-                className={`${speechState === 'listening' ? 'bg-red-500 text-white animate-pulse' : 'bg-white/80 text-[#0a1a0e] hover:bg-red-100 hover:text-red-700'} flex h-9 w-9 items-center justify-center rounded-full text-base shadow-md transition-all active:scale-95 focus-visible:outline-none`}
+                className={`${speechState === 'listening' ? 'bg-red-500 text-white animate-pulse' : 'bg-white/80 text-[#0a1a0e] hover:bg-red-100 hover:text-red-700'} flex h-9 w-9 items-center justify-center rounded-full text-base shadow-md transition-all active:scale-95 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--theme-focus)]`}
                 aria-label={speechState === 'listening' ? t('stopListening') : t('startListening')}
               >
                 <MicrophoneIcon className="h-5 w-5" />

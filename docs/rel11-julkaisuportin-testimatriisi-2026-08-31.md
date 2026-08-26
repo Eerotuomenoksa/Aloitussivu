@@ -113,6 +113,12 @@ Paikalliset tulokset korvattiin yllä kuvatulla REL-11-staging-uusintatestillä 
 | A11Y-08 | P1 | Dynaamiset tilat | Tekstikoko, hakutulokset, lataus, virhe ja onnistuminen ilmoitetaan ilman kohtuutonta fokuksen siirtoa. |  | Ei testattu tässä kierroksessa — vaatii aria-live-alueiden kohdennetun kokeen. |
 | A11Y-09 | P2 | Kielenvaihto | Suomi, ruotsi ja englanti vaihtuvat; dokumentin kieli ja keskeiset nimet vastaavat valintaa. | PASS (paikallinen build) | `fi`/`sv`/`en`: `html[lang]`, sivun otsikko ja "Siirry sisältöön" / "Gå till innehållet" / "Skip to content" vaihtuvat oikein. |
 
+### A11Y-03-korjauksen paikallinen vaikutusaluetesti 26.8.2026
+
+Versioon `0.74.1` lisättiin Google-haun ylätunnisteversion `Puhu hakusana` -painikkeelle neljän pikselin `focus-visible`-rengas, joka käyttää aktiivisen teeman fokusväriä. Todellinen Tab-koe läpäisi kaikki kahdeksan väriteema/vaalea–tumma-yhdistelmää: painike oli jokaisessa kokeessa fokuksessa, `:focus-visible` oli aktiivinen ja laskettu varjo erosi kohdistamattomasta tilasta. Vaalea vihreä ja tumma violetti tarkistettiin lisäksi kuvista; rengas erottui selvästi eikä muuttanut painikkeen kokoa.
+
+Vaikutusaluetesti läpäisi myös 1280 ja 360 pikselin näkymät: hakukenttä, Hae-painike ja mikrofonipainike pysyivät vaakasuunnassa näkymän sisällä eikä sivulle syntynyt vaakavieritystä. `npx tsc --noEmit`, `npm run check:secrets` ja `npm run build:staging` läpäisivät. Tulos on **PASS paikallisessa korjausbuildissa**, mutta A11Y-03:n staging-tulos säilyy FAIL-tilassa, kunnes uusi yksilöity ehdokas on viety stagingiin ja uusintatesti on läpäissyt.
+
 ## 7. Julkiset ydintoiminnot ja linkit
 
 | ID | P | Testi | Hyväksymisehto | Tulos | Todiste tai havainto |
@@ -199,7 +205,7 @@ Näissä testeissä ei muuteta WordPressin pääjuuren `.htaccess`-tiedostoa, te
 | REL11-UI-01 | UI-08, UI-09 | P1 | Aseta näkymäksi 768 px, selaimen zoomiksi 100 % ja sovelluksen tekstikooksi 150 tai 200 %. Avaa Asetukset. Ikkuna skaalautui vanhassa ehdokkaassa näkymää leveämmäksi. | Osa otsikosta ja ohjaimista leikkautui; 200 %:ssa Asetukset eivät olleet luotettavasti käytettävissä. | kehitys | suljettu staging-uusintatestillä 26.8.2026 | REL-11-ehdokkaan UI-08 ja UI-09 PASS; paneeli, tekstit ja ohjaimet pysyivät kokonaan näkymässä. |
 | REL11-UI-02 | UI-03 | P2 | Aseta näkymäksi 320 px ja tekstikooksi 200 %. Avaa Asetukset ja vieritä kellotyyliin ja teemavalintaan. Korjauskierroksen väliversiossa Digitaalinen ja Kiinnostavat teemat ylittivät reunan. | Kapeimmassa näkymässä suurimmalla tekstikoolla osa tekstistä leikkautui. | kehitys | suljettu staging-uusintatestillä 26.8.2026 | REL-11-ehdokkaan UI-03 PASS; teksti- tai ohjainylityksiä ei löytynyt. |
 | REL11-A11Y-01 | A11Y-02, A11Y-04 | P1 | Avaa Asetukset näppäimistöllä 768 px / 150 %. Korjauksen ensimmäisessä versiossa paneeli renderöitiin portaalilla ilman alkufokusta ja fokuksen rajausta. | Näppäimistökäyttäjä ei käytännössä päässyt Asetuksiin. | kehitys | suljettu staging-uusintatestillä 26.8.2026 | A11Y-02 ja A11Y-04 PASS oikeassa REL-11-stagingissa: alkufokus, Tab/Shift+Tab-rajaus, Esc, Sulje ja fokuksen palautus toimivat. |
-| REL11-A11Y-04 | A11Y-03 | P1 | Avaa staging 1280 px:n näkymässä, siirry Tabilla Google-haun `Puhu hakusana` -painikkeeseen ja vertaa kohdistamatonta sekä kohdistettua tilaa. Painike saa `:focus-visible`-tilan, mutta outline muuttuu läpinäkyväksi; varjo, reuna ja tausta eivät muutu. | Näppäimistökäyttäjä ei näe, että fokus on mikrofonipainikkeessa. | kehitys | avoin 26.8.2026 | Lisää painikkeelle näkyvä `focus-visible`-rengas, rakenna ja vie uusi ehdokas sekä uusintatesta A11Y-03 ja vaikutusalue. |
+| REL11-A11Y-04 | A11Y-03 | P1 | Avaa staging 1280 px:n näkymässä, siirry Tabilla Google-haun `Puhu hakusana` -painikkeeseen ja vertaa kohdistamatonta sekä kohdistettua tilaa. Vanhassa ehdokkaassa painike sai `:focus-visible`-tilan, mutta outline muuttui läpinäkyväksi; varjo, reuna ja tausta eivät muuttuneet. | Näppäimistökäyttäjä ei nähnyt, että fokus oli mikrofonipainikkeessa. | kehitys | korjattu paikallisesti 26.8.2026; staging-varmistus avoin | Version `0.74.1` näkyvä teemanvärinen rengas ja vaikutusaluetesti PASS kaikissa kahdeksassa teema-/tilayhdistelmässä sekä 1280/360 px:n näkymissä. Rakenna ja vie uusi ehdokas sekä uusintatesta A11Y-03 stagingissa. |
 | REL11-OPS-01 | ERR-02 | P3 | **KORJATTU HAVAINTO (26.8.2026):** alkuperäinen väite oli virheellinen. Skeema ON versionhallinnassa — `database/migrations/001_initial_schema.sql` (14 taulua + `schema_migrations`) ja `database/migrations/002_add_link_reports_triage_index.sql`, dokumentoituna `database/README.md`:ssä. Virhe syntyi siitä, että alkuperäinen haku kohdistui vain `api/`-hakemistoon eikä löytänyt repon juuren `database/`-hakemistoa. | Ei vaikutusta — ei koskaan ollut oikea puute, vain hakuvirhe. Skeema todettu toimivaksi: sovellettu puhtaaseen MariaDB 10.11 -kantaan pilvikontissa, molemmat migraatiot ajettuvat järjestyksessä ilman virheitä (exit 0), `schema_migrations`-taulu kirjautui oikein. | kehitys | suljettu, virhe korjattu | Ei toimenpiteitä — skeema on jo olemassa ja toimii. Ks. OPS-04-rivi täydestä vahvistuksesta (migraatiot, vähimmän oikeuden käyttäjä, elävä API-pyyntö oikeaa skeemaa vasten). |
 
 Havaintoon ei kopioida yksityisen lomakevastauksen, ylläpitotietueen tai liitteen sisältöä.
@@ -209,14 +215,14 @@ Havaintoon ei kopioida yksityisen lomakevastauksen, ylläpitotietueen tai liitte
 | Portti | Vaatimus | Tulos |
 | --- | --- | --- |
 | Testikattavuus | Kaikki P1-rivit ovat PASS tai perustellusti N/A; yksikään P1 ei ole BLOCKED. | Kesken: stagingin näkymämatriisi 12/12 PASS, A11Y-02 ja A11Y-04 PASS, mutta A11Y-03 FAIL; lisäksi muita P1-rivejä on avoinna. |
-| Avoimet P1-havainnot | 0 | 1 (`REL11-A11Y-04`); `REL11-UI-01` ja `REL11-A11Y-01` suljettiin staging-uusintatestillä 26.8.2026. |
+| Avoimet P1-havainnot | 0 | 1 staging-varmistusta odottava (`REL11-A11Y-04`); korjaus ja paikallinen vaikutusaluetesti ovat PASS. `REL11-UI-01` ja `REL11-A11Y-01` suljettiin staging-uusintatestillä 26.8.2026. |
 | P2/P3-poikkeamat | Jokainen on kirjallisesti hyväksytty, omistettu ja aikataulutettu. |  |
 | WordPress | Ennen- ja jälkeen-savukoe läpäisty ilman regressiota. |  |
 | Suora tuotantopolku | `/aloitus/`, `/aloitus/api/v1` ja resurssit on testattu ilman alidomainiin siirtymistä. |  |
 | Sama ehdokas | Tuotantoon vietävä commit, versio, skeema ja paketti vastaavat testattua ehdokasta. |  |
 | Palautusvalmius | Varmistukset, käyttöoikeudet, omistajat ja pysäytysehto on vahvistettu. |  |
 
-- **Päätös:** NO-GO 26.8.2026 — ehdokasta ei jäädytetä ennen `REL11-A11Y-04`-korjausta ja uuden ehdokkaan vaikutusaluetestiä.
+- **Päätös:** NO-GO 26.8.2026 — paikallinen `REL11-A11Y-04`-korjaus ja vaikutusaluetesti ovat PASS, mutta ehdokasta ei jäädytetä ennen uuden paketin staging-vientiä, smokea ja A11Y-03-uusintatestiä.
 - **Hyväksyjä:** täytetään
 - **Päivämäärä ja kellonaika:** täytetään
 - **Hyväksytyt P2/P3-poikkeamat:** täytetään tai `ei ole`

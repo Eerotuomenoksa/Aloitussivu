@@ -24,14 +24,295 @@ export type ChangelogCommit = {
   tags: string[];
 };
 
-export const CHANGELOG_GENERATED_AT = "26.8.2026 klo 06.02";
-export const CHANGELOG_VERSION = "0.74.0";
+export const CHANGELOG_GENERATED_AT = "26.8.2026 klo 13.25";
+export const CHANGELOG_VERSION = "0.74.1";
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
-  "Asetukset-ikkuna ei enää leikkaudu 768 px:n leveydellä suuremmilla tekstikoilla (REL11-UI-01), eikä pisin sana tai otsikko leikkaudu 320 px:n leveydellä 200 % tekstikoolla (REL11-UI-02).",
-  "Asetukset-ikkuna sai fokuksenhallinnan: avattaessa fokus siirtyy ikkunaan, sarkain pysyy ikkunan sisällä, ja Esc tai Sulje palauttaa fokuksen avauspainikkeeseen (REL11-A11Y-01)."
+  "Google-haun mikrofonipainike näyttää nyt selkeän näppäimistökohdistuksen kaikissa väriteemoissa sekä vaaleassa ja tummassa tilassa."
 ];
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
+  {
+    "hash": "59b08311e16d10d986786ec5018b11400a6a90f9",
+    "date": "2026-08-26",
+    "version": "0.108.16",
+    "changeType": "patch",
+    "subject": "Kirjaa REL-11 stagingin UI- ja A11Y-uusintatesti",
+    "tags": []
+  },
+  {
+    "hash": "6a1b83374d9f7515a10fa672f409b563d1d86c8b",
+    "date": "2026-08-26",
+    "version": "0.108.15",
+    "changeType": "patch",
+    "subject": "Vahvista REL-11 stagingvienti ja smoke",
+    "tags": []
+  },
+  {
+    "hash": "32b797936437a3919c9f22728f41f6db8693f85b",
+    "date": "2026-08-26",
+    "version": "0.108.14",
+    "changeType": "patch",
+    "subject": "Kirjaa REL-11 stagingehdokas ja vientiohje",
+    "tags": []
+  },
+  {
+    "hash": "375efac68d1d57229b8dce8a222376aa5e90e0e4",
+    "date": "2026-08-26",
+    "version": "0.108.13",
+    "changeType": "patch",
+    "subject": "Estä paketointi muuttuvasta Git-tilasta",
+    "tags": []
+  },
+  {
+    "hash": "4e5c799248c4134b6070585a35b5e1e4145bbdac",
+    "date": "2026-08-26",
+    "version": "0.108.12",
+    "changeType": "patch",
+    "subject": "Lisaa REL-11 stagingpaketin rakennus",
+    "tags": []
+  },
+  {
+    "hash": "065de105ed52960a3ed7c22c8db879aa48a759fa",
+    "date": "2026-08-26",
+    "version": "0.108.11",
+    "changeType": "patch",
+    "subject": "REL-11: OPS-04 osittain PASS + korjaus REL11-OPS-01-havaintoon",
+    "tags": []
+  },
+  {
+    "hash": "f934777f7ef7f4aff51566b1494bf6cfc87f1a99",
+    "date": "2026-08-26",
+    "version": "0.108.10",
+    "changeType": "patch",
+    "subject": "REL-11: paivita paikallislehdet HTTPS-osoitteisiin",
+    "tags": []
+  },
+  {
+    "hash": "bbf55af2a7ecf6bc57eb86a0d535a300bea686ce",
+    "date": "2026-08-26",
+    "version": "0.108.9",
+    "changeType": "patch",
+    "subject": "REL-11: OPS-03 Firestore-deltan kuivaharjoitus - osittain PASS",
+    "tags": []
+  },
+  {
+    "hash": "5650c0e0ddc129fde4b92383b44cf7045b9d7feb",
+    "date": "2026-08-26",
+    "version": "0.108.8",
+    "changeType": "patch",
+    "subject": "REL-11: OPS-01/OPS-02 vahvistettu PASS (elava SSH-yhteys Cloudcityyn)",
+    "tags": []
+  },
+  {
+    "hash": "22612d91b29c2389ff6794022a1981c1f4b722f1",
+    "date": "2026-08-26",
+    "version": "0.108.7",
+    "changeType": "patch",
+    "subject": "Vahvista ERR-08 ja ERR-09 PASS elavalla stagingilla (Eeron curl-tarkistukset)",
+    "tags": []
+  },
+  {
+    "hash": "d8d76b933c56f85fadcebb4f626808db7ad00bd0",
+    "date": "2026-08-26",
+    "version": "0.108.6",
+    "changeType": "patch",
+    "subject": "Vahvista ERR-05 PASS elavalla stagingilla, ERR-08/09 tyokalurajoite pysyva",
+    "tags": []
+  },
+  {
+    "hash": "8b5f0f1e3770dca82869519712c518867338a32c",
+    "date": "2026-08-26",
+    "version": "0.108.5",
+    "changeType": "patch",
+    "subject": "Kirjaa ERR-05/07/08/09 ja OPS-osion tila: tekninen esto stagingpaasyyn",
+    "tags": []
+  },
+  {
+    "hash": "9297d1b31f267250d854b01b6801481dad1b6ce8",
+    "date": "2026-08-26",
+    "version": "0.108.4",
+    "changeType": "patch",
+    "subject": "Kirjaa REL-11 DATA/ADMIN/ERR-testien tulokset API-sopimustasolla (26.8.2026)",
+    "tags": []
+  },
+  {
+    "hash": "e56af527257ac8d60d44044f8072c7c8101a098d",
+    "date": "2026-08-26",
+    "version": "0.108.3",
+    "changeType": "patch",
+    "subject": "Kirjaa REL-11 CORE-01..12-testien tulokset (26.8.2026)",
+    "tags": []
+  },
+  {
+    "hash": "4eec02d07ee9444261311e40be2ce723824beeaa",
+    "date": "2026-08-26",
+    "version": "0.108.2",
+    "changeType": "patch",
+    "subject": "Vahvista A11Y-03 kuvakaappauksella, kirjaa testiajurin getComputedStyle-virhe",
+    "tags": []
+  },
+  {
+    "hash": "0e4b2c1e71a1cbfc35c0add33d2f495bfc50df9e",
+    "date": "2026-08-26",
+    "version": "0.108.1",
+    "changeType": "patch",
+    "subject": "Kirjaa REL-11 teema-, asetus- ja saavutettavuustestien tulokset (26.8.2026)",
+    "tags": [
+      "Visuaalisuus"
+    ]
+  },
+  {
+    "hash": "bd492c4cb0cb76f388188838114b6ddb87db480f",
+    "date": "2026-08-26",
+    "version": "0.108.0",
+    "changeType": "minor",
+    "subject": "Lisaa fokusrengas ylatunnisteen Palaute/Ohje/Tietoa/Asetukset-painikkeisiin (REL11-A11Y-02)",
+    "tags": []
+  },
+  {
+    "hash": "22be3e303f23ba6b79efd7d181a0339927ad6f45",
+    "date": "2026-08-26",
+    "version": "0.107.6",
+    "changeType": "patch",
+    "subject": "Kirjaa REL-11 korjauksen commit-tunniste paivakirjaan",
+    "tags": []
+  },
+  {
+    "hash": "886f54f97ff5d8b4c16feba5fc81bab297c273c7",
+    "date": "2026-08-26",
+    "version": "0.107.5",
+    "changeType": "patch",
+    "subject": "Korjaa Asetukset-ikkunan leikkautuminen ja nappaimistosaavutettavuus (REL11-UI-01, REL11-A11Y-01)",
+    "tags": [
+      "Visuaalisuus"
+    ]
+  },
+  {
+    "hash": "4f79109df984491d04361d4f43a174715f2570e7",
+    "date": "2026-08-26",
+    "version": "0.107.4",
+    "changeType": "patch",
+    "subject": "Kirjaa REL-11 näkymämatriisin tulokset",
+    "tags": []
+  },
+  {
+    "hash": "55b95b280811f081677b0c5ffced9883e1d01d6a",
+    "date": "2026-08-26",
+    "version": "0.107.3",
+    "changeType": "patch",
+    "subject": "Valmistele REL-11 julkaisuportin testimatriisi",
+    "tags": []
+  },
+  {
+    "hash": "dee81522c0af72d68eb37cf10e316d3991135f6a",
+    "date": "2026-08-26",
+    "version": "0.107.2",
+    "changeType": "patch",
+    "subject": "Jäädytä REL-10 julkaisukandidaatti",
+    "tags": []
+  },
+  {
+    "hash": "b28578557e5a42a273432feb4fde23cf47e36195",
+    "date": "2026-08-26",
+    "version": "0.107.1",
+    "changeType": "patch",
+    "subject": "Korjaa REL-10 paketin tarkistussumma",
+    "tags": []
+  },
+  {
+    "hash": "a852438ba309a7e06d69ac10056ae077f4b74f63",
+    "date": "2026-08-26",
+    "version": "0.107.0",
+    "changeType": "minor",
+    "subject": "Lisää REL-10 staging-julkaisukandidaatin paketointi",
+    "tags": []
+  },
+  {
+    "hash": "7a72e9a14e81a037d7bfe13bdcba536a546a85e1",
+    "date": "2026-08-26",
+    "version": "0.106.1",
+    "changeType": "patch",
+    "subject": "Hyväksy REL-10 WordPress-esittelyteksti",
+    "tags": []
+  },
+  {
+    "hash": "34c4fe7ae86455a8493ebe472c250aa78a833760",
+    "date": "2026-08-25",
+    "version": "0.106.0",
+    "changeType": "minor",
+    "subject": "Valmistele Cloudcity-julkaisu ja REL-10 tuotantopolku",
+    "tags": []
+  },
+  {
+    "hash": "2c0c9e717256934685f9d4f30c0481e081b0599e",
+    "date": "2026-08-20",
+    "version": "0.105.1",
+    "changeType": "patch",
+    "subject": "Korjaa testipalautteen lähetysvahvistus",
+    "tags": []
+  },
+  {
+    "hash": "8a6d09610f185be9081f8df05b476672381dfff7",
+    "date": "2026-08-17",
+    "version": "0.105.0",
+    "changeType": "minor",
+    "subject": "Testauspalaute takaisin näkyviin ja aktiiviseksi",
+    "tags": []
+  },
+  {
+    "hash": "06b6307ed525b3c39e485664a29304209bf8b2d6",
+    "date": "2026-08-14",
+    "version": "0.104.0",
+    "changeType": "minor",
+    "subject": "tarkistettu paikalliset uutislähteet, 225 kuntaa löydetty niiden äärelle",
+    "tags": []
+  },
+  {
+    "hash": "590d2e0cfee701b7ebc184d29971803e2dca5394",
+    "date": "2026-08-14",
+    "version": "0.103.0",
+    "changeType": "minor",
+    "subject": "väriteemojen asetukset kuvakkeet ja nimeäminen",
+    "tags": [
+      "Visuaalisuus"
+    ]
+  },
+  {
+    "hash": "0b8448bf0d68fe98572bcd537f4fbe503f5f4b74",
+    "date": "2026-08-14",
+    "version": "0.102.0",
+    "changeType": "minor",
+    "subject": "Viimeistele alatunniste ja Tietoa-ikkuna",
+    "tags": [
+      "Visuaalisuus"
+    ]
+  },
+  {
+    "hash": "0286fe37b9d148ef8137669544cb16c677db6cd8",
+    "date": "2026-08-14",
+    "version": "0.101.0",
+    "changeType": "minor",
+    "subject": "Viimeistele julkaisunäkymä ja testausaineistot",
+    "tags": [
+      "Visuaalisuus"
+    ]
+  },
+  {
+    "hash": "1e4c032c2f40ef835ddf6344c424e541a960c52f",
+    "date": "2026-08-13",
+    "version": "0.100.0",
+    "changeType": "minor",
+    "subject": "123 kpl kuntien seniori sivua lähelläsi osioon",
+    "tags": []
+  },
+  {
+    "hash": "b1811ea17bbbf66c6efc26223a4272c981f8d106",
+    "date": "2026-08-13",
+    "version": "0.99.0",
+    "changeType": "minor",
+    "subject": "poista Google-haun turha otsikko",
+    "tags": []
+  },
   {
     "hash": "d89b73f27b4614eab8db5ed797649c365b55f27c",
     "date": "2026-08-13",
