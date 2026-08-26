@@ -88,28 +88,28 @@ Nämä tulokset **eivät** korvaa stagingissa ajettavia rivejä. Korjaus muuttaa
 
 | ID | P | Testi | Hyväksymisehto | Tulos | Todiste tai havainto |
 | --- | --- | --- | --- | --- | --- |
-| THEME-01 | P1 | Vihreä, vaalea ja tumma | Teksti, linkit, fokus, ohjaimet ja tilat erottuvat; sisältö ei katoa. |  |  |
-| THEME-02 | P1 | Violetti, vaalea ja tumma | Sama hyväksymisehto kuin THEME-01:ssä. |  |  |
-| THEME-03 | P1 | Sininen, vaalea ja tumma | Sama hyväksymisehto kuin THEME-01:ssä. |  |  |
-| THEME-04 | P1 | Ruskea, vaalea ja tumma | Sama hyväksymisehto kuin THEME-01:ssä. |  |  |
-| PREF-01 | P2 | Kotikunta, teema, kellot ja tekstikoko | Asetukset säilyvät sivun päivityksen jälkeen vain paikallisesti selaimessa. |  |  |
-| PREF-02 | P2 | Asetusten palautus | Oletusasetusten palautus toimii eikä poista palvelimen tietoja. |  |  |
-| PREF-03 | P1 | Paikallisuutisten oletus | Uutiset ovat puhtaassa istunnossa piilossa eivätkä syötteet lataudu ennen valintaa. |  |  |
-| PREF-04 | P1 | Paikallisuutisten käyttöönotto | Valinta näyttää oikean kunnan uutiset ja käynnistää syötteet hallitusti. |  |  |
+| THEME-01 | P1 | Vihreä, vaalea ja tumma | Teksti, linkit, fokus, ohjaimet ja tilat erottuvat; sisältö ei katoa. | PASS (paikallinen build) | 26.8.2026 paikallisella Chromium-buildilla: teksti/tausta 16.5:1 ja 17.4:1, painikkeen teksti/tausta 9.1:1 ja 4.9:1 (vaalea/tumma). Ei stagingissa. |
+| THEME-02 | P1 | Violetti, vaalea ja tumma | Sama hyväksymisehto kuin THEME-01:ssä. | PASS (paikallinen build) | Teksti/tausta 17.6:1 ja 17.7:1, painikkeen teksti/tausta 10.0:1 ja 6.5:1. Ei stagingissa. |
+| THEME-03 | P1 | Sininen, vaalea ja tumma | Sama hyväksymisehto kuin THEME-01:ssä. | PASS (paikallinen build) | Teksti/tausta 17.1:1 ja 17.5:1, painikkeen teksti/tausta 11.3:1 ja 6.3:1. Ei stagingissa. |
+| THEME-04 | P1 | Ruskea, vaalea ja tumma | Sama hyväksymisehto kuin THEME-01:ssä. | PASS (paikallinen build) | Teksti/tausta 17.7:1 ja 17.6:1, painikkeen teksti/tausta 8.4:1 ja 5.0:1. Ei stagingissa. |
+| PREF-01 | P2 | Kotikunta, teema, kellot ja tekstikoko | Asetukset säilyvät sivun päivityksen jälkeen vain paikallisesti selaimessa. | PASS (paikallinen build) | Automatisoitu koe: asetukset säilyivät todellisen sivunlatauksen yli, ja uusi selainistunto (tyhjä localStorage) näytti oletukset. |
+| PREF-02 | P2 | Asetusten palautus | Oletusasetusten palautus toimii eikä poista palvelimen tietoja. | FAIL (löydös) | Sovelluksessa ei ole "palauta kaikki oletusasetukset" -painiketta — Asetuksista löytyy vain tekstikoon oma "Palauta normaali tekstikoko". Rivin hyväksymisehto ei vastaa nykyistä käyttöliittymää; vaatii tuotepäätöksen (uusi ominaisuus tai rivin uudelleenmuotoilu). |
+| PREF-03 | P1 | Paikallisuutisten oletus | Uutiset ovat puhtaassa istunnossa piilossa eivätkä syötteet lataudu ennen valintaa. | PASS (paikallinen build) | Verkkopyyntöjä uutis-/RSS-osoitteisiin ei havaittu ennen käyttäjän valintaa; `uiVisibility.regionalNews` oletuksena `false`. |
+| PREF-04 | P1 | Paikallisuutisten käyttöönotto | Valinta näyttää oikean kunnan uutiset ja käynnistää syötteet hallitusti. | ei testattu | Vaatii oikean uutissyötteen (verkko/Cloudcity) — ei testattavissa paikallisesti. |
 
 ## 6. Näppäimistö ja ruudunlukijan perusrakenne
 
 | ID | P | Testi | Hyväksymisehto | Tulos | Todiste tai havainto |
 | --- | --- | --- | --- | --- | --- |
-| A11Y-01 | P1 | Ohita sisältöön -linkki | Linkki tulee näkyviin fokuksessa ja siirtää pääsisältöön. |  |  |
-| A11Y-02 | P1 | Koko sivun sarkainjärjestys | Järjestys on looginen, mikään kohde ei jää saavuttamatta eikä synny näppäimistöansaa. |  |  |
-| A11Y-03 | P1 | Näkyvä fokus | Fokus näkyy jokaisessa linkissä, painikkeessa, kentässä, valinnassa ja modaalissa kaikilla teemoilla. |  |  |
-| A11Y-04 | P1 | Asetukset | Avaus, kaikki ohjaimet, sulkeminen ja fokuksen palautus toimivat näppäimistöllä. |  |  |
-| A11Y-05 | P1 | Modaalit | Tietoa-, palaute-, linkki-ilmoitus-, palveluvalinta- ja aloitussivuohjemodaali rajaavat fokuksen, sulkeutuvat Escillä ja palauttavat fokuksen avaajaan. |  |  |
-| A11Y-06 | P1 | Otsikot ja maamerkit | Yksi pääotsikko; header, nav, main ja footer ovat tunnistettavissa; otsikkotasot ovat loogiset. |  |  |
-| A11Y-07 | P1 | Kenttien nimet ja virheet | Hakujen ja lomakkeiden nimet, pakollisuus, virheet ja onnistumisviestit välittyvät ruudunlukijalle. |  |  |
-| A11Y-08 | P1 | Dynaamiset tilat | Tekstikoko, hakutulokset, lataus, virhe ja onnistuminen ilmoitetaan ilman kohtuutonta fokuksen siirtoa. |  |  |
-| A11Y-09 | P2 | Kielenvaihto | Suomi, ruotsi ja englanti vaihtuvat; dokumentin kieli ja keskeiset nimet vastaavat valintaa. |  |  |
+| A11Y-01 | P1 | Ohita sisältöön -linkki | Linkki tulee näkyviin fokuksessa ja siirtää pääsisältöön. | PASS (paikallinen build) | Ensimmäinen sarkain löytää "Siirry sisältöön" -linkin, Enter siirtää fokuksen `#main-content`-elementtiin. |
+| A11Y-02 | P1 | Koko sivun sarkainjärjestys | Järjestys on looginen, mikään kohde ei jää saavuttamatta eikä synny näppäimistöansaa. | PASS (paikallinen build) | 80 peräkkäistä sarkainpainallusta ei jäänyt loukkuun. Sama koe paljasti A11Y-03-havainnon (ks. alla) — korjattu commitissa `bd492c4`, vahvistettava manuaalisesti. |
+| A11Y-03 | P1 | Näkyvä fokus | Fokus näkyy jokaisessa linkissä, painikkeessa, kentässä, valinnassa ja modaalissa kaikilla teemoilla. | FAIL → korjattu, vahvistus kesken | Automatisoitu CSS-tarkistus löysi 26.8.2026: neljältä ylätunnisteen painikkeelta (Palaute, Ohje, ℹ️ Tietoa, ⚙️ Asetukset) puuttui sovelluksen oma fokusrengas kaikissa 8 teema/tila-yhdistelmässä (`outline-width: 0`, läpinäkyvä `box-shadow`), toisin kuin footerin identtisillä painikkeilla. Lisätty samat `focus-visible:ring-2 focus-visible:ring-[var(--theme-focus)]`-luokat kuin footerissa (commit `bd492c4`). TypeScript ja build puhtaita. Automaattista visuaalista jälkivarmennusta ei saatu luotettavaksi tässä istunnossa (headless-testiajurin ja Reactin välinen ajoitusongelma esti DOM-tarkistuksen) — **vaatii lyhyen manuaalisen sarkainkokeen oikealla selaimella ennen kuin rivi merkitään PASSiksi**. |
+| A11Y-04 | P1 | Asetukset | Avaus, kaikki ohjaimet, sulkeminen ja fokuksen palautus toimivat näppäimistöllä. | PASS (paikallinen build) | Ks. REL11-UI-01/A11Y-01-korjaus: alkufokus, sarkainrajaus, Esc ja Sulje palauttavat fokuksen — automatisoitu koe 40/40 sarkainta pysyi paneelissa. |
+| A11Y-05 | P1 | Modaalit | Tietoa-, palaute-, linkki-ilmoitus-, palveluvalinta- ja aloitussivuohjemodaali rajaavat fokuksen, sulkeutuvat Escillä ja palauttavat fokuksen avaajaan. | Osittain PASS (paikallinen build) | Automatisoitu koe kattoi Palaute- ja Tietoa-modaalit: fokusloukku, Esc ja fokuksen palautus toimivat. Linkki-ilmoitus-, palveluvalinta- ja aloitussivuohjemodaalia ei vielä testattu. |
+| A11Y-06 | P1 | Otsikot ja maamerkit | Yksi pääotsikko; header, nav, main ja footer ovat tunnistettavissa; otsikkotasot ovat loogiset. | PASS (paikallinen build) | Yksi `h1`, header/nav(×3)/main/footer löytyvät, otsikkotasoissa ei hyppyjä (h1→h2→h3). |
+| A11Y-07 | P1 | Kenttien nimet ja virheet | Hakujen ja lomakkeiden nimet, pakollisuus, virheet ja onnistumisviestit välittyvät ruudunlukijalle. |  | Ei testattu tässä kierroksessa — vaatii lomakekohtaisen kokeen. |
+| A11Y-08 | P1 | Dynaamiset tilat | Tekstikoko, hakutulokset, lataus, virhe ja onnistuminen ilmoitetaan ilman kohtuutonta fokuksen siirtoa. |  | Ei testattu tässä kierroksessa — vaatii aria-live-alueiden kohdennetun kokeen. |
+| A11Y-09 | P2 | Kielenvaihto | Suomi, ruotsi ja englanti vaihtuvat; dokumentin kieli ja keskeiset nimet vastaavat valintaa. | PASS (paikallinen build) | `fi`/`sv`/`en`: `html[lang]`, sivun otsikko ja "Siirry sisältöön" / "Gå till innehållet" / "Skip to content" vaihtuvat oikein. |
 
 ## 7. Julkiset ydintoiminnot ja linkit
 
