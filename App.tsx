@@ -606,7 +606,7 @@ const AppContent: React.FC = () => {
                   type="button"
                   onClick={() => setIsFeedbackOpen(true)}
                   title="Anna palautetta sivusta"
-                  className="inline-flex min-h-[2.75rem] items-center rounded-full border border-white/[.16] bg-white/[.09] px-[1.1rem] py-[.55rem] text-[.95rem] font-bold text-white/85 transition-all hover:bg-white/[.18] hover:text-white"
+                  className="inline-flex min-h-[2.75rem] items-center rounded-full border border-white/[.16] bg-white/[.09] px-[1.1rem] py-[.55rem] text-[.95rem] font-bold text-white/85 transition-all hover:bg-white/[.18] hover:text-white focus-visible:ring-2 focus-visible:ring-[var(--theme-focus)]"
                 >
                   Palaute
                 </button>
@@ -614,7 +614,7 @@ const AppContent: React.FC = () => {
                 <button
                   onClick={() => setIsHomepageOpen(true)}
                   title="Avaa ohje aloitussivuksi asettamiseen"
-                  className="inline-flex min-h-[2.75rem] items-center gap-1.5 rounded-full border border-white/20 bg-[var(--theme-gold)] px-[1.1rem] py-[.55rem] text-[.95rem] font-extrabold text-[var(--theme-cta-label)] transition-all hover:bg-[var(--theme-gold-light)] active:scale-[.97]"
+                  className="inline-flex min-h-[2.75rem] items-center gap-1.5 rounded-full border border-white/20 bg-[var(--theme-gold)] px-[1.1rem] py-[.55rem] text-[.95rem] font-extrabold text-[var(--theme-cta-label)] transition-all hover:bg-[var(--theme-gold-light)] active:scale-[.97] focus-visible:ring-2 focus-visible:ring-[var(--theme-focus)]"
                   aria-label={t('openHomepageHelp')}
                 >
                   🏠 {t('help')}
@@ -623,7 +623,7 @@ const AppContent: React.FC = () => {
                   type="button"
                   onClick={() => setIsInfoOpen(true)}
                   title="Katso mitä Seniorin aloitussivu sisältää ja miten sitä ylläpidetään"
-                  className="inline-flex min-h-[2.75rem] items-center gap-1.5 rounded-full border border-white/[.16] bg-white/[.09] px-[1.1rem] py-[.55rem] text-[.95rem] font-bold text-white/85 transition-all hover:bg-white/[.18] hover:text-white"
+                  className="inline-flex min-h-[2.75rem] items-center gap-1.5 rounded-full border border-white/[.16] bg-white/[.09] px-[1.1rem] py-[.55rem] text-[.95rem] font-bold text-white/85 transition-all hover:bg-white/[.18] hover:text-white focus-visible:ring-2 focus-visible:ring-[var(--theme-focus)]"
                 >
                   ℹ️ {t('info')}
                 </button>
@@ -633,7 +633,7 @@ const AppContent: React.FC = () => {
                   onClick={() => setIsSettingsOpen(prev => !prev)}
                   data-tour="settings"
                   title="Avaa asetukset: värit, tekstikoko ja etusivun osiot"
-                  className="inline-flex min-h-[2.75rem] items-center gap-1.5 rounded-full border border-white/[.16] bg-white/[.09] px-[1.1rem] py-[.55rem] text-[.95rem] font-bold text-white/85 transition-all hover:bg-white/[.18] hover:text-white"
+                  className="inline-flex min-h-[2.75rem] items-center gap-1.5 rounded-full border border-white/[.16] bg-white/[.09] px-[1.1rem] py-[.55rem] text-[.95rem] font-bold text-white/85 transition-all hover:bg-white/[.18] hover:text-white focus-visible:ring-2 focus-visible:ring-[var(--theme-focus)]"
                   aria-label={t('openSettings')}
                   aria-expanded={isSettingsOpen}
                   aria-haspopup="dialog"
