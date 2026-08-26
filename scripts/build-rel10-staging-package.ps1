@@ -89,12 +89,25 @@ try {
         $archive.Dispose()
     }
 
-    $hash = Get-FileHash -LiteralPath $zipPath -Algorithm SHA256
+    $sha256 = [Security.Cryptography.SHA256]::Create()
+    try {
+        $zipStream = [IO.File]::OpenRead($zipPath)
+        try {
+            $hashBytes = $sha256.ComputeHash($zipStream)
+        }
+        finally {
+            $zipStream.Dispose()
+        }
+    }
+    finally {
+        $sha256.Dispose()
+    }
+    $hash = ([BitConverter]::ToString($hashBytes)).Replace('-', '').ToLowerInvariant()
     [pscustomobject]@{
         BuildId = $buildId
         PackageDirectory = $packageRoot
         Zip = $zipPath
-        Sha256 = $hash.Hash.ToLowerInvariant()
+        Sha256 = $hash
     } | Format-List
 }
 finally {
