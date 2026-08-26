@@ -7,6 +7,7 @@ Tämä ohje koskee vain seuraavaa yksilöityä staging-ehdokasta:
 | Build ID | `REL-11-v0.74.1-fe313d8ee3e5` |
 | Commit | `fe313d8ee3e5` |
 | ZIP | `C:\dev\Aloitussivu\.tmp\aloitussivu-rel11-staging.zip` |
+| ZIP palvelimella | `/home/seniorsurffi/aloitussivu-rel11-v0741-staging.zip` |
 | Koko | 833 070 tavua |
 | SHA-256 | `f7d78cb3bc6cebf958ab5e895f99ff650746f108ad39d7a5c6240377c3bd1521` |
 | Tiedostoja | 115 |
@@ -29,7 +30,7 @@ f7d78cb3bc6cebf958ab5e895f99ff650746f108ad39d7a5c6240377c3bd1521
 ## 2. Siirrä ZIP paikallisessa PowerShellissä
 
 ```powershell
-scp 'C:\dev\Aloitussivu\.tmp\aloitussivu-rel11-staging.zip' seniorsurffi@staging.aloitussivu.seniorsurf.fi:/home/seniorsurffi/
+scp 'C:\dev\Aloitussivu\.tmp\aloitussivu-rel11-staging.zip' seniorsurffi@staging.aloitussivu.seniorsurf.fi:/home/seniorsurffi/aloitussivu-rel11-v0741-staging.zip
 ```
 
 ## 3. Vahvista kohde nykyisessä SSH-istunnossa
@@ -59,8 +60,8 @@ Jos ensimmäinen komento ei tulosta mitään eikä varmistustiedostoa synny, pys
 ## 5. Varmista siirretty ZIP
 
 ```bash
-sha256sum /home/seniorsurffi/aloitussivu-rel11-staging.zip
-unzip -tq /home/seniorsurffi/aloitussivu-rel11-staging.zip
+sha256sum /home/seniorsurffi/aloitussivu-rel11-v0741-staging.zip
+unzip -tq /home/seniorsurffi/aloitussivu-rel11-v0741-staging.zip
 ```
 
 SHA-256:n pitää olla täsmälleen sama kuin yllä, ja `unzip`-testin pitää ilmoittaa, ettei pakatussa datassa ole virheitä.
@@ -68,7 +69,7 @@ SHA-256:n pitää olla täsmälleen sama kuin yllä, ja `unzip`-testin pitää i
 ## 6. Pura ehdokas stagingiin
 
 ```bash
-unzip -oq /home/seniorsurffi/aloitussivu-rel11-staging.zip -d /home/seniorsurffi/website.aloitussivu-staging
+unzip -oq /home/seniorsurffi/aloitussivu-rel11-v0741-staging.zip -d /home/seniorsurffi/website.aloitussivu-staging
 ```
 
 Komento ei koske `secrets/config.php`-tiedostoon, koska sitä ei ole ZIPissä.
