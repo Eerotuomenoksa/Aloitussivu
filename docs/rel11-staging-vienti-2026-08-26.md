@@ -100,7 +100,7 @@ curl -sS https://staging.aloitussivu.seniorsurf.fi/api/v1/health
 
 Vastauksen pitää sisältää `status: ok`, `database: up` ja `version: v1`.
 
-Tämän jälkeen uusintatestataan A11Y-03 kaikissa kahdeksassa väriteema/vaalea–tumma-yhdistelmässä ja tehdään P1-smoke. Aiemmat UI-01–UI-12-, A11Y-02- ja A11Y-04-tulokset säilyvät, koska muutos rajautuu Google-haun mikrofonipainikkeen fokusrenkaaseen. Ehdokasta ei jäädytetä ennen uuden ehdokkaan hyväksyntää.
+Toteutunut tulos 26.8.2026: etusivu ja pääbundle palauttivat HTTP 200:n, API-health palautti `ok/up/v1`, Tietoa-ikkunan testaajakiitos ja seitsemän nimeä näkyivät oikeassa järjestyksessä ja selaimen virheloki oli tyhjä. A11Y-03 läpäisi kaikki kahdeksan väriteema/vaalea–tumma-yhdistelmää: mikrofonipainikkeen neljän pikselin fokusvärinen rengas näkyi näppäimistökohdistuksessa. Aiemmat UI-01–UI-12-, A11Y-02- ja A11Y-04-tulokset säilyvät, koska muutos rajautuu Google-haun mikrofonipainikkeen fokusrenkaaseen ja Tietoa-ikkunan sisältöön.
 
 ## 9. Palautus tarvittaessa
 

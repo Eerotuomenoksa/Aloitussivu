@@ -568,3 +568,15 @@ Tuotevastuun pyynnöstä Tietoa-ikkunaan lisättiin oma **Kiitokset testaajille*
 Paikallinen Playwright-koe vahvisti listan järjestyksen, semanttisen listarakenteen sekä suomen-, ruotsin- ja englanninkieliset tekstit. Kiitososio pysyi näkymän sisällä 1280 ja 360 pikselin leveyksillä ilman vaaka-ylivuotoa; työpöytä- ja mobiiliasu tarkistettiin lisäksi kuvista. `npx tsc --noEmit`, `npm run check:secrets` ja staging-build läpäisivät.
 
 Puhtaasta commitista `ee6f9ebf1f3d` rakennettiin ehdokas `REL-11-v0.74.2-ee6f9ebf1f3d`. ZIPissä on 115 tiedostoa, sen koko on 833 781 tavua, SHA-256 `4205860a745f8ba561b34f304e1e689fdf5f12bb2679d3879cf15cb554848c25` ja pääbundle `assets/main-CamQDfot.js`. Kaikki ZIP-merkinnät avautuivat, vaarallisia polkuja tai salaisuustiedostoja ei ollut, stagingin `/api/v1`-polku ja yksi `noindex, nofollow, noarchive` -merkintä säilyivät eikä tuotannon `/aloitus/api/v1`-polkua ollut mukana. Valmis bundle sisälsi kiitosotsikon ja kaikki seitsemän nimeä oikeassa järjestyksessä. PHP-lint läpäisi 43/43 paketin PHP-tiedostoa ja API-sopimustestit 42/42. Paketti odottaa Cloudcity-staging-vientiä; stagingissa on edelleen vanha ehdokas.
+
+## 26.8.2026 — REL-11 tehtävä 5/10: version 0.74.2 staging-vienti ja vaikutusaluetesti
+
+Eero siirsi paketin Cloudcity-palvelimelle nimellä `/home/seniorsurffi/aloitussivu-rel11-v0742-staging.zip`. Palvelimella laskettu SHA-256 täsmäsi paikalliseen arvoon `4205860a745f8ba561b34f304e1e689fdf5f12bb2679d3879cf15cb554848c25`, ja `unzip -tq` vahvisti paketin virheettömäksi. Ennen purkua luotiin palautuspaketti `/home/seniorsurffi/rel11-v0740-predeploy-files-20260826.tar.gz`, jonka koko oli noin 2,0 Mt.
+
+Purun jälkeen SSH-tarkistus vahvisti build ID:n `REL-11-v0.74.2-ee6f9ebf1f3d`, commitin `ee6f9ebf1f3d`, arvon `workingTreeDirty: false`, pääbundlen `assets/main-CamQDfot.js` ja keskeisten tiedostojen oikeudet `644`. PowerShell-smoke palautti etusivulle HTTP 200:n, pääbundlelle HTTP 200:n ja API-healthille arvot `status: ok`, `database: up`, `version: v1`.
+
+Stagingin Tietoa-ikkunassa näkyivät **Kiitokset testaajille** -osio sekä nimet Ari, Eija-Riitta, Jaana, Marianne, Minna, Pertti ja Tapani täsmälleen pyydetyssä aakkosjärjestyksessä. Selaimen virhe- ja varoitusloki oli tyhjä.
+
+A11Y-03:n staging-uusinta läpäisi kaikki kahdeksan väriteema/vaalea–tumma-yhdistelmää. Jokaisessa yhdistelmässä Google-haun `Puhu hakusana` -painike sai näppäimistökohdistuksen, `:focus-visible` aktivoitui, neljän pikselin rengas erosi kohdistamattomasta tilasta ja renkaan väri vastasi aktiivisen teeman `--theme-focus`-arvoa. Testin jälkeen selain palautettiin vihreään vaaleaan teemaan. Havainto `REL11-A11Y-04` suljettiin ja A11Y-03 päivitettiin PASS-tilaan.
+
+**Porttitila:** version 0.74.2 asennus, smoke, testaajakiitos ja A11Y-03-vaikutusalue ovat hyväksytty stagingissa. REL-11:n kokonaisportti ei ole vielä GO, koska matriisissa on muita avoimia P1-rivejä, muun muassa WordPress-esittelysivu ja tuotannonkaltaisen `/aloitus/`-polun koe. Tehtävä 5/10 jatkuu niiden parissa. Stagingin Basic Auth pysyy tuotevastuun päätöksellä väliaikaisesti poissa käytöstä ja palautetaan tuotannon valmistuttua.

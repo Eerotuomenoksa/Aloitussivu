@@ -7,10 +7,10 @@ Tämä matriisi suoritetaan jäädytetylle Cloudcity-staging-ehdokkaalle. Testit
 | Kenttä | Arvo |
 | --- | --- |
 | Staging | `https://staging.aloitussivu.seniorsurf.fi/` |
-| Julkaisukandidaatti | `REL-11-v0.74.0-375efac68d1d` |
-| Sovellusversio | `0.74.0` |
-| Sovelluscommit | `375efac68d1d` |
-| Staging-ZIP SHA-256 | `0fbac326abd866f63bc8c518d3ac39d72173cd9cb7e4bda8b3610e46eb223d9a` |
+| Julkaisukandidaatti | `REL-11-v0.74.2-ee6f9ebf1f3d` |
+| Sovellusversio | `0.74.2` |
+| Sovelluscommit | `ee6f9ebf1f3d` |
+| Staging-ZIP SHA-256 | `4205860a745f8ba561b34f304e1e689fdf5f12bb2679d3879cf15cb554848c25` |
 | Skeemamigraatiot | `001_initial_schema`, `002_add_link_reports_triage_index` |
 | Testipäivä | 31.8.2026 |
 | Testauksen aloittaja ja aika | täytetään |
@@ -36,10 +36,10 @@ Yksikin avoin P1 tarkoittaa päätöstä **NO-GO**. Jäädytettyä ehdokasta muu
 
 | ID | P | Tarkistus | Hyväksymisehto | Tulos | Todiste tai havainto |
 | --- | --- | --- | --- | --- | --- |
-| PRE-01 | P1 | Stagingin `build-info.json` | Build ID, commit ja `workingTreeDirty: false` vastaavat yllä olevaa testikohdetta. | PASS | Eero vahvisti SSH:lla 26.8.2026: build ID `REL-11-v0.74.0-375efac68d1d`, commit `375efac68d1d`, `workingTreeDirty: false`. |
-| PRE-02 | P1 | API-health ja MariaDB | `/api/v1/health` palauttaa `status: ok`, `database: up` ja `version: v1`. | PASS | Eeron PowerShell-smoke 26.8.2026: etusivu HTTP 200, pääbundle HTTP 200 ja health `ok/up/v1`. Pyyntötunnistetta ei tallennettu. |
-| PRE-03 | P1 | Muuttumaton ehdokas | Stagingin pääbundle on `assets/main-CbpUtkYy.js`; jäädytyksen jälkeen ei ole tehty sovellus- tai palvelinasetusmuutosta. | Osittain PASS | Oikea pääbundle vahvistettiin sekä SSH:ssa että HTTP 200 -pyynnöllä. UI-01–UI-12 sekä A11Y-02 ja A11Y-04 läpäisivät staging-uusintatestin 26.8.2026, mutta A11Y-03 hylättiin uuden `REL11-A11Y-04`-havainnon vuoksi. Ehdokasta ei jäädytetä ennen korjausta, uutta buildia ja vaikutusaluetestiä. |
-| PRE-04 | P1 | Stagingin palautuspiste | Tiedostopalautuspaketti ja tuore tietokantavarmistus ovat olemassa yksityisessä sijainnissa. | PASS | Ennen REL-11-purkua luotiin `/home/seniorsurffi/rel11-predeploy-files-20260826.tar.gz`, koko noin 1,7 Mt, SHA-256 `5a23bc8f253332527a695fe298871834cf4e79536651618dd2c21469f7378605`. Tuore erillinen MariaDB-varmistus on vahvistettu OPS-02:ssa. |
+| PRE-01 | P1 | Stagingin `build-info.json` | Build ID, commit ja `workingTreeDirty: false` vastaavat yllä olevaa testikohdetta. | PASS | Eero vahvisti SSH:lla 26.8.2026: build ID `REL-11-v0.74.2-ee6f9ebf1f3d`, commit `ee6f9ebf1f3d`, `workingTreeDirty: false`. |
+| PRE-02 | P1 | API-health ja MariaDB | `/api/v1/health` palauttaa `status: ok`, `database: up` ja `version: v1`. | PASS | Eeron PowerShell-smoke 26.8.2026 uudelle ehdokkaalle: etusivu HTTP 200, pääbundle `assets/main-CamQDfot.js` HTTP 200 ja health `ok/up/v1`. Pyyntötunnistetta ei tallennettu. |
+| PRE-03 | P1 | Muuttumaton ehdokas | Stagingin pääbundle on `assets/main-CamQDfot.js`; jäädytyksen jälkeen ei ole tehty sovellus- tai palvelinasetusmuutosta. | PASS | Pääbundle vahvistettiin SSH:ssa ja HTTP 200 -pyynnöllä. Asennuksen jälkeen tehty A11Y-03-vaikutusaluetesti ja Tietoa-ikkunan testaajakiitoksen tarkistus kohdistuivat samaan buildiin. Sovellustiedostoja tai palvelinasetuksia ei muutettu testin aikana. |
+| PRE-04 | P1 | Stagingin palautuspiste | Tiedostopalautuspaketti ja tuore tietokantavarmistus ovat olemassa yksityisessä sijainnissa. | PASS | Ennen version 0.74.2 purkua luotiin `/home/seniorsurffi/rel11-v0740-predeploy-files-20260826.tar.gz`, koko noin 2,0 Mt. Tuore erillinen MariaDB-varmistus on vahvistettu OPS-02:ssa. |
 | PRE-05 | P1 | WordPress-esittelysivu | `/aloitussivu-palvelu/` on julkaistu hyväksytyllä sisällöllä ja suoralla `/aloitus/`-linkillä. |  |  |
 | PRE-06 | P1 | Tuotannonkaltainen `/aloitus/`-koe | Suora polku, API-entrypoint ja resurssit voidaan testata WordPressin rinnalla ilman pääjuuren `.htaccess`-muutosta tai Redirection-sääntöä. |  |  |
 | PRE-07 | P1 | Vastuut ja muutosikkuna | Varmistus-, vaihto-, smoke- ja palautusvastuut sekä tuotannon kellonaika on vahvistettu. |  |  |
@@ -84,7 +84,7 @@ Havainnon `REL11-UI-01` korjaus varmennettiin paikallisesti rakennetulla korjatu
 
 Näppäimistökoe korjatulla buildilla 768 px / 150 %: fokus siirtyy avattaessa `Sulje`-painikkeeseen, 40 peräkkäistä sarkainpainallusta ja vaihto-sarkain pysyivät paneelin sisällä, Esc sulki paneelin ja palautti fokuksen `Avaa asetukset` -painikkeeseen.
 
-Paikalliset tulokset korvattiin yllä kuvatulla REL-11-staging-uusintatestillä 26.8.2026. PRE-01 vastaa uutta ehdokasta; PRE-03 jää osittaiseksi A11Y-03:n uuden P1-havainnon vuoksi.
+Paikalliset tulokset korvattiin yllä kuvatulla REL-11-staging-uusintatestillä 26.8.2026. PRE-01–PRE-03 päivitettiin vielä samana päivänä ehdokkaaseen `REL-11-v0.74.2-ee6f9ebf1f3d`; A11Y-03:n korjaus läpäisi uuden staging-vaikutusaluetestin.
 
 ## 5. Teemat ja asetusten säilyminen
 
@@ -105,7 +105,7 @@ Paikalliset tulokset korvattiin yllä kuvatulla REL-11-staging-uusintatestillä 
 | --- | --- | --- | --- | --- | --- |
 | A11Y-01 | P1 | Ohita sisältöön -linkki | Linkki tulee näkyviin fokuksessa ja siirtää pääsisältöön. | PASS (paikallinen build) | Ensimmäinen sarkain löytää "Siirry sisältöön" -linkin, Enter siirtää fokuksen `#main-content`-elementtiin. |
 | A11Y-02 | P1 | Koko sivun sarkainjärjestys | Järjestys on looginen, mikään kohde ei jää saavuttamatta eikä synny näppäimistöansaa. | PASS (REL-11-staging) | Täydessä 96 näkyvän kohteen rakenteessa 80 peräkkäistä sarkainaskelta eteni loogisesti ilman ansaa. Ensimmäiset kohteet olivat Siirry sisältöön, Palaute, Kieli, Ohje, Tietoa ja Asetukset. Kunta-kentän fokuksessa ilmestyvä Tyhjennä-painike tuli odotetusti mukaan järjestykseen. |
-| A11Y-03 | P1 | Näkyvä fokus | Fokus näkyy jokaisessa linkissä, painikkeessa, kentässä, valinnassa ja modaalissa kaikilla teemoilla. | FAIL (REL-11-staging) | Ylätunnisteen Palaute-, Kieli-, Ohje-, Tietoa- ja Asetukset-ohjaimet läpäisivät todellisen Tab-kokeen kaikissa kahdeksassa väriteema/vaalea–tumma-yhdistelmässä. Asetusten 27 ja Palaute-ikkunan 13 ohjainta läpäisivät kohdennetun Tab-kierroksen. Google-haun ylätunnisteversion `Puhu hakusana` -painikkeen fokus ei kuitenkaan erotu: `:focus-visible` on aktiivinen, mutta outline on läpinäkyvä eikä varjo, reuna tai tausta muutu. Havainto `REL11-A11Y-04` on P1. |
+| A11Y-03 | P1 | Näkyvä fokus | Fokus näkyy jokaisessa linkissä, painikkeessa, kentässä, valinnassa ja modaalissa kaikilla teemoilla. | PASS (REL-11-staging) | Ehdokkaan `0.74.2` `Puhu hakusana` -painike testattiin stagingissa kaikilla kahdeksalla väriteema/vaalea–tumma-yhdistelmällä. Painike sai näppäimistökohdistuksen, `:focus-visible` aktivoitui, neljän pikselin rengas erosi kohdistamattomasta tilasta ja renkaan väri vastasi jokaisessa yhdistelmässä `--theme-focus`-arvoa. Aiemmin hyväksytyt muut ohjaimet säilyivät muuttumattomina; havainto `REL11-A11Y-04` on suljettu. |
 | A11Y-04 | P1 | Asetukset | Avaus, kaikki ohjaimet, sulkeminen ja fokuksen palautus toimivat näppäimistöllä. | PASS (REL-11-staging) | Testattu 768 px / 150 %: alkufokus siirtyi Sulje-painikkeeseen, 40 Tab- ja 40 Shift+Tab-painallusta pysyivät paneelissa, ja sekä Esc että Sulje palauttivat fokuksen Avaa asetukset -painikkeeseen (`aria-expanded=false`). |
 | A11Y-05 | P1 | Modaalit | Tietoa-, palaute-, linkki-ilmoitus-, palveluvalinta- ja aloitussivuohjemodaali rajaavat fokuksen, sulkeutuvat Escillä ja palauttavat fokuksen avaajaan. | Osittain PASS (paikallinen build) | Automatisoitu koe kattoi Palaute- ja Tietoa-modaalit: fokusloukku, Esc ja fokuksen palautus toimivat. Linkki-ilmoitus-, palveluvalinta- ja aloitussivuohjemodaalia ei vielä testattu. |
 | A11Y-06 | P1 | Otsikot ja maamerkit | Yksi pääotsikko; header, nav, main ja footer ovat tunnistettavissa; otsikkotasot ovat loogiset. | PASS (paikallinen build) | Yksi `h1`, header/nav(×3)/main/footer löytyvät, otsikkotasoissa ei hyppyjä (h1→h2→h3). |
@@ -113,17 +113,19 @@ Paikalliset tulokset korvattiin yllä kuvatulla REL-11-staging-uusintatestillä 
 | A11Y-08 | P1 | Dynaamiset tilat | Tekstikoko, hakutulokset, lataus, virhe ja onnistuminen ilmoitetaan ilman kohtuutonta fokuksen siirtoa. |  | Ei testattu tässä kierroksessa — vaatii aria-live-alueiden kohdennetun kokeen. |
 | A11Y-09 | P2 | Kielenvaihto | Suomi, ruotsi ja englanti vaihtuvat; dokumentin kieli ja keskeiset nimet vastaavat valintaa. | PASS (paikallinen build) | `fi`/`sv`/`en`: `html[lang]`, sivun otsikko ja "Siirry sisältöön" / "Gå till innehållet" / "Skip to content" vaihtuvat oikein. |
 
-### A11Y-03-korjauksen paikallinen vaikutusaluetesti 26.8.2026
+### A11Y-03-korjauksen paikallinen vaikutusaluetesti ja staging-uusinta 26.8.2026
 
 Versioon `0.74.1` lisättiin Google-haun ylätunnisteversion `Puhu hakusana` -painikkeelle neljän pikselin `focus-visible`-rengas, joka käyttää aktiivisen teeman fokusväriä. Todellinen Tab-koe läpäisi kaikki kahdeksan väriteema/vaalea–tumma-yhdistelmää: painike oli jokaisessa kokeessa fokuksessa, `:focus-visible` oli aktiivinen ja laskettu varjo erosi kohdistamattomasta tilasta. Vaalea vihreä ja tumma violetti tarkistettiin lisäksi kuvista; rengas erottui selvästi eikä muuttanut painikkeen kokoa.
 
-Vaikutusaluetesti läpäisi myös 1280 ja 360 pikselin näkymät: hakukenttä, Hae-painike ja mikrofonipainike pysyivät vaakasuunnassa näkymän sisällä eikä sivulle syntynyt vaakavieritystä. `npx tsc --noEmit`, `npm run check:secrets` ja `npm run build:staging` läpäisivät. Korjauksesta rakennettiin yksilöity ehdokas `REL-11-v0.74.1-fe313d8ee3e5`, jonka ZIP-tarkistussumma on `f7d78cb3bc6cebf958ab5e895f99ff650746f108ad39d7a5c6240377c3bd1521` ja pääbundle `assets/main-DjnTJ0pM.js`. Paketin 115 tiedostoa avautuivat, 43/43 PHP-tiedostoa läpäisi lintin ja API-sopimustestit olivat 42/42 PASS. Tulos on **PASS paikallisessa korjausbuildissa**, mutta A11Y-03:n staging-tulos säilyy FAIL-tilassa, kunnes uusi ehdokas on viety stagingiin ja uusintatesti on läpäissyt.
+Vaikutusaluetesti läpäisi myös 1280 ja 360 pikselin näkymät: hakukenttä, Hae-painike ja mikrofonipainike pysyivät vaakasuunnassa näkymän sisällä eikä sivulle syntynyt vaakavieritystä. `npx tsc --noEmit`, `npm run check:secrets` ja `npm run build:staging` läpäisivät. Korjaus sisältyy lopulliseen ehdokkaaseen `REL-11-v0.74.2-ee6f9ebf1f3d`, jonka ZIP-tarkistussumma on `4205860a745f8ba561b34f304e1e689fdf5f12bb2679d3879cf15cb554848c25` ja pääbundle `assets/main-CamQDfot.js`. Paketin 115 tiedostoa avautuivat, 43/43 PHP-tiedostoa läpäisi lintin ja API-sopimustestit olivat 42/42 PASS.
+
+Eero vei ehdokkaan Cloudcity-stagingiin 26.8.2026. Staging-uusinnassa kaikki kahdeksan väriteema/vaalea–tumma-yhdistelmää läpäisivät: mikrofonipainike oli näppäimistökohdistuksessa, `:focus-visible` oli aktiivinen, näkyvä neljän pikselin rengas erosi kohdistamattomasta tilasta ja renkaan väri vastasi aktiivisen teeman fokusväriä. Selaimen virheloki oli tyhjä. A11Y-03 on **PASS** ja `REL11-A11Y-04` suljettu.
 
 ### Tietoa-ikkunan testaajakiitos 26.8.2026
 
 Tuotevastuun pyynnöstä Tietoa-ikkunaan lisättiin kiitos testaajille sekä pelkät etunimet aakkosjärjestyksessä: Ari, Eija-Riitta, Jaana, Marianne, Minna, Pertti ja Tapani. Otsikko ja kiitosteksti ovat suomeksi, ruotsiksi ja englanniksi; muut kielivalinnat käyttävät sovelluksen nykyistä englanninkielistä varatekstiä. Sisältömuutos nostaa version `0.74.2`:een ja korvaa ennen staging-vientiä rakennetun `0.74.1`-ehdokkaan.
 
-Paikallinen selainkoe varmisti nimien järjestyksen, semanttisen listarakenteen ja käännökset. Osio pysyi kokonaan vaakasuunnassa näkymän sisällä 1280 ja 360 pikselin leveyksillä, eikä osioon tai sivulle syntynyt vaakavieritystä. Vaalea työpöytä- ja mobiilinäkymä tarkistettiin lisäksi kuvista. `npx tsc --noEmit`, `npm run check:secrets` ja `npm run build:staging` läpäisivät. Puhtaasta commitista `ee6f9ebf1f3d` rakennettiin ehdokas `REL-11-v0.74.2-ee6f9ebf1f3d`, jonka ZIPin SHA-256 on `4205860a745f8ba561b34f304e1e689fdf5f12bb2679d3879cf15cb554848c25` ja pääbundle `assets/main-CamQDfot.js`. ZIPin 115 tiedostoa avautuivat, PHP-lint oli 43/43 ja API-sopimustestit 42/42 PASS.
+Paikallinen selainkoe varmisti nimien järjestyksen, semanttisen listarakenteen ja käännökset. Osio pysyi kokonaan vaakasuunnassa näkymän sisällä 1280 ja 360 pikselin leveyksillä, eikä osioon tai sivulle syntynyt vaakavieritystä. Vaalea työpöytä- ja mobiilinäkymä tarkistettiin lisäksi kuvista. `npx tsc --noEmit`, `npm run check:secrets` ja `npm run build:staging` läpäisivät. Puhtaasta commitista `ee6f9ebf1f3d` rakennettiin ehdokas `REL-11-v0.74.2-ee6f9ebf1f3d`, jonka ZIPin SHA-256 on `4205860a745f8ba561b34f304e1e689fdf5f12bb2679d3879cf15cb554848c25` ja pääbundle `assets/main-CamQDfot.js`. ZIPin 115 tiedostoa avautuivat, PHP-lint oli 43/43 ja API-sopimustestit 42/42 PASS. Staging-tarkistus vahvisti otsikon, kiitostekstin ja kaikki seitsemän nimeä täsmälleen oikeassa järjestyksessä; selaimen virheloki oli tyhjä.
 
 ## 7. Julkiset ydintoiminnot ja linkit
 
