@@ -22,6 +22,10 @@ try {
     if ($workingTreeDirty) {
         throw 'Julkaisukandidaatti on rakennettava puhtaasta työpuusta.'
     }
+    $commit = (& git rev-parse --short=12 HEAD).Trim()
+    if ($LASTEXITCODE -ne 0 -or -not $commit) {
+        throw 'Julkaisukandidaatin commit-tunnistetta ei voitu ratkaista.'
+    }
 
     & npm.cmd run build:staging
     if ($LASTEXITCODE -ne 0) {
@@ -56,11 +60,12 @@ try {
         $null = New-Item -ItemType File -Path (Join-Path $packageRoot "$directory/.keep") -Force
     }
 
-    $packageJson = Get-Content -LiteralPath (Join-Path $workspaceRoot 'package.json') -Raw | ConvertFrom-Json
-    $commit = (& git rev-parse --short=12 HEAD).Trim()
-    if ($LASTEXITCODE -ne 0 -or -not $commit) {
-        throw 'Julkaisukandidaatin commit-tunnistetta ei voitu ratkaista.'
+    $currentCommit = (& git rev-parse --short=12 HEAD).Trim()
+    $workingTreeDirty = [bool](& git status --porcelain)
+    if ($LASTEXITCODE -ne 0 -or $workingTreeDirty -or $currentCommit -ne $commit) {
+        throw 'Git-tila muuttui paketoinnin aikana. Julkaisukandidaattia ei muodostettu.'
     }
+    $packageJson = Get-Content -LiteralPath (Join-Path $workspaceRoot 'package.json') -Raw | ConvertFrom-Json
     $version = [string]$packageJson.version
     $buildId = "REL-11-v$version-$commit"
     [ordered]@{
