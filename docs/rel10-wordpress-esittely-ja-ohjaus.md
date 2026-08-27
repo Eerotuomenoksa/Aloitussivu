@@ -8,6 +8,14 @@ Päivitetty 27.8.2026. Käyttäjän lopullinen osoite ja selaimen osoitepalkissa
 - Tuolloin suunniteltu `https://seniorsurf.fi/aloitussivu-palvelu/` näytti WordPressin 404-sivun. Tuotevastuu lyhensi esittelysivun osoitteeksi `https://seniorsurf.fi/aloitussivu/` 27.8.2026; uusi sivu ei ole vielä julkaistu.
 - WordPressin tiedostoja, asetuksia, tietokantaa tai reititystä ei ole muutettu REL-10:ssä.
 
+## WordPress-pohjan välitarkistus 27.8.2026
+
+- `https://seniorsurf.fi/aloitussivu/` on julkaistu WordPress-sivuna ja palauttaa HTTP 200:n ilman osoitteen vaihtumista.
+- Julkinen otsikko on **Seniorin aloitussivu**. Viisi hyväksyttyä esittelykappaletta sekä teksti **Avataan 1.9.2026** näkyvät sivun lähteessä.
+- Sivulla ei vielä ole kuvaa eikä **Avaa Seniorin aloitussivu** -linkkiä. Kuvakaappaus- ja painiketestit ovat siksi avoinna.
+- Ennen fyysisen sovellushakemiston käyttöönottoa `https://seniorsurf.fi/aloitus/` palauttaa WordPressin HTTP 301 -ohjauksen osoitteeseen `/aloitussivu/` (`X-Redirect-By: WordPress`). Tämä on lähtötila, ei hyväksytty lopputulos. Ohjauksen pitää poistua, kun fyysinen `/aloitus/`-hakemisto aktivoidaan; erillistä Redirection-sääntöä ei lisätä.
+- WordPressin etusivu, kolme vertailusivua, julkinen haku, ylläpitokirjautumisen ohjaus ja vertailumedia läpäisivät vain lukevan välisavukokeen. Lopullinen WP-11 tehdään fyysisen `/aloitus/`-hakemiston jälkeen.
+
 ## Hyväksytty tuotantorakenne
 
 ```text
