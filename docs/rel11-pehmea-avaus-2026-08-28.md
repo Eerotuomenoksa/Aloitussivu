@@ -13,6 +13,8 @@ Pehmeä avaus on oikea tuotantovaihto, ei erillinen esikatselu. Osoite `https://
 
 Ehdokas on paikallisesti PASS, mutta staging-uusinta on vielä tehtävä ennen pehmeää avausta.
 
+Huomisaamun tiivis työjärjestys on tiedostossa `rel11-huomisaamun-tyolista-2026-08-28.md` ja uuden ehdokkaan staging-komennot tiedostossa `rel11-staging-vienti-2026-08-28.md`.
+
 ## Aikataulu
 
 - **28.8. klo 08.30:** valmiusportti. Rajattu API-käyttäjä, tuotantokonfiguraatio, uusi version 0.74.6 ehdokas, staging-uusinta, varmistukset, admin-roolit, smoke-hyväksyjä ja palautustuki tarkistetaan.
