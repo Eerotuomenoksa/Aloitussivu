@@ -5,8 +5,8 @@ $ErrorActionPreference = 'Stop'
 
 $workspaceRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 $temporaryRoot = [IO.Path]::GetFullPath((Join-Path $workspaceRoot '.tmp'))
-$packageRoot = [IO.Path]::GetFullPath((Join-Path $temporaryRoot 'rel10-production-path-package'))
-$zipPath = [IO.Path]::GetFullPath((Join-Path $temporaryRoot 'aloitussivu-rel10-production-path.zip'))
+$packageRoot = [IO.Path]::GetFullPath((Join-Path $temporaryRoot 'rel11-production-path-package'))
+$zipPath = [IO.Path]::GetFullPath((Join-Path $temporaryRoot 'aloitussivu-rel11-production-path.zip'))
 $pathPrefix = $temporaryRoot.TrimEnd([IO.Path]::DirectorySeparatorChar) + [IO.Path]::DirectorySeparatorChar
 
 if (-not $packageRoot.StartsWith($pathPrefix, [StringComparison]::OrdinalIgnoreCase)) {
@@ -15,6 +15,18 @@ if (-not $packageRoot.StartsWith($pathPrefix, [StringComparison]::OrdinalIgnoreC
 
 Push-Location $workspaceRoot
 try {
+    $workingTreeDirty = [bool](& git status --porcelain)
+    if ($LASTEXITCODE -ne 0) {
+        throw 'Git-työpuun tilaa ei voitu tarkistaa.'
+    }
+    if ($workingTreeDirty) {
+        throw 'Tuotantopolun paketti on rakennettava puhtaasta työpuusta.'
+    }
+    $commit = (& git rev-parse --short=12 HEAD).Trim()
+    if ($LASTEXITCODE -ne 0 -or -not $commit) {
+        throw 'Tuotantopolun paketin commit-tunnistetta ei voitu ratkaista.'
+    }
+
     $previousApiBase = $env:VITE_API_BASE
     $previousProvider = $env:VITE_DATA_PROVIDER
     try {
@@ -65,22 +77,25 @@ try {
         throw 'Tuotantobundlesta puuttuu odotettu /aloitus/api/v1-polku.'
     }
 
-    $packageJson = Get-Content -LiteralPath (Join-Path $workspaceRoot 'package.json') -Raw | ConvertFrom-Json
-    $commit = (& git rev-parse --short=12 HEAD).Trim()
-    if ($LASTEXITCODE -ne 0 -or -not $commit) {
-        $commit = 'unknown'
-    }
+    $currentCommit = (& git rev-parse --short=12 HEAD).Trim()
     $workingTreeDirty = [bool](& git status --porcelain)
+    if ($LASTEXITCODE -ne 0 -or $workingTreeDirty -or $currentCommit -ne $commit) {
+        throw 'Git-tila muuttui paketoinnin aikana. Tuotantopolun pakettia ei muodostettu.'
+    }
+    $packageJson = Get-Content -LiteralPath (Join-Path $workspaceRoot 'package.json') -Raw | ConvertFrom-Json
+    $version = [string]$packageJson.version
+    $buildId = "REL-11-v$version-$commit"
     [ordered]@{
-        package = 'REL-10-production-path'
-        mode = 'cloudcity'
+        package = 'REL-11'
+        mode = 'production-path'
+        buildId = $buildId
         publicUrl = 'https://seniorsurf.fi/aloitus/'
         publicApiBase = '/aloitus/api/v1'
         publicUploadTarget = '/website.wp33403/aloitus/'
         privateUploadTarget = '/aloitus-production/'
-        version = [string]$packageJson.version
+        version = $version
         commit = $commit
-        workingTreeDirty = $workingTreeDirty
+        workingTreeDirty = $false
         builtAtUtc = [DateTime]::UtcNow.ToString('o')
         schemaMigrations = @('001_initial_schema', '002_add_link_reports_triage_index')
         backgroundJobs = @('ncsc')
@@ -119,9 +134,11 @@ try {
     }
     $hash = ([BitConverter]::ToString($hashBytes)).Replace('-', '').ToLowerInvariant()
     [pscustomobject]@{
+        BuildId = $buildId
         PackageDirectory = $packageRoot
         PublicUploadDirectory = $publicRoot.FullName
         PrivateUploadDirectory = $privateRoot.FullName
+        FileCount = @(Get-ChildItem -LiteralPath $packageRoot -Recurse -Force -File).Count
         Zip = $zipPath
         Sha256 = $hash
     } | Format-List
