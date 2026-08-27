@@ -1,6 +1,6 @@
 # REL-10: WordPress-esittely ja suora `/aloitus/`-julkaisu
 
-Päivitetty 25.8.2026. Käyttäjän lopullinen osoite ja selaimen osoitepalkissa säilyvä osoite on `https://seniorsurf.fi/aloitus/`. Canonista polkua ei ohjata alidomainiin.
+Päivitetty 27.8.2026. Käyttäjän lopullinen osoite ja selaimen osoitepalkissa säilyvä osoite on `https://seniorsurf.fi/aloitus/`. Canonista polkua ei ohjata alidomainiin.
 
 ## Nykytila 25.8.2026
 
@@ -54,6 +54,18 @@ Luo WordPressiin tavallinen julkinen sivu seuraavilla tiedoilla:
 Linkin näkyvän tekstin pitää kuvata kohde. Älä käytä pelkkää tekstiä ”Klikkaa tästä”.
 
 SeniorSurf-tuotevastuu hyväksyi sisällön 26.8.2026. Eero Tuomenoksa luo ja julkaisee esittelysivun itse WordPressissä ennen REL-11-julkaisuporttia.
+
+### Julkaisu WordPressin lohkoeditorissa
+
+1. Valitse **Sivut → Lisää uusi sivu**.
+2. Anna sivun otsikoksi **Seniorin aloitussivu – palvelun esittely**.
+3. Aseta polkutunnukseksi `aloitussivu-palvelu`. Esikatseluosoitteen pitää päättyä muotoon `/aloitussivu-palvelu/`.
+4. Lisää hyväksytty sisältö yllä olevassa järjestyksessä: **Otsikko**-lohko tasolla 2, viisi **Kappale**-lohkoa ja lopuksi **Painikkeet**-lohko.
+5. Aseta painikkeen tekstiksi **Avaa Seniorin aloitussivu** ja linkiksi `https://seniorsurf.fi/aloitus/`. Linkkiä ei tarvitse avata uuteen välilehteen.
+6. Varmista, että sivu on julkinen ja hakukonenäkyvyys on sallittu. Tarkista esikatselu sekä tietokoneen että puhelimen levyisessä näkymässä.
+7. Julkaise sivu ja avaa julkinen osoite uloskirjautuneena. Varmista, että sivu palauttaa hyväksytyn sisällön ja että painike osoittaa täsmälleen `/aloitus/`-osoitteeseen.
+
+Älä luo WordPress-sivua polkuun `/aloitus/` äläkä lisää tälle polulle Redirection-sääntöä. `/aloitus/` varataan fyysisessä hakemistossa julkaistavalle sovellukselle.
 
 ## Valinnaiset kirjoitusvirheosoitteet
 
