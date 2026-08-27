@@ -4,11 +4,20 @@ Päivitetty 27.8.2026. Aloitussivu avataan teknisesti yleisölle perjantaina 28.
 
 Pehmeä avaus on oikea tuotantovaihto, ei erillinen esikatselu. Osoite `https://seniorsurf.fi/aloitus/`, Cloudcity-API ja tuotanto-MariaDB ovat avaamisen jälkeen käyttäjien käytössä. Siksi samoja varmistus-, tietosuoja-, vähimmän oikeuden ja palautusehtoja noudatetaan kuin aiemmin 1.9. suunnitellussa vaihdossa.
 
+## Uusi paikallinen ehdokas
+
+- Build ID: `REL-11-v0.74.6-d010d2954873`
+- Staging-ZIP: `C:\dev\Aloitussivu\.tmp\aloitussivu-rel11-staging.zip`, 838175 tavua, SHA-256 `1d05240c75ad46095829f6830103db9c6176f08cb188776dc01de3e4ed758ebe`
+- Tuotantopolun ZIP: `C:\dev\Aloitussivu\.tmp\aloitussivu-rel11-production-path.zip`, 824586 tavua, SHA-256 `97006ada23b3c32626fbe40160d8b74933a01f1081be71aada97bb6245e162e4`
+- Kummassakin ZIPissä on 115 tiedostoa, kaikki merkinnät avautuvat, vaarallisia polkuja on 0 eikä paketissa ole oikeaa `config.php`-tiedostoa, `.env`-tiedostoja tai Admin SDK -avainta.
+
+Ehdokas on paikallisesti PASS, mutta staging-uusinta on vielä tehtävä ennen pehmeää avausta.
+
 ## Aikataulu
 
 - **28.8. klo 08.30:** valmiusportti. Rajattu API-käyttäjä, tuotantokonfiguraatio, uusi version 0.74.6 ehdokas, staging-uusinta, varmistukset, admin-roolit, smoke-hyväksyjä ja palautustuki tarkistetaan.
 - **28.8. klo 09.00:** aikaisin mahdollinen T0, jos kaikki kovat GO-ehdot ovat PASS. Jos yksikin ehto puuttuu, avausta siirretään saman päivän myöhempään hallittuun ikkunaan eikä ehtoja ohiteta.
-- **28.8. T0–T0+25 min:** Firestore-kirjoituslukko, lopullinen vienti, tuotantotuonti, julkisen hakemiston aktivointi ja smoke tehdään tiedoston `rel11-tuotantovaihto-2026-09-01.md` suhteellisessa järjestyksessä.
+- **28.8. T0–T0+25 min:** Firestore-kirjoituslukko, lopullinen vienti, tuotantotuonti, julkisen hakemiston aktivointi ja smoke tehdään tiedoston `rel11-tuotantovaihto-2026-09-01.md` vaiheiden järjestyksessä. Sen vanhoja version 0.74.5 polkuja sisältäviä komentolohkoja ei ajeta; uudet täsmälliset palvelinpolut kirjataan version 0.74.6 esiviennin jälkeen.
 - **28.8. smoken jälkeen:** sivu jätetään julkisesti käytettäväksi. Vain rajatulle digiopastaja- ja testaajaryhmälle kerrotaan osoite; yleistä julkaisuviestiä ei vielä lähetetä.
 - **1.9. klo 08.30:** tarkistetaan health, huijausvaroitukset, sää, paikallisuutiset, lomakekirjoitus, admin-näkymä ja WordPressin vertailusivut.
 - **1.9. klo 09.00:** laaja tiedotus lähetetään vain, jos tarkistus on PASS. Muussa tapauksessa tiedotus siirretään ja sivu joko korjataan tai palautetaan vian vakavuuden mukaan.
