@@ -397,7 +397,7 @@ Tehtävät:
 2. Varmista, että nimipäivät ja AI eivät näy tai lataudu ja että paikallisuutiset ovat oletuksena piilossa mutta asetuksista avattavissa.
 3. Tarkista canonical, Open Graph, sitemap, robots, nimi, osoite, tietosuoja- ja saavutettavuuslinkit.
 4. Aja keskeisten palvelulinkkien raportti ja korjaa vain hyväksytyt P1/P2-havainnot.
-5. Hyväksy WordPressin `/aloitussivu-palvelu/`-esittelysivun sisältö sekä suora `/aloitus/`-tuotantorakenne. Varmista, että frontend käyttää `/aloitus/api/v1`-osoitetta, yksityiset palvelintiedostot pysyvät web-juuren ulkopuolella eikä kanoniseen polkuun tehdä Redirection-sääntöä.
+5. Hyväksy WordPressin `/aloitussivu/`-esittelysivun sisältö ja tietokone- sekä mobiilikuvakaappaukset sekä suora `/aloitus/`-tuotantorakenne. Varmista, että frontend käyttää `/aloitus/api/v1`-osoitetta, yksityiset palvelintiedostot pysyvät web-juuren ulkopuolella eikä kanoniseen polkuun tehdä Redirection-sääntöä.
 6. Rakenna yksilöity julkaisukandidaatti `main`-haarasta ja vie sama build stagingiin.
 7. Jäädytä sisältö. Tämän jälkeen hyväksytään vain P1-korjauksia.
 
@@ -433,7 +433,7 @@ Tehtävät:
 5. Testaa luvaton ylläpitokäyttö, ylimittainen syöte, liitteen suojaus, 404, verkkovirhe ja palautusproviderin hallittu toiminta.
 6. Toista WordPress-savukoe ja vertaa REL-01:n lähtötilaan.
 7. Testaa suora `/aloitus/`-polku loppukauttaviivalla ja ilman sitä, varmista ettei osoite vaihdu alidomainiin, tarkista `/aloitus/api/v1`-reitit sekä resurssit ja varmista ettei WordPress kaappaa Aloitussivun reittejä.
-8. Testaa `/aloitussivu-palvelu/`-esittelysivun sisältö, saavutettavuus, mobiilinäkymä ja linkki `/aloitus/`-osoitteeseen.
+8. Testaa `/aloitussivu/`-esittelysivun sisältö, saavutettavuus, tietokone- ja mobiilinäkymä, hyväksytyt kuvakaappaukset ja linkki `/aloitus/`-osoitteeseen.
 9. Ota viimeinen staging-varmistus, tee lopullisen delta-tuonnin kuivaharjoitus ja vahvista tuotannon muutosikkuna Fakiirimedian kanssa.
 10. Kirjaa julkaise/älä julkaise -päätös ja kaikki hyväksytyt P2/P3-poikkeamat.
 
@@ -466,7 +466,7 @@ Tehtävät:
 2. Kirjaa WordPress-savukokeen tuotannon lähtötila.
 3. Vie hyväksytty build, API, skeemamigraatio ja lopullinen Firestore-delta suunnitellussa järjestyksessä.
 4. Testaa Aloitussivun etusivu, metatiedot, sitemap, robots, mobiili, työpöytä, haut, paikallissisällöt, lomakkeet, huijausvaroitukset, käyttötilasto ja ylläpito.
-5. Aktivoi hyväksytty suora `/aloitus/`-hakemisto, testaa etusivu ja `/aloitus/api/v1/health` ilman ulkoista ohjausta sekä varmista `/aloitussivu-palvelu/`-esittelysivu.
+5. Aktivoi hyväksytty suora `/aloitus/`-hakemisto, testaa etusivu ja `/aloitus/api/v1/health` ilman ulkoista ohjausta sekä varmista `/aloitussivu/`-esittelysivu.
 6. Toista WordPress-savukoe välittömästi julkaisun jälkeen.
 7. Jos P1-virhe tai WordPress-regressio löytyy, pysäytä kirjoitukset ja käynnistä dokumentoitu palautus.
 8. Lähetä sovittu julkaisuviesti vasta smoke-testien jälkeen ja käynnistä päivittäinen seuranta.

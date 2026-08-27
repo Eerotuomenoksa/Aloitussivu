@@ -5,7 +5,7 @@ Päivitetty 27.8.2026. Käyttäjän lopullinen osoite ja selaimen osoitepalkissa
 ## Nykytila 25.8.2026
 
 - `https://seniorsurf.fi/aloitus/` näyttää vielä WordPressin 404-sivun.
-- `https://seniorsurf.fi/aloitussivu-palvelu/` näyttää vielä WordPressin 404-sivun.
+- Tuolloin suunniteltu `https://seniorsurf.fi/aloitussivu-palvelu/` näytti WordPressin 404-sivun. Tuotevastuu lyhensi esittelysivun osoitteeksi `https://seniorsurf.fi/aloitussivu/` 27.8.2026; uusi sivu ei ole vielä julkaistu.
 - WordPressin tiedostoja, asetuksia, tietokantaa tai reititystä ei ole muutettu REL-10:ssä.
 
 ## Hyväksytty tuotantorakenne
@@ -31,8 +31,8 @@ https://seniorsurf.fi/aloitus/
 Luo WordPressiin tavallinen julkinen sivu seuraavilla tiedoilla:
 
 - otsikko: **Seniorin aloitussivu – palvelun esittely**
-- polkutunnus: `aloitussivu-palvelu`
-- julkinen osoite: `https://seniorsurf.fi/aloitussivu-palvelu/`
+- polkutunnus: `aloitussivu`
+- julkinen osoite: `https://seniorsurf.fi/aloitussivu/`
 - hakukonenäkyvyys: sallittu
 
 ### Hyväksytty sisältö 26.8.2026
@@ -59,7 +59,7 @@ SeniorSurf-tuotevastuu hyväksyi sisällön 26.8.2026. Eero Tuomenoksa luo ja ju
 
 1. Valitse **Sivut → Lisää uusi sivu**.
 2. Anna sivun otsikoksi **Seniorin aloitussivu – palvelun esittely**.
-3. Aseta polkutunnukseksi `aloitussivu-palvelu`. Esikatseluosoitteen pitää päättyä muotoon `/aloitussivu-palvelu/`.
+3. Aseta polkutunnukseksi `aloitussivu`. Esikatseluosoitteen pitää päättyä muotoon `/aloitussivu/`.
 4. Lisää hyväksytty sisältö yllä olevassa järjestyksessä: **Otsikko**-lohko tasolla 2, viisi **Kappale**-lohkoa ja lopuksi **Painikkeet**-lohko.
 5. Aseta painikkeen tekstiksi **Avaa Seniorin aloitussivu** ja linkiksi `https://seniorsurf.fi/aloitus/`. Linkkiä ei tarvitse avata uuteen välilehteen.
 6. Varmista, että sivu on julkinen ja hakukonenäkyvyys on sallittu. Tarkista esikatselu sekä tietokoneen että puhelimen levyisessä näkymässä.
@@ -67,9 +67,20 @@ SeniorSurf-tuotevastuu hyväksyi sisällön 26.8.2026. Eero Tuomenoksa luo ja ju
 
 Älä luo WordPress-sivua polkuun `/aloitus/` äläkä lisää tälle polulle Redirection-sääntöä. `/aloitus/` varataan fyysisessä hakemistossa julkaistavalle sovellukselle.
 
+### Kuvakaappaustyölista esittelysivua varten
+
+Kuvakaappaukset otetaan vasta puhtaasta hyväksytystä näkymästä. Niissä ei saa näkyä ylläpitoa, lomakevastauksia, tunnuksia, selaimen kirjanmerkkejä tai muuta henkilötietoa.
+
+1. Ota sovelluksen etusivusta tietokonekuva 1440 × 900 pikselin näkymässä, vihreällä vaalealla oletusteemalla ja 100 prosentin tekstikoolla. Kunnaksi voi valita Tampereen, jotta Lähelläsi-osio näkyy julkisella testisisällöllä.
+2. Ota samasta sovellusversiosta puhelinkuva 390 × 844 pikselin näkymässä. Varmista, ettei sisältö leikkaudu eikä kuvassa ole avointa modaalia.
+3. Rajaa esittelysivulle käytettävä kuva niin, että palvelun nimi, haku ja vähintään yksi keskeinen sisältöalue näkyvät. Tallenna verkkoon optimoituna WebP- tai PNG-tiedostona ilman tarpeettomia metatietoja.
+4. Lisää WordPress-kuvalle vaihtoehtoinen teksti: `Seniorin aloitussivun etusivu, jossa näkyvät haku ja arjen palvelut.` Älä laita olennaista ohjetekstiä vain kuvan sisään.
+5. Kun WordPress-pohja on valmis, ota siitä tarkistuskuvat 1280 pikselin ja 390 pikselin leveydellä. Kuvissa pitää näkyä sivun otsikko, esittelyteksti, sovelluskuva ja **Avaa Seniorin aloitussivu** -painike.
+6. Säilytä alkuperäiset tarkistuskuvat paikallisesti julkaisuportin ajan. WordPressiin ladataan vain hyväksytty esittelykuva; selainkehysten tai testitulosten kuvia ei julkaista.
+
 ## Valinnaiset kirjoitusvirheosoitteet
 
-Vasta kun suora `/aloitus/`-osoite toimii, Redirection-lisäosalla voidaan ohjata esimerkiksi `/aloitussivu/`, `/aloitusivu/`, `/aloittussivu/`, `/alotussivu/` ja `/alku/` suoraan osoitteeseen `/aloitus/`.
+Vasta kun suora `/aloitus/`-osoite toimii, Redirection-lisäosalla voidaan ohjata esimerkiksi `/aloitusivu/`, `/aloittussivu/`, `/alotussivu/` ja `/alku/` suoraan osoitteeseen `/aloitus/`. Osoitetta `/aloitussivu/` ei käytetä alias-sääntönä, koska se kuuluu WordPressin esittelysivulle.
 
 - testissä HTTP 302, julkaisussa HTTP 301
 - kyselyparametrit välitetään kohteeseen
@@ -82,7 +93,7 @@ Vasta kun suora `/aloitus/`-osoite toimii, Redirection-lisäosalla voidaan ohjat
 1. `https://seniorsurf.fi/aloitus/` palauttaa HTTP 200:n ilman ulkoista uudelleenohjausta ja osoitepalkki säilyy samana.
 2. `https://seniorsurf.fi/aloitus/api/v1/health` palauttaa HTTP 200:n, sovelluksen tilan `ok` ja tietokannan tilan `up` sekä `Cache-Control: no-store` -otsakkeen.
 3. Frontendin resurssit latautuvat `/aloitus/assets/`-polusta ja API-pyynnöt `/aloitus/api/v1`-polusta.
-4. `https://seniorsurf.fi/aloitussivu-palvelu/` palauttaa HTTP 200:n, ja **Avaa Seniorin aloitussivu** -linkki osoittaa suoraan `/aloitus/`-osoitteeseen.
+4. `https://seniorsurf.fi/aloitussivu/` palauttaa HTTP 200:n, ja **Avaa Seniorin aloitussivu** -linkki osoittaa suoraan `/aloitus/`-osoitteeseen.
 5. Tarkoituksella puuttuva `/aloitus/`-osoite näyttää Aloitussivun oman 404-sivun eikä WordPressin 404-sivua.
 6. WordPressin etusivu, Etäopastus, Ajankohtaista, Yhteystiedot, julkinen haku, kirjautumissivu ja vertailumedia toimivat kuten ennen muutosta.
 

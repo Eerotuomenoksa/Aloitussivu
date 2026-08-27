@@ -82,8 +82,8 @@ Tehtävät:
 
 1. Lisää tietosuoja- ja saavutettavuusselosteisiin lopulliset vastuu- ja yhteystiedot.
 2. Tarkista nimi, osoite, canonical, Open Graph, sitemap ja robots.
-3. Laadi ja hyväksytä WordPressin julkinen `Seniorin aloitussivu – palvelun esittely` -sivu polkuun `/aloitussivu-palvelu/`; lisää selkeä linkki markkinointiosoitteeseen `/aloitus/`.
-4. Valmistele WordPressin `Seniorin aloitussivu` -sivu polkuun `/aloitus/` ja Redirection-sääntö, joka ohjaa testauksessa 302-koodilla ja julkaisussa 301-koodilla osoitteeseen `https://aloitussivu.seniorsurf.fi/`.
+3. Laadi ja hyväksytä WordPressin julkinen `Seniorin aloitussivu – palvelun esittely` -sivu polkuun `/aloitussivu/`; lisää selkeä linkki sovelluksen osoitteeseen `/aloitus/` ja ota hyväksyntää varten tietokone- sekä puhelinkuvakaappaukset.
+4. Valmistele sovelluksen fyysinen `/aloitus/`-hakemisto WordPressin rinnalle ilman WordPress-sivua, Redirection-sääntöä tai pääjuuren `.htaccess`-muutosta. Osoitepalkin pitää säilyä muodossa `https://seniorsurf.fi/aloitus/`.
 5. Aja linkkiraportti ja korjaa keskeisten palveluiden rikkinäiset linkit.
 6. Toteuta lukitut P2-korjaukset ja testaa ne uudelleen.
 7. Jäädytä sisältö 27.8. päivän lopussa. Sen jälkeen hyväksytään vain P1-korjauksia.
@@ -105,8 +105,8 @@ Tehtävät:
 4. Testaa leveydet 320, 375, 768 ja 1280 pikseliä sekä tekstikoot 100–200 prosenttia.
 5. Testaa näppäimistöpolku, ruudunlukijan perusrakenne, kaikki neljä väriteemaa ja tärkeimmät modaalit.
 6. Testaa tärkeimmät linkit, linkki-ilmoitus, huijausvaroitukset, käyttötilasto ja suojattu ylläpito stagingissä.
-7. Testaa WordPressin `/aloitus/`-osoite ilman loppukauttaviivaa ja sen kanssa, varmista suora ohjaus alidomainiin ilman ketjua tai silmukkaa sekä tarkista kyselyparametrien välittyminen.
-8. Testaa `/aloitussivu-palvelu/`-esittelysivun sisältö, saavutettavuus, mobiilinäkymä ja linkki `/aloitus/`-markkinointiosoitteeseen.
+7. Testaa sovelluksen `/aloitus/`-osoite ilman loppukauttaviivaa ja sen kanssa, varmista että osoite säilyy samalla domainilla ilman ketjua tai silmukkaa sekä tarkista kyselyparametrien säilyminen tarvittavissa reiteissä.
+8. Testaa `/aloitussivu/`-esittelysivun sisältö, saavutettavuus, tietokone- ja mobiilinäkymä sekä linkki `/aloitus/`-sovellusosoitteeseen.
 9. Tee julkaise/älä julkaise -päätös 31.8. päivän loppuun mennessä.
 
 Valmis, kun julkaisuportti täyttyy ja sama build voidaan viedä tuotantoon ilman uusia sisältömuutoksia.

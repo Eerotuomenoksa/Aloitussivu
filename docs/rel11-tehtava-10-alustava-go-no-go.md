@@ -6,7 +6,7 @@ Päivitetty 27.8.2026. Tämä on ennen ensi viikon julkaisuikkunaa tehty alustav
 
 **NO-GO 27.8.2026.** REL-11-versiota ei julkaista vielä tuotantoon.
 
-Staging-ehdokkaan `REL-11-v0.74.5-d5c4ea9ac2b8` sovelluskorjaukset ja niiden vaikutusaluetestit ovat PASS, ja avoimia P1-vikahavaintoja on 0. Kokonaisportissa on silti 16 P1-riviä, joita ei ole vielä hyväksytty oikeassa julkaisuympäristössä tai ihmisten vahvistuksilla.
+Staging-ehdokkaan `REL-11-v0.74.5-d5c4ea9ac2b8` sovelluskorjaukset ja niiden vaikutusaluetestit ovat PASS, ja avoimia P1-vikahavaintoja on 0. PRE-08:n keinotekoinen testiaineisto on lukittu ja PASS. Kokonaisportissa on silti 15 P1-riviä, joita ei ole vielä hyväksytty oikeassa julkaisuympäristössä tai ihmisten vahvistuksilla.
 
 ## Hyväksytty tekninen näyttö
 
@@ -23,7 +23,7 @@ Staging-ehdokkaan `REL-11-v0.74.5-d5c4ea9ac2b8` sovelluskorjaukset ja niiden vai
 
 | Ryhmä | Rivit | Mitä puuttuu |
 | --- | --- | --- |
-| Ennakkoehdot | PRE-05–PRE-08 | WordPress-esittelysivu, oikea Cloudcity/WordPress-rinnakkaiskoe, henkilöiden ja kellonaikojen vahvistus sekä keinotekoisen testiaineiston sopiminen. |
+| Ennakkoehdot | PRE-05–PRE-07 | WordPress-esittelysivu, oikea Cloudcity/WordPress-rinnakkaiskoe sekä henkilöiden ja kellonaikojen vahvistus. PRE-08-testiaineisto on PASS. |
 | WordPress ja tuotantopolku | WP-05–WP-11 | Esittelysivun julkaisu, WP-06–WP-10:n uusinta oikeassa `/aloitus/`-osoitteessa ja WP-01–WP-04:n jälkeen-savukoe. |
 | Varmistus ja vaihto | OPS-01–OPS-04, OPS-06 | Julkaisuhetken tiedosto- ja MariaDB-varmistukset, oikea Firestore-delta ja täsmäytys, oikean tuotantotietokannan valmius sekä vastuiden ja muutosikkunan hyväksyntä. |
 
@@ -41,7 +41,7 @@ Suljettu P3-havainto `REL11-OPS-01` oli hakurajauksesta johtunut väärä löyd�
 
 Päätös voidaan muuttaa GO-tilaan vain, kun kaikki seuraavat toteutuvat samalla jäädytetyllä ehdokkaalla:
 
-1. PRE-05–PRE-08, WP-05–WP-11, OPS-01–OPS-04 ja OPS-06 ovat PASS tai kirjallisesti perusteltu N/A sallitaan matriisin sääntöjen mukaisesti.
+1. PRE-05–PRE-07, WP-05–WP-11, OPS-01–OPS-04 ja OPS-06 ovat PASS tai kirjallisesti perusteltu N/A sallitaan matriisin sääntöjen mukaisesti.
 2. Oikea `/aloitus/`, `/aloitus/api/v1/health`, resurssit, kanonisointi ja Aloitussivun 404 läpäisevät kokeet ilman alidomainiohjausta tai WordPress-regressiota.
 3. Lopullinen Firestore-delta ja tunnistejoukon vertailu täsmäävät, `exceptionCount` on 0 eikä samanaikaisia kirjoituksia synny Firestoreen ja Cloudcityyn.
 4. Julkaisuhetken tiedosto- ja MariaDB-varmistukset, palautusoikeudet sekä tuotantotietokannan vähimmän oikeuden tunnukset on vahvistettu.
