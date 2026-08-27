@@ -666,3 +666,11 @@ Eero siirsi ja purki ehdokkaan `REL-11-v0.74.5-d5c4ea9ac2b8` Cloudcity-stagingii
 NCSC-CLI-ajo valmistui yhteenvedolla `alertsCreated: 0`, `targetsProcessed: 3`, `targetsSkipped: 1` ja `errors: 0`. Julkinen API palautti sen jälkeen seitsemän aktiivista automaattivaroitusta. Kuusi tekstiä oli 786–800 merkkiä, ja yksi tasan 300 merkin teksti päättyi ehjään lauseeseen. Kesken lauseen täsmälleen 300 merkkiin jääneitä aktiivisia rivejä oli **0**. Käyttöliittymän kaksi ensimmäisenä näkyvää varoitusta avautuivat dialogeihin 800 ja 795 merkin tekstein, ja kummassakin näkyi toimiva lähdelinkki.
 
 **Porttitila:** CORE-07 on PASS ja `REL11-CORE-01` suljettu staging-uusinnalla. Myös A11Y-07, A11Y-08 ja A11Y-10 ovat aiemmin läpäisseet saman selainbundlen staging-uusinnan, joten neljän P1-korjauksen vaikutusalue on hyväksytty. REL-11:n kokonaispäätös säilyy kuitenkin NO-GO-tilassa, kunnes WordPress-esittelysivu, suora tuotannonkaltainen `/aloitus/`-polku ja niiden jälkeinen WordPress-smoke on suoritettu. Stagingin Basic Auth pysyy tuotevastuun aiemman päätöksen mukaisesti väliaikaisesti poissa käytöstä.
+
+## 27.8.2026 — REL-11 tehtävä 6/10: WordPressin lukeva välisavukoe
+
+WordPress-esittelysivun julkaisu siirrettiin tuotevastuun päätöksellä ensi viikolle. Sitä tai suoraa `/aloitus/`-polkua ei merkitty läpäistyksi eikä WordPressiin tehty muutoksia. Tehtävän 6 vain lukeva savukoe toistettiin nykyisen WordPressin kunnon varmistamiseksi ja tulosta verrattiin REL-01-lähtötasoon.
+
+Etusivu, Etäopastus, Ajankohtaista, Yhteystiedot ja julkinen `digiopastus`-haku palauttivat HTTP 200:n. Selainotsikot ja näkyvät pääotsikot vastasivat lähtötasoa. `/wp-admin/` palautti HTTP 302:n kirjautumissivulle, kirjautumissivun otsikko ja tunnuskentät olivat odotetut, eikä kirjautumista tehty. Sovittu JPEG-vertailumedia palautti HTTP 200:n, `image/jpeg`-sisältötyypin ja 152080 tavun koon.
+
+**Tulos:** tehtävän 6 välisavukoe on PASS eikä WordPress-regressiota havaittu. Lopullinen WP-11-jälkeen-savukoe jää avoimeksi ja toistetaan ensi viikolla vasta esittelysivun ja suoran `/aloitus/`-polun muutosten jälkeen.

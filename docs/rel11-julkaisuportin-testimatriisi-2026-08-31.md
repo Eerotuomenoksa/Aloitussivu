@@ -195,6 +195,8 @@ Näissä testeissä ei muuteta WordPressin pääjuuren `.htaccess`-tiedostoa, te
 | WP-10 | P1 | Aloitussivun 404 | Puuttuva `/aloitus/`-alipolku näyttää Aloitussivun oman 404:n eikä WordPressin 404:ää. |  |  |
 | WP-11 | P1 | WordPressin jälkeen-savukoe | WP-01–WP-04 läpäisevät uudelleen Aloitussivun polkutestin jälkeen. |  |  |
 
+WP-01–WP-04 toistettiin vain lukevana välitarkistuksena 27.8.2026 ennen WordPress-esittelysivun ja `/aloitus/`-polun julkaisua. Etusivu, Etäopastus, Ajankohtaista, Yhteystiedot ja `?s=digiopastus` palauttivat HTTP 200:n sekä odotetut otsikot ja näkyvät pääotsikot. `/wp-admin/` palautti HTTP 302:n kirjautumissivulle, jonka tunnuskentät näkyivät. Vertailumedia palautti HTTP 200:n, tyypin `image/jpeg` ja 152080 tavua. Tulos vastasi REL-01-lähtötasoa. WP-11 jätetään avoimeksi, kunnes sama savukoe on toistettu ensi viikon WordPress- ja `/aloitus/`-muutosten jälkeen.
+
 ## 11. Varmistus, delta ja tuotantovalmius
 
 | ID | P | Testi | Hyväksymisehto | Tulos | Todiste tai havainto |
