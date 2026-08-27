@@ -1,0 +1,5 @@
+{
+  "firestore": {
+    "rules": "deploy/firebase/firestore-write-freeze.rules"
+  }
+}

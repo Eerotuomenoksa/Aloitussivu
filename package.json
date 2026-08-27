@@ -34,6 +34,8 @@
     "rel08:test": "node scripts/rel08-migration-test.mjs",
     "rel08:export": "node scripts/rel08-export-firestore.mjs",
     "rel08:build-import": "node scripts/rel08-build-import.mjs",
+    "rel11:build-admin-provisioning": "node scripts/rel11-build-admin-provisioning.mjs",
+    "rel11:admin-provisioning-test": "node scripts/rel11-admin-provisioning-test.mjs",
     "preview": "vite preview"
   },
   "dependencies": {

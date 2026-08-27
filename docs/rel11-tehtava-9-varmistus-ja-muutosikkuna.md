@@ -1,16 +1,17 @@
 # REL-11 tehtävä 9/10 – varmistus, delta ja muutosikkuna
 
-Päivitetty 27.8.2026. Tämä on valmisteluohje ensi viikon tuotantovaihdolle. Ohjeen tekeminen ei muuta Cloudcityä, WordPressiä, Firestorea tai MariaDB:tä.
+Päivitetty 27.8.2026. Tämä on valmisteluohje ensi viikon tuotantovaihdolle. Varsinainen suoritettava, 1.9.2026 klo 09.00 alkava ajokirja on [rel11-tuotantovaihto-2026-09-01.md](rel11-tuotantovaihto-2026-09-01.md). Ohjeen tekeminen ei muuta Cloudcityä, WordPressiä, Firestorea tai MariaDB:tä.
 
 ## Nykyinen paikallinen näyttö
 
 - `npm run rel08:test`: PASS 27.8.2026.
 - `scripts/rel08-export-firestore.mjs`, `rel08-build-import.mjs`, `rel08-migration-lib.mjs` ja `rel08-migration-test.mjs`: Node-syntaksi PASS.
 - `npm run check:secrets`: PASS.
-- Viimeisin tuotantopolun koepaketti on `REL-11-v0.74.5-3f6d9c6ff403`, 115 tiedostoa, SHA-256 `c85852e1e59581b41b9d113565c124719ddb16b37e4c913e3afe8f07fd76e160`.
-- Deploy-inputit vastaavat stagingissa testattua sovelluskoodia `d5c4ea9ac2b8`. Jos jokin deploy-inputti muuttuu, paketti rakennetaan ja testataan uudelleen.
+- Palvelimelle esiviety tuotantoehdokas on `REL-11-v0.74.5-ccaea4d434df`, 115 tiedostoa. ZIPin koko on 828142 tavua ja SHA-256 `a2b18ab6ddff6a590b3adf1de46560252b9f74abd48226aadbed7e3b645b5143`.
+- Deploy-inputit vastaavat stagingissa testattua version 0.74.5 sovelluskoodia. Jos jokin sovelluksen tai tuotantopaketin deploy-inputti muuttuu, paketti rakennetaan ja testataan uudelleen.
+- Firestore-harjoitusvienti projektista `aloitussivu-5d50c` valmistui 27.8.2026 klo 12.14.31 UTC, poikkeamia oli 0 ja SHA-256 oli `7b1ccaf1546f50f39332ba6f188fab642f1aa3a36789bec2b78d5713dcab6d3a`.
 
-Oikea Firestore-delta, julkaisuhetken varmistukset ja vastuuhenkilöiden hyväksyntä ovat vielä avoinna.
+Julkaisuhetken täysi Firestore-vienti, audit-delta, vähimmän oikeuden API-käyttäjä ja vastuuhenkilöiden hyväksyntä ovat vielä avoinna.
 
 ## Julkaisupäivän järjestys
 
@@ -18,12 +19,12 @@ Oikea Firestore-delta, julkaisuhetken varmistukset ja vastuuhenkilöiden hyväks
 2. Toista WordPressin ennen-savukoe WP-01–WP-04.
 3. Ota nykyisestä staging-versiosta uusi tiedostovarmistus ja uusi MariaDB-varmistus.
 4. Varmista tuotantotietokannan kohde, migraatiot ja vähimmän oikeuden käyttäjä.
-5. Aloita kirjoituskatko ja ota lopullinen Firestore-vienti sekä delta.
+5. Julkaise etukäteen kuivaharjoitettu Firestore-kirjoituslukko ja odota sääntöjen leviämisaika. Ota sen jälkeen lopullinen täysi Firestore-vienti sekä audit-delta.
 6. Rakenna tuontiaineisto, tarkista `exceptionCount = 0` ja täsmäytä lukumäärät sekä tiivisteet.
-7. Tuo delta MariaDB:hen vain vahvistettuun Aloitussivun tuotantotietokantaan.
+7. Koska tuotantokannan sovellusdatataulut ovat tyhjiä, tuo vain lopullisen täyden viennin `import.sql` vahvistettuun Aloitussivun tuotantotietokantaan. Älä tuo audit-deltaa tämän lisäksi.
 8. Vie hyväksytty julkinen ja yksityinen tuotantopaketti niiden omiin hakemistoihin.
 9. Aja `/aloitus/`-, API-, resurssi-, 404-, lomake-, ylläpito- ja WordPress-smoke.
-10. Avaa kirjoitukset vain Cloudcity-provideriin. Lähetä julkaisuviesti vasta hyväksytyn REL-12-smoken jälkeen.
+10. Julkisen hakemiston aktivointi tekee Cloudcitystä ainoan kirjoittavan providerin. Hyväksy smoke, jätä Firestore-kirjoituslukko voimaan ja lähetä julkaisuviesti vasta hyväksytyn REL-12-smoken jälkeen.
 
 ## Lopullinen staging-tiedostovarmistus SSH:ssa
 
@@ -58,6 +59,8 @@ Hyväksy vain, jos `realpath` palauttaa täsmälleen `/home/seniorsurffi/website
 Varmistus pitää uusia julkaisuikkunassa. Elokuun 26. päivän varmistus säilyy palautusnäyttönä, mutta se ei yksin riitä ensi viikon viimeiseksi palautuspisteeksi.
 
 ## Firestore-delta käyttäjän omassa PowerShellissä
+
+Alla oleva komento on aikaisemman delta-harjoituksen taustatieto. Julkaisuhetken täyden viennin ja audit-deltan täsmälliset komennot ovat 1.9. ajokirjassa; tätä vanhempaa aikarajaa ei käytetä tuotantotuontiin.
 
 Admin SDK -avainta ei anneta AI-agentille, tallenneta repoon tai kopioida keskusteluun. Käytä uutta väliaikaista avainta vain nykyisessä PowerShell-prosessissa ja mitätöi se heti hyväksytyn viennin jälkeen.
 
@@ -125,21 +128,21 @@ Täytä ja hyväksytä ennen PRE-07:n PASS-merkintää:
 | WordPress- ja Cloudcity-tuki | Fakiirimedia |  |
 | Riippumaton smoke-hyväksyntä | nimetään |  |
 
-- Muutosikkunan päivämäärä: `täytetään`
-- Aloitusaika Europe/Helsinki: `täytetään`
-- Viimeinen hyväksytty lopetusaika: `täytetään`
-- Ensimmäisen smoken kellonaika: `täytetään`
-- Palautuksen käynnistäjä: `täytetään`
+- Muutosikkunan päivämäärä: `1.9.2026`
+- Aloitusaika Europe/Helsinki: `09.00` (Firestore-kirjoituslukko julkaistaan klo 08.47)
+- Viimeinen hyväksytty lopetusaika: `09.25`
+- Ensimmäisen smoken tavoiteaika: `09.11`
+- Palautuksen käynnistäjä: `Eero Tuomenoksa, tuen kanssa; vahvistetaan 31.8.`
 
 Suunniteltu kirjoituskatko on enintään 25 minuuttia:
 
-1. **T−15:** ilmoitus, vastuut ja palautuspiste.
-2. **T0:** kirjoitukset kiinni.
-3. **T+2:** lopullinen vienti ja tunnistejoukon vertailu.
-4. **T+7:** delta rakennettu ja tuotu.
-5. **T+12:** täsmäytys ja yksityisyystarkistus.
-6. **T+17:** paketti käyttöön ja smoke.
-7. **T+22:** kirjoitukset auki vain Cloudcity-provideriin.
+1. **T−13:** Firestore-kirjoituslukko julkaistaan; aktiivisten kuuntelijoiden 10 minuutin leviämisaika alkaa.
+2. **T0:** lopullinen täysi vienti ja audit-delta jäädytetystä Firestoresta.
+3. **T+3:** molemmat aineistot rakennettu, poikkeamia 0.
+4. **T+5:** tyhjään tuotantokantaan tuodaan vain täysi aineisto ja ajetaan täsmäytys.
+5. **T+10:** julkinen paketti ja samalla ainoa kirjoittava Cloudcity-provider aktivoidaan; smoke alkaa.
+6. **T+17:** WordPress- ja riippumaton smoke valmistuvat.
+7. **T+20:** smoke hyväksytään ja huoltojakso päätetään; Firestore-lukko jää voimaan.
 8. **T+25:** ikkuna päätetään tai palautus käynnistetään.
 
 ## Pysäytysehdot

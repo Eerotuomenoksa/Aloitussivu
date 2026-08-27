@@ -1,0 +1,12 @@
+{
+  "projectId": "aloitussivu-5d50c",
+  "environment": "production",
+  "admins": [
+    {
+      "firebaseUid": "REPLACE_WITH_FIREBASE_UID_1",
+      "email": "replace-with-verified-email@example.invalid",
+      "role": "admin",
+      "active": true
+    }
+  ]
+}

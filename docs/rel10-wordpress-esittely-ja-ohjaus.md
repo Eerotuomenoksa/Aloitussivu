@@ -12,7 +12,7 @@ Päivitetty 27.8.2026. Käyttäjän lopullinen osoite ja selaimen osoitepalkissa
 
 - `https://seniorsurf.fi/aloitussivu/` on julkaistu WordPress-sivuna ja palauttaa HTTP 200:n ilman osoitteen vaihtumista.
 - Julkinen otsikko on **Seniorin aloitussivu**. Viisi hyväksyttyä esittelykappaletta sekä teksti **Avataan 1.9.2026** näkyvät sivun lähteessä.
-- Sivulla ei vielä ole kuvaa eikä **Avaa Seniorin aloitussivu** -linkkiä. Kuvakaappaus- ja painiketestit ovat siksi avoinna.
+- Myöhemmin 27.8.2026 tuotevastuu vahvisti lisänneensä hyväksytyn kuvan ja suoraan `/aloitus/`-osoitteeseen vievän **Avaa Seniorin aloitussivu** -painikkeen sekä tehneensä tietokone- ja mobiilikuvien tarkistukset. PRE-05 ja WP-05 voidaan hyväksyä tällä tuotevastuun näytöllä; fyysisen `/aloitus/`-polun WP-06–WP-11-kokeet tehdään edelleen tuotantovaihdossa.
 - Ennen fyysisen sovellushakemiston käyttöönottoa `https://seniorsurf.fi/aloitus/` palauttaa WordPressin HTTP 301 -ohjauksen osoitteeseen `/aloitussivu/` (`X-Redirect-By: WordPress`). Tämä on lähtötila, ei hyväksytty lopputulos. Ohjauksen pitää poistua, kun fyysinen `/aloitus/`-hakemisto aktivoidaan; erillistä Redirection-sääntöä ei lisätä.
 - WordPressin etusivu, kolme vertailusivua, julkinen haku, ylläpitokirjautumisen ohjaus ja vertailumedia läpäisivät vain lukevan välisavukokeen. Lopullinen WP-11 tehdään fyysisen `/aloitus/`-hakemiston jälkeen.
 

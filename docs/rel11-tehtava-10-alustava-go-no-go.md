@@ -2,11 +2,13 @@
 
 Päivitetty 27.8.2026. Tämä on ennen ensi viikon julkaisuikkunaa tehty alustava päätöspöytäkirja. Se ei ole tuotantolupa eikä muuta Cloudcityä, WordPressiä, Firestorea tai MariaDB:tä.
 
+Suoritettava tuotantovaihto on aikataulutettu 1.9.2026 klo 09.00–09.25 ja dokumentoitu ajokirjaan [rel11-tuotantovaihto-2026-09-01.md](rel11-tuotantovaihto-2026-09-01.md). Alustava päätös pysyy NO-GO-tilassa, kunnes ajokirjan maanantain kova valmiusportti on hyväksytty.
+
 ## Päätös
 
 **NO-GO 27.8.2026.** REL-11-versiota ei julkaista vielä tuotantoon.
 
-Staging-ehdokkaan `REL-11-v0.74.5-d5c4ea9ac2b8` sovelluskorjaukset ja niiden vaikutusaluetestit ovat PASS, ja avoimia P1-vikahavaintoja on 0. PRE-08:n keinotekoinen testiaineisto on lukittu ja PASS. Kokonaisportissa on silti 15 P1-riviä, joita ei ole vielä hyväksytty oikeassa julkaisuympäristössä tai ihmisten vahvistuksilla.
+Staging-ehdokkaan `REL-11-v0.74.5-d5c4ea9ac2b8` sovelluskorjaukset ja niiden vaikutusaluetestit ovat PASS, ja avoimia P1-vikahavaintoja on 0. PRE-05:n WordPress-esittely, PRE-08:n keinotekoinen testiaineisto, WP-05, OPS-01 ja OPS-05 ovat PASS. Kokonaisportissa on silti 12 P1-riviä, joita ei ole vielä hyväksytty oikeassa julkaisuympäristössä tai ihmisten vahvistuksilla.
 
 ## Hyväksytty tekninen näyttö
 
@@ -23,9 +25,9 @@ Staging-ehdokkaan `REL-11-v0.74.5-d5c4ea9ac2b8` sovelluskorjaukset ja niiden vai
 
 | Ryhmä | Rivit | Mitä puuttuu |
 | --- | --- | --- |
-| Ennakkoehdot | PRE-05–PRE-07 | WordPress-esittelysivu, oikea Cloudcity/WordPress-rinnakkaiskoe sekä henkilöiden ja kellonaikojen vahvistus. PRE-08-testiaineisto on PASS. |
-| WordPress ja tuotantopolku | WP-05–WP-11 | Esittelysivun julkaisu, WP-06–WP-10:n uusinta oikeassa `/aloitus/`-osoitteessa ja WP-01–WP-04:n jälkeen-savukoe. |
-| Varmistus ja vaihto | OPS-01–OPS-04, OPS-06 | Julkaisuhetken tiedosto- ja MariaDB-varmistukset, oikea Firestore-delta ja täsmäytys, oikean tuotantotietokannan valmius sekä vastuiden ja muutosikkunan hyväksyntä. |
+| Ennakkoehdot | PRE-06–PRE-07 | Oikea Cloudcity/WordPress-rinnakkaiskoe sekä henkilöiden ja kellonaikojen vahvistus. PRE-05-esittelysivu ja PRE-08-testiaineisto ovat PASS. |
+| WordPress ja tuotantopolku | WP-06–WP-11 | WP-06–WP-10:n uusinta oikeassa `/aloitus/`-osoitteessa ja WP-01–WP-04:n jälkeen-savukoe. WP-05-esittelysivu on PASS. |
+| Varmistus ja vaihto | OPS-02–OPS-04, OPS-06 | MariaDB-varmistuksen yksityinen lopputietue, lopullinen Firestore-vienti ja täsmäytys, oikean tuotantotietokannan API-käyttäjä sekä vastuiden hyväksyntä. OPS-01-tiedostovarmistus ja OPS-05-tuotantopaketti ovat PASS. |
 
 WP-06–WP-10:n paikallinen tulos on hyväksytty vain valmistelunäyttönä. Se ei todista Cloudcityn LiteSpeed/Apache-reititystä, fyysisen `/aloitus/`-hakemiston rinnakkaiseloa WordPressin kanssa eikä oikeaa tuotantotietokantaa.
 
@@ -41,7 +43,7 @@ Suljettu P3-havainto `REL11-OPS-01` oli hakurajauksesta johtunut väärä löyd�
 
 Päätös voidaan muuttaa GO-tilaan vain, kun kaikki seuraavat toteutuvat samalla jäädytetyllä ehdokkaalla:
 
-1. PRE-05–PRE-07, WP-05–WP-11, OPS-01–OPS-04 ja OPS-06 ovat PASS tai kirjallisesti perusteltu N/A sallitaan matriisin sääntöjen mukaisesti.
+1. PRE-06–PRE-07, WP-06–WP-11, OPS-02–OPS-04 ja OPS-06 ovat PASS tai kirjallisesti perusteltu N/A sallitaan matriisin sääntöjen mukaisesti. PRE-05, PRE-08, WP-05, OPS-01 ja OPS-05 säilyvät PASS-tilassa.
 2. Oikea `/aloitus/`, `/aloitus/api/v1/health`, resurssit, kanonisointi ja Aloitussivun 404 läpäisevät kokeet ilman alidomainiohjausta tai WordPress-regressiota.
 3. Lopullinen Firestore-delta ja tunnistejoukon vertailu täsmäävät, `exceptionCount` on 0 eikä samanaikaisia kirjoituksia synny Firestoreen ja Cloudcityyn.
 4. Julkaisuhetken tiedosto- ja MariaDB-varmistukset, palautusoikeudet sekä tuotantotietokannan vähimmän oikeuden tunnukset on vahvistettu.
