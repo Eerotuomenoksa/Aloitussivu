@@ -674,3 +674,17 @@ WordPress-esittelysivun julkaisu siirrettiin tuotevastuun päätöksellä ensi v
 Etusivu, Etäopastus, Ajankohtaista, Yhteystiedot ja julkinen `digiopastus`-haku palauttivat HTTP 200:n. Selainotsikot ja näkyvät pääotsikot vastasivat lähtötasoa. `/wp-admin/` palautti HTTP 302:n kirjautumissivulle, kirjautumissivun otsikko ja tunnuskentät olivat odotetut, eikä kirjautumista tehty. Sovittu JPEG-vertailumedia palautti HTTP 200:n, `image/jpeg`-sisältötyypin ja 152080 tavun koon.
 
 **Tulos:** tehtävän 6 välisavukoe on PASS eikä WordPress-regressiota havaittu. Lopullinen WP-11-jälkeen-savukoe jää avoimeksi ja toistetaan ensi viikolla vasta esittelysivun ja suoran `/aloitus/`-polun muutosten jälkeen.
+
+## 27.8.2026 — REL-11 tehtävä 7/10: paikallinen `/aloitus/`-tuotantopolun koe
+
+Tuotantopolun paketointiskripti päivitettiin REL-11-tunnisteille. Skripti vaatii nyt puhtaan Git-työpuun, ratkaisee commitin ennen käännöstä ja estää paketin muodostamisen, jos työpuu tai commit muuttuu paketoinnin aikana. Muutos tallennettiin committiin `3f6d9c6ff403`.
+
+Puhtaasta commitista muodostettiin paketti `REL-11-v0.74.5-3f6d9c6ff403` polkuun `C:\dev\Aloitussivu\.tmp\aloitussivu-rel11-production-path.zip`. ZIPissä on 115 tiedostoa ja sen SHA-256 on `c85852e1e59581b41b9d113565c124719ddb16b37e4c913e3afe8f07fd76e160`. Julkinen osa on erotettu `wordpress_aloitus`-hakemistoon ja yksityinen PHP-, cron-, loki-, välimuisti-, liite- ja malliasetusosa `private_root`-hakemistoon.
+
+ZIPin kaikki 115 merkintää avautuivat. Vaarallisia polkuja, lukuvirheitä, puuttuvia pakollisia tiedostoja, oikeaa `secrets/config.php`-tiedostoa, `.env`-tiedostoja, palvelutiliavaimia, yksityisiä avaimia tai tunnettuja salaisia tunnisteita löytyi 0. Valmiissa selainkoodissa on yksi tarkoituksellinen ja aiemmin domainrajatuksi varmennettu Firebase Web API -avain. Tuotantobundle sisältää `/aloitus/api/v1`-osoitteen, staging-osoitetta tai stagingin `noindex`-merkintää ei ole, ja HTML-tiedostojen resurssiviittaukset ovat suhteellisia.
+
+`npx tsc --noEmit`, `npm run check:secrets`, paketin PHP-lint 43/43 ja API-sopimustestit 46/46 läpäisivät. Ensimmäinen API-testi väärällä kannettavalla PHP-kansiolla raportoi puuttuvat SQLite- ja OpenSSL-laajennukset; aiemmin varmennetulla PHP 8.4.24 -ajopaketilla koko sarja läpäisi ilman sovellusmuutosta.
+
+Eristetyssä paikallisessa reitityskokeessa `/aloitus` palautti yhden HTTP 301 -ohjauksen osoitteeseen `/aloitus/`, etusivu ja `assets/main-DWW8yeqL.js` palauttivat HTTP 200:n, `/aloitus/api/v1/health` palautti HTTP 200:n, arvot `ok/up/v1` ja `Cache-Control: no-store`, ja tarkoituksella puuttuva alipolku palautti HTTP 404:n sekä Aloitussivun oman `Sivua ei löytynyt` -sivun. Selainkoe vahvisti kanonisen osoitteen, sivun otsikon, pääotsikon, Google-haun sekä Ohje-, Tietoa- ja Asetukset-ohjaimet.
+
+**Tulos ja rajaus:** tehtävän 7 paikallinen osuus on PASS. Tämä ei vielä todista Cloudcityn LiteSpeed/Apache-reititystä tai fyysisen `/aloitus/`-hakemiston rinnakkaiseloa WordPressin kanssa. PRE-06:n täysi PASS, oikean tuotanto-URL:n WP-06–WP-10-uusinta ja WP-11-jälkeen-savukoe jäävät ensi viikolle. Tuotantoon, Cloudcityyn tai WordPressiin ei tehty muutoksia.
