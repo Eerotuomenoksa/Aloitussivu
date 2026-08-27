@@ -30,18 +30,48 @@ const RegionalServicesPanel = lazy(() => import('./components/RegionalServicesPa
 const ScamAlertsBanner = lazy(() => import('./components/ScamAlertsBanner'));
 const QuickLinks = lazy(() => import('./components/QuickLinks'));
 
-const RegionalServicesFallback = () => (
-  <section
-    id="lahellasi"
-    className="zone zone-local min-h-[13rem] rounded-[2rem] border-2 border-[var(--theme-border)] bg-[var(--theme-surface)]"
+const LoadingMessage: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <div
+    className="flex min-h-24 items-center gap-3 rounded-2xl border-2 border-dashed border-[var(--theme-border)] bg-[var(--theme-surface)] p-5 font-bold text-[var(--theme-muted)]"
+    role="status"
+    aria-live="polite"
     aria-busy="true"
-    aria-label="Ladataan lähialueen palveluja"
-  />
+    aria-atomic="true"
+  >
+    <span className="text-2xl" aria-hidden="true">⏳</span>
+    <span>{children}</span>
+  </div>
 );
 
-const QuickLinksFallback = () => (
-  <div className="min-h-[24rem]" aria-hidden="true" />
-);
+const ScamAlertsFallback = () => {
+  const { t } = useI18n();
+  return (
+    <section className="zone zone-suosikit space-y-3 !border-[3px] !border-[var(--theme-gold)] !py-4" aria-labelledby="scam-alerts-loading-heading" data-tour="scam-alerts">
+      <h3 id="scam-alerts-loading-heading" className="flex items-center gap-2 text-xl font-black text-[var(--theme-text)] md:text-2xl">
+        <span aria-hidden="true">⚠️</span>
+        {t('scamAlertsTitle')}
+      </h3>
+      <LoadingMessage>{t('scamAlertsLoading')}</LoadingMessage>
+    </section>
+  );
+};
+
+const RegionalServicesFallback = () => {
+  const { t } = useI18n();
+  return (
+    <section id="lahellasi" className="zone zone-local space-y-3" aria-labelledby="regional-services-loading-heading">
+      <h2 id="regional-services-loading-heading" className="font-display zone-title">
+        <span aria-hidden="true">📍 </span>{t('nearYou')}
+      </h2>
+      <LoadingMessage>{t('regionalServicesLoading')}</LoadingMessage>
+    </section>
+  );
+};
+
+const QuickLinksFallback = () => {
+  const { t } = useI18n();
+  return <LoadingMessage>{t('serviceLinksLoading')}</LoadingMessage>;
+};
 
 type IdleCapableWindow = Window & {
   requestIdleCallback?: (callback: () => void, options?: { timeout?: number }) => number;
@@ -60,7 +90,6 @@ const THEME_KEY = 'colorTheme';
 const CLOCK_MODE_KEY = 'clockMode';
 const FAVORITES_KEY = 'favorites';
 const INTEREST_THEMES_KEY = 'interestThemes';
-const DEFERRED_CONTENT_DELAY_MS = 900;
 
 const readLocalPreference = (key: string) => {
   try {
@@ -225,7 +254,6 @@ const AppContent: React.FC = () => {
   const [isHomepageOpen, setIsHomepageOpen] = useState(false);
   const [isOnboardingOpen, setIsOnboardingOpen] = useState(false);
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
-  const [isDeferredContentReady, setIsDeferredContentReady] = useState(false);
   const [hasSeenOnboarding, setHasSeenOnboarding] = useState(() => readLocalPreference(ONBOARDING_SEEN_KEY) === 'true');
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [locality, setLocality] = useState<LocalityInfo | null>(() => {
@@ -365,34 +393,6 @@ const AppContent: React.FC = () => {
   useEffect(() => {
     const interval = window.setInterval(() => setLogoPhase(getLogoPhase(new Date())), 60 * 1000);
     return () => window.clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
-    let cancelled = false;
-    let idleHandle: number | undefined;
-    const win = window as IdleCapableWindow;
-
-    const markReady = () => {
-      if (!cancelled) {
-        setIsDeferredContentReady(true);
-      }
-    };
-
-    const timer = window.setTimeout(() => {
-      if (win.requestIdleCallback) {
-        idleHandle = win.requestIdleCallback(markReady, { timeout: 1500 });
-      } else {
-        markReady();
-      }
-    }, DEFERRED_CONTENT_DELAY_MS);
-
-    return () => {
-      cancelled = true;
-      window.clearTimeout(timer);
-      if (idleHandle !== undefined) {
-        win.cancelIdleCallback?.(idleHandle);
-      }
-    };
   }, []);
 
   useEffect(() => {
@@ -860,8 +860,8 @@ const AppContent: React.FC = () => {
         <main id="main-content" className="space-y-10 animate-fade-up" style={{ animationDelay: '300ms', marginTop: '-3.5rem' }} tabIndex={-1}>
           <ZoneToc showLocal={shouldShowRegionalServices} selectedThemeAnchors={interestThemeAnchors} />
 
-          {uiVisibility.scamAlerts && isDeferredContentReady && (
-            <Suspense fallback={null}>
+          {uiVisibility.scamAlerts && (
+            <Suspense fallback={<ScamAlertsFallback />}>
               <ScamAlertsBanner compact framed />
             </Suspense>
           )}
@@ -879,39 +879,31 @@ const AppContent: React.FC = () => {
 
           {shouldShowRegionalServices && (
             <div data-tour="regional-services">
-              {isDeferredContentReady ? (
-                <Suspense fallback={<RegionalServicesFallback />}>
-                  <RegionalServicesPanel
-                    locality={regionalLocality}
-                    fontSizeStep={fontSizeStep}
-                    onLocalitySelected={updateLocality}
-                    onReportLink={openReportModal}
-                    onSelectCategory={setSelectedCategory}
-                    showNews={uiVisibility.regionalNews}
-                  />
-                </Suspense>
-              ) : (
-                <RegionalServicesFallback />
-              )}
+              <Suspense fallback={<RegionalServicesFallback />}>
+                <RegionalServicesPanel
+                  locality={regionalLocality}
+                  fontSizeStep={fontSizeStep}
+                  onLocalitySelected={updateLocality}
+                  onReportLink={openReportModal}
+                  onSelectCategory={setSelectedCategory}
+                  showNews={uiVisibility.regionalNews}
+                />
+              </Suspense>
             </div>
           )}
 
           <section className="space-y-8" data-tour="quick-links">
-            {isDeferredContentReady ? (
-              <Suspense fallback={<QuickLinksFallback />}>
-                <QuickLinks
-                  onSelectCategory={setSelectedCategory}
-                  fontSizeStep={fontSizeStep}
-                  favorites={favorites}
-                  onToggleFavorite={toggleFavorite}
-                  locality={regionalLocality}
-                  onReportLink={openReportModal}
-                  selectedThemeAnchors={interestThemeAnchors}
-                />
-              </Suspense>
-            ) : (
-              <QuickLinksFallback />
-            )}
+            <Suspense fallback={<QuickLinksFallback />}>
+              <QuickLinks
+                onSelectCategory={setSelectedCategory}
+                fontSizeStep={fontSizeStep}
+                favorites={favorites}
+                onToggleFavorite={toggleFavorite}
+                locality={regionalLocality}
+                onReportLink={openReportModal}
+                selectedThemeAnchors={interestThemeAnchors}
+              />
+            </Suspense>
           </section>
         </main>
 

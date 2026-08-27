@@ -701,6 +701,7 @@ test('public list routes expose only contracted fields and support ETag', static
     $scamQuery = $database->executions[2]['sql'];
     assertTrue(str_contains($scamQuery, 'active = 1'));
     assertTrue(str_contains($scamQuery, 'expires_at > UTC_TIMESTAMP(6)'));
+    assertTrue(str_contains($scamQuery, 'LIMIT 2'));
 
     $notModified = $app->handle(Request::fromValues(
         'GET',

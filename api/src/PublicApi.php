@@ -70,7 +70,7 @@ final class PublicApi
         $rows = $this->database->fetchAll(
             'SELECT id, title, body, severity, source, source_url, source_week, original_heading, '
             . 'structure_version, created_at, updated_at, expires_at FROM scam_alerts '
-            . 'WHERE active = 1 AND expires_at > UTC_TIMESTAMP(6) ORDER BY created_at DESC LIMIT 50',
+            . 'WHERE active = 1 AND expires_at > UTC_TIMESTAMP(6) ORDER BY created_at DESC LIMIT 2',
         );
         $data = array_map(static function (array $row): array {
             $item = [

@@ -39,6 +39,7 @@ export const subscribeScamAlerts = (
   callback: (alerts: ScamAlertEntry[]) => void,
   admin = false,
   onError?: (error: unknown) => void,
+  onLoadingChange?: (loading: boolean) => void,
 ) => {
   callback([]);
   return subscribeWithPolling(
@@ -51,6 +52,7 @@ export const subscribeScamAlerts = (
     callback,
     onError,
     admin ? adminPollIntervalMs : 300000,
+    onLoadingChange,
   );
 };
 

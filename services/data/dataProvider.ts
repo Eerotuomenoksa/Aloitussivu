@@ -72,6 +72,7 @@ export const subscribeWithPolling = <T>(
   callback: (value: T) => void,
   onError?: (error: unknown) => void,
   pollIntervalMs = 0,
+  onLoadingChange?: (loading: boolean) => void,
 ) => {
   let active = true;
   let loading = false;
@@ -79,6 +80,7 @@ export const subscribeWithPolling = <T>(
   const refresh = async () => {
     if (!active || loading) return;
     loading = true;
+    onLoadingChange?.(true);
     try {
       const value = await load();
       if (active) callback(value);
@@ -86,6 +88,7 @@ export const subscribeWithPolling = <T>(
       if (active) onError?.(error);
     } finally {
       loading = false;
+      if (active) onLoadingChange?.(false);
     }
   };
 

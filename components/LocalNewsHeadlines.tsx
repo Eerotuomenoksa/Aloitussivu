@@ -109,15 +109,19 @@ const LocalNewsHeadlines: React.FC<LocalNewsHeadlinesProps> = ({ feeds, fallback
   if (loading) {
     return (
       <div
-        className={compact ? 'space-y-3' : 'grid grid-cols-1 md:grid-cols-3 gap-4'}
+        className="space-y-3"
         role="status"
         aria-live="polite"
         aria-busy="true"
         aria-atomic="true"
-        aria-label="Ladataan paikallisia uutisia"
+        aria-label={t('localNewsLoading')}
+        data-content-state="loading"
       >
-        <span className="sr-only">Ladataan paikallisia uutisia.</span>
-        <div className="contents" aria-hidden="true">
+        <p className={`flex items-center gap-2 font-bold text-[var(--theme-muted)] ${smallTextClasses[fontSizeStep]}`}>
+          <span aria-hidden="true">⏳</span>
+          {t('localNewsLoading')}
+        </p>
+        <div className={compact ? 'space-y-3' : 'grid grid-cols-1 gap-4 md:grid-cols-3'} aria-hidden="true">
           {[0, 1, 2].map((item) => (
             <div key={item} className={`rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-surface)] p-5 shadow-sm animate-pulse ${compact ? 'min-h-[72px]' : 'min-h-[130px]'}`}>
               <div className="mb-4 h-5 w-3/4 rounded bg-[var(--theme-pale)]" />

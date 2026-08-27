@@ -24,11 +24,12 @@ export type ChangelogCommit = {
   tags: string[];
 };
 
-export const CHANGELOG_GENERATED_AT = "26.8.2026 klo 21.34";
-export const CHANGELOG_VERSION = "0.74.5";
+export const CHANGELOG_GENERATED_AT = "27.8.2026 klo 15.55";
+export const CHANGELOG_VERSION = "0.74.6";
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
-  "Onnistuneen NCSC-lähdesivuhaun jälkeen kesken lauseen 300 merkkiin jäänyt vanha automaattivaroitus piilotetaan julkisesta näkymästä, jos lähdesivulta ei saatu korvaavaa tekstiä.",
-  "Piilotus ei poista tietuetta tietokannasta, ja myöhempi onnistunut automaattipäivitys voi aktivoida varoituksen uudelleen."
+  "Huijausvaroitusten, lähialueen palvelujen, paikallisuutisten ja palvelulinkkien lataaminen ei enää jätä sivulle tyhjää kohtaa, vaan lataustila kerrotaan näkyvästi.",
+  "Huijausvaroitusten tyhjä ja virheellinen vastaus näytetään hallitusti, ja muu sivu pysyy käytettävissä myös hitaan tai epäonnistuvan haun aikana.",
+  "Etusivulle haetaan vain siinä näytettävät kaksi uusinta aktiivista huijausvaroitusta."
 ];
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [

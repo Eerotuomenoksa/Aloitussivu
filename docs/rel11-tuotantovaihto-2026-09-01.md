@@ -1,5 +1,7 @@
 # REL-11 tuotantovaihto 1.9.2026 klo 09.00
 
+> **Aikataulumuutos 27.8.2026:** tekninen tuotantovaihto on aikaistettu pehmeäksi avaukseksi 28.8.2026. Laaja tiedotus säilyy 1.9.2026 klo 09.00. Päivitetty aikataulu ja GO-ehdot ovat tiedostossa `rel11-pehmea-avaus-2026-08-28.md`; tämän ajokirjan komentoja ja T0-järjestystä käytetään edelleen, mutta vanhaa version 0.74.5 ehdokasta ei aktivoida.
+
 Päivitetty 27.8.2026. Tämä on suoritettava ajokirja Aloitussivun tuotantojulkaisuun. Kellonajat ovat Europe/Helsinki-aikaa. **Klo 09.00 on varsinaisen tietosiirron T0; tavoite on aktivoida julkinen `/aloitus/` ja samalla ainoa kirjoittava Cloudcity-provider noin klo 09.10, hyväksyä smoke noin klo 09.20 ja päättää muutosikkuna viimeistään klo 09.25.**
 
 ## Lukittu lähtötilanne

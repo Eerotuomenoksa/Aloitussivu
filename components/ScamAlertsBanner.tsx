@@ -50,6 +50,8 @@ interface ScamAlertsBannerProps {
 const ScamAlertsBanner: React.FC<ScamAlertsBannerProps> = ({ compact = false, framed = false }) => {
   const { locale, t } = useI18n();
   const [alerts, setAlerts] = useState<ScamAlertEntry[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [failed, setFailed] = useState(false);
   const [selectedAlert, setSelectedAlert] = useState<ScamAlertEntry | null>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const alertOpenerRef = useRef<HTMLButtonElement | null>(null);
@@ -68,7 +70,15 @@ const ScamAlertsBanner: React.FC<ScamAlertsBannerProps> = ({ compact = false, fr
     });
   }, []);
 
-  useEffect(() => subscribeScamAlerts(setAlerts), []);
+  useEffect(() => subscribeScamAlerts(
+    (nextAlerts) => {
+      setAlerts(nextAlerts);
+      setFailed(false);
+    },
+    false,
+    () => setFailed(true),
+    setLoading,
+  ), []);
 
   const visibleAlerts = useMemo(
     () => alerts.filter(isVisibleAlert).slice(0, 2),
@@ -95,8 +105,6 @@ const ScamAlertsBanner: React.FC<ScamAlertsBannerProps> = ({ compact = false, fr
       window.removeEventListener('keydown', onKeyDown);
     };
   }, [closeAlert, selectedAlert]);
-
-  if (visibleAlerts.length === 0) return null;
 
   const alertDialog = selectedAlert ? ReactDOM.createPortal(
     <div
@@ -170,7 +178,37 @@ const ScamAlertsBanner: React.FC<ScamAlertsBannerProps> = ({ compact = false, fr
         </div>
       </div>
 
-      {compact ? (
+      {loading && visibleAlerts.length === 0 ? (
+        <div
+          className="flex min-h-24 items-center gap-3 rounded-2xl border-2 border-dashed border-[var(--theme-border)] bg-[var(--theme-surface)] p-5 font-bold text-[var(--theme-muted)]"
+          role="status"
+          aria-live="polite"
+          aria-busy="true"
+          aria-atomic="true"
+          data-content-state="loading"
+        >
+          <span className="text-2xl" aria-hidden="true">⏳</span>
+          <span>{t('scamAlertsLoading')}</span>
+        </div>
+      ) : failed && visibleAlerts.length === 0 ? (
+        <div
+          className="min-h-24 rounded-2xl border-2 border-dashed border-[var(--theme-border)] bg-[var(--theme-surface)] p-5 font-bold text-[var(--theme-muted)]"
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+          data-content-state="error"
+        >
+          {t('scamAlertsLoadFailed')}
+        </div>
+      ) : visibleAlerts.length === 0 ? (
+        <div
+          className="min-h-24 rounded-2xl border-2 border-dashed border-[var(--theme-border)] bg-[var(--theme-surface)] p-5 font-bold text-[var(--theme-muted)]"
+          role="status"
+          data-content-state="empty"
+        >
+          {t('scamAlertsEmpty')}
+        </div>
+      ) : compact ? (
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2" aria-label={t('scamAlertsHeadings')}>
           {visibleAlerts.map((alert) => (
             <button
