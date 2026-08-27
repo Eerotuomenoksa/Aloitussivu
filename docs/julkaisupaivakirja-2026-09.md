@@ -710,3 +710,9 @@ Auditoinnissa korjattiin myös kaksi vanhentunutta merkintää. Testikohde oli j
 OPS-07 merkittiin PASS-tilaan, koska hyväksymisvaatimuksen mukaiset julkaisu- ja keskeytysviestit ovat valmiit ja lähetyskielto on kirjattu. Viestejä ei lähetetty. PREF-02 jää avoimeksi P2-tuotepäätökseksi: kaikkien asetusten kokonaispalautus joko toteutetaan ja testataan tai hyväksymisehto muotoillaan uudelleen kirjallisena, omistettuna ja aikataulutettuna P2-poikkeamana.
 
 Alustava päätös ja ensi viikon GO-ehdot kirjattiin tiedostoon `docs/rel11-tehtava-10-alustava-go-no-go.md`. Tehtävä 10/10 ei ole lopullisesti valmis ennen WordPress-esittelysivua, oikean `/aloitus/`-polun testejä, WP-jälkeen-savukoetta, julkaisuhetken varmistuksia, oikeaa Firestore-deltaa, tuotantotietokannan vahvistusta ja ihmisten hyväksyntöjä. Tuotantoon, Cloudcityyn, WordPressiin, Firestoreen tai MariaDB:hen ei tehty muutoksia.
+
+### PREF-02-tuotepäätös 27.8.2026
+
+Tuotevastuu hyväksyi REL-11:n rajauksen: PREF-02:n hyväksymisehto koskee tekstikoon palauttamista 100 prosenttiin. Nykyinen `Palauta normaali tekstikoko` -toiminto muuttaa vain selaimen paikallista `uiScale`-asetusta. Kooditarkistus vahvisti, ettei toiminto käsittele kotikuntaa, suosikkeja, lomaketietoja, tunnistautumista tai palvelimen tietoja. PREF-02 päivitettiin PASS-tilaan ilman sovelluskoodin tai version muuttamista, joten staging-ehdokas `REL-11-v0.74.5-d5c4ea9ac2b8` ei tämän päätöksen vuoksi vaadi uutta buildia tai vaikutusaluetestiä.
+
+Kaikkien Asetukset-paneelissa näkyvien näkymäasetusten kertapalautus kirjattiin `TODO_HUMAN.md`-tiedostoon kehityksen omistamaksi P3-tehtäväksi REL-13-versioon tai myöhemmäksi. Rajaus kieltää kotikunnan, suosikkien, kielen, perehdytyksen tilan, käyttötilastovalinnan, lomake- ja lähetysjonojen, tunnistautumistietojen, välimuistien sekä palvelimen tietojen poistamisen. REL-11:n kokonaispäätös säilyy NO-GO-tilassa 16 avoimen P1-porttirivin vuoksi.

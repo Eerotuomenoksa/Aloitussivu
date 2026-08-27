@@ -42,6 +42,10 @@ Tila: Julkaisun rajaus päätetty 13.8.2026. Tavoitejulkaisu on 1.9.2026 ja ehdo
 10. **P1 – linkki- ja integraatiotesti, viimeistään 31.8.:** testaa tärkeimmät palvelulinkit, linkki-ilmoitus, huijausvaroitukset, karkea käyttötilasto ja suojattu ylläpito Cloudcity-osoitteessa. Julkaisu voidaan hyväksyä vasta, kun keskeiset tietovirrat toimivat eikä avoimia P1-havaintoja ole.
 11. **P1 – julkaisupäivän tuotantotarkistus 1.9., tarvittaessa viimeistään 3.9.:** tarkista canonical-, Open Graph-, sitemap- ja robots-tiedostot, etusivu, tietosuoja, saavutettavuus, WordPressin `/aloitus/`-ohjaus ja `/aloitussivu-palvelu/`-esittelysivu sekä mobiili- ja työpöytänäkymä oikeassa tuotanto-osoitteessa. Toista myös WordPress-savukoe. Julkaisu hyväksytään vasta, kun tuotannon smoke-testit on läpäisty eikä avoimia P1-havaintoja ole.
 
+### Julkaisun jälkeen
+
+1. **P3 – näkymäasetusten kertapalautus, REL-13 tai myöhempi:** lisää Asetukset-paneeliin selkeä `Palauta näkymän oletusasetukset` -toiminto. Se saa palauttaa vihreän vaalean teeman, digitaalisen kellon, 100 prosentin tekstikoon, osioiden oletusnäkyvyyden, tyhjän kiinnostavien teemojen valinnan ja toissijaisen kellon oletusaikavyöhykkeen. Toiminto ei saa poistaa kotikuntaa, suosikkeja, kielivalintaa, perehdytyksen tilaa, käyttötilastovalintaa, lomake- tai lähetysjonoja, tunnistautumistietoja, välimuisteja eikä mitään palvelimen tietoja. Omistaja: kehitys. Testaa näppäimistöllä, ruudunlukijan perustilassa ja sivun uudelleenlatauksen yli.
+
 ## Tehty
 
 - Paikallisuutisten lopullinen rajaus päätettiin 14.8.2026: osuus säilytetään ensimmäisessä julkaisussa oletuksena piilotettuna ja käyttäjän asetuksista avattavana. Poistaminen siirrettiin pois julkaisutyöstä, koska se edellyttäisi Lähelläsi-osion laajempaa käyttöliittymäsuunnittelua.

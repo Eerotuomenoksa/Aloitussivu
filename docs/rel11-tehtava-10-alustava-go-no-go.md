@@ -29,14 +29,13 @@ Staging-ehdokkaan `REL-11-v0.74.5-d5c4ea9ac2b8` sovelluskorjaukset ja niiden vai
 
 WP-06–WP-10:n paikallinen tulos on hyväksytty vain valmistelunäyttönä. Se ei todista Cloudcityn LiteSpeed/Apache-reititystä, fyysisen `/aloitus/`-hakemiston rinnakkaiseloa WordPressin kanssa eikä oikeaa tuotantotietokantaa.
 
-## Avoin P2-tuotepäätös
+## Ratkaistu P2-tuotepäätös
 
-PREF-02 on FAIL, koska sovelluksessa ei ole kaikkien asetusten kertapalautusta oletuksiin. Nykyinen tekstikoon palautuspainike ei täytä testirivin nykyistä hyväksymisehtoa. Ennen GO-päätöstä tuotevastuun pitää kirjallisesti valita jompikumpi:
+Tuotevastuu hyväksyi 27.8.2026 PREF-02:n täsmennetyn hyväksymisehdon. REL-11:ssä tekstikoon voi palauttaa 100 prosenttiin. Palautus muuttaa vain selaimen paikallista `uiScale`-asetusta eikä poista kotikuntaa, suosikkeja, lomaketietoja, tunnistautumistietoja tai palvelimen tietoja. Kooditarkistus vahvisti, että `resetFont` asettaa vain tekstikoon oletusarvoon ja tallennusefekti kirjoittaa vain `uiScale`-avaimen. PREF-02 on PASS eikä vaadi version 0.74.5 sovelluskoodin muuttamista tai uutta staging-kierrosta.
 
-1. toteutetaan kaikkien paikallisten käyttöliittymäasetusten turvallinen palautus oletuksiin ja testataan se; tai
-2. muutetaan PREF-02:n hyväksymisehto vastaamaan tarkoitettua, nykyistä asetusten hallintaa ja hyväksytään puuttuva kokonaispalautus rajattuna P2-poikkeamana omistajan ja aikataulun kanssa.
+Kaikkien Asetukset-paneelissa näkyvien näkymäasetusten turvallinen kertapalautus siirrettiin kehityksen omistamaksi REL-13:n tai myöhemmän version tehtäväksi tiedostoon `TODO_HUMAN.md`. Tehtävä ei saa tyhjentää kotikuntaa, suosikkeja, kieltä, lomakejonoja, tunnistautumista tai palvelimen tietoja.
 
-P2-riviä ei hyväksytä automaattisesti. Suljettu P3-havainto `REL11-OPS-01` oli hakurajauksesta johtunut väärä löydös eikä vaikuta päätökseen.
+Suljettu P3-havainto `REL11-OPS-01` oli hakurajauksesta johtunut väärä löydös eikä vaikuta päätökseen.
 
 ## GO-ehdot
 
@@ -46,7 +45,7 @@ Päätös voidaan muuttaa GO-tilaan vain, kun kaikki seuraavat toteutuvat samall
 2. Oikea `/aloitus/`, `/aloitus/api/v1/health`, resurssit, kanonisointi ja Aloitussivun 404 läpäisevät kokeet ilman alidomainiohjausta tai WordPress-regressiota.
 3. Lopullinen Firestore-delta ja tunnistejoukon vertailu täsmäävät, `exceptionCount` on 0 eikä samanaikaisia kirjoituksia synny Firestoreen ja Cloudcityyn.
 4. Julkaisuhetken tiedosto- ja MariaDB-varmistukset, palautusoikeudet sekä tuotantotietokannan vähimmän oikeuden tunnukset on vahvistettu.
-5. PREF-02:sta on kirjallinen tuotepäätös; mahdollinen P2-poikkeama on hyväksytty, omistettu ja aikataulutettu.
+5. PREF-02:n 27.8.2026 hyväksytty rajaus säilyy muuttumattomana; myöhempi kertapalautus ei kuulu REL-11-julkaisuun.
 6. Go/no-go-hyväksyjä, riippumaton smoke-hyväksyjä, palautuksen käynnistäjä ja muutosikkunan kellonajat on nimetty.
 7. Lopullinen commit, build ID ja ZIP-tiiviste on lukittu ja vastaa testattua sisältöä.
 
