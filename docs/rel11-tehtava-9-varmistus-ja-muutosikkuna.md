@@ -157,6 +157,33 @@ Käynnistä palautusarvio heti, jos yksikin toteutuu:
 
 Palautuksessa pidä kirjoitukset suljettuina, ota muutostilanteesta uusi Aloitussivun MariaDB-varmistus, palauta vain Aloitussivun täsmällisesti nimetyt tiedosto- ja tietokantakohteet ja toista WordPress-savukoe. Älä palauta WordPressin tietokantaa Aloitussivun virheen vuoksi.
 
+## Hallittu Firebase-palautuspolku
+
+Firebase-palautusprovider on hätäpalautus, ei normaalin julkaisun rinnakkainen kirjoituskohde. Käytä sitä vain erillisen palautuspäätöksen jälkeen ja pidä kirjoitukset suljettuina koko vaihdon ajan, kunnes yksi ainoa provider on varmennettu käyttöön.
+
+Paikallinen näyttö 27.8.2026:
+
+- version 0.74.5 `npm run build:firebase-rollback` valmistui onnistuneesti;
+- tuotetun provider-asetuksen aktiivinen arvo on `firebase-rollback`, ja Firebase-toteutuksen `kind` on `firebase-rollback`;
+- `index.html` viittaa muodostuneeseen pääbundleen `assets/main-DKbR0YvP.js`;
+- `npx tsc --noEmit` ja `npm run check:secrets` läpäisivät;
+- Vite raportoi Firebase-kirjastobundlen koosta 687 733 tavua sekä Firestore-tuonnin staattisen/dynaamisen tuonnin huomautuksen. Ne eivät estä palautusbuildin muodostumista, mutta ovat suorituskyvyn P2-seurantaa.
+
+Palautuksen järjestys:
+
+1. Kirjaa palautuspäätös, päätöksentekijä, kellonaika ja syy. Älä aloita, jos täsmällistä Aloitussivun julkista hakemistoa tai palautuspakettia ei ole varmennettu.
+2. Pidä lomake- ja ylläpitokirjoitukset suljettuina. Ota ongelmatilanteen Aloitussivun MariaDB:stä uusi varmistus ennen tiedosto- tai tietokantapalautusta; WordPressin tietokantaan ei kosketa.
+3. Varmista, että palautettava sovelluskoodi vastaa testattua versiota 0.74.5. Rakenna puhtaasta työpuusta `npm run build:firebase-rollback` ja tarkista, että valmis provider-asetus valitsee arvon `firebase-rollback`.
+4. Julkaise vain Firebase-palautusbuildin frontend-tiedostot täsmällisesti varmennettuun Aloitussivun julkiseen hakemistoon. Älä pura pakettia WordPressin juureen äläkä muuta WordPressin pääjuuren `.htaccess`-tiedostoa, teemaa, lisäosia tai tietokantaa.
+5. Älä aja Firestore-deltaa takaisinpäin, älä synkronoi MariaDB:n julkaisuikkunan tietoja automaattisesti Firestoreen äläkä avaa Cloudcity-providerin kirjoituksia. Näin estetään yhtäaikaiset kirjoitukset kahteen tietovarastoon.
+6. Tarkista `/aloitus/`, hashattu pääbundle ja Aloitussivun oma 404. Varmista sen jälkeen Firebase-lukujen toiminta sekä keinotekoisella aineistolla yksi lomakekirjoitus.
+7. Tarkista Google-ylläpitokirjautuminen tavallisessa tuetussa selaimessa, koska sovelluksen sisäinen selain ei välttämättä hyväksy Google-kirjautumista. Varmista ylläpitonäkymän luvut ja kirjaudu ulos.
+8. Toista WordPressin WP-01–WP-04-savukoe. Jos WordPress tai `/aloitus/` ei vastaa hyväksymisehtoja, pidä kirjoitukset suljettuina ja jatka palautusarviota.
+9. Säilytä Cloudcityn MariaDB muuttamattomana täsmäytystä varten. Kirjaa palautuksen jälkeen Firestoreen syntyneet keinotekoiset testitiedot ja poista ne vain hyväksytyllä ylläpitotoiminnolla.
+10. Avaa kirjoitukset vain Firebase-provideriin, kun riippumaton smoke-hyväksyjä on hyväksynyt tuloksen. Cloudcity-provideriin palaaminen vaatii uuden go/no-go-päätöksen, deltan ja täsmäytyksen.
+
+Palautusbuildin onnistuminen ei itsessään anna lupaa tuotantovientiin eikä sulje ensi viikon tiedosto-, tietokanta-, WordPress- tai vastuuvahvistuksia.
+
 ## Valmiit viestiluonnokset
 
 Näitä ei lähetetä ennen REL-12-smoken hyväksyntää.
