@@ -45,6 +45,8 @@ Noudata tiedostoa `rel11-staging-vienti-2026-08-28.md`. Tee stagingin tiedostova
 
 Stagingin pitää olla PASS ennen tuotantopaketin esivientiä. Aikataulu siirtyy automaattisesti, jos testiä ei saada valmiiksi klo 09.00 mennessä.
 
+Toteutunut 28.8.2026: **PASS**. Build, commit, pääbundle ja API-health täsmäsivät; selainvaikutusalue hyväksyttiin tuloksella `STAGING_UI=PASS`.
+
 ### 4. Valmiusportti stagingin jälkeen
 
 Vahvista ennen tuotannon kirjoituslukkoa:

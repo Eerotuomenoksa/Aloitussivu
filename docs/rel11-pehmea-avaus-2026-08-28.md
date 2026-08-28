@@ -55,7 +55,7 @@ Videon voi kuvata vasta hyväksytyn smoken jälkeen. Kuvassa ei näytetä ylläp
 
 | Kohta | Tulos |
 | --- | --- |
-| Version 0.74.6 staging-uusinta | build, commit, pääbundle ja health PASS; käyttöliittymän vaikutusaluetesti avoinna |
+| Version 0.74.6 staging-uusinta | PASS 28.8.2026: build, commit, pääbundle, health ja käyttöliittymän vaikutusalue hyväksytty |
 | API-käyttäjä ja tuotantokonfiguraatio | käyttäjä sekä `SHOW GRANTS` PASS hyväksytyllä poikkeuksella; `config.php` ja `database=up` avoinna |
 | Lopullinen Firestore-vienti ja MariaDB-täsmäytys | täytetään |
 | Julkisen `/aloitus/`-polun smoke | täytetään |
