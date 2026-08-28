@@ -1210,6 +1210,8 @@ html.dark {
 }
 
 .zone {
+  min-width: 0;
+  max-width: 100%;
   border-radius: 40px;
   padding: 2rem 2rem 2.2rem;
   background: var(--zone-bg);
@@ -1228,22 +1230,26 @@ html.dark {
 .zone-local     { --zone-bg: var(--zone-local-bg);     --zone-accent: var(--zone-local-accent);     --zone-border: var(--zone-local-border);     --zone-strong: var(--zone-local-strong); }
 .zone-suosikit  { --zone-bg: var(--zone-suosikit-bg);  --zone-accent: var(--zone-suosikit-accent);  --zone-border: var(--zone-suosikit-border);  --zone-strong: var(--zone-suosikit-strong); }
 
-.zone-head { display: flex; align-items: flex-start; gap: 1.4rem; margin-bottom: 1.5rem; }
+.zone-head { display: flex; min-width: 0; max-width: 100%; align-items: flex-start; gap: 1.4rem; margin-bottom: 1.5rem; }
+.zone-head > div { min-width: 0; max-width: 100%; }
 .zone-icon {
   flex-shrink: 0; display: flex; align-items: center; justify-content: center;
   width: 5.4rem; height: 5.4rem; border-radius: 28px; font-size: 3rem; line-height: 1;
   background: var(--zone-accent); box-shadow: 0 6px 18px rgba(10,26,14,.14);
 }
-.zone-title { margin: 0; font-size: 2.1rem; font-weight: 700; line-height: 1.1; color: var(--theme-text); }
-.zone-info { margin: .45rem 0 0; font-size: 1.2rem; color: var(--theme-text-2); max-width: 60ch; }
+.zone-title { margin: 0; max-width: 100%; overflow-wrap: anywhere; word-break: break-word; font-size: 2.1rem; font-weight: 700; line-height: 1.1; color: var(--theme-text); }
+.zone-info { margin: .45rem 0 0; max-width: 60ch; overflow-wrap: anywhere; word-break: break-word; font-size: 1.2rem; color: var(--theme-text-2); }
 
 .zone-links-grid {
   display: grid;
+  min-width: 0;
+  max-width: 100%;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
   gap: 1rem;
 }
 .zone-link {
   display: flex; align-items: center; gap: 1rem;
+  width: 100%; min-width: 0; max-width: 100%;
   min-height: 4.6rem; padding: .9rem 1.2rem; border-radius: 24px;
   background: var(--theme-surface); border: 2px solid var(--zone-border);
   color: var(--theme-text); text-decoration: none; font-size: 1.25rem; font-weight: 400;
@@ -1260,9 +1266,11 @@ html.dark {
 .zone-link .zone-link-arrow { flex-shrink: 0; margin-left: auto; font-size: 1.4rem; color: var(--zone-strong); }
 .zone-link .zone-link-label,
 .link-label-text {
+  flex: 1 1 auto;
+  max-width: 100%;
   min-width: 0;
-  overflow-wrap: normal;
-  word-break: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
   -webkit-hyphens: auto;
   hyphens: auto;
   line-height: 1.2;
@@ -1304,8 +1312,28 @@ html.dark {
   .zone { padding: 1.4rem 1.2rem 1.6rem; border-radius: 28px; }
   .zone-head { gap: 1rem; }
   .zone-icon { width: 4.2rem; height: 4.2rem; font-size: 2.3rem; }
-  .zone-title { font-size: 1.45rem; overflow-wrap: normal; hyphens: auto; }
+  .zone-title { font-size: 1.45rem; overflow-wrap: anywhere; word-break: break-word; hyphens: auto; }
   .zone-info { font-size: 1.1rem; }
-  .zone-links-grid { grid-template-columns: 1fr; }
+  .zone-links-grid { grid-template-columns: minmax(0, 1fr); }
   .local-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 560px) {
+  .zone {
+    padding: 1rem .75rem 1.25rem;
+  }
+  .zone-head {
+    gap: .75rem;
+  }
+  .zone-icon,
+  .zone-link .zone-link-icon,
+  .zone-link .zone-link-arrow {
+    display: none;
+  }
+  .zone-link {
+    gap: .5rem;
+    min-height: 3.5rem;
+    padding: .75rem .85rem;
+    border-radius: 1rem;
+  }
 }

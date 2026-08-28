@@ -1,6 +1,6 @@
 # REL-11 pehmeä avaus 28.8.2026
 
-Päivitetty 27.8.2026. Aloitussivu avataan teknisesti yleisölle perjantaina 28.8.2026, jotta Eero voi kuvata lyhyen videon ja digiopastajat sekä testaajat voivat tutustua palveluun ennakkoon. Laaja tiedotus tehdään maanantaina 1.9.2026 klo 09.00.
+Päivitetty 28.8.2026. Aloitussivu avataan teknisesti yleisölle perjantaina 28.8.2026, jotta Eero voi kuvata lyhyen videon ja digiopastajat sekä testaajat voivat tutustua palveluun ennakkoon. Laaja tiedotus tehdään maanantaina 1.9.2026 klo 09.00.
 
 Pehmeä avaus on oikea tuotantovaihto, ei erillinen esikatselu. Osoite `https://seniorsurf.fi/aloitus/`, Cloudcity-API ja tuotanto-MariaDB ovat avaamisen jälkeen käyttäjien käytössä. Siksi samoja varmistus-, tietosuoja-, vähimmän oikeuden ja palautusehtoja noudatetaan kuin aiemmin 1.9. suunnitellussa vaihdossa.
 
@@ -66,6 +66,7 @@ Videon voi kuvata vasta hyväksytyn smoken jälkeen. Kuvassa ei näytetä ylläp
 | WordPressin jälkeen-savukoe | PASS 28.8.2026: etusivu, Etäopastus, Ajankohtaista, Yhteystiedot ja haku palauttivat 200 odotetuilla otsikoilla; `/wp-admin/` ohjasi kirjautumiseen ja vertailumedia säilyi 152080 tavun JPEG-kuvana |
 | Riippumaton hyväksyjä | PASS 28.8.2026: tietokone- ja mobiilinäkymä hyväksyttiin eikä P1-virheitä havaittu |
 | Pehmeän avauksen GO-aika | GO 28.8.2026 klo 11.36 Europe/Helsinki |
+| Version 0.74.7 P2-korjausten paikallinen vaikutusalue | PASS 28.8.2026: palautteen vahvistus ja lähetyslukko, kategoriakorttien 320/375/768/1280 px × 100/200 % -matriisi sekä OP-linkin lopullinen valtakunnallinen kohde hyväksyttiin paikallisessa buildissa |
 | 1.9. tiedotuksen GO-aika | täytetään |
 
 Tuotantoympäristö paljasti kaksi käyttöönoton aikaista alustapoikkeamaa. ZIP oli purettu yksityisen ehdokashakemiston vuoksi oikeuksilla 700/600; julkiset hakemistot korjattiin arvoon 755 ja tiedostot arvoon 644 ennen hyväksyttyä aktivointia. Lisäksi WordPressin pääjuuren reititys sieppasi virtuaaliset `/aloitus/api/`-polut. Pääjuuren `.htaccess` varmuuskopioitiin yksityiseen kotihakemistoon, minkä jälkeen ennen WordPressin automaattista lohkoa lisättiin vain `/aloitus/api/`-pyyntöihin rajattu sääntö. WordPressin dynaamista lohkoa, tietokantaa, teemaa, lisäosia tai Redirection-sääntöjä ei muutettu. LiteSpeedin vanha API-404 tyhjennettiin välimuistista ja kaikki WordPress-verrokit testattiin muutoksen jälkeen.
@@ -73,3 +74,13 @@ Tuotantoympäristö paljasti kaksi käyttöönoton aikaista alustapoikkeamaa. ZI
 Firebase-verkkosovelluksen tuotanto-origin lisättiin selaimen API-avaimen HTTP-referrer-rajoituksiin sekä Authenticationin sallittuihin domaineihin. Tämän jälkeen tuotannon admin-kirjautuminen ja `ADMIN`-rooli olivat PASS. Kaksi henkilötiedotonta smoke-palautetta tallentui MariaDB:hen ja merkittiin hyväksytyssä ylläpitonäkymässä valmiiksi. Firestore-kirjoituslukko jätettiin GO-päätöksen mukaisesti voimaan.
 
 Pehmeä avaus hyväksyttiin kolmella avoimella P2-havainnolla, jotka eivät estä rajattua ennakkokäyttöä mutta käsitellään ennen 1.9. laajaa tiedotusta: palautteen onnistumisvahvistus voi jäädä vieritysalueen loppuun ja sulkeutua liian nopeasti, OnePlus 12:n Chromessa kategorian linkkilaatikot ovat 100 prosentin näkymässä liian leveitä sekä Osuuspankki-linkki avasi Keski-Suomen alueellisen OP-sivun.
+
+## Version 0.74.7 P2-korjauskierros 28.8.2026
+
+Kaikki kolme pehmeän avauksen P2-havaintoa on korjattu lähdekoodiin. Palautteen onnistumisvahvistus on modaaliotsikon alla näkyvässä, ruudunlukijalle ilmoittavassa tilassa; fokus siirtyy vahvistukseen, uusi lähetys estetään ja ikkuna pysyy auki käyttäjän sulkemiseen asti. Paikallisessa 320 px / 200 % -kokeessa vahvistus pysyi kokonaan näkymässä yli 4,5 sekuntia, lähetyspainike oli lukittu ja Escape sulki ikkunan sekä palautti fokuksen Palaute-painikkeeseen.
+
+Kategoriakorttien leveys ja rivittyminen korjattiin. Paikallinen build läpäisi 320, 375, 768 ja 1280 pikselin leveydet sekä 100 ja 200 prosentin tekstikoot: kaikissa kahdeksassa yhdistelmässä dokumentin leveys vastasi näkymää, yhdeksän kategoriaruudukkoa ja 39 korttia pysyivät rajojen sisällä eikä sivuttaisvieritystä syntynyt.
+
+Pankit-kategorian OP-linkki ja `OP henkilöasiakkaat` osoittavat nyt valtakunnalliselle sivulle `https://www.op.fi/henkiloasiakkaat/asiakaspalvelu/ota-yhteytta`. Osoite palautti HTTP 200:n ja selain päätyi samaan URLiin otsikolla `OP:n ja Pohjola Vakuutuksen yhteystiedot henkilöasiakkaille | OP`. Alueellinen numero nimettiin `OP Keski-Suomi – seniorit ja erityistä tukea tarvitsevat`, ja sen Keski-Suomen kohde säilytettiin tarkoituksella.
+
+Version 0.74.7 TypeScript-tarkistus, salaisuustarkistus, Functions-build sekä Cloudcity-, staging-, Firebase-palautus- ja local-provider-buildit ovat PASS. Paikallinen PHP-ajonaika puuttui Windows-ympäristöstä, joten muuttumattoman API:n sopimustestejä ei ajettu uudelleen; viimeisin dokumentoitu 46/46-tulos säilyy vertailunäyttönä. Korjausversiota ei ole vielä viety tuotantoon, joten 1.9. tiedotuksen GO pysyy avoimena tuotantoviennille ja koko tuotantoportin uusinnalle.

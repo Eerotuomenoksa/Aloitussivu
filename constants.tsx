@@ -85,8 +85,8 @@ export const SHORTCUTS: Shortcut[] = [
       { name: 'Vantaa-info', url: 'https://www.vantaa.fi/fi/kaupunki-ja-paatoksenteko/asiakaspalvelu', group: 'Kunnat', phone: '09 839 11', phoneUrl: 'tel:0983911' },
       { name: 'Turun kaupungin vaihde', url: 'https://www.turku.fi/kassapalvelut', group: 'Kunnat', phone: '02 330 000', phoneUrl: 'tel:02330000' },
       { name: 'Oulu10-asiakaspalvelu', url: 'https://www.ouka.fi/yhteystiedot-ja-palaute', group: 'Kunnat', phone: '08 558 558 00', phoneUrl: 'tel:0855855800' },
-      { name: 'OP seniorit ja erityistä tukea tarvitsevat', url: 'https://www.op.fi/osuuspankit/op-keski-suomi/pankin-palvelut/paikallista-asiakaspalvelua/', group: 'Pankit', phone: '010 252 9627', phoneUrl: 'tel:0102529627' },
-      { name: 'OP henkilöasiakkaat', url: 'https://www.op.fi/osuuspankit/op-keski-suomi/pankin-palvelut/paikallista-asiakaspalvelua/', group: 'Pankit', phone: '0100 0500', phoneUrl: 'tel:01000500' },
+      { name: 'OP Keski-Suomi – seniorit ja erityistä tukea tarvitsevat', url: 'https://www.op.fi/osuuspankit/op-keski-suomi/pankin-palvelut/paikallista-asiakaspalvelua/', group: 'Pankit', phone: '010 252 9627', phoneUrl: 'tel:0102529627' },
+      { name: 'OP henkilöasiakkaat', url: 'https://www.op.fi/henkiloasiakkaat/asiakaspalvelu/ota-yhteytta', group: 'Pankit', phone: '0100 0500', phoneUrl: 'tel:01000500' },
       { name: 'Nordea asiakaspalvelu ja seniorilinja', url: 'https://www.nordea.fi/henkiloasiakkaat/palvelumme/verkko-mobiilipalvelut/digineuvontaa.html', group: 'Pankit', phone: '0200 3000', phoneUrl: 'tel:02003000' },
       { name: 'Danske Bank - seniorit ja erityisryhmät', url: 'https://danskebank.fi/sinulle/asiakaspalvelu', group: 'Pankit', phone: '0200 25889', phoneUrl: 'tel:020025889' },
       { name: 'Danske Bank asiakaspalvelu', url: 'https://danskebank.fi/sinulle/asiakaspalvelu', group: 'Pankit', phone: '0200 2580', phoneUrl: 'tel:02002580' },
@@ -380,7 +380,7 @@ export const SHORTCUTS: Shortcut[] = [
   { 
     name: 'Pankit', icon: '🏦', color: 'bg-[#173e5f]',
     providers: [
-      { name: 'OP', url: 'https://www.op.fi/osuuspankit/op-keski-suomi/pankin-palvelut/paikallista-asiakaspalvelua/', phone: '0100 0500', phoneUrl: 'tel:01000500' },
+      { name: 'OP', url: 'https://www.op.fi/henkiloasiakkaat/asiakaspalvelu/ota-yhteytta', phone: '0100 0500', phoneUrl: 'tel:01000500' },
       { name: 'Nordea', url: 'https://www.nordea.fi/henkiloasiakkaat/palvelumme/verkko-mobiilipalvelut/digineuvontaa.html', phone: '0200 3000', phoneUrl: 'tel:02003000' },
       { name: 'Danske Bank', url: 'https://danskebank.fi/sinulle/asiakaspalvelu', phone: '0200 2580', phoneUrl: 'tel:02002580' },
       { name: 'S-Pankki', url: 'https://www.s-pankki.fi/fi/tiedotteet/2025/s-pankki-kehottaa-asiakaspalveluun-soittavia-tarkistamaan-puhelinnumeron/', phone: '010 76 5800', phoneUrl: 'tel:010765800' },

@@ -546,7 +546,7 @@ const AppContent: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[var(--theme-bg)] text-[var(--theme-text)] transition-all duration-300 text-base overflow-x-auto">
+    <div className="min-h-screen overflow-x-hidden bg-[var(--theme-bg)] text-base text-[var(--theme-text)] transition-all duration-300">
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-white focus:px-5 focus:py-3 focus:font-black focus:text-slate-950 focus:shadow-2xl focus:outline-none focus:ring-4 focus:ring-[var(--theme-focus)]"

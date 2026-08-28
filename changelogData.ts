@@ -24,15 +24,265 @@ export type ChangelogCommit = {
   tags: string[];
 };
 
-export const CHANGELOG_GENERATED_AT = "27.8.2026 klo 15.55";
-export const CHANGELOG_VERSION = "0.74.6";
+export const CHANGELOG_GENERATED_AT = "28.8.2026 klo 13.20";
+export const CHANGELOG_VERSION = "0.74.7";
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
-  "Huijausvaroitusten, lähialueen palvelujen, paikallisuutisten ja palvelulinkkien lataaminen ei enää jätä sivulle tyhjää kohtaa, vaan lataustila kerrotaan näkyvästi.",
-  "Huijausvaroitusten tyhjä ja virheellinen vastaus näytetään hallitusti, ja muu sivu pysyy käytettävissä myös hitaan tai epäonnistuvan haun aikana.",
-  "Etusivulle haetaan vain siinä näytettävät kaksi uusinta aktiivista huijausvaroitusta."
+  "Palautteen onnistumisvahvistus pysyy näkyvissä sulkemiseen asti, siirtää fokuksen vahvistukseen ja estää uuden lähetyksen onnistumisen jälkeen.",
+  "Palvelukategorioiden kortit mahtuvat mobiilinäkymään ilman sivuttaisvieritystä myös 200 prosentin tekstikoolla.",
+  "OP:n yleiset henkilöasiakaslinkit vievät valtakunnalliselle yhteystietosivulle, ja Keski-Suomen alueellinen senioripalvelu on nimetty yksiselitteisesti."
 ];
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
+  {
+    "hash": "5369e4da327b15e3d551ac22ae0cd580b2f70b90",
+    "date": "2026-08-28",
+    "version": "0.111.16",
+    "changeType": "patch",
+    "subject": "Kirjaa REL-11 pehmeän avauksen GO",
+    "tags": []
+  },
+  {
+    "hash": "19247485928b2de13f6b90eae028c8a367d4895e",
+    "date": "2026-08-28",
+    "version": "0.111.15",
+    "changeType": "patch",
+    "subject": "Kirjaa lopullinen Firestore-siirto MariaDBhen",
+    "tags": []
+  },
+  {
+    "hash": "15ebebd64d217793cbf774dd0149caa72fb9a4ee",
+    "date": "2026-08-28",
+    "version": "0.111.14",
+    "changeType": "patch",
+    "subject": "Kirjaa admin-roolit ja Firestore-kuivaharjoitus",
+    "tags": []
+  },
+  {
+    "hash": "257803f1e70100044052098388fc070390d05522",
+    "date": "2026-08-28",
+    "version": "0.111.13",
+    "changeType": "patch",
+    "subject": "Kirjaa REL-11 yksityisen tuotantojuuren asennus",
+    "tags": []
+  },
+  {
+    "hash": "4b735dbfacece1dee90b0753b3c1b2aa2c189ef4",
+    "date": "2026-08-28",
+    "version": "0.111.12",
+    "changeType": "patch",
+    "subject": "Hyväksy REL-11 tuotantopaketin esivienti",
+    "tags": []
+  },
+  {
+    "hash": "b48872f41b8cf5a513ed75232fc5cfb343a3f10e",
+    "date": "2026-08-28",
+    "version": "0.111.11",
+    "changeType": "patch",
+    "subject": "Kirjaa tuotantotietokannan yhteys ja esivienti",
+    "tags": []
+  },
+  {
+    "hash": "5132e62764c470780097c041cce674181981f909",
+    "date": "2026-08-28",
+    "version": "0.111.10",
+    "changeType": "patch",
+    "subject": "Lukitse korjattu REL-11 tuotantopaketti",
+    "tags": []
+  },
+  {
+    "hash": "6974967944fba248778cf28bd45088ddf4f2bd32",
+    "date": "2026-08-28",
+    "version": "0.111.9",
+    "changeType": "patch",
+    "subject": "Korjaa tuotantotietokannan palvelin",
+    "tags": []
+  },
+  {
+    "hash": "d92a43337eba23a10e25b4d536276c51cab2b283",
+    "date": "2026-08-28",
+    "version": "0.111.8",
+    "changeType": "patch",
+    "subject": "Turvaa REL-11 tuotantokonfiguraation SSH-vaihe",
+    "tags": []
+  },
+  {
+    "hash": "1ad87e209cd950cb5db6fd9f2937b80610d123cd",
+    "date": "2026-08-28",
+    "version": "0.111.7",
+    "changeType": "patch",
+    "subject": "Kirjaa REL-11 version 0.74.6 staginghyväksyntä",
+    "tags": []
+  },
+  {
+    "hash": "f9ba6ee2b0dc2e3e365058970aa1cfc8cc63cbc7",
+    "date": "2026-08-28",
+    "version": "0.111.6",
+    "changeType": "patch",
+    "subject": "Kirjaa REL-11 version 0.74.6 stagingbuild",
+    "tags": []
+  },
+  {
+    "hash": "39f54db591ca86eaf237064bc8972261082e479c",
+    "date": "2026-08-28",
+    "version": "0.111.5",
+    "changeType": "patch",
+    "subject": "Korjaa REL-11 stagingin versiotarkistus",
+    "tags": []
+  },
+  {
+    "hash": "b08b34fa17cd05c872d30aba23e568e5b43eabff",
+    "date": "2026-08-28",
+    "version": "0.111.4",
+    "changeType": "patch",
+    "subject": "Korjaa REL-11 stagingin SSH-jatko-ohje",
+    "tags": []
+  },
+  {
+    "hash": "d6aa8374925aa68877d8c90230fb876134ecae7d",
+    "date": "2026-08-28",
+    "version": "0.111.3",
+    "changeType": "patch",
+    "subject": "Hyväksy REL-11 tietokantakäyttäjän poikkeus",
+    "tags": []
+  },
+  {
+    "hash": "f3dee5187a1c7f770fb37b8e4de574a104098bfe",
+    "date": "2026-08-27",
+    "version": "0.111.2",
+    "changeType": "patch",
+    "subject": "Valmistele REL-11 huomisaamun pehmeä avaus",
+    "tags": []
+  },
+  {
+    "hash": "5856fa3d0717084ab574b042eabc7be836fb3626",
+    "date": "2026-08-27",
+    "version": "0.111.1",
+    "changeType": "patch",
+    "subject": "Kirjaa REL-11 version 0.74.6 ehdokas",
+    "tags": []
+  },
+  {
+    "hash": "d010d29548732aaead153e5a6b4b3eb64e395400",
+    "date": "2026-08-27",
+    "version": "0.111.0",
+    "changeType": "minor",
+    "subject": "Paranna dynaamisten sisältöjen lataustiloja",
+    "tags": []
+  },
+  {
+    "hash": "5d8d9bd0b1473d36886a3edb6c920afc11271c13",
+    "date": "2026-08-27",
+    "version": "0.110.10",
+    "changeType": "patch",
+    "subject": "Valmistele REL-11 tuotantovaihto",
+    "tags": []
+  },
+  {
+    "hash": "2fbe38b18b7e919b6af15b3df8a656e39159dd64",
+    "date": "2026-08-27",
+    "version": "0.110.9",
+    "changeType": "patch",
+    "subject": "Kirjaa tuotannon esivienti ja tietokantavalmistelu",
+    "tags": []
+  },
+  {
+    "hash": "ccaea4d434df6fab63dbddf02931050d9a05e3cd",
+    "date": "2026-08-27",
+    "version": "0.110.8",
+    "changeType": "patch",
+    "subject": "Kirjaa WordPress-pohjan välitesti",
+    "tags": []
+  },
+  {
+    "hash": "ee91f9f49b94788bee40b96298405c9c5201cd52",
+    "date": "2026-08-27",
+    "version": "0.110.7",
+    "changeType": "patch",
+    "subject": "Päivitä WordPress-esittelyosoite ja testiaineisto",
+    "tags": []
+  },
+  {
+    "hash": "cee1f0804665c8d62cd88d047551379f3fcfef9d",
+    "date": "2026-08-27",
+    "version": "0.110.6",
+    "changeType": "patch",
+    "subject": "Ratkaise REL-11 PREF-02-tuotepäätös",
+    "tags": []
+  },
+  {
+    "hash": "1ffefd26a2cf41cd444f7e50518ff07a5dce99b0",
+    "date": "2026-08-27",
+    "version": "0.110.5",
+    "changeType": "patch",
+    "subject": "Kirjaa REL-11 alustava no-go-päätös",
+    "tags": []
+  },
+  {
+    "hash": "e2fcd290ffaf480d3cf90f1980ef0d3e3330004f",
+    "date": "2026-08-27",
+    "version": "0.110.4",
+    "changeType": "patch",
+    "subject": "Valmistele REL-11 varmistus ja muutosikkuna",
+    "tags": [
+      "Visuaalisuus"
+    ]
+  },
+  {
+    "hash": "10ded36b76cf0598a05773193a7bbe874aafbdcf",
+    "date": "2026-08-27",
+    "version": "0.110.3",
+    "changeType": "patch",
+    "subject": "Kirjaa REL-11 tuotantopolun paikalliskoe",
+    "tags": []
+  },
+  {
+    "hash": "3f6d9c6ff4039d88ae7751b6772b89d7f7d3bdc8",
+    "date": "2026-08-27",
+    "version": "0.110.2",
+    "changeType": "patch",
+    "subject": "Päivitä REL-11 tuotantopolun paketointi",
+    "tags": []
+  },
+  {
+    "hash": "8438ef4454d5a5dadce242b42bdf584460999d5a",
+    "date": "2026-08-27",
+    "version": "0.110.1",
+    "changeType": "patch",
+    "subject": "Kirjaa REL-11 WordPressin välisavukoe",
+    "tags": []
+  },
+  {
+    "hash": "b1fc32a36a86813d560f4cb67daeaf144c098546",
+    "date": "2026-08-27",
+    "version": "0.110.0",
+    "changeType": "minor",
+    "subject": "Täsmennä WordPress-esittelysivun julkaisuohje",
+    "tags": []
+  },
+  {
+    "hash": "81614bd2770150fef1e6da9e1673a9cb2ba3ab01",
+    "date": "2026-08-27",
+    "version": "0.109.11",
+    "changeType": "patch",
+    "subject": "Kirjaa REL-11 version 0.74.5 stagingvarmennus",
+    "tags": []
+  },
+  {
+    "hash": "eee706937cb82d148616672530160f0a5927a3c2",
+    "date": "2026-08-27",
+    "version": "0.109.10",
+    "changeType": "patch",
+    "subject": "Kirjaa REL-11 version 0.74.5 stagingehdokas",
+    "tags": []
+  },
+  {
+    "hash": "d5c4ea9ac2b8080afadd569f4b2b3bb8c0b0aa50",
+    "date": "2026-08-26",
+    "version": "0.109.9",
+    "changeType": "patch",
+    "subject": "Piilota katkenneet NCSC-varoitukset turvallisesti",
+    "tags": []
+  },
   {
     "hash": "e57a67b9a964b4a6058f781903ed073bcdd59d8f",
     "date": "2026-08-26",

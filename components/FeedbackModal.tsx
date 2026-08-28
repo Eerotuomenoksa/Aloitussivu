@@ -115,7 +115,8 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose }) => {
   const [clientInfo, setClientInfo] = useState<FeedbackClientInfo | undefined>(() => collectClientInfo());
   const [screenshot, setScreenshot] = useState<FeedbackScreenshotDraft | null>(null);
   const [screenshotError, setScreenshotError] = useState('');
-  const closeTimerRef = useRef<number | null>(null);
+  const submissionLockedRef = useRef(false);
+  const submitStatusRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
@@ -136,6 +137,7 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose }) => {
     setClientInfo(collectClientInfo());
     setScreenshot(null);
     setScreenshotError('');
+    submissionLockedRef.current = false;
     if (fileInputRef.current) fileInputRef.current.value = '';
     void syncLocalFeedbackItems().then((result) => {
       if (result.synced > 0) {
@@ -144,15 +146,6 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose }) => {
         setSyncNotice(`${result.remaining} aiemmin tallennettua palautetta odottaa toimivaa verkkoyhteyttä.`);
       }
     }).catch(() => {});
-  }, [isOpen]);
-
-  useEffect(() => {
-    if (!isOpen) return undefined;
-    return () => {
-      if (closeTimerRef.current !== null) {
-        window.clearTimeout(closeTimerRef.current);
-      }
-    };
   }, [isOpen]);
 
   if (!isOpen || typeof document === 'undefined') return null;
@@ -196,6 +189,7 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose }) => {
 
   const submit = async (event: React.FormEvent) => {
     event.preventDefault();
+    if (submitted || isSubmitting || submissionLockedRef.current) return;
     setSubmitError('');
 
     const trimmedTitle = title.trim();
@@ -212,6 +206,7 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose }) => {
       return;
     }
 
+    submissionLockedRef.current = true;
     setIsSubmitting(true);
 
     try {
@@ -227,11 +222,9 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose }) => {
       setSubmitNotice(result.storage === 'cloud'
         ? 'Kiitos. Palaute lisättiin kehitysjonoon.'
         : 'Kiitos. Palaute tallennettiin tähän selaimeen, mutta tietokantaan ei juuri nyt saatu yhteyttä.');
-      if (closeTimerRef.current !== null) {
-        window.clearTimeout(closeTimerRef.current);
-      }
-      closeTimerRef.current = window.setTimeout(onClose, result.storage === 'cloud' ? 1100 : 3500);
+      window.requestAnimationFrame(() => submitStatusRef.current?.focus());
     } catch {
+      submissionLockedRef.current = false;
       setSubmitError('Palautteen tallennus ei onnistunut. Yritä hetken päästä uudelleen.');
     } finally {
       setIsSubmitting(false);
@@ -260,6 +253,21 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose }) => {
             x
           </button>
         </div>
+
+        {submitted ? (
+          <div className="shrink-0 border-b-2 border-green-200 bg-green-50 p-4 sm:px-5 md:px-8 dark:border-green-900 dark:bg-green-900/20">
+            <div
+              ref={submitStatusRef}
+              tabIndex={-1}
+              role="status"
+              aria-live="polite"
+              className="rounded-2xl border-4 border-green-200 bg-green-50 p-4 font-black text-green-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--theme-focus)] dark:border-green-900 dark:bg-green-900/20 dark:text-green-200"
+            >
+              <p>{submitNotice}</p>
+              <p className="mt-1 text-sm font-bold">Palaute on lähetetty vain kerran. Voit nyt sulkea ikkunan.</p>
+            </div>
+          </div>
+        ) : null}
 
         <form onSubmit={submit} className="flex min-h-0 flex-1 flex-col">
           <div className="aurora-modal-body min-h-0 flex-1 space-y-5 overflow-y-auto overscroll-contain p-5 md:p-8">
@@ -362,12 +370,6 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose }) => {
               </div>
             </div>
 
-            {submitted ? (
-              <p role="status" className="rounded-2xl border-4 border-green-200 bg-green-50 p-4 font-black text-green-800 dark:border-green-900 dark:bg-green-900/20 dark:text-green-200">
-                {submitNotice}
-              </p>
-            ) : null}
-
             {syncNotice ? (
               <p role="status" className="rounded-2xl border-2 border-amber-300 bg-amber-50 p-4 font-bold text-amber-900 dark:border-amber-800 dark:bg-amber-900/20 dark:text-amber-100">
                 {syncNotice}
@@ -384,14 +386,14 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose }) => {
           <div className="flex shrink-0 flex-wrap items-center justify-end gap-3 border-t-2 border-[var(--theme-border)] bg-[var(--theme-surface)] p-4 sm:p-5">
             <div className="flex flex-wrap items-center justify-end gap-3">
               <button type="button" onClick={onClose} className="aurora-secondary-button px-6 py-3">
-                Peruuta
+                {submitted ? 'Sulje' : 'Peruuta'}
               </button>
               <button
                 type="submit"
-                disabled={isSubmitting}
+                disabled={isSubmitting || submitted}
                 className="rounded-full bg-[var(--theme-primary)] px-8 py-3 font-black text-white transition-all hover:bg-[var(--theme-primary-mid)] active:scale-95 disabled:cursor-not-allowed disabled:opacity-60"
               >
-                {isSubmitting ? 'Lähetetään...' : 'Lähetä palaute'}
+                {submitted ? 'Palaute lähetetty' : isSubmitting ? 'Lähetetään...' : 'Lähetä palaute'}
               </button>
             </div>
           </div>
