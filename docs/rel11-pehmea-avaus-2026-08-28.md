@@ -61,7 +61,7 @@ Videon voi kuvata vasta hyväksytyn smoken jälkeen. Kuvassa ei näytetä ylläp
 | Yksityinen tuotanto-API-juuri | PASS 28.8.2026: palautusarkisto 600-oikeudella, vanha juuri säilytetty, PHP-lint 43/43 ja aktiivinen tietokantayhteys `up` |
 | Admin-roolit ja tuotantokannan varmistus | PASS 28.8.2026: ristiriitoja 0, kaksi aktiivista admin-roolia, odotetut tilit löytyivät ja täsmäsivät 2/2; uusi yksityinen SQL-varmistus tallessa |
 | Firestore-sääntöjen kuivaharjoitus | PASS 28.8.2026: kirjoituslukko ja normaalien sääntöjen palautus kääntyivät projektille `aloitussivu-5d50c`; sääntöjä ei vielä julkaistu |
-| Lopullinen Firestore-vienti ja MariaDB-täsmäytys | täytetään |
+| Lopullinen Firestore-vienti ja MariaDB-täsmäytys | PASS 28.8.2026: kirjoituslukko julkaistu klo 10.19.33, julkinen luku PASS ja kirjoitus estetty; vientien poikkeamia 0/0; täysi SHA-256 `fcd0b951a021a08c0a192e74c98ce106da03bce2b99ff3a60dd439983685e597`; taulumäärät ja tunnistenäytteet täsmäsivät |
 | Julkisen `/aloitus/`-polun smoke | täytetään |
 | WordPressin jälkeen-savukoe | täytetään |
 | Riippumaton hyväksyjä | täytetään |
