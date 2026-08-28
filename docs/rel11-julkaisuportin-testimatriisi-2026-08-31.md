@@ -7,7 +7,7 @@ Tämä matriisi suoritetaan jäädytetylle Cloudcity-staging-ehdokkaalle. Testit
 | Kenttä | Arvo |
 | --- | --- |
 | Staging | `https://staging.aloitussivu.seniorsurf.fi/` |
-| Julkaisukandidaatti | `REL-11-v0.74.6-d010d2954873` (paikallisesti varmennettu 27.8.2026; staging-uusinta avoin) |
+| Julkaisukandidaatti | `REL-11-v0.74.6-d010d2954873` (asennettu ja teknisesti varmennettu stagingissa 28.8.2026; käyttöliittymän vaikutusaluetesti avoin) |
 | Sovellusversio | `0.74.6` |
 | Sovelluscommit | `d010d2954873` |
 | Staging-ZIP SHA-256 | `1d05240c75ad46095829f6830103db9c6176f08cb188776dc01de3e4ed758ebe` |
@@ -36,9 +36,9 @@ Yksikin avoin P1 tarkoittaa päätöstä **NO-GO**. Jäädytettyä ehdokasta muu
 
 | ID | P | Tarkistus | Hyväksymisehto | Tulos | Todiste tai havainto |
 | --- | --- | --- | --- | --- | --- |
-| PRE-01 | P1 | Stagingin `build-info.json` | Build ID, commit ja `workingTreeDirty: false` vastaavat yllä olevaa testikohdetta. | PASS | Eero vahvisti SSH:lla 27.8.2026: build ID `REL-11-v0.74.5-d5c4ea9ac2b8`, commit `d5c4ea9ac2b8` ja `workingTreeDirty: false`. |
-| PRE-02 | P1 | API-health ja MariaDB | `/api/v1/health` palauttaa `status: ok`, `database: up` ja `version: v1`. | PASS | Version 0.74.5 etusivu ja pääbundle palauttivat HTTP 200:n; health palautti `ok/up/v1`. |
-| PRE-03 | P1 | Muuttumaton ehdokas | Stagingin pääbundle on `assets/main-BpDCsx27.js`; jäädytyksen jälkeen ei ole tehty sovellus- tai palvelinasetusmuutosta. | PASS | Pääbundle `assets/main-BpDCsx27.js`, build ID ja commit vahvistettiin samasta ehdokkaasta. P1-uusinnan aikana tehtiin vain dokumentoitu NCSC-CLI-ajo; sovellus- tai palvelinasetuksia ei muutettu. |
+| PRE-01 | P1 | Stagingin `build-info.json` | Build ID, commit ja `workingTreeDirty: false` vastaavat yllä olevaa testikohdetta. | PASS | Eero vahvisti SSH:lla 28.8.2026: build ID `REL-11-v0.74.6-d010d2954873`, commit `d010d2954873` ja `workingTreeDirty: false`. |
+| PRE-02 | P1 | API-health ja MariaDB | `/api/v1/health` palauttaa `status: ok`, `database: up` ja `version: v1`. | PASS | Version 0.74.6 staging-health palautti 28.8.2026 HTTP 200:n sekä arvot `ok/up/v1`. |
+| PRE-03 | P1 | Muuttumaton ehdokas | Stagingin pääbundle on `assets/main-NYkkJV2H.js`; jäädytyksen jälkeen ei ole tehty sovellus- tai palvelinasetusmuutosta. | PASS | Pääbundle `assets/main-NYkkJV2H.js`, build ID ja commit vahvistettiin samasta version 0.74.6 ehdokkaasta. Myöhemmät paikalliset commitit muuttavat vain julkaisuohjeita eivätkä paketin deploy-inputteja. |
 | PRE-04 | P1 | Stagingin palautuspiste | Tiedostopalautuspaketti ja tuore tietokantavarmistus ovat olemassa yksityisessä sijainnissa. | PASS | Ennen version 0.74.5 purkua tehtiin version 0.74.4 palautuspaketti `/home/seniorsurffi/rel11-v0744-predeploy-files-20260827.tar.gz`, koko noin 2,3 Mt ja SHA-256 `938dd651e93e1200343fb19fac3507e83c4d231b446248120bd7a570caf5e251`. Tuore erillinen MariaDB-varmistus on vahvistettu OPS-02:ssa. |
 | PRE-05 | P1 | WordPress-esittelysivu | `/aloitussivu/` on julkaistu hyväksytyllä sisällöllä ja suoralla `/aloitus/`-linkillä. | PASS (tuotevastuun hyväksyntä) | Julkisen sivun HTTP 200, slug, otsikko ja viisi hyväksyttyä esittelykappaletta varmennettiin ensin teknisesti. Myöhemmin 27.8.2026 tuotevastuu vahvisti lisänneensä hyväksytyn kuvan ja suoraan `/aloitus/`-osoitteeseen vievän painikkeen sekä tehneensä tietokone- ja mobiilikuvien tarkistukset. |
 | PRE-06 | P1 | Tuotannonkaltainen `/aloitus/`-koe | Suora polku, API-entrypoint ja resurssit voidaan testata WordPressin rinnalla ilman pääjuuren `.htaccess`-muutosta tai Redirection-sääntöä. | Osittain PASS (paikallinen) | REL-11-tuotantopolun paketti läpäisi paikallisen `/aloitus/`-reititys-, API-, resurssi- ja 404-kokeen 27.8.2026. Ennen fyysisen hakemiston aktivointia oikea `https://seniorsurf.fi/aloitus/` palauttaa WordPressin 301-ohjauksen `/aloitussivu/`-esittelyyn. Tämä lähtötila pitää korvautua suoralla fyysisellä `/aloitus/`-reitillä ilman Redirection-sääntöä ja todentaa ennen täyttä PASS-merkintää. |
