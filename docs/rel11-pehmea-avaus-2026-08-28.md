@@ -58,6 +58,7 @@ Videon voi kuvata vasta hyväksytyn smoken jälkeen. Kuvassa ei näytetä ylläp
 | --- | --- |
 | Version 0.74.6 staging-uusinta | PASS 28.8.2026: build, commit, pääbundle, health ja käyttöliittymän vaikutusalue hyväksytty |
 | API-käyttäjä ja tuotantokonfiguraatio | PASS 28.8.2026: käyttäjä ja `SHOW GRANTS` hyväksytyllä poikkeuksella; `config.php`-syntaksi, arvot ja 640-oikeus PASS; tuotantopalvelin `dbtqq.db.cchosting.fi`; `database=up` |
+| Yksityinen tuotanto-API-juuri | PASS 28.8.2026: palautusarkisto 600-oikeudella, vanha juuri säilytetty, PHP-lint 43/43 ja aktiivinen tietokantayhteys `up` |
 | Lopullinen Firestore-vienti ja MariaDB-täsmäytys | täytetään |
 | Julkisen `/aloitus/`-polun smoke | täytetään |
 | WordPressin jälkeen-savukoe | täytetään |
