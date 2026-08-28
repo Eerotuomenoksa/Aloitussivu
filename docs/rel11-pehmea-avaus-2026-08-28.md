@@ -62,8 +62,14 @@ Videon voi kuvata vasta hyväksytyn smoken jälkeen. Kuvassa ei näytetä ylläp
 | Admin-roolit ja tuotantokannan varmistus | PASS 28.8.2026: ristiriitoja 0, kaksi aktiivista admin-roolia, odotetut tilit löytyivät ja täsmäsivät 2/2; uusi yksityinen SQL-varmistus tallessa |
 | Firestore-sääntöjen kuivaharjoitus | PASS 28.8.2026: kirjoituslukko ja normaalien sääntöjen palautus kääntyivät projektille `aloitussivu-5d50c`; sääntöjä ei vielä julkaistu |
 | Lopullinen Firestore-vienti ja MariaDB-täsmäytys | PASS 28.8.2026: kirjoituslukko julkaistu klo 10.19.33, julkinen luku PASS ja kirjoitus estetty; vientien poikkeamia 0/0; täysi SHA-256 `fcd0b951a021a08c0a192e74c98ce106da03bce2b99ff3a60dd439983685e597`; taulumäärät ja tunnistenäytteet täsmäsivät |
-| Julkisen `/aloitus/`-polun smoke | täytetään |
-| WordPressin jälkeen-savukoe | täytetään |
-| Riippumaton hyväksyjä | täytetään |
-| Pehmeän avauksen GO-aika | täytetään |
+| Julkisen `/aloitus/`-polun smoke | PASS 28.8.2026: etusivu ja pääbundle 200, `/aloitus` ohjasi kerran kanoniseen polkuun, oma 404 toimi ja health palautti 200 sekä `ok/up/v1` ja `Cache-Control: no-store` |
+| WordPressin jälkeen-savukoe | PASS 28.8.2026: etusivu, Etäopastus, Ajankohtaista, Yhteystiedot ja haku palauttivat 200 odotetuilla otsikoilla; `/wp-admin/` ohjasi kirjautumiseen ja vertailumedia säilyi 152080 tavun JPEG-kuvana |
+| Riippumaton hyväksyjä | PASS 28.8.2026: tietokone- ja mobiilinäkymä hyväksyttiin eikä P1-virheitä havaittu |
+| Pehmeän avauksen GO-aika | GO 28.8.2026 klo 11.36 Europe/Helsinki |
 | 1.9. tiedotuksen GO-aika | täytetään |
+
+Tuotantoympäristö paljasti kaksi käyttöönoton aikaista alustapoikkeamaa. ZIP oli purettu yksityisen ehdokashakemiston vuoksi oikeuksilla 700/600; julkiset hakemistot korjattiin arvoon 755 ja tiedostot arvoon 644 ennen hyväksyttyä aktivointia. Lisäksi WordPressin pääjuuren reititys sieppasi virtuaaliset `/aloitus/api/`-polut. Pääjuuren `.htaccess` varmuuskopioitiin yksityiseen kotihakemistoon, minkä jälkeen ennen WordPressin automaattista lohkoa lisättiin vain `/aloitus/api/`-pyyntöihin rajattu sääntö. WordPressin dynaamista lohkoa, tietokantaa, teemaa, lisäosia tai Redirection-sääntöjä ei muutettu. LiteSpeedin vanha API-404 tyhjennettiin välimuistista ja kaikki WordPress-verrokit testattiin muutoksen jälkeen.
+
+Firebase-verkkosovelluksen tuotanto-origin lisättiin selaimen API-avaimen HTTP-referrer-rajoituksiin sekä Authenticationin sallittuihin domaineihin. Tämän jälkeen tuotannon admin-kirjautuminen ja `ADMIN`-rooli olivat PASS. Kaksi henkilötiedotonta smoke-palautetta tallentui MariaDB:hen ja merkittiin hyväksytyssä ylläpitonäkymässä valmiiksi. Firestore-kirjoituslukko jätettiin GO-päätöksen mukaisesti voimaan.
+
+Pehmeä avaus hyväksyttiin kolmella avoimella P2-havainnolla, jotka eivät estä rajattua ennakkokäyttöä mutta käsitellään ennen 1.9. laajaa tiedotusta: palautteen onnistumisvahvistus voi jäädä vieritysalueen loppuun ja sulkeutua liian nopeasti, OnePlus 12:n Chromessa kategorian linkkilaatikot ovat 100 prosentin näkymässä liian leveitä sekä Osuuspankki-linkki avasi Keski-Suomen alueellisen OP-sivun.
