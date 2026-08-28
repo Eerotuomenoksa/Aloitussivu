@@ -112,7 +112,7 @@ Ensimmäisen lohkon pitää päättyä arvoon `staging_files=ok`. Health-vastauk
 
 Tarkista stagingissa vähintään:
 
-1. Footerissa näkyy versio 0.74.6.
+1. Footerissa näkyvät vuosiluku ja osoite `seniorsurf.fi/aloitus`. Versionumero ei kuulu nykyiseen julkiseen footeriin; varmista versio palvelimen `build-info.json`-tiedostosta ja pääbundlen nimestä kohdan 4 mukaisesti.
 2. Otsikko, sää, Google-haku, sisältövalikko ja palvelukategoriat näkyvät heti.
 3. Huijausvaroituslaatikossa näkyy hitaalla yhteydellä `Ladataan huijausvaroituksia…`, ja sisältö korvaa viestin valmistuttua.
 4. Varoituksia näkyy enintään kaksi ja niiden lisätietoikkuna sekä lähdelinkki toimivat.
