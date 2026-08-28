@@ -94,3 +94,14 @@ Aja seuraava lohko SSH-istunnossa. Sulut estävät tarkistusvirhettä sulkemasta
 ```
 
 Hyväksy vain tulos `PRODUCTION_ZIP=PASS`, `FILES=115` ja `PHP_FILES=43`. `PUBLIC_TARGET` kirjataan, mutta sitä ei muuteta tässä vaiheessa. Säilytä tulostuva `CANDIDATE`-polku seuraavia vaiheita varten.
+
+## Toteutunut tulos 28.8.2026
+
+- Palvelimen koko ja SHA-256 täsmäsivät.
+- ZIPin eheystarkistus ja kielletyn oikean `config.php`-tiedoston tarkistus olivat PASS.
+- Ehdokas purettiin hakemistoon `/home/seniorsurffi/rel11-production-candidate-6974967944fb-20260828`.
+- Build ID `REL-11-v0.74.6-6974967944fb`, commit `6974967944fb` ja `workingTreeDirty: false` täsmäsivät.
+- Tiedostoja oli 115 ja PHP-lint läpäisi 43/43.
+- Konfiguraatiomallissa oli tuotantoisäntä `dbtqq.db.cchosting.fi`, oikea `config.php` puuttui ja julkinen `/home/seniorsurffi/website.wp33403/aloitus` oli edelleen vapaa.
+
+**Esivienti: PASS.** Ehdokasta ei ole vielä yhdistetty yksityiseen tuotantojuureen eikä julkista hakemistoa ole aktivoitu.

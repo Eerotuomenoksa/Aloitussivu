@@ -12,7 +12,7 @@ Pehmeä avaus on oikea tuotantovaihto, ei erillinen esikatselu. Osoite `https://
 - Tuotantopolun ZIP: `C:\dev\Aloitussivu\.tmp\aloitussivu-rel11-production-path.zip`, 824590 tavua, SHA-256 `2fca11c90ca1fdcf3ec0bfd10ae6e1a9e465100b3ea4fde44f6b3935c50db479`.
 - Kummassakin ZIPissä on 115 tiedostoa, kaikki merkinnät avautuvat, vaarallisia polkuja on 0 eikä paketissa ole oikeaa `config.php`-tiedostoa, `.env`-tiedostoja tai Admin SDK -avainta.
 
-Commitien `d010d2954873..6974967944fb` tuotantoajoon vaikuttava ainoa muutos on tuotannon esimerkkikonfiguraation tietokantaisäntä `dbtqq.db.cchosting.fi`; frontend- tai API-koodi ei muuttunut. Uuden staging-verrokin pääbundle säilyi nimeltään `assets/main-NYkkJV2H.js`. Aiempi stagingin health- ja käyttöliittymä-PASS säilyvät näyttönä sovelluskoodista; tuotantokonfiguraation `database=up` on PASS ja uuden tuotantopaketin esivienti on avoinna.
+Commitien `d010d2954873..6974967944fb` tuotantoajoon vaikuttava ainoa muutos on tuotannon esimerkkikonfiguraation tietokantaisäntä `dbtqq.db.cchosting.fi`; frontend- tai API-koodi ei muuttunut. Uuden staging-verrokin pääbundle säilyi nimeltään `assets/main-NYkkJV2H.js`. Aiempi stagingin health- ja käyttöliittymä-PASS säilyvät näyttönä sovelluskoodista; tuotantokonfiguraation `database=up` ja uuden tuotantopaketin palvelinesivienti ovat PASS.
 
 Huomisaamun tiivis työjärjestys on tiedostossa `rel11-huomisaamun-tyolista-2026-08-28.md` ja uuden ehdokkaan staging-komennot tiedostossa `rel11-staging-vienti-2026-08-28.md`.
 
