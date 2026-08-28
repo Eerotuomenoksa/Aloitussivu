@@ -17,7 +17,7 @@ Huomisaamun tiivis työjärjestys on tiedostossa `rel11-huomisaamun-tyolista-202
 
 ## Aikataulu
 
-- **28.8. klo 08.30:** valmiusportti. Rajattu API-käyttäjä, tuotantokonfiguraatio, uusi version 0.74.6 ehdokas, staging-uusinta, varmistukset, admin-roolit, smoke-hyväksyjä ja palautustuki tarkistetaan.
+- **28.8. klo 08.30:** valmiusportti. Hyväksytty API-käyttäjäpoikkeus, tuotantokonfiguraatio, uusi version 0.74.6 ehdokas, staging-uusinta, varmistukset, admin-roolit, smoke-hyväksyjä ja palautustuki tarkistetaan.
 - **28.8. klo 09.00:** aikaisin mahdollinen T0, jos kaikki kovat GO-ehdot ovat PASS. Jos yksikin ehto puuttuu, avausta siirretään saman päivän myöhempään hallittuun ikkunaan eikä ehtoja ohiteta.
 - **28.8. T0–T0+25 min:** Firestore-kirjoituslukko, lopullinen vienti, tuotantotuonti, julkisen hakemiston aktivointi ja smoke tehdään tiedoston `rel11-tuotantovaihto-2026-09-01.md` vaiheiden järjestyksessä. Sen vanhoja version 0.74.5 polkuja sisältäviä komentolohkoja ei ajeta; uudet täsmälliset palvelinpolut kirjataan version 0.74.6 esiviennin jälkeen.
 - **28.8. smoken jälkeen:** sivu jätetään julkisesti käytettäväksi. Vain rajatulle digiopastaja- ja testaajaryhmälle kerrotaan osoite; yleistä julkaisuviestiä ei vielä lähetetä.
@@ -26,14 +26,14 @@ Huomisaamun tiivis työjärjestys on tiedostossa `rel11-huomisaamun-tyolista-202
 
 ## Kovat GO-ehdot 28.8.
 
-1. Cloudcityn erillisen API-käyttäjän oikeudet ovat vain globaali `USAGE` sekä tuotantokantaan `SELECT`, `INSERT`, `UPDATE` ja `DELETE`.
+1. Cloudcityn 28.8.2026 vahvistama käyttäjärajoitus ja tuotevastuun hyväksymä tietoturvapoikkeus on kirjattu tiedostoon `rel11-tietoturvapoikkeus-api-kayttaja-2026-08-28.md`. Ainoalla käyttäjällä on globaali `USAGE` ja tietokantakohtainen `ALL PRIVILEGES` vain Aloitussivun tuotantokantaan, ilman `GRANT OPTION` -oikeutta.
 2. Yksityinen tuotanto-`config.php` on valmis, oikeudet ovat 640 ja yhteyskoe tulostaa `database=up` paljastamatta arvoja.
 3. Version 0.74.6 uusi ZIP ja ehdokashakemisto on yksilöity SHA-256-tiivisteellä. Vanhaa version 0.74.5 pakettia ei aktivoida.
 4. Versio 0.74.6 on viety stagingiin ja huijausvaroitusten hidas, onnistuva, tyhjä ja virheellinen tila sekä muun sivun samanaikainen käytettävyys on hyväksytty.
 5. Tuotannon admin-roolit, viimeiset varmistukset, Firestore-lukon kuivaharjoitus ja palautuskomento ovat PASS.
 6. Riippumaton smoke-hyväksyjä ja palautuspäätöksen tuki ovat tavoitettavissa koko muutosikkunan ajan.
 
-Jos yksikin ehto puuttuu, tulos on NO-GO. Erityisesti täysioikeuksista migraatiotunnusta ei käytetä API:ssa kiireen vuoksi.
+Jos yksikin ehto puuttuu, tulos on NO-GO. Tietokantakohtainen `ALL PRIVILEGES` hyväksytään vain dokumentoidun poikkeuksen rajoissa; globaalit tai muiden tietokantojen oikeudet pysäyttävät julkaisun.
 
 ## Version 0.74.6 vaikutusaluetesti stagingissa
 
@@ -56,7 +56,7 @@ Videon voi kuvata vasta hyväksytyn smoken jälkeen. Kuvassa ei näytetä ylläp
 | Kohta | Tulos |
 | --- | --- |
 | Version 0.74.6 staging-uusinta | täytetään |
-| API-käyttäjä ja tuotantokonfiguraatio | täytetään |
+| API-käyttäjä ja tuotantokonfiguraatio | käyttäjä sekä `SHOW GRANTS` PASS hyväksytyllä poikkeuksella; `config.php` ja `database=up` avoinna |
 | Lopullinen Firestore-vienti ja MariaDB-täsmäytys | täytetään |
 | Julkisen `/aloitus/`-polun smoke | täytetään |
 | WordPressin jälkeen-savukoe | täytetään |

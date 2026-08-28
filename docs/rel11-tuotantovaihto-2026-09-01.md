@@ -14,7 +14,7 @@ Päivitetty 27.8.2026. Tämä on suoritettava ajokirja Aloitussivun tuotantojulk
 - Julkista `/home/seniorsurffi/website.wp33403/aloitus/`-hakemistoa ei ollut vielä lähtötilanteessa. Nykyinen WordPress-ohjaus säilyy siihen asti, kun fyysinen hakemisto aktivoidaan.
 - Tuotanto-MariaDB:ssä ovat migraatiot `001_initial_schema` ja `002_add_link_reports_triage_index`, 15 taulua ja tarvittava linkki-ilmoitusindeksi. Sovellusdataa ei ole vielä tuotu.
 - Tuotanto-MariaDB:n varmistus ja staging-MariaDB:n manuaalinen varmistus on otettu 27.8.2026.
-- Cloudcitylle on lähetetty pyyntö erillisestä API-käyttäjästä, jolla saa olla vain `SELECT`, `INSERT`, `UPDATE` ja `DELETE` Aloitussivun tuotantokantaan.
+- Cloudcity vahvisti 28.8.2026, ettei tietokantaan saa erillisiä käyttäjiä eri oikeuksilla. Tuotevastuu hyväksyi ainoan tietokantakäyttäjän käyttämisen API:ssa dokumentoidulla tietoturvapoikkeuksella. Käyttäjällä saa olla globaali `USAGE` ja tietokantakohtainen `ALL PRIVILEGES` vain Aloitussivun tuotantokantaan, ilman `GRANT OPTION` -oikeutta.
 - Firestore-esivienti projektista `aloitussivu-5d50c` valmistui 27.8.2026 klo 15.14.31, SHA-256 `7b1ccaf1546f50f39332ba6f188fab642f1aa3a36789bec2b78d5713dcab6d3a`, poikkeamia 0. Tämä on harjoitus- ja vertailuaineisto, **ei julkaisuhetkellä tuotava aineisto**.
 - WordPress-esittelysivu ja kuvakaappaukset on tuotevastuun ilmoituksen mukaan tehty.
 
@@ -36,7 +36,7 @@ Täytä nimet viimeistään maanantaina 31.8. klo 12.00:
 
 Julkaisu on NO-GO, jos maanantaina 31.8. klo 12.00 yksikin näistä puuttuu:
 
-1. erillinen API-käyttäjä ja hyväksytty vähimmän oikeuden `SHOW GRANTS` -tulos;
+1. hyväksytty tietoturvapoikkeus ja sen rajauksen mukainen `SHOW GRANTS` -tulos;
 2. valmis yksityinen tuotanto-`config.php` sekä onnistunut tietokantayhteyskoe;
 3. tuotannon admin-roolit ja henkilötiedoton täsmäytys;
 4. nimetty riippumaton smoke-hyväksyjä ja tavoitettavissa oleva palautustuki;
@@ -48,9 +48,9 @@ Ilman näitä ei aloiteta kirjoituslukkoa eikä tietojen tuontia.
 
 ## Perjantai 28.8. – valmistelu 1/2
 
-1. Seuraa Cloudcityn API-käyttäjäpyyntöä. Pyydä kiireellinen tilannepäivitys, jos vastausta ei ole klo 12.00 mennessä.
-2. Tarkista API-käyttäjän grantit phpMyAdminissa tai ylläpitoistunnossa. Hyväksy vain globaali `USAGE` ja `SELECT, INSERT, UPDATE, DELETE` täsmälliseen Aloitussivun tuotantokantaan. Hylkää `ALL PRIVILEGES`, `CREATE`, `ALTER`, `DROP`, `GRANT OPTION` ja oikeudet WordPress-kantaan.
-3. Tee yksityinen `config.php` jäljempänä kuvatulla tavalla. Älä käytä migraatiokäyttäjää API:ssa.
+1. Säilytä Cloudcityn vastaus yksityisessä ylläpitolokissa ilman tunnuksia.
+2. Tarkista API-käyttäjän grantit phpMyAdminissa tai ylläpitoistunnossa. Hyväksy dokumentoidulla poikkeuksella globaali `USAGE` ja tietokantakohtainen `ALL PRIVILEGES` täsmälleen Aloitussivun tuotantokantaan. Hylkää `GRANT OPTION`, muut globaalit oikeudet sekä oikeudet WordPress-kantaan tai muihin kantoihin.
+3. Tee yksityinen `config.php` jäljempänä kuvatulla tavalla käyttäen ainoaa Cloudcityn tietokantakäyttäjää.
 4. Tarkista Firebase Consolesta jokaisen ylläpitäjän UID, vahvistettu sähköposti, rooli ja aktiivisuus. Muodosta admin-SQL repositorion ulkopuolelle ja aja se tuotantokantaan.
 5. Nimeä riippumaton smoke-hyväksyjä ja varmista, että hän on tavoitettavissa 1.9. klo 09.10–09.25.
 6. Aja kirjoituslukkosääntöjen `--dry-run`. Älä julkaise sääntöjä vielä.
@@ -74,7 +74,7 @@ chmod 640 "$REL11_PRIVATE/secrets/config.php"
 Muokkaa `config.php` palvelimen omassa editorissa tai Cloudcityn suojatussa tiedostonhallinnassa. Aseta:
 
 - ympäristö `production`, origin `https://seniorsurf.fi` ja base path `/aloitus`;
-- tuotantokannan nimi sekä uusi erillinen API-käyttäjä;
+- tuotantokannan nimi sekä tietoturvapoikkeuksella hyväksytty ainoa Cloudcity-käyttäjä;
 - Cloudcityn tietokantaisäntä `dbtma.db.cchosting.fi` ja portti 3306;
 - vahva satunnainen `rate_limit_secret`;
 - Firebase-projekti `aloitussivu-5d50c`.

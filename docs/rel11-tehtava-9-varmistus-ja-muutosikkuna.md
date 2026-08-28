@@ -11,14 +11,14 @@ Päivitetty 27.8.2026. Tämä on valmisteluohje ensi viikon tuotantovaihdolle. V
 - Deploy-inputit vastaavat stagingissa testattua version 0.74.5 sovelluskoodia. Jos jokin sovelluksen tai tuotantopaketin deploy-inputti muuttuu, paketti rakennetaan ja testataan uudelleen.
 - Firestore-harjoitusvienti projektista `aloitussivu-5d50c` valmistui 27.8.2026 klo 12.14.31 UTC, poikkeamia oli 0 ja SHA-256 oli `7b1ccaf1546f50f39332ba6f188fab642f1aa3a36789bec2b78d5713dcab6d3a`.
 
-Julkaisuhetken täysi Firestore-vienti, audit-delta, vähimmän oikeuden API-käyttäjä ja vastuuhenkilöiden hyväksyntä ovat vielä avoinna.
+Julkaisuhetken täysi Firestore-vienti, audit-delta, tietoturvapoikkeuksen mukainen tuotantoyhteys ja vastuuhenkilöiden hyväksyntä ovat vielä avoinna.
 
 ## Julkaisupäivän järjestys
 
 1. Vahvista muutosikkunan alkamis- ja päättymisaika sekä kaikki vastuuhenkilöt.
 2. Toista WordPressin ennen-savukoe WP-01–WP-04.
 3. Ota nykyisestä staging-versiosta uusi tiedostovarmistus ja uusi MariaDB-varmistus.
-4. Varmista tuotantotietokannan kohde, migraatiot ja vähimmän oikeuden käyttäjä.
+4. Varmista tuotantotietokannan kohde, migraatiot, hyväksytty API-käyttäjäpoikkeus ja sen rajauksen mukainen `SHOW GRANTS`.
 5. Julkaise etukäteen kuivaharjoitettu Firestore-kirjoituslukko ja odota sääntöjen leviämisaika. Ota sen jälkeen lopullinen täysi Firestore-vienti sekä audit-delta.
 6. Rakenna tuontiaineisto, tarkista `exceptionCount = 0` ja täsmäytä lukumäärät sekä tiivisteet.
 7. Koska tuotantokannan sovellusdatataulut ovat tyhjiä, tuo vain lopullisen täyden viennin `import.sql` vahvistettuun Aloitussivun tuotantotietokantaan. Älä tuo audit-deltaa tämän lisäksi.

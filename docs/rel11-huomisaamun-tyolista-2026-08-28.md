@@ -21,14 +21,21 @@ powershell -ExecutionPolicy Bypass -File .\scripts\rel11-morning-preflight.ps1
 
 Odotus: staging ja production-path ovat molemmat `PASS`.
 
+Toteutunut 28.8.2026: **PASS**. Molemmat paketit vastasivat buildia `REL-11-v0.74.6-d010d2954873`, tiedostomäärä oli 115 ja SHA-256-tiivisteet täsmäsivät.
+
 ### 2. Klo 08.10–08.20: API-käyttäjän portti
 
-Tarkista Cloudcityn vastaus. Jatka vain, jos uusi API-käyttäjä on olemassa ja sen grantit ovat:
+Cloudcity vahvisti 28.8.2026, ettei samaan tietokantaan saa erillisiä käyttäjiä eri oikeuksilla. Tuotevastuu hyväksyi tiedostoon `rel11-tietoturvapoikkeus-api-kayttaja-2026-08-28.md` kirjatun poikkeuksen ja ainoan käyttäjän käyttämisen API:ssa.
 
-- globaali `USAGE`;
-- tuotantokantaan vain `SELECT`, `INSERT`, `UPDATE` ja `DELETE`.
+Varmista vielä `SHOW GRANTS` -tuloksesta:
 
-STOP, jos käyttäjällä on `ALL PRIVILEGES`, `CREATE`, `ALTER`, `DROP`, `GRANT OPTION` tai oikeuksia WordPress-kantaan. Migraatiotunnusta ei kytketä API:in.
+- globaali oikeus on vain `USAGE`;
+- `ALL PRIVILEGES` kohdistuu täsmälleen kantaan `dbtqq_aloitussivu_prod`;
+- `GRANT OPTION` -oikeutta tai oikeuksia WordPressin ja muiden palveluiden kantoihin ei ole.
+
+STOP, jos rajaus ei täyty. Tietokantakohtainen `ALL PRIVILEGES` hyväksytään vain dokumentoidulla poikkeuksella.
+
+Toteutunut 28.8.2026: **PASS poikkeuksella**. Aiemmin toimitettu `SHOW GRANTS` sisälsi globaalin `USAGE`-oikeuden ja tietokantakohtaisen `ALL PRIVILEGES` -oikeuden vain kantaan `dbtqq_aloitussivu_prod`; `GRANT OPTION`- tai muiden kantojen oikeuksia ei näkynyt. Seuraava tuotantoportti on `config.php` ja `database=up`.
 
 Kun käyttäjä on hyväksytty, tee tuotannon yksityinen `config.php` tiedoston `rel11-tuotantovaihto-2026-09-01.md` kohdan **API-konfiguraatio SSH:ssa** mukaan. Varmista tiedosto-oikeus 640 ja `database=up`. Älä kopioi tunnuksia tai asetustiedoston sisältöä keskusteluun.
 
@@ -42,7 +49,7 @@ Stagingin pitää olla PASS ennen tuotantopaketin esivientiä. Aikataulu siirtyy
 
 Vahvista ennen tuotannon kirjoituslukkoa:
 
-- rajattu API-käyttäjä ja `database=up`;
+- tietoturvapoikkeuksen mukainen `SHOW GRANTS` sekä `database=up`;
 - version 0.74.6 staging-uusinta PASS;
 - tuotannon admin-roolit henkilötiedottomasti täsmäytetty;
 - tuore staging- ja tuotantotietokannan varmistus kirjattu yksityiseen lokiin;

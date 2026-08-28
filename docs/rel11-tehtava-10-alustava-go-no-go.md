@@ -27,7 +27,7 @@ Staging-ehdokkaan `REL-11-v0.74.5-d5c4ea9ac2b8` sovelluskorjaukset ja niiden vai
 | --- | --- | --- |
 | Ennakkoehdot | PRE-06–PRE-07 | Oikea Cloudcity/WordPress-rinnakkaiskoe sekä henkilöiden ja kellonaikojen vahvistus. PRE-05-esittelysivu ja PRE-08-testiaineisto ovat PASS. |
 | WordPress ja tuotantopolku | WP-06–WP-11 | WP-06–WP-10:n uusinta oikeassa `/aloitus/`-osoitteessa ja WP-01–WP-04:n jälkeen-savukoe. WP-05-esittelysivu on PASS. |
-| Varmistus ja vaihto | OPS-02–OPS-04, OPS-06 | MariaDB-varmistuksen yksityinen lopputietue, lopullinen Firestore-vienti ja täsmäytys, oikean tuotantotietokannan API-käyttäjä sekä vastuiden hyväksyntä. OPS-01-tiedostovarmistus ja OPS-05-tuotantopaketti ovat PASS. |
+| Varmistus ja vaihto | OPS-02–OPS-04, OPS-06 | MariaDB-varmistuksen yksityinen lopputietue, lopullinen Firestore-vienti ja täsmäytys, hyväksytyn käyttäjäpoikkeuksen mukainen tuotantoyhteys sekä vastuiden hyväksyntä. OPS-01-tiedostovarmistus ja OPS-05-tuotantopaketti ovat PASS. |
 
 WP-06–WP-10:n paikallinen tulos on hyväksytty vain valmistelunäyttönä. Se ei todista Cloudcityn LiteSpeed/Apache-reititystä, fyysisen `/aloitus/`-hakemiston rinnakkaiseloa WordPressin kanssa eikä oikeaa tuotantotietokantaa.
 
@@ -46,7 +46,7 @@ Päätös voidaan muuttaa GO-tilaan vain, kun kaikki seuraavat toteutuvat samall
 1. PRE-06–PRE-07, WP-06–WP-11, OPS-02–OPS-04 ja OPS-06 ovat PASS tai kirjallisesti perusteltu N/A sallitaan matriisin sääntöjen mukaisesti. PRE-05, PRE-08, WP-05, OPS-01 ja OPS-05 säilyvät PASS-tilassa.
 2. Oikea `/aloitus/`, `/aloitus/api/v1/health`, resurssit, kanonisointi ja Aloitussivun 404 läpäisevät kokeet ilman alidomainiohjausta tai WordPress-regressiota.
 3. Lopullinen Firestore-delta ja tunnistejoukon vertailu täsmäävät, `exceptionCount` on 0 eikä samanaikaisia kirjoituksia synny Firestoreen ja Cloudcityyn.
-4. Julkaisuhetken tiedosto- ja MariaDB-varmistukset, palautusoikeudet sekä tuotantotietokannan vähimmän oikeuden tunnukset on vahvistettu.
+4. Julkaisuhetken tiedosto- ja MariaDB-varmistukset, palautusoikeudet sekä 28.8.2026 hyväksytyn tietoturvapoikkeuksen rajauksen mukainen tuotantotietokantatunnus on vahvistettu.
 5. PREF-02:n 27.8.2026 hyväksytty rajaus säilyy muuttumattomana; myöhempi kertapalautus ei kuulu REL-11-julkaisuun.
 6. Go/no-go-hyväksyjä, riippumaton smoke-hyväksyjä, palautuksen käynnistäjä ja muutosikkunan kellonajat on nimetty.
 7. Lopullinen commit, build ID ja ZIP-tiiviste on lukittu ja vastaa testattua sisältöä.

@@ -44,7 +44,9 @@ Tila: Julkaisun rajaus päätetty 13.8.2026. Tavoitejulkaisu on 1.9.2026 ja ehdo
 
 ### Julkaisun jälkeen
 
-1. **P3 – näkymäasetusten kertapalautus, REL-13 tai myöhempi:** lisää Asetukset-paneeliin selkeä `Palauta näkymän oletusasetukset` -toiminto. Se saa palauttaa vihreän vaalean teeman, digitaalisen kellon, 100 prosentin tekstikoon, osioiden oletusnäkyvyyden, tyhjän kiinnostavien teemojen valinnan ja toissijaisen kellon oletusaikavyöhykkeen. Toiminto ei saa poistaa kotikuntaa, suosikkeja, kielivalintaa, perehdytyksen tilaa, käyttötilastovalintaa, lomake- tai lähetysjonoja, tunnistautumistietoja, välimuisteja eikä mitään palvelimen tietoja. Omistaja: kehitys. Testaa näppäimistöllä, ruudunlukijan perustilassa ja sivun uudelleenlatauksen yli.
+1. **P1 – tuotantotietokannan käyttäjäpoikkeuksen tarkistus viimeistään 30.9.2026:** tarkista, mahdollistaako Cloudcity silloin erillisen vähimmän oikeuden API-käyttäjän tai onko käyttöympäristöön tullut muu turvallinen ratkaisu. Jos mahdollista, siirrä API käyttäjälle, jolla on vain `SELECT`, `INSERT`, `UPDATE` ja `DELETE`, kierrätä vanha salasana ja sulje tiedoston `docs/rel11-tietoturvapoikkeus-api-kayttaja-2026-08-28.md` poikkeus. Omistaja: Eero Tuomenoksa.
+
+2. **P3 – näkymäasetusten kertapalautus, REL-13 tai myöhempi:** lisää Asetukset-paneeliin selkeä `Palauta näkymän oletusasetukset` -toiminto. Se saa palauttaa vihreän vaalean teeman, digitaalisen kellon, 100 prosentin tekstikoon, osioiden oletusnäkyvyyden, tyhjän kiinnostavien teemojen valinnan ja toissijaisen kellon oletusaikavyöhykkeen. Toiminto ei saa poistaa kotikuntaa, suosikkeja, kielivalintaa, perehdytyksen tilaa, käyttötilastovalintaa, lomake- tai lähetysjonoja, tunnistautumistietoja, välimuisteja eikä mitään palvelimen tietoja. Omistaja: kehitys. Testaa näppäimistöllä, ruudunlukijan perustilassa ja sivun uudelleenlatauksen yli.
 
 ## Tehty
 
