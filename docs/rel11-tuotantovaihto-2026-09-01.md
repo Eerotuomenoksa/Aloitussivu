@@ -60,16 +60,25 @@ Ilman näitä ei aloiteta kirjoituslukkoa eikä tietojen tuontia.
 Kirjaudu palvelimelle omassa terminaalissa. Älä kopioi salasanaa komentoriville tai keskusteluun.
 
 ```bash
-set -eu
-REL11_PRIVATE=/home/seniorsurffi/aloitus-production
+(
+  set -eu
+  REL11_PRIVATE=/home/seniorsurffi/aloitus-production
 
-test "$(realpath "$REL11_PRIVATE")" = /home/seniorsurffi/aloitus-production
-test -f "$REL11_PRIVATE/secrets/config.production.example.php"
-test ! -e "$REL11_PRIVATE/secrets/config.php"
+  test "$(realpath "$REL11_PRIVATE")" = /home/seniorsurffi/aloitus-production
+  test -f "$REL11_PRIVATE/secrets/config.production.example.php"
+  if test -e "$REL11_PRIVATE/secrets/config.php"; then
+    echo 'STOP: config.php on jo olemassa; sitä ei korvattu.' >&2
+    exit 1
+  fi
 
-cp "$REL11_PRIVATE/secrets/config.production.example.php" "$REL11_PRIVATE/secrets/config.php"
-chmod 640 "$REL11_PRIVATE/secrets/config.php"
+  cp "$REL11_PRIVATE/secrets/config.production.example.php" "$REL11_PRIVATE/secrets/config.php"
+  chmod 640 "$REL11_PRIVATE/secrets/config.php"
+  test "$(stat -c '%a' "$REL11_PRIVATE/secrets/config.php")" = 640
+  echo 'production_config_template=ready'
+)
 ```
+
+Suluissa ajettava lohko ei sulje SSH-yhteyttä, vaikka jokin tarkistus pysäyttää vaiheen. Jos tulos on `STOP`, älä poista tai korvaa olemassa olevaa tiedostoa ennen sen alkuperän varmistamista.
 
 Muokkaa `config.php` palvelimen omassa editorissa tai Cloudcityn suojatussa tiedostonhallinnassa. Aseta:
 
@@ -82,18 +91,22 @@ Muokkaa `config.php` palvelimen omassa editorissa tai Cloudcityn suojatussa tied
 Tarkista paljastamatta arvoja:
 
 ```bash
-set -eu
-REL11_CONFIG=/home/seniorsurffi/aloitus-production/secrets/config.php
+(
+  set -eu
+  REL11_CONFIG=/home/seniorsurffi/aloitus-production/secrets/config.php
+  PHP_BIN=/opt/alt/php84/usr/bin/php
 
-test -f "$REL11_CONFIG"
-test "$(stat -c '%a' "$REL11_CONFIG")" = 640
-php -l "$REL11_CONFIG"
-if grep -Eq 'REPLACE_WITH|CHANGE_ME' "$REL11_CONFIG"; then
-  echo 'BLOCKED: config.php sisältää malliarvon.' >&2
-  exit 1
-fi
+  test -x "$PHP_BIN"
+  test -f "$REL11_CONFIG"
+  test "$(stat -c '%a' "$REL11_CONFIG")" = 640
+  "$PHP_BIN" -l "$REL11_CONFIG"
+  if grep -Eq 'REPLACE_WITH|CHANGE_ME' "$REL11_CONFIG"; then
+    echo 'BLOCKED: config.php sisältää malliarvon.' >&2
+    exit 1
+  fi
 
-php -r '$c = require $argv[1]; $p = new PDO($c["database"]["dsn"], $c["database"]["username"], $c["database"]["password"], [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]); $p->query("SELECT 1"); echo "database=up\n";' "$REL11_CONFIG"
+  "$PHP_BIN" -r '$c = require $argv[1]; $p = new PDO($c["database"]["dsn"], $c["database"]["username"], $c["database"]["password"], [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]); $p->query("SELECT 1"); echo "database=up\n";' "$REL11_CONFIG"
+)
 ```
 
 Komennon pitää tulostaa vain syntaksin onnistuminen ja `database=up`.
