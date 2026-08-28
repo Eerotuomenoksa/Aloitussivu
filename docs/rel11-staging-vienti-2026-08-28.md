@@ -71,9 +71,25 @@ STOP, jos jokin `test` tai `unzip` epäonnistuu. Kirjaa `BACKUP`-polku ja tiivis
 
 ## 4. Pura uusi ehdokas stagingiin
 
-Jatka samassa SSH-istunnossa. Muuttujat ovat voimassa vain, jos istuntoa ei ole suljettu.
+Tämä lohko on itsenäinen ja sen voi ajaa turvallisesti uudessa SSH-istunnossa myös silloin, jos aikaisempi istunto katkesi. ZIP ei sisällä oikeaa `secrets/config.php`-tiedostoa. Sulut ajavat tarkistukset alishellissä, joten virhe pysäyttää lohkon mutta ei sulje SSH-yhteyttä.
 
 ```bash
+(
+set -eu
+REL11_STAGING_ROOT=/home/seniorsurffi/website.aloitussivu-staging
+REL11_STAGING_ZIP=/home/seniorsurffi/aloitussivu-rel11-v0746-staging.zip
+
+test "$(realpath "$REL11_STAGING_ROOT")" = /home/seniorsurffi/website.aloitussivu-staging
+test -f "$REL11_STAGING_ZIP"
+test -f "$REL11_STAGING_ROOT/secrets/config.php"
+test "$(sha256sum "$REL11_STAGING_ZIP" | awk '{print $1}')" = 1d05240c75ad46095829f6830103db9c6176f08cb188776dc01de3e4ed758ebe
+find /home/seniorsurffi -maxdepth 1 -type f -name 'rel11-v0745-pre-v0746-staging-files-*.tar.gz' -print -quit | grep -q .
+if unzip -Z1 "$REL11_STAGING_ZIP" | grep -qx 'secrets/config.php'; then
+  echo 'BLOCKED: ZIP sisältää oikean config.php-polun.' >&2
+  exit 1
+fi
+
+REL11_CONFIG_SHA_BEFORE=$(sha256sum "$REL11_STAGING_ROOT/secrets/config.php" | awk '{print $1}')
 unzip -oq "$REL11_STAGING_ZIP" -d "$REL11_STAGING_ROOT"
 
 test "$(sha256sum "$REL11_STAGING_ROOT/secrets/config.php" | awk '{print $1}')" = "$REL11_CONFIG_SHA_BEFORE"
@@ -82,12 +98,15 @@ grep -F '"buildId": "REL-11-v0.74.6-d010d2954873"' "$REL11_STAGING_ROOT/build-in
 grep -F '"commit": "d010d2954873"' "$REL11_STAGING_ROOT/build-info.json"
 grep -F '"workingTreeDirty": false' "$REL11_STAGING_ROOT/build-info.json"
 grep -F 'assets/main-NYkkJV2H.js' "$REL11_STAGING_ROOT/public_html/index.html"
-php -l "$REL11_STAGING_ROOT/bootstrap.php"
+/opt/alt/php84/usr/bin/php -l "$REL11_STAGING_ROOT/bootstrap.php"
 
-curl -fsS https://staging.aloitussivu.seniorsurf.fi/api/v1/health
+echo 'staging_files=ok'
+)
+
+curl -sS -w '\nHTTP_STATUS=%{http_code}\n' https://staging.aloitussivu.seniorsurf.fi/api/v1/health
 ```
 
-Health-vastauksen pitää sisältää `status: ok`, `database: up` ja `version: v1`. Jos stagingin Basic Auth on käytössä, tee health-tarkistus selaimen kirjautuneessa istunnossa tai anna tunnukset `curl`-komennolle paikallisesti; älä kirjoita niitä tähän ohjeeseen tai keskusteluun.
+Ensimmäisen lohkon pitää päättyä arvoon `staging_files=ok`. Health-vastauksen pitää sisältää `status: ok`, `database: up` ja `version: v1`. Jos curl palauttaa HTTP 401:n, stagingin Basic Auth on käytössä: tee health-tarkistus selaimen kirjautuneessa istunnossa tai anna tunnukset curl-komennolle paikallisesti; älä kirjoita niitä tähän ohjeeseen tai keskusteluun.
 
 ## 5. Selaimen vaikutusaluetesti
 
