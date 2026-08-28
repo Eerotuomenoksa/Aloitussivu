@@ -39,6 +39,8 @@ Toteutunut 28.8.2026: **PASS poikkeuksella**. Aiemmin toimitettu `SHOW GRANTS` s
 
 Kun käyttäjä on hyväksytty, tee tuotannon yksityinen `config.php` tiedoston `rel11-tuotantovaihto-2026-09-01.md` kohdan **API-konfiguraatio SSH:ssa** mukaan. Varmista tiedosto-oikeus 640 ja `database=up`. Älä kopioi tunnuksia tai asetustiedoston sisältöä keskusteluun.
 
+Toteutunut 28.8.2026: **PASS**. `config.php`-syntaksi, vaaditut arvot ja tiedosto-oikeus 640 täsmäsivät. Tuotantokannan oikea palvelin on `dbtqq.db.cchosting.fi`, ja korjauksen jälkeinen yhteyskoe palautti `database=up`.
+
 ### 3. Klo 08.20 alkaen: versio 0.74.6 stagingiin
 
 Noudata tiedostoa `rel11-staging-vienti-2026-08-28.md`. Tee stagingin tiedostovarmistus, varmista ZIPin SHA-256, pura paketti ja tee vaikutusaluetesti.
