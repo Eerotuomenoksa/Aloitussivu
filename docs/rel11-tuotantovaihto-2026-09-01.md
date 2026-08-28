@@ -84,7 +84,7 @@ Muokkaa `config.php` palvelimen omassa editorissa tai Cloudcityn suojatussa tied
 
 - ympäristö `production`, origin `https://seniorsurf.fi` ja base path `/aloitus`;
 - tuotantokannan nimi sekä tietoturvapoikkeuksella hyväksytty ainoa Cloudcity-käyttäjä;
-- Cloudcityn tietokantaisäntä `dbtma.db.cchosting.fi` ja portti 3306;
+- Cloudcityn tuotantotietokantaisäntä `dbtqq.db.cchosting.fi` ja portti 3306;
 - vahva satunnainen `rate_limit_secret`;
 - Firebase-projekti `aloitussivu-5d50c`.
 

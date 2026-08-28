@@ -12,7 +12,7 @@ return [
         'max_body_bytes' => 786432,
     ],
     'database' => [
-        'dsn' => 'mysql:host=dbtma.db.cchosting.fi;port=3306;dbname=REPLACE_WITH_PRODUCTION_DATABASE;charset=utf8mb4',
+        'dsn' => 'mysql:host=dbtqq.db.cchosting.fi;port=3306;dbname=REPLACE_WITH_PRODUCTION_DATABASE;charset=utf8mb4',
         'username' => 'REPLACE_WITH_PRODUCTION_DATABASE_USER',
         'password' => '',
     ],
