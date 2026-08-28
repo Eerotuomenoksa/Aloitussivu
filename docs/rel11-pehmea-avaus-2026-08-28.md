@@ -4,14 +4,15 @@ Päivitetty 27.8.2026. Aloitussivu avataan teknisesti yleisölle perjantaina 28.
 
 Pehmeä avaus on oikea tuotantovaihto, ei erillinen esikatselu. Osoite `https://seniorsurf.fi/aloitus/`, Cloudcity-API ja tuotanto-MariaDB ovat avaamisen jälkeen käyttäjien käytössä. Siksi samoja varmistus-, tietosuoja-, vähimmän oikeuden ja palautusehtoja noudatetaan kuin aiemmin 1.9. suunnitellussa vaihdossa.
 
-## Uusi paikallinen ehdokas
+## Lukittu sovellusehdokas ja tuotantokonfiguraation korjaus
 
-- Build ID: `REL-11-v0.74.6-d010d2954873`
-- Staging-ZIP: `C:\dev\Aloitussivu\.tmp\aloitussivu-rel11-staging.zip`, 838175 tavua, SHA-256 `1d05240c75ad46095829f6830103db9c6176f08cb188776dc01de3e4ed758ebe`
-- Tuotantopolun ZIP: `C:\dev\Aloitussivu\.tmp\aloitussivu-rel11-production-path.zip`, 824586 tavua, SHA-256 `97006ada23b3c32626fbe40160d8b74933a01f1081be71aada97bb6245e162e4`
+- Stagingissa hyväksytty sovellusbuild: `REL-11-v0.74.6-d010d2954873`; pääbundle `assets/main-NYkkJV2H.js`.
+- Tuotantokonfiguraation korjauksen sisältävä build: `REL-11-v0.74.6-6974967944fb`.
+- Uusi paikallinen staging-verrokkipaketti: `C:\dev\Aloitussivu\.tmp\aloitussivu-rel11-staging.zip`, 838198 tavua, SHA-256 `03620b1b6265223f712c07b90b5f25d2fc96d3b04666bdebd5da563ec46a0648`.
+- Tuotantopolun ZIP: `C:\dev\Aloitussivu\.tmp\aloitussivu-rel11-production-path.zip`, 824590 tavua, SHA-256 `2fca11c90ca1fdcf3ec0bfd10ae6e1a9e465100b3ea4fde44f6b3935c50db479`.
 - Kummassakin ZIPissä on 115 tiedostoa, kaikki merkinnät avautuvat, vaarallisia polkuja on 0 eikä paketissa ole oikeaa `config.php`-tiedostoa, `.env`-tiedostoja tai Admin SDK -avainta.
 
-Ehdokas on paikallisesti PASS, mutta staging-uusinta on vielä tehtävä ennen pehmeää avausta.
+Commitien `d010d2954873..6974967944fb` tuotantoajoon vaikuttava ainoa muutos on tuotannon esimerkkikonfiguraation tietokantaisäntä `dbtqq.db.cchosting.fi`; frontend- tai API-koodi ei muuttunut. Uuden staging-verrokin pääbundle säilyi nimeltään `assets/main-NYkkJV2H.js`. Aiempi stagingin health- ja käyttöliittymä-PASS säilyvät näyttönä sovelluskoodista; tuotantokonfiguraation `database=up` ja uuden tuotantopaketin esivienti ovat avoinna.
 
 Huomisaamun tiivis työjärjestys on tiedostossa `rel11-huomisaamun-tyolista-2026-08-28.md` ja uuden ehdokkaan staging-komennot tiedostossa `rel11-staging-vienti-2026-08-28.md`.
 
@@ -56,7 +57,7 @@ Videon voi kuvata vasta hyväksytyn smoken jälkeen. Kuvassa ei näytetä ylläp
 | Kohta | Tulos |
 | --- | --- |
 | Version 0.74.6 staging-uusinta | PASS 28.8.2026: build, commit, pääbundle, health ja käyttöliittymän vaikutusalue hyväksytty |
-| API-käyttäjä ja tuotantokonfiguraatio | käyttäjä sekä `SHOW GRANTS` PASS hyväksytyllä poikkeuksella; `config.php` ja `database=up` avoinna |
+| API-käyttäjä ja tuotantokonfiguraatio | käyttäjä, `SHOW GRANTS`, `config.php`-syntaksi, arvot ja 640-oikeus PASS; tuotantopalvelin korjattu arvoon `dbtqq.db.cchosting.fi`, `database=up`-uusinta avoinna |
 | Lopullinen Firestore-vienti ja MariaDB-täsmäytys | täytetään |
 | Julkisen `/aloitus/`-polun smoke | täytetään |
 | WordPressin jälkeen-savukoe | täytetään |

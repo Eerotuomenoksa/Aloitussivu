@@ -70,8 +70,8 @@ Uuden tuotantopaketin paikallinen tunniste on:
 
 ```text
 C:\dev\Aloitussivu\.tmp\aloitussivu-rel11-production-path.zip
-824586 tavua
-SHA-256 97006ada23b3c32626fbe40160d8b74933a01f1081be71aada97bb6245e162e4
+824590 tavua
+SHA-256 2fca11c90ca1fdcf3ec0bfd10ae6e1a9e465100b3ea4fde44f6b3935c50db479
 ```
 
 Kun paketti on siirretty palvelimelle, kirjaa sen täsmällinen palvelinpolku ja uuden erillisen ehdokashakemiston polku ennen aktivointikomentojen muodostamista. Julkista `/home/seniorsurffi/website.wp33403/aloitus/`-hakemistoa ei luoda ennen lopullisen MariaDB-tuonnin PASS-tulosta.

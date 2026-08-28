@@ -4,22 +4,22 @@ param()
 $ErrorActionPreference = 'Stop'
 
 $workspaceRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
-$expectedBuildId = 'REL-11-v0.74.6-d010d2954873'
-$expectedCommit = 'd010d2954873'
+$expectedBuildId = 'REL-11-v0.74.6-6974967944fb'
+$expectedCommit = '6974967944fb'
 $expectedVersion = '0.74.6'
 
 $packages = @(
     [pscustomobject]@{
         Name = 'staging'
         Path = Join-Path $workspaceRoot '.tmp\aloitussivu-rel11-staging.zip'
-        Bytes = 838175
-        Sha256 = '1d05240c75ad46095829f6830103db9c6176f08cb188776dc01de3e4ed758ebe'
+        Bytes = 838198
+        Sha256 = '03620b1b6265223f712c07b90b5f25d2fc96d3b04666bdebd5da563ec46a0648'
     },
     [pscustomobject]@{
         Name = 'production-path'
         Path = Join-Path $workspaceRoot '.tmp\aloitussivu-rel11-production-path.zip'
-        Bytes = 824586
-        Sha256 = '97006ada23b3c32626fbe40160d8b74933a01f1081be71aada97bb6245e162e4'
+        Bytes = 824590
+        Sha256 = '2fca11c90ca1fdcf3ec0bfd10ae6e1a9e465100b3ea4fde44f6b3935c50db479'
     }
 )
 
@@ -81,6 +81,26 @@ try {
                 throw "$($package.Name): ZIPissä on oikea asetus-, ympäristö- tai Admin SDK -tiedosto."
             }
 
+            if ($package.Name -eq 'production-path') {
+                $configEntry = $entries |
+                    Where-Object { $_.FullName -eq 'private_root/secrets/config.production.example.php' } |
+                    Select-Object -First 1
+                if (-not $configEntry) {
+                    throw 'production-path: tuotannon konfiguraatiomalli puuttuu.'
+                }
+
+                $configReader = [IO.StreamReader]::new($configEntry.Open())
+                try {
+                    $configContents = $configReader.ReadToEnd()
+                }
+                finally {
+                    $configReader.Dispose()
+                }
+                if ($configContents -notmatch 'mysql:host=dbtqq\.db\.cchosting\.fi;') {
+                    throw 'production-path: tuotantotietokannan palvelin ei ole dbtqq.db.cchosting.fi.'
+                }
+            }
+
             $buildInfoEntry = $entries | Where-Object { $_.FullName -eq 'build-info.json' } | Select-Object -First 1
             if (-not $buildInfoEntry) {
                 throw "$($package.Name): build-info.json puuttuu."
@@ -132,7 +152,7 @@ try {
     $results | Format-Table -AutoSize
     Write-Host ''
     Write-Host 'HUOMISAAMUN PAIKALLINEN ENNAKKOTARKISTUS: PASS'
-    Write-Host 'Seuraava vaihe: vie ensin staging-ZIP ohjeen docs/rel11-staging-vienti-2026-08-28.md mukaan.'
+    Write-Host 'Seuraava vaihe: varmista tuotannon database=up ja tee uuden tuotantopaketin esivienti.'
 }
 finally {
     Pop-Location
