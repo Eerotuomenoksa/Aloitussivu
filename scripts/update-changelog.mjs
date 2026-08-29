@@ -195,7 +195,7 @@ function summarizeWorktree(changes) {
     notes.push('Palautelomakkeen kuvakaappausliitteet rajattiin sallittuihin kuvatyyppeihin ja turvalliseen data URL -muotoon.');
   }
 
-  if (paths.some((pathName) => ['appVersion.ts', 'package.json', 'package-lock.json', 'muutosloki.tsx', 'App.tsx'].includes(pathName))) {
+  if (paths.some((pathName) => ['muutosloki.tsx', 'App.tsx'].includes(pathName))) {
     notes.push('Versionumerointi otettiin käyttöön: nykyinen versio näkyy footerissa ja muutoslokin yläosassa.');
     notes.push('Muutoshistoria näyttää versionumeron jokaisen muutoksen yhteydessä.');
   }
@@ -223,6 +223,10 @@ function summarizeWorktree(changes) {
 
   if (paths.some((pathName) => ['README.md', 'security_best_practices_report.md', 'docs/alueelliset-linkit-puuttuvat-kunnat.md'].includes(pathName))) {
     notes.push('Dokumentaatioon lisättiin täyden tarkistuksen raportti, ylläpito-ohjeet ja alueellisten linkkien kattavuusraportti.');
+  }
+
+  if (paths.some((pathName) => ['api/src/NotificationReportBuilder.php'].includes(pathName))) {
+    notes.push('Ylläpitokoosteen sekä kuukausi- ja kvartaaliraporttien sähköpostit ryhmiteltiin selkeiksi korteiksi, ja jokaiselle luvulle lisättiin selkokielinen määritelmä sekä ymmärrettävä vertailu edelliseen jaksoon.');
   }
 
   if (paths.some((pathName) => ['tsconfig.json', 'vite-env.d.ts', 'adminStats.ts', 'components/RegionalServicesPanel.tsx'].includes(pathName))) {

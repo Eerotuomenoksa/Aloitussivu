@@ -24,11 +24,21 @@ export type ChangelogCommit = {
   tags: string[];
 };
 
-export const CHANGELOG_GENERATED_AT = "29.8.2026 klo 13.52";
-export const CHANGELOG_VERSION = "0.76.0";
-export const CHANGELOG_WORKTREE_SUMMARY: string[] = [];
+export const CHANGELOG_GENERATED_AT = "29.8.2026 klo 14.07";
+export const CHANGELOG_VERSION = "0.76.1";
+export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
+  "Ylläpitokoosteen sekä kuukausi- ja kvartaaliraporttien sähköpostit ryhmiteltiin selkeiksi korteiksi, ja jokaiselle luvulle lisättiin selkokielinen määritelmä sekä ymmärrettävä vertailu edelliseen jaksoon."
+];
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
+  {
+    "hash": "2f6fb14789f9f10a7b8d82989e3e8b344c67b1b7",
+    "date": "2026-08-29",
+    "version": "0.113.3",
+    "changeType": "patch",
+    "subject": "docs: paivita version 0.76.0 kayttoonottoloki",
+    "tags": []
+  },
   {
     "hash": "73fdf1e10bedc1b2ee3d74c77ebfc266d2f708d9",
     "date": "2026-08-29",

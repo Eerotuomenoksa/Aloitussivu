@@ -1812,8 +1812,14 @@ test('maintenance digest contains only aggregate task data and skips an empty he
     $builder = new NotificationReportBuilder($database, notificationConfig());
     $message = $builder->maintenanceDigest(new DateTimeImmutable('2026-08-29T08:15:00+03:00'));
     assertTrue($message instanceof MailMessage);
-    assertTrue(str_contains($message->textBody, 'Avoimia palautteita: 3'));
-    assertTrue(str_contains($message->textBody, 'Odottavia linkki-ilmoituksia: 2'));
+    assertTrue(str_contains($message->textBody, 'Avoimet palautteet: 3'), 'Maintenance feedback count is missing.');
+    assertTrue(str_contains($message->textBody, 'Odottavat linkki-ilmoitukset: 2'), 'Maintenance link count is missing.');
+    assertTrue(str_contains($message->textBody, 'Mitä tämä tarkoittaa: Palautteet, joiden käsittely on kesken'), 'Maintenance explanation is missing.');
+    assertTrue(str_contains($message->textBody, 'Vanhin avoin palaute on 8 vuorokautta vanha.'), 'Maintenance age is missing.');
+    assertTrue(str_contains($message->htmlBody, 'Vaatii huomiota'), 'Maintenance HTML status is missing.');
+    assertTrue(str_contains($message->htmlBody, 'Avaa ylläpidon työtila'), 'Maintenance CTA is missing.');
+    assertTrue(str_contains($message->htmlBody, '<meta name="viewport"'), 'Maintenance viewport metadata is missing.');
+    assertTrue(!str_contains($message->htmlBody, 'description'), 'Maintenance HTML exposes a private description field.');
     $query = $database->executions[0]['sql'];
     assertTrue(!preg_match('/SELECT[^;]*(description|public_note|note|body)/i', $query));
 
@@ -1874,10 +1880,20 @@ test('monthly report compares aggregate usage and explains privacy limitations',
     $message = (new NotificationReportBuilder($database, notificationConfig()))
         ->monthlyReport(new DateTimeImmutable('2026-07-01T00:00:00+03:00'));
     assertTrue(str_contains($message->subject, 'heinäkuu 2026'));
-    assertTrue(str_contains($message->textBody, 'Sivulataukset: 120 (+20.0 %)'));
+    assertTrue(str_contains($message->textBody, 'Sivulataukset: 120'));
+    assertTrue(str_contains($message->textBody, '20,0 % enemmän kuin edellisellä jaksolla'));
+    assertTrue(str_contains($message->textBody, 'Edellinen jakso: 100'));
+    assertTrue(str_contains($message->textBody, 'Sama kävijä voi ladata sivun useita kertoja'));
     assertTrue(str_contains($message->textBody, 'Suoran avauksen osuus: 60,0 %'));
+    assertTrue(str_contains($message->textBody, '10,0 prosenttiyksikköä suurempi kuin edellisellä jaksolla'));
     assertTrue(str_contains($message->textBody, 'tunnisteettomia tapahtumakoosteita'));
     assertTrue(str_contains($message->textBody, 'Esimerkkipalvelu: 15'));
+    assertTrue(str_contains($message->htmlBody, 'Sivuston käyttö'));
+    assertTrue(str_contains($message->htmlBody, 'Aloitussivuopas'));
+    assertTrue(str_contains($message->htmlBody, 'Ylläpitotyö'));
+    assertTrue(str_contains($message->htmlBody, 'Mitä luku tarkoittaa:'));
+    assertTrue(str_contains($message->htmlBody, 'Tietosuoja ja tulkinta'));
+    assertTrue(str_contains($message->htmlBody, 'background:#eef3f5'));
 });
 
 test('email dispatcher sends claimed mail and records only safe failure codes', static function (): void {
@@ -1960,7 +1976,7 @@ test('quarterly report includes a calendar-quarter monthly trend', static functi
     $database->fetchOneResults = [
         ['pageviews' => 300, 'link_clicks' => 90],
         [],
-        ['pageviews' => 250, 'link_clicks' => 80],
+        ['pageviews' => 0, 'link_clicks' => 0],
         [],
     ];
     $database->fetchAllResults = [
@@ -1980,6 +1996,8 @@ test('quarterly report includes a calendar-quarter monthly trend', static functi
     assertTrue(str_contains($message->subject, 'Q2/2026'));
     assertTrue(str_contains($message->textBody, 'Kuukausitrendi'));
     assertTrue(str_contains($message->textBody, '2026-06: 110 sivulatausta'));
+    assertTrue(str_contains($message->textBody, 'ei vertailuarvoa (edellisellä jaksolla 0)'));
+    assertTrue(str_contains($message->htmlBody, '>Sivulataukset</th>'));
 });
 
 $failures = 0;
