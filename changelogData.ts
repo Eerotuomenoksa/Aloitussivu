@@ -24,14 +24,19 @@ export type ChangelogCommit = {
   tags: string[];
 };
 
-export const CHANGELOG_GENERATED_AT = "29.8.2026 klo 12.53";
+export const CHANGELOG_GENERATED_AT = "29.8.2026 klo 12.55";
 export const CHANGELOG_VERSION = "0.76.0";
-export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
-  "Versionumerointi otettiin käyttöön: nykyinen versio näkyy footerissa ja muutoslokin yläosassa.",
-  "Muutoshistoria näyttää versionumeron jokaisen muutoksen yhteydessä."
-];
+export const CHANGELOG_WORKTREE_SUMMARY: string[] = [];
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
+  {
+    "hash": "efbdc820f83a9d64561d52a8f8cf1dbb1d1957ec",
+    "date": "2026-08-29",
+    "version": "0.113.0",
+    "changeType": "minor",
+    "subject": "feat: lisaa sahkoposti-ilmoitukset ja raportit",
+    "tags": []
+  },
   {
     "hash": "f483b78f9f00763bce4bba52f60a219316960677",
     "date": "2026-08-29",
