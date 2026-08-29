@@ -11,22 +11,29 @@ use Aloitussivu\Api\Config;
 use Aloitussivu\Api\ConfigException;
 use Aloitussivu\Api\DatabaseConnection;
 use Aloitussivu\Api\DatabaseRateLimiter;
+use Aloitussivu\Api\EmailDispatcher;
 use Aloitussivu\Api\FirebaseIdentity;
 use Aloitussivu\Api\FirebaseIdTokenVerifier;
 use Aloitussivu\Api\FirebasePublicKeys;
 use Aloitussivu\Api\IdTokenVerifier;
 use Aloitussivu\Api\JsonRequestLogger;
+use Aloitussivu\Api\MailMessage;
+use Aloitussivu\Api\MailTransport;
 use Aloitussivu\Api\HttpNcscSource;
 use Aloitussivu\Api\NcscJob;
 use Aloitussivu\Api\NcscScrapeItem;
 use Aloitussivu\Api\NcscScrapeResult;
 use Aloitussivu\Api\NcscSource;
 use Aloitussivu\Api\NcscTarget;
+use Aloitussivu\Api\NotificationOutbox;
+use Aloitussivu\Api\NotificationJob;
+use Aloitussivu\Api\NotificationReportBuilder;
 use Aloitussivu\Api\PdoDatabase;
 use Aloitussivu\Api\Request;
 use Aloitussivu\Api\RequestLogger;
 use Aloitussivu\Api\RequestId;
 use Aloitussivu\Api\RateLimiter;
+use Aloitussivu\Api\SmtpMailTransport;
 use Aloitussivu\Api\Validator;
 
 final class FakeDatabase implements DatabaseConnection
@@ -207,6 +214,24 @@ final class FakeNcscSource implements NcscSource
     }
 }
 
+final class FakeMailTransport implements MailTransport
+{
+    /** @var list<MailMessage> */
+    public array $messages = [];
+
+    public function __construct(public ?Throwable $error = null)
+    {
+    }
+
+    public function send(MailMessage $message): void
+    {
+        $this->messages[] = $message;
+        if ($this->error !== null) {
+            throw $this->error;
+        }
+    }
+}
+
 /** @var list<array{name: string, test: Closure(): void}> $tests */
 $tests = [];
 
@@ -242,8 +267,12 @@ function jsonBody(\Aloitussivu\Api\Response $response): array
     return $decoded;
 }
 
-/** @param array<string, mixed> $appOverrides @param array<string, mixed> $authenticationOverrides */
-function testConfig(array $appOverrides = [], array $authenticationOverrides = []): Config
+/**
+ * @param array<string, mixed> $appOverrides
+ * @param array<string, mixed> $authenticationOverrides
+ * @param array<string, mixed> $notificationOverrides
+ */
+function testConfig(array $appOverrides = [], array $authenticationOverrides = [], array $notificationOverrides = []): Config
 {
     return Config::fromArray([
         'app' => [
@@ -273,7 +302,28 @@ function testConfig(array $appOverrides = [], array $authenticationOverrides = [
             'public_key_cache_path' => sys_get_temp_dir() . '/aloitussivu-firebase-public-keys.json',
             ...$authenticationOverrides,
         ],
+        'notifications' => [
+            'enabled' => false,
+            ...$notificationOverrides,
+        ],
     ], dirname(__DIR__) . '/public');
+}
+
+function notificationConfig(): Config
+{
+    return testConfig(notificationOverrides: [
+        'enabled' => true,
+        'recipient' => 'seniorsurf@vtkl.fi',
+        'from_address' => 'noreply@seniorsurf.fi',
+        'from_name' => 'Seniorin aloitussivu',
+        'smtp' => [
+            'host' => 'smtp.cloudcity.fi',
+            'port' => 587,
+            'encryption' => 'starttls',
+            'username' => 'noreply@seniorsurf.fi',
+            'password' => 'test-only-password',
+        ],
+    ]);
 }
 
 function testApp(
@@ -1702,6 +1752,234 @@ test('authorized admin can run the Cloudcity NCSC job and the action is audited'
     ))[0];
     assertSameValue('ncsc.run', $audit['parameters']['action']);
     assertTrue(!str_contains((string) $audit['parameters']['metadata_json'], $url));
+});
+
+test('notification configuration is optional and validates enabled SMTP settings', static function (): void {
+    $disabled = testConfig();
+    assertSameValue(false, $disabled->notificationEnabled);
+    assertSameValue('', $disabled->smtpPassword);
+
+    $enabled = notificationConfig();
+    assertSameValue(true, $enabled->notificationEnabled);
+    assertSameValue('seniorsurf@vtkl.fi', $enabled->notificationRecipient);
+    assertSameValue('smtp.cloudcity.fi', $enabled->smtpHost);
+    assertSameValue(587, $enabled->smtpPort);
+
+    try {
+        testConfig(notificationOverrides: [
+            'enabled' => true,
+            'recipient' => "bad@example.com\nBcc: attacker@example.com",
+        ]);
+        throw new RuntimeException('Invalid notification configuration was accepted.');
+    } catch (ConfigException) {
+        assertTrue(true);
+    }
+});
+
+test('SMTP renderer creates UTF-8 multipart mail without exposing credentials', static function (): void {
+    $config = notificationConfig();
+    $message = new MailMessage('Kuukausiraportti – heinäkuu', "Hei!\nTekstiosa", '<p>Hei!</p>');
+    $rendered = (new SmtpMailTransport($config))->render($message);
+    assertTrue(str_contains($rendered, 'Content-Type: multipart/alternative'));
+    assertTrue(str_contains($rendered, 'To: <seniorsurf@vtkl.fi>'));
+    assertTrue(str_contains($rendered, base64_encode($message->subject)));
+    assertTrue(str_contains($rendered, base64_encode("Hei!\r\nTekstiosa")));
+    assertTrue(!str_contains($rendered, $config->smtpPassword));
+});
+
+test('notification outbox is idempotent and does not persist the recipient address', static function (): void {
+    $database = new FakeDatabase();
+    $database->executeResults = [1, 0];
+    $outbox = new NotificationOutbox($database);
+    $message = new MailMessage('Kooste', 'Koosteteksti', '<p>Koosteteksti</p>');
+    assertSameValue(true, $outbox->enqueue('maintenance_digest', '2026-08-28', $message));
+    assertSameValue(false, $outbox->enqueue('maintenance_digest', '2026-08-28', $message));
+    $insert = $database->executions[0];
+    assertTrue(str_contains($insert['sql'], 'INSERT IGNORE INTO email_outbox'));
+    assertTrue(!str_contains(json_encode($insert['parameters'], JSON_THROW_ON_ERROR), 'seniorsurf@vtkl.fi'));
+});
+
+test('maintenance digest contains only aggregate task data and skips an empty healthy queue', static function (): void {
+    $database = new FakeDatabase();
+    $database->fetchOneResults = [[
+        'feedback_open' => 3,
+        'feedback_oldest' => '2026-08-20 07:00:00',
+        'links_pending' => 2,
+        'links_oldest' => '2026-08-25 09:00:00',
+        'alerts_expiring' => 1,
+        'ncsc_last_run' => '2026-08-28 08:00:00',
+    ]];
+    $builder = new NotificationReportBuilder($database, notificationConfig());
+    $message = $builder->maintenanceDigest(new DateTimeImmutable('2026-08-29T08:15:00+03:00'));
+    assertTrue($message instanceof MailMessage);
+    assertTrue(str_contains($message->textBody, 'Avoimia palautteita: 3'));
+    assertTrue(str_contains($message->textBody, 'Odottavia linkki-ilmoituksia: 2'));
+    $query = $database->executions[0]['sql'];
+    assertTrue(!preg_match('/SELECT[^;]*(description|public_note|note|body)/i', $query));
+
+    $emptyDatabase = new FakeDatabase();
+    $emptyDatabase->fetchOneResults = [[
+        'feedback_open' => 0,
+        'links_pending' => 0,
+        'alerts_expiring' => 0,
+        'ncsc_last_run' => '2026-08-29 05:00:00',
+    ]];
+    assertSameValue(
+        null,
+        (new NotificationReportBuilder($emptyDatabase, notificationConfig()))
+            ->maintenanceDigest(new DateTimeImmutable('2026-08-29T08:15:00+03:00')),
+    );
+});
+
+test('monthly report compares aggregate usage and explains privacy limitations', static function (): void {
+    $database = new FakeDatabase();
+    $database->fetchOneResults = [
+        ['pageviews' => 120, 'link_clicks' => 45],
+        [
+            'feedback_received' => 4,
+            'feedback_handled' => 3,
+            'link_reports_received' => 2,
+            'link_reports_handled' => 1,
+            'feedback_backlog' => 5,
+            'link_backlog' => 2,
+        ],
+        ['pageviews' => 100, 'link_clicks' => 50],
+        [
+            'feedback_received' => 2,
+            'feedback_handled' => 2,
+            'link_reports_received' => 1,
+            'link_reports_handled' => 1,
+            'feedback_backlog' => 5,
+            'link_backlog' => 2,
+        ],
+    ];
+    $database->fetchAllResults = [
+        [
+            ['dimension' => 'entry', 'bucket' => 'direct', 'total' => 60],
+            ['dimension' => 'entry', 'bucket' => 'search', 'total' => 40],
+            ['dimension' => 'guide', 'bucket' => 'opened', 'total' => 20],
+            ['dimension' => 'guide', 'bucket' => 'done', 'total' => 10],
+            ['dimension' => 'guide', 'bucket' => 'shared:copy', 'total' => 3],
+        ],
+        [['page' => '/', 'total' => 90]],
+        [['category' => 'Terveys', 'total' => 20]],
+        [['url' => 'https://example.fi', 'label' => 'Esimerkkipalvelu', 'category' => 'Terveys', 'total' => 15]],
+        [
+            ['dimension' => 'entry', 'bucket' => 'direct', 'total' => 40],
+            ['dimension' => 'entry', 'bucket' => 'search', 'total' => 40],
+            ['dimension' => 'guide', 'bucket' => 'opened', 'total' => 10],
+            ['dimension' => 'guide', 'bucket' => 'done', 'total' => 4],
+        ],
+    ];
+    $message = (new NotificationReportBuilder($database, notificationConfig()))
+        ->monthlyReport(new DateTimeImmutable('2026-07-01T00:00:00+03:00'));
+    assertTrue(str_contains($message->subject, 'heinäkuu 2026'));
+    assertTrue(str_contains($message->textBody, 'Sivulataukset: 120 (+20.0 %)'));
+    assertTrue(str_contains($message->textBody, 'Suoran avauksen osuus: 60,0 %'));
+    assertTrue(str_contains($message->textBody, 'tunnisteettomia tapahtumakoosteita'));
+    assertTrue(str_contains($message->textBody, 'Esimerkkipalvelu: 15'));
+});
+
+test('email dispatcher sends claimed mail and records only safe failure codes', static function (): void {
+    $config = notificationConfig();
+    $database = new FakeDatabase();
+    $database->fetchOneResults = [['acquired' => 1], ['released' => 1]];
+    $database->fetchAllResults = [[[
+        'id' => '10000000-0000-4000-8000-000000000001',
+        'subject' => 'Kooste',
+        'text_body' => 'Teksti',
+        'html_body' => '<p>Teksti</p>',
+        'status' => 'pending',
+        'attempt_count' => 0,
+    ]]];
+    $transport = new FakeMailTransport();
+    $result = (new EmailDispatcher($config, $database, $transport))
+        ->run(new DateTimeImmutable('2026-08-29T06:00:00Z'));
+    assertSameValue(1, $result['sent']);
+    assertSameValue(1, count($transport->messages));
+    assertTrue((bool) array_filter(
+        $database->executions,
+        static fn (array $execution): bool => str_contains($execution['sql'], "status = 'sent'"),
+    ));
+
+    $failedDatabase = new FakeDatabase();
+    $failedDatabase->fetchOneResults = [['acquired' => 1], ['released' => 1]];
+    $failedDatabase->fetchAllResults = [[[
+        'id' => '10000000-0000-4000-8000-000000000002',
+        'subject' => 'Kooste',
+        'text_body' => 'Teksti',
+        'html_body' => '<p>Teksti</p>',
+        'status' => 'pending',
+        'attempt_count' => 0,
+    ]]];
+    $failure = (new EmailDispatcher(
+        $config,
+        $failedDatabase,
+        new FakeMailTransport(new RuntimeException("private SMTP response\npassword")),
+    ))->run(new DateTimeImmutable('2026-08-29T06:00:00Z'));
+    assertSameValue(1, $failure['retried']);
+    $retry = array_values(array_filter(
+        $failedDatabase->executions,
+        static fn (array $execution): bool => str_contains($execution['sql'], "status = 'retry'"),
+    ))[0];
+    assertSameValue('smtp_send_failed', $retry['parameters']['error_code']);
+});
+
+test('notification job queues one weekday digest and is disabled without database access', static function (): void {
+    $database = new FakeDatabase();
+    $database->fetchOneResults = [[
+        'feedback_open' => 1,
+        'feedback_oldest' => '2026-05-31 08:00:00',
+        'links_pending' => 0,
+        'alerts_expiring' => 0,
+        'ncsc_last_run' => '2026-06-01 04:00:00',
+    ]];
+    $database->executeResults = [1, 0];
+    $config = notificationConfig();
+    $result = (new NotificationJob(
+        $config,
+        new NotificationReportBuilder($database, $config),
+        new NotificationOutbox($database),
+    ))->run(new DateTimeImmutable('2026-06-01T08:15:00+03:00'));
+    assertSameValue(['maintenance_digest:2026-06-01'], $result['queued']);
+    assertSameValue([], $result['existing']);
+
+    $disabledDatabase = new FakeDatabase();
+    $disabledConfig = testConfig();
+    $disabled = (new NotificationJob(
+        $disabledConfig,
+        new NotificationReportBuilder($disabledDatabase, $disabledConfig),
+        new NotificationOutbox($disabledDatabase),
+    ))->run(new DateTimeImmutable('2026-06-01T08:15:00+03:00'));
+    assertSameValue('disabled', $disabled['status']);
+    assertSameValue([], $disabledDatabase->executions);
+});
+
+test('quarterly report includes a calendar-quarter monthly trend', static function (): void {
+    $database = new FakeDatabase();
+    $database->fetchOneResults = [
+        ['pageviews' => 300, 'link_clicks' => 90],
+        [],
+        ['pageviews' => 250, 'link_clicks' => 80],
+        [],
+    ];
+    $database->fetchAllResults = [
+        [],
+        [],
+        [],
+        [],
+        [
+            ['month' => '2026-04', 'pageviews' => 90, 'link_clicks' => 25],
+            ['month' => '2026-05', 'pageviews' => 100, 'link_clicks' => 30],
+            ['month' => '2026-06', 'pageviews' => 110, 'link_clicks' => 35],
+        ],
+        [],
+    ];
+    $message = (new NotificationReportBuilder($database, notificationConfig()))
+        ->quarterlyReport(new DateTimeImmutable('2026-04-01T00:00:00+03:00'));
+    assertTrue(str_contains($message->subject, 'Q2/2026'));
+    assertTrue(str_contains($message->textBody, 'Kuukausitrendi'));
+    assertTrue(str_contains($message->textBody, '2026-06: 110 sivulatausta'));
 });
 
 $failures = 0;

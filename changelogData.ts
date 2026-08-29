@@ -24,11 +24,30 @@ export type ChangelogCommit = {
   tags: string[];
 };
 
-export const CHANGELOG_GENERATED_AT = "29.8.2026 klo 12.10";
-export const CHANGELOG_VERSION = "0.75.0";
-export const CHANGELOG_WORKTREE_SUMMARY: string[] = [];
+export const CHANGELOG_GENERATED_AT = "29.8.2026 klo 12.53";
+export const CHANGELOG_VERSION = "0.76.0";
+export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
+  "Versionumerointi otettiin käyttöön: nykyinen versio näkyy footerissa ja muutoslokin yläosassa.",
+  "Muutoshistoria näyttää versionumeron jokaisen muutoksen yhteydessä."
+];
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
+  {
+    "hash": "f483b78f9f00763bce4bba52f60a219316960677",
+    "date": "2026-08-29",
+    "version": "0.112.2",
+    "changeType": "patch",
+    "subject": "docs: kirjaa version 0.75.0 tuotantopaivitys",
+    "tags": []
+  },
+  {
+    "hash": "950431b873b69936eb91e6633e7c83119942dcb0",
+    "date": "2026-08-29",
+    "version": "0.112.1",
+    "changeType": "patch",
+    "subject": "docs: paivita version 0.75.0 muutosloki",
+    "tags": []
+  },
   {
     "hash": "072251325c0e5a6fc3f6cbae7a2f1437005a0c42",
     "date": "2026-08-29",

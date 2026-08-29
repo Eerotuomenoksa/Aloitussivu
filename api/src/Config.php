@@ -22,6 +22,15 @@ final class Config
         public readonly string $firebaseProjectId,
         public readonly string $firebasePublicKeyCachePath,
         public readonly string $adminTokenHeader,
+        public readonly bool $notificationEnabled,
+        public readonly string $notificationRecipient,
+        public readonly string $mailFromAddress,
+        public readonly string $mailFromName,
+        public readonly string $smtpHost,
+        public readonly int $smtpPort,
+        public readonly string $smtpEncryption,
+        public readonly string $smtpUsername,
+        public readonly string $smtpPassword,
     ) {
     }
 
@@ -49,6 +58,8 @@ final class Config
         $attachments = self::section($raw, 'attachments');
         $security = self::section($raw, 'security');
         $authentication = self::section($raw, 'authentication');
+        $notifications = self::optionalSection($raw, 'notifications');
+        $smtp = self::optionalSection($notifications, 'smtp');
 
         $environment = self::requiredString($app, 'environment');
         if (!in_array($environment, ['local', 'testing', 'staging', 'production'], true)) {
@@ -125,6 +136,54 @@ final class Config
             throw new ConfigException('Unsupported Firebase token header.');
         }
 
+        $notificationEnabled = self::boolValue($notifications, 'enabled', false);
+        $notificationRecipient = self::stringValue($notifications, 'recipient');
+        $mailFromAddress = self::stringValue($notifications, 'from_address');
+        $mailFromName = self::stringValue($notifications, 'from_name');
+        $smtpHost = self::stringValue($smtp, 'host');
+        $smtpPort = self::intValue($smtp, 'port', 587);
+        $smtpEncryption = strtolower(self::stringValue($smtp, 'encryption'));
+        if ($smtpEncryption === '') {
+            $smtpEncryption = 'starttls';
+        }
+        $smtpUsername = self::stringValue($smtp, 'username');
+        $smtpPassword = self::secretValue($smtp, 'password');
+
+        foreach (['notification recipient' => $notificationRecipient, 'mail sender address' => $mailFromAddress] as $label => $address) {
+            if ($address !== '' && filter_var($address, FILTER_VALIDATE_EMAIL) === false) {
+                throw new ConfigException(sprintf('Invalid %s.', $label));
+            }
+        }
+        if ($mailFromName !== '' && (strlen($mailFromName) > 120 || preg_match('/[\r\n]/', $mailFromName) === 1)) {
+            throw new ConfigException('Mail sender name has an invalid format.');
+        }
+        if ($smtpHost !== '' && preg_match('/^(?=.{1,253}$)(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?)(?:\.(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?))*$/D', $smtpHost) !== 1) {
+            throw new ConfigException('SMTP host has an invalid format.');
+        }
+        if ($smtpPort < 1 || $smtpPort > 65535) {
+            throw new ConfigException('SMTP port must be between 1 and 65535.');
+        }
+        if ($smtpEncryption !== 'starttls') {
+            throw new ConfigException('SMTP encryption must be starttls.');
+        }
+        if ($smtpUsername !== '' && preg_match('/[\r\n]/', $smtpUsername) === 1) {
+            throw new ConfigException('SMTP username has an invalid format.');
+        }
+        if ($notificationEnabled) {
+            foreach ([
+                'notification recipient' => $notificationRecipient,
+                'mail sender address' => $mailFromAddress,
+                'mail sender name' => $mailFromName,
+                'SMTP host' => $smtpHost,
+                'SMTP username' => $smtpUsername,
+                'SMTP password' => $smtpPassword,
+            ] as $label => $value) {
+                if ($value === '') {
+                    throw new ConfigException(sprintf('Missing enabled notification value: %s.', $label));
+                }
+            }
+        }
+
         return new self(
             environment: $environment,
             origin: $origin,
@@ -141,6 +200,15 @@ final class Config
             firebaseProjectId: $firebaseProjectId,
             firebasePublicKeyCachePath: $firebasePublicKeyCachePath,
             adminTokenHeader: $adminTokenHeader,
+            notificationEnabled: $notificationEnabled,
+            notificationRecipient: $notificationRecipient,
+            mailFromAddress: $mailFromAddress,
+            mailFromName: $mailFromName,
+            smtpHost: $smtpHost,
+            smtpPort: $smtpPort,
+            smtpEncryption: $smtpEncryption,
+            smtpUsername: $smtpUsername,
+            smtpPassword: $smtpPassword,
         );
     }
 
@@ -150,6 +218,19 @@ final class Config
         $value = $raw[$key] ?? null;
         if (!is_array($value)) {
             throw new ConfigException(sprintf('Missing API configuration section: %s.', $key));
+        }
+        return $value;
+    }
+
+    /** @param array<string, mixed> $raw */
+    private static function optionalSection(array $raw, string $key): array
+    {
+        if (!array_key_exists($key, $raw)) {
+            return [];
+        }
+        $value = $raw[$key];
+        if (!is_array($value)) {
+            throw new ConfigException(sprintf('API configuration section %s must be an array.', $key));
         }
         return $value;
     }
@@ -172,6 +253,16 @@ final class Config
             throw new ConfigException(sprintf('API configuration value %s must be a string.', $key));
         }
         return trim($value);
+    }
+
+    /** @param array<string, mixed> $values */
+    private static function secretValue(array $values, string $key): string
+    {
+        $value = $values[$key] ?? '';
+        if (!is_string($value)) {
+            throw new ConfigException(sprintf('API configuration value %s must be a string.', $key));
+        }
+        return $value;
     }
 
     /** @param array<string, mixed> $values */

@@ -15,6 +15,9 @@ ZIP on tarkoitettu purettavaksi Cloudcityn staging-hakemistoon:
   bootstrap.php
   src/
   cron/ncsc.php
+  cron/notifications.php
+  cron/email-dispatch.php
+  cron/smtp-test.php
   secrets/config.staging.example.php
   logs/
   cache/
@@ -38,6 +41,8 @@ Ennen API:n avaamista:
 6. Varmista, että `logs`, `cache` ja `protected_uploads` eivät ole `public_html`-hakemiston sisällä.
 
 REL-09:stä alkaen `cron/ncsc.php` sijoitetaan web-juuren ulkopuolelle ja sen hakemisto-oikeus on `750`, tiedosto-oikeus `640`. Cloudcityn **Aja PHP-skripti** -ajastus suorittaa kotihakemistoon suhteutetun tiedoston `website.aloitussivu-staging/cron/ncsc.php` arkipäivisin klo 11.30 ja 15.30 Europe/Helsinki-ajassa. Täsmälliset käyttöönotto-, testi- ja palautusvaiheet ovat `docs/rel09-tausta-ajot-ja-palautuskoe.md`-ohjeessa.
+
+REL-13 lisää web-juuren ulkopuoliset `notifications.php`- ja `email-dispatch.php`-ajot. Tuotannossa ensimmäinen muodostaa ylläpitokoosteen ja määräaikaisraportit päivittäin klo 08.15, toinen lähettää jonossa olevat viestit 15 minuutin välein. Lähetys käyttää `secrets/config.php`-tiedoston Cloudcity SMTP -asetuksia; salasanaa ei lisätä ajastuskomentoon. `smtp-test.php` on vain manuaalista käyttöönottokoetta varten eikä sille tehdä ajastusta. Täsmälliset asetukset, migraatio, koekomennot ja palautusrajat ovat `docs/rel13-v0760-sahkoposti-ilmoitukset.md`-ohjeessa.
 
 Stagingin pääjuuren `.htaccess` tekee HTTPS-ohjauksen, estää hakemistolistauksen, lisää stagingin `noindex`-rajauksen ja suojausotsikot, antaa hashatuille resursseille pitkän välimuistin sekä HTML:lle uudelleenvalidoinnin ja ottaa gzip-pakkauksen käyttöön, jos palvelinmoduuli on saatavilla. API:n oma `.htaccess` reitittää `/api/v1/*`-pyynnöt entrypointiin ja pakottaa API-vastaukset välimuistittomiksi.
 

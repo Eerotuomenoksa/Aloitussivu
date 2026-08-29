@@ -30,4 +30,17 @@ return [
         'public_key_cache_path' => dirname(__DIR__) . '/cache/firebase-public-keys.json',
         'token_header' => 'x-firebase-id-token',
     ],
+    'notifications' => [
+        'enabled' => false,
+        'recipient' => 'seniorsurf@vtkl.fi',
+        'from_address' => 'noreply@seniorsurf.fi',
+        'from_name' => 'Seniorin aloitussivu',
+        'smtp' => [
+            'host' => 'smtp.cloudcity.fi',
+            'port' => 587,
+            'encryption' => 'starttls',
+            'username' => 'noreply@seniorsurf.fi',
+            'password' => '',
+        ],
+    ],
 ];

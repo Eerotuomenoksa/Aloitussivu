@@ -9,6 +9,9 @@ api/
   bootstrap.php              PSR-4-autoload ilman Composer-riippuvuutta
   src/                       reititys, HTTP, PDO, validointi ja suojaus
   cron/ncsc.php              vain CLI:stä ajettava NCSC-tausta-ajo
+  cron/notifications.php     ylläpitokoosteen ja raporttien muodostus jonoon
+  cron/email-dispatch.php    SMTP-lähetys ja hallitut uudelleenyritykset
+  cron/smtp-test.php         manuaalinen SMTP-yhteyden testiviesti
   public/api/index.php       ainoa julkinen PHP-entrypoint
   public/api/.htaccess       Apache-reititys /api/* -> index.php
   public/router.php          PHP:n paikallisen palvelimen reititin
@@ -57,9 +60,11 @@ ympäristöjuuri/
       .htaccess
 ```
 
-Kopioi siis `api/bootstrap.php` ja `api/src/` ympäristöjuureen sekä `api/public/api/` hakemistoon `public_html/api/`. Entry point löytää oletuksena ympäristöjuuren ja `secrets/config.php`-tiedoston. Poikkeava sijainti voidaan määrittää palvelinympäristön muuttujilla `ALOITUSSIVU_API_ROOT` ja `ALOITUSSIVU_API_CONFIG`.
+Kopioi siis `api/bootstrap.php` ja `api/src/` ympäristöjuureen sekä `api/public/api/` hakemistoon `public_html/api/`. Entry point löytää oletuksena ympäristöjuuren ja `secrets/config.php`-tiedoston. Poikkeava sijainti voidaan määrittää palvelinympäristön muuttujilla `ALOITUSSIVU_API_ROOT` ja `ALOITUSSIVU_API_CONFIG`. Cron-ajoille julkinen juuri voidaan tarvittaessa ilmoittaa muuttujalla `ALOITUSSIVU_PUBLIC_ROOT`; tuotannon vakiosijoittelu tunnistetaan myös automaattisesti.
 
 Staging- ja tuotantoasetuksissa vaaditaan HTTPS-origin, `mysql:`-DSN, tietokannan salasana ja vähintään 32-merkkinen satunnainen rate limit -salaisuus. `trust_proxy` pidetään `false`-arvossa, ellei Cloudcityn tunnetun välityspalvelimen käyttöä ole erikseen varmennettu.
+
+Sähköposti-ilmoitukset ovat oletuksena pois käytöstä. Kun `notifications.enabled` asetetaan arvoon `true`, asetuksessa vaaditaan vastaanottaja, lähettäjän osoite ja nimi sekä STARTTLS-suojatun SMTP-yhteyden palvelin, portti, käyttäjätunnus ja salasana. Salasana kuuluu vain web-juuren ulkopuoliseen `secrets/config.php`-tiedostoon; sitä ei välitetä cron-komennossa eikä tallenneta tietokantaan tai lokiin.
 
 Ylläpidon tunnistus vaatii lisäksi Firebase-projektin julkisen projektitunnisteen ja web-juuren ulkopuolisen välimuistitiedoston Googlen julkisille allekirjoitusvarmenteille. PHP:n OpenSSL-laajennuksen ja ulospäin toimivan HTTPS-yhteyden pitää olla käytettävissä.
 
@@ -269,6 +274,22 @@ Ympäristökohtaiset UID:t ja sähköpostit lisätään `admin_users`-tauluun tu
 `cron/ncsc.php` ja `POST /api/v1/admin/ncsc-run` käyttävät samaa `NcscJob`-toteutusta. MariaDB:n yhteyskohtainen `GET_LOCK` estää rinnakkaiset ajot. Kuuden päivän lähdekohtainen uusintaesto, deterministinen varoitustunniste ja upsert estävät kaksoisvaroitukset. Onnistumiset, hallitut ohitukset ja turvalliset virhekoodit tallennetaan `ncsc_scrape_logs`-tauluun. Käsiajo vaatii kirjoittavan ylläpitoroolin ja siitä syntyy auditointimerkintä.
 
 Cloudcity-cron käyttää palvelimen PHP 8.4 CLI:tä ja ympäristöjuuren web-juuren ulkopuolista skriptiä. Suositeltu aikataulu on arkipäivisin klo 11.30 ja 15.30 Europe/Helsinki-ajassa. Komentoon ei lisätä salaisuuksia; skripti lukee olemassa olevan `secrets/config.php`-asetuksen. Yksityiskohtainen staging- ja palautuskoe on tiedostossa `docs/rel09-tausta-ajot-ja-palautuskoe.md`.
+
+## REL-13: sähköposti-ilmoitukset ja raportit
+
+Migraatio `004_email_notifications.sql` lisää idempotentin `email_outbox`-jonon. Vastaanottaja `seniorsurf@vtkl.fi` ja lähettäjä `noreply@seniorsurf.fi` luetaan yksityisestä asetuksesta; vastaanottajan osoitetta tai SMTP-tunnuksia ei tallenneta jonoon. Jonossa säilyvät vain viestityyppi, raporttijakso, koosteviestin sisältö, turvallinen virhekoodi ja toimitustila. Lähetetyt ja lopullisesti epäonnistuneet rivit poistetaan 24 kuukauden kuluttua.
+
+`cron/notifications.php` muodostaa:
+
+- arkipäivän ylläpitokoosteen vain, kun jonossa on avoimia palautteita, odottavia linkki-ilmoituksia, pian vanhenevia huijausvaroituksia tai tarkistettava NCSC-ajo;
+- edellisen kalenterikuukauden raportin kuukauden toisesta päivästä alkaen;
+- edellisen kalenterikvartaalin raportin tammi-, huhti-, heinä- ja lokakuun viidennestä päivästä alkaen.
+
+Kooste ei lue eikä lähetä käyttäjien otsikoita, kuvauksia, huomioita tai liitteitä. Kuukausi- ja kvartaaliraportit sisältävät tunnisteettomat tapahtumakoosteet, vertailun edelliseen jaksoon, suoran avauksen osuuden, ohjefunnelin, suosituimmat sivut/linkkiluokat/linkit sekä ylläpitovirran lukumäärät. Raportissa kerrotaan erikseen, etteivät tapahtumat ole yksilöityjä käyttäjiä eikä suora avaus todista aloitussivuasetusta.
+
+`cron/email-dispatch.php` käyttää MariaDB:n yhteyslukkoa, ottaa enintään kymmenen erää kerrallaan ja yrittää virhettä uudelleen 5 ja 30 minuutin kuluttua. Kolmas epäonnistuminen merkitään tilaan `failed`. Tietokantaan tallennetaan vain rajattu `smtp_*`-virhekoodi, ei palvelimen vastausta tai tunnuksia. Tunnin ajaksi tilaan `sending` jäänyt rivi palautuu hallittuun käsittelyyn. Sama viestityyppi, jakso ja vastaanottaja-alias voidaan jonottaa vain kerran.
+
+Cloudcityn suositus on ajaa `notifications.php` päivittäin klo 08.15 ja `email-dispatch.php` 15 minuutin välein Europe/Helsinki-ajassa. Ensimmäinen SMTP-koe tehdään manuaalisesti skriptillä `cron/smtp-test.php`; skripti ei tulosta salasanaa tai vastaanottajan osoitetta.
 
 Kaikki ylläpidon listat palauttavat `Cache-Control: private, no-store`. Liitteen tallennusavainta ei palauteta asiakkaalle, vaan kuva luetaan web-juuren ulkopuolelta vasta uuden oikeustarkistuksen jälkeen. Ylläpidon muutokset tehdään tietokantatransaktiossa yhdessä `audit_log`-rivin kanssa. Auditointirivi sisältää tekijän UID:n, toiminnon, kohdetyypin, kohdetunnisteen ja muuttuneiden kenttien nimet, mutta ei palautetekstiä, käsittelyperustetta tai muuta yksityistä kenttäarvoa.
 

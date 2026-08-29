@@ -11,22 +11,26 @@ $apiRoot = getenv('ALOITUSSIVU_API_ROOT') ?: dirname(__DIR__);
 require $apiRoot . '/bootstrap.php';
 
 use Aloitussivu\Api\CronRuntime;
-use Aloitussivu\Api\HttpNcscSource;
+use Aloitussivu\Api\EmailDispatcher;
 use Aloitussivu\Api\LazyPdoDatabase;
-use Aloitussivu\Api\NcscJob;
+use Aloitussivu\Api\SmtpMailTransport;
 
 try {
     $startedAt = new DateTimeImmutable('now', new DateTimeZone('UTC'));
     $config = CronRuntime::loadConfig($apiRoot);
-    $database = new LazyPdoDatabase($config);
-    $result = (new NcscJob($database, new HttpNcscSource()))->run();
+    if (!$config->notificationEnabled) {
+        $result = ['status' => 'disabled', 'sent' => 0, 'retried' => 0, 'failed' => 0];
+    } else {
+        $database = new LazyPdoDatabase($config);
+        $result = (new EmailDispatcher($config, $database, new SmtpMailTransport($config)))->run($startedAt);
+    }
     echo json_encode([
-        ...$result->toArray(),
+        ...$result,
         'runAtUtc' => $startedAt->format(DATE_ATOM),
         'runAtHelsinki' => $startedAt->setTimezone(new DateTimeZone('Europe/Helsinki'))->format(DATE_ATOM),
     ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . PHP_EOL;
-    exit($result->status === 'failed' ? 1 : 0);
+    exit($result['failed'] > 0 ? 1 : 0);
 } catch (Throwable) {
-    fwrite(STDERR, "NCSC background job failed before execution.\n");
+    fwrite(STDERR, "Email dispatch failed before execution.\n");
     exit(1);
 }
