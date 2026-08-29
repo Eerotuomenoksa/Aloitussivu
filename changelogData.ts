@@ -24,15 +24,39 @@ export type ChangelogCommit = {
   tags: string[];
 };
 
-export const CHANGELOG_GENERATED_AT = "28.8.2026 klo 13.20";
-export const CHANGELOG_VERSION = "0.74.7";
-export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
-  "Palautteen onnistumisvahvistus pysyy näkyvissä sulkemiseen asti, siirtää fokuksen vahvistukseen ja estää uuden lähetyksen onnistumisen jälkeen.",
-  "Palvelukategorioiden kortit mahtuvat mobiilinäkymään ilman sivuttaisvieritystä myös 200 prosentin tekstikoolla.",
-  "OP:n yleiset henkilöasiakaslinkit vievät valtakunnalliselle yhteystietosivulle, ja Keski-Suomen alueellinen senioripalvelu on nimetty yksiselitteisesti."
-];
+export const CHANGELOG_GENERATED_AT = "29.8.2026 klo 12.10";
+export const CHANGELOG_VERSION = "0.75.0";
+export const CHANGELOG_WORKTREE_SUMMARY: string[] = [];
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
+  {
+    "hash": "072251325c0e5a6fc3f6cbae7a2f1437005a0c42",
+    "date": "2026-08-29",
+    "version": "0.112.0",
+    "changeType": "minor",
+    "subject": "feat: valmistele version 0.75.0 julkaisu",
+    "tags": [
+      "Visuaalisuus"
+    ]
+  },
+  {
+    "hash": "d74dd8dde008dbe287df44603333e9af4141ab12",
+    "date": "2026-08-28",
+    "version": "0.111.18",
+    "changeType": "patch",
+    "subject": "docs: kirjaa 0.74.7 tuotantosavu ja 1.0-portti",
+    "tags": []
+  },
+  {
+    "hash": "7bc8b9f0633474d3a6bbc003e05c47956ba60bc3",
+    "date": "2026-08-28",
+    "version": "0.111.17",
+    "changeType": "patch",
+    "subject": "Korjaa REL-11 pehmeän avauksen P2-havainnot",
+    "tags": [
+      "Visuaalisuus"
+    ]
+  },
   {
     "hash": "5369e4da327b15e3d551ac22ae0cd580b2f70b90",
     "date": "2026-08-28",
