@@ -247,13 +247,13 @@ const QuickLinks: React.FC<QuickLinksProps> = ({
                 : 'border-[var(--theme-border)] focus:border-[var(--theme-gold)] focus:ring-[var(--theme-focus)]/30'
               } ${inputClasses[fontSizeStep]}`}
             aria-label={t('searchPlaceholder')}
-            title="Etsi palveluita, kategorioita ja puhelinnumeroita tältä sivulta"
+            title={t('serviceSearchTitle')}
           />
           {searchInput && (
             <button
               type="button"
               onClick={clearSearch}
-              title="Tyhjennä palveluhaku"
+              title={t('clearSearch')}
               className="absolute right-4 top-1/2 -translate-y-1/2 text-2xl font-semibold text-[var(--theme-muted)] transition-colors hover:text-[var(--theme-text)]"
               aria-label={t('clearSearch')}
             >
@@ -272,7 +272,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({
             <button
               type="button"
               onClick={toggleListening}
-              title={speechState === 'listening' ? 'Lopeta puheentunnistus' : 'Hae palvelua puhumalla'}
+              title={speechState === 'listening' ? t('stopListening') : t('startListening')}
               className={`flex min-h-14 min-w-14 items-center justify-center rounded-2xl border-2 transition-all focus:ring-4 focus:ring-red-300 focus:outline-none active:scale-95
                 ${speechState === 'listening'
                   ? 'border-red-500 bg-red-500 text-white animate-pulse shadow-lg shadow-red-300'
@@ -301,7 +301,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({
           )}
           {hasResults && (
             <p className="sr-only" aria-live="polite">
-              Hakutuloksia {matchedCategories.length + matchedLinks.length + matchedPhones.length}.
+              {t('searchResultsCount').replace('{count}', String(matchedCategories.length + matchedLinks.length + matchedPhones.length))}.
             </p>
           )}
 
@@ -315,7 +315,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({
                   <button
                     key={idx}
                     onClick={() => onSelectCategory({ ...shortcut, color })}
-                    title={`Avaa kategoria ${categoryName(shortcut.name)}`}
+                    title={`${t('openCategory')}: ${categoryName(shortcut.name)}`}
                     className={baseCardStyles(color)}
                     aria-label={`${t('openCategory')}: ${categoryName(shortcut.name)}`}
                   >
@@ -332,7 +332,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({
           {matchedLinks.length > 0 && (
             <div className="space-y-3">
               <p className={`font-black uppercase tracking-widest text-[var(--theme-muted)] ${subTextClasses[fontSizeStep]}`}>
-                Verkkosivut
+                {t('websites')}
               </p>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3 2xl:grid-cols-4">
                 {matchedLinks.map((link, idx) => {
@@ -351,7 +351,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({
                         href={link.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        title={`Avaa verkkosivu: ${link.name}`}
+                        title={`${t('goToSite')}: ${link.name}`}
                         className={baseCardStyles(link.color)}
                         aria-label={`${t('goToSite')}: ${link.name}`}
                       >
@@ -376,7 +376,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({
                           category: link.categoryName,
                           source: 'QuickLinks',
                         })}
-                        title={`Ilmoita ongelma linkissä: ${link.name}`}
+                        title={`${t('reportLink')}: ${link.name}`}
                         className="absolute bottom-3 right-3 flex h-10 w-10 items-center justify-center rounded-full bg-[var(--theme-surface)] text-xl text-[var(--theme-text)] opacity-0 shadow-md transition-all hover:bg-[var(--theme-pale)] focus:opacity-100 focus:outline-none focus:ring-4 focus:ring-[var(--theme-focus)]/30 group-hover/link:opacity-100"
                         aria-label={`${t('reportLink')}: ${link.name}`}
                       >
@@ -385,7 +385,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({
                       )}
                       <button
                         onClick={() => onToggleFavorite(fav)}
-                        title={isFav ? `Poista suosikeista: ${link.name}` : `Lisää suosikkeihin: ${link.name}`}
+                        title={isFav ? `${t('removeFavorite')}: ${link.name}` : `${t('addFavorite')}: ${link.name}`}
                         className={`absolute top-3 right-3 flex items-center justify-center rounded-full transition-all focus:ring-4 focus:ring-yellow-300 focus:outline-none
                           ${isFav
                             ? 'bg-yellow-400 hover:bg-yellow-500 shadow-md'
@@ -405,7 +405,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({
           {matchedPhones.length > 0 && (
             <div className="space-y-3">
               <p className={`font-black uppercase tracking-widest text-[var(--theme-muted)] ${subTextClasses[fontSizeStep]}`}>
-                Puhelinnumerot
+                {t('phoneNumbers')}
               </p>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3 2xl:grid-cols-4">
                 {matchedPhones.map((phone, idx) => {
@@ -415,7 +415,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({
                       key={idx}
                       href={phoneHref}
                       className={baseCardStyles(phone.color)}
-                      aria-label={`Soita: ${phone.name}, ${phone.phone}`}
+                      aria-label={`${t('call')}: ${phone.name}, ${phone.phone}`}
                     >
                       <span className={`flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-2xl bg-[var(--theme-pale)] text-3xl transition-all duration-300 ${iconClasses[fontSizeStep]}`} aria-hidden="true">☎</span>
                       <span className={`link-label-text min-w-0 max-w-full font-normal leading-snug transition-all duration-300 ${textClasses[fontSizeStep]}`}>
@@ -442,10 +442,10 @@ const QuickLinks: React.FC<QuickLinksProps> = ({
               <div className="flex flex-col gap-3 rounded-[2rem] border-2 border-[var(--theme-border)] bg-[var(--theme-surface)] p-5 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <p className="text-lg font-black text-[var(--theme-text)]">
-                    {showAllThemes ? 'Kaikki teemat näkyvät' : 'Sinulle valitut teemat'}
+                    {showAllThemes ? t('allThemesVisible') : t('selectedThemesVisible')}
                   </p>
                   <p className="mt-1 font-bold text-[var(--theme-muted)]">
-                    Palveluhaku etsii aina myös piilossa olevista teemoista.
+                    {t('serviceSearchIncludesHidden')}
                   </p>
                 </div>
                 <button
@@ -454,7 +454,9 @@ const QuickLinks: React.FC<QuickLinksProps> = ({
                   aria-expanded={showAllThemes}
                   className="min-h-12 shrink-0 rounded-full bg-[var(--theme-primary)] px-5 py-3 font-black text-[var(--theme-primary-label)] shadow-md transition-all hover:bg-[var(--theme-primary-mid)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--theme-focus)]/40 active:scale-95"
                 >
-                  {showAllThemes ? 'Näytä vain valitut' : `Näytä kaikki ${zoneGroups.length} teemaa`}
+                  {showAllThemes
+                    ? t('showOnlySelectedThemes')
+                    : t('showAllThemesCount').replace('{count}', String(zoneGroups.length))}
                 </button>
               </div>
             )}
@@ -495,7 +497,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({
                           type="button"
                           onClick={() => onSelectCategory({ ...shortcut, color: rowColors[0] })}
                           className="zone-link"
-                          title={`Avaa kategoria ${label}`}
+                          title={`${t('openCategory')}: ${label}`}
                           aria-label={`${t('openCategory')}: ${label}`}
                         >
                           {content}
@@ -510,7 +512,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({
                         target="_blank"
                         rel="noopener noreferrer"
                         className="zone-link"
-                        title={`Avaa verkkosivu: ${label}`}
+                        title={`${t('goToSite')}: ${label}`}
                         aria-label={`${t('goToSite')}: ${label}`}
                       >
                         {content}
@@ -539,7 +541,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({
                         type="button"
                         onClick={() => onSelectCategory({ ...shortcut, color: rowColors[0] })}
                         className="zone-link"
-                        title={`Avaa kategoria ${label}`}
+                        title={`${t('openCategory')}: ${label}`}
                         aria-label={`${t('openCategory')}: ${label}`}
                       >
                         {content}
@@ -551,7 +553,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({
                         target="_blank"
                         rel="noopener noreferrer"
                         className="zone-link"
-                        title={`Avaa verkkosivu: ${label}`}
+                        title={`${t('goToSite')}: ${label}`}
                         aria-label={`${t('goToSite')}: ${label}`}
                       >
                         {content}

@@ -472,6 +472,10 @@ final class AdminApi
             'SELECT usage_date, url, label, category, page, count FROM usage_link_daily '
             . 'ORDER BY usage_date DESC, count DESC LIMIT 2000',
         );
+        $context = $this->database->fetchAll(
+            'SELECT usage_date, dimension, bucket, count FROM usage_context_daily '
+            . 'ORDER BY usage_date DESC, dimension, bucket LIMIT 5000',
+        );
         return $this->data($request, [
             'daily' => array_map(static fn (array $row): array => [
                 'date' => (string) ($row['usage_date'] ?? ''),
@@ -491,6 +495,12 @@ final class AdminApi
                 'page' => (string) ($row['page'] ?? ''),
                 'count' => (int) ($row['count'] ?? 0),
             ], $links),
+            'context' => array_map(static fn (array $row): array => [
+                'date' => (string) ($row['usage_date'] ?? ''),
+                'dimension' => (string) ($row['dimension'] ?? ''),
+                'bucket' => (string) ($row['bucket'] ?? ''),
+                'count' => (int) ($row['count'] ?? 0),
+            ], $context),
         ]);
     }
 

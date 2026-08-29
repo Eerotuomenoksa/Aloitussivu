@@ -1333,6 +1333,85 @@ HTML;
     assertTrue(!str_contains(serialize($result->items), 'Tekninen tiedote'));
 });
 
+test('usage pageview context and guide funnel are stored only as allowed daily buckets', static function (): void {
+    $database = new FakeDatabase();
+    $response = testApp(
+        $database,
+        rateLimiter: new FakeRateLimiter(),
+        attachmentStorage: new FakeAttachmentStorage(),
+    )->handle(jsonRequest('POST', '/api/v1/usage-events', [
+        'type' => 'pageview',
+        'page' => 'index',
+        'entry' => 'direct',
+        'navType' => 'navigate',
+        'freshTab' => true,
+        'hour' => 7,
+        'src' => 'qr',
+        'displayMode' => 'browser',
+    ]));
+    assertSameValue(204, $response->status);
+    assertSameValue(8, count($database->executions));
+    $stored = serialize($database->executions);
+    assertTrue(str_contains($stored, 'usage_context_daily'));
+    assertTrue(str_contains($stored, 'direct'));
+    assertTrue(str_contains($stored, '07'));
+    assertTrue(!str_contains($stored, 'referrer'));
+
+    $unknownDatabase = new FakeDatabase();
+    $unknown = testApp(
+        $unknownDatabase,
+        rateLimiter: new FakeRateLimiter(),
+        attachmentStorage: new FakeAttachmentStorage(),
+    )->handle(jsonRequest('POST', '/api/v1/usage-events', [
+        'type' => 'pageview',
+        'page' => 'index',
+        'entry' => 'not-allowed',
+        'hour' => 99,
+        'src' => 'free-text-campaign',
+    ]));
+    assertSameValue(204, $unknown->status);
+    assertSameValue(2, count($unknownDatabase->executions));
+
+    $guideDatabase = new FakeDatabase();
+    foreach ([
+        ['step' => 'opened'],
+        ['step' => 'browser', 'value' => 'chrome'],
+        ['step' => 'done'],
+        ['step' => 'shared', 'value' => 'copy'],
+    ] as $guide) {
+        $guideResponse = testApp(
+            $guideDatabase,
+            rateLimiter: new FakeRateLimiter(),
+            attachmentStorage: new FakeAttachmentStorage(),
+        )->handle(jsonRequest('POST', '/api/v1/usage-events', [
+            'type' => 'guide',
+            'page' => 'index',
+            ...$guide,
+        ]));
+        assertSameValue(204, $guideResponse->status);
+    }
+    assertSameValue(4, count($guideDatabase->executions));
+    $guideStored = serialize($guideDatabase->executions);
+    assertTrue(str_contains($guideStored, 'opened'));
+    assertTrue(str_contains($guideStored, 'browser:chrome'));
+    assertTrue(str_contains($guideStored, 'done'));
+    assertTrue(str_contains($guideStored, 'shared:copy'));
+
+    $invalidGuideDatabase = new FakeDatabase();
+    $invalidGuide = testApp(
+        $invalidGuideDatabase,
+        rateLimiter: new FakeRateLimiter(),
+        attachmentStorage: new FakeAttachmentStorage(),
+    )->handle(jsonRequest('POST', '/api/v1/usage-events', [
+        'type' => 'guide',
+        'page' => 'index',
+        'step' => 'browser',
+        'value' => 'unknown-browser',
+    ]));
+    assertSameValue(204, $invalidGuide->status);
+    assertSameValue([], $invalidGuideDatabase->executions);
+});
+
 test('NCSC parser truncates long source text at a whole word', static function (): void {
     $source = new HttpNcscSource();
     $target = new NcscTarget(

@@ -5,8 +5,11 @@ $ErrorActionPreference = 'Stop'
 
 $workspaceRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 $temporaryRoot = [IO.Path]::GetFullPath((Join-Path $workspaceRoot '.tmp'))
-$packageRoot = [IO.Path]::GetFullPath((Join-Path $temporaryRoot 'rel11-production-path-package'))
-$zipPath = [IO.Path]::GetFullPath((Join-Path $temporaryRoot 'aloitussivu-rel11-production-path.zip'))
+$packageJson = Get-Content -LiteralPath (Join-Path $workspaceRoot 'package.json') -Raw | ConvertFrom-Json
+$version = [string]$packageJson.version
+$versionSlug = $version -replace '[^0-9A-Za-z.-]', '-'
+$packageRoot = [IO.Path]::GetFullPath((Join-Path $temporaryRoot "rel12-v$versionSlug-production-path-package"))
+$zipPath = [IO.Path]::GetFullPath((Join-Path $temporaryRoot "aloitussivu-rel12-v$versionSlug-production-path.zip"))
 $pathPrefix = $temporaryRoot.TrimEnd([IO.Path]::DirectorySeparatorChar) + [IO.Path]::DirectorySeparatorChar
 
 if (-not $packageRoot.StartsWith($pathPrefix, [StringComparison]::OrdinalIgnoreCase)) {
@@ -65,7 +68,9 @@ try {
     Copy-Item -LiteralPath (Join-Path $workspaceRoot 'api/src') -Destination $privateRoot.FullName -Recurse -Force
     Copy-Item -LiteralPath (Join-Path $workspaceRoot 'api/cron') -Destination $privateRoot.FullName -Recurse -Force
     Copy-Item -LiteralPath (Join-Path $workspaceRoot 'deploy/cloudcity/production-config.example.php') -Destination (Join-Path $secretsRoot.FullName 'config.production.example.php') -Force
-    Copy-Item -LiteralPath (Join-Path $workspaceRoot 'docs/rel10-wordpress-esittely-ja-ohjaus.md') -Destination (Join-Path $packageRoot 'DEPLOY_INSTRUCTIONS.md') -Force
+    $migrationsRoot = New-Item -ItemType Directory -Path (Join-Path $packageRoot 'database_migrations') -Force
+    Copy-Item -LiteralPath (Join-Path $workspaceRoot 'database/migrations/003_usage_context_daily.sql') -Destination $migrationsRoot.FullName -Force
+    Copy-Item -LiteralPath (Join-Path $workspaceRoot 'docs/rel12-v0750-tuotantopaivitys.md') -Destination (Join-Path $packageRoot 'DEPLOY_INSTRUCTIONS.md') -Force
 
     foreach ($directory in @('logs', 'cache', 'protected_uploads')) {
         $null = New-Item -ItemType File -Path (Join-Path $privateRoot.FullName "$directory/.keep") -Force
@@ -82,11 +87,9 @@ try {
     if ($LASTEXITCODE -ne 0 -or $workingTreeDirty -or $currentCommit -ne $commit) {
         throw 'Git-tila muuttui paketoinnin aikana. Tuotantopolun pakettia ei muodostettu.'
     }
-    $packageJson = Get-Content -LiteralPath (Join-Path $workspaceRoot 'package.json') -Raw | ConvertFrom-Json
-    $version = [string]$packageJson.version
-    $buildId = "REL-11-v$version-$commit"
+    $buildId = "REL-12-v$version-$commit"
     [ordered]@{
-        package = 'REL-11'
+        package = 'REL-12'
         mode = 'production-path'
         buildId = $buildId
         publicUrl = 'https://seniorsurf.fi/aloitus/'
@@ -97,7 +100,7 @@ try {
         commit = $commit
         workingTreeDirty = $false
         builtAtUtc = [DateTime]::UtcNow.ToString('o')
-        schemaMigrations = @('001_initial_schema', '002_add_link_reports_triage_index')
+        schemaMigrations = @('001_initial_schema', '002_add_link_reports_triage_index', '003_usage_context_daily')
         backgroundJobs = @('ncsc')
     } | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $packageRoot 'build-info.json') -Encoding utf8
 

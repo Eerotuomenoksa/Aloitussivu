@@ -1,15 +1,34 @@
 import { getDataProvider } from './services/data';
 
-type UsageEvent = {
-  type: 'pageview' | 'linkClick';
+export type UsageEvent = {
+  type: 'pageview' | 'linkClick' | 'guide';
   page: string;
   url?: string;
   label?: string;
   category?: string;
+  entry?: 'direct' | 'internal' | 'seniorsurf' | 'search' | 'external';
+  navType?: 'navigate' | 'reload' | 'back_forward' | 'prerender';
+  freshTab?: boolean;
+  hour?: number;
+  src?: string;
+  displayMode?: 'browser' | 'standalone';
+  step?: 'opened' | 'browser' | 'done' | 'shared';
+  value?: string;
 };
+
+export type EntryContext = Pick<
+  UsageEvent,
+  'entry' | 'navType' | 'freshTab' | 'hour' | 'src' | 'displayMode'
+>;
 
 const USAGE_TRACKING_DISABLED_KEY = 'seniorSurfUsageTrackingDisabled';
 const PAGEVIEW_DELAY_MS = 15000;
+const ALLOWED_CAMPAIGN_SOURCES = new Set(['opastus', 'esite', 'qr', 'kirje', 'some', 'lehti']);
+const SEARCH_HOSTS = ['google.', 'bing.', 'duckduckgo.', 'search.yahoo.', 'ecosia.'];
+const GUIDE_VALUES = {
+  browser: new Set(['chrome', 'edge', 'firefox', 'safari', 'android', 'ios', 'other']),
+  shared: new Set(['share', 'email', 'sms', 'print', 'copy']),
+} as const;
 
 const isLocalDevelopmentHost = () => {
   if (typeof window === 'undefined') return false;
@@ -46,18 +65,91 @@ const getPageName = () => {
   return path.replace(/\.html$/i, '') || 'index';
 };
 
+const getNavigationType = (): UsageEvent['navType'] => {
+  try {
+    const navigation = performance.getEntriesByType?.('navigation')?.[0] as PerformanceNavigationTiming | undefined;
+    return ['navigate', 'reload', 'back_forward', 'prerender'].includes(navigation?.type ?? '')
+      ? navigation?.type
+      : undefined;
+  } catch {
+    return undefined;
+  }
+};
+
+const getReferrerCategory = (
+  referrer: string,
+  navType: UsageEvent['navType'],
+  freshTab: boolean,
+): UsageEvent['entry'] => {
+  if (!referrer) {
+    return navType === 'navigate' && freshTab ? 'direct' : undefined;
+  }
+  try {
+    const referrerUrl = new URL(referrer);
+    if (referrerUrl.origin === window.location.origin) return 'internal';
+    const hostname = referrerUrl.hostname.toLocaleLowerCase('en-US');
+    if (hostname === 'seniorsurf.fi' || hostname.endsWith('.seniorsurf.fi')) return 'seniorsurf';
+    if (SEARCH_HOSTS.some((searchHost) => hostname.includes(searchHost))) return 'search';
+    return 'external';
+  } catch {
+    return 'external';
+  }
+};
+
+const readAndRemoveCampaignSource = () => {
+  try {
+    const currentUrl = new URL(window.location.href);
+    const rawSource = currentUrl.searchParams.get('src');
+    if (rawSource === null) return undefined;
+    const normalizedSource = rawSource.trim().toLocaleLowerCase('en-US');
+    const source = ALLOWED_CAMPAIGN_SOURCES.has(normalizedSource) ? normalizedSource : 'other';
+    currentUrl.searchParams.delete('src');
+    window.history.replaceState(window.history.state, '', `${currentUrl.pathname}${currentUrl.search}${currentUrl.hash}`);
+    return source;
+  } catch {
+    return undefined;
+  }
+};
+
+export const getEntryContext = (): EntryContext => {
+  if (typeof window === 'undefined' || typeof document === 'undefined') return {};
+  try {
+    const navType = getNavigationType();
+    const freshTab = window.history.length === 1;
+    const entry = getReferrerCategory(document.referrer, navType, freshTab);
+    const src = readAndRemoveCampaignSource();
+    const displayMode = window.matchMedia?.('(display-mode: standalone)').matches
+      || ('standalone' in navigator && Boolean((navigator as Navigator & { standalone?: boolean }).standalone))
+      ? 'standalone'
+      : 'browser';
+    return {
+      ...(entry ? { entry } : {}),
+      ...(navType ? { navType } : {}),
+      freshTab,
+      hour: new Date().getHours(),
+      ...(src ? { src } : {}),
+      displayMode,
+    };
+  } catch {
+    return {};
+  }
+};
+
+// Capture navigation state at module load. history.length may change before the delayed pageview is sent.
+const initialEntryContext = getEntryContext();
+
 const sendUsageEvent = async (event: UsageEvent) => {
   if (typeof navigator === 'undefined') return;
   if (isUsageTrackingDisabled()) return;
   getDataProvider()
     .then((provider) => provider.submitPublic('usage-events', event as Record<string, unknown>))
     .catch(() => {
-    // Usage tracking is optional and must not disturb the user.
+      // Usage tracking is optional and must not disturb the user.
     });
 };
 
 export const trackPageView = (page = getPageName()) => {
-  void sendUsageEvent({ type: 'pageview', page });
+  void sendUsageEvent({ type: 'pageview', page, ...initialEntryContext });
 };
 
 export const trackLinkClick = (values: { url: string; label?: string; category?: string; page?: string }) => {
@@ -67,6 +159,19 @@ export const trackLinkClick = (values: { url: string; label?: string; category?:
     url: values.url,
     label: values.label,
     category: values.category,
+  });
+};
+
+export const trackGuideStep = (
+  step: 'opened' | 'browser' | 'done' | 'shared',
+  value?: string,
+) => {
+  if ((step === 'browser' || step === 'shared') && !GUIDE_VALUES[step].has(value ?? '')) return;
+  void sendUsageEvent({
+    type: 'guide',
+    page: getPageName(),
+    step,
+    ...((step === 'browser' || step === 'shared') && value ? { value } : {}),
   });
 };
 

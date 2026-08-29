@@ -11,6 +11,21 @@ use Throwable;
 
 final class PublicApi
 {
+    /** @var array<string, list<string>> */
+    private const ALLOWED_CONTEXT = [
+        'entry' => ['direct', 'internal', 'seniorsurf', 'search', 'external'],
+        'navtype' => ['navigate', 'reload', 'back_forward', 'prerender'],
+        'freshtab' => ['true', 'false'],
+        'src' => ['opastus', 'esite', 'qr', 'kirje', 'some', 'lehti', 'other'],
+        'display' => ['browser', 'standalone'],
+        'guide' => [
+            'opened', 'done',
+            'browser:chrome', 'browser:edge', 'browser:firefox', 'browser:safari',
+            'browser:android', 'browser:ios', 'browser:other',
+            'shared:share', 'shared:email', 'shared:sms', 'shared:print', 'shared:copy',
+        ],
+    ];
+
     public function __construct(
         private readonly DatabaseConnection $database,
         private readonly RateLimiter $rateLimiter,
@@ -338,19 +353,36 @@ final class PublicApi
     {
         $this->limit($request, '/api/v1/usage-events', 120, 60);
         $data = Validator::jsonObject($request);
-        Validator::shape($data, ['type', 'page', 'url', 'label', 'category', 'website'], ['type', 'page']);
+        Validator::shape($data, [
+            'type', 'page', 'url', 'label', 'category', 'entry', 'navType', 'freshTab',
+            'hour', 'src', 'displayMode', 'step', 'value', 'website',
+        ], ['type', 'page']);
         Validator::honeypotIsEmpty($data);
-        $type = Validator::enum($data, 'type', ['pageview', 'linkClick']);
+        $type = Validator::enum($data, 'type', ['pageview', 'linkClick', 'guide']);
         $page = Validator::string($data, 'page', 1, 180);
         $usageDate = (new DateTimeImmutable('now', new DateTimeZone('Europe/Helsinki')))->format('Y-m-d');
         $pageHash = hash('sha256', $page, true);
 
         if ($type === 'pageview') {
-            Validator::shape($data, ['type', 'page', 'website'], ['type', 'page']);
+            Validator::shape($data, [
+                'type', 'page', 'entry', 'navType', 'freshTab', 'hour', 'src', 'displayMode', 'website',
+            ], ['type', 'page']);
+            $context = [];
+            $this->addAllowedContext($context, 'entry', $data['entry'] ?? null);
+            $this->addAllowedContext($context, 'navtype', $data['navType'] ?? null);
+            if (isset($data['freshTab']) && is_bool($data['freshTab'])) {
+                $this->addAllowedContext($context, 'freshtab', $data['freshTab'] ? 'true' : 'false');
+            }
+            if (isset($data['hour']) && is_int($data['hour']) && $data['hour'] >= 0 && $data['hour'] <= 23) {
+                $context['hour'] = str_pad((string) $data['hour'], 2, '0', STR_PAD_LEFT);
+            }
+            $this->addAllowedContext($context, 'src', $data['src'] ?? null);
+            $this->addAllowedContext($context, 'display', $data['displayMode'] ?? null);
             $this->database->transaction(static function (DatabaseConnection $database) use (
                 $usageDate,
                 $page,
                 $pageHash,
+                $context,
             ): void {
                 $database->execute(
                     'INSERT INTO usage_daily (usage_date, total_pageviews, total_link_clicks) VALUES (:usage_date, 1, 0) '
@@ -363,7 +395,36 @@ final class PublicApi
                     . 'ON DUPLICATE KEY UPDATE count = count + 1, page = VALUES(page)',
                     ['usage_date' => $usageDate, 'page_hash' => $pageHash, 'page' => $page],
                 );
+                foreach ($context as $dimension => $bucket) {
+                    $database->execute(
+                        'INSERT INTO usage_context_daily (usage_date, dimension, bucket, count) '
+                        . 'VALUES (:usage_date, :dimension, :bucket, 1) '
+                        . 'ON DUPLICATE KEY UPDATE count = count + 1',
+                        ['usage_date' => $usageDate, 'dimension' => $dimension, 'bucket' => $bucket],
+                    );
+                }
             });
+            return Response::empty(204);
+        }
+
+        if ($type === 'guide') {
+            Validator::shape($data, ['type', 'page', 'step', 'value', 'website'], ['type', 'page']);
+            $step = isset($data['step']) && is_string($data['step']) ? $data['step'] : '';
+            $value = isset($data['value']) && is_string($data['value']) ? $data['value'] : '';
+            $bucket = match ($step) {
+                'opened', 'done' => $step,
+                'browser', 'shared' => $value !== '' ? $step . ':' . $value : '',
+                default => '',
+            };
+            if (!in_array($bucket, self::ALLOWED_CONTEXT['guide'], true)) {
+                return Response::empty(204);
+            }
+            $this->database->execute(
+                'INSERT INTO usage_context_daily (usage_date, dimension, bucket, count) '
+                . 'VALUES (:usage_date, :dimension, :bucket, 1) '
+                . 'ON DUPLICATE KEY UPDATE count = count + 1',
+                ['usage_date' => $usageDate, 'dimension' => 'guide', 'bucket' => $bucket],
+            );
             return Response::empty(204);
         }
 
@@ -404,6 +465,17 @@ final class PublicApi
             );
         });
         return Response::empty(204);
+    }
+
+    /** @param array<string, string> $context */
+    private function addAllowedContext(array &$context, string $dimension, mixed $value): void
+    {
+        if (!is_string($value) || !isset(self::ALLOWED_CONTEXT[$dimension])) {
+            return;
+        }
+        if (in_array($value, self::ALLOWED_CONTEXT[$dimension], true)) {
+            $context[$dimension] = $value;
+        }
     }
 
     /** @param list<array<string, mixed>> $data */

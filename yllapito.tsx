@@ -11,14 +11,10 @@ const adminLinks = [
     href: './muutosloki.html',
   },
   {
-    title: 'Kirjautuminen, käyttötilastot ja huijausvaroitukset',
-    description: 'Kirjaudu ylläpitoon, tarkastele karkeita käyttötilastoja, käsittele linkkiehdotukset ja aja Kyberturvallisuuskeskuksen haku.',
+    title: 'Suojattu työtila',
+    description: 'Kirjaudu suojattuun työtilaan, tarkastele käyttö- ja kasvumittareita, käsittele linkkiehdotukset ja ylläpidä huijausvaroituksia.',
     href: './ehdotukset.html',
-  },
-  {
-    title: 'Testipalautteen koonti',
-    description: 'Tarkastele anonyymin testilomakkeen vastauksia, jakaumia, keskiarvoja ja avoimia huomioita.',
-    href: './testipalaute-yllapito.html',
+    protected: true,
   },
   {
     title: 'Linkkiluettelo',
@@ -53,20 +49,23 @@ function App() {
           </div>
           <h1 className="font-display text-4xl font-bold tracking-tight md:text-6xl">Ylläpitäjän työpöytä</h1>
           <p className="max-w-3xl text-base font-semibold text-white/75 md:text-lg">
-            Nopea näkymä sivuston ylläpidon tärkeimpiin työkaluihin. Kirjautuminen ja huijausvaroitukset löytyvät samasta suojatusta ylläpitonäkymästä.
+            Valitse tehtävä alta. Muutoksia sisältävät työkalut ovat suojatussa ylläpitonäkymässä.
           </p>
         </header>
 
-        <section className="grid gap-4 md:grid-cols-3" aria-label="Ylläpidon linkit">
+        <section className="grid gap-4 md:grid-cols-3" aria-label="Ylläpidon työkalut">
           {adminLinks.map((link) => (
             <a
               key={link.href}
               href={link.href}
               className="aurora-card group transition-all hover:-translate-y-1 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-[var(--theme-focus)]/40"
             >
-              <span className="text-sm font-black uppercase tracking-wide text-[var(--theme-primary)]">
-                Avaa
-              </span>
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <span className="text-sm font-black uppercase tracking-wide text-[var(--theme-primary)]">Avaa</span>
+                {'protected' in link && link.protected && (
+                  <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-black text-emerald-900">Suojattu</span>
+                )}
+              </div>
               <h2 className="aurora-section-title mt-3 text-2xl group-hover:text-[var(--theme-primary)]">
                 {link.title}
               </h2>

@@ -3,6 +3,8 @@ Allow: /
 Disallow: /aloitus/yllapito.html
 Disallow: /aloitus/ehdotukset.html
 Disallow: /aloitus/linkit.html
+Disallow: /aloitus/linkit-sv.html
+Disallow: /aloitus/linkit-en.html
 Disallow: /aloitus/muutosloki.html
 Disallow: /aloitus/kehitysjono.html
 Disallow: /aloitus/testipalaute.html

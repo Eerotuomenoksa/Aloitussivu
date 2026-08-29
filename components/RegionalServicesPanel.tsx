@@ -68,7 +68,12 @@ const isRedundantScopeDetail = (provider: Provider, detail?: string) => {
   return providerName.includes(detailText) || detailText.includes(providerName);
 };
 
-const formatScopeLabel = (provider: Provider, scopeInfo: ReturnType<typeof getRegionalProviderScopeInfo>, t: ReturnType<typeof useI18n>['t']) => {
+const formatScopeLabel = (
+  provider: Provider,
+  scopeInfo: ReturnType<typeof getRegionalProviderScopeInfo>,
+  t: ReturnType<typeof useI18n>['t'],
+  localizeName: (name: string) => string,
+) => {
   if (!scopeInfo) return '';
   if (scopeInfo.scope === 'municipality' || scopeInfo.scope === 'wellbeingArea') return '';
   if (isRedundantScopeDetail(provider, scopeInfo.detail)) {
@@ -80,16 +85,19 @@ const formatScopeLabel = (provider: Provider, scopeInfo: ReturnType<typeof getRe
     : scopeInfo.scope === 'neighbor'
       ? t('regionalScopeNeighbor')
       : t('regionalScopeNationalFallback');
-  return scopeInfo.detail ? `${label}: ${scopeInfo.detail}` : label;
+  return scopeInfo.detail ? `${label}: ${localizeName(scopeInfo.detail)}` : label;
 };
 
 const ServiceLink: React.FC<{ provider: Provider; index: number; fontSizeStep: number; context: RegionalContext; onReportLink?: (draft: LinkReportDraft) => void }> = ({ provider, index, fontSizeStep, context, onReportLink }) => {
-  const { t } = useI18n();
+  const { categoryName, language, t } = useI18n();
   const icon = getRegionalServiceIcon(provider);
   const phoneHref = getPhoneHref(provider);
   const href = phoneHref ?? provider.url;
   const isPhoneLink = Boolean(phoneHref);
-  const scopeLabel = formatScopeLabel(provider, getRegionalProviderScopeInfo(provider, context), t);
+  const localizeName = (name: string) => (
+    getLocalizedMunicipalityName(findMunicipality(name), language) || categoryName(name)
+  );
+  const scopeLabel = formatScopeLabel(provider, getRegionalProviderScopeInfo(provider, context), t, localizeName);
   return (
     <div className="relative group/service">
       <a
@@ -97,8 +105,8 @@ const ServiceLink: React.FC<{ provider: Provider; index: number; fontSizeStep: n
         target={isPhoneLink ? undefined : '_blank'}
         rel={isPhoneLink ? undefined : 'noopener noreferrer'}
         className="zone-link"
-        title={isPhoneLink ? `Soita: ${provider.name}` : `Avaa alueellinen palvelu: ${provider.name}`}
-        aria-label={provider.phone ? `Soita: ${provider.name}, ${provider.phone}` : undefined}
+        title={isPhoneLink ? `${t('call')}: ${provider.name}` : `${t('openRegionalService')}: ${provider.name}`}
+        aria-label={provider.phone ? `${t('call')}: ${provider.name}, ${provider.phone}` : undefined}
       >
         <span className="zone-link-icon" aria-hidden="true">{icon}</span>
         <span className="zone-link-label flex min-w-0 flex-col gap-0.5">
@@ -116,7 +124,7 @@ const ServiceLink: React.FC<{ provider: Provider; index: number; fontSizeStep: n
             category: provider.group,
             source: 'RegionalServicesPanel',
           })}
-          title={`Ilmoita ongelma alueellisessa linkissä: ${provider.name}`}
+          title={`${t('reportLink')}: ${provider.name}`}
           className="absolute bottom-3 right-3 flex h-10 w-10 items-center justify-center rounded-full bg-[var(--theme-surface)] text-xl text-[var(--theme-text)] opacity-0 shadow-md transition-all hover:bg-[var(--theme-pale)] focus:opacity-100 focus:outline-none focus:ring-4 focus:ring-[var(--theme-focus)]/30 group-hover/service:opacity-100"
           aria-label={`${t('reportLink')}: ${provider.name}`}
         >
@@ -143,7 +151,7 @@ const CategoryLink: React.FC<{ shortcut: Shortcut; fontSizeStep: number; onSelec
       type="button"
       onClick={() => onSelectCategory(shortcut)}
       className="zone-link"
-      title={`Avaa alueelliset linkit kategoriassa ${categoryName(shortcut.name)}`}
+      title={`${t('openRegionalCategory')}: ${categoryName(shortcut.name)}`}
     >
       <span className="zone-link-icon" aria-hidden="true">{shortcut.icon}</span>
       <span className="zone-link-label flex min-w-0 flex-col gap-0.5">
@@ -266,7 +274,7 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
                     onClick={clearMunicipalityInput}
                     className={`min-h-11 rounded-full bg-[var(--theme-primary)] px-5 py-2 font-black text-white transition-all hover:bg-[var(--theme-primary-mid)] active:scale-95 ${smallTextClasses[fontSizeStep]}`}
                   >
-                    Tyhjennä
+                    {t('clear')}
                   </button>
                 ) : null}
                 {locality?.municipality && isManualQuery && context && normalizeMunicipality(locality.municipality) !== normalizeMunicipality(context.municipality.name) ? (
@@ -275,7 +283,7 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
                     onClick={useDetectedMunicipality}
                     className={`min-h-11 rounded-full bg-[var(--theme-primary)] px-5 py-2 font-black text-white transition-all hover:bg-[var(--theme-primary-mid)] active:scale-95 ${smallTextClasses[fontSizeStep]}`}
                   >
-                    Käytä sijaintia
+                    {t('useDetectedLocation')}
                   </button>
                 ) : null}
               </div>
@@ -284,7 +292,7 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
           <p className="zone-info">{t('localZoneInfo')}</p>
           {locality?.municipality && isManualQuery && context && normalizeMunicipality(locality.municipality) !== normalizeMunicipality(context.municipality.name) && (
             <p className={`mt-2 font-semibold text-[var(--theme-muted)] ${smallTextClasses[fontSizeStep]}`}>
-              Sijaintisi on {detectedLocationLabel}.
+              {t('currentLocationIs').replace('{location}', detectedLocationLabel)}
             </p>
           )}
           {hasInvalidMunicipality && (
@@ -294,7 +302,7 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
               aria-atomic="true"
               className={`mt-2 font-semibold text-[var(--theme-muted)] ${smallTextClasses[fontSizeStep]}`}
             >
-              Kirjoita kunnan nimi kokonaan, esimerkiksi Helsinki, Akaa tai Alajärvi.
+              {t('fullMunicipalityPrompt')}
             </p>
           )}
           <p id={municipalityHelpId} className="sr-only">
@@ -370,9 +378,9 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
                     <button
                       type="button"
                       onClick={() => onReportLink({
-                        name: `${localizedMunicipalityName || context.municipality.name} paikallinen uutislähde`,
+                        name: t('localNewsSourceName').replace('{municipality}', localizedMunicipalityName || context.municipality.name),
                         url: '',
-                        category: 'Paikalliset uutiset',
+                        category: t('localNews'),
                         source: 'RegionalServicesPanelMissingNews',
                       })}
                       className="mt-2 inline-flex min-h-11 items-center rounded-full bg-[var(--theme-primary)] px-5 py-2 font-black text-white transition-colors hover:bg-[var(--theme-primary-mid)] focus:outline-none focus:ring-4 focus:ring-[var(--theme-focus)]/30"

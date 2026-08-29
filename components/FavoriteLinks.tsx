@@ -140,7 +140,7 @@ const FavoriteLinks: React.FC<FavoriteLinksProps> = ({ favorites, onToggleFavori
         rel="noopener noreferrer"
         onClick={() => onFavoriteOpen(fav.url)}
         className={`${basePillStyles} ${textClasses[fontSizeStep]}`}
-        title={`Avaa suosikki: ${fav.name}`}
+        title={`${t('goToSite')}: ${fav.name}`}
         aria-label={`${t('goToSite')}: ${fav.name}`}
       >
         <span aria-hidden="true">{fav.categoryIcon}</span>
@@ -155,7 +155,7 @@ const FavoriteLinks: React.FC<FavoriteLinksProps> = ({ favorites, onToggleFavori
       </a>
       <button
         onClick={() => onToggleFavorite(fav)}
-        title={`Poista suosikeista: ${fav.name}`}
+        title={`${t('removeFavorite')}: ${fav.name}`}
         className="inline-flex h-11 w-11 items-center justify-center rounded-full border-2 border-dashed border-[var(--theme-border-strong)] bg-transparent text-xl font-black text-[var(--theme-text-3)] transition-all hover:border-[var(--theme-gold)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--theme-focus)]"
         aria-label={`${t('removeFavorite')}: ${fav.name}`}
       >

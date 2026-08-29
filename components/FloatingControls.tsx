@@ -64,7 +64,7 @@ const FloatingControls: React.FC<FloatingControlsProps> = ({
         onClick={onIncrease}
         disabled={!canIncrease}
         className={`${buttonClass} ${accentButtonClass}`}
-        title="Suurenna sivun tekstiä ja painikkeita"
+        title={increaseLabel}
         aria-label={`${increaseLabel} (${uiScale}%)`}
       >
         A+
@@ -74,7 +74,7 @@ const FloatingControls: React.FC<FloatingControlsProps> = ({
         onClick={onDecrease}
         disabled={!canDecrease}
         className={`${buttonClass} ${primaryButtonClass}`}
-        title="Pienennä sivun tekstiä ja painikkeita"
+        title={decreaseLabel}
         aria-label={`${decreaseLabel} (${uiScale}%)`}
       >
         A−
@@ -84,7 +84,7 @@ const FloatingControls: React.FC<FloatingControlsProps> = ({
           type="button"
           onClick={onReset}
           className="rounded-full border-2 border-[var(--theme-gold)] bg-[var(--theme-gold)] px-3 py-2 text-sm font-black text-[var(--theme-cta-label)] shadow-[0_4px_20px_rgba(0,0,0,.24)] transition-all hover:bg-[var(--theme-gold-light)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--theme-focus)] active:scale-95 md:px-4 md:py-3 md:text-base"
-          title="Palauta tekstikoko normaaliksi"
+          title={resetLabel}
           aria-label={resetLabel}
         >
           100%
@@ -93,7 +93,7 @@ const FloatingControls: React.FC<FloatingControlsProps> = ({
       <button
         type="button"
         onClick={scrollToTop}
-        title="Palaa sivun alkuun"
+        title={backToTopLabel}
         aria-label={backToTopLabel}
         aria-hidden={!isTopVisible}
         tabIndex={isTopVisible ? 0 : -1}

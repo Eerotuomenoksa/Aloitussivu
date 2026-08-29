@@ -13,7 +13,7 @@ const InterestThemeSelector: React.FC<InterestThemeSelectorProps> = ({
   onChange,
   compact = false,
 }) => {
-  const { categoryName } = useI18n();
+  const { categoryName, t } = useI18n();
   const showAll = selectedAnchors.length === 0;
   const selectionLimitReached = selectedAnchors.length >= MAX_INTEREST_THEMES;
 
@@ -27,9 +27,9 @@ const InterestThemeSelector: React.FC<InterestThemeSelectorProps> = ({
 
   return (
     <fieldset className="rounded-2xl border-2 border-[var(--theme-border)] p-4">
-      <legend className="px-1 font-black text-[var(--theme-text)]">Kiinnostavat teemat</legend>
+      <legend className="px-1 font-black text-[var(--theme-text)]">{t('interestingThemes')}</legend>
       <p className="mt-1 text-sm font-bold leading-relaxed text-[var(--theme-muted)]">
-        Valitse enintään {MAX_INTEREST_THEMES} teemaa. Jos valitset Näytä kaikki, mitään sisältöä ei rajata.
+        {t('interestThemesHint').replace('{count}', String(MAX_INTEREST_THEMES))}
       </p>
 
       <div className={`mt-3 grid grid-cols-1 gap-2 ${compact ? 'sm:grid-cols-2' : 'sm:grid-cols-2 md:grid-cols-3'}`}>
@@ -43,7 +43,7 @@ const InterestThemeSelector: React.FC<InterestThemeSelectorProps> = ({
           } flex min-h-20 min-w-0 items-center gap-2 rounded-2xl border-2 p-3 text-left font-black transition-all focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--theme-focus)]/40`}
         >
           <span className="text-2xl" aria-hidden="true">✨</span>
-          <span className="min-w-0 leading-tight [overflow-wrap:anywhere]">Näytä kaikki</span>
+          <span className="min-w-0 leading-tight [overflow-wrap:anywhere]">{t('showAll')}</span>
           {showAll && <span className="ml-auto" aria-hidden="true">✓</span>}
         </button>
 
@@ -72,8 +72,10 @@ const InterestThemeSelector: React.FC<InterestThemeSelectorProps> = ({
 
       <p className="mt-3 text-sm font-bold text-[var(--theme-muted)]" aria-live="polite">
         {showAll
-          ? 'Kaikki teemat näytetään.'
-          : `${selectedAnchors.length}/${MAX_INTEREST_THEMES} teemaa valittu. Muut teemat saa aina näkyviin sivulta.`}
+          ? t('allThemesShown')
+          : t('themesSelected')
+            .replace('{selected}', String(selectedAnchors.length))
+            .replace('{max}', String(MAX_INTEREST_THEMES))}
       </p>
     </fieldset>
   );

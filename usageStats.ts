@@ -14,6 +14,7 @@ export type UsageDailyStats = {
   totalLinkClicks: number;
   pageviews: Record<string, { count: number; page: string }>;
   linkClicks: Record<string, UsageLinkStats>;
+  context: Record<string, Record<string, number>>;
 };
 
 const toNumber = (value: unknown) => (typeof value === 'number' && Number.isFinite(value) ? value : 0);
@@ -90,6 +91,7 @@ export const fetchUsageStats = async (startDate: string, endDate: string): Promi
     daily: Array<{ date: string; pageviews: number; linkClicks: number }>;
     pages: Array<{ date: string; page: string; count: number }>;
     links: Array<{ date: string; url: string; label: string; category: string; page: string; count: number }>;
+    context?: Array<{ date: string; dimension: string; bucket: string; count: number }>;
   };
   const raw = await (await getDataProvider()).listAdmin<UsageDailyStats[] | CloudcityUsageStats>('usage-stats');
   if (Array.isArray(raw)) {
@@ -102,6 +104,7 @@ export const fetchUsageStats = async (startDate: string, endDate: string): Promi
         totalLinkClicks: toNumber(data?.totalLinkClicks),
         pageviews: normalizePageviews(data?.pageviews),
         linkClicks: normalizeLinkClicks(data?.linkClicks),
+        context: data?.context && typeof data.context === 'object' ? data.context : {},
       };
     });
   }
@@ -113,6 +116,7 @@ export const fetchUsageStats = async (startDate: string, endDate: string): Promi
     totalLinkClicks: 0,
     pageviews: {},
     linkClicks: {},
+    context: {},
   }]));
   raw.daily.forEach((day) => {
     const target = byDate.get(day.date);
@@ -135,6 +139,15 @@ export const fetchUsageStats = async (startDate: string, endDate: string): Promi
       category: toString(link.category),
       page: toString(link.page),
     };
+  });
+  (raw.context ?? []).forEach((item) => {
+    if (!allowedDates.has(item.date)) return;
+    const target = byDate.get(item.date)!;
+    const dimension = toString(item.dimension);
+    const bucket = toString(item.bucket);
+    if (!dimension || !bucket) return;
+    target.context[dimension] ??= {};
+    target.context[dimension][bucket] = toNumber(item.count);
   });
   return dates.map((date) => byDate.get(date)!);
 };

@@ -6,6 +6,12 @@ import { MUNICIPALITIES } from './municipalRegistry';
 import { getRegionalLibraryProviders, getRegionalNewsProviders, getRegionalProviders, getRegionalPublicTransportProviders, getRegionalRssFeeds, getRegionalServiceAreaMunicipalities, normalizeMunicipality } from './localServices';
 import { Municipality, Provider } from './types';
 import { installUsageTracking } from './usageTracking';
+import { translateCategoryName } from './i18n';
+import {
+  PublicPageLanguage,
+  PublicPageLanguageSwitcher,
+  usePublicPageLanguage,
+} from './publicPageLocalization';
 
 interface GeneralLinkRow {
   name: string;
@@ -215,6 +221,145 @@ const regionalLinks = uniqueByKey(
 const allLinkCount = generalLinks.length + regionalLinks.length;
 const pageNavLinkClass = 'aurora-nav-link px-4 py-2 text-sm';
 
+const linkListTranslations = {
+  fi: {
+    pageLinks: 'Sivun linkit',
+    backHome: 'Takaisin aloitussivulle',
+    kicker: 'Ammattilaisille',
+    title: 'Linkkiluettelo',
+    intro: 'Koonti sivuston yleisistä linkeistä sekä jokaiselle kunnalle muodostuvista alueellisista palvelu-, uutis- ja RSS-linkeistä.',
+    searchLabel: 'Hae linkeistä',
+    searchPlaceholder: 'Hae nimellä, URLilla, kategorialla tai paikkakunnalla',
+    downloadGeneral: 'Lataa yleiset CSV',
+    downloadRegional: 'Lataa alueelliset CSV',
+    allLinks: 'Kaikki linkit',
+    allLinksSubtitle: 'Yleiset + alueelliset',
+    generalLinks: 'Yleiset linkit',
+    regionalLinks: 'Alueelliset linkit',
+    municipalities: 'Paikkakunnat',
+    phoneNumbers: 'Puhelinnumeroita',
+    views: 'Linkkiluettelon näkymät',
+    byMunicipality: 'Paikkakunnittain',
+    skipList: 'Ohita valittu linkkilista',
+    regionalIntro: 'Tässä näkymässä ovat vain paikkakuntiin liittyvät linkit: kunnan sivut, hyvinvointialueet, kirjastot, kulttuuri- ja yhdistyslinkit, alueelliset uutiset ja uutisvirrat.',
+    municipalitiesHeading: 'Paikkakunnat aakkosjärjestyksessä',
+    pageName: 'Sivun nimi',
+    url: 'URL',
+    category: 'Kategoria',
+    group: 'Ryhmä',
+    municipality: 'Paikkakunta',
+    municipalityWebsite: 'Kunnan nettisivut',
+    wellbeingArea: 'Hyvinvointialue',
+    library: 'Kirjasto',
+    publicTransport: 'Julkinen liikenne',
+    serviceTransport: 'Palveluliikenne',
+    museums: 'Museot',
+    theaters: 'Teatterit',
+    patientAssociations: 'Potilasyhdistykset',
+    seniorAssociations: 'Eläkeyhdistykset',
+    regionalNews: 'Alueelliset uutiset',
+    newsFeeds: 'Uutisvirrat',
+    listEnd: 'Linkkilistan loppu.',
+    generalCsvFilename: 'yleiset-linkit.csv',
+    regionalCsvFilename: 'alueelliset-linkit.csv',
+  },
+  sv: {
+    pageLinks: 'Sidans länkar',
+    backHome: 'Tillbaka till startsidan',
+    kicker: 'För yrkesverksamma',
+    title: 'Länklista',
+    intro: 'En sammanställning av webbplatsens allmänna länkar och de regionala service-, nyhets- och RSS-länkar som skapas för varje kommun.',
+    searchLabel: 'Sök bland länkarna',
+    searchPlaceholder: 'Sök efter namn, webbadress, kategori eller ort',
+    downloadGeneral: 'Ladda ned allmänna länkar som CSV',
+    downloadRegional: 'Ladda ned regionala länkar som CSV',
+    allLinks: 'Alla länkar',
+    allLinksSubtitle: 'Allmänna + regionala',
+    generalLinks: 'Allmänna länkar',
+    regionalLinks: 'Regionala länkar',
+    municipalities: 'Kommuner',
+    phoneNumbers: 'Telefonnummer',
+    views: 'Länklistans vyer',
+    byMunicipality: 'Per kommun',
+    skipList: 'Hoppa över den valda länklistan',
+    regionalIntro: 'Den här vyn innehåller endast ortsspecifika länkar: kommunernas webbplatser, välfärdsområden, bibliotek, kultur- och föreningslänkar, regionala nyheter och nyhetsflöden.',
+    municipalitiesHeading: 'Kommuner i alfabetisk ordning',
+    pageName: 'Sidans namn',
+    url: 'Webbadress',
+    category: 'Kategori',
+    group: 'Grupp',
+    municipality: 'Kommun',
+    municipalityWebsite: 'Kommunens webbplats',
+    wellbeingArea: 'Välfärdsområde',
+    library: 'Bibliotek',
+    publicTransport: 'Kollektivtrafik',
+    serviceTransport: 'Servicetrafik',
+    museums: 'Museer',
+    theaters: 'Teatrar',
+    patientAssociations: 'Patientföreningar',
+    seniorAssociations: 'Pensionärsföreningar',
+    regionalNews: 'Regionala nyheter',
+    newsFeeds: 'Nyhetsflöden',
+    listEnd: 'Slut på länklistan.',
+    generalCsvFilename: 'allmanna-lankar.csv',
+    regionalCsvFilename: 'regionala-lankar.csv',
+  },
+  en: {
+    pageLinks: 'Page links',
+    backHome: 'Back to the home page',
+    kicker: 'For professionals',
+    title: 'Link list',
+    intro: 'A summary of the website’s general links and the regional service, news and RSS links provided for each municipality.',
+    searchLabel: 'Search the links',
+    searchPlaceholder: 'Search by name, URL, category or municipality',
+    downloadGeneral: 'Download general links as CSV',
+    downloadRegional: 'Download regional links as CSV',
+    allLinks: 'All links',
+    allLinksSubtitle: 'General + regional',
+    generalLinks: 'General links',
+    regionalLinks: 'Regional links',
+    municipalities: 'Municipalities',
+    phoneNumbers: 'Phone numbers',
+    views: 'Link list views',
+    byMunicipality: 'By municipality',
+    skipList: 'Skip the selected link list',
+    regionalIntro: 'This view contains only municipality-related links: municipal websites, wellbeing services counties, libraries, cultural and association links, regional news and news feeds.',
+    municipalitiesHeading: 'Municipalities in alphabetical order',
+    pageName: 'Page name',
+    url: 'URL',
+    category: 'Category',
+    group: 'Group',
+    municipality: 'Municipality',
+    municipalityWebsite: 'Municipal website',
+    wellbeingArea: 'Wellbeing services county',
+    library: 'Library',
+    publicTransport: 'Public transport',
+    serviceTransport: 'Service transport',
+    museums: 'Museums',
+    theaters: 'Theatres',
+    patientAssociations: 'Patient associations',
+    seniorAssociations: 'Pensioner associations',
+    regionalNews: 'Regional news',
+    newsFeeds: 'News feeds',
+    listEnd: 'End of the link list.',
+    generalCsvFilename: 'general-links.csv',
+    regionalCsvFilename: 'regional-links.csv',
+  },
+} as const;
+
+const linkValueTranslations: Record<string, Partial<Record<PublicPageLanguage, string>>> = {
+  'Kunnan nettisivut': { sv: 'Kommunens webbplats', en: 'Municipal website' },
+  'Kirjasto': { sv: 'Bibliotek', en: 'Library' },
+  'Palveluliikenne': { sv: 'Servicetrafik', en: 'Service transport' },
+  'Uutisvirrat': { sv: 'Nyhetsflöden', en: 'News feeds' },
+  'Koko Suomi': { sv: 'Hela Finland', en: 'All Finland' },
+};
+
+const localizeLinkValue = (value: string, language: PublicPageLanguage) => (
+  linkValueTranslations[value]?.[language]
+  ?? translateCategoryName(value, language)
+);
+
 const csvEscape = (value: string | number) => `"${String(value).replace(/"/g, '""')}"`;
 
 const downloadCsv = (filename: string, headers: string[], rows: string[][]) => {
@@ -233,6 +378,10 @@ const downloadCsv = (filename: string, headers: string[], rows: string[][]) => {
 
 const normalizeSearch = (value: string) => value.toLocaleLowerCase('fi-FI').trim();
 
+const getRegionalLinkSearchText = (link: RegionalLinkRow, language: PublicPageLanguage) => (
+  `${link.category} ${localizeLinkValue(link.category, language)} ${link.name} ${link.url}`
+);
+
 const LinkList = ({ links }: { links: RegionalLinkRow[] }) => (
   <ul className="space-y-2">
     {links.map((link) => (
@@ -249,6 +398,9 @@ const LinkList = ({ links }: { links: RegionalLinkRow[] }) => (
 function App() {
   useEffect(() => installUsageTracking('linkit'), []);
 
+  const language = usePublicPageLanguage();
+  const copy = linkListTranslations[language];
+
   const [query, setQuery] = useState('');
   const [activeView, setActiveView] = useState<ActiveView>('regional');
   const municipalityTopScrollRef = useRef<HTMLDivElement>(null);
@@ -256,29 +408,29 @@ function App() {
   const search = normalizeSearch(query);
 
   const filteredGeneralLinks = useMemo(() => generalLinks.filter((row) => (
-    !search || `${row.name} ${row.url} ${row.category} ${row.group}`.toLocaleLowerCase('fi-FI').includes(search)
-  )), [search]);
+    !search || `${row.name} ${row.url} ${row.category} ${localizeLinkValue(row.category, language)} ${row.group} ${localizeLinkValue(row.group, language)}`.toLocaleLowerCase('fi-FI').includes(search)
+  )), [language, search]);
 
   const filteredRegionalLinks = useMemo(() => regionalLinks.filter((row) => (
-    !search || `${row.municipality} ${row.category} ${row.name} ${row.url}`.toLocaleLowerCase('fi-FI').includes(search)
-  )), [search]);
+    !search || `${row.municipality} ${row.category} ${localizeLinkValue(row.category, language)} ${row.name} ${row.url}`.toLocaleLowerCase('fi-FI').includes(search)
+  )), [language, search]);
 
   const filteredMunicipalityRows = useMemo(() => municipalityRows.filter((row) => (
     !search || [
       row.municipality,
-      ...row.municipalityWebsites.map((link) => `${link.category} ${link.name} ${link.url}`),
-      ...row.wellbeingAreas.map((link) => `${link.category} ${link.name} ${link.url}`),
-      ...row.libraries.map((link) => `${link.category} ${link.name} ${link.url}`),
-      ...row.publicTransport.map((link) => `${link.category} ${link.name} ${link.url}`),
-      ...row.serviceTransport.map((link) => `${link.category} ${link.name} ${link.url}`),
-      ...row.museums.map((link) => `${link.category} ${link.name} ${link.url}`),
-      ...row.theaters.map((link) => `${link.category} ${link.name} ${link.url}`),
-      ...row.patientAssociations.map((link) => `${link.category} ${link.name} ${link.url}`),
-      ...row.seniorAssociations.map((link) => `${link.category} ${link.name} ${link.url}`),
-      ...row.regionalNews.map((link) => `${link.category} ${link.name} ${link.url}`),
-      ...row.rssFeeds.map((link) => `${link.category} ${link.name} ${link.url}`),
+      ...row.municipalityWebsites.map((link) => getRegionalLinkSearchText(link, language)),
+      ...row.wellbeingAreas.map((link) => getRegionalLinkSearchText(link, language)),
+      ...row.libraries.map((link) => getRegionalLinkSearchText(link, language)),
+      ...row.publicTransport.map((link) => getRegionalLinkSearchText(link, language)),
+      ...row.serviceTransport.map((link) => getRegionalLinkSearchText(link, language)),
+      ...row.museums.map((link) => getRegionalLinkSearchText(link, language)),
+      ...row.theaters.map((link) => getRegionalLinkSearchText(link, language)),
+      ...row.patientAssociations.map((link) => getRegionalLinkSearchText(link, language)),
+      ...row.seniorAssociations.map((link) => getRegionalLinkSearchText(link, language)),
+      ...row.regionalNews.map((link) => getRegionalLinkSearchText(link, language)),
+      ...row.rssFeeds.map((link) => getRegionalLinkSearchText(link, language)),
     ].join(' ').toLocaleLowerCase('fi-FI').includes(search)
-  )), [search]);
+  )), [language, search]);
 
   const municipalityColumnCounts = useMemo(() => ({
     municipalityWebsites: filteredMunicipalityRows.reduce((sum, row) => sum + row.municipalityWebsites.length, 0),
@@ -295,9 +447,9 @@ function App() {
   }), [filteredMunicipalityRows]);
 
   const tabs: { id: ActiveView; label: string; count: number }[] = [
-    { id: 'regional', label: 'Alueelliset linkit', count: filteredRegionalLinks.length },
-    { id: 'municipalities', label: 'Paikkakunnittain', count: filteredMunicipalityRows.length },
-    { id: 'general', label: 'Yleiset linkit', count: filteredGeneralLinks.length },
+    { id: 'regional', label: copy.regionalLinks, count: filteredRegionalLinks.length },
+    { id: 'municipalities', label: copy.byMunicipality, count: filteredMunicipalityRows.length },
+    { id: 'general', label: copy.generalLinks, count: filteredGeneralLinks.length },
   ];
 
   const syncMunicipalityTopScroll = () => {
@@ -315,26 +467,29 @@ function App() {
       <div className="mx-auto max-w-[1800px] px-4 py-8 md:px-8 md:py-12 space-y-10">
         <header className="aurora-subpage-hero space-y-5">
           <div className="flex flex-wrap items-center justify-between gap-4">
-            <a href="./index.html" className={pageNavLinkClass}>
-              Takaisin aloitussivulle
-            </a>
+            <nav aria-label={copy.pageLinks}>
+              <a href="./index.html" className={pageNavLinkClass}>
+                {copy.backHome}
+              </a>
+            </nav>
+            <PublicPageLanguageSwitcher page="linkit" language={language} />
           </div>
           <div className="space-y-3">
             <span className="aurora-kicker">
-              Ammattilaisille
+              {copy.kicker}
             </span>
-            <h1 className="font-display text-4xl font-bold tracking-tight md:text-6xl">Linkkiluettelo</h1>
+            <h1 className="font-display text-4xl font-bold tracking-tight md:text-6xl">{copy.title}</h1>
             <p className="max-w-4xl text-base font-semibold text-white/75 md:text-lg">
-              Koonti sivuston yleisistä linkeistä sekä jokaiselle kunnalle muodostuvista alueellisista palvelu-, uutis- ja RSS-linkeistä.
+              {copy.intro}
             </p>
           </div>
           <div className="grid gap-3 md:grid-cols-[minmax(260px,1fr)_auto]">
             <label className="block">
-              <span className="sr-only">Hae linkeistä</span>
+              <span className="sr-only">{copy.searchLabel}</span>
               <input
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
-                placeholder="Hae nimellä, URLilla, kategorialla tai paikkakunnalla"
+                placeholder={copy.searchPlaceholder}
                 className="aurora-input w-full rounded-xl px-4 py-3 font-bold shadow-sm"
               />
             </label>
@@ -342,51 +497,51 @@ function App() {
               <button
                 type="button"
                 onClick={() => downloadCsv(
-                  'yleiset-linkit.csv',
-                  ['Sivun nimi', 'URL', 'Kategoria', 'Ryhmä'],
-                  generalLinks.map((row) => [row.name, row.url, row.category, row.group])
+                  copy.generalCsvFilename,
+                  [copy.pageName, copy.url, copy.category, copy.group],
+                  generalLinks.map((row) => [row.name, row.url, localizeLinkValue(row.category, language), localizeLinkValue(row.group, language)])
                 )}
                 className="rounded-xl bg-[var(--theme-gold)] px-4 py-3 font-black text-[var(--theme-cta-label)] shadow-sm hover:bg-[var(--theme-gold-light)]"
               >
-                Lataa yleiset CSV
+                {copy.downloadGeneral}
               </button>
               <button
                 type="button"
                 onClick={() => downloadCsv(
-                  'alueelliset-linkit.csv',
-                  ['Paikkakunta', 'Kategoria', 'Sivun nimi', 'URL'],
-                  regionalLinks.map((row) => [row.municipality, row.category, row.name, row.url])
+                  copy.regionalCsvFilename,
+                  [copy.municipality, copy.category, copy.pageName, copy.url],
+                  regionalLinks.map((row) => [row.municipality, localizeLinkValue(row.category, language), row.name, row.url])
                 )}
                 className="rounded-xl bg-[var(--theme-primary)] px-4 py-3 font-black text-white shadow-sm hover:bg-[var(--theme-primary-mid)]"
               >
-                Lataa alueelliset CSV
+                {copy.downloadRegional}
               </button>
             </div>
           </div>
           <dl className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
             <div className="rounded-lg border border-white/15 bg-white/10 p-4">
-              <dt className="text-sm font-black uppercase tracking-wide text-white/65">Kaikki linkit</dt>
+              <dt className="text-sm font-black uppercase tracking-wide text-white/65">{copy.allLinks}</dt>
               <dd className="text-3xl font-black text-white">{allLinkCount}</dd>
-              <dd className="mt-1 text-xs font-bold text-white/55">Yleiset + alueelliset</dd>
+              <dd className="mt-1 text-xs font-bold text-white/55">{copy.allLinksSubtitle}</dd>
             </div>
             <div className="rounded-lg border border-white/15 bg-white/10 p-4">
-              <dt className="text-sm font-black uppercase tracking-wide text-white/65">Yleiset linkit</dt>
+              <dt className="text-sm font-black uppercase tracking-wide text-white/65">{copy.generalLinks}</dt>
               <dd className="text-3xl font-black text-white">{generalLinks.length}</dd>
             </div>
             <div className="rounded-lg border border-white/15 bg-white/10 p-4">
-              <dt className="text-sm font-black uppercase tracking-wide text-white/65">Alueelliset linkit</dt>
+              <dt className="text-sm font-black uppercase tracking-wide text-white/65">{copy.regionalLinks}</dt>
               <dd className="text-3xl font-black text-white">{regionalLinks.length}</dd>
             </div>
             <div className="rounded-lg border border-white/15 bg-white/10 p-4">
-              <dt className="text-sm font-black uppercase tracking-wide text-white/65">Paikkakunnat</dt>
+              <dt className="text-sm font-black uppercase tracking-wide text-white/65">{copy.municipalities}</dt>
               <dd className="text-3xl font-black text-white">{municipalityRows.length}</dd>
             </div>
             <div className="rounded-lg border border-white/15 bg-white/10 p-4">
-              <dt className="text-sm font-black uppercase tracking-wide text-white/65">Puhelinnumeroita</dt>
+              <dt className="text-sm font-black uppercase tracking-wide text-white/65">{copy.phoneNumbers}</dt>
               <dd className="text-3xl font-black text-white">{phoneLinkCount}</dd>
             </div>
           </dl>
-          <nav className="flex flex-wrap gap-2 rounded-xl border border-white/15 bg-white/10 p-2 shadow-sm" aria-label="Linkkiluettelon näkymät">
+          <nav className="flex flex-wrap gap-2 rounded-xl border border-white/15 bg-white/10 p-2 shadow-sm" aria-label={copy.views}>
             {tabs.map((tab) => {
               const isActive = activeView === tab.id;
               return (
@@ -409,21 +564,21 @@ function App() {
             href="#link-list-after"
             className="inline-flex min-h-12 items-center rounded-full bg-white/10 px-4 py-2 text-sm font-black text-white shadow-sm hover:bg-white/20 focus:outline-none focus:ring-4 focus:ring-white/30"
           >
-            Ohita valittu linkkilista
+            {copy.skipList}
           </a>
         </header>
 
         {activeView === 'general' && (
         <section id="general-links" className="space-y-4" aria-labelledby="general-links-heading">
-          <h2 id="general-links-heading" className="aurora-section-title text-2xl md:text-3xl">Yleiset linkit</h2>
+          <h2 id="general-links-heading" className="aurora-section-title text-2xl md:text-3xl">{copy.generalLinks}</h2>
           <div className="overflow-x-auto rounded-lg border border-[var(--theme-border)] bg-[var(--theme-surface)] shadow-sm">
             <table className="min-w-full divide-y divide-[var(--theme-border)] text-sm text-[var(--theme-text)]">
               <thead className="bg-[var(--theme-pale)] text-left text-xs font-black uppercase tracking-wide text-[var(--theme-muted)]">
                 <tr>
-                  <th className="px-4 py-3">Sivun nimi</th>
-                  <th className="px-4 py-3">URL</th>
-                  <th className="px-4 py-3">Kategoria</th>
-                  <th className="px-4 py-3">Ryhmä</th>
+                  <th className="px-4 py-3">{copy.pageName}</th>
+                  <th className="px-4 py-3">{copy.url}</th>
+                  <th className="px-4 py-3">{copy.category}</th>
+                  <th className="px-4 py-3">{copy.group}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[var(--theme-border)]">
@@ -433,8 +588,8 @@ function App() {
                     <td className="px-4 py-3">
                       <a className="inline-flex min-h-8 items-center break-all text-[var(--theme-primary)] hover:underline focus:outline-none focus:ring-4 focus:ring-[var(--theme-focus)]/40" href={row.url} target="_blank" rel="noopener noreferrer">{row.url}</a>
                     </td>
-                    <td className="px-4 py-3 font-bold">{row.category}</td>
-                    <td className="px-4 py-3 text-[var(--theme-muted)]">{row.group || '-'}</td>
+                    <td className="px-4 py-3 font-bold">{localizeLinkValue(row.category, language)}</td>
+                    <td className="px-4 py-3 text-[var(--theme-muted)]">{row.group ? localizeLinkValue(row.group, language) : '-'}</td>
                   </tr>
                 ))}
               </tbody>
@@ -445,25 +600,25 @@ function App() {
 
         {activeView === 'regional' && (
         <section id="regional-links" className="space-y-4" aria-labelledby="regional-links-heading">
-          <h2 id="regional-links-heading" className="aurora-section-title text-2xl md:text-3xl">Alueelliset linkit</h2>
+          <h2 id="regional-links-heading" className="aurora-section-title text-2xl md:text-3xl">{copy.regionalLinks}</h2>
           <p className="max-w-4xl text-sm font-bold text-[var(--theme-text-2)]">
-            Tässä näkymässä ovat vain paikkakuntiin liittyvät linkit: kunnan sivut, hyvinvointialueet, kirjastot, kulttuuri- ja yhdistyslinkit, alueelliset uutiset ja uutisvirrat.
+            {copy.regionalIntro}
           </p>
           <div className="overflow-x-auto rounded-lg border border-[var(--theme-border)] bg-[var(--theme-surface)] shadow-sm">
             <table className="min-w-full divide-y divide-[var(--theme-border)] text-sm text-[var(--theme-text)]">
               <thead className="bg-[var(--theme-pale)] text-left text-xs font-black uppercase tracking-wide text-[var(--theme-muted)]">
                 <tr>
-                  <th className="px-4 py-3">Paikkakunta</th>
-                  <th className="px-4 py-3">Kategoria</th>
-                  <th className="px-4 py-3">Sivun nimi</th>
-                  <th className="px-4 py-3">URL</th>
+                  <th className="px-4 py-3">{copy.municipality}</th>
+                  <th className="px-4 py-3">{copy.category}</th>
+                  <th className="px-4 py-3">{copy.pageName}</th>
+                  <th className="px-4 py-3">{copy.url}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[var(--theme-border)]">
                 {filteredRegionalLinks.map((row) => (
                   <tr key={`${row.municipality}|${row.category}|${row.name}|${row.url}`}>
                     <td className="px-4 py-3 font-black">{row.municipality}</td>
-                    <td className="px-4 py-3 font-bold">{row.category}</td>
+                    <td className="px-4 py-3 font-bold">{localizeLinkValue(row.category, language)}</td>
                     <td className="px-4 py-3">{row.name}</td>
                     <td className="px-4 py-3">
                       <a className="inline-flex min-h-8 items-center break-all text-[var(--theme-primary)] hover:underline focus:outline-none focus:ring-4 focus:ring-[var(--theme-focus)]/40" href={row.url} target="_blank" rel="noopener noreferrer">{row.url}</a>
@@ -478,7 +633,7 @@ function App() {
 
         {activeView === 'municipalities' && (
         <section id="municipality-links" className="space-y-4" aria-labelledby="municipality-links-heading">
-          <h2 id="municipality-links-heading" className="aurora-section-title text-2xl md:text-3xl">Paikkakunnat aakkosjärjestyksessä</h2>
+          <h2 id="municipality-links-heading" className="aurora-section-title text-2xl md:text-3xl">{copy.municipalitiesHeading}</h2>
           <div className="sticky top-0 z-30 rounded-lg border border-[var(--theme-border)] bg-[var(--theme-surface)] p-2 shadow-sm">
             <div
               ref={municipalityTopScrollRef}
@@ -497,18 +652,18 @@ function App() {
             <table className="min-w-full divide-y divide-[var(--theme-border)] text-sm align-top text-[var(--theme-text)]" style={{ minWidth: municipalityTableMinWidth }}>
               <thead className="bg-[var(--theme-pale)] text-left text-xs font-black uppercase tracking-wide text-[var(--theme-muted)]">
                 <tr>
-                  <th className="sticky left-0 z-20 w-44 bg-[var(--theme-pale)] px-4 py-3 shadow-[6px_0_12px_rgba(15,23,42,0.08)]">Paikkakunta</th>
-                  <th className="min-w-80 px-4 py-3">Kunnan nettisivut ({municipalityColumnCounts.municipalityWebsites})</th>
-                  <th className="min-w-80 px-4 py-3">Hyvinvointialue ({municipalityColumnCounts.wellbeingAreas})</th>
-                  <th className="min-w-80 px-4 py-3">Kirjasto ({municipalityColumnCounts.libraries})</th>
-                  <th className="min-w-80 px-4 py-3">Julkinen liikenne ({municipalityColumnCounts.publicTransport})</th>
-                  <th className="min-w-80 px-4 py-3">Palveluliikenne ({municipalityColumnCounts.serviceTransport})</th>
-                  <th className="min-w-80 px-4 py-3">Museot ({municipalityColumnCounts.museums})</th>
-                  <th className="min-w-80 px-4 py-3">Teatterit ({municipalityColumnCounts.theaters})</th>
-                  <th className="min-w-80 px-4 py-3">Potilasyhdistykset ({municipalityColumnCounts.patientAssociations})</th>
-                  <th className="min-w-80 px-4 py-3">Eläkeyhdistykset ({municipalityColumnCounts.seniorAssociations})</th>
-                  <th className="min-w-80 px-4 py-3">Alueelliset uutiset ({municipalityColumnCounts.regionalNews})</th>
-                  <th className="min-w-80 px-4 py-3">Uutisvirrat ({municipalityColumnCounts.rssFeeds})</th>
+                  <th className="sticky left-0 z-20 w-44 bg-[var(--theme-pale)] px-4 py-3 shadow-[6px_0_12px_rgba(15,23,42,0.08)]">{copy.municipality}</th>
+                  <th className="min-w-80 px-4 py-3">{copy.municipalityWebsite} ({municipalityColumnCounts.municipalityWebsites})</th>
+                  <th className="min-w-80 px-4 py-3">{copy.wellbeingArea} ({municipalityColumnCounts.wellbeingAreas})</th>
+                  <th className="min-w-80 px-4 py-3">{copy.library} ({municipalityColumnCounts.libraries})</th>
+                  <th className="min-w-80 px-4 py-3">{copy.publicTransport} ({municipalityColumnCounts.publicTransport})</th>
+                  <th className="min-w-80 px-4 py-3">{copy.serviceTransport} ({municipalityColumnCounts.serviceTransport})</th>
+                  <th className="min-w-80 px-4 py-3">{copy.museums} ({municipalityColumnCounts.museums})</th>
+                  <th className="min-w-80 px-4 py-3">{copy.theaters} ({municipalityColumnCounts.theaters})</th>
+                  <th className="min-w-80 px-4 py-3">{copy.patientAssociations} ({municipalityColumnCounts.patientAssociations})</th>
+                  <th className="min-w-80 px-4 py-3">{copy.seniorAssociations} ({municipalityColumnCounts.seniorAssociations})</th>
+                  <th className="min-w-80 px-4 py-3">{copy.regionalNews} ({municipalityColumnCounts.regionalNews})</th>
+                  <th className="min-w-80 px-4 py-3">{copy.newsFeeds} ({municipalityColumnCounts.rssFeeds})</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[var(--theme-border)]">
@@ -534,7 +689,7 @@ function App() {
         </section>
         )}
         <div id="link-list-after" tabIndex={-1} className="rounded-lg border border-[var(--theme-border)] bg-[var(--theme-surface)] p-4 text-sm font-bold text-[var(--theme-muted)]">
-          Linkkilistan loppu.
+          {copy.listEnd}
         </div>
       </div>
     </main>

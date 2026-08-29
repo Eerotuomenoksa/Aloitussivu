@@ -27,7 +27,7 @@ interface ClockProps {
 }
 
 const Clock: React.FC<ClockProps> = ({ fontSizeStep = 0, variant = 'hero', mode = 'digital', secondaryClock }) => {
-  const { locale } = useI18n();
+  const { locale, t } = useI18n();
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
@@ -102,7 +102,7 @@ const Clock: React.FC<ClockProps> = ({ fontSizeStep = 0, variant = 'hero', mode 
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex max-w-full flex-wrap items-baseline gap-x-2 gap-y-1 self-start rounded-full border border-white/15 bg-white/10 px-4 py-2 text-white backdrop-blur transition-colors hover:bg-white/20 lg:mt-2 lg:w-[7.5rem] lg:flex-col lg:items-start lg:rounded-3xl"
-                aria-label={`${secondaryClock.label} ${secondaryTimeString}. Avaa maailmankello`}
+                aria-label={`${secondaryClock.label} ${secondaryTimeString}. ${t('openWorldClock')}`}
               >
                 <span className="text-xs font-black uppercase tracking-wide text-white/80">{secondaryClock.label}</span>
                 <span className="font-display text-2xl font-semibold leading-none text-white">{secondaryTimeString}</span>
@@ -145,7 +145,7 @@ const Clock: React.FC<ClockProps> = ({ fontSizeStep = 0, variant = 'hero', mode 
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex max-w-full flex-wrap items-baseline gap-x-2 gap-y-1 self-start rounded-full border border-white/15 bg-white/10 px-4 py-2 text-white backdrop-blur transition-colors hover:bg-white/20 lg:mt-2 lg:w-[7.5rem] lg:flex-col lg:items-start lg:rounded-3xl"
-              aria-label={`${secondaryClock.label} ${secondaryTimeString}. Avaa maailmankello`}
+              aria-label={`${secondaryClock.label} ${secondaryTimeString}. ${t('openWorldClock')}`}
             >
               <span className="text-xs font-black uppercase tracking-wide text-white/80">{secondaryClock.label}</span>
               <span className="font-display text-2xl font-semibold leading-none text-white">{secondaryTimeString}</span>
@@ -188,7 +188,7 @@ const Clock: React.FC<ClockProps> = ({ fontSizeStep = 0, variant = 'hero', mode 
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex max-w-full flex-wrap items-baseline gap-x-2 gap-y-1 rounded-2xl bg-white/10 px-3 py-2 text-white ring-1 ring-white/20 transition-colors hover:bg-white/20 focus:outline-none focus:ring-4 focus:ring-white/50"
-            aria-label={`${secondaryClock.label} ${secondaryTimeString}. Avaa maailmankello`}
+            aria-label={`${secondaryClock.label} ${secondaryTimeString}. ${t('openWorldClock')}`}
           >
             <span className="text-xs font-black uppercase tracking-wide text-white/75">{secondaryClock.label}</span>
             <span className="font-display text-2xl font-bold leading-none text-white">{secondaryTimeString}</span>
@@ -227,7 +227,7 @@ const Clock: React.FC<ClockProps> = ({ fontSizeStep = 0, variant = 'hero', mode 
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex flex-wrap items-baseline gap-x-3 gap-y-1 rounded-2xl bg-white/80 px-5 py-3 text-slate-900 shadow-sm ring-1 ring-slate-200 transition-colors hover:bg-white focus:outline-none focus:ring-4 focus:ring-indigo-300 dark:bg-slate-800 dark:text-white dark:ring-slate-700 dark:hover:bg-slate-700"
-          aria-label={`${secondaryClock.label} ${secondaryTimeString}. Avaa maailmankello`}
+          aria-label={`${secondaryClock.label} ${secondaryTimeString}. ${t('openWorldClock')}`}
         >
           <span className="text-sm md:text-lg font-black uppercase tracking-wide text-slate-500 dark:text-slate-300">{secondaryClock.label}</span>
           <span className="text-3xl md:text-5xl font-black leading-none">{secondaryTimeString}</span>

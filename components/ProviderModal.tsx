@@ -5,7 +5,7 @@ import { filterVisibleProviders, useLinkVisibilityVersion } from '../linkVisibil
 import { Shortcut, Provider, Favorite, LinkReportDraft, LocalityInfo } from '../types';
 import { useI18n } from '../i18n';
 import NearbyGuidancePlaces from './NearbyGuidancePlaces';
-import { getRegionalProviderScopeInfo, resolveRegionalContext } from '../localServices';
+import { findMunicipality, getLocalizedMunicipalityName, getRegionalProviderScopeInfo, resolveRegionalContext } from '../localServices';
 import { useModalFocusTrap } from '../hooks/useModalFocusTrap';
 
 interface ProviderModalProps {
@@ -24,7 +24,11 @@ const getPhoneHref = (provider: Provider) => {
   return `tel:${provider.phone.replace(/[^\d+]/g, '')}`;
 };
 
-const formatScopeLabel = (scopeInfo: ReturnType<typeof getRegionalProviderScopeInfo>, t: ReturnType<typeof useI18n>['t']) => {
+const formatScopeLabel = (
+  scopeInfo: ReturnType<typeof getRegionalProviderScopeInfo>,
+  t: ReturnType<typeof useI18n>['t'],
+  localizeName: (name: string) => string,
+) => {
   if (!scopeInfo) return '';
   const label = scopeInfo.scope === 'municipality'
     ? t('regionalScopeOwnMunicipality')
@@ -35,11 +39,11 @@ const formatScopeLabel = (scopeInfo: ReturnType<typeof getRegionalProviderScopeI
         : scopeInfo.scope === 'neighbor'
           ? t('regionalScopeNeighbor')
           : t('regionalScopeNationalFallback');
-  return scopeInfo.detail ? `${label}: ${scopeInfo.detail}` : label;
+  return scopeInfo.detail ? `${label}: ${localizeName(scopeInfo.detail)}` : label;
 };
 
 const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSizeStep = 0, favorites, onToggleFavorite, onReportLink, locality = null }) => {
-  const { t, categoryName } = useI18n();
+  const { language, t, categoryName } = useI18n();
   useLinkVisibilityVersion();
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
@@ -117,9 +121,12 @@ const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSi
 
   if (visibleProviders.length === 0) return null;
   const regionalContext = resolveRegionalContext('', locality);
+  const localizeName = (name: string) => (
+    getLocalizedMunicipalityName(findMunicipality(name), language) || categoryName(name)
+  );
 
   const groupedProviders = visibleProviders.reduce((acc, provider) => {
-    const key = categoryName(provider.group || t('services'));
+    const key = localizeName(provider.group || t('services'));
     if (!acc[key]) acc[key] = [];
     acc[key].push(provider);
     return acc;
@@ -171,7 +178,7 @@ const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSi
                 {groupedProviders[group].map((provider, idx) => {
                   const isFav = favorites.some(f => f.url === provider.url);
                   const phoneHref = getPhoneHref(provider);
-                  const scopeLabel = regionalContext ? formatScopeLabel(getRegionalProviderScopeInfo(provider, regionalContext), t) : '';
+                  const scopeLabel = regionalContext ? formatScopeLabel(getRegionalProviderScopeInfo(provider, regionalContext), t, localizeName) : '';
                   const fav: Favorite = {
                     name: provider.name,
                     url: provider.url,
@@ -200,18 +207,18 @@ const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSi
                             target="_blank"
                             rel="noopener noreferrer"
                             className="inline-flex min-h-14 items-center justify-center gap-3 rounded-full bg-[var(--theme-primary)] px-5 py-3 text-base font-black text-white shadow-sm transition-all hover:bg-[var(--theme-primary-mid)] focus-visible:ring-4 focus-visible:ring-[var(--theme-focus)]/40 active:scale-95 md:text-lg"
-                            title={`Avaa verkkosivu: ${provider.name}`}
-                            aria-label={`Avaa verkkosivu: ${provider.name}`}
+                            title={`${t('goToSite')}: ${provider.name}`}
+                            aria-label={`${t('goToSite')}: ${provider.name}`}
                           >
                             <span aria-hidden="true">↗</span>
-                            <span>Verkkosivu</span>
+                            <span>{t('websites')}</span>
                           </a>
                           {provider.phone && phoneHref && (
                             <a
                               href={phoneHref}
                               className="inline-flex min-h-16 items-center justify-center gap-3 rounded-full bg-[var(--theme-gold)] px-5 py-3 text-xl font-black text-[var(--theme-cta-label)] shadow-sm transition-all hover:bg-[var(--theme-gold-light)] focus-visible:ring-4 focus-visible:ring-[var(--theme-focus)]/40 active:scale-95 md:text-2xl"
-                              title={`Soita: ${provider.name}`}
-                              aria-label={`Soita: ${provider.name}, ${provider.phone}`}
+                              title={`${t('call')}: ${provider.name}`}
+                              aria-label={`${t('call')}: ${provider.name}, ${provider.phone}`}
                             >
                               <span aria-hidden="true">☎</span>
                               <span>{provider.phone}</span>
@@ -227,7 +234,7 @@ const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSi
                             category: shortcut.name,
                             source: 'ProviderModal',
                           })}
-                          title={`Ilmoita ongelma linkissä: ${provider.name}`}
+                          title={`${t('reportLink')}: ${provider.name}`}
                           className="absolute bottom-3 right-3 flex h-11 w-11 items-center justify-center rounded-full bg-slate-900/80 text-xl text-white shadow-md transition-all hover:bg-slate-900 focus:opacity-100 focus:outline-none focus:ring-4 focus:ring-blue-300 sm:h-10 sm:w-10 sm:opacity-0 sm:group-hover/card:opacity-100"
                           aria-label={`${t('reportLink')}: ${provider.name}`}
                         >
@@ -236,7 +243,7 @@ const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSi
                       )}
                       <button
                         onClick={() => onToggleFavorite(fav)}
-                        title={isFav ? `Poista suosikeista: ${provider.name}` : `Lisää suosikkeihin: ${provider.name}`}
+                        title={isFav ? `${t('removeFavorite')}: ${provider.name}` : `${t('addFavorite')}: ${provider.name}`}
                         className={`absolute top-3 right-3 flex items-center justify-center rounded-full transition-all focus:ring-4 focus:ring-yellow-300 focus:outline-none
                           ${isFav
                             ? 'bg-yellow-400 hover:bg-yellow-500 shadow-md'

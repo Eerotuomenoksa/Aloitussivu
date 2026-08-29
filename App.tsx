@@ -8,14 +8,16 @@ import InterestThemeSelector from './components/InterestThemeSelector';
 import SearchBar from './components/SearchBar';
 import FloatingControls from './components/FloatingControls';
 import FavoriteLinks from './components/FavoriteLinks';
-import TimeAwareLogo, { LogoPhase, getLogoPhase } from './components/TimeAwareLogo';
+import { LogoPhase, getLogoPhase } from './components/TimeAwareLogo';
 import { isLinkVisible, useLinkVisibilityVersion } from './linkVisibility';
 import { Shortcut, Favorite, LocalityInfo, LinkReportDraft } from './types';
 import { mergeApprovedLinksIntoShortcuts } from './approvedLinks';
 import { useApprovedLinkSuggestionsVersion } from './approvedLinks';
 import { LanguageCode, LanguageProvider, LANGUAGES, useI18n } from './i18n';
+import { getLocalizedPublicPageHref } from './publicPageLocalization';
 import { normalizeInterestThemeAnchors } from './components/shortcutGroups';
 import { defaultUiVisibility, UiVisibilityKey, UiVisibilityOption, UiVisibilityState } from './uiPreferences';
+import { installUsageTracking, trackGuideStep } from './usageTracking';
 // Valkoinen logo näytetään tummassa teemassa, värillinen vaaleassa.
 import seniorSurfLogoTummaTeema from './assets/seniorsurf-logo-tumma-teema.png';
 import seniorSurfLogoVaaleaTeema from './assets/seniorsurf-logo-vaalea-teema.png';
@@ -73,11 +75,6 @@ const QuickLinksFallback = () => {
   return <LoadingMessage>{t('serviceLinksLoading')}</LoadingMessage>;
 };
 
-type IdleCapableWindow = Window & {
-  requestIdleCallback?: (callback: () => void, options?: { timeout?: number }) => number;
-  cancelIdleCallback?: (handle: number) => void;
-};
-
 const MIN_UI_SCALE = 50;
 const MAX_UI_SCALE = 200;
 const DEFAULT_UI_SCALE = 100;
@@ -118,16 +115,16 @@ const THEMES: { id: ColorTheme; labelKey: 'themeGreen' | 'themeViolet' | 'themeB
 ];
 
 const SECONDARY_TIME_ZONE_OPTIONS = [
-  { value: 'America/Los_Angeles', label: 'Los Angeles' },
-  { value: 'America/New_York', label: 'New York' },
-  { value: 'America/Toronto', label: 'Ottawa' },
-  { value: 'Atlantic/Canary', label: 'Kanariansaaret' },
-  { value: 'Europe/London', label: 'Iso-Britannia' },
-  { value: 'Europe/Stockholm', label: 'Ruotsi' },
-  { value: 'Europe/Kyiv', label: 'Ukraina' },
-  { value: 'Asia/Dubai', label: 'Dubai' },
-  { value: 'Asia/Bangkok', label: 'Thaimaa' },
-  { value: 'Australia/Sydney', label: 'Sydney' },
+  { value: 'America/Los_Angeles', labels: { fi: 'Los Angeles', sv: 'Los Angeles', en: 'Los Angeles' } },
+  { value: 'America/New_York', labels: { fi: 'New York', sv: 'New York', en: 'New York' } },
+  { value: 'America/Toronto', labels: { fi: 'Ottawa', sv: 'Ottawa', en: 'Ottawa' } },
+  { value: 'Atlantic/Canary', labels: { fi: 'Kanariansaaret', sv: 'Kanarieöarna', en: 'Canary Islands' } },
+  { value: 'Europe/London', labels: { fi: 'Iso-Britannia', sv: 'Storbritannien', en: 'United Kingdom' } },
+  { value: 'Europe/Stockholm', labels: { fi: 'Ruotsi', sv: 'Sverige', en: 'Sweden' } },
+  { value: 'Europe/Kyiv', labels: { fi: 'Ukraina', sv: 'Ukraina', en: 'Ukraine' } },
+  { value: 'Asia/Dubai', labels: { fi: 'Dubai', sv: 'Dubai', en: 'Dubai' } },
+  { value: 'Asia/Bangkok', labels: { fi: 'Thaimaa', sv: 'Thailand', en: 'Thailand' } },
+  { value: 'Australia/Sydney', labels: { fi: 'Sydney', sv: 'Sydney', en: 'Sydney' } },
 ];
 
 const getUtcOffsetLabel = (timeZone: string, date = new Date()) => {
@@ -139,11 +136,14 @@ const getUtcOffsetLabel = (timeZone: string, date = new Date()) => {
   return offset.replace('GMT', 'UTC');
 };
 
-const formatTimeZoneLabel = (label: string, timeZone: string) => {
+const formatTimeZoneLabel = (label: string, timeZone: string, template: string) => {
   const offset = getUtcOffsetLabel(timeZone);
   const winterOffset = getUtcOffsetLabel(timeZone, new Date('2026-01-15T12:00:00Z'));
   if (!offset) return label;
-  return `${label} (${offset} nyt, talvella ${winterOffset || offset})`;
+  return template
+    .replace('{label}', label)
+    .replace('{current}', offset)
+    .replace('{winter}', winterOffset || offset);
 };
 
 const normalizeFavoriteUsageCount = (value: unknown) => (
@@ -214,12 +214,13 @@ interface LanguageSelectorProps {
 }
 
 const LanguageSelector: React.FC<LanguageSelectorProps> = ({ language, setLanguage, label }) => {
+  const { t } = useI18n();
   const activeLanguage = LANGUAGES.find((item) => item.code === language) ?? LANGUAGES[0];
 
   return (
     <label
       className="relative inline-flex h-12 min-w-[4.75rem] items-center rounded-full border border-white/20 bg-white/10 text-white shadow-sm focus-within:ring-2 focus-within:ring-[var(--theme-focus)] sm:min-w-[9.5rem] md:h-12"
-      title="Vaihda sivun kieli"
+      title={t('changeLanguage')}
     >
       <span className="sr-only">{label}</span>
       <span className="pointer-events-none flex items-center gap-2 pl-4 pr-10 text-white">
@@ -247,6 +248,7 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({ language, setLangua
 
 const AppContent: React.FC = () => {
   const { language, setLanguage, t } = useI18n();
+  const timeZoneLanguage = language === 'sv' || language === 'en' ? language : 'fi';
   const settingsButtonRef = React.useRef<HTMLButtonElement>(null);
   const settingsPanelRef = React.useRef<HTMLDivElement>(null);
   const [selectedCategory, setSelectedCategory] = useState<Shortcut | null>(null);
@@ -473,34 +475,7 @@ const AppContent: React.FC = () => {
   useLinkVisibilityVersion();
   useApprovedLinkSuggestionsVersion();
   useEffect(() => {
-    let cancelled = false;
-    let cleanup = () => {};
-    let idleHandle: number | undefined;
-    const win = window as IdleCapableWindow;
-
-    const startUsageTracking = () => {
-      void import('./usageTracking').then(({ installUsageTracking }) => {
-        if (cancelled) return;
-        cleanup = installUsageTracking('etusivu');
-      });
-    };
-
-    const timer = window.setTimeout(() => {
-      if (win.requestIdleCallback) {
-        idleHandle = win.requestIdleCallback(startUsageTracking, { timeout: 3000 });
-      } else {
-        startUsageTracking();
-      }
-    }, 1500);
-
-    return () => {
-      cancelled = true;
-      window.clearTimeout(timer);
-      if (idleHandle !== undefined) {
-        win.cancelIdleCallback?.(idleHandle);
-      }
-      cleanup();
-    };
+    return installUsageTracking('etusivu');
   }, []);
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -604,25 +579,31 @@ const AppContent: React.FC = () => {
               <div className="flex w-full flex-wrap items-center gap-2 sm:w-auto sm:justify-end">
                 <button
                   type="button"
-                  onClick={() => setIsFeedbackOpen(true)}
-                  title="Anna palautetta sivusta"
-                  className="inline-flex min-h-[2.75rem] items-center rounded-full border border-white/[.16] bg-white/[.09] px-[1.1rem] py-[.55rem] text-[.95rem] font-bold text-white/85 transition-all hover:bg-white/[.18] hover:text-white focus-visible:ring-2 focus-visible:ring-[var(--theme-focus)]"
-                >
-                  Palaute
-                </button>
-                <LanguageSelector language={language} setLanguage={setLanguage} label={t('language')} />
-                <button
-                  onClick={() => setIsHomepageOpen(true)}
-                  title="Avaa ohje aloitussivuksi asettamiseen"
+                  onClick={() => {
+                    trackGuideStep('opened');
+                    setIsHomepageOpen(true);
+                  }}
+                  title={t('setHomepageAria')}
                   className="inline-flex min-h-[2.75rem] items-center gap-1.5 rounded-full border border-white/20 bg-[var(--theme-gold)] px-[1.1rem] py-[.55rem] text-[.95rem] font-extrabold text-[var(--theme-cta-label)] transition-all hover:bg-[var(--theme-gold-light)] active:scale-[.97] focus-visible:ring-2 focus-visible:ring-[var(--theme-focus)]"
-                  aria-label={t('openHomepageHelp')}
+                  aria-label={t('setHomepageAria')}
                 >
-                  🏠 {t('help')}
+                  <span aria-hidden="true">🏠</span>
+                  <span className="hidden sm:inline">{t('setHomepageButton')}</span>
+                  <span className="sm:hidden">{t('setHomepageButtonShort')}</span>
                 </button>
                 <button
                   type="button"
+                  onClick={() => setIsFeedbackOpen(true)}
+                  title={t('feedbackPageTitle')}
+                  className="inline-flex min-h-[2.75rem] items-center rounded-full border border-white/[.16] bg-white/[.09] px-[1.1rem] py-[.55rem] text-[.95rem] font-bold text-white/85 transition-all hover:bg-white/[.18] hover:text-white focus-visible:ring-2 focus-visible:ring-[var(--theme-focus)]"
+                >
+                  {t('feedbackButton')}
+                </button>
+                <LanguageSelector language={language} setLanguage={setLanguage} label={t('language')} />
+                <button
+                  type="button"
                   onClick={() => setIsInfoOpen(true)}
-                  title="Katso mitä Seniorin aloitussivu sisältää ja miten sitä ylläpidetään"
+                  title={t('infoButtonTitle')}
                   className="inline-flex min-h-[2.75rem] items-center gap-1.5 rounded-full border border-white/[.16] bg-white/[.09] px-[1.1rem] py-[.55rem] text-[.95rem] font-bold text-white/85 transition-all hover:bg-white/[.18] hover:text-white focus-visible:ring-2 focus-visible:ring-[var(--theme-focus)]"
                 >
                   ℹ️ {t('info')}
@@ -632,7 +613,7 @@ const AppContent: React.FC = () => {
                   type="button"
                   onClick={() => setIsSettingsOpen(prev => !prev)}
                   data-tour="settings"
-                  title="Avaa asetukset: värit, tekstikoko ja etusivun osiot"
+                  title={t('openSettings')}
                   className="inline-flex min-h-[2.75rem] items-center gap-1.5 rounded-full border border-white/[.16] bg-white/[.09] px-[1.1rem] py-[.55rem] text-[.95rem] font-bold text-white/85 transition-all hover:bg-white/[.18] hover:text-white focus-visible:ring-2 focus-visible:ring-[var(--theme-focus)]"
                   aria-label={t('openSettings')}
                   aria-expanded={isSettingsOpen}
@@ -654,7 +635,7 @@ const AppContent: React.FC = () => {
                         variant="aurora"
                         mode={clockMode}
                         secondaryClock={uiVisibility.secondaryClock ? {
-                          label: selectedSecondaryTimeZone.label,
+                          label: selectedSecondaryTimeZone.labels[timeZoneLanguage],
                           timeZone: selectedSecondaryTimeZone.value,
                         } : undefined}
                       />
@@ -743,7 +724,7 @@ const AppContent: React.FC = () => {
             <button
                 type="button"
                 onClick={toggleDarkMode}
-                title={isDarkMode ? 'Vaihda vaaleaan teemaan' : 'Vaihda tummaan teemaan'}
+                title={isDarkMode ? t('lightTheme') : t('darkTheme')}
                 className="mb-4 flex w-full items-center justify-between gap-4 rounded-2xl border-2 border-[var(--theme-border)] px-4 py-3 text-left font-bold text-[var(--theme-text)] hover:bg-[var(--theme-pale)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--theme-focus)]/40"
                 aria-label={isDarkMode ? t('lightTheme') : t('darkTheme')}
             >
@@ -780,7 +761,7 @@ const AppContent: React.FC = () => {
                   type="button"
                   onClick={decreaseFont}
                   disabled={uiScale <= MIN_UI_SCALE}
-                  title="Pienennä sivun tekstiä ja painikkeita"
+                  title={t('decreaseText')}
                   className="flex h-14 w-14 items-center justify-center rounded-full bg-[var(--theme-primary)] text-lg font-black text-[var(--theme-primary-label)] shadow-md transition-all hover:bg-[var(--theme-primary-mid)] focus-visible:ring-4 focus-visible:ring-[var(--theme-focus)]/40 active:scale-95 disabled:opacity-40 md:h-12 md:w-12"
                   aria-label={`${t('decreaseText')} (${uiScale}%)`}
                 >
@@ -793,7 +774,7 @@ const AppContent: React.FC = () => {
                   type="button"
                   onClick={increaseFont}
                   disabled={uiScale >= MAX_UI_SCALE}
-                  title="Suurenna sivun tekstiä ja painikkeita"
+                  title={t('increaseText')}
                   className="flex h-14 w-14 items-center justify-center rounded-full bg-[var(--theme-primary)] text-lg font-black text-[var(--theme-primary-label)] shadow-md transition-all hover:bg-[var(--theme-primary-mid)] focus-visible:ring-4 focus-visible:ring-[var(--theme-focus)]/40 active:scale-95 disabled:opacity-40 md:h-12 md:w-12"
                   aria-label={`${t('increaseText')} (${uiScale}%)`}
                 >
@@ -803,7 +784,7 @@ const AppContent: React.FC = () => {
                   <button
                     type="button"
                     onClick={resetFont}
-                    title="Palauta tekstikoko normaaliksi"
+                    title={t('resetText')}
                     className="rounded-full bg-[var(--theme-gold)] px-4 py-3 text-sm font-black text-[var(--theme-cta-label)] shadow-md transition-all hover:bg-[var(--theme-gold-light)] focus-visible:ring-4 focus-visible:ring-[var(--theme-focus)]/40 active:scale-95"
                     aria-label={t('resetText')}
                   >
@@ -829,7 +810,7 @@ const AppContent: React.FC = () => {
                     type="checkbox"
                     checked={uiVisibility[item.key]}
                     onChange={(event) => updateVisibility(item.key, event.target.checked)}
-                    title={`${item.label}: näytä tai piilota tämä osio etusivulta`}
+                    title={`${item.label}: ${t('toggleSectionVisibility')}`}
                     className="h-14 w-14 shrink-0 accent-[var(--theme-primary)] md:h-5 md:w-5"
                     aria-label={item.label}
                   />
@@ -847,7 +828,7 @@ const AppContent: React.FC = () => {
                 >
                   {SECONDARY_TIME_ZONE_OPTIONS.map((option) => (
                     <option key={option.value} value={option.value}>
-                      {formatTimeZoneLabel(option.label, option.value)}
+                      {formatTimeZoneLabel(option.labels[timeZoneLanguage], option.value, t('timeZoneOffsetLabel'))}
                     </option>
                   ))}
                 </select>
@@ -937,7 +918,7 @@ const AppContent: React.FC = () => {
                   href="https://vtkl.fi/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  title="Avaa Vanhustyön keskusliiton verkkosivut"
+                  title={t('openVtklSite')}
                   className="font-normal text-[var(--theme-footer-text)] underline decoration-[var(--theme-footer-muted)] underline-offset-4 hover:decoration-[var(--theme-footer-text)]"
                 >
                   {t('footerVtklLink')}
@@ -946,7 +927,7 @@ const AppContent: React.FC = () => {
                   href="https://seniorsurf.fi/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  title="Avaa SeniorSurfin verkkosivut"
+                  title={t('openSeniorSurfSite')}
                   className="font-normal text-[var(--theme-footer-text)] underline decoration-[var(--theme-footer-muted)] underline-offset-4 hover:decoration-[var(--theme-footer-text)]"
                 >
                   {t('footerSeniorSurfLink')}
@@ -976,7 +957,7 @@ const AppContent: React.FC = () => {
                   onClick={() => setIsFeedbackOpen(true)}
                   className="mt-5 inline-flex items-center gap-2 rounded-full bg-[var(--theme-primary)] px-5 py-2.5 text-sm font-black text-[var(--theme-primary-label)] shadow-[0_3px_0_rgba(0,0,0,.28)] hover:bg-[var(--theme-primary-mid)] focus-visible:ring-2 focus-visible:ring-[var(--theme-focus)] active:translate-y-[2px] active:shadow-none"
                 >
-                  Anna palautetta
+                  {t('feedbackPageTitle')}
                 </button>
                 <button
                   type="button"
@@ -1000,9 +981,9 @@ const AppContent: React.FC = () => {
                 {t('footerNavSite')}
               </p>
               {[
-                { href: './linkit.html', label: t('linkList') },
-                { href: './tietosuoja.html', label: t('privacyNotice') },
-                { href: './saavutettavuus.html', label: t('accessibilityStatement') },
+                { href: getLocalizedPublicPageHref('linkit', language), label: t('linkList') },
+                { href: getLocalizedPublicPageHref('tietosuoja', language), label: t('privacyNotice') },
+                { href: getLocalizedPublicPageHref('saavutettavuus', language), label: t('accessibilityStatement') },
               ].map((link) => (
                 <a
                   key={link.href}
@@ -1045,7 +1026,7 @@ const AppContent: React.FC = () => {
               isOpen={isInfoOpen}
               onClose={() => setIsInfoOpen(false)}
               fontSizeStep={fontSizeStep}
-              showOnboardingOffer={!hasSeenOnboarding}
+              showOnboardingOffer
               onStartOnboarding={startOnboarding}
             />
           )}
@@ -1054,7 +1035,6 @@ const AppContent: React.FC = () => {
               isOpen={isHomepageOpen}
               onClose={() => setIsHomepageOpen(false)}
               fontSizeStep={fontSizeStep}
-              onStartOnboarding={startOnboarding}
             />
           )}
           {isOnboardingOpen && (

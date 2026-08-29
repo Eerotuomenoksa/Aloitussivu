@@ -7,6 +7,7 @@ import { LOCAL_LINK_STATS } from '../localStats';
 import { filterVisibleShortcuts, useLinkVisibilityVersion } from '../linkVisibility';
 import { useI18n } from '../i18n';
 import { useModalFocusTrap } from '../hooks/useModalFocusTrap';
+import { getLocalizedPublicPageHref } from '../publicPageLocalization';
 
 interface InfoModalProps {
   isOpen: boolean;
@@ -26,8 +27,78 @@ const TESTER_FIRST_NAMES = [
   'Tapani',
 ] as const;
 
+const infoPageTranslations = {
+  fi: {
+    scopeTitle: 'Sivuston laajuus',
+    scopeBody: 'Sivustolta löytyy yhteensä {count} näkyvää linkkiä.',
+    localLinksTitle: 'Paikalliset linkit',
+    localLinksBody: 'Paikalliset sisällöt näkyvät oman kunnan perusteella. Osa linkeistä on kunta- tai aluekohtaisia palveluita, osa taas yleisiä kategorioita, joiden näkyvyyttä tarkennetaan paikkakunnan mukaan.',
+    allCategories: 'Kaikki {count} kategoriaa',
+    localItems: [
+      ['Kunnat', 'kunnan omat verkkosivut'],
+      ['Kieliversiot', 'kuntien ruotsi-, englanti- ja muut kieliversiot'],
+      ['Hyvinvointialueet', 'alueen sote-sivut'],
+      ['Kunnan palvelusivut', 'esim. palvelut ja asiointi'],
+      ['Paikallisliikenne', 'joukkoliikenne ja reittioppaat'],
+      ['Palveluliikenne', 'kuntien palvelu-, asiointi- ja kutsuliikenne'],
+      ['Paikalliset kirjastot', 'kirjastojen omat palvelut'],
+      ['Lehdet', 'suomalaiset paikallislehdet'],
+      ['Uutisvirrat', 'paikallislehtien RSS-syötteet'],
+      ['Ohjattu liikunta', 'kuntien liikuntaryhmät ja soveltava liikunta'],
+      ['Senioripalvelut', 'kuntien omat seniori- ja ikäihmisten sivut'],
+      ['Urheiluseurat', 'paikkakunnan omat seurat'],
+      ['Kela-taksien puhelinnumerot', 'alueelliset tilausnumerot'],
+    ],
+  },
+  sv: {
+    scopeTitle: 'Webbplatsens omfattning',
+    scopeBody: 'Webbplatsen innehåller totalt {count} synliga länkar.',
+    localLinksTitle: 'Lokala länkar',
+    localLinksBody: 'Lokalt innehåll visas utifrån den egna kommunen. Vissa länkar är kommun- eller områdesspecifika tjänster, medan andra är allmänna kategorier vars synlighet anpassas efter orten.',
+    allCategories: 'Alla {count} kategorier',
+    localItems: [
+      ['Kommuner', 'kommunernas egna webbplatser'],
+      ['Språkversioner', 'kommunernas svenska, engelska och andra språkversioner'],
+      ['Välfärdsområden', 'områdets social- och hälsovårdssidor'],
+      ['Kommunala servicesidor', 't.ex. tjänster och ärenden'],
+      ['Lokaltrafik', 'kollektivtrafik och ruttguider'],
+      ['Servicetrafik', 'kommunernas service-, ärende- och anropsstyrda trafik'],
+      ['Lokala bibliotek', 'bibliotekens egna tjänster'],
+      ['Tidningar', 'finländska lokaltidningar'],
+      ['Nyhetsflöden', 'lokaltidningarnas RSS-flöden'],
+      ['Ledd motion', 'kommunernas motionsgrupper och anpassad motion'],
+      ['Seniortjänster', 'kommunernas egna sidor för seniorer och äldre'],
+      ['Idrottsföreningar', 'lokala föreningar'],
+      ['Telefonnummer till FPA-taxi', 'regionala beställningsnummer'],
+    ],
+  },
+  en: {
+    scopeTitle: 'Website scope',
+    scopeBody: 'The website contains a total of {count} visible links.',
+    localLinksTitle: 'Local links',
+    localLinksBody: 'Local content is shown based on the user’s municipality. Some links are municipal or regional services, while others are general categories whose visibility is refined according to location.',
+    allCategories: 'All {count} categories',
+    localItems: [
+      ['Municipalities', 'municipalities’ own websites'],
+      ['Language versions', 'municipal Swedish, English and other language versions'],
+      ['Wellbeing services counties', 'regional health and social services pages'],
+      ['Municipal service pages', 'for example services and official matters'],
+      ['Local public transport', 'public transport and route planners'],
+      ['Service transport', 'municipal service, errand and on-demand transport'],
+      ['Local libraries', 'libraries’ own services'],
+      ['Newspapers', 'Finnish local newspapers'],
+      ['News feeds', 'local newspaper RSS feeds'],
+      ['Guided exercise', 'municipal exercise groups and adapted exercise'],
+      ['Services for older people', 'municipal pages for senior and older residents'],
+      ['Sports clubs', 'local clubs'],
+      ['Kela taxi phone numbers', 'regional booking numbers'],
+    ],
+  },
+} as const;
+
 const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, fontSizeStep = 0, showOnboardingOffer = false, onStartOnboarding }) => {
-  const { t } = useI18n();
+  const { language, t, categoryName } = useI18n();
+  const copy = infoPageTranslations[language === 'sv' || language === 'en' ? language : 'fi'];
   useLinkVisibilityVersion();
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
@@ -112,10 +183,12 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, fontSizeStep = 0
           <section className="aurora-soft-panel space-y-6 p-8">
             <div>
               <h3 className="mb-2 flex items-center gap-2 text-xl font-bold text-[var(--theme-primary)]">
-                <span>📊</span> Sivuston laajuus
+                <span>📊</span> {copy.scopeTitle}
               </h3>
               <p className="text-2xl font-medium leading-tight text-[var(--theme-text)]">
-                Sivustolta löytyy yhteensä <span className={`inline-block px-2 font-black text-[var(--theme-primary)] transition-all duration-300 ${statClasses[fontSizeStep]}`}>{totalLinks}</span> näkyvää linkkiä.
+                {copy.scopeBody.split('{count}')[0]}
+                <span className={`inline-block px-2 font-black text-[var(--theme-primary)] transition-all duration-300 ${statClasses[fontSizeStep]}`}>{totalLinks}</span>
+                {copy.scopeBody.split('{count}')[1]}
               </p>
             </div>
           </section>
@@ -151,7 +224,7 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, fontSizeStep = 0
             </p>
             <div className="flex flex-wrap gap-3">
               <a
-                href="./tietosuoja.html"
+                href={getLocalizedPublicPageHref('tietosuoja', language)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="aurora-nav-link px-5 py-3 text-base"
@@ -159,7 +232,7 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, fontSizeStep = 0
                 {t('privacyNotice')}
               </a>
               <a
-                href="./saavutettavuus.html"
+                href={getLocalizedPublicPageHref('saavutettavuus', language)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="aurora-nav-link px-5 py-3 text-base"
@@ -171,24 +244,28 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, fontSizeStep = 0
 
           <section className="space-y-6">
             <h3 className="aurora-section-title border-b-2 border-[var(--theme-border)] pb-2 text-2xl">
-              Paikalliset linkit
+              {copy.localLinksTitle}
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              {[
-                { name: 'Kunnat', count: LOCAL_LINK_STATS.municipalities, note: 'kunnan omat verkkosivut' },
-                { name: 'Kieliversiot', count: LOCAL_LINK_STATS.municipalityLanguageVersions, note: 'kuntien ruotsi-, englanti- ja muut kieliversiot' },
-                { name: 'Hyvinvointialueet', count: LOCAL_LINK_STATS.wellbeingAreas, note: 'alueen sote-sivut' },
-                { name: 'Kunnan palvelusivut', count: LOCAL_LINK_STATS.municipalityServicePages, note: 'esim. palvelut ja asiointi' },
-                { name: 'Paikallisliikenne', count: LOCAL_LINK_STATS.localTransport, note: 'joukkoliikenne ja reittioppaat' },
-                { name: 'Palveluliikenne', count: LOCAL_LINK_STATS.localServiceTransport, note: 'kuntien palvelu-, asiointi- ja kutsuliikenne' },
-                { name: 'Paikalliset kirjastot', count: LOCAL_LINK_STATS.localLibraries, note: 'kirjastojen omat palvelut' },
-                { name: 'Lehdet', count: LOCAL_LINK_STATS.localNewspapers, note: 'suomalaiset paikallislehdet' },
-                { name: 'Uutisvirrat', count: LOCAL_LINK_STATS.localNewsFeeds, note: 'paikallislehtien RSS-syötteet' },
-                { name: 'Ohjattu liikunta', count: LOCAL_LINK_STATS.localExerciseLinks, note: 'kuntien liikuntaryhmät ja soveltava liikunta' },
-                { name: 'Senioripalvelut', count: LOCAL_LINK_STATS.localSeniorLinks, note: 'kuntien omat seniori- ja ikäihmisten sivut' },
-                { name: 'Urheiluseurat', count: LOCAL_LINK_STATS.localSportsClubs, note: 'paikkakunnan omat seurat' },
-                { name: 'Kela-taksien puhelinnumerot', count: LOCAL_LINK_STATS.localKelaTaxiPhones, note: 'alueelliset tilausnumerot' },
-              ].map((item) => (
+              {copy.localItems.map(([name, note], index) => ({
+                name,
+                note,
+                count: [
+                  LOCAL_LINK_STATS.municipalities,
+                  LOCAL_LINK_STATS.municipalityLanguageVersions,
+                  LOCAL_LINK_STATS.wellbeingAreas,
+                  LOCAL_LINK_STATS.municipalityServicePages,
+                  LOCAL_LINK_STATS.localTransport,
+                  LOCAL_LINK_STATS.localServiceTransport,
+                  LOCAL_LINK_STATS.localLibraries,
+                  LOCAL_LINK_STATS.localNewspapers,
+                  LOCAL_LINK_STATS.localNewsFeeds,
+                  LOCAL_LINK_STATS.localExerciseLinks,
+                  LOCAL_LINK_STATS.localSeniorLinks,
+                  LOCAL_LINK_STATS.localSportsClubs,
+                  LOCAL_LINK_STATS.localKelaTaxiPhones,
+                ][index],
+              })).map((item) => (
                 <div key={item.name} className="aurora-card flex items-center justify-between p-4">
                   <div className="space-y-1">
                     <span className="block text-lg font-bold text-[var(--theme-text)]">{item.name}</span>
@@ -201,18 +278,20 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, fontSizeStep = 0
               ))}
             </div>
             <p className="text-sm font-bold text-[var(--theme-text-3)]">
-              Paikalliset sisällöt näkyvät oman kunnan perusteella. Osa linkeistä on kunta- tai aluekohtaisia palveluita, osa taas yleisiä kategorioita, joiden näkyvyyttä tarkennetaan paikkakunnan mukaan.
+              {copy.localLinksBody}
             </p>
           </section>
 
           <section className="space-y-6">
-            <h3 className="aurora-section-title border-b-2 border-[var(--theme-border)] pb-2 text-2xl">Kaikki {categoryStats.length} kategoriaa</h3>
+            <h3 className="aurora-section-title border-b-2 border-[var(--theme-border)] pb-2 text-2xl">
+              {copy.allCategories.replace('{count}', String(categoryStats.length))}
+            </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {categoryStats.sort((a,b) => a.name.localeCompare(b.name)).map((stat, idx) => (
                 <div key={idx} className="aurora-card flex items-center justify-between p-4">
                   <div className="flex items-center gap-3">
                     <span className="text-2xl">{stat.icon}</span>
-                    <span className="text-lg font-bold text-[var(--theme-text)]">{stat.name}</span>
+                    <span className="text-lg font-bold text-[var(--theme-text)]">{categoryName(stat.name)}</span>
                   </div>
                   <span className="rounded-full border border-[var(--theme-border)] bg-[var(--theme-surface)] px-3 py-1 font-bold text-[var(--theme-primary)]">
                     {stat.count}

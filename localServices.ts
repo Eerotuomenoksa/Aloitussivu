@@ -241,12 +241,20 @@ const getMunicipalityWebsiteUrl = (municipality: string, language: LanguageCode 
     ?? MUNICIPALITY_WEBSITES[normalizeText(municipality)];
 };
 
+const getMunicipalityServicesName = (municipality: string, language: LanguageCode) => {
+  const municipalityInfo = MUNICIPALITIES.find((item) => normalizeMunicipality(item.name) === normalizeMunicipality(municipality));
+  const localizedMunicipality = getLocalizedMunicipalityName(municipalityInfo, language) || municipality;
+  if (language === 'sv') return `Kommunala tjänster: ${localizedMunicipality}`;
+  if (language === 'en') return `Municipal services: ${localizedMunicipality}`;
+  return `Kunnan palvelut: ${localizedMunicipality}`;
+};
+
 const getMunicipalityWebsiteProvider = (municipality: string, language: LanguageCode = 'fi'): Provider | undefined => {
   const url = getMunicipalityWebsiteUrl(municipality, language);
   if (!url) return undefined;
 
   return {
-    name: `Kunnan palvelut: ${municipality}`,
+    name: getMunicipalityServicesName(municipality, language),
     url,
     group: 'Paikalliset palvelut',
     municipality,
@@ -260,6 +268,9 @@ const localizeMunicipalityProvider = (provider: Provider | undefined, municipali
   const url = getMunicipalityWebsiteUrl(municipality, language);
   return url ? {
     ...provider,
+    name: language === 'sv' || language === 'en'
+      ? getMunicipalityServicesName(municipality, language)
+      : provider.name,
     url,
     municipality: provider.municipality ?? municipality,
     sourceMunicipality: provider.sourceMunicipality ?? provider.municipality ?? municipality,

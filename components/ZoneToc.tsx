@@ -22,7 +22,7 @@ const ZoneToc: React.FC<ZoneTocProps> = ({ showLocal = false, selectedThemeAncho
             <a
               href="#lahellasi"
               className="toc-chip zone-local"
-              title={`Siirry kohtaan ${t('nearYou')}`}
+              title={`${t('goToSection')} ${t('nearYou')}`}
             >
               <span className="toc-dot" aria-hidden="true">📍</span>
               {t('nearYou')}
@@ -34,7 +34,7 @@ const ZoneToc: React.FC<ZoneTocProps> = ({ showLocal = false, selectedThemeAncho
             <a
               href={`#${group.anchor}`}
               className={`toc-chip ${group.zone}`}
-              title={`Siirry kohtaan ${categoryName(group.name)}`}
+              title={`${t('goToSection')} ${categoryName(group.name)}`}
             >
               <span className="toc-dot" aria-hidden="true">{group.icon}</span>
               {categoryName(group.name)}

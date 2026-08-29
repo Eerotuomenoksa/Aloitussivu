@@ -33,10 +33,6 @@ import {
   updateScamAlertActiveState,
 } from './scamAlerts';
 import {
-  NameDayApiUsageStats,
-  subscribeNameDayApiUsageStats,
-} from './adminStats';
-import {
   UsageDailyStats,
   fetchUsageStats,
   formatDateKey,
@@ -96,11 +92,6 @@ const getUsagePresetRange = (mode: UsageRangeMode) => {
   return { start: end, end };
 };
 
-const getCurrentMonthKey = () => new Intl.DateTimeFormat('sv-SE', {
-  year: 'numeric',
-  month: '2-digit',
-}).format(new Date());
-
 const normalizeUsagePage = (page: string) => (page === 'index' ? 'etusivu' : page);
 
 const sumUsageStats = (stats: UsageDailyStats[]) => {
@@ -146,6 +137,64 @@ const getFrontPageViews = (day: UsageDailyStats) => (
     normalizeUsagePage(pageview.page) === 'etusivu' ? total + pageview.count : total
   ), 0)
 );
+
+const sumContext = (stats: UsageDailyStats[], dimension: string, bucket?: string) => (
+  stats.reduce((total, day) => {
+    const values = day.context?.[dimension] ?? {};
+    if (bucket) return total + (values[bucket] ?? 0);
+    return total + Object.values(values).reduce((sum, count) => sum + count, 0);
+  }, 0)
+);
+
+const getGrowthMetrics = (stats: UsageDailyStats[]) => {
+  const dailyDirect = stats.map((day, index) => {
+    const windowDays = stats.slice(Math.max(0, index - 6), index + 1);
+    const rollingViews = windowDays.reduce((sum, item) => sum + item.totalPageviews, 0);
+    const rollingDirect = sumContext(windowDays, 'entry', 'direct');
+    const direct = day.context?.entry?.direct ?? 0;
+    return {
+      date: day.date,
+      direct,
+      share: day.totalPageviews > 0 ? (direct / day.totalPageviews) * 100 : 0,
+      rollingShare: rollingViews > 0 ? (rollingDirect / rollingViews) * 100 : 0,
+    };
+  });
+  const guide = stats.reduce<Record<string, number>>((totals, day) => {
+    Object.entries(day.context?.guide ?? {}).forEach(([bucket, count]) => {
+      totals[bucket] = (totals[bucket] ?? 0) + count;
+    });
+    return totals;
+  }, {});
+  const opened = guide.opened ?? 0;
+  const done = guide.done ?? 0;
+  const browser = Object.entries(guide).reduce((sum, [bucket, count]) => (
+    bucket.startsWith('browser:') ? sum + count : sum
+  ), 0);
+  const shared = Object.entries(guide).reduce((sum, [bucket, count]) => (
+    bucket.startsWith('shared:') ? sum + count : sum
+  ), 0);
+  const hours = Array.from({ length: 24 }, (_, hour) => {
+    const bucket = String(hour).padStart(2, '0');
+    return { hour: bucket, count: sumContext(stats, 'hour', bucket) };
+  });
+  const sources = Object.entries(stats.reduce<Record<string, number>>((totals, day) => {
+    Object.entries(day.context?.src ?? {}).forEach(([bucket, count]) => {
+      totals[bucket] = (totals[bucket] ?? 0) + count;
+    });
+    return totals;
+  }, {})).sort(([, first], [, second]) => second - first);
+  const totalViews = stats.reduce((sum, day) => sum + day.totalPageviews, 0);
+  const direct = sumContext(stats, 'entry', 'direct');
+  return {
+    dailyDirect,
+    direct,
+    directShare: totalViews > 0 ? (direct / totalViews) * 100 : 0,
+    funnel: { opened, browser, done, shared, completion: opened > 0 ? (done / opened) * 100 : 0 },
+    hours,
+    maxHour: Math.max(1, ...hours.map((item) => item.count)),
+    sources,
+  };
+};
 
 function HomeLink() {
   return (
@@ -245,8 +294,6 @@ function App() {
   const [ncscLogError, setNcscLogError] = useState('');
   const [ncscBusy, setNcscBusy] = useState(false);
   const [ncscMessage, setNcscMessage] = useState('');
-  const [nameDayApiUsage, setNameDayApiUsage] = useState<NameDayApiUsageStats | null>(null);
-  const [nameDayApiUsageError, setNameDayApiUsageError] = useState('');
   const [usageRangeMode, setUsageRangeMode] = useState<UsageRangeMode>('week');
   const [usageRange, setUsageRange] = useState(() => getUsagePresetRange('week'));
   const [usageStats, setUsageStats] = useState<UsageDailyStats[]>([]);
@@ -317,8 +364,6 @@ function App() {
       setScamAlerts([]);
       setNcscLogs([]);
       setNcscLogError('');
-      setNameDayApiUsage(null);
-      setNameDayApiUsageError('');
       setUsageStats([]);
       setUsageStatsError('');
       return () => {};
@@ -339,14 +384,9 @@ function App() {
         setNcscLogError(addPermissionHint(message, error));
       }
     );
-    const unsubscribeNameDayUsage = subscribeNameDayApiUsageStats(
-      setNameDayApiUsage,
-      (message, error) => setNameDayApiUsageError(addPermissionHint(message, error))
-    );
     return () => {
       unsubscribeAlerts();
       unsubscribeLogs();
-      unsubscribeNameDayUsage();
     };
   }, [adminPermissionHint, hasAdminAccess]);
 
@@ -417,9 +457,7 @@ function App() {
     [scamAlerts]
   );
   const usageTotals = useMemo(() => sumUsageStats(usageStats), [usageStats]);
-  const currentNameDayMonth = getCurrentMonthKey();
-  const currentNameDayRequests = nameDayApiUsage?.monthlyRequests[currentNameDayMonth] ?? 0;
-  const nameDayMonthlyLimit = nameDayApiUsage?.monthlyLimit || 100;
+  const growthMetrics = useMemo(() => getGrowthMetrics(usageStats), [usageStats]);
   const reviewTasks = useMemo(() => [
     {
       label: 'Uudet linkit',
@@ -456,16 +494,7 @@ function App() {
       tone: usageStatsError ? 'bg-rose-100 text-rose-950 dark:bg-rose-900/40 dark:text-rose-100' : 'bg-cyan-100 text-cyan-950 dark:bg-cyan-900/40 dark:text-cyan-100',
       note: usageStatsError || `${usageRange.start} - ${usageRange.end}`,
     },
-    {
-      label: 'Nimipäivärajapinta',
-      count: nameDayApiUsage?.totalRequests ?? 0,
-      href: '#nameday-api-usage',
-      tone: nameDayApiUsageError || currentNameDayRequests >= nameDayMonthlyLimit ? 'bg-rose-100 text-rose-950 dark:bg-rose-900/40 dark:text-rose-100' : 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200',
-      note: nameDayApiUsage
-        ? `${currentNameDayMonth}: ${currentNameDayRequests}/${nameDayMonthlyLimit}. Viimeksi käytetty ${formatDateTime(nameDayApiUsage.lastUsedAt)}.`
-        : (nameDayApiUsageError || 'Käyttöä ei ole vielä kirjattu.'),
-    },
-  ], [activeScamAlerts.length, approvedLinks.length, currentNameDayMonth, currentNameDayRequests, issueReports.length, nameDayApiUsage, nameDayApiUsageError, nameDayMonthlyLimit, ncscAttentionLogs.length, pendingNewReports.length, usageRange.end, usageRange.start, usageStatsError, usageTotals.frontPageViews]);
+  ], [activeScamAlerts.length, approvedLinks.length, issueReports.length, ncscAttentionLogs.length, pendingNewReports.length, usageRange.end, usageRange.start, usageStatsError, usageTotals.frontPageViews]);
 
   useEffect(() => {
     setReportDrafts((current) => {
@@ -591,9 +620,9 @@ function App() {
             </span>
             <HomeLink />
           </div>
-          <h1 className="font-display text-4xl font-bold tracking-tight md:text-6xl">Linkkiehdotukset</h1>
+          <h1 className="font-display text-4xl font-bold tracking-tight md:text-6xl">Ylläpidon työtila</h1>
           <p className="max-w-3xl text-base font-semibold text-white/75 md:text-lg">
-            Ilmoitetut muutokset tallentuvat yhteiseen ylläpitojonoon. Hyväksyntä on rajattu ylläpitäjän Google-tunnukselle.
+            Seuraa käyttöä, käsittele linkkiehdotukset ja ylläpidä huijausvaroituksia yhdessä suojatussa näkymässä.
           </p>
         </header>
 
@@ -695,7 +724,7 @@ function App() {
                   Nopea näkymä avoimiin asioihin ja automaation huomioihin.
                 </p>
               </div>
-              <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-6">
+              <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
                 {reviewTasks.map((task) => (
                   <a
                     key={task.href}
@@ -807,6 +836,92 @@ function App() {
                     </div>
                   </div>
 
+                  <section className="space-y-5 rounded-3xl border-2 border-cyan-200 bg-cyan-50/70 p-4 dark:border-cyan-900 dark:bg-cyan-950/20 md:p-6" aria-labelledby="growth-metrics-heading">
+                    <div>
+                      <h3 id="growth-metrics-heading" className="text-2xl font-black">Kasvumittarit</h3>
+                      <p className="mt-1 text-sm font-bold text-slate-600 dark:text-slate-300">
+                        Suorat avaukset ovat aloitussivukäytön yläraja. Tiedot ovat päiväkohtaisia koosteita ilman käyttäjä- tai istuntotunnisteita.
+                      </p>
+                    </div>
+
+                    <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
+                      {[
+                        ['Suorat avaukset', growthMetrics.direct, `${growthMetrics.directShare.toFixed(1)} % kaikista`],
+                        ['Ohje avattu', growthMetrics.funnel.opened, 'suppilon alku'],
+                        ['Selain valittu', growthMetrics.funnel.browser, 'ohje avattu'],
+                        ['Valmis', growthMetrics.funnel.done, `${growthMetrics.funnel.completion.toFixed(1)} % avauksista`],
+                        ['Ohje jaettu', growthMetrics.funnel.shared, 'läheiselle'],
+                      ].map(([label, value, note]) => (
+                        <div key={label} className="rounded-2xl bg-white p-4 shadow-sm dark:bg-slate-900">
+                          <p className="text-sm font-black uppercase tracking-wide text-slate-500 dark:text-slate-400">{label}</p>
+                          <p className="mt-1 text-3xl font-black">{value}</p>
+                          <p className="mt-1 text-xs font-bold text-slate-500 dark:text-slate-400">{note}</p>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="grid gap-5 xl:grid-cols-2">
+                      <div className="space-y-3">
+                        <h4 className="text-lg font-black">Suorien avausten kehitys</h4>
+                        <div className="max-h-72 overflow-auto rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
+                          <table className="w-full text-left text-sm">
+                            <thead className="sticky top-0 bg-slate-100 dark:bg-slate-800">
+                              <tr>
+                                <th className="px-3 py-2 font-black">Päivä</th>
+                                <th className="px-3 py-2 font-black">Suorat</th>
+                                <th className="px-3 py-2 font-black">Osuus</th>
+                                <th className="px-3 py-2 font-black">7 pv</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {growthMetrics.dailyDirect.map((day) => (
+                                <tr key={day.date} className="border-t border-slate-200 dark:border-slate-800">
+                                  <td className="px-3 py-2 font-bold">{day.date}</td>
+                                  <td className="px-3 py-2 font-bold">{day.direct}</td>
+                                  <td className="px-3 py-2 font-bold">{day.share.toFixed(1)} %</td>
+                                  <td className="px-3 py-2 font-bold">{day.rollingShare.toFixed(1)} %</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+
+                      <div className="space-y-3">
+                        <h4 className="text-lg font-black">Kampanjalähteet</h4>
+                        {growthMetrics.sources.length === 0 ? (
+                          <p className="rounded-2xl bg-white p-4 font-bold text-slate-500 dark:bg-slate-900 dark:text-slate-400">Ei kampanja-avauksia valitulla aikavälillä.</p>
+                        ) : (
+                          <ul className="space-y-2">
+                            {growthMetrics.sources.map(([source, count]) => (
+                              <li key={source} className="flex items-center justify-between gap-3 rounded-xl bg-white px-4 py-3 dark:bg-slate-900">
+                                <span className="font-black">{source}</span>
+                                <span className="rounded-full bg-cyan-100 px-3 py-1 text-sm font-black text-cyan-950 dark:bg-cyan-900 dark:text-cyan-100">{count}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="space-y-3">
+                      <h4 className="text-lg font-black">Avausten kellonaikajakauma</h4>
+                      <div className="flex h-48 items-end gap-1 overflow-x-auto rounded-2xl bg-white p-3 dark:bg-slate-900" role="img" aria-label="Avausten määrä tunneittain">
+                        {growthMetrics.hours.map((item) => (
+                          <div key={item.hour} className="flex h-full min-w-7 flex-1 flex-col items-center justify-end gap-1" title={`${item.hour}:00 – ${item.count} avausta`}>
+                            <span className="text-[10px] font-black text-slate-500">{item.count}</span>
+                            <span
+                              aria-hidden="true"
+                              className="w-full rounded-t-md bg-cyan-600"
+                              style={{ height: `${Math.max(3, (item.count / growthMetrics.maxHour) * 100)}%` }}
+                            />
+                            <span className="text-[10px] font-black text-slate-500">{item.hour}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </section>
+
                   <div className="grid gap-5 xl:grid-cols-2">
                     <div className="space-y-3">
                       <h3 className="text-xl font-black">Päivittäin</h3>
@@ -853,51 +968,6 @@ function App() {
                           ))}
                         </div>
                       )}
-                    </div>
-                  </div>
-                </>
-              )}
-            </section>
-
-            <section id="nameday-api-usage" className="scroll-mt-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm">
-              <div className="flex flex-wrap items-start justify-between gap-4">
-                <div>
-                  <h2 className="text-2xl md:text-3xl font-black">Nimipäivärajapinta</h2>
-                  <p className="mt-1 text-sm font-bold text-slate-500 dark:text-slate-400">
-                    Kertoo, kuinka monta kertaa Cloud Function on kutsunut Nimipäivärajapintaa.
-                  </p>
-                </div>
-                <span className="rounded-full bg-slate-100 px-4 py-2 text-lg font-black text-slate-900 dark:bg-slate-800 dark:text-white">
-                  {nameDayApiUsage?.totalRequests ?? 0} kertaa
-                </span>
-              </div>
-              {nameDayApiUsageError ? (
-                <p className="mt-4 rounded-2xl border border-rose-200 bg-rose-50 p-4 font-bold text-rose-900 dark:border-rose-900 dark:bg-rose-950/30 dark:text-rose-200">
-                  {nameDayApiUsageError}
-                </p>
-              ) : (
-                <>
-                  {currentNameDayRequests >= nameDayMonthlyLimit && (
-                    <p className="mt-4 rounded-2xl border border-rose-200 bg-rose-50 p-4 font-bold text-rose-900 dark:border-rose-900 dark:bg-rose-950/30 dark:text-rose-200">
-                      Kuukauden testiraja on täynnä. Nimipäivät piilotetaan käyttäjiltä, kunnes uusi kuukausi alkaa tai raja nostetaan.
-                    </p>
-                  )}
-                  <div className="mt-4 grid gap-3 md:grid-cols-4">
-                    <div className="rounded-2xl bg-slate-50 p-4 dark:bg-slate-950/60">
-                      <p className="text-sm font-black uppercase tracking-wide text-slate-500 dark:text-slate-400">Tämä kuukausi</p>
-                      <p className="mt-1 text-2xl font-black">{currentNameDayRequests}/{nameDayMonthlyLimit}</p>
-                    </div>
-                    <div className="rounded-2xl bg-slate-50 p-4 dark:bg-slate-950/60">
-                      <p className="text-sm font-black uppercase tracking-wide text-slate-500 dark:text-slate-400">Onnistuneet</p>
-                      <p className="mt-1 text-2xl font-black">{nameDayApiUsage?.successfulRequests ?? 0}</p>
-                    </div>
-                    <div className="rounded-2xl bg-slate-50 p-4 dark:bg-slate-950/60">
-                      <p className="text-sm font-black uppercase tracking-wide text-slate-500 dark:text-slate-400">Epäonnistuneet</p>
-                      <p className="mt-1 text-2xl font-black">{nameDayApiUsage?.failedRequests ?? 0}</p>
-                    </div>
-                    <div className="rounded-2xl bg-slate-50 p-4 dark:bg-slate-950/60">
-                      <p className="text-sm font-black uppercase tracking-wide text-slate-500 dark:text-slate-400">Viimeksi</p>
-                      <p className="mt-1 text-lg font-black">{formatDateTime(nameDayApiUsage?.lastUsedAt)}</p>
                     </div>
                   </div>
                 </>

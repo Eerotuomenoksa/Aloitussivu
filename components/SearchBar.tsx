@@ -46,7 +46,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ fontSizeStep = 0, variant = 'defa
             placeholder={speechState === 'listening' ? t('listeningPlaceholder') : t('googlePlaceholder')}
             className="w-full rounded-[28px] border-[1.5px] border-white bg-white py-[.9rem] pl-12 pr-36 font-body text-[1.1rem] font-normal text-[#0a1a0e] shadow-[0_8px_32px_rgba(0,0,0,.25)] outline-none transition-all placeholder:text-[#4a6455] focus:border-[var(--theme-gold)] focus:ring-4 focus:ring-[var(--theme-focus)]/20"
             aria-label={t('googleSearch')}
-            title="Kirjoita hakusana ja hae Googlesta"
+            title={t('googleInputTitle')}
           />
           <span className="absolute left-5 top-1/2 -translate-y-1/2 opacity-50" aria-hidden="true">
             <SearchIcon className="h-5 w-5" />
@@ -54,7 +54,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ fontSizeStep = 0, variant = 'defa
           <div className="absolute right-[.45rem] top-1/2 flex -translate-y-1/2 items-center gap-2">
             <button
               type="submit"
-              title="Avaa hakutulos Googlessa"
+              title={t('openGoogleResult')}
               className="rounded-[24px] bg-[var(--theme-primary)] px-[1.1rem] py-[.55rem] text-sm font-bold text-[var(--theme-primary-label)] shadow-[0_2px_12px_rgba(0,0,0,.28)] transition-all hover:bg-[var(--theme-primary-mid)] hover:shadow-[0_4px_20px_rgba(0,0,0,.32)] active:scale-95"
             >
               {t('searchButton')}
@@ -63,7 +63,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ fontSizeStep = 0, variant = 'defa
               <button
                 type="button"
                 onClick={toggleListening}
-                title={speechState === 'listening' ? 'Lopeta puheentunnistus' : 'Hae puhumalla'}
+                title={speechState === 'listening' ? t('stopListening') : t('startListening')}
                 className={`${speechState === 'listening' ? 'bg-red-500 text-white animate-pulse' : 'bg-white/80 text-[#0a1a0e] hover:bg-red-100 hover:text-red-700'} flex h-9 w-9 items-center justify-center rounded-full text-base shadow-md transition-all active:scale-95 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--theme-focus)]`}
                 aria-label={speechState === 'listening' ? t('stopListening') : t('startListening')}
               >
@@ -97,7 +97,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ fontSizeStep = 0, variant = 'defa
           placeholder={speechState === 'listening' ? t('listeningPlaceholder') : t('googlePlaceholder')}
           className={`w-full border-2 ${inputColorClass} ${inputShapeClass} focus:border-[var(--theme-gold)] focus:ring-4 focus:ring-[var(--theme-focus)]/30 outline-none transition-all font-normal shadow-md ${inputTextClass}`}
           aria-label={t('googleSearch')}
-          title="Kirjoita hakusana ja hae Googlesta"
+          title={t('googleInputTitle')}
         />
         <div className={`absolute ${isHeader ? 'left-4 top-1/2 sm:left-6' : 'left-6 top-1/2'} -translate-y-1/2 opacity-50`} aria-hidden="true">
           <SearchIcon className={isHeader ? 'h-6 w-6 sm:h-8 sm:w-8' : 'h-8 w-8'} />
@@ -105,7 +105,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ fontSizeStep = 0, variant = 'defa
         <div className={`absolute ${isHeader ? 'right-3 sm:right-4' : 'right-4'} top-1/2 -translate-y-1/2 flex items-center gap-2`}>
           <button
             type="submit"
-            title="Avaa hakutulos Googlessa"
+            title={t('openGoogleResult')}
             className={`${isHeader ? 'px-4 py-2 text-base sm:px-7 sm:py-3 sm:text-xl' : 'px-8 py-3 text-xl'} rounded-full bg-[var(--theme-primary)] font-black text-[var(--theme-primary-label)] shadow-lg transition-all hover:bg-[var(--theme-primary-mid)] active:scale-95 focus:outline-none focus:ring-4 focus:ring-[var(--theme-focus)]/40`}
           >
             {t('searchButton')}
@@ -114,7 +114,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ fontSizeStep = 0, variant = 'defa
             <button
               type="button"
               onClick={toggleListening}
-              title={speechState === 'listening' ? 'Lopeta puheentunnistus' : 'Hae puhumalla'}
+              title={speechState === 'listening' ? t('stopListening') : t('startListening')}
               className={`${speechState === 'listening' ? 'bg-red-500 text-white animate-pulse' : 'bg-white/90 text-slate-700 hover:bg-red-100 hover:text-red-700 dark:bg-slate-800 dark:text-white dark:hover:bg-red-900/40'} flex h-11 w-11 items-center justify-center rounded-full text-xl shadow-md transition-all active:scale-95 focus:outline-none focus:ring-4 focus:ring-red-300 sm:h-12 sm:w-12`}
               aria-label={speechState === 'listening' ? t('stopListening') : t('startListening')}
             >

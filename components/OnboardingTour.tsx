@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { UiVisibilityKey, UiVisibilityOption, UiVisibilityState } from '../uiPreferences';
 import InterestThemeSelector from './InterestThemeSelector';
+import { useI18n } from '../i18n';
 
 interface OnboardingTourProps {
   isOpen: boolean;
@@ -22,67 +23,69 @@ type TourStep = {
   kind?: 'highlight' | 'preferences';
 };
 
-const steps: TourStep[] = [
-  {
-    target: 'logo',
-    title: 'Seniorin aloitussivu',
-    body: 'Täältä löytyvät arjen tärkeät verkkopalvelut.',
-    contains: 'Sivun nimi ja tunnus. Tästä tunnistaa, että olet Seniorin aloitussivulla.',
+const tourTranslations: Record<'fi' | 'sv' | 'en', {
+  steps: TourStep[];
+  step: string;
+  preferencesLegend: string;
+  preferencesHint: string;
+  highlightedContains: string;
+  stop: string;
+  previous: string;
+  done: string;
+  next: string;
+}> = {
+  fi: {
+    step: 'Vaihe', preferencesLegend: 'Mitä aloitussivulla näkyy',
+    preferencesHint: 'Valinnat tulevat voimaan heti. Ne voi vaihtaa myöhemmin Asetuksista.',
+    highlightedContains: 'Korostettu kohta sisältää', stop: 'Lopeta', previous: 'Edellinen', done: 'Valmis', next: 'Seuraava',
+    steps: [
+      { target: 'logo', title: 'Seniorin aloitussivu', body: 'Täältä löytyvät arjen tärkeät verkkopalvelut.', contains: 'Sivun nimi ja tunnus. Tästä tunnistaa, että olet Seniorin aloitussivulla.' },
+      { target: 'weather', title: 'Sää', body: 'Näet paikallisen sään nyt, huomisen ennusteen ja linkin tarkempiin säätietoihin.', contains: 'Paikkakunnan nykyinen sää ja lämpötila, huomisen säätila ja lämpötilaväli sekä linkki tarkempaan sääennusteeseen.' },
+      { target: 'google-search', title: 'Google-haku', body: 'Kirjoita hakusana tai paina mikrofonia ja sano hakusana ääneen. Paina lopuksi Hae.', contains: 'Hakukenttä, mikrofonipainike ja hakupainike internetistä etsimistä varten.' },
+      { target: 'scam-alerts', title: 'Huijausvaroitukset', body: 'Täältä näet ajankohtaisia varoituksia.', contains: 'Ajankohtaiset varoitukset, joita klikkaamalla näet lisätiedot.' },
+      { target: 'favorites', title: 'Suosikit', body: 'Tallenna tärkeät linkit nopeaa käyttöä varten.', contains: 'Omat tallennetut linkit. Jos suosikkeja ei vielä ole, alue voi olla tyhjä.' },
+      { target: 'regional-services', title: 'Paikalliset palvelut', body: 'Valitse paikkakunta, niin saat paikalliset linkit.', contains: 'Kuntavalinta sekä oman alueen palvelu-, uutis- ja varoitusnostot.' },
+      { target: 'local-news', title: 'Paikalliset uutiset', body: 'Paikalliset otsikot vievät alkuperäisen lehden sivulle.', contains: 'Otsikoita paikallisista uutislähteistä ja linkki lehden sivulle.' },
+      { target: 'quick-links', title: 'Kategoriat', body: 'Avaa aihealue ja valitse tarvitsemasi palvelu. Palveluhaussa voit myös painaa mikrofonia ja sanoa hakusanan ääneen.', contains: 'Pääkategoriat, palveluhaku ja alakategoriat, joista palvelulinkit avautuvat.' },
+      { kind: 'preferences', title: 'Tee sivusta omasi', body: 'Valitse kiinnostavat teemat ja ne osiot, jotka haluat nähdä aloitussivulla.' },
+      { target: 'settings', title: 'Asetukset', body: 'Muuta tekstikokoa, teemaa ja näkyviä osioita.', contains: 'Rataspainike, josta avautuvat sivun omat asetukset.' },
+    ],
   },
-  {
-    target: 'weather',
-    title: 'Sää',
-    body: 'Näet paikallisen sään nyt, huomisen ennusteen ja linkin tarkempiin säätietoihin.',
-    contains: 'Paikkakunnan nykyinen sää ja lämpötila, huomisen säätila ja lämpötilaväli sekä linkki tarkempaan sääennusteeseen.',
+  sv: {
+    step: 'Steg', preferencesLegend: 'Vad som visas på startsidan',
+    preferencesHint: 'Valen börjar gälla genast. De kan ändras senare i Inställningar.',
+    highlightedContains: 'Det markerade området innehåller', stop: 'Avsluta', previous: 'Föregående', done: 'Klar', next: 'Nästa',
+    steps: [
+      { target: 'logo', title: 'Seniorin aloitussivu', body: 'Här hittar du viktiga webbtjänster för vardagen.', contains: 'Sidans namn och kännetecken, som visar att du är på Seniorin aloitussivu.' },
+      { target: 'weather', title: 'Väder', body: 'Du ser det lokala vädret nu, morgondagens prognos och en länk till mer detaljerad väderinformation.', contains: 'Ortens aktuella väder och temperatur, morgondagens väder och temperaturintervall samt en länk till en mer detaljerad prognos.' },
+      { target: 'google-search', title: 'Google-sökning', body: 'Skriv ett sökord eller tryck på mikrofonen och säg sökordet. Tryck sedan på Sök.', contains: 'Sökfält, mikrofonknapp och sökknapp för att söka på internet.' },
+      { target: 'scam-alerts', title: 'Bedrägerivarningar', body: 'Här ser du aktuella varningar.', contains: 'Aktuella varningar som du kan öppna för mer information.' },
+      { target: 'favorites', title: 'Favoriter', body: 'Spara viktiga länkar för snabb åtkomst.', contains: 'Dina sparade länkar. Om du ännu inte har favoriter kan området vara tomt.' },
+      { target: 'regional-services', title: 'Lokala tjänster', body: 'Välj en ort för att få lokala länkar.', contains: 'Kommunval samt tjänster, nyheter och varningar för ditt område.' },
+      { target: 'local-news', title: 'Lokala nyheter', body: 'Lokala rubriker leder till den ursprungliga tidningens sida.', contains: 'Rubriker från lokala nyhetskällor och en länk till tidningens sida.' },
+      { target: 'quick-links', title: 'Kategorier', body: 'Öppna ett ämne och välj den tjänst du behöver. I tjänstesökningen kan du också trycka på mikrofonen och säga sökordet.', contains: 'Huvudkategorier, tjänstesökning och underkategorier som öppnar tjänstelänkar.' },
+      { kind: 'preferences', title: 'Gör sidan till din egen', body: 'Välj intressanta teman och de avsnitt som du vill se på startsidan.' },
+      { target: 'settings', title: 'Inställningar', body: 'Ändra textstorlek, tema och synliga avsnitt.', contains: 'Kugghjulsknappen som öppnar sidans inställningar.' },
+    ],
   },
-  {
-    target: 'google-search',
-    title: 'Google-haku',
-    body: 'Kirjoita hakusana tai paina mikrofonia ja sano hakusana ääneen. Paina lopuksi Hae.',
-    contains: 'Hakukenttä, mikrofonipainike ja hakupainike internetistä etsimistä varten.',
+  en: {
+    step: 'Step', preferencesLegend: 'What is shown on the start page',
+    preferencesHint: 'Your choices take effect immediately. You can change them later in Settings.',
+    highlightedContains: 'The highlighted area contains', stop: 'End tour', previous: 'Previous', done: 'Done', next: 'Next',
+    steps: [
+      { target: 'logo', title: 'Seniorin aloitussivu', body: 'Here you can find important online services for everyday life.', contains: 'The page name and identifier, showing that you are on Seniorin aloitussivu.' },
+      { target: 'weather', title: 'Weather', body: 'You can see the current local weather, tomorrow’s forecast and a link to more detailed weather information.', contains: 'The location’s current weather and temperature, tomorrow’s conditions and temperature range, and a link to a more detailed forecast.' },
+      { target: 'google-search', title: 'Google search', body: 'Enter a search term or press the microphone and say it aloud. Then press Search.', contains: 'A search field, microphone button and search button for finding information online.' },
+      { target: 'scam-alerts', title: 'Scam alerts', body: 'Current alerts are shown here.', contains: 'Current alerts that you can open for more information.' },
+      { target: 'favorites', title: 'Favourites', body: 'Save important links for quick access.', contains: 'Your saved links. If you do not have any favourites yet, the area may be empty.' },
+      { target: 'regional-services', title: 'Local services', body: 'Select a location to see local links.', contains: 'Municipality selection and service, news and alert highlights for your area.' },
+      { target: 'local-news', title: 'Local news', body: 'Local headlines open the original newspaper’s page.', contains: 'Headlines from local news sources and a link to the newspaper’s page.' },
+      { target: 'quick-links', title: 'Categories', body: 'Open a topic and select the service you need. You can also press the microphone in service search and say the search term.', contains: 'Main categories, service search and subcategories that open service links.' },
+      { kind: 'preferences', title: 'Make the page your own', body: 'Select themes of interest and the sections you want to see on the start page.' },
+      { target: 'settings', title: 'Settings', body: 'Change text size, theme and visible sections.', contains: 'The cog button that opens the page settings.' },
+    ],
   },
-  {
-    target: 'scam-alerts',
-    title: 'Huijausvaroitukset',
-    body: 'Täältä näet ajankohtaisia varoituksia.',
-    contains: 'Ajankohtaiset varoitukset, joita klikkaamalla näet lisätiedot.',
-  },
-  {
-    target: 'favorites',
-    title: 'Suosikit',
-    body: 'Tallenna tärkeät linkit nopeaa käyttöä varten.',
-    contains: 'Omat tallennetut linkit. Jos suosikkeja ei vielä ole, alue voi olla tyhjä.',
-  },
-  {
-    target: 'regional-services',
-    title: 'Paikalliset palvelut',
-    body: 'Valitse paikkakunta, niin saat paikalliset linkit.',
-    contains: 'Kuntavalinta sekä oman alueen palvelu-, uutis- ja varoitusnostot.',
-  },
-  {
-    target: 'local-news',
-    title: 'Paikalliset uutiset',
-    body: 'Paikalliset otsikot vievät alkuperäisen lehden sivulle.',
-    contains: 'Otsikoita paikallisista uutislähteistä ja linkki lehden sivulle.',
-  },
-  {
-    target: 'quick-links',
-    title: 'Kategoriat',
-    body: 'Avaa aihealue ja valitse tarvitsemasi palvelu. Palveluhaussa voit myös painaa mikrofonia ja sanoa hakusanan ääneen.',
-    contains: 'Pääkategoriat, palveluhaku ja alakategoriat, joista palvelulinkit avautuvat.',
-  },
-  {
-    kind: 'preferences',
-    title: 'Tee sivusta omasi',
-    body: 'Valitse kiinnostavat teemat ja ne osiot, jotka haluat nähdä aloitussivulla.',
-  },
-  {
-    target: 'settings',
-    title: 'Asetukset',
-    body: 'Muuta tekstikokoa, teemaa ja näkyviä osioita.',
-    contains: 'Rataspainike, josta avautuvat sivun omat asetukset.',
-  },
-];
+};
 
 const isVisibleTourTarget = (target: string) => {
   const element = document.querySelector<HTMLElement>(`[data-tour="${target}"]`);
@@ -101,11 +104,13 @@ const OnboardingTour: React.FC<OnboardingTourProps> = ({
   visibilityOptions,
   onVisibilityChange,
 }) => {
+  const { language } = useI18n();
+  const copy = tourTranslations[language === 'sv' || language === 'en' ? language : 'fi'];
   const [stepIndex, setStepIndex] = useState(0);
   const [targetRect, setTargetRect] = useState<DOMRect | null>(null);
-  const [availableSteps, setAvailableSteps] = useState<TourStep[]>(steps);
+  const [availableSteps, setAvailableSteps] = useState<TourStep[]>(copy.steps);
   const dialogRef = useRef<HTMLDivElement>(null);
-  const step = availableSteps[stepIndex] ?? availableSteps[0] ?? steps[0];
+  const step = availableSteps[stepIndex] ?? availableSteps[0] ?? copy.steps[0];
 
   const visibleStepNumber = stepIndex + 1;
   const isLastStep = stepIndex === availableSteps.length - 1;
@@ -129,9 +134,9 @@ const OnboardingTour: React.FC<OnboardingTourProps> = ({
 
   useEffect(() => {
     if (!isOpen) return;
-    setAvailableSteps(steps.filter((item) => item.kind === 'preferences' || Boolean(item.target && isVisibleTourTarget(item.target))));
+    setAvailableSteps(copy.steps.filter((item) => item.kind === 'preferences' || Boolean(item.target && isVisibleTourTarget(item.target))));
     setStepIndex(0);
-  }, [isOpen]);
+  }, [copy, isOpen]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -242,7 +247,7 @@ const OnboardingTour: React.FC<OnboardingTourProps> = ({
         className={`aurora-modal-shell fixed inset-x-4 bottom-4 mx-auto overflow-y-auto rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-surface)] p-4 text-[var(--theme-text)] shadow-2xl outline-none sm:bottom-6 md:inset-x-1/2 md:bottom-auto md:top-1/2 md:max-h-[80dvh] md:w-[min(44rem,calc(100vw-3rem))] md:max-w-none md:-translate-x-1/2 md:-translate-y-1/2 md:rounded-[2rem] md:p-6 ${step.kind === 'preferences' ? 'max-h-[calc(100dvh-2rem)]' : 'max-h-[42dvh]'}`}
       >
         <p className="text-xs font-black uppercase tracking-widest text-[var(--theme-primary)] md:text-sm">
-          Vaihe {visibleStepNumber}/{availableSteps.length}
+          {copy.step} {visibleStepNumber}/{availableSteps.length}
         </p>
         <h2 id="onboarding-title" className="mt-1 text-xl font-black md:mt-2 md:text-3xl">
           {step.title}
@@ -258,9 +263,9 @@ const OnboardingTour: React.FC<OnboardingTourProps> = ({
             />
 
             <fieldset className="rounded-2xl border-2 border-[var(--theme-border)] p-4">
-              <legend className="px-1 font-black text-[var(--theme-text)]">Mitä aloitussivulla näkyy</legend>
+              <legend className="px-1 font-black text-[var(--theme-text)]">{copy.preferencesLegend}</legend>
               <p className="mt-1 text-sm font-bold leading-relaxed text-[var(--theme-muted)]">
-                Valinnat tulevat voimaan heti. Ne voi vaihtaa myöhemmin Asetuksista.
+                {copy.preferencesHint}
               </p>
               <div className="mt-3 grid gap-2 sm:grid-cols-2">
                 {visibilityOptions.map((option) => (
@@ -284,7 +289,7 @@ const OnboardingTour: React.FC<OnboardingTourProps> = ({
         ) : step.contains ? (
           <div className="mt-4 hidden rounded-2xl border-2 border-[var(--theme-gold)] bg-[var(--theme-gold-pale)] p-4 md:block">
             <p className="text-sm font-black uppercase tracking-widest text-[var(--theme-primary)]">
-              Korostettu kohta sisältää
+              {copy.highlightedContains}
             </p>
             <p className="mt-1 text-base font-black leading-relaxed text-[var(--theme-text)]">
               {step.contains}
@@ -298,7 +303,7 @@ const OnboardingTour: React.FC<OnboardingTourProps> = ({
             onClick={onClose}
             className="rounded-full bg-[var(--theme-pale)] px-4 py-2 text-sm font-black text-[var(--theme-text)] transition-all hover:bg-[var(--theme-gold-pale)] focus:outline-none focus:ring-4 focus:ring-[var(--theme-focus)]/30 md:px-5 md:py-3 md:text-base"
           >
-            Lopeta
+            {copy.stop}
           </button>
           <div className="flex flex-wrap gap-2 md:gap-3">
             <button
@@ -307,14 +312,14 @@ const OnboardingTour: React.FC<OnboardingTourProps> = ({
               disabled={stepIndex === 0}
               className="rounded-full bg-[var(--theme-pale)] px-4 py-2 text-sm font-black text-[var(--theme-text)] transition-all hover:bg-[var(--theme-gold-pale)] focus:outline-none focus:ring-4 focus:ring-[var(--theme-focus)]/30 disabled:opacity-40 md:px-5 md:py-3 md:text-base"
             >
-              Edellinen
+              {copy.previous}
             </button>
             <button
               type="button"
               onClick={isLastStep ? finish : () => setStepIndex((current) => Math.min(availableSteps.length - 1, current + 1))}
               className="rounded-full bg-[var(--theme-primary)] px-5 py-2 text-sm font-black text-white shadow-md transition-all hover:bg-[var(--theme-primary-mid)] focus:outline-none focus:ring-4 focus:ring-[var(--theme-focus)]/30 active:scale-95 md:px-6 md:py-3 md:text-base"
             >
-              {isLastStep ? 'Valmis' : 'Seuraava'}
+              {isLastStep ? copy.done : copy.next}
             </button>
           </div>
         </div>

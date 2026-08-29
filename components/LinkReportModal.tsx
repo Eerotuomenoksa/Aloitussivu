@@ -43,12 +43,12 @@ const LinkReportModal: React.FC<LinkReportModalProps> = ({ draft, onClose }) => 
     setIsSubmitting(false);
     void syncLocalLinkReports().then((result) => {
       if (result.synced > 0) {
-        setSyncNotice(`${result.synced} aiemmin tallennettua linkki-ilmoitusta lähetettiin tietokantaan.`);
+        setSyncNotice(t('linkReportSynced').replace('{count}', String(result.synced)));
       } else if (result.remaining > 0) {
-        setSyncNotice(`${result.remaining} linkki-ilmoitusta odottaa toimivaa verkkoyhteyttä.`);
+        setSyncNotice(t('linkReportPending').replace('{count}', String(result.remaining)));
       }
     }).catch(() => {});
-  }, [draft]);
+  }, [draft, t]);
 
   useEffect(() => {
     return () => {
@@ -105,7 +105,7 @@ const LinkReportModal: React.FC<LinkReportModalProps> = ({ draft, onClose }) => 
       setSubmitted(true);
       setSubmitNotice(result.storage === 'cloud'
         ? t('reportSaved')
-        : 'Ilmoitus tallennettiin tähän selaimeen. Lähetä se myöhemmin uudelleen, kun verkkoyhteys toimii.');
+        : t('reportSavedLocally'));
       if (closeTimerRef.current !== null) {
         window.clearTimeout(closeTimerRef.current);
       }
