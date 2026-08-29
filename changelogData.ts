@@ -24,11 +24,27 @@ export type ChangelogCommit = {
   tags: string[];
 };
 
-export const CHANGELOG_GENERATED_AT = "29.8.2026 klo 12.55";
+export const CHANGELOG_GENERATED_AT = "29.8.2026 klo 13.52";
 export const CHANGELOG_VERSION = "0.76.0";
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = [];
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
+  {
+    "hash": "73fdf1e10bedc1b2ee3d74c77ebfc266d2f708d9",
+    "date": "2026-08-29",
+    "version": "0.113.2",
+    "changeType": "patch",
+    "subject": "docs: kirjaa version 0.76.0 tuotantokayttoonotto",
+    "tags": []
+  },
+  {
+    "hash": "a49410f118e7a96ca1419c5d8b6aa64626f187f9",
+    "date": "2026-08-29",
+    "version": "0.113.1",
+    "changeType": "patch",
+    "subject": "docs: paivita version 0.76.0 muutosloki",
+    "tags": []
+  },
   {
     "hash": "efbdc820f83a9d64561d52a8f8cf1dbb1d1957ec",
     "date": "2026-08-29",
