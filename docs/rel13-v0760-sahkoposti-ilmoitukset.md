@@ -119,7 +119,7 @@ Luo Cloudcityn **Aja PHP-skripti** -toiminnolla kaksi tuotantoajoa Europe/Helsin
 | `aloitus-production/cron/notifications.php` | päivittäin klo 08.15 | muodostaa ylläpitokoosteen ja erääntyneet raportit jonoon |
 | `aloitus-production/cron/email-dispatch.php` | 15 minuutin välein | lähettää jonon ja tekee hallitut uusintayritykset |
 
-`smtp-test.php`-skriptiä ei ajasteta. Olemassa olevat NCSC-ajot säilyvät ennallaan.
+`smtp-test.php`-skriptiä ei ajasteta. Tuotannolle luodaan lisäksi oma `aloitus-production/cron/ncsc.php`-ajo arkipäiviksi klo 11.30 ja 15.30 (`30 11,15 * * 1-5`). Aiempi stagingin NCSC-ajo ei päivitä tuotantokantaa, ja se voidaan pitää poissa käytöstä normaalissa tuotantotilassa.
 
 ## STOP-ehdot
 
@@ -135,3 +135,15 @@ Keskeytä käyttöönotto, jos jokin seuraavista toteutuu:
 ## Palautus
 
 Ilmoitukset pysäytetään ensin poistamalla molemmat uudet cron-ajastukset käytöstä ja asettamalla yksityisessä asetuksessa `notifications.enabled` arvoon `false`. Version 0.75.0 koodi voidaan tämän jälkeen palauttaa normaalilla koodipalautuksella. Migraatio 004 ja `email_outbox` voidaan jättää tietokantaan: muutos on additiivinen eikä versio 0.75.0 käytä taulua. Taulua ei poisteta palautuksen yhteydessä, jotta lähetyshistoria ja vikatilanteen selvitystieto säilyvät.
+
+## Toteutunut tuotantokäyttöönotto 29.8.2026
+
+Puhtaasta commitista `a49410f118e7` rakennettu paketti `REL-13-v0.76.0-a49410f118e7` sisälsi 130 tiedostoa. ZIPin SHA-256 oli `0437596c3567297f725995f7f8d9f371d857f20a9663094ac48cbaa8ed502d75`. Build-info vahvisti version 0.76.0, puhtaan työpuun, migraatiot 001–004, tausta-ajot `ncsc`, `notifications` ja `email-dispatch` sekä manuaalisen `smtp-test`-työkalun. Paketissa ei ollut oikeaa `secrets/config.php`-tiedostoa, ja SMTP-salasana jäi vain palvelimen yksityiseen asetukseen.
+
+Ennen aktivointia luotiin 600-oikeuksinen koodi- ja asetussnapshot `/home/seniorsurffi/rel13-v0760-predeploy-a49410f118e7.tar.gz`, jonka SHA-256 oli `33dad7c2693b5b9666dcc6eb513659f9b321d19019143ab861208dcc09c4ba42`. Migraatio `004_email_notifications` varmennettiin yhdellä migraatiorivillä, 14 sarakkeella ja kolmiosaisella yksikäsitteisellä jaksoavaimella. Edellinen julkinen ja yksityinen koodi säilyvät palautuspolussa `/home/seniorsurffi/rel13-v0760-rollback-a49410f118e7`.
+
+Version 0.76.0 aktivointisavu palautti etusivulle, ylläpitoon, englannin- ja ruotsinkielisille linkkisivuille, API-healthille ja WordPressin etusivulle HTTP 200:n. Tarkoituksella puuttuva polku palautti HTTP 404:n ja WordPressin ylläpito HTTP 302 -kirjautumisohjauksen. Health sisälsi arvot `ok/up/v1`, ja `config.php` pysyi aktivointivaihdon aikana tavutasolla muuttumattomana.
+
+Cloudcityn SMTP-yhteys varmennettiin portissa 587 TLS 1.3:lla, varmenteen tarkistus oli OK ja palvelin ilmoitti tukevansa `AUTH PLAIN LOGIN` -menetelmiä. Ensimmäinen kirjautumisyritys rajasi virheen SMTP-tunnukseen; postilaatikkokohtaisen salasanan korjauksen jälkeen manuaalinen testiviesti sai tilan `sent` ja saapui vastaanottajalle. Heinäkuun 2026 kuukausiraportti jonotettiin kerran, lähetettiin ensimmäisellä yrityksellä ja varmennettiin tietokannasta tilaan `sent`, jossa `attempt_count=1` ja `last_error_code` oli tyhjä. Uusinta palautti raportin `existing`-kentässä ja lähettäjä lähetti 0 uutta viestiä, joten idempotenssi on PASS.
+
+Cloudcityn tuotantoajot aktivoitiin seuraavasti: ilmoitusten muodostus päivittäin klo 08.15, sähköpostijonon lähetys 15 minuutin välein ja tuotannon NCSC-ajo arkipäivisin klo 11.30 sekä 15.30. Stagingin NCSC-ajo poistettiin käytöstä. Cloudcityn omassa ajastusympäristössä `email-dispatch` palautti `status=ok`, `sent=0` ja `failed=0`; `notifications` palautti `status=ok`, tyhjän `queued`-listan ja olemassa olevan `monthly_report:2026-07`-avaimen. Tuotannon NCSC-koe valmistui 2,603 sekunnissa tilalla `completed`, käsitteli kuusi kohdetta, loi yhden varoituksen eikä tuottanut virheitä. Version 0.76.0 sähköposti- ja tuotantocron-käyttöönotto on PASS.
