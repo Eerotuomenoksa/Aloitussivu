@@ -62,7 +62,7 @@ Tärkein tunnusluku on `guideDone / guideOpened`. Se kertoo, toimiiko ohje, ja s
 
 ### 3.4 Kampanjalähde
 
-Tuetaan `?src=`-parametria painetuissa materiaaleissa, QR-koodeissa ja opastajien jakamissa linkeissä. Palvelin hyväksyy vain kiinteän listan arvoja (esim. `opastus`, `esite`, `qr`, `kirje`, `some`, `lehti`). Tuntematon arvo lasketaan arvoon `other`. Parametri poistetaan osoiteriviltä `history.replaceState`-kutsulla heti lukemisen jälkeen, jottei se jää kirjanmerkkiin.
+Tuetaan `?src=`-parametria painetuissa materiaaleissa, QR-koodeissa ja opastajien jakamissa linkeissä. `src` tarkoittaa kanavaa, ei linkin muotoa. Sallitut kanavat ovat `opastus`, `kirje`, `some`, `esite`, `lehti`, `esittely`, `vtkl`, `juttunetti`, `tyopaikka`, `pankki`, `kirjasto` ja `koulu`. Tuntematon arvo lasketaan palvelimen tuntemaksi varmistusarvoksi `other`. Parametri poistetaan osoiteriviltä `history.replaceState`-kutsulla heti lukemisen jälkeen, jottei se jää kirjanmerkkiin. QR-koodi käyttää sitä kanava-arvoa, jossa koodi jaetaan; `qr` ei ole oma kanava-arvo.
 
 ## 4. Toteutus, asiakaspuoli
 

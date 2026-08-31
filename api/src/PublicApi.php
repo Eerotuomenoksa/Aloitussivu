@@ -16,7 +16,11 @@ final class PublicApi
         'entry' => ['direct', 'internal', 'seniorsurf', 'search', 'external'],
         'navtype' => ['navigate', 'reload', 'back_forward', 'prerender'],
         'freshtab' => ['true', 'false'],
-        'src' => ['opastus', 'esite', 'qr', 'kirje', 'some', 'lehti', 'other'],
+        'src' => [
+            'opastus', 'kirje', 'some', 'esite', 'lehti', 'esittely',
+            'vtkl', 'juttunetti', 'tyopaikka', 'pankki', 'kirjasto', 'koulu',
+            'other',
+        ],
         'display' => ['browser', 'standalone'],
         'guide' => [
             'opened', 'done',

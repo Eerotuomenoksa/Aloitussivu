@@ -23,7 +23,20 @@ export type EntryContext = Pick<
 
 const USAGE_TRACKING_DISABLED_KEY = 'seniorSurfUsageTrackingDisabled';
 const PAGEVIEW_DELAY_MS = 15000;
-const ALLOWED_CAMPAIGN_SOURCES = new Set(['opastus', 'esite', 'qr', 'kirje', 'some', 'lehti']);
+const ALLOWED_CAMPAIGN_SOURCES = new Set([
+  'opastus',
+  'kirje',
+  'some',
+  'esite',
+  'lehti',
+  'esittely',
+  'vtkl',
+  'juttunetti',
+  'tyopaikka',
+  'pankki',
+  'kirjasto',
+  'koulu',
+]);
 const SEARCH_HOSTS = ['google.', 'bing.', 'duckduckgo.', 'search.yahoo.', 'ecosia.'];
 const GUIDE_VALUES = {
   browser: new Set(['chrome', 'edge', 'firefox', 'safari', 'android', 'ios', 'other']),

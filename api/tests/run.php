@@ -1631,7 +1631,7 @@ test('usage pageview context and guide funnel are stored only as allowed daily b
         'navType' => 'navigate',
         'freshTab' => true,
         'hour' => 7,
-        'src' => 'qr',
+        'src' => 'opastus',
         'displayMode' => 'browser',
     ]));
     assertSameValue(204, $response->status);
@@ -1641,6 +1641,28 @@ test('usage pageview context and guide funnel are stored only as allowed daily b
     assertTrue(str_contains($stored, 'direct'));
     assertTrue(str_contains($stored, '07'));
     assertTrue(!str_contains($stored, 'referrer'));
+
+    foreach ([
+        'opastus', 'kirje', 'some', 'esite', 'lehti', 'esittely',
+        'vtkl', 'juttunetti', 'tyopaikka', 'pankki', 'kirjasto', 'koulu',
+        'other',
+    ] as $source) {
+        $sourceDatabase = new FakeDatabase();
+        $sourceResponse = testApp(
+            $sourceDatabase,
+            rateLimiter: new FakeRateLimiter(),
+            attachmentStorage: new FakeAttachmentStorage(),
+        )->handle(jsonRequest('POST', '/api/v1/usage-events', [
+            'type' => 'pageview',
+            'page' => 'index',
+            'src' => $source,
+        ]));
+        assertSameValue(204, $sourceResponse->status);
+        assertSameValue(3, count($sourceDatabase->executions));
+        $sourceStored = serialize($sourceDatabase->executions);
+        assertTrue(str_contains($sourceStored, 'src'));
+        assertTrue(str_contains($sourceStored, $source));
+    }
 
     $unknownDatabase = new FakeDatabase();
     $unknown = testApp(
