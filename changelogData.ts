@@ -25,11 +25,10 @@ export type ChangelogCommit = {
 };
 
 export const CHANGELOG_GENERATED_AT = "31.8.2026";
-export const CHANGELOG_VERSION = "0.77.9";
+export const CHANGELOG_VERSION = "0.78.0";
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
-  "Markkinointilinkkien src-kanavalista täydennettiin 12 sovittuun kanavaan selaimessa ja palvelimella.",
-  "QR poistettiin kanava-arvoista; tuntemattomat linkkiarvot säilyvät other-varmistusluokassa.",
-  "API-testi varmistaa jokaisen sallitun markkinointikanavan tallennuksen."
+  "Tietosuojaseloste kirjoitettiin selkeämmälle kielelle suomeksi, ruotsiksi ja englanniksi.",
+  "Selosteeseen lisättiin lyhyt sanasto, joka selittää tärkeät tietosuojaan liittyvät sanat."
 ];
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
