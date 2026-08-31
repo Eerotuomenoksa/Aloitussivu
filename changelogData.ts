@@ -25,10 +25,10 @@ export type ChangelogCommit = {
 };
 
 export const CHANGELOG_GENERATED_AT = "31.8.2026";
-export const CHANGELOG_VERSION = "0.77.5";
+export const CHANGELOG_VERSION = "0.77.6";
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
-  "Huijausvaroitusten ylläpitolista näyttää kahden viime kuukauden historian ja kaikki sitä vanhemmat varoitukset, jotka ovat edelleen aktiivisia ja vanhenemattomia.",
-  "Vanhemmat päättyneet tai pois näkyvistä olevat ilmoitukset säilyvät tietokannassa historiatietona, mutta eivät enää kasvata ylläpidon työlistaa."
+  "Huijausvaroitukset siirrettiin ylläpitosivun alimmaiseksi osioksi.",
+  "Linkkien tarkistus, käyttötilastot sekä linkkiehdotusten ja ilmoitusten käsittely näkyvät nyt ennen huijausvaroituksia."
 ];
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [

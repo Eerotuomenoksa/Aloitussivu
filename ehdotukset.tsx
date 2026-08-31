@@ -723,7 +723,7 @@ function App() {
 
   return (
     <main className="aurora-page">
-      <div className="mx-auto max-w-7xl px-4 py-8 md:px-8 md:py-12 space-y-10">
+      <div className="mx-auto flex max-w-7xl flex-col gap-10 px-4 py-8 md:px-8 md:py-12">
         <header className="aurora-subpage-hero space-y-4">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <span className="aurora-kicker">
@@ -1268,7 +1268,7 @@ function App() {
               )}
             </section>
 
-            <section id="scam-alerts-admin" className="space-y-4 scroll-mt-6">
+            <section id="scam-alerts-admin" className="order-last space-y-4 scroll-mt-6">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
                   <h2 className="text-2xl md:text-3xl font-black">Huijausvaroitukset</h2>
