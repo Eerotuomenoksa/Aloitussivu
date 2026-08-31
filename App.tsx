@@ -1047,6 +1047,9 @@ const AppContent: React.FC = () => {
               uiVisibility={uiVisibility}
               visibilityOptions={visibilityOptions}
               onVisibilityChange={updateVisibility}
+              locality={regionalLocality}
+              onLocalitySelected={updateLocality}
+              onSetHomepage={() => setIsHomepageOpen(true)}
             />
           )}
           {reportDraft && <LinkReportModal draft={reportDraft} onClose={closeReportModal} />}

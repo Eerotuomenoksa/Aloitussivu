@@ -20,6 +20,11 @@ use Aloitussivu\Api\JsonRequestLogger;
 use Aloitussivu\Api\MailMessage;
 use Aloitussivu\Api\MailTransport;
 use Aloitussivu\Api\HttpNcscSource;
+use Aloitussivu\Api\HttpLinkChecker;
+use Aloitussivu\Api\LinkCatalog;
+use Aloitussivu\Api\LinkChecker;
+use Aloitussivu\Api\LinkCheckJob;
+use Aloitussivu\Api\LinkCheckResult;
 use Aloitussivu\Api\NcscJob;
 use Aloitussivu\Api\NcscScrapeItem;
 use Aloitussivu\Api\NcscScrapeResult;
@@ -214,6 +219,22 @@ final class FakeNcscSource implements NcscSource
     }
 }
 
+final class FakeLinkChecker implements LinkChecker
+{
+    /** @var list<LinkCheckResult> */
+    public array $results = [];
+    /** @var list<string> */
+    public array $urls = [];
+
+    public function check(string $url): LinkCheckResult
+    {
+        $this->urls[] = $url;
+        return $this->results === []
+            ? new LinkCheckResult('ok', 200, $url, null, 10)
+            : array_shift($this->results);
+    }
+}
+
 final class FakeMailTransport implements MailTransport
 {
     /** @var list<MailMessage> */
@@ -271,8 +292,14 @@ function jsonBody(\Aloitussivu\Api\Response $response): array
  * @param array<string, mixed> $appOverrides
  * @param array<string, mixed> $authenticationOverrides
  * @param array<string, mixed> $notificationOverrides
+ * @param array<string, mixed> $linkCheckOverrides
  */
-function testConfig(array $appOverrides = [], array $authenticationOverrides = [], array $notificationOverrides = []): Config
+function testConfig(
+    array $appOverrides = [],
+    array $authenticationOverrides = [],
+    array $notificationOverrides = [],
+    array $linkCheckOverrides = [],
+): Config
 {
     return Config::fromArray([
         'app' => [
@@ -305,6 +332,10 @@ function testConfig(array $appOverrides = [], array $authenticationOverrides = [
         'notifications' => [
             'enabled' => false,
             ...$notificationOverrides,
+        ],
+        'link_checks' => [
+            'enabled' => false,
+            ...$linkCheckOverrides,
         ],
     ], dirname(__DIR__) . '/public');
 }
@@ -1276,6 +1307,113 @@ test('admin creates approved links with an audit entry and duplicate protection'
     ));
 });
 
+test('admin can approve a link-check redirect with a scoped expiring override', static function (): void {
+    $urlHash = str_repeat('a', 64);
+    $database = new FakeDatabase();
+    $database->fetchOneResults = [
+        adminRow(),
+        [
+            'url_hash' => $urlHash,
+            'url' => 'https://taipalsaari.fi/palvelu',
+            'last_status' => 'warning',
+            'final_url' => 'https://www.taipalsaari.fi/palvelu',
+            'final_domain_changed' => 1,
+        ],
+        null,
+    ];
+    $response = testApp(
+        $database,
+        attachmentStorage: new FakeAttachmentStorage(),
+        idTokenVerifier: adminVerifier(),
+    )->handle(adminJsonRequest(
+        'POST',
+        '/api/v1/admin/link-checks/' . $urlHash . '/action',
+        ['action' => 'approve', 'reason' => 'Tarkistettu selaimessa ja kohde on oikea.'],
+    ));
+    assertSameValue(200, $response->status);
+    $insert = array_values(array_filter(
+        $database->executions,
+        static fn (array $execution): bool => str_contains($execution['sql'], 'INSERT INTO link_check_overrides'),
+    ))[0];
+    assertSameValue($urlHash, $insert['parameters']['url_hash']);
+    assertSameValue('verified', $insert['parameters']['status']);
+    assertSameValue('redirect', $insert['parameters']['scope']);
+    assertSameValue('https://www.taipalsaari.fi/palvelu', $insert['parameters']['expected_final_url']);
+    assertTrue($insert['parameters']['next_review_at'] > $insert['parameters']['verified_at']);
+    $audit = array_values(array_filter(
+        $database->executions,
+        static fn (array $execution): bool => str_contains($execution['sql'], 'INSERT INTO audit_log'),
+    ))[0];
+    assertSameValue('link_check.approve', $audit['parameters']['action']);
+    assertSameValue($urlHash, $audit['parameters']['target_id']);
+});
+
+test('admin can permanently hide a link-check target with a manual block', static function (): void {
+    $urlHash = str_repeat('b', 64);
+    $database = new FakeDatabase();
+    $database->fetchOneResults = [
+        adminRow(),
+        [
+            'url_hash' => $urlHash,
+            'url' => 'https://example.com/vanha',
+            'last_status' => 'failed',
+            'final_url' => null,
+            'final_domain_changed' => 0,
+        ],
+        null,
+    ];
+    $response = testApp(
+        $database,
+        attachmentStorage: new FakeAttachmentStorage(),
+        idTokenVerifier: adminVerifier(),
+    )->handle(adminJsonRequest(
+        'POST',
+        '/api/v1/admin/link-checks/' . $urlHash . '/action',
+        ['action' => 'block', 'reason' => 'Palvelu on lopettanut toimintansa.'],
+    ));
+    assertSameValue(200, $response->status);
+    $insert = array_values(array_filter(
+        $database->executions,
+        static fn (array $execution): bool => str_contains($execution['sql'], 'INSERT INTO blocked_links'),
+    ))[0];
+    assertSameValue($urlHash, $insert['parameters']['url_hash']);
+    assertSameValue('firebase-admin-uid', $insert['parameters']['created_by']);
+    assertSameValue('manual:Palvelu on lopettanut toimintansa.', $insert['parameters']['reason']);
+    $audit = array_values(array_filter(
+        $database->executions,
+        static fn (array $execution): bool => str_contains($execution['sql'], 'INSERT INTO audit_log'),
+    ))[0];
+    assertSameValue('link_check.block', $audit['parameters']['action']);
+});
+
+test('link-check actions validate the target hash and require an administrator reason', static function (): void {
+    $invalidHashDatabase = new FakeDatabase();
+    $invalidHashDatabase->fetchOneResults = [adminRow()];
+    $invalidHash = testApp(
+        $invalidHashDatabase,
+        attachmentStorage: new FakeAttachmentStorage(),
+        idTokenVerifier: adminVerifier(),
+    )->handle(adminJsonRequest(
+        'POST',
+        '/api/v1/admin/link-checks/not-a-hash/action',
+        ['action' => 'approve', 'reason' => 'Tarkistettu.'],
+    ));
+    assertSameValue(422, $invalidHash->status);
+
+    $database = new FakeDatabase();
+    $database->fetchOneResults = [adminRow()];
+    $missingReason = testApp(
+        $database,
+        attachmentStorage: new FakeAttachmentStorage(),
+        idTokenVerifier: adminVerifier(),
+    )->handle(adminJsonRequest(
+        'POST',
+        '/api/v1/admin/link-checks/' . str_repeat('c', 64) . '/action',
+        ['action' => 'approve', 'reason' => ''],
+    ));
+    assertSameValue(422, $missingReason->status);
+});
+
 test('admin attachment download stays authenticated and outside the web root', static function (): void {
     $id = '40000000-0000-4000-8000-000000000011';
     $key = '2026/08/' . $id . '-0123456789ab.png';
@@ -1776,6 +1914,391 @@ test('notification configuration is optional and validates enabled SMTP settings
     }
 });
 
+test('link-check configuration has safe defaults and bounded values', static function (): void {
+    $defaults = testConfig();
+    assertSameValue(false, $defaults->linkCheckEnabled);
+    assertSameValue(10, $defaults->linkCheckBatchSize);
+    assertSameValue(8, $defaults->linkCheckTimeoutSeconds);
+    assertSameValue(2, $defaults->linkCheckAlertAfterFailures);
+    assertSameValue(false, $defaults->linkCheckAutoBlockEnabled);
+    assertSameValue(25, $defaults->linkCheckAutoBlockMaxPerRun);
+    assertSameValue(true, $defaults->linkCheckAutoUnblockEnabled);
+
+    $enabled = testConfig(linkCheckOverrides: [
+        'enabled' => true,
+        'batch_size' => 20,
+        'timeout_seconds' => 12,
+        'refresh_days' => 45,
+        'retry_hours' => 6,
+        'alert_after_failures' => 3,
+        'auto_block_enabled' => true,
+        'auto_block_max_per_run' => 40,
+        'auto_unblock_enabled' => false,
+    ]);
+    assertSameValue(true, $enabled->linkCheckEnabled);
+    assertSameValue(20, $enabled->linkCheckBatchSize);
+    assertSameValue(3, $enabled->linkCheckAlertAfterFailures);
+    assertSameValue(true, $enabled->linkCheckAutoBlockEnabled);
+    assertSameValue(40, $enabled->linkCheckAutoBlockMaxPerRun);
+    assertSameValue(false, $enabled->linkCheckAutoUnblockEnabled);
+
+    try {
+        testConfig(linkCheckOverrides: ['batch_size' => 51]);
+        throw new RuntimeException('Invalid link-check batch size was accepted.');
+    } catch (ConfigException $error) {
+        assertTrue(str_contains($error->getMessage(), 'batch_size'));
+    }
+});
+
+test('HTTP link checker rejects insecure and internal targets before a request', static function (): void {
+    $checker = new HttpLinkChecker();
+    $http = $checker->check('http://example.com/path');
+    assertSameValue('rejected', $http->status);
+    assertSameValue('https_required', $http->errorCode);
+
+    $local = $checker->check('https://127.0.0.1/private');
+    assertSameValue('rejected', $local->status);
+    assertSameValue('address_not_allowed', $local->errorCode);
+
+    $missingDns = $checker->check('https://host-that-must-not-exist.invalid/');
+    assertSameValue('failed', $missingDns->status);
+    assertSameValue('dns_failed', $missingDns->errorCode);
+});
+
+test('link-check job is disabled without database access and persists a checked batch', static function (): void {
+    $catalogPath = sys_get_temp_dir() . '/aloitussivu-link-catalog-' . bin2hex(random_bytes(6)) . '.json';
+    file_put_contents($catalogPath, json_encode([
+        'schemaVersion' => 1,
+        'links' => [[
+            'url' => 'https://example.com/',
+            'name' => 'Esimerkki',
+            'category' => 'Testi',
+            'source' => 'test.php',
+        ]],
+    ], JSON_THROW_ON_ERROR));
+    try {
+        $catalog = LinkCatalog::load($catalogPath);
+        $disabledDatabase = new FakeDatabase();
+        $disabled = (new LinkCheckJob(
+            $disabledDatabase,
+            testConfig(),
+            $catalog,
+            new FakeLinkChecker(),
+        ))->run(new DateTimeImmutable('2026-08-30T10:00:00Z'));
+        assertSameValue('disabled', $disabled['status']);
+        assertSameValue([], $disabledDatabase->executions);
+
+        $database = new FakeDatabase();
+        $database->fetchOneResults = [
+            ['acquired' => 1],
+            ['checksum' => $catalog->checksum],
+        ];
+        $database->fetchAllResults = [
+            [],
+            [[
+                'url_hash' => hash('sha256', 'https://example.com/'),
+                'url' => 'https://example.com/',
+                'failure_count' => 0,
+            ]],
+        ];
+        $checker = new FakeLinkChecker();
+        $result = (new LinkCheckJob(
+            $database,
+            testConfig(linkCheckOverrides: ['enabled' => true]),
+            $catalog,
+            $checker,
+        ))->run(new DateTimeImmutable('2026-08-30T10:00:00Z'));
+        assertSameValue('completed', $result['status']);
+        assertSameValue(1, $result['checked']);
+        assertSameValue(1, $result['ok']);
+        assertSameValue(['https://www.suomi.fi/', 'https://example.com/'], $checker->urls);
+        assertTrue((bool) array_filter(
+            $database->executions,
+            static fn (array $execution): bool => str_contains($execution['sql'], 'INSERT INTO link_check_results'),
+        ));
+        $successfulUpdate = array_values(array_filter(
+            $database->executions,
+            static fn (array $execution): bool => str_starts_with($execution['sql'], 'UPDATE link_check_targets SET last_checked_at'),
+        ))[0];
+        assertSameValue(108, $successfulUpdate['parameters']['check_interval_hours']);
+        assertSameValue('2026-09-03 22:00:00.000000', $successfulUpdate['parameters']['next_check_at']);
+    } finally {
+        @unlink($catalogPath);
+    }
+});
+
+test('link-check job does not retry HTTPS policy rejections and limits requests per host', static function (): void {
+    $catalogPath = sys_get_temp_dir() . '/aloitussivu-link-catalog-' . bin2hex(random_bytes(6)) . '.json';
+    file_put_contents($catalogPath, json_encode([
+        'schemaVersion' => 1,
+        'links' => [[
+            'url' => 'http://legacy.example/path',
+            'name' => 'Vanha osoite',
+            'category' => 'Testi',
+            'source' => 'test.php',
+        ]],
+    ], JSON_THROW_ON_ERROR));
+    try {
+        $catalog = LinkCatalog::load($catalogPath);
+        $rejectedDatabase = new FakeDatabase();
+        $rejectedDatabase->fetchOneResults = [['acquired' => 1], ['checksum' => $catalog->checksum]];
+        $rejectedDatabase->fetchAllResults = [[], [[
+            'url_hash' => hash('sha256', 'http://legacy.example/path'),
+            'url' => 'http://legacy.example/path',
+            'failure_count' => 7,
+        ]]];
+        $rejectedChecker = new FakeLinkChecker();
+        $rejectedChecker->results = [
+            new LinkCheckResult('ok', 200, 'https://www.suomi.fi/', null, 1),
+            new LinkCheckResult(
+                'rejected',
+                null,
+                'http://legacy.example/path',
+                'https_required',
+                1,
+            ),
+        ];
+        $rejectedResult = (new LinkCheckJob(
+            $rejectedDatabase,
+            testConfig(linkCheckOverrides: ['enabled' => true]),
+            $catalog,
+            $rejectedChecker,
+        ))->run(new DateTimeImmutable('2026-08-30T10:00:00Z'));
+        assertSameValue(1, $rejectedResult['rejected']);
+        $targetUpdate = array_values(array_filter(
+            $rejectedDatabase->executions,
+            static fn (array $execution): bool => str_starts_with($execution['sql'], 'UPDATE link_check_targets SET last_checked_at'),
+        ))[0];
+        assertSameValue(0, $targetUpdate['parameters']['failure_count']);
+        assertTrue(str_starts_with($targetUpdate['parameters']['next_check_at'], '9999-12-31'));
+
+        $fairDatabase = new FakeDatabase();
+        $fairDatabase->fetchOneResults = [['acquired' => 1], ['checksum' => $catalog->checksum]];
+        $candidates = [];
+        foreach (range(1, 5) as $index) {
+            $url = 'https://same.example/' . $index;
+            $candidates[] = ['url_hash' => hash('sha256', $url), 'url' => $url, 'failure_count' => 0];
+        }
+        foreach (range(1, 2) as $index) {
+            $url = 'https://other' . $index . '.example/';
+            $candidates[] = ['url_hash' => hash('sha256', $url), 'url' => $url, 'failure_count' => 0];
+        }
+        $fairDatabase->fetchAllResults = [[], $candidates];
+        $fairChecker = new FakeLinkChecker();
+        $fairResult = (new LinkCheckJob(
+            $fairDatabase,
+            testConfig(linkCheckOverrides: ['enabled' => true, 'batch_size' => 4]),
+            $catalog,
+            $fairChecker,
+        ))->run(new DateTimeImmutable('2026-08-30T11:00:00Z'));
+        assertSameValue(4, $fairResult['checked']);
+        assertSameValue(3, count(array_filter(
+            $fairChecker->urls,
+            static fn (string $url): bool => str_contains($url, 'same.example'),
+        )));
+    } finally {
+        @unlink($catalogPath);
+    }
+});
+
+test('link-check job discards a suspect network batch before updating targets', static function (): void {
+    $catalogPath = sys_get_temp_dir() . '/aloitussivu-link-catalog-' . bin2hex(random_bytes(6)) . '.json';
+    file_put_contents($catalogPath, json_encode([
+        'schemaVersion' => 1,
+        'links' => [[
+            'url' => 'https://example.com/',
+            'name' => 'Esimerkki',
+            'category' => 'Testi',
+            'source' => 'test.php',
+        ]],
+    ], JSON_THROW_ON_ERROR));
+    try {
+        $catalog = LinkCatalog::load($catalogPath);
+        $database = new FakeDatabase();
+        $database->fetchOneResults = [
+            ['acquired' => 1],
+            ['checksum' => $catalog->checksum],
+            ['message_code' => 'network_suspect'],
+        ];
+        $candidates = [];
+        foreach (range(1, 5) as $index) {
+            $url = 'https://host' . $index . '.example/';
+            $candidates[] = [
+                'url_hash' => hash('sha256', $url),
+                'url' => $url,
+                'last_status' => 'ok',
+                'failure_count' => 1,
+            ];
+        }
+        $database->fetchAllResults = [[], $candidates];
+        $checker = new FakeLinkChecker();
+        $checker->results = [new LinkCheckResult('ok', 200, 'https://www.suomi.fi/', null, 1)];
+        foreach (range(1, 4) as $index) {
+            $checker->results[] = new LinkCheckResult('failed', null, null, 'dns_failed', 1);
+        }
+        $checker->results[] = new LinkCheckResult('ok', 200, 'https://host5.example/', null, 1);
+
+        $result = (new LinkCheckJob(
+            $database,
+            testConfig(linkCheckOverrides: ['enabled' => true, 'auto_block_enabled' => true]),
+            $catalog,
+            $checker,
+        ))->run(new DateTimeImmutable('2026-08-30T12:00:00Z'));
+
+        assertSameValue('skipped', $result['status']);
+        assertSameValue('network_suspect_repeated', $result['messageCode']);
+        assertSameValue(5, $result['checked']);
+        assertSameValue(0, $result['blocked']);
+        assertTrue(!(bool) array_filter(
+            $database->executions,
+            static fn (array $execution): bool => str_starts_with($execution['sql'], 'UPDATE link_check_targets SET last_checked_at')
+                || str_contains($execution['sql'], 'INSERT INTO link_check_results'),
+        ));
+
+        $knownFailureDatabase = new FakeDatabase();
+        $knownFailureDatabase->fetchOneResults = [['acquired' => 1], ['checksum' => $catalog->checksum]];
+        $knownFailures = [];
+        foreach (range(1, 5) as $index) {
+            $url = 'https://known-failed-' . $index . '.example/';
+            $knownFailures[] = [
+                'url_hash' => hash('sha256', $url),
+                'url' => $url,
+                'last_status' => 'failed',
+                'failure_count' => 3,
+            ];
+        }
+        $knownFailureDatabase->fetchAllResults = [[], $knownFailures];
+        $knownFailureChecker = new FakeLinkChecker();
+        $knownFailureChecker->results = [new LinkCheckResult('ok', 200, 'https://www.suomi.fi/', null, 1)];
+        foreach (range(1, 4) as $index) {
+            $knownFailureChecker->results[] = new LinkCheckResult('failed', null, null, 'dns_failed', 1);
+        }
+        $knownFailureChecker->results[] = new LinkCheckResult(
+            'ok',
+            200,
+            'https://known-failed-5.example/',
+            null,
+            1,
+        );
+
+        $knownFailureResult = (new LinkCheckJob(
+            $knownFailureDatabase,
+            testConfig(linkCheckOverrides: [
+                'enabled' => true,
+                'auto_block_enabled' => false,
+                'auto_unblock_enabled' => false,
+            ]),
+            $catalog,
+            $knownFailureChecker,
+        ))->run(new DateTimeImmutable('2026-08-30T12:30:00Z'));
+
+        assertSameValue('completed', $knownFailureResult['status']);
+        assertSameValue(4, $knownFailureResult['failed']);
+        assertSameValue(5, count(array_filter(
+            $knownFailureDatabase->executions,
+            static fn (array $execution): bool => str_starts_with($execution['sql'], 'UPDATE link_check_targets SET last_checked_at'),
+        )));
+        $candidateSelection = array_values(array_filter(
+            $knownFailureDatabase->executions,
+            static fn (array $execution): bool => str_contains($execution['sql'], 'FROM link_check_targets')
+                && str_contains($execution['sql'], 'next_check_at <= :now'),
+        ))[0];
+        assertTrue(str_contains($candidateSelection['sql'], 'last_status'));
+    } finally {
+        @unlink($catalogPath);
+    }
+});
+
+test('link-check job automatically blocks confirmed hard failures and only removes automatic blocks', static function (): void {
+    $url = 'https://gone.example/page';
+    $urlHash = hash('sha256', $url);
+    $catalogPath = sys_get_temp_dir() . '/aloitussivu-link-catalog-' . bin2hex(random_bytes(6)) . '.json';
+    file_put_contents($catalogPath, json_encode([
+        'schemaVersion' => 1,
+        'links' => [[
+            'url' => $url,
+            'name' => 'Kadonnut sivu',
+            'category' => 'Testi',
+            'source' => 'test.php',
+        ]],
+    ], JSON_THROW_ON_ERROR));
+    try {
+        $catalog = LinkCatalog::load($catalogPath);
+        $blockDatabase = new FakeDatabase();
+        $blockDatabase->fetchOneResults = [['acquired' => 1], ['checksum' => $catalog->checksum]];
+        $blockDatabase->fetchAllResults = [
+            [],
+            [['url_hash' => $urlHash, 'url' => $url, 'failure_count' => 1]],
+            [['url_hash' => $urlHash, 'url' => $url, 'last_error_code' => 'http_status_error', 'http_status' => 404]],
+            [],
+        ];
+        $blockChecker = new FakeLinkChecker();
+        $blockChecker->results = [
+            new LinkCheckResult('ok', 200, 'https://www.suomi.fi/', null, 1),
+            new LinkCheckResult('failed', 404, $url, 'http_status_error', 1),
+        ];
+        $blocked = (new LinkCheckJob(
+            $blockDatabase,
+            testConfig(linkCheckOverrides: ['enabled' => true, 'auto_block_enabled' => true]),
+            $catalog,
+            $blockChecker,
+        ))->run(new DateTimeImmutable('2026-08-30T13:00:00Z'));
+        assertSameValue(1, $blocked['blocked']);
+        $automaticInsert = array_values(array_filter(
+            $blockDatabase->executions,
+            static fn (array $execution): bool => str_starts_with($execution['sql'], 'INSERT IGNORE INTO blocked_links'),
+        ))[0];
+        assertSameValue('auto:http_status_error:404', $automaticInsert['parameters']['reason']);
+        assertSameValue(hash('sha256', $url, true), $automaticInsert['parameters']['url_hash']);
+        assertTrue(str_contains($automaticInsert['sql'], 'created_by)'));
+        assertTrue(str_contains($automaticInsert['sql'], 'NULL)'));
+        $failedUpdate = array_values(array_filter(
+            $blockDatabase->executions,
+            static fn (array $execution): bool => str_starts_with($execution['sql'], 'UPDATE link_check_targets SET last_checked_at'),
+        ))[0];
+        assertSameValue(72, $failedUpdate['parameters']['check_interval_hours']);
+        assertSameValue('2026-08-31 13:00:00.000000', $failedUpdate['parameters']['next_check_at']);
+
+        $unblockDatabase = new FakeDatabase();
+        $unblockDatabase->fetchOneResults = [['acquired' => 1], ['checksum' => $catalog->checksum]];
+        $unblockDatabase->fetchAllResults = [
+            [],
+            [['url_hash' => $urlHash, 'url' => $url, 'failure_count' => 2]],
+            [['id' => '10000000-0000-4000-8000-000000000099', 'url_hash' => $urlHash]],
+        ];
+        $unblockChecker = new FakeLinkChecker();
+        $unblockChecker->results = [
+            new LinkCheckResult('ok', 200, 'https://www.suomi.fi/', null, 1),
+            new LinkCheckResult('ok', 200, $url, null, 1),
+        ];
+        $unblocked = (new LinkCheckJob(
+            $unblockDatabase,
+            testConfig(linkCheckOverrides: [
+                'enabled' => true,
+                'auto_block_enabled' => false,
+                'auto_unblock_enabled' => true,
+            ]),
+            $catalog,
+            $unblockChecker,
+        ))->run(new DateTimeImmutable('2026-08-30T14:00:00Z'));
+        assertSameValue(1, $unblocked['unblocked']);
+        $automaticDelete = array_values(array_filter(
+            $unblockDatabase->executions,
+            static fn (array $execution): bool => str_starts_with($execution['sql'], 'DELETE FROM blocked_links'),
+        ))[0];
+        assertTrue(str_contains($automaticDelete['sql'], 'created_by IS NULL'));
+        assertTrue(str_contains($automaticDelete['sql'], "reason LIKE 'auto:%'"));
+        $unblockSelection = array_values(array_filter(
+            $unblockDatabase->executions,
+            static fn (array $execution): bool => str_contains($execution['sql'], 'INNER JOIN link_check_targets'),
+        ))[0];
+        assertTrue(str_contains($unblockSelection['sql'], 'b.created_by IS NULL'));
+        assertTrue(str_contains($unblockSelection['sql'], "b.reason LIKE 'auto:%'"));
+    } finally {
+        @unlink($catalogPath);
+    }
+});
+
 test('SMTP renderer creates UTF-8 multipart mail without exposing credentials', static function (): void {
     $config = notificationConfig();
     $message = new MailMessage('Kuukausiraportti – heinäkuu', "Hei!\nTekstiosa", '<p>Hei!</p>');
@@ -1835,6 +2358,21 @@ test('maintenance digest contains only aggregate task data and skips an empty he
         (new NotificationReportBuilder($emptyDatabase, notificationConfig()))
             ->maintenanceDigest(new DateTimeImmutable('2026-08-29T08:15:00+03:00')),
     );
+
+    $networkDatabase = new FakeDatabase();
+    $networkDatabase->fetchOneResults = [[
+        'feedback_open' => 0,
+        'links_pending' => 0,
+        'alerts_expiring' => 0,
+        'link_check_attention' => 0,
+        'link_check_last_run' => '2026-08-29 05:14:00',
+        'link_check_last_message' => 'network_suspect_repeated',
+        'ncsc_last_run' => '2026-08-29 05:00:00',
+    ]];
+    $networkMessage = (new NotificationReportBuilder($networkDatabase, notificationConfig()))
+        ->maintenanceDigest(new DateTimeImmutable('2026-08-29T08:15:00+03:00'));
+    assertTrue($networkMessage instanceof MailMessage);
+    assertTrue(str_contains($networkMessage->textBody, 'Kaksi peräkkäistä ajoa keskeytyi'));
 });
 
 test('monthly report compares aggregate usage and explains privacy limitations', static function (): void {

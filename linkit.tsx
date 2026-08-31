@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import { SHORTCUTS } from './constants';
 import { MUNICIPALITIES } from './municipalRegistry';
+import { KELA_TAXI_PROVIDERS } from './localKelaTaxiNumbers';
 import { getRegionalLibraryProviders, getRegionalNewsProviders, getRegionalProviders, getRegionalPublicTransportProviders, getRegionalRssFeeds, getRegionalServiceAreaMunicipalities, normalizeMunicipality } from './localServices';
 import { Municipality, Provider } from './types';
 import { installUsageTracking } from './usageTracking';
@@ -132,8 +133,13 @@ const generalLinks = uniqueByKey(
   (row) => `${row.category}|${row.group}|${row.name}|${row.url}`
 ).sort((a, b) => collator.compare(`${a.category} ${a.name}`, `${b.category} ${b.name}`));
 
+// Kela-taksien alueelliset tilausnumerot ovat omassa tiedostossaan, joten ne on
+// laskettava erikseen. Ilman tata luku oli 39, vaikka numeroita on 81.
 const phoneLinkCount = uniqueByKey(
-  SHORTCUTS.flatMap((shortcut) => (shortcut.providers ?? []).filter((provider) => provider.phone)),
+  [
+    ...SHORTCUTS.flatMap((shortcut) => (shortcut.providers ?? []).filter((provider) => provider.phone)),
+    ...KELA_TAXI_PROVIDERS.filter((provider) => provider.phone),
+  ],
   (provider) => `${provider.name}|${provider.url}|${provider.phone}`
 ).length;
 
@@ -218,7 +224,12 @@ const regionalLinks = uniqueByKey(
   (row) => `${row.municipality}|${row.category}|${row.name}|${row.url}`
 ).sort((a, b) => collator.compare(`${a.municipality} ${a.category} ${a.name}`, `${b.municipality} ${b.category} ${b.name}`));
 
-const allLinkCount = generalLinks.length + regionalLinks.length;
+// Kokonaisluku kertoo ERI VERKKO-OSOITTEIDEN maaran, ei rivien maaraa. Rivi yksiloidaan
+// alueellisissa avaimella kunta|kategoria|nimi|osoite, joten sama osoite toistuu jokaiselle
+// kunnalle jolle se naytetaan. Rivien summa (5199) antoi harhaanjohtavan kuvan laajuudesta.
+const allLinkCount = new Set(
+  [...generalLinks, ...regionalLinks].map((row) => row.url).filter(Boolean)
+).size;
 const pageNavLinkClass = 'aurora-nav-link px-4 py-2 text-sm';
 
 const linkListTranslations = {
@@ -233,7 +244,7 @@ const linkListTranslations = {
     downloadGeneral: 'Lataa yleiset CSV',
     downloadRegional: 'Lataa alueelliset CSV',
     allLinks: 'Kaikki linkit',
-    allLinksSubtitle: 'Yleiset + alueelliset',
+    allLinksSubtitle: 'Eri verkko-osoitetta',
     generalLinks: 'Yleiset linkit',
     regionalLinks: 'Alueelliset linkit',
     municipalities: 'Paikkakunnat',
@@ -274,7 +285,7 @@ const linkListTranslations = {
     downloadGeneral: 'Ladda ned allmänna länkar som CSV',
     downloadRegional: 'Ladda ned regionala länkar som CSV',
     allLinks: 'Alla länkar',
-    allLinksSubtitle: 'Allmänna + regionala',
+    allLinksSubtitle: 'Olika webbadresser',
     generalLinks: 'Allmänna länkar',
     regionalLinks: 'Regionala länkar',
     municipalities: 'Kommuner',
@@ -315,7 +326,7 @@ const linkListTranslations = {
     downloadGeneral: 'Download general links as CSV',
     downloadRegional: 'Download regional links as CSV',
     allLinks: 'All links',
-    allLinksSubtitle: 'General + regional',
+    allLinksSubtitle: 'Different web addresses',
     generalLinks: 'General links',
     regionalLinks: 'Regional links',
     municipalities: 'Municipalities',
@@ -451,6 +462,17 @@ function App() {
     { id: 'municipalities', label: copy.byMunicipality, count: filteredMunicipalityRows.length },
     { id: 'general', label: copy.generalLinks, count: filteredGeneralLinks.length },
   ];
+
+  // Nakyma avautuu Alueelliset-valilehdelle, jossa valtakunnalliset linkit (esim. EETU ry)
+  // eivat nay lainkaan. Ilman tata haku nayttaisi "ei tuloksia", vaikka osuma olisi toisella
+  // valilehdella. Siirrytaan automaattisesti sinne missa tuloksia on.
+  useEffect(() => {
+    if (!search) return;
+    const active = tabs.find((tab) => tab.id === activeView);
+    if (active && active.count > 0) return;
+    const withResults = tabs.find((tab) => tab.count > 0);
+    if (withResults) setActiveView(withResults.id);
+  }, [search, activeView, filteredRegionalLinks.length, filteredMunicipalityRows.length, filteredGeneralLinks.length]);
 
   const syncMunicipalityTopScroll = () => {
     if (!municipalityTopScrollRef.current || !municipalityTableScrollRef.current) return;

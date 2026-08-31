@@ -2,6 +2,8 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { lookup } from 'node:dns/promises';
 import path from 'node:path';
 
+import { evaluateHttpsUrl } from './link-url-policy.mjs';
+
 const ROOT = process.cwd();
 const CHECK_TIMEOUT_MS = 10_000;
 const CHECK_CONCURRENCY = 12;
@@ -181,24 +183,12 @@ const isPrivateIp = (address) => {
 
 const evaluateUrlSafety = async (rawUrl) => {
   const notes = [];
-
-  let parsed;
-  try {
-    parsed = new URL(rawUrl);
-  } catch {
-    return { safety: 'virhe', notes: ['Virheellinen URL'] };
-  }
-
-  if (!['https:', 'http:'].includes(parsed.protocol)) {
-    return { safety: 'virhe', notes: [`Ei sallittu protokolla: ${parsed.protocol}`] };
-  }
+  const policy = evaluateHttpsUrl(rawUrl);
+  if (!policy.accepted) return { safety: 'virhe', notes: [policy.note] };
+  const parsed = policy.url;
 
   if (parsed.username || parsed.password) {
     notes.push('URL sisältää käyttäjätunnuksen tai salasanan');
-  }
-
-  if (parsed.protocol !== 'https:') {
-    notes.push('Ei HTTPS-yhteyttä');
   }
 
   const host = normalizeHost(parsed.hostname);
@@ -242,6 +232,16 @@ const fetchWithTimeout = async (url, options) => {
 };
 
 const checkHttp = async (url) => {
+  const policy = evaluateHttpsUrl(url);
+  if (!policy.accepted) {
+    return {
+      check: 'virhe',
+      status: '',
+      finalUrl: '',
+      notes: [policy.note],
+    };
+  }
+
   let response = null;
   let headError = null;
 
@@ -271,12 +271,16 @@ const checkHttp = async (url) => {
   }
 
   try {
-    const reachable = response.status >= 200 && response.status < 400;
+    const finalPolicy = evaluateHttpsUrl(response.url);
+    const reachable = response.status >= 200 && response.status < 400 && finalPolicy.accepted;
+    const notes = [];
+    if (response.status < 200 || response.status >= 400) notes.push(`HTTP ${response.status}`);
+    if (!finalPolicy.accepted) notes.push(`Lopullinen osoite hylättiin: ${finalPolicy.note}`);
     return {
-      check: reachable ? 'ok' : 'huomio',
+      check: reachable ? 'ok' : finalPolicy.accepted ? 'huomio' : 'virhe',
       status: String(response.status),
       finalUrl: response.url,
-      notes: reachable ? [] : [`HTTP ${response.status}`],
+      notes,
     };
   } catch (error) {
     return {
@@ -325,13 +329,12 @@ const phoneNumberAppearsInText = (text, digits) => getPhoneNumberVariants(digits
 const phoneSourcePageCache = new Map();
 
 const readPhoneSourcePage = async (rawUrl) => {
-  let sourceUrl;
-  try {
-    sourceUrl = new URL(rawUrl);
-    sourceUrl.hash = '';
-  } catch {
-    return { check: 'virhe', finalUrl: '', contentType: '', text: '', note: 'Virheellinen lähde-URL' };
+  const policy = evaluateHttpsUrl(rawUrl);
+  if (!policy.accepted) {
+    return { check: 'virhe', finalUrl: '', contentType: '', text: '', note: policy.note };
   }
+  const sourceUrl = policy.url;
+  sourceUrl.hash = '';
 
   const cacheKey = sourceUrl.toString();
   if (!phoneSourcePageCache.has(cacheKey)) {
@@ -342,6 +345,16 @@ const readPhoneSourcePage = async (rawUrl) => {
           headers: { range: `bytes=0-${PHONE_SOURCE_CHECK_BYTES - 1}` },
         });
         const contentType = response.headers.get('content-type') ?? '';
+        const finalPolicy = evaluateHttpsUrl(response.url);
+        if (!finalPolicy.accepted) {
+          return {
+            check: 'virhe',
+            finalUrl: response.url,
+            contentType,
+            text: '',
+            note: `Lopullinen lähdeosoite hylättiin: ${finalPolicy.note}`,
+          };
+        }
         if (!response.ok) {
           return {
             check: 'virhe',

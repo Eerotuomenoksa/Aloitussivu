@@ -8,8 +8,8 @@ $temporaryRoot = [IO.Path]::GetFullPath((Join-Path $workspaceRoot '.tmp'))
 $packageJson = Get-Content -LiteralPath (Join-Path $workspaceRoot 'package.json') -Raw | ConvertFrom-Json
 $version = [string]$packageJson.version
 $versionSlug = $version -replace '[^0-9A-Za-z.-]', '-'
-$packageRoot = [IO.Path]::GetFullPath((Join-Path $temporaryRoot "rel13-v$versionSlug-production-path-package"))
-$zipPath = [IO.Path]::GetFullPath((Join-Path $temporaryRoot "aloitussivu-rel13-v$versionSlug-production-path.zip"))
+$packageRoot = [IO.Path]::GetFullPath((Join-Path $temporaryRoot "rel14-v$versionSlug-production-path-package"))
+$zipPath = [IO.Path]::GetFullPath((Join-Path $temporaryRoot "aloitussivu-rel14-v$versionSlug-production-path.zip"))
 $pathPrefix = $temporaryRoot.TrimEnd([IO.Path]::DirectorySeparatorChar) + [IO.Path]::DirectorySeparatorChar
 
 if (-not $packageRoot.StartsWith($pathPrefix, [StringComparison]::OrdinalIgnoreCase)) {
@@ -55,6 +55,7 @@ try {
     $publicRoot = New-Item -ItemType Directory -Path (Join-Path $packageRoot 'wordpress_aloitus') -Force
     $privateRoot = New-Item -ItemType Directory -Path (Join-Path $packageRoot 'private_root') -Force
     $secretsRoot = New-Item -ItemType Directory -Path (Join-Path $privateRoot.FullName 'secrets') -Force
+    $dataRoot = New-Item -ItemType Directory -Path (Join-Path $privateRoot.FullName 'data') -Force
     foreach ($directory in @('logs', 'cache', 'protected_uploads')) {
         $null = New-Item -ItemType Directory -Path (Join-Path $privateRoot.FullName $directory) -Force
     }
@@ -68,9 +69,20 @@ try {
     Copy-Item -LiteralPath (Join-Path $workspaceRoot 'api/src') -Destination $privateRoot.FullName -Recurse -Force
     Copy-Item -LiteralPath (Join-Path $workspaceRoot 'api/cron') -Destination $privateRoot.FullName -Recurse -Force
     Copy-Item -LiteralPath (Join-Path $workspaceRoot 'deploy/cloudcity/production-config.example.php') -Destination (Join-Path $secretsRoot.FullName 'config.production.example.php') -Force
+    & node (Join-Path $workspaceRoot 'scripts/build-link-catalog.mjs') --output (Join-Path $dataRoot.FullName 'link-catalog.json')
+    if ($LASTEXITCODE -ne 0) {
+        throw "Linkkiluettelon muodostus epäonnistui koodilla $LASTEXITCODE."
+    }
+    $linkCatalog = Get-Content -LiteralPath (Join-Path $dataRoot.FullName 'link-catalog.json') -Raw | ConvertFrom-Json
+    if ([int]$linkCatalog.schemaVersion -ne 1 -or @($linkCatalog.links).Count -lt 2000) {
+        throw 'Tuotantopaketin linkkiluettelo on puutteellinen.'
+    }
     $migrationsRoot = New-Item -ItemType Directory -Path (Join-Path $packageRoot 'database_migrations') -Force
     Copy-Item -LiteralPath (Join-Path $workspaceRoot 'database/migrations/004_email_notifications.sql') -Destination $migrationsRoot.FullName -Force
-    Copy-Item -LiteralPath (Join-Path $workspaceRoot 'docs/rel13-v0760-sahkoposti-ilmoitukset.md') -Destination (Join-Path $packageRoot 'DEPLOY_INSTRUCTIONS.md') -Force
+    Copy-Item -LiteralPath (Join-Path $workspaceRoot 'database/migrations/005_automated_link_checks.sql') -Destination $migrationsRoot.FullName -Force
+    Copy-Item -LiteralPath (Join-Path $workspaceRoot 'database/migrations/006_link_check_hardening.sql') -Destination $migrationsRoot.FullName -Force
+    Copy-Item -LiteralPath (Join-Path $workspaceRoot 'database/migrations/007_link_check_admin_actions.sql') -Destination $migrationsRoot.FullName -Force
+    Copy-Item -LiteralPath (Join-Path $workspaceRoot 'docs/rel14-v0770-automaattinen-linkkitarkistus.md') -Destination (Join-Path $packageRoot 'DEPLOY_INSTRUCTIONS.md') -Force
 
     foreach ($directory in @('logs', 'cache', 'protected_uploads')) {
         $null = New-Item -ItemType File -Path (Join-Path $privateRoot.FullName "$directory/.keep") -Force
@@ -87,9 +99,9 @@ try {
     if ($LASTEXITCODE -ne 0 -or $workingTreeDirty -or $currentCommit -ne $commit) {
         throw 'Git-tila muuttui paketoinnin aikana. Tuotantopolun pakettia ei muodostettu.'
     }
-    $buildId = "REL-13-v$version-$commit"
-    [ordered]@{
-        package = 'REL-13'
+    $buildId = "REL-14-v$version-$commit"
+    $buildInfoJson = [ordered]@{
+        package = 'REL-14'
         mode = 'production-path'
         buildId = $buildId
         publicUrl = 'https://seniorsurf.fi/aloitus/'
@@ -100,10 +112,15 @@ try {
         commit = $commit
         workingTreeDirty = $false
         builtAtUtc = [DateTime]::UtcNow.ToString('o')
-        schemaMigrations = @('001_initial_schema', '002_add_link_reports_triage_index', '003_usage_context_daily', '004_email_notifications')
-        backgroundJobs = @('ncsc', 'notifications', 'email-dispatch')
+        schemaMigrations = @('001_initial_schema', '002_add_link_reports_triage_index', '003_usage_context_daily', '004_email_notifications', '005_automated_link_checks', '006_link_check_hardening', '007_link_check_admin_actions')
+        backgroundJobs = @('ncsc', 'notifications', 'email-dispatch', 'link-check')
         manualTools = @('smtp-test')
-    } | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $packageRoot 'build-info.json') -Encoding utf8
+    } | ConvertTo-Json
+    [IO.File]::WriteAllText(
+        (Join-Path $packageRoot 'build-info.json'),
+        $buildInfoJson + [Environment]::NewLine,
+        [Text.UTF8Encoding]::new($false)
+    )
 
     Add-Type -AssemblyName System.IO.Compression
     Add-Type -AssemblyName System.IO.Compression.FileSystem

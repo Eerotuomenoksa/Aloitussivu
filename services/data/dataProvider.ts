@@ -10,6 +10,7 @@ export type AdminListResource =
   | 'blocked-links'
   | 'scam-alerts'
   | 'ncsc-logs'
+  | 'link-checks'
   | 'usage-stats';
 export type AdminMutableResource =
   | 'link-reports'
@@ -18,6 +19,7 @@ export type AdminMutableResource =
   | 'blocked-links'
   | 'scam-alerts';
 export type AdminAction = 'ncsc-run';
+export type LinkCheckAdminAction = 'approve' | 'block';
 
 export type MutationReceipt = {
   id?: string;
@@ -49,6 +51,7 @@ export interface DataProvider {
   updateAdmin(resource: AdminMutableResource, id: string, payload: Record<string, unknown>): Promise<MutationReceipt>;
   deleteAdmin(resource: 'approved-links' | 'blocked-links', id: string): Promise<void>;
   runAdminAction<T>(action: AdminAction): Promise<T>;
+  actOnLinkCheck(urlHash: string, action: LinkCheckAdminAction, reason: string): Promise<MutationReceipt>;
   getFeedbackAttachment(feedbackId: string): Promise<AdminAttachment | null>;
 }
 

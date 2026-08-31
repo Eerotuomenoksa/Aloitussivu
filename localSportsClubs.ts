@@ -8,7 +8,7 @@ export const LOCAL_SPORTS_CLUBS: RegionalProvider[] = [
   { name: 'HJK', url: 'https://hjk.fi/', group: 'Helsinki', municipality: 'Helsinki', specialty: 'Jalkapallo' },
   { name: 'HIFK Fotboll', url: 'https://hifkfotboll.fi/', group: 'Helsinki', municipality: 'Helsinki', specialty: 'Jalkapallo' },
   { name: 'Tapiolan Honka', url: 'https://www.tapiolanhonka.fi/', group: 'Espoo', municipality: 'Espoo', specialty: 'Koripallo' },
-  { name: 'Esport Oilers', url: 'https://www.esportoilers.fi/', group: 'Espoo', municipality: 'Espoo', specialty: 'Salibandy' },
+  { name: 'Esport Oilers', url: 'https://oilers.fi/', group: 'Espoo', municipality: 'Espoo', specialty: 'Salibandy' },
   { name: 'Vantaan Jalkapalloseura', url: 'https://vjs.fi/', group: 'Vantaa', municipality: 'Vantaa', specialty: 'Jalkapallo' },
   { name: 'Ilves', url: 'https://ilves.fi/', group: 'Tampere', municipality: 'Tampere', specialty: 'Urheiluseura' },
   { name: 'Tappara', url: 'https://www.tappara.fi/', group: 'Tampere', municipality: 'Tampere', specialty: 'Jääkiekko' },

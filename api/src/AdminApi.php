@@ -16,6 +16,7 @@ final class AdminApi
         private readonly AdminAuthenticator $authenticator,
         private readonly AttachmentStorage $attachments,
         private readonly NcscJob $ncscJob,
+        private readonly Config $config,
         private readonly string $basePath = '',
     ) {
     }
@@ -40,6 +41,8 @@ final class AdminApi
         $router->add('PATCH', '/api/v1/admin/scam-alerts/{id}', fn (Request $request): Response => $this->updateScamAlert($request));
         $router->add('GET', '/api/v1/admin/ncsc-logs', fn (Request $request): Response => $this->ncscLogs($request));
         $router->add('POST', '/api/v1/admin/ncsc-run', fn (Request $request): Response => $this->runNcsc($request));
+        $router->add('GET', '/api/v1/admin/link-checks', fn (Request $request): Response => $this->linkChecks($request));
+        $router->add('POST', '/api/v1/admin/link-checks/{urlHash}/action', fn (Request $request): Response => $this->linkCheckAction($request));
         $router->add('GET', '/api/v1/admin/usage-stats', fn (Request $request): Response => $this->usageStats($request));
         $router->add('GET', '/api/v1/admin/audit-log', fn (Request $request): Response => $this->auditLog($request));
     }
@@ -504,6 +507,266 @@ final class AdminApi
         ]);
     }
 
+    private function linkChecks(Request $request): Response
+    {
+        $this->authenticator->authenticate($request);
+        $now = self::databaseNow();
+        $threshold = $this->config->linkCheckAlertAfterFailures;
+        $summary = $this->database->fetchOne(
+            'SELECT COUNT(*) AS total, '
+            . "SUM(CASE WHEN t.last_status = 'pending' THEN 1 ELSE 0 END) AS pending, "
+            . "SUM(CASE WHEN t.last_status = 'ok' THEN 1 ELSE 0 END) AS ok_count, "
+            . "SUM(CASE WHEN t.last_status = 'warning' THEN 1 ELSE 0 END) AS warning_count, "
+            . "SUM(CASE WHEN t.last_status = 'failed' THEN 1 ELSE 0 END) AS failing, "
+            . "SUM(CASE WHEN t.last_status = 'rejected' THEN 1 ELSE 0 END) AS rejected_count, "
+            . "SUM(CASE WHEN t.final_domain_changed = 1 AND b.id IS NULL AND (o.id IS NULL OR "
+            . "(o.scope <> 'all' AND (o.scope <> 'redirect' OR o.expected_final_url IS NULL "
+            . "OR o.expected_final_url <> t.final_url))) THEN 1 ELSE 0 END) AS domain_changed, "
+            . "SUM(CASE WHEN b.id IS NULL AND ((t.last_status = 'failed' AND t.failure_count >= :threshold "
+            . "AND (o.id IS NULL OR o.scope <> 'all')) OR (t.final_domain_changed = 1 "
+            . "AND (o.id IS NULL OR (o.scope <> 'all' AND (o.scope <> 'redirect' "
+            . "OR o.expected_final_url IS NULL OR o.expected_final_url <> t.final_url))))) THEN 1 ELSE 0 END) AS attention, "
+            . 'SUM(CASE WHEN t.next_check_at <= :due_now THEN 1 ELSE 0 END) AS due_count, '
+            . 'MIN(t.last_checked_at) AS oldest_checked_at '
+            . 'FROM link_check_targets t '
+            . 'LEFT JOIN blocked_links b ON b.url_hash = UNHEX(t.url_hash) '
+            . "LEFT JOIN link_check_overrides o ON o.url_hash = t.url_hash "
+            . "AND o.status IN ('verified', 'exception') AND o.next_review_at >= :override_now "
+            . 'WHERE t.catalog_active = 1 OR t.approved_active = 1',
+            ['threshold' => $threshold, 'due_now' => $now, 'override_now' => $now],
+        ) ?? [];
+        $lastRun = $this->database->fetchOne(
+            'SELECT id, started_at, finished_at, status, catalog_count, approved_count, checked_count, ok_count, '
+            . 'warning_count, failed_count, rejected_count, blocked_count, unblocked_count, message_code '
+            . 'FROM link_check_runs ORDER BY started_at DESC LIMIT 1',
+        );
+        $items = $this->database->fetchAll(
+            'SELECT t.url_hash, t.url, t.name, t.category, t.source, t.last_checked_at, t.next_check_at, '
+            . 't.last_status, t.http_status, t.final_url, t.failure_count, t.last_error_code, t.response_ms '
+            . 'FROM link_check_targets t '
+            . 'LEFT JOIN blocked_links b ON b.url_hash = UNHEX(t.url_hash) '
+            . "LEFT JOIN link_check_overrides o ON o.url_hash = t.url_hash "
+            . "AND o.status IN ('verified', 'exception') AND o.next_review_at >= :override_now "
+            . "WHERE (t.catalog_active = 1 OR t.approved_active = 1) AND b.id IS NULL "
+            . "AND t.last_status = 'failed' AND t.failure_count >= :threshold AND (o.id IS NULL OR o.scope <> 'all') "
+            . 'ORDER BY t.failure_count DESC, t.last_checked_at DESC LIMIT 200',
+            ['threshold' => $threshold, 'override_now' => $now],
+        );
+        $rejectedItems = $this->database->fetchAll(
+            'SELECT url_hash, url, name, category, source, last_checked_at, next_check_at, last_status, http_status, '
+            . 'final_url, failure_count, last_error_code, response_ms '
+            . "FROM link_check_targets WHERE (catalog_active = 1 OR approved_active = 1) AND last_status = 'rejected' "
+            . 'ORDER BY last_checked_at DESC LIMIT 200',
+        );
+        $domainChangedItems = $this->database->fetchAll(
+            'SELECT t.url_hash, t.url, t.name, t.category, t.source, t.last_checked_at, t.next_check_at, '
+            . 't.last_status, t.http_status, t.final_url, t.failure_count, t.last_error_code, t.response_ms '
+            . 'FROM link_check_targets t '
+            . 'LEFT JOIN blocked_links b ON b.url_hash = UNHEX(t.url_hash) '
+            . "LEFT JOIN link_check_overrides o ON o.url_hash = t.url_hash "
+            . "AND o.status IN ('verified', 'exception') AND o.next_review_at >= :override_now "
+            . "WHERE (t.catalog_active = 1 OR t.approved_active = 1) AND b.id IS NULL "
+            . "AND t.final_domain_changed = 1 AND (o.id IS NULL OR (o.scope <> 'all' AND (o.scope <> 'redirect' "
+            . "OR o.expected_final_url IS NULL OR o.expected_final_url <> t.final_url))) "
+            . 'ORDER BY t.last_checked_at DESC LIMIT 200',
+            ['override_now' => $now],
+        );
+        $runs = $this->database->fetchAll(
+            'SELECT id, started_at, finished_at, status, checked_count, ok_count, warning_count, failed_count, '
+            . 'rejected_count, blocked_count, unblocked_count, message_code '
+            . 'FROM link_check_runs ORDER BY started_at DESC LIMIT 20',
+        );
+        $mapRun = static fn (array $row): array => [
+            'id' => (string) ($row['id'] ?? ''),
+            'startedAt' => self::isoDate($row['started_at'] ?? ''),
+            'finishedAt' => self::nullableIsoDate($row['finished_at'] ?? null),
+            'status' => (string) ($row['status'] ?? ''),
+            'catalogCount' => (int) ($row['catalog_count'] ?? 0),
+            'approvedCount' => (int) ($row['approved_count'] ?? 0),
+            'checked' => (int) ($row['checked_count'] ?? 0),
+            'ok' => (int) ($row['ok_count'] ?? 0),
+            'warnings' => (int) ($row['warning_count'] ?? 0),
+            'failed' => (int) ($row['failed_count'] ?? 0),
+            'rejected' => (int) ($row['rejected_count'] ?? 0),
+            'blocked' => (int) ($row['blocked_count'] ?? 0),
+            'unblocked' => (int) ($row['unblocked_count'] ?? 0),
+            'messageCode' => self::nullableString($row['message_code'] ?? null),
+        ];
+        $mapItem = static fn (array $row): array => [
+            'id' => (string) ($row['url_hash'] ?? ''),
+            'url' => (string) ($row['url'] ?? ''),
+            'name' => (string) ($row['name'] ?? ''),
+            'category' => (string) ($row['category'] ?? ''),
+            'source' => (string) ($row['source'] ?? ''),
+            'lastCheckedAt' => self::nullableIsoDate($row['last_checked_at'] ?? null),
+            'nextCheckAt' => self::isoDate($row['next_check_at'] ?? ''),
+            'status' => (string) ($row['last_status'] ?? ''),
+            'httpStatus' => isset($row['http_status']) ? (int) $row['http_status'] : null,
+            'finalUrl' => self::nullableString($row['final_url'] ?? null),
+            'failureCount' => (int) ($row['failure_count'] ?? 0),
+            'errorCode' => self::nullableString($row['last_error_code'] ?? null),
+            'responseMs' => isset($row['response_ms']) ? (int) $row['response_ms'] : null,
+        ];
+        $totalTargets = (int) ($summary['total'] ?? 0);
+        $dailyCapacity = max(1, $this->config->linkCheckBatchSize * 24);
+        return $this->data($request, [
+            'enabled' => $this->config->linkCheckEnabled,
+            'autoBlockEnabled' => $this->config->linkCheckAutoBlockEnabled,
+            'alertAfterFailures' => $threshold,
+            'summary' => [
+                'total' => (int) ($summary['total'] ?? 0),
+                'pending' => (int) ($summary['pending'] ?? 0),
+                'ok' => (int) ($summary['ok_count'] ?? 0),
+                'warnings' => (int) ($summary['warning_count'] ?? 0),
+                'failing' => (int) ($summary['failing'] ?? 0),
+                'rejected' => (int) ($summary['rejected_count'] ?? 0),
+                'domainChanged' => (int) ($summary['domain_changed'] ?? 0),
+                'attention' => (int) ($summary['attention'] ?? 0),
+                'due' => (int) ($summary['due_count'] ?? 0),
+                'oldestCheckedAt' => self::nullableIsoDate($summary['oldest_checked_at'] ?? null),
+                'estimatedCycleDays' => round($totalTargets / $dailyCapacity, 1),
+            ],
+            'lastRun' => $lastRun === null ? null : $mapRun($lastRun),
+            'items' => array_map($mapItem, $items),
+            'rejectedItems' => array_map($mapItem, $rejectedItems),
+            'domainChangedItems' => array_map($mapItem, $domainChangedItems),
+            'runs' => array_map($mapRun, $runs),
+        ]);
+    }
+
+    private function linkCheckAction(Request $request): Response
+    {
+        $actor = $this->authenticator->authenticate($request, true);
+        $urlHash = $this->routeUrlHash($request);
+        $data = Validator::jsonObject($request);
+        Validator::shape($data, ['action', 'reason'], ['action', 'reason']);
+        $action = Validator::enum($data, 'action', ['approve', 'block']);
+        $reason = Validator::string($data, 'reason', 3, 900);
+        $nowDate = new DateTimeImmutable('now', new DateTimeZone('UTC'));
+        $now = $nowDate->format('Y-m-d H:i:s.u');
+        $nextReviewAt = $nowDate->modify('+3 months')->format('Y-m-d H:i:s.u');
+
+        $this->database->transaction(function (DatabaseConnection $database) use (
+            $actor,
+            $urlHash,
+            $action,
+            $reason,
+            $now,
+            $nextReviewAt,
+        ): void {
+            $target = $database->fetchOne(
+                'SELECT url_hash, url, last_status, final_url, final_domain_changed FROM link_check_targets '
+                . 'WHERE url_hash = :url_hash AND (catalog_active = 1 OR approved_active = 1) FOR UPDATE',
+                ['url_hash' => $urlHash],
+            );
+            if ($target === null) {
+                throw $this->notFound();
+            }
+
+            if ($action === 'approve') {
+                $scope = ($target['last_status'] ?? null) === 'failed'
+                    ? 'all'
+                    : ((bool) ($target['final_domain_changed'] ?? false) ? 'redirect' : 'bot_protection');
+                $status = $scope === 'redirect' ? 'verified' : 'exception';
+                $expectedFinalUrl = $scope === 'redirect' ? self::nullableString($target['final_url'] ?? null) : null;
+                $existing = $database->fetchOne(
+                    'SELECT id FROM link_check_overrides WHERE url_hash = :url_hash LIMIT 1 FOR UPDATE',
+                    ['url_hash' => $urlHash],
+                );
+                $overrideId = (string) ($existing['id'] ?? Uuid::generate());
+                if ($existing === null) {
+                    $database->execute(
+                        'INSERT INTO link_check_overrides '
+                        . '(id, url_hash, status, scope, reason, expected_final_url, verified_at, next_review_at, created_at, updated_at, created_by) '
+                        . 'VALUES (:id, :url_hash, :status, :scope, :reason, :expected_final_url, :verified_at, :next_review_at, :created_at, :updated_at, :created_by)',
+                        [
+                            'id' => $overrideId,
+                            'url_hash' => $urlHash,
+                            'status' => $status,
+                            'scope' => $scope,
+                            'reason' => $reason,
+                            'expected_final_url' => $expectedFinalUrl,
+                            'verified_at' => $now,
+                            'next_review_at' => $nextReviewAt,
+                            'created_at' => $now,
+                            'updated_at' => $now,
+                            'created_by' => $actor->uid,
+                        ],
+                    );
+                } else {
+                    $database->execute(
+                        'UPDATE link_check_overrides SET status = :status, scope = :scope, reason = :reason, expected_final_url = :expected_final_url, '
+                        . 'verified_at = :verified_at, next_review_at = :next_review_at, updated_at = :updated_at, '
+                        . 'created_by = :created_by WHERE url_hash = :url_hash',
+                        [
+                            'url_hash' => $urlHash,
+                            'status' => $status,
+                            'scope' => $scope,
+                            'reason' => $reason,
+                            'expected_final_url' => $expectedFinalUrl,
+                            'verified_at' => $now,
+                            'next_review_at' => $nextReviewAt,
+                            'updated_at' => $now,
+                            'created_by' => $actor->uid,
+                        ],
+                    );
+                }
+                $database->execute(
+                    "DELETE FROM blocked_links WHERE url_hash = UNHEX(:url_hash) AND created_by IS NULL AND reason LIKE 'auto:%'",
+                    ['url_hash' => $urlHash],
+                );
+                $database->execute(
+                    'UPDATE link_check_targets SET auto_blocked_at = NULL WHERE url_hash = :url_hash',
+                    ['url_hash' => $urlHash],
+                );
+                $this->audit($database, $actor, 'link_check.approve', 'link_check_target', $urlHash, [
+                    'scope' => $scope,
+                    'expectedFinalUrl' => $expectedFinalUrl,
+                    'nextReviewAt' => self::isoDate($nextReviewAt),
+                ]);
+                return;
+            }
+
+            $existingBlock = $database->fetchOne(
+                'SELECT id FROM blocked_links WHERE url_hash = UNHEX(:url_hash) LIMIT 1 FOR UPDATE',
+                ['url_hash' => $urlHash],
+            );
+            $blockId = (string) ($existingBlock['id'] ?? Uuid::generate());
+            if ($existingBlock === null) {
+                $database->execute(
+                    'INSERT INTO blocked_links (id, url, url_hash, reason, created_at, created_by) '
+                    . 'VALUES (:id, :url, UNHEX(:url_hash), :reason, :created_at, :created_by)',
+                    [
+                        'id' => $blockId,
+                        'url' => (string) ($target['url'] ?? ''),
+                        'url_hash' => $urlHash,
+                        'reason' => 'manual:' . $reason,
+                        'created_at' => $now,
+                        'created_by' => $actor->uid,
+                    ],
+                );
+            } else {
+                $database->execute(
+                    'UPDATE blocked_links SET reason = :reason, created_by = :created_by WHERE id = :id',
+                    ['id' => $blockId, 'reason' => 'manual:' . $reason, 'created_by' => $actor->uid],
+                );
+            }
+            $database->execute(
+                "UPDATE link_check_overrides SET status = 'retired', updated_at = :updated_at WHERE url_hash = :url_hash",
+                ['url_hash' => $urlHash, 'updated_at' => $now],
+            );
+            $database->execute(
+                'UPDATE link_check_targets SET auto_blocked_at = NULL WHERE url_hash = :url_hash',
+                ['url_hash' => $urlHash],
+            );
+            $this->audit($database, $actor, 'link_check.block', 'link_check_target', $urlHash, [
+                'blockedLinkId' => $blockId,
+            ]);
+        });
+
+        return $this->updated($request, $urlHash, $now);
+    }
+
     private function auditLog(Request $request): Response
     {
         $this->authenticator->authenticate($request);
@@ -590,6 +853,15 @@ final class AdminApi
     private function routeId(Request $request): string
     {
         return Validator::uuid(['id' => $request->pathParameter('id')], 'id');
+    }
+
+    private function routeUrlHash(Request $request): string
+    {
+        $urlHash = strtolower(trim($request->pathParameter('urlHash')));
+        if (preg_match('/^[a-f0-9]{64}$/D', $urlHash) !== 1) {
+            throw new ApiException(422, 'validation_error', 'Linkin tunniste ei kelpaa.');
+        }
+        return $urlHash;
     }
 
     /** @param array<string, mixed> $data */

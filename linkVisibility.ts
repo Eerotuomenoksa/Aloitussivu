@@ -126,7 +126,7 @@ const updateLocalLinkReportStatus = (
 
 export const isLinkVisible = (url?: string | null) => {
   if (!url) return false;
-  if (/^http:\/\//i.test(url.trim())) return false;
+  if (!normalizeReportUrl(url)) return false;
   return !blockedUrlsCache.has(normalizeUrl(url));
 };
 

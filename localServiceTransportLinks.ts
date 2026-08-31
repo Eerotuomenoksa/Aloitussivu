@@ -301,7 +301,7 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
     municipality: "joroinen",
     provider: {
       name: "Joroinen palveluliikenne",
-      url: "https://www.joroinen.fi/asuminen-ja-ymparisto/liikenne/palveluliikenne-pali/",
+      url: "https://www.joroinen.fi/asuminen-ja-ymparisto/kadut-tiet-ja-liikenne/joukkoliikenne-ja-pali/",
       group: 'Palveluliikenne',
     },
     evidence: "Palveluliikenne PALI - joroinen.fi; termit: palveluliikenne; kutsujoukkoliikenne",
@@ -553,7 +553,7 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
     municipality: "kiuruvesi",
     provider: {
       name: "Kiuruvesi palveluliikenne",
-      url: "https://kiuruvesi.fi/asuminen-ja-ymparisto/liikenne/palveluliikenne/",
+      url: "https://kiuruvesi.fi/palvelut/matkailu/paikallisliikenneaikataulut/",
       group: 'Palveluliikenne',
     },
     evidence: "Palveluliikenne - Kiuruvesi; termit: palveluliikenne; asiointireitit; kutsutaksi; tarkistettu 2026-07-09",
@@ -607,7 +607,7 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
     municipality: "kuopio",
     provider: {
       name: "Kuopio PALI-palveluliikenne",
-      url: "https://vilkku.kuopio.fi/pali",
+      url: "https://vilkku.kuopio.fi/aikataulut-ja-reitit/palveluliikenne-pali",
       group: 'Palveluliikenne',
     },
     evidence: "PALI-palveluliikenne - Vilkku; termit: palveluliikenne; Kuopio; tarkistettu 2026-07-09",
@@ -688,7 +688,7 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
     municipality: "lapinlahti",
     provider: {
       name: "Lapinlahti asiointiliikenne",
-      url: "https://lapinlahti.fi/liikenne/",
+      url: "https://lapinlahti.fi/fi/asuminen-ja-ymparisto/kadut-ja-liikenne/joukkoliikenne",
       group: 'Palveluliikenne',
     },
     evidence: "Liikenne - Lapinlahti; termit: asiointiliikenne; kutsuperusteista; tarkistettu 2026-07-09",
@@ -1039,7 +1039,7 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
     municipality: "parikkala",
     provider: {
       name: "Parikkala palveluliikenne",
-      url: "https://parikkala.fi/asuminen-ja-ymparisto/joukkoliikenne/",
+      url: "https://parikkala.fi/asuminen-ja-ymparisto/asiointiliikenne/",
       group: 'Palveluliikenne',
     },
     evidence: "Asiointiliikenne - Parikkala; termit: asiointiliikenne",
@@ -1160,15 +1160,6 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
       group: 'Palveluliikenne',
     },
     evidence: "Asiointiliikenne - Posion kunta; termit: asiointiliikenne; kutsuliikenne; kutsutaksi",
-  },
-  {
-    municipality: "pudasjärvi",
-    provider: {
-      name: "Pudasjärvi palveluliikenne",
-      url: "https://www.pudasjarvi.fi/asuminen-ja-ymparisto/liikenneyhteydet/asiointiliikenne/",
-      group: 'Palveluliikenne',
-    },
-    evidence: "Asiointiliikenne - Pudasjärvi; termit: asiointiliikenne; kutsutaksi",
   },
   {
     municipality: "puumala",
@@ -1480,7 +1471,7 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
     municipality: "sonkajärvi",
     provider: {
       name: "Sonkajärvi asiointi- ja palveluliikenne",
-      url: "https://www.sonkajarvi.fi/asuminen-ja-ymparisto/tiet-ja-liikenne/joukkoliikenne/",
+      url: "https://sonkajarvi.fi/fi/asuminen-ja-ymparisto/tiet-ja-liikenne/julkinen-liikenne/pali-palveluliikenne",
       group: 'Palveluliikenne',
     },
     evidence: "Joukkoliikenne - Sonkajärvi; termit: asiointi- ja palveluliikenne; kutsutaksi; tarkistettu 2026-07-09",
@@ -1790,15 +1781,6 @@ export const LOCAL_SERVICE_TRANSPORT_LINKS: LocalServiceTransportEntry[] = [
       group: 'Palveluliikenne',
     },
     evidence: "Palveluliikenne - Ylöjärvi; termit: palveluliikenne; asiointiliikenne; palvelubussi",
-  },
-  {
-    municipality: "ähtäri",
-    provider: {
-      name: "Ähtäri asiointiliikenne",
-      url: "https://www.petripekkala.com/asiointiliikenne.html",
-      group: 'Palveluliikenne',
-    },
-    evidence: "Asiointiliikenne - Petri Pekkala; palveluntuottajan ajantasainen asiointiliikennesivu Ähtärissä, päivitetty 28.3.2026; tarkistettu 2026-07-09",
   },
   {
     municipality: "äänekoski",

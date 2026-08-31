@@ -16,6 +16,7 @@ const storageKeys = {
   feedback: 'feedbackItems',
   'test-feedback': 'testFeedbackResponses',
   'ncsc-logs': 'ncscScrapeLog',
+  'link-checks': 'linkChecks',
   'usage-stats': 'usageStats',
 } as const;
 
@@ -109,6 +110,10 @@ export const localDataProvider: DataProvider = {
 
   async runAdminAction<T>() {
     throw new DataProviderError('Ylläpidon käsiajoa ei tueta paikallisproviderissa.', 'unsupported_operation');
+  },
+
+  async actOnLinkCheck() {
+    throw new DataProviderError('Linkkitarkistuksen huomioita ei käsitellä paikallisproviderissa.', 'unsupported_operation');
   },
 
   async getFeedbackAttachment(feedbackId: string): Promise<AdminAttachment | null> {

@@ -39,27 +39,43 @@ final class NotificationReportBuilder
             . "(SELECT MIN(created_at) FROM feedback_items WHERE status IN ('new', 'triage', 'planned', 'in_progress')) AS feedback_oldest, "
             . "(SELECT COUNT(*) FROM link_reports WHERE status = 'pending') AS links_pending, "
             . "(SELECT MIN(created_at) FROM link_reports WHERE status = 'pending') AS links_oldest, "
+            . "(SELECT COUNT(*) FROM link_check_targets t "
+            . "LEFT JOIN blocked_links b ON b.url_hash = UNHEX(t.url_hash) "
+            . "LEFT JOIN link_check_overrides o ON o.url_hash = t.url_hash AND o.scope = 'all' "
+            . "AND o.status IN ('verified', 'exception') AND o.next_review_at >= :link_override_now "
+            . "WHERE (t.catalog_active = 1 OR t.approved_active = 1) AND b.id IS NULL AND o.id IS NULL "
+            . "AND t.last_status = 'failed' AND t.failure_count >= :link_failure_threshold) AS link_check_attention, "
+            . '(SELECT MAX(started_at) FROM link_check_runs) AS link_check_last_run, '
+            . '(SELECT message_code FROM link_check_runs ORDER BY started_at DESC LIMIT 1) AS link_check_last_message, '
             . '(SELECT COUNT(*) FROM scam_alerts WHERE active = 1 AND expires_at >= :now '
             . 'AND expires_at < :expiry_limit) AS alerts_expiring, '
             . '(SELECT MAX(processed_at) FROM ncsc_scrape_logs) AS ncsc_last_run',
             [
                 'now' => $utcNow->format('Y-m-d H:i:s.u'),
+                'link_override_now' => $utcNow->format('Y-m-d H:i:s.u'),
                 'expiry_limit' => $utcNow->modify('+7 days')->format('Y-m-d H:i:s.u'),
+                'link_failure_threshold' => $this->config->linkCheckAlertAfterFailures,
             ],
         ) ?? [];
 
         $feedback = (int) ($row['feedback_open'] ?? 0);
         $links = (int) ($row['links_pending'] ?? 0);
         $alerts = (int) ($row['alerts_expiring'] ?? 0);
+        $linkCheckAttention = (int) ($row['link_check_attention'] ?? 0);
+        $lastLinkCheck = $this->parseUtc($row['link_check_last_run'] ?? null);
+        $linkCheckStale = $this->config->linkCheckEnabled
+            && ($lastLinkCheck === null || $lastLinkCheck < $utcNow->modify('-2 hours'));
+        $networkSuspectRepeated = ($row['link_check_last_message'] ?? null) === 'network_suspect_repeated';
         $lastNcsc = $this->parseUtc($row['ncsc_last_run'] ?? null);
         $ncscStale = $lastNcsc === null || $lastNcsc < $utcNow->modify('-2 days');
-        if ($feedback + $links + $alerts === 0 && !$ncscStale) {
+        if ($feedback + $links + $alerts + $linkCheckAttention === 0 && !$ncscStale && !$linkCheckStale && !$networkSuspectRepeated) {
             return null;
         }
 
         $feedbackAge = $this->oldestAgeDays($row['feedback_oldest'] ?? null, $utcNow);
         $linksAge = $this->oldestAgeDays($row['links_oldest'] ?? null, $utcNow);
-        $attentionCount = ($feedback > 0 ? 1 : 0) + ($links > 0 ? 1 : 0) + ($alerts > 0 ? 1 : 0) + ($ncscStale ? 1 : 0);
+        $attentionCount = ($feedback > 0 ? 1 : 0) + ($links > 0 ? 1 : 0) + ($alerts > 0 ? 1 : 0)
+            + ($linkCheckAttention > 0 || $linkCheckStale || $networkSuspectRepeated ? 1 : 0) + ($ncscStale ? 1 : 0);
         $items = [
             [
                 'name' => 'Avoimet palautteet',
@@ -81,6 +97,17 @@ final class NotificationReportBuilder
                 'detail' => 'Mukana ovat aktiiviset varoitukset, joiden voimassaolo päättyy seuraavan seitsemän vuorokauden aikana.',
                 'explanation' => 'Tarkista, pitääkö varoituksen voimassaoloa jatkaa vai voiko sen antaa poistua näkyvistä.',
                 'attention' => $alerts > 0,
+            ],
+            [
+                'name' => 'Automaattisen linkkitarkistuksen ongelmat',
+                'value' => (string) $linkCheckAttention,
+                'detail' => $networkSuspectRepeated
+                    ? 'Kaksi peräkkäistä ajoa keskeytyi epäillyn palvelinverkon tai DNS-yhteyden vian vuoksi. Linkkien vikalaskureita ei muutettu.'
+                    : ($linkCheckAttention > 0
+                        ? sprintf('%d linkkiä on epäonnistunut vähintään %d peräkkäisessä tarkistuksessa.', $linkCheckAttention, $this->config->linkCheckAlertAfterFailures)
+                        : ($linkCheckStale ? 'Ajastus ei ole kirjannut uutta ajoa kahteen tuntiin.' : 'Vahvistettuja linkkiongelmia ei ole.')),
+                'explanation' => 'Linkki nostetaan ylläpidolle vasta toistuvan virheen jälkeen. Joukkovirhekatkaisin erottaa palvelimen oman verkkovian kohdesivujen vioista.',
+                'attention' => $linkCheckAttention > 0 || $linkCheckStale || $networkSuspectRepeated,
             ],
             [
                 'name' => 'NCSC-päivitys',

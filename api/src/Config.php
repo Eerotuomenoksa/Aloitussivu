@@ -31,6 +31,16 @@ final class Config
         public readonly string $smtpEncryption,
         public readonly string $smtpUsername,
         public readonly string $smtpPassword,
+        public readonly bool $linkCheckEnabled,
+        public readonly int $linkCheckBatchSize,
+        public readonly int $linkCheckTimeoutSeconds,
+        public readonly int $linkCheckRefreshDays,
+        public readonly int $linkCheckRetryHours,
+        public readonly int $linkCheckAlertAfterFailures,
+        public readonly bool $linkCheckAutoBlockEnabled,
+        public readonly int $linkCheckAutoBlockMaxPerRun,
+        public readonly bool $linkCheckAutoUnblockEnabled,
+        public readonly int $linkCheckMinIntervalHours,
     ) {
     }
 
@@ -60,6 +70,7 @@ final class Config
         $authentication = self::section($raw, 'authentication');
         $notifications = self::optionalSection($raw, 'notifications');
         $smtp = self::optionalSection($notifications, 'smtp');
+        $linkChecks = self::optionalSection($raw, 'link_checks');
 
         $environment = self::requiredString($app, 'environment');
         if (!in_array($environment, ['local', 'testing', 'staging', 'production'], true)) {
@@ -184,6 +195,20 @@ final class Config
             }
         }
 
+        $linkCheckEnabled = self::boolValue($linkChecks, 'enabled', false);
+        $linkCheckBatchSize = self::boundedInt($linkChecks, 'batch_size', 10, 1, 50);
+        $linkCheckTimeoutSeconds = self::boundedInt($linkChecks, 'timeout_seconds', 8, 2, 20);
+        $linkCheckRefreshDays = self::boundedInt($linkChecks, 'refresh_days', 30, 1, 365);
+        $linkCheckRetryHours = self::boundedInt($linkChecks, 'retry_hours', 24, 1, 168);
+        $linkCheckAlertAfterFailures = self::boundedInt($linkChecks, 'alert_after_failures', 2, 1, 10);
+        // LC-02: automaattinen piilotus on oletuksena POIS. Ota kayttoon vasta kun putki on
+        // ajanut tuotannossa yhden taydellisen kierroksen ja tulokset on katsottu lapi.
+        $linkCheckAutoBlockEnabled = self::boolValue($linkChecks, 'auto_block_enabled', false);
+        $linkCheckAutoBlockMaxPerRun = self::boundedInt($linkChecks, 'auto_block_max_per_run', 25, 1, 200);
+        $linkCheckAutoUnblockEnabled = self::boolValue($linkChecks, 'auto_unblock_enabled', true);
+        // LC-03: lyhin vali johon mukautuva ajastus voi laskea.
+        $linkCheckMinIntervalHours = self::boundedInt($linkChecks, 'min_interval_hours', 72, 6, 720);
+
         return new self(
             environment: $environment,
             origin: $origin,
@@ -209,6 +234,16 @@ final class Config
             smtpEncryption: $smtpEncryption,
             smtpUsername: $smtpUsername,
             smtpPassword: $smtpPassword,
+            linkCheckEnabled: $linkCheckEnabled,
+            linkCheckBatchSize: $linkCheckBatchSize,
+            linkCheckTimeoutSeconds: $linkCheckTimeoutSeconds,
+            linkCheckRefreshDays: $linkCheckRefreshDays,
+            linkCheckRetryHours: $linkCheckRetryHours,
+            linkCheckAlertAfterFailures: $linkCheckAlertAfterFailures,
+            linkCheckAutoBlockEnabled: $linkCheckAutoBlockEnabled,
+            linkCheckAutoBlockMaxPerRun: $linkCheckAutoBlockMaxPerRun,
+            linkCheckAutoUnblockEnabled: $linkCheckAutoUnblockEnabled,
+            linkCheckMinIntervalHours: $linkCheckMinIntervalHours,
         );
     }
 
@@ -281,6 +316,16 @@ final class Config
         $value = $values[$key] ?? $default;
         if (!is_int($value)) {
             throw new ConfigException(sprintf('API configuration value %s must be an integer.', $key));
+        }
+        return $value;
+    }
+
+    /** @param array<string, mixed> $values */
+    private static function boundedInt(array $values, string $key, int $default, int $minimum, int $maximum): int
+    {
+        $value = self::intValue($values, $key, $default);
+        if ($value < $minimum || $value > $maximum) {
+            throw new ConfigException(sprintf('API configuration value %s must be between %d and %d.', $key, $minimum, $maximum));
         }
         return $value;
     }

@@ -181,7 +181,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Auran kunta",
-        "url": "http://www.aura.fi/kirjasto/",
+        "url": "https://www.aura.fi/kirjasto/",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -366,7 +366,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Eläkeliiton Rovaniemen yhdistys",
-        "url": "https://www.elakeliitto.fi/muut-viikottaiset-kerhot",
+        "url": "https://rovaniemi.elakeliitto.fi/",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -430,7 +430,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
       },
       {
         "name": "Espoon kaupunginkirjasto",
-        "url": "https://www.helmet.fi/fi-FI/Kirjastot_ja_palvelut/Entressen_kirjasto",
+        "url": "https://www.espoo.fi/fi/toimipisteet/15321",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -487,7 +487,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Kouvolan eri yhteisöt",
-        "url": "https://www.kouvola.fi/kouvolankaupunki/asiointi/digituki-2/digituki-yhteisotiloissa/",
+        "url": "https://www.kouvola.fi/kouvolankaupunki/asiointi/digituki-2/",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -582,7 +582,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Närpes pensionärsförening",
-        "url": "http://narpes.spfpension.fi/hem/",
+        "url": "https://narpes.spfpension.fi/hem/",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -620,7 +620,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Pensionärsklubben Milstolpen r.f.",
-        "url": "http://milstolpen.spfpension.fi",
+        "url": "https://milstolpen.spfpension.fi",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -703,7 +703,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Haapajärven kaupunki",
-        "url": "http://www.haapajarvi.fi/kirjasto",
+        "url": "https://www.haapajarvi.fi/kirjasto",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -786,7 +786,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Hanko",
-        "url": "https://www.hanko.fi/kulttuuri_vapaa-aika_ja_nuoriso/kirjasto/aukioloajat_ja_yhteystiedot",
+        "url": "https://hanko.fi/kulttuuri-vapaa-aika-ja-nuoriso/kirjasto/aukioloajat-ja-yhteystiedot/",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -823,7 +823,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Harjavallan kaupunki / Kirjasto- ja kulttuuripalvelut",
-        "url": "http://www.harjavalta.fi/kirjasto",
+        "url": "https://www.harjavalta.fi/kirjasto",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -861,7 +861,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Espoon kaupunginkirjasto",
-        "url": "https://www.helmet.fi/fi-FI/Kirjastot_ja_palvelut/Haukilahden_kirjasto",
+        "url": "https://www.espoo.fi/fi/toimipisteet/15346",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -937,7 +937,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Heinävesi",
-        "url": "http://heinavesi.fi/kirjasto",
+        "url": "https://heinavesi.fi/kirjasto",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -1186,7 +1186,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Huittisten kaupunki",
-        "url": "https://www.huittinen.fi/palvelut/kirjastopalvelut",
+        "url": "https://www.huittinen.fi/vapaa-aika/kirjasto/",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -1205,7 +1205,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Hyvinkään kaupunginkirjasto",
-        "url": "https://www.hyvinkaa.fi/kulttuuri-ja-vapaa-aika/kirjasto/vierailut-ja-opetus/kirjaston-tietotekniikkaopastukset/",
+        "url": "https://www.hyvinkaa.fi/hyvinvointi/digituki/",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -1250,7 +1250,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Mikkelin setlementti, Ikädigi-hanke",
-        "url": "https://www.mikkelinsetlementti.fi/ikadigi/sdfghjk/",
+        "url": "https://www.mikkelinsetlementti.fi/ikadigi/",
         "email": null,
         "phone": null,
         "footnote": "Ajanvarauksellisen, maksuttoman yksilöohjauksen lisäksi teemoitettuja digitreenejä ryhmille - lisätietoa aikataulut-sivulta."
@@ -1333,7 +1333,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Iin kunta",
-        "url": "http://www.ii.fi/kirjasto",
+        "url": "https://www.ii.fi/kirjasto",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -1409,7 +1409,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Ilomantsin kunta",
-        "url": "http://www.ilomantsi.fi/kirjasto",
+        "url": "https://www.ilomantsi.fi/kirjasto",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -1503,7 +1503,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Espoon kaupunginkirjasto",
-        "url": "https://www.helmet.fi/fi-FI/Kirjastot_ja_palvelut/Ison_Omenan_kirjasto",
+        "url": "https://www.espoo.fi/fi/toimipisteet/15395",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -1619,7 +1619,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Kouvolan eri yhteisöt",
-        "url": "https://www.kouvola.fi/kouvolankaupunki/asiointi/digituki-2/digituki-yhteisotiloissa/",
+        "url": "https://www.kouvola.fi/kouvolankaupunki/asiointi/digituki-2/",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -1790,7 +1790,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Joutsan kunta",
-        "url": "http://www.joutsa.fi/vapaa-aika-ja-kulttuuri/kirjasto/",
+        "url": "https://www.joutsa.fi/vapaa-aika-ja-kulttuuri/kirjasto/",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -1828,7 +1828,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Juupajoen kunta",
-        "url": "http://www.juupajoki.fi/palvelut/kirjasto",
+        "url": "https://www.juupajoki.fi/palvelut/kirjasto",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -2031,7 +2031,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Kajaanin kaupunki",
-        "url": "http://www.kajaani.fi/fi/kirjasto",
+        "url": "https://www.kajaani.fi/fi/kirjasto",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -2057,7 +2057,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Espoon kaupunginkirjasto",
-        "url": "https://www.helmet.fi/fi-FI/Kirjastot_ja_palvelut/Kalajarven_kirjasto",
+        "url": "https://www.espoo.fi/fi/toimipisteet/15365",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -2166,7 +2166,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Kouvolan eri yhteisöt",
-        "url": "https://www.kouvola.fi/kouvolankaupunki/asiointi/digituki-2/digituki-yhteisotiloissa/",
+        "url": "https://www.kouvola.fi/kouvolankaupunki/asiointi/digituki-2/",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -2192,7 +2192,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
       },
       {
         "name": "Helsingin kaupunki",
-        "url": "https://www.hel.fi/sote/toimipisteet-fi/aakkosittain/kamppi-pake",
+        "url": "https://www.hel.fi/fi/sosiaali-ja-terveyspalvelut/senioripalvelut/tekemista-ja-vertaistukea/palvelukeskukset/palvelukeskusten-toimipisteet/kampin-palvelukeskus",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -2339,7 +2339,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Suomen Reumaliitto: Lestijokiseudun Reumayhdistys ry",
-        "url": "http://lestinreuma.reumaliitto.fi/",
+        "url": "https://lestinreuma.reumaliitto.fi/",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -2422,7 +2422,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Espoon kaupunginkirjasto",
-        "url": "https://www.helmet.fi/fi-FI/Kirjastot_ja_palvelut/Karhusuon_kirjasto",
+        "url": "https://www.espoo.fi/fi/toimipisteet/15422",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -2581,7 +2581,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Kauhavan kirjasto",
-        "url": "https://www.kauhava.fi/palvelut/kirjasto_ja_tietopalvelut",
+        "url": "https://www.kauhava.fi/vapaa_aika/kirjasto/",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -2600,7 +2600,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Espoon kaupunginkirjasto",
-        "url": "https://www.helmet.fi/fi-FI/Kirjastot_ja_palvelut/Kauklahden_kirjasto",
+        "url": "https://www.espoo.fi/fi/toimipisteet/15317",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -2619,7 +2619,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Kauniaisten kirjasto",
-        "url": "https://www.helmet.fi/fi-FI/Kirjastot_ja_palvelut/Kauniaisten_kirjasto",
+        "url": "https://www.kauniainen.fi/kulttuuri-ja-vapaa-aika/kirjasto/",
         "email": null,
         "phone": null,
         "footnote": "<p>Lähidigitukea ajanvarauksella: Kauniaisten kirjasto antaa digitukea arkisin. Varaa aika etukäteen numerosta 050 411 6504 (1 h / asiakas) </p>"
@@ -2645,7 +2645,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Turun kaupunki",
-        "url": "https://www.turku.fi/monitori/digituki",
+        "url": "https://www.suomi.fi/palvelut/digituki-turun-kaupunki/5a4f74d5-3933-445c-9784-fa30b7d45a50",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -2671,7 +2671,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Uusikaarlepyyn kaupunki",
-        "url": "https://www.fredrikabiblioteken.fi/fi/library-page/uudenkaarlepyyn-kaupunginkirjasto",
+        "url": "https://www.nykarleby.fi/fi/kulttuuri-vapaa-aika-ja-hyvinvointi/uudenkaarlepyyn-kirjastot/",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -2951,7 +2951,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Keuruu",
-        "url": "https://www.keuruu.fi/vapaa-aika-ja-kulttuuri/kirjasto/palvelut/asiakaskoneet-ja-digipalvelut",
+        "url": "https://keuruu.fi/vapaa-aika-ja-matkailu/kirjasto/kirjaston-tilat-ja-laitteet/",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -3067,7 +3067,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Mikkelin setlementti, Ikädigi-hanke",
-        "url": "https://www.mikkelinsetlementti.fi/ikadigi/sdfghjk/",
+        "url": "https://www.mikkelinsetlementti.fi/ikadigi/",
         "email": null,
         "phone": null,
         "footnote": "Ajanvarauksellisen, maksuttoman yksilöohjauksen lisäksi teemoitettuja digitreenejä ryhmille - lisätietoa aikataulut-sivulta."
@@ -3489,7 +3489,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Vähähaara-Seura ry",
-        "url": "http://www.sastamalankylat.fi/vahahaara/",
+        "url": "https://www.sastamalankylat.fi/vahahaara/",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -3610,14 +3610,14 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Pieksämäen seutuopisto",
-        "url": "http://seutuopisto.pieksamaki.fi/",
+        "url": "https://seutuopisto.pieksamaki.fi/",
         "email": null,
         "phone": null,
         "footnote": ""
       },
       {
         "name": "Pieksämäen kirjasto",
-        "url": "http://kirjasto.pieksamaki.fi/",
+        "url": "https://kirjasto.pieksamaki.fi/",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -3669,7 +3669,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Tuusulan Opisto",
-        "url": "https://www.tuusula.fi/sivu.tmpl?sivu_id=10054",
+        "url": "https://tuusula.fi/2025/04/03/tukea-ja-turvaa-digimaailmaan/",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -3721,7 +3721,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Loviisan Järjestöt ry – Lovisa Föreningar rf",
-        "url": "http://www.kumppanuustalokulma.fi/",
+        "url": "https://www.kumppanuustalokulma.fi/",
         "email": null,
         "phone": null,
         "footnote": "<p>Digiopastus keskiviikkoisin 3.9.–10.12.2025 klo 11–13 Kumppanuustalo Kulmassa. Opastus on maksutonta. Voit tuoda mukana oman laitteesi tai harjoitella talon laitteilla.<br />\nDigirådgivning onsdagar 3.9–10.12.2025 kl. 11–13 i Kompanjonskapshuset Hörnan. Rådgivningen är kostnadsfri. Du kan ta med dig dina egna apparater eller öva på husets.</p>"
@@ -3932,7 +3932,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Kuusamon kaupunki",
-        "url": "http://www.kuusamo.fi/koe-ja-nae/kirjasto/kirjaston-toimipisteet/paakirjasto",
+        "url": "https://www.kuusamo.fi/koe-ja-nae/kirjasto/kirjaston-toimipisteet/paakirjasto",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -3996,7 +3996,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Lohjan Digiseniorit",
-        "url": "https://www.lohjansydan.fi/toiminta/digitoiminta",
+        "url": "https://www.lohjansydan.fi/digitoiminta",
         "email": null,
         "phone": null,
         "footnote": "Verkosta virtaa (Eläkkeesaajien keskusliitto EKL ry:n) ja Lohjan Sydän ry:n vapaaehtoiset"
@@ -4181,7 +4181,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Espoon kaupunginkirjasto",
-        "url": "https://www.helmet.fi/fi-FI/Kirjastot_ja_palvelut/Laajalahden_kirjasto",
+        "url": "https://www.espoo.fi/fi/toimipisteet/15344",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -4219,7 +4219,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Espoon kaupunginkirjasto",
-        "url": "https://www.helmet.fi/fi-FI/Kirjastot_ja_palvelut/Laaksolahden_kirjasto",
+        "url": "https://www.espoo.fi/fi/toimipisteet/15309",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -4276,7 +4276,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Laitilan kaupunki",
-        "url": "https://www.laitila.fi/palvelut/kirjastopalvelut/",
+        "url": "https://www.laitila.fi/kulttuuri-ja-vapaa-aika/kirjasto/palvelut/",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -4480,7 +4480,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
       },
       {
         "name": "Varsinais-Suomen hyvinvointialue",
-        "url": "https://www.varha.fi/fi/palvelut/hyvinvointikeskusten-palvelut-yli-65-vuotiaille",
+        "url": "https://www.varha.fi/fi/palvelut/ikaantyneiden-palvelut",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -4696,7 +4696,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Espoon kaupunginkirjasto",
-        "url": "https://www.helmet.fi/fi-FI/Kirjastot_ja_palvelut/Lippulaivan_kirjasto",
+        "url": "https://www.espoo.fi/fi/toimipisteet/63115",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -4722,7 +4722,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Lohjan Digiseniorit",
-        "url": "https://www.lohjansydan.fi/toiminta/digitoiminta",
+        "url": "https://www.lohjansydan.fi/digitoiminta",
         "email": null,
         "phone": null,
         "footnote": "Verkosta virtaa (Eläkkeesaajien keskusliitto EKL ry:n) ja Lohjan Sydän ry:n vapaaehtoiset"
@@ -4793,7 +4793,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Lopen kunta",
-        "url": "http://loppi.fi/palvelut/kulttuuri-ja-vapaa-aika/kirjasto/",
+        "url": "https://loppi.fi/palvelut/kulttuuri-ja-vapaa-aika/kirjasto/",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -4812,7 +4812,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Norra kyrkslätts pensionärsförening r.f.",
-        "url": "https://norrakyrkslatt.spfpension.fi/textmodul/",
+        "url": "https://kyrkslattseniorer.spfpension.fi/it_hjalp_kurser_och_foredrag/",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -4888,7 +4888,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "TSL Turku",
-        "url": "https://tslturku.fi/apupiste-nettitaitoja-kadesta-pitaen",
+        "url": "https://www.tslturku.fi/apupiste",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -4959,7 +4959,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "TSL Turku",
-        "url": "https://tslturku.fi/apupiste-nettitaitoja-kadesta-pitaen",
+        "url": "https://www.tslturku.fi/apupiste",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -5073,7 +5073,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Maunula-Seura ry",
-        "url": "https://www.maunula.net/maunula-seura/asukastila-maunulan-mediapaja/",
+        "url": "https://kaupunginosat.fi/maunula/maunula-seura/asukastila-maunulan-mediapaja/",
         "email": null,
         "phone": null,
         "footnote": "Tiedustelut p. 0405900455"
@@ -5111,7 +5111,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Mikkelin setlementti, Ikädigi-hanke",
-        "url": "https://www.mikkelinsetlementti.fi/ikadigi/sdfghjk/",
+        "url": "https://www.mikkelinsetlementti.fi/ikadigi/",
         "email": null,
         "phone": null,
         "footnote": "Ajanvarauksellisen, maksuttoman yksilöohjauksen lisäksi teemoitettuja digitreenejä ryhmille - lisätietoa aikataulut-sivulta."
@@ -5187,7 +5187,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Mikkelin setlementti, Ikädigi-hanke",
-        "url": "https://www.mikkelinsetlementti.fi/ikadigi/sdfghjk/",
+        "url": "https://www.mikkelinsetlementti.fi/ikadigi/",
         "email": null,
         "phone": null,
         "footnote": "Ajanvarauksellisen, maksuttoman yksilöohjauksen lisäksi teemoitettuja digitreenejä ryhmille - lisätietoa aikataulut-sivulta."
@@ -5339,7 +5339,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Multian kunta",
-        "url": "https://multia.fi/asukkaille/kirjasto.html",
+        "url": "https://multia.fi/kulttuuri-ja-vapaa-aika/kirjasto",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -5403,7 +5403,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
       },
       {
         "name": "Helsingin kaupunki",
-        "url": "https://www.hel.fi/sote/toimipisteet-fi/aakkosittain/munkkiniemi-pake",
+        "url": "https://www.hel.fi/fi/sosiaali-ja-terveyspalvelut/senioripalvelut/palvelukeskukset/munkkiniemen-palvelukeskus",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -5562,7 +5562,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Mynämäen kunta",
-        "url": "http://www.mynamaki.fi/kirjasto",
+        "url": "https://www.mynamaki.fi/kirjasto",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -5626,7 +5626,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Mäntsälän kunta",
-        "url": "http://www.mantsala.fi/asukkaille/kirjasto",
+        "url": "https://www.mantsala.fi/asukkaille/kirjasto",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -5652,7 +5652,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Mäntyharjun kunta",
-        "url": "https://mantyharju.fi/sisalto/palvelut/kirjastopalvelut",
+        "url": "https://www.mantyharju.fi/sivut/vapaa-aika-kulttuuri/kirjasto/",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -5856,7 +5856,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "TSL Turku",
-        "url": "https://tslturku.fi/apupiste-nettitaitoja-kadesta-pitaen",
+        "url": "https://www.tslturku.fi/apupiste",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -5946,7 +5946,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Espoon kaupunginkirjasto",
-        "url": "https://www.helmet.fi/fi-FI/Kirjastot_ja_palvelut/Noykkion_kirjasto",
+        "url": "https://www.espoo.fi/fi/toimipisteet/15396",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -6055,7 +6055,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
       },
       {
         "name": "Oriveden kaupunki",
-        "url": "http://www.orivesi.fi/fi/palvelut/kirjasto",
+        "url": "https://www.orivesi.fi/fi/palvelut/kirjasto",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -6093,7 +6093,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Oulaisten kaupunki",
-        "url": "http://www.oulainen.fi/kirjasto",
+        "url": "https://www.oulainen.fi/kirjasto",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -6241,25 +6241,6 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     ]
   },
   {
-    "id": 9774,
-    "name": "Outokummun Mielenterveysyhdistys Välke ry",
-    "address": "Sänkinotkonkatu 6",
-    "postalcode": "83500",
-    "postoffice": "Outokumpu",
-    "wellbeing_services_county": "Pohjois-Karjala",
-    "lat": 62.72698189999999,
-    "lng": 29.01077969999999,
-    "organizers": [
-      {
-        "name": "Outokummun VÄLKE ry",
-        "url": "https://valkery.fi/digineuvonta/",
-        "email": null,
-        "phone": null,
-        "footnote": ""
-      }
-    ]
-  },
-  {
     "id": 2551,
     "name": "Padasjoen kunnankirjasto",
     "address": "Vaahteratie 4",
@@ -6290,7 +6271,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Paimion kaupunki",
-        "url": "http://www.paimio.fi/kirjasto",
+        "url": "https://www.paimio.fi/kirjasto",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -6814,7 +6795,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Helsingin kaupunki",
-        "url": "https://www.hel.fi/sote/toimipisteet-fi/aakkosittain/pohjois-haaga-pake",
+        "url": "https://www.hel.fi/fi/sosiaali-ja-terveyspalvelut/senioripalvelut/tekemista-ja-vertaistukea/palvelukeskukset/palvelukeskusten-toimipisteet/pohjois-haagan-palvelukeskus",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -6897,7 +6878,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Kouvolan eri yhteisöt",
-        "url": "https://www.kouvola.fi/kouvolankaupunki/asiointi/digituki-2/digituki-yhteisotiloissa/",
+        "url": "https://www.kouvola.fi/kouvolankaupunki/asiointi/digituki-2/",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -7082,7 +7063,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Kouvolan eri yhteisöt",
-        "url": "https://www.kouvola.fi/kouvolankaupunki/asiointi/digituki-2/digituki-yhteisotiloissa/",
+        "url": "https://www.kouvola.fi/kouvolankaupunki/asiointi/digituki-2/",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -7120,7 +7101,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Hausjärven kunta",
-        "url": "http://hausjarvi.fi/palvelut/vapaa-aika-kulttuuri/kirjasto/",
+        "url": "https://hausjarvi.fi/palvelut/vapaa-aika-kulttuuri/kirjasto/",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -7158,7 +7139,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Kruunupyyn kunta",
-        "url": "https://www.fredrikabiblioteken.fi/fi/library-page/kruunupyyn-p%C3%A4%C3%A4kirjasto",
+        "url": "https://www.kronoby.fi/fi/vapaa-aika-and-matkailu/kirjastot/",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -7177,7 +7158,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Närpiön kaupunki",
-        "url": "https://www.narpes.fi/fi/invanare/fritid-kultur/kirjasto/narpion-kirjastot",
+        "url": "https://www.narpes.fi/fi/kulttuuri-vapaa-aika-ja-nuoriso/narpion-kirjastot/",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -7399,7 +7380,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
       },
       {
         "name": "Riihimäen kaupunki",
-        "url": "http://www.riihimaki.fi/kirjasto/",
+        "url": "https://www.riihimaki.fi/kirjasto/",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -7615,7 +7596,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Varsinais-Suomen hyvinvointialue",
-        "url": "https://www.varha.fi/fi/palvelut/hyvinvointikeskusten-palvelut-yli-65-vuotiaille",
+        "url": "https://www.varha.fi/fi/palvelut/ikaantyneiden-palvelut",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -7641,7 +7622,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Saarijärvi",
-        "url": "http://www.saarijarvi.fi/palvelut/kirjasto",
+        "url": "https://www.saarijarvi.fi/palvelut/kirjasto",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -7679,7 +7660,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Salo",
-        "url": "http://www.salo.fi/vapaaaikajamatkailu/kirjasto/",
+        "url": "https://www.salo.fi/vapaaaikajamatkailu/kirjasto/",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -7755,7 +7736,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Satakunnan Näkövammaiset ry",
-        "url": "http://www.satakunnannakovammaiset.fi/",
+        "url": "https://www.satakunnannakovammaiset.fi/",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -7774,7 +7755,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Lohjan Digiseniorit",
-        "url": "https://www.lohjansydan.fi/toiminta/digitoiminta",
+        "url": "https://www.lohjansydan.fi/digitoiminta",
         "email": null,
         "phone": null,
         "footnote": "Verkosta virtaa (Eläkkeesaajien keskusliitto EKL ry:n) ja Lohjan Sydän ry:n vapaaehtoiset"
@@ -7793,7 +7774,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Espoon kaupunginkirjasto",
-        "url": "https://www.helmet.fi/fi-FI/Kirjastot_ja_palvelut/Saunalahden_kirjasto",
+        "url": "https://www.espoo.fi/fi/toimipisteet/29805",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -7921,7 +7902,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
       },
       {
         "name": "Espoon kaupunginkirjasto",
-        "url": "https://www.helmet.fi/fi-FI/Kirjastot_ja_palvelut/Sellon_kirjasto",
+        "url": "https://www.espoo.fi/fi/kulttuuri-ja-vapaa-aika/kirjastot/sellon-kirjasto",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -7959,7 +7940,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "SenioriJelppi",
-        "url": "http://www.seniorijelppi.fi/palvelu.html",
+        "url": "https://www.seniorijelppi.fi/palvelu.html",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -8030,7 +8011,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
       },
       {
         "name": "Pargas stad",
-        "url": "https://www.pargas.fi/sv/web/pargas/handledning-och-radgivning?inheritRedirect=true",
+        "url": "https://www.pargas.fi/kontaktuppgifter-staden",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -8049,7 +8030,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Korsholms Pensionärsförening r.f.",
-        "url": "http://korsholm.spfpension.fi",
+        "url": "https://korsholm.spfpension.fi",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -8094,7 +8075,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
       },
       {
         "name": "Sipoon pääkirjasto",
-        "url": "https://www.sipoo.fi/fi/kulttuuri_ja_vapaa-aika/kirjasto/kirjastot_ja_yhteystiedot/sipoon_paakirjasto",
+        "url": "https://www.sipoo.fi/fi/servicechannel/sipoon-paakirjasto/",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -8526,7 +8507,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Sysmä",
-        "url": "http://www.sysma.fi/kirjasto",
+        "url": "https://www.sysma.fi/kirjasto",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -8545,7 +8526,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Helsingin kaupunki",
-        "url": "https://www.hel.fi/sote/toimipisteet-fi/aakkosittain/syystien-seniorikeskus/",
+        "url": "https://www.hel.fi/fi/sosiaali-ja-terveyspalvelut/senioripalvelut/ikaantyneiden-asumispalvelut/seniorikeskukset/etsi-seniorikeskus-tai-palvelutalo/syystien-seniorikeskus",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -8635,7 +8616,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
       },
       {
         "name": "Sipoon pääkirjasto",
-        "url": "https://www.sipoo.fi/fi/kulttuuri_ja_vapaa-aika/kirjasto/kirjastot_ja_yhteystiedot/sipoon_paakirjasto",
+        "url": "https://www.sipoo.fi/fi/servicechannel/sipoon-paakirjasto/",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -8730,7 +8711,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Taivassalon kunta",
-        "url": "http://www.taivassalo.fi/vapaa-aika/kirjasto",
+        "url": "https://www.taivassalo.fi/vapaa-aika/kirjasto",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -8870,7 +8851,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
       },
       {
         "name": "Espoon kaupunginkirjasto",
-        "url": "https://www.helmet.fi/fi-FI/Kirjastot_ja_palvelut/Tapiolan_kirjasto",
+        "url": "https://www.espoo.fi/fi/toimipisteet/15311",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -8934,7 +8915,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Terjärv Pensionärer rf. i sammarbete med Kronoby Medborgarinstitut",
-        "url": "http://terjarv.spfpension.fi/start/",
+        "url": "https://terjarv.spfpension.fi/start/",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -8972,7 +8953,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Tervolan kunta",
-        "url": "http://tervola.fi/vapaa-aika-ja-liikunta/kirjasto/kirjaston-palvelut/",
+        "url": "https://tervola.fi/vapaa-aika-ja-liikunta/kirjasto/kirjaston-palvelut/",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -9047,7 +9028,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "The Firma, Turku AMK",
-        "url": "https://thefirma.fi/?page_id=44",
+        "url": "https://tai.fi/kansalaisen-it-tuki-auttaa/",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -9156,14 +9137,14 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
       },
       {
         "name": "Vantaan Pilviagenttien digiopastus",
-        "url": "https://www.helmet.fi/fi-FI/Kirjastot_ja_palvelut/Tikkurilan_kirjasto/Tapahtumat?s=pilviagentti*",
+        "url": "https://www.vantaa.fi/fi/palveluhakemisto/toimipiste/tikkurilan-kirjasto",
         "email": null,
         "phone": null,
         "footnote": ""
       },
       {
         "name": "Tikkurilan kirjasto",
-        "url": "https://www.helmet.fi/fi-FI/Kirjastot_ja_palvelut/Tikkurilan_kirjasto/Tapahtumat",
+        "url": "https://www.vantaa.fi/fi/palveluhakemisto/toimipiste/tikkurilan-kirjasto",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -9182,7 +9163,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Suomen Reumaliitto: Lestijokiseudun Reumayhdistys ry",
-        "url": "http://lestinreuma.reumaliitto.fi/",
+        "url": "https://lestinreuma.reumaliitto.fi/",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -9322,29 +9303,10 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "TSL Turku",
-        "url": "https://tslturku.fi/apupiste-nettitaitoja-kadesta-pitaen",
+        "url": "https://www.tslturku.fi/apupiste",
         "email": null,
         "phone": null,
         "footnote": ""
-      }
-    ]
-  },
-  {
-    "id": 1642,
-    "name": "Tuulensuun palvelukeskus",
-    "address": "Huvilakatu 32",
-    "postalcode": "32200",
-    "postoffice": "Loimaa",
-    "wellbeing_services_county": "Varsinais-Suomi",
-    "lat": 60.8504869,
-    "lng": 23.0487387,
-    "organizers": [
-      {
-        "name": "Tuulensuun Palvelu Oy",
-        "url": "https://www.tuulensuunpalvelukeskus.fi/muut-palvelut/seniorit-surffaa",
-        "email": null,
-        "phone": null,
-        "footnote": "Seniorit Surffaa – ohjatut ryhmät kokoontuvat tiistaisin kello 9:00–11:00. Varaa oma yksilöohjausaikasi ryhmään soittamalla numeroon 045 321 5810."
       }
     ]
   },
@@ -9481,7 +9443,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Urjala",
-        "url": "http://www.urjala.fi/vapaa-aika-ja-kulttuuri/kirjasto",
+        "url": "https://www.urjala.fi/vapaa-aika-ja-kulttuuri/kirjasto",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -9500,7 +9462,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Utsjoen kunta",
-        "url": "https://www.utsjoki.fi/kuntalaiselle/kirjasto-kulttuuri-ja-vapaa-aika/kirjasto/",
+        "url": "https://www.utsjoki.fi/vapaa-aika-ja-hyvinvointi/kirjasto/",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -9526,10 +9488,10 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
       },
       {
         "name": "Uudenkaupungin kirjasto",
-        "url": "https://uusikaupunki.fi/fi/kirjaston-palvelut/kirjaston-digiopastus",
+        "url": "https://uusikaupunki.fi/fi/kirjaston-palvelut",
         "email": null,
         "phone": null,
-        "footnote": "<p>https://uusikaupunki.fi/fi/kirjaston-palvelut/kirjaston-digiopastus</p>"
+        "footnote": "Kirjasto auttaa arjen pienissä tietotekniikkaongelmissa ja tarjoaa digiopastusta."
       }
     ]
   },
@@ -9713,7 +9675,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Vantaan kaupunki",
-        "url": "http://www.vantaa.fi/hallinto_ja_talous/tietoa_vantaasta/vantaa-info",
+        "url": "https://www.vantaa.fi/hallinto_ja_talous/tietoa_vantaasta/vantaa-info",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -9732,7 +9694,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Vantaan kaupunki",
-        "url": "http://www.vantaa.fi/hallinto_ja_talous/tietoa_vantaasta/vantaa-info",
+        "url": "https://www.vantaa.fi/hallinto_ja_talous/tietoa_vantaasta/vantaa-info",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -9770,7 +9732,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Hämeenlinnan kaupunki",
-        "url": "http://www.hameenlinna.fi/pysakki",
+        "url": "https://www.hameenlinna.fi/pysakki",
         "email": null,
         "phone": null,
         "footnote": "Pysäkin vapaaehtoiset digiopastajat auttavat ja neuvovat esimerkiksi kännykän, tabletin tai tietokoneen käytössä. Digiapua saa laitteiden, ohjelmien ja sovellusten käyttöön."
@@ -9796,7 +9758,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
       },
       {
         "name": "TSL Turku",
-        "url": "https://tslturku.fi/apupiste-nettitaitoja-kadesta-pitaen",
+        "url": "https://www.tslturku.fi/apupiste",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -9853,7 +9815,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "TSL Turku",
-        "url": "https://tslturku.fi/apupiste-nettitaitoja-kadesta-pitaen",
+        "url": "https://www.tslturku.fi/apupiste",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -10114,7 +10076,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
       },
       {
         "name": "Espoon kaupunginkirjasto",
-        "url": "https://www.helmet.fi/fi-FI/Kirjastot_ja_palvelut/Viherlaakson_kirjasto",
+        "url": "https://www.espoo.fi/fi/toimipisteet/15429",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -10247,7 +10209,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Grankulla svenska pensionärer rf",
-        "url": "https://www.grankulla.spfpension.fi/hobby/it_stod/",
+        "url": "https://grankulla.spfpension.fi/aktuellt/",
         "email": null,
         "phone": null,
         "footnote": "IT-handledning på finska och svenska."
@@ -10292,7 +10254,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Lohjan Digiseniorit",
-        "url": "https://www.lohjansydan.fi/toiminta/digitoiminta",
+        "url": "https://www.lohjansydan.fi/digitoiminta",
         "email": null,
         "phone": null,
         "footnote": "Verkosta virtaa (Eläkkeesaajien keskusliitto EKL ry:n) ja Lohjan Sydän ry:n vapaaehtoiset"
@@ -10382,7 +10344,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Västanfjärds pensionärs förening",
-        "url": "http://vastanfjard.spfpension.fi/start/",
+        "url": "https://vastanfjard.spfpension.fi/start/",
         "email": null,
         "phone": null,
         "footnote": ""
@@ -10401,7 +10363,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Vääksyn Tietotupa",
-        "url": "http://tietotupa.omasivu.fi/tuki-vaaksyn-information-room/",
+        "url": "https://tietotupa.omasivu.fi/tuki-vaaksyn-information-room/",
         "email": null,
         "phone": null,
         "footnote": "puh. 040 5101246 /Heikki Hallikainen tai s-posti: tupatieto@gmail.com"
@@ -10420,7 +10382,7 @@ export const SENIORSURF_GUIDANCE_PLACES: SeniorSurfGuidancePlace[] = [
     "organizers": [
       {
         "name": "Vöyrin kunta",
-        "url": "https://www.vora.fi/ko-kulttuuri-ja-vapaa-aika/kirjasto/",
+        "url": "https://www.vora.fi/fi/palvelut/kirjasto/voyrin-paakirjasto/",
         "email": null,
         "phone": null,
         "footnote": ""

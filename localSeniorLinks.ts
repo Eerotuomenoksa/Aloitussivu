@@ -637,7 +637,7 @@ export const MUNICIPALITY_SENIOR_LINKS: Provider[] = [
   },
   {
     "name": "Pudasjärvi – Pudasjärven seniorisivut",
-    "url": "https://www.pudasjarvi.fi/asuminen-ja-ymparisto/seniorit/",
+    "url": "https://www.pudasjarvi.fi/ikaihmisten-ja-vammaisten-palvelut/",
     "group": "Oman kunnan senioripalvelut",
     "municipality": "pudasjärvi",
     "scope": "municipality",
@@ -709,7 +709,7 @@ export const MUNICIPALITY_SENIOR_LINKS: Provider[] = [
   },
   {
     "name": "Riihimäki – Avoin senioritoiminta",
-    "url": "https://www.riihimaki.fi/ela-ja-voi-hyvin/hyvinvointi/aktiivisuutta-arkeen/avoin-senioritoiminta/",
+    "url": "https://www.riihimaki.fi/ela-ja-voi-hyvin/avoimet-hyvinvointipalvelut/lahitoiminta/",
     "group": "Oman kunnan senioripalvelut",
     "municipality": "riihimäki",
     "scope": "municipality",

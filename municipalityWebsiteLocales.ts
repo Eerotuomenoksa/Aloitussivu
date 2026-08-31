@@ -109,10 +109,6 @@ export const MUNICIPALITY_WEBSITE_LANGUAGE_URLS: Record<string, Partial<Record<L
   "joutsa": {
     en: "https://www.joutsa.fi/in-english/"
   },
-  "juuka": {
-    en: "https://www.juuka.fi/en/web/english",
-    ru: "https://www.juuka.fi/ru/web/russian"
-  },
   "juupajoki": {
     en: "https://juupajoki.fi/en/"
   },
@@ -406,7 +402,7 @@ export const MUNICIPALITY_WEBSITE_LANGUAGE_URLS: Record<string, Partial<Record<L
     en: "https://raisio.fi/en"
   },
   "rantasalmi": {
-    en: "https://www.rantasalmi.fi/en/"
+    en: "https://rantasalmi.fi/briefly-in-english/municipality-and-administration/"
   },
   "ranua": {
     en: "https://ranua.fi/en/"
@@ -529,9 +525,6 @@ export const MUNICIPALITY_WEBSITE_LANGUAGE_URLS: Record<string, Partial<Record<L
   },
   "tuusula": {
     en: "https://tuusula.fi/en/home/"
-  },
-  "tyrnävä": {
-    en: "https://www.tyrnava.fi/en/home.html"
   },
   "utajärvi": {
     en: "https://www.utajarvi.fi/en/"

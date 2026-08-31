@@ -43,4 +43,19 @@ return [
             'password' => '',
         ],
     ],
+    'link_checks' => [
+        // Enable after migrations 005-007 and the hourly link-check cron are installed.
+        'enabled' => true,
+        'batch_size' => 10,
+        'timeout_seconds' => 12,
+        'refresh_days' => 30,
+        'retry_hours' => 24,
+        'alert_after_failures' => 2,
+        // Automatic blocking only acts on confirmed 404/410, DNS, TLS, redirect-loop
+        // and domain-for-sale failures. Network-wide failures stop the run first.
+        'auto_block_enabled' => true,
+        'auto_block_max_per_run' => 25,
+        'auto_unblock_enabled' => true,
+        'min_interval_hours' => 72,
+    ],
 ];

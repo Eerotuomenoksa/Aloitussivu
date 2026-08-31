@@ -266,6 +266,8 @@ Ympäristökohtaiset UID:t ja sähköpostit lisätään `admin_users`-tauluun tu
 | `PATCH /api/v1/admin/scam-alerts/{id}` | huijausvaroituksen rajattu päivitys |
 | `GET /api/v1/admin/ncsc-logs` | Kyberturvallisuuskeskuksen ajoloki |
 | `POST /api/v1/admin/ncsc-run` | editorin tai adminin turvallinen NCSC-käsiajo |
+| `GET /api/v1/admin/link-checks` | automaattisen linkkitarkistuksen yhteenveto, vahvistetut ongelmat ja ajohistoria |
+| `POST /api/v1/admin/link-checks/{urlHash}/action` | hyväksy huomio määräaikaiseksi poikkeukseksi tai piilota linkki ylläpitäjän estolla |
 | `GET /api/v1/admin/usage-stats` | päivä-, sivu- ja linkkikohtaiset aggregaatit |
 | `GET /api/v1/admin/audit-log` | ylläpidon muutosloki |
 
@@ -290,6 +292,16 @@ Kooste ei lue eikä lähetä käyttäjien otsikoita, kuvauksia, huomioita tai li
 `cron/email-dispatch.php` käyttää MariaDB:n yhteyslukkoa, ottaa enintään kymmenen erää kerrallaan ja yrittää virhettä uudelleen 5 ja 30 minuutin kuluttua. Kolmas epäonnistuminen merkitään tilaan `failed`. Tietokantaan tallennetaan vain rajattu `smtp_*`-virhekoodi, ei palvelimen vastausta tai tunnuksia. Tunnin ajaksi tilaan `sending` jäänyt rivi palautuu hallittuun käsittelyyn. Sama viestityyppi, jakso ja vastaanottaja-alias voidaan jonottaa vain kerran.
 
 Cloudcityn suositus on ajaa `notifications.php` päivittäin klo 08.15 ja `email-dispatch.php` 15 minuutin välein Europe/Helsinki-ajassa. Ensimmäinen SMTP-koe tehdään manuaalisesti skriptillä `cron/smtp-test.php`; skripti ei tulosta salasanaa tai vastaanottajan osoitetta.
+
+## REL-14: automaattinen linkkitarkistus
+
+Migraatio `005_automated_link_checks.sql` lisää tarkistuskohteet, viimeisimmän tilan, 180 vuorokauden tuloshistorian ja ajokoosteen. Migraatio `006_link_check_hardening.sql` lisää mukautuvan tarkistusvälin, domain-muutoksen, automaattisen eston sekä ajokohtaiset esto- ja palautuslaskurit. Migraatio `007_link_check_admin_actions.sql` lisää auditoidut, kolmen kuukauden välein uudelleen tarkistettavat ylläpitäjän varmennukset. Tuotantopaketin `data/link-catalog.json` muodostetaan sovelluksen linkkilähteistä paketoinnin aikana. Cron yhdistää siihen tietokannan hyväksytyt linkit ja tarkistaa vain vuorossa olevan, asetuksella rajatun erän.
+
+`cron/link-check.php` hyväksyy vain HTTPS-osoitteet, tarkistaa TLS-varmenteen ja jokaisen uudelleenohjauksen sekä estää paikalliset, yksityiset ja varatut IP-osoitteet. HTTP 401, 403 ja 429 kirjataan varoituksiksi; varsinaiset virheet vahvistetaan oletuksena kahdella peräkkäisellä tarkistuksella ennen ylläpidon huomiota. Vahvistettu 404/410-, DNS-, TLS-, uudelleenohjaus- tai verkkotunnuksen myyntivirhe voidaan piilottaa automaattisesti `blocked_links`-taulun kautta. Ihmisen tekemää estoa automaatio ei koskaan poista. MariaDB:n yhteyslukko estää rinnakkaiset ajot.
+
+Ylläpitäjä voi käsitellä huomion ylläpitonäkymässä kahdella tavalla. `Hyväksy toimivaksi` tallentaa perustellun poikkeuksen kolmeksi kuukaudeksi; verkkotunnusohjauksen hyväksyntä ei vaimenna myöhempää 404- tai DNS-vikaa. `Poista linkki näkyvistä` tekee ylläpitäjän pysyvän `blocked_links`-eston, jota automaattinen palautus ei poista.
+
+Cloudcityn suositus on ajaa työ kerran tunnissa vapaalla ajastuksella `7 * * * *`. Oletuserä on 10 linkkiä. Uusi linkki aloittaa 72 tunnin tarkistusvälistä, ja onnistumiset kasvattavat väliä asteittain enintään 30 vuorokauteen. Epäonnistumiset yritetään uudelleen 6, 24 ja 72 tunnin sekä sen jälkeen 7 vuorokauden välein. Kohteen aikabudjetti on 15 sekuntia ja ajon 120 sekuntia. Jos kiintopiste ei vastaa tai yli 60 prosenttia erästä kaatuu verkkovirheeseen, ajo keskeytyy muuttamatta linkkien vikalaskureita tai näkyvyyttä. Käyttöönotto-ohje on tiedostossa `docs/rel14-v0770-automaattinen-linkkitarkistus.md`.
 
 Kaikki ylläpidon listat palauttavat `Cache-Control: private, no-store`. Liitteen tallennusavainta ei palauteta asiakkaalle, vaan kuva luetaan web-juuren ulkopuolelta vasta uuden oikeustarkistuksen jälkeen. Ylläpidon muutokset tehdään tietokantatransaktiossa yhdessä `audit_log`-rivin kanssa. Auditointirivi sisältää tekijän UID:n, toiminnon, kohdetyypin, kohdetunnisteen ja muuttuneiden kenttien nimet, mutta ei palautetekstiä, käsittelyperustetta tai muuta yksityistä kenttäarvoa.
 

@@ -117,7 +117,7 @@ export const LOCAL_NEWSPAPER_LINKS = [
   },
   {
     "name": "Kaleva: Oulun seutu",
-    "url": "https://www.kaleva.fi/oulun-seutu/"
+    "url": "https://www.kaleva.fi/oulun-seutu"
   },
   {
     "name": "Kangasalan Sanomat",
@@ -137,7 +137,7 @@ export const LOCAL_NEWSPAPER_LINKS = [
   },
   {
     "name": "Karkkilan Tienoo",
-    "url": "https://www.karkkilantienoo.fi/"
+    "url": "https://www.karkkilalainen.fi/"
   },
   {
     "name": "Kauhajoki-lehti",

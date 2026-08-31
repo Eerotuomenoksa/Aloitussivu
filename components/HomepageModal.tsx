@@ -12,6 +12,7 @@ interface HomepageModalProps {
 
 type GuidePath = 'own' | 'helper' | 'share';
 type BrowserId = 'chrome' | 'edge' | 'firefox' | 'safari' | 'android' | 'ios';
+type DetectedBrowser = BrowserId | 'inapp';
 
 const HOMEPAGE_URL = 'https://www.seniorsurf.fi/aloitus/';
 
@@ -29,9 +30,16 @@ const browserInstructions: Array<{
   { id: 'ios', label: 'iPhone Safari', icon: 'i', steps: ['homepageIosStep1', 'homepageIosStep2', 'homepageIosStep3'] },
 ];
 
-const detectBrowser = (): BrowserId | null => {
+// Sovellusten sisaiset selaimet (WhatsApp, Messenger, Facebook, Instagram, ...). Niissa
+// aloitussivua ei voi asettaa lainkaan, joten valikko-ohjeiden nayttaminen olisi harhaanjohtavaa.
+const IN_APP_BROWSER_PATTERN = /fban|fbav|fb_iab|fbios|instagram|messenger|whatsapp|line\/|micromessenger|gsa\/|twitter|snapchat|tiktok/;
+
+const detectBrowser = (): DetectedBrowser | null => {
   if (typeof navigator === 'undefined') return null;
   const agent = navigator.userAgent.toLocaleLowerCase('en-US');
+  if (IN_APP_BROWSER_PATTERN.test(agent)) return 'inapp';
+  // iOS:n sovellusikkuna: WebKit ilman Safari-tunnistetta.
+  if (/iphone|ipad|ipod/.test(agent) && agent.includes('applewebkit') && !agent.includes('safari/')) return 'inapp';
   if (/iphone|ipad|ipod/.test(agent)) return 'ios';
   if (agent.includes('android')) return 'android';
   if (agent.includes('edg/')) return 'edge';
@@ -66,13 +74,26 @@ const HomepageModal: React.FC<HomepageModalProps> = ({ isOpen, onClose, fontSize
   const iconClasses = ['text-4xl', 'text-5xl', 'text-6xl', 'text-7xl', 'text-8xl'];
   const urlClasses = ['text-base sm:text-lg', 'text-lg sm:text-xl', 'text-xl sm:text-2xl', 'text-2xl sm:text-3xl', 'text-3xl sm:text-4xl'];
   const detectedBrowser = useMemo(detectBrowser, []);
+  const isInAppBrowser = detectedBrowser === 'inapp';
+  const detectedCardId = detectedBrowser === 'inapp' ? null : detectedBrowser;
   const orderedBrowsers = useMemo(() => (
-    detectedBrowser
+    detectedCardId
       ? [...browserInstructions].sort((first, second) => (
-        Number(second.id === detectedBrowser) - Number(first.id === detectedBrowser)
+        Number(second.id === detectedCardId) - Number(first.id === detectedCardId)
       ))
       : browserInstructions
-  ), [detectedBrowser]);
+  ), [detectedCardId]);
+  const detectedBrowserLabel = useMemo(() => (
+    browserInstructions.find((browser) => browser.id === detectedCardId)?.label ?? ''
+  ), [detectedCardId]);
+  // Avoinna olevat ohjekortit pidetaan omassa tilassaan. Suora open={id === detectedBrowser}
+  // avaisi kortin uudelleen jokaisella uudelleenpiirrolla, esimerkiksi osoitetta kopioitaessa.
+  const [openBrowsers, setOpenBrowsers] = useState<Set<BrowserId>>(() => new Set<BrowserId>());
+
+  useEffect(() => {
+    if (!isOpen) return;
+    setOpenBrowsers(detectedCardId ? new Set<BrowserId>([detectedCardId]) : new Set<BrowserId>());
+  }, [isOpen, detectedCardId]);
   const shareMessage = t('homepageShareMessage').replace('{url}', HOMEPAGE_URL);
 
   useModalFocusTrap(modalRef, isOpen, onClose, closeButtonRef);
@@ -147,19 +168,41 @@ const HomepageModal: React.FC<HomepageModalProps> = ({ isOpen, onClose, fontSize
     </section>
   );
 
+  const inAppGuide = (
+    <section className="space-y-4" aria-labelledby="in-app-heading">
+      <div className="rounded-2xl border-2 border-[var(--theme-gold)] bg-[var(--theme-gold-pale)] p-5">
+        <h3 id="in-app-heading" className="aurora-section-title text-2xl sm:text-3xl">{t('homepageInAppTitle')}</h3>
+        <p className="mt-3 text-base font-bold leading-relaxed text-[var(--theme-text-2)] sm:text-lg">{t('homepageInAppBody')}</p>
+        <p className="mt-3 text-base font-bold leading-relaxed text-[var(--theme-text-2)] sm:text-lg">{t('homepageInAppStep')}</p>
+        <p className="mt-4 break-all rounded-xl bg-[var(--theme-surface)] px-4 py-3 text-lg font-black text-[var(--theme-primary)]">{HOMEPAGE_URL}</p>
+      </div>
+    </section>
+  );
+
   const browserGuide = (
     <section className="space-y-4" aria-labelledby="browser-instructions-heading">
       <div>
         <h3 id="browser-instructions-heading" className="aurora-section-title text-2xl sm:text-3xl">{t('browserInstructions')}</h3>
-        {detectedBrowser && <p className="mt-2 font-bold text-[var(--theme-text-2)]">{t('homepageDetectedBrowser')}</p>}
+        <p className="mt-2 font-bold text-[var(--theme-text-2)]">
+          {detectedCardId
+            ? t('homepageDetectedBrowser').replace('{browser}', detectedBrowserLabel)
+            : t('homepageBrowserUnknown')}
+        </p>
       </div>
       <div className="space-y-3">
         {orderedBrowsers.map((browser) => (
           <details
             key={browser.id}
+            open={openBrowsers.has(browser.id)}
             className="group rounded-2xl border-2 border-[var(--theme-border)] bg-[var(--theme-surface)] shadow-sm"
             onToggle={(event) => {
-              if (event.currentTarget.open) trackGuideStep('browser', browser.id);
+              const isNowOpen = event.currentTarget.open;
+              setOpenBrowsers((current) => {
+                const next = new Set(current);
+                if (isNowOpen) next.add(browser.id); else next.delete(browser.id);
+                return next;
+              });
+              if (isNowOpen) trackGuideStep('browser', browser.id);
             }}
           >
             <summary className="flex min-h-14 cursor-pointer list-none items-center gap-3 rounded-2xl px-4 py-3 font-black text-[var(--theme-primary)] focus:outline-none focus-visible:ring-4 focus-visible:ring-[var(--theme-focus)]/40 sm:text-xl">
@@ -222,7 +265,7 @@ const HomepageModal: React.FC<HomepageModalProps> = ({ isOpen, onClose, fontSize
                 {guidePath === 'helper' && (
                   <p className="rounded-2xl border-2 border-amber-300 bg-amber-50 p-4 text-lg font-bold leading-relaxed text-amber-950 dark:border-amber-800 dark:bg-amber-950/30 dark:text-amber-100">{t('homepageHelperIntro')}</p>
                 )}
-                {browserGuide}
+                {isInAppBrowser ? inAppGuide : browserGuide}
                 {guidePath === 'helper' && (
                   <fieldset className="aurora-soft-panel space-y-3 p-5">
                     <legend className="aurora-section-title px-2 text-2xl">{t('homepageHelperChecklistTitle')}</legend>

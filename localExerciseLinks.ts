@@ -4,7 +4,7 @@ import { Provider } from './types';
 export const MUNICIPALITY_EXERCISE_LINKS: Provider[] = [
   {
     "name": "Akaa - Liikuntaryhmät 2026",
-    "url": "https://akaa.fi/tee-ja-viihdy/liikunta/erityisryhmien-liikunta/liikuntaryhmat/",
+    "url": "https://akaa.fi/tee-ja-viihdy/liikunta/erityisryhmien-liikunta/",
     "group": "Alueelliset"
   },
   {
@@ -264,7 +264,7 @@ export const MUNICIPALITY_EXERCISE_LINKS: Provider[] = [
   },
   {
     "name": "Kiuruvesi - Ohjatut liikuntaryhmät 2025-2026",
-    "url": "https://kiuruvesi.fi/palvelut/liikunta-ja-ulkoilu/ohjatut-liikuntaryhmat-2024-2025/",
+    "url": "https://kiuruvesi.fi/palvelut/liikunta-ja-ulkoilu/erityisliikunta/",
     "group": "Alueelliset"
   },
   {
@@ -309,7 +309,7 @@ export const MUNICIPALITY_EXERCISE_LINKS: Provider[] = [
   },
   {
     "name": "Kuopio - Vertaisohjatut liikuntaryhmät",
-    "url": "https://www.kuopio.fi/vapaa-aika-ja-hyvinvointi/liikkuva-kuopio/vertaisohjattu-liikunta/vertaisohjatut-liikuntarymat/",
+    "url": "https://www.kuopio.fi/vapaa-aika-ja-hyvinvointi/liikkuva-kuopio/liikuntaa-ikaantyneille/kaupungin-ohjatut-liikuntaryhmat-ikaantyneille/",
     "group": "Alueelliset"
   },
   {
@@ -344,7 +344,7 @@ export const MUNICIPALITY_EXERCISE_LINKS: Provider[] = [
   },
   {
     "name": "Lappeenranta - Suosikit",
-    "url": "https://lappeenranta.fi/fi/kulttuuri-ja-liikunta/liikunta/ohjattu-liikunta/terveysliikunta-syksy-2025/ohjattujen-liikuntaryhmien-tuntikuvaukset",
+    "url": "https://lappeenranta.fi/fi/kulttuuri-ja-liikunta/liikunta/ohjattu-liikunta/sovellettu-liikunta",
     "group": "Alueelliset"
   },
   {
@@ -504,7 +504,7 @@ export const MUNICIPALITY_EXERCISE_LINKS: Provider[] = [
   },
   {
     "name": "Petäjävesi - Soveltava liikunta",
-    "url": "https://www.petajavesi.fi/vapaa-aika-ja-kulttuuri/vapaa-ajan-palvelut2017/soveltava-liikunta",
+    "url": "https://www.petajavesi.fi/vapaa-aika-ja-hyvinvointi/liikunta/soveltava-liikunta/",
     "group": "Alueelliset"
   },
   {
@@ -529,7 +529,7 @@ export const MUNICIPALITY_EXERCISE_LINKS: Provider[] = [
   },
   {
     "name": "Pori - Kesäliikunta",
-    "url": "https://www.pori.fi/vapaa-aika/liikunta/ohjattu-liikunta/kesaliikunta/",
+    "url": "https://www.pori.fi/vapaa-aika/liikunta/ohjattu-liikunta/liikuntaa-ikaantyville/",
     "group": "Alueelliset"
   },
   {
@@ -544,7 +544,7 @@ export const MUNICIPALITY_EXERCISE_LINKS: Provider[] = [
   },
   {
     "name": "Pudasjärvi - Liikuntaryhmät",
-    "url": "https://www.pudasjarvi.fi/liikuntapalvelut/liikuntatarjonta/",
+    "url": "https://www.pudasjarvi.fi/liikuntapalvelut/liikuntaryhmat/",
     "group": "Alueelliset"
   },
   {
@@ -609,7 +609,7 @@ export const MUNICIPALITY_EXERCISE_LINKS: Provider[] = [
   },
   {
     "name": "Savukoski - Kevään 2026 liikuntaryhmät",
-    "url": "https://www.savukoski.fi/news-article/liikuntapalvelut/",
+    "url": "https://www.savukoski.fi/kulttuuri-ja-vapaa-aika/liikunta/",
     "group": "Alueelliset"
   },
   {

@@ -1,7 +1,7 @@
 {
   "name": "aloitussivu",
   "private": true,
-  "version": "0.76.1",
+  "version": "0.77.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -14,6 +14,9 @@
     "package:rel11-staging": "powershell -ExecutionPolicy Bypass -File scripts/build-rel11-staging-package.ps1",
     "package:production-path": "powershell -ExecutionPolicy Bypass -File scripts/build-production-path-package.ps1",
     "links": "node scripts/update-links.mjs",
+    "test:link-policy": "node scripts/link-url-policy-test.mjs",
+    "test:link-catalog": "node scripts/link-catalog-test.mjs",
+    "build:link-catalog": "node scripts/build-link-catalog.mjs",
     "visual-check": "node scripts/visual-check.mjs",
     "municipality-locales": "node scripts/update-municipality-website-locales.mjs",
     "newspapers": "node scripts/update-newspapers.mjs",

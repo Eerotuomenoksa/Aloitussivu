@@ -132,6 +132,8 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ locality, onLocationResolved,
   const [tomorrowWeather, setTomorrowWeather] = useState<DailyWeatherData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  // Ilmatieteen laitoksen paikallissaasivu vaatii kunnan SUOMENKIELISEN nimen; lokalisoitu nimi ei toimi.
+  const [fmiMunicipality, setFmiMunicipality] = useState<string | null>(null);
 
   const getWeatherIcon = (code: number) => {
     if (code === 0) return '☀️';
@@ -271,6 +273,7 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ locality, onLocationResolved,
         setWeather(weatherResult.current);
         setTomorrowWeather(weatherResult.tomorrow);
         setLocationName(shouldLocalizeLinks ? (isInFinland ? localizedMunicipality : city) : fallbackMunicipality);
+        setFmiMunicipality(shouldLocalizeLinks && isInFinland ? (municipalityInfo?.name ?? municipality) : null);
         if (shouldLocalizeLinks) {
           onLocationResolved?.({ municipality, displayName: city, lat, lon, countryCode, isInFinland });
         }
@@ -322,6 +325,7 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ locality, onLocationResolved,
         }
 
         if (!isActive) return;
+        setFmiMunicipality(municipalityInfo?.name ?? nextLocality.municipality);
         onLocationResolved?.({
           ...nextLocality,
           municipality: municipalityInfo?.name ?? nextLocality.municipality,
@@ -370,6 +374,9 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ locality, onLocationResolved,
   }, [language, locality, onLocationResolved, t]);
 
   const isCompact = variant === 'compact';
+  const weatherDetailsUrl = fmiMunicipality
+    ? `https://www.ilmatieteenlaitos.fi/saa/${encodeURIComponent(fmiMunicipality)}`
+    : 'https://www.ilmatieteenlaitos.fi/';
 
   if (variant === 'aurora') {
     const state: WeatherState = getWeatherState(weather?.code, weather?.hour);
@@ -518,13 +525,26 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ locality, onLocationResolved,
           <>
             <p className={`${isCompact ? 'text-xl md:text-4xl text-[var(--theme-gold-light)]' : 'text-6xl'} font-black my-0.5 tracking-tighter md:my-1`}>{weather?.temp}°C</p>
             <p className={`${isCompact ? 'text-xs md:text-lg' : 'text-xl'} font-bold opacity-80 uppercase leading-tight`}>{weather?.condition}</p>
+            {!isCompact && isLinkVisible('https://www.ilmatieteenlaitos.fi/') && (
+              <a
+                href={weatherDetailsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-3 inline-flex min-h-[44px] items-center gap-2 rounded-xl bg-white/15 px-4 py-2 text-base font-black text-white underline decoration-2 underline-offset-4 transition-colors hover:bg-white/25 focus:outline-none focus:ring-4 focus:ring-white/50"
+              >
+                {fmiMunicipality
+                  ? t('weatherDetailsLocal').replace('{municipality}', locationName)
+                  : t('weatherDetails')}
+                <span aria-hidden="true">&rarr;</span>
+              </a>
+            )}
           </>
         )}
       </div>
 
       {isLinkVisible('https://www.ilmatieteenlaitos.fi/') ? (
         <a
-          href="https://www.ilmatieteenlaitos.fi/"
+          href={weatherDetailsUrl}
           target="_blank"
           rel="noopener noreferrer"
           className={`${isCompact ? 'text-2xl min-w-[44px] min-h-[44px] md:text-5xl md:min-w-[76px] md:min-h-[76px]' : 'text-8xl min-w-[120px] min-h-[120px]'} drop-shadow-2xl hover:scale-110 transition-transform cursor-pointer p-2 md:p-4 bg-white/10 rounded-full flex items-center justify-center focus:ring-4 focus:ring-white/50 focus:outline-none`}

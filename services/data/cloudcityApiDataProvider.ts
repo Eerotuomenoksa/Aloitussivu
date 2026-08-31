@@ -171,6 +171,15 @@ export const cloudcityApiDataProvider: DataProvider = {
     return envelope.data;
   },
 
+  async actOnLinkCheck(urlHash, action, reason) {
+    const envelope = await request<ApiEnvelope<MutationReceipt>>(`/admin/link-checks/${encodeURIComponent(urlHash)}/action`, {
+      method: 'POST',
+      headers: await adminHeaders(true),
+      body: body({ action, reason }),
+    });
+    return envelope.data;
+  },
+
   async getFeedbackAttachment(feedbackId: string): Promise<AdminAttachment | null> {
     let response: Response;
     try {

@@ -26,12 +26,15 @@ Kayta ennen julkaisua tai isompaa muutosta ainakin:
 
 - `npm run check:secrets` tarkistaa tunnettuja kovakoodattuja salaisuuksia.
 - `npm run regional-coverage` paivittaa alueellisten linkkien kattavuusraportin.
-- `npm run refresh:links` paivittaa linkkidokumentit ja linkkien tarkistusaineiston. Aja tama erillisena huoltotehtavana, koska tarkistus kay verkossa.
+- `npm run refresh:links` paivittaa linkkidokumentit ja linkkien tarkistusaineiston. Aja tama erillisena huoltotehtavana, koska tarkistus kay verkossa. Tarkistus hyväksyy vain `https://`-osoitteet; suorat HTTP-osoitteet ja HTTPS:stä HTTP:hen päätyvät uudelleenohjaukset hylätään.
+- `npm run test:link-catalog` varmistaa, että tuotannon automaattiseen tarkistukseen pakattava linkkiluettelo on ehjä, yksilöllinen ja sisältää myös digiopastuspaikat sekä kuntien kieliversiot.
 - `npm run refresh:data` paivittaa verkosta paikallislehti- ja RSS-aineistot, alueellisen kattavuusraportin, linkkidokumentit ja muutoslokin. Aja tama erillisena huoltotehtavana, koska ulkoiset lahteet voivat olla hitaita tai rajoittaa pyyntoja.
 - `npx tsc --noEmit -p tsconfig.json` tarkistaa frontendin TypeScript-tyypit.
 - `npm run build` tekee normaalin frontend-buildin ilman hitaita verkkohakuja.
 - `npm run changelog` paivittaa muutoslokin, kun haluat kirjata tyopuun muutokset ennen commitia.
 - `cd functions && npm run build` tarkistaa Cloud Functions -tyypityksen.
+
+Tuotannon automaattinen linkkitarkistus ajetaan yksityisellä PHP-cronilla `api/cron/link-check.php`. Se tarkistaa linkit erissä, tallentaa ajohistorian MariaDB:hen ja näyttää toistuvasti epäonnistuneet linkit ylläpidossa. Käyttöönotto ja Cloudcityn ajastus on kuvattu tiedostossa `docs/rel14-v0770-automaattinen-linkkitarkistus.md`.
 
 ## Tietoturvan peruslinja
 

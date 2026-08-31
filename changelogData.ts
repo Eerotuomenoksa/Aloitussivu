@@ -24,10 +24,11 @@ export type ChangelogCommit = {
   tags: string[];
 };
 
-export const CHANGELOG_GENERATED_AT = "29.8.2026 klo 14.07";
-export const CHANGELOG_VERSION = "0.76.1";
+export const CHANGELOG_GENERATED_AT = "30.8.2026";
+export const CHANGELOG_VERSION = "0.77.0";
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
-  "Ylläpitokoosteen sekä kuukausi- ja kvartaaliraporttien sähköpostit ryhmiteltiin selkeiksi korteiksi, ja jokaiselle luvulle lisättiin selkokielinen määritelmä sekä ymmärrettävä vertailu edelliseen jaksoon."
+  "Automaattinen linkkitarkistus tarkistaa tuotannon linkit erissä, vaatii HTTPS-yhteyden, tallentaa ajohistorian ja näyttää toistuvat ongelmat ylläpidossa sekä sähköpostikoosteessa.",
+  "Tuotantopaketti sisältää muodostetun linkkiluettelon, tietokantamigraation ja Cloudcityn cron-käyttöönotto-ohjeen."
 ];
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [

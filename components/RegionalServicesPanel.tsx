@@ -1,8 +1,9 @@
-import React, { useEffect, useId, useMemo, useRef, useState } from 'react';
-import { findMunicipality, getLocalizedMunicipalityName, getRegionalCategoryShortcuts, getRegionalLibraryProviders, getRegionalNewsProviders, getRegionalProviderScopeInfo, getRegionalProviders, getRegionalRssFeeds, normalizeMunicipality, resolveRegionalContext } from '../localServices';
+import React, { useMemo } from 'react';
+import { findMunicipality, getLocalizedMunicipalityName, getRegionalCategoryShortcuts, getRegionalLibraryProviders, getRegionalNewsProviders, getRegionalProviderScopeInfo, getRegionalProviders, getRegionalRssFeeds, resolveRegionalContext } from '../localServices';
 import { filterVisibleProviders } from '../linkVisibility';
 import { LocalityInfo, Provider, LinkReportDraft, RegionalContext, Shortcut } from '../types';
 import LocalNewsHeadlines from './LocalNewsHeadlines';
+import MunicipalitySelector from './MunicipalitySelector';
 import { useI18n } from '../i18n';
 
 interface RegionalServicesPanelProps {
@@ -167,18 +168,7 @@ const CategoryLink: React.FC<{ shortcut: Shortcut; fontSizeStep: number; onSelec
 
 const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality, fontSizeStep = 0, onLocalitySelected, onReportLink, onSelectCategory, showNews = true }) => {
   const { language, t } = useI18n();
-  const [query, setQuery] = useState('');
-  const [isManualQuery, setIsManualQuery] = useState(false);
-  const municipalityInputRef = useRef<HTMLInputElement>(null);
-  const municipalityHelpId = useId();
-  const municipalityErrorId = useId();
-
-  useEffect(() => {
-    if (!locality?.municipality || isManualQuery) return;
-    setQuery(locality.municipality);
-  }, [isManualQuery, locality?.municipality]);
-
-  const context = useMemo(() => resolveRegionalContext(query, isManualQuery ? null : locality), [isManualQuery, query, locality]);
+  const context = useMemo(() => resolveRegionalContext('', locality), [locality]);
   const services = useMemo(() => context ? filterVisibleProviders(uniqueProvidersByUrl(
     [
       ...getRegionalProviders(context, language),
@@ -191,37 +181,6 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
   const hasOwnLocalNewsSource = rssFeeds.some((feed) => feed.sourceType === 'local-newspaper' || feed.sourceType === 'municipality');
   const fallbackNewsUrl = newsFallbacks[0]?.url ?? '';
   const localizedMunicipalityName = context ? getLocalizedMunicipalityName(context.municipality, language) : '';
-  const detectedMunicipality = locality?.municipality ? findMunicipality(locality.municipality) : null;
-  const detectedMunicipalityName = detectedMunicipality ? getLocalizedMunicipalityName(detectedMunicipality, language) : '';
-  const detectedLocationLabel = detectedMunicipalityName || locality?.municipality || '';
-  const displayedQuery = !isManualQuery && localizedMunicipalityName ? localizedMunicipalityName : query;
-  const hasInvalidMunicipality = isManualQuery && Boolean(query.trim()) && !context;
-
-  useEffect(() => {
-    if (!isManualQuery || !context) return;
-    if (locality?.municipality && normalizeMunicipality(locality.municipality) === normalizeMunicipality(context.municipality.name)) return;
-
-    onLocalitySelected?.({
-      municipality: context.municipality.name,
-      displayName: localizedMunicipalityName || context.displayName,
-      countryCode: 'fi',
-      isInFinland: true,
-    });
-  }, [context, isManualQuery, locality?.municipality, localizedMunicipalityName, onLocalitySelected]);
-
-  const useDetectedMunicipality = () => {
-    if (!locality?.municipality) return;
-    setIsManualQuery(false);
-    setQuery(locality.municipality);
-  };
-
-  const clearMunicipalityInput = () => {
-    setIsManualQuery(true);
-    setQuery('');
-    window.requestAnimationFrame(() => {
-      municipalityInputRef.current?.focus();
-    });
-  };
 
   return (
     <section className="zone zone-local" id="lahellasi" aria-labelledby="regional-services-heading">
@@ -232,82 +191,15 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
             <h2 id="regional-services-heading" className="font-display zone-title break-words [overflow-wrap:anywhere]">
               {t('nearYou')}
             </h2>
-            <div className="flex min-w-0 flex-1 flex-col gap-2 sm:flex-row sm:items-center">
-              <label className="min-w-0 flex-1 lg:max-w-md">
-                <span className="sr-only">
-                  {t('municipality')}
-                </span>
-                <input
-                  ref={municipalityInputRef}
-                  type="search"
-                  value={displayedQuery}
-                  onFocus={() => {
-                    if (!isManualQuery) {
-                      setIsManualQuery(true);
-                      window.requestAnimationFrame(() => municipalityInputRef.current?.select());
-                    }
-                  }}
-                  onChange={(event) => {
-                    const nextQuery = event.target.value;
-                    setQuery(nextQuery);
-                    setIsManualQuery(true);
-                  }}
-                  onKeyDown={(event) => {
-                    if (event.key === 'Escape') {
-                      event.preventDefault();
-                      useDetectedMunicipality();
-                      municipalityInputRef.current?.blur();
-                    }
-                  }}
-                  placeholder={localizedMunicipalityName ? localizedMunicipalityName : t('municipalityPlaceholder')}
-                  className={`min-h-12 w-full rounded-full border-2 border-[var(--zone-border)] bg-[var(--theme-surface)] px-5 py-2 font-black text-[var(--theme-text)] placeholder:text-[var(--theme-muted)] focus:border-[var(--theme-gold)] focus:outline-none focus:ring-4 focus:ring-[var(--theme-focus)]/30 ${textClasses[fontSizeStep]}`}
-                  aria-label={t('municipality')}
-                  aria-invalid={hasInvalidMunicipality ? 'true' : undefined}
-                  aria-describedby={`${municipalityHelpId}${hasInvalidMunicipality ? ` ${municipalityErrorId}` : ''}`}
-                  enterKeyHint="done"
-                />
-              </label>
-              <div className="flex flex-wrap gap-2">
-                {isManualQuery && query.trim() ? (
-                  <button
-                    type="button"
-                    onClick={clearMunicipalityInput}
-                    className={`min-h-11 rounded-full bg-[var(--theme-primary)] px-5 py-2 font-black text-white transition-all hover:bg-[var(--theme-primary-mid)] active:scale-95 ${smallTextClasses[fontSizeStep]}`}
-                  >
-                    {t('clear')}
-                  </button>
-                ) : null}
-                {locality?.municipality && isManualQuery && context && normalizeMunicipality(locality.municipality) !== normalizeMunicipality(context.municipality.name) ? (
-                  <button
-                    type="button"
-                    onClick={useDetectedMunicipality}
-                    className={`min-h-11 rounded-full bg-[var(--theme-primary)] px-5 py-2 font-black text-white transition-all hover:bg-[var(--theme-primary-mid)] active:scale-95 ${smallTextClasses[fontSizeStep]}`}
-                  >
-                    {t('useDetectedLocation')}
-                  </button>
-                ) : null}
-              </div>
+            <div className="min-w-0 flex-1 lg:max-w-md">
+              <MunicipalitySelector
+                locality={locality}
+                onLocalitySelected={onLocalitySelected}
+                fontSizeStep={fontSizeStep}
+              />
             </div>
           </div>
           <p className="zone-info">{t('localZoneInfo')}</p>
-          {locality?.municipality && isManualQuery && context && normalizeMunicipality(locality.municipality) !== normalizeMunicipality(context.municipality.name) && (
-            <p className={`mt-2 font-semibold text-[var(--theme-muted)] ${smallTextClasses[fontSizeStep]}`}>
-              {t('currentLocationIs').replace('{location}', detectedLocationLabel)}
-            </p>
-          )}
-          {hasInvalidMunicipality && (
-            <p
-              id={municipalityErrorId}
-              role="alert"
-              aria-atomic="true"
-              className={`mt-2 font-semibold text-[var(--theme-muted)] ${smallTextClasses[fontSizeStep]}`}
-            >
-              {t('fullMunicipalityPrompt')}
-            </p>
-          )}
-          <p id={municipalityHelpId} className="sr-only">
-            {t('changeMunicipalityHint')}
-          </p>
         </div>
       </div>
 

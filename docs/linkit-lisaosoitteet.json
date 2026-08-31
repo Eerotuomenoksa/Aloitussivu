@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 2,
+  "note": "Tarkistettu 30.8.2026: kaikki kayttajalle nakyvat komponenttilinkit ovat jo linkkikatalogissa, joten links-taulukko on tyhja. Tiedosto on olemassa kahdesta syysta: (1) jos komponenttiin lisataan myohemmin osoite jota ei ole missaan katalogin lahdetiedostossa, se lisataan tanne ja link-check-benchmark.mjs ottaa sen mukaan, (2) eiTarkisteta-lista dokumentoi mita jatetaan tarkoituksella tarkistuksen ulkopuolelle.",
+  "links": [],
+  "eiTarkisteta": {
+    "note": "Naita EI tarkisteta linkkitarkistuksessa. Ne eivat ole kayttajalle nakyvia linkkeja vaan rajapintoja, mallipohjia tai ei-linkkeja. Rajapintojen valvonta on eri asia, ks. docs/linkit-katalogin-kattavuus-2026-08-30.md.",
+    "rajapinnat": [
+      { "url": "https://api.open-meteo.com/v1/forecast", "kaytto": "Saatiedot", "lahde": "components/WeatherCard.tsx" },
+      { "url": "https://geocoding-api.open-meteo.com/v1/search", "kaytto": "Kunnan koordinaatit", "lahde": "components/WeatherCard.tsx" },
+      { "url": "https://nominatim.openstreetmap.org/reverse", "kaytto": "Sijainnista kunnaksi", "lahde": "components/WeatherCard.tsx" },
+      { "url": "https://api.rss2json.com/v1/api.json", "kaytto": "RSS-syotteiden luku", "lahde": "services/rssService.ts" },
+      { "url": "https://api.allorigins.win/raw", "kaytto": "CORS-valitys, varajarjestelma", "lahde": "services/rssService.ts" },
+      { "url": "https://www.kyberturvallisuuskeskus.fi/feed/rss/fi", "kaytto": "Huijausvaroitusten lahde, palvelinpuoli", "lahde": "services/ncscScraper.ts" },
+      { "url": "https://europe-west1-<projectId>.cloudfunctions.net/*", "kaytto": "Oma taustapalvelu", "lahde": "services/*, scamAlerts.ts" }
+    ],
+    "dynaamiset": [
+      { "url": "https://www.google.com/search?q=...", "syy": "Muodostuu kayttajan hausta" },
+      { "url": "uutisotsikoiden osoitteet", "syy": "Muodostuvat ajossa RSS-syotteista" }
+    ],
+    "eiLinkkeja": [
+      { "url": "http://www.w3.org/2000/svg", "syy": "SVG-nimiavaruus, ei avattava osoite" },
+      { "url": "https://", "syy": "Lomakkeen paikkamerkki, components/LinkReportModal.tsx" }
+    ]
+  }
+}

@@ -65,7 +65,7 @@ const wellbeingAreaUrls: Record<string, string> = {
   '03': 'https://www.luvn.fi/',
   '04': 'https://vakehyva.fi/',
   '05': 'https://www.varha.fi/',
-  '06': 'https://sata.fi/',
+  '06': 'https://satakunnanhyvinvointialue.fi/',
   '07': 'https://omahame.fi/',
   '08': 'https://www.pirha.fi/',
   '09': 'https://paijatha.fi/',
@@ -79,7 +79,7 @@ const wellbeingAreaUrls: Record<string, string> = {
   '17': 'https://pohjanmaanhyvinvointi.fi/',
   '18': 'https://soite.fi/',
   '19': 'https://pohde.fi/',
-  '20': 'https://kainuunhyvinvointialue.fi/',
+  '20': 'https://hyvinvointialue.kainuu.fi/',
   '21': 'https://lapha.fi/',
   '90': 'https://www.hel.fi/fi/sosiaali-ja-terveyspalvelut',
   '91': 'https://www.aland.ax/sv',
@@ -91,7 +91,7 @@ const wellbeingAreaNewsUrls: Record<string, string> = {
   '03': 'https://www.luvn.fi/fi/haku?q=&type=news',
   '04': 'https://vakehyva.fi/fi/ajankohtaista',
   '05': 'https://www.varha.fi/fi/ajankohtaista',
-  '06': 'https://sata.fi/ajankohtaista/',
+  '06': 'https://satakunnanhyvinvointialue.fi/ajankohtaista/',
   '07': 'https://omahame.fi/uutiset',
   '08': 'https://www.pirha.fi/ajankohtaista/pirha-nyt',
   '09': 'https://paijatha.fi/ajankohtaista/',
@@ -351,7 +351,7 @@ const regionalServiceAreas: RegionalServiceArea[] = [
     name: 'Oulun seutu',
     municipalities: ['ii', 'kempele', 'liminka', 'lumijoki', 'muhos', 'oulu', 'tyrnävä', 'utajärvi'],
     services: {
-      publicTransport: { name: 'Oulun joukkoliikenne', url: 'https://www.oulunjoukkoliikenne.fi/', group: 'Julkinen liikenne' },
+      publicTransport: { name: 'Oulun joukkoliikenne', url: 'https://www.osl.fi/', group: 'Julkinen liikenne' },
     },
   },
   {
@@ -807,12 +807,12 @@ const regionalLibraryAreas: RegionalLibraryArea[] = [
   {
     id: 'eepos',
     municipalities: ['alajärvi', 'alavus', 'evijärvi', 'ilmajoki', 'isojoki', 'isokyrö', 'karijoki', 'kaskinen', 'kauhajoki', 'kauhava', 'kuortane', 'kurikka', 'laihia', 'lappajärvi', 'lapua', 'perho', 'seinäjoki', 'soini', 'teuva', 'veteli', 'vimpeli', 'ähtäri'],
-    provider: { name: 'Eepos-kirjastot', url: 'http://eepos.finna.fi/', group: 'Kirjastot' },
+    provider: { name: 'Eepos-kirjastot', url: 'https://eepos.finna.fi/', group: 'Kirjastot' },
   },
   {
     id: 'fredrika',
     municipalities: ['korsnäs', 'kristiinankaupunki', 'kruunupyy', 'luoto', 'maalahti', 'mustasaari', 'närpiö', 'pedersören', 'pietarsaari', 'uusikaarlepyy', 'vöyri'],
-    provider: { name: 'Fredrikabiblioteken', url: 'http://fredrika.finna.fi', group: 'Kirjastot' },
+    provider: { name: 'Fredrikabiblioteken', url: 'https://fredrika.finna.fi', group: 'Kirjastot' },
   },
   {
     id: 'heili',
@@ -827,7 +827,7 @@ const regionalLibraryAreas: RegionalLibraryArea[] = [
   {
     id: 'helmet',
     municipalities: ['espoo', 'helsinki', 'kauniainen', 'vantaa'],
-    provider: { name: 'Helmet-kirjastot', url: 'https://www.helmet.fi/', group: 'Kirjastot' },
+    provider: { name: 'Helmet-kirjastot', url: 'https://helmet.finna.fi/', group: 'Kirjastot' },
   },
   {
     id: 'joki',
@@ -872,7 +872,7 @@ const regionalLibraryAreas: RegionalLibraryArea[] = [
   {
     id: 'lapin-kirjasto',
     municipalities: ['enontekiö', 'inari', 'kemi', 'kemijärvi', 'keminmaa', 'kittilä', 'kolari', 'muonio', 'pelkosenniemi', 'pello', 'posio', 'ranua', 'rovaniemi', 'salla', 'savukoski', 'simo', 'sodankylä', 'tervola', 'tornio', 'utsjoki', 'ylitornio'],
-    provider: { name: 'Lapin kirjasto', url: 'http://lapinkirjasto.finna.fi/', group: 'Kirjastot' },
+    provider: { name: 'Lapin kirjasto', url: 'https://lapinkirjasto.finna.fi/', group: 'Kirjastot' },
   },
   {
     id: 'lastu',
@@ -1291,7 +1291,7 @@ const yleSwedishRegionalNewsFeedsByWellbeingArea: Record<string, YleRegionalNews
 const localServiceMap: Record<string, LocalServiceConfig> = {
   helsinki: {
     publicTransport: hslPublicTransport,
-    library: { name: 'Helmet-kirjastot', url: 'https://www.helmet.fi/', group: 'Kirjastot' },
+    library: { name: 'Helmet-kirjastot', url: 'https://helmet.finna.fi/', group: 'Kirjastot' },
     municipality: { name: 'Helsingin palvelut', url: 'https://www.hel.fi/fi', group: 'Paikalliset palvelut' },
     rssFeeds: [
       { name: 'Helsingin kaupungin uutiset', url: 'https://www.hel.fi/fi/uutiset' },
@@ -1299,7 +1299,7 @@ const localServiceMap: Record<string, LocalServiceConfig> = {
   },
   espoo: {
     publicTransport: hslPublicTransport,
-    library: { name: 'Helmet-kirjastot', url: 'https://www.helmet.fi/', group: 'Kirjastot' },
+    library: { name: 'Helmet-kirjastot', url: 'https://helmet.finna.fi/', group: 'Kirjastot' },
     municipality: { name: 'Espoon palvelut', url: 'https://www.espoo.fi/fi', group: 'Paikalliset palvelut' },
     rssFeeds: [
       { name: 'Espoon uutiset', url: 'https://www.espoo.fi/fi/rss/news' },
@@ -1308,7 +1308,7 @@ const localServiceMap: Record<string, LocalServiceConfig> = {
   },
   vantaa: {
     publicTransport: hslPublicTransport,
-    library: { name: 'Helmet-kirjastot', url: 'https://www.helmet.fi/', group: 'Kirjastot' },
+    library: { name: 'Helmet-kirjastot', url: 'https://helmet.finna.fi/', group: 'Kirjastot' },
     municipality: { name: 'Vantaan palvelut', url: 'https://www.vantaa.fi/fi', group: 'Paikalliset palvelut' },
     rssFeeds: [
       { name: 'Vantaan uutiset', url: 'https://www.vantaa.fi/fi/rss/topical/121' },
@@ -1317,7 +1317,7 @@ const localServiceMap: Record<string, LocalServiceConfig> = {
   },
   kauniainen: {
     publicTransport: hslPublicTransport,
-    library: { name: 'Helmet-kirjastot', url: 'https://www.helmet.fi/', group: 'Kirjastot' },
+    library: { name: 'Helmet-kirjastot', url: 'https://helmet.finna.fi/', group: 'Kirjastot' },
     municipality: { name: 'Kauniaisten palvelut', url: 'https://www.kauniainen.fi/', group: 'Paikalliset palvelut' },
   },
   tampere: {

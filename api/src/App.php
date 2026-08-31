@@ -74,6 +74,7 @@ final class App
             ),
             $attachments,
             $ncscJob ?? new NcscJob($database, new HttpNcscSource()),
+            $config,
             $config->basePath,
         ))->register($router);
 

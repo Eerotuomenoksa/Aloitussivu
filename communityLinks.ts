@@ -15,15 +15,15 @@ export const PATIENT_ASSOCIATION_LINKS: RegionalProvider[] = [
   },
   {
     name: "AH-potilaat",
-    url: "https://www.ah-potilaat.fi/"
+    url: "https://www.ah-potilaat.org/"
   },
   {
     name: "Aivolisäke-potilasyhdistys Sella",
-    url: "https://www.aivolisake.fi/"
+    url: "https://sellanet.com/"
   },
   {
     name: "ALS-tutkimuksen tuki",
-    url: "https://www.als-tutkimus.fi/"
+    url: "https://www.alstuttu.org/"
   },
   {
     name: "AMC",
@@ -34,8 +34,8 @@ export const PATIENT_ASSOCIATION_LINKS: RegionalProvider[] = [
     url: "https://www.aniridia.fi/"
   },
   {
-    name: "Autistien ja Rett-henkilöiden Tuki ry",
-    url: "https://www.autistienettutuki.fi/"
+    name: "Rett Finland ry",
+    url: "https://www.rettfinland.fi/"
   },
   {
     name: "Cranio",
@@ -43,11 +43,11 @@ export const PATIENT_ASSOCIATION_LINKS: RegionalProvider[] = [
   },
   {
     name: "Erityislasten Omaiset ELO",
-    url: "https://www.elory.fi/"
+    url: "https://erityislastenomaiset.fi/"
   },
   {
     name: "Etelä-Suomen Alopecia- ja Vitiligoyhdistys",
-    url: "https://www.alopecia.fi/"
+    url: "https://www.alopeciavitiligo.fi/yhdistykset/etela-suomi/"
   },
   {
     name: "Finnilco",
@@ -55,15 +55,15 @@ export const PATIENT_ASSOCIATION_LINKS: RegionalProvider[] = [
   },
   {
     name: "Frax",
-    url: "https://www.frax.fi/"
+    url: "https://fraxry.wordpress.com/"
   },
   {
     name: "FSHD-yhdistys",
-    url: "https://www.fshd.fi/"
+    url: "https://fshdfinland.org/"
   },
   {
     name: "GNAO1 Tuki",
-    url: "https://www.gnao1tuki.fi/"
+    url: "https://www.gnao1.fi/"
   },
   {
     name: "HARSO",
@@ -75,15 +75,15 @@ export const PATIENT_ASSOCIATION_LINKS: RegionalProvider[] = [
   },
   {
     name: "Ihoyhdistys",
-    url: "https://www.ihoyhdistys.fi/"
+    url: "https://www.iholiitto.fi/ihoyhdistys/"
   },
   {
     name: "Immuunipuutospotilaiden yhdistys Imppu",
-    url: "https://www.imppu.fi/"
+    url: "https://immuunipuutospotilaidenyhdistys.fi/"
   },
   {
-    name: "ITP Suomi",
-    url: "https://www.itpsuomi.fi/"
+    name: "ITP – Verenvuotosairaudet ry",
+    url: "https://verenvuotosairaudet.fi/verenvuototaudit/itp-eli-immuuni-trombosytopenia/"
   },
   {
     name: "Kalfos",
@@ -91,7 +91,7 @@ export const PATIENT_ASSOCIATION_LINKS: RegionalProvider[] = [
   },
   {
     name: "Karpatiat",
-    url: "https://www.karpatiat.fi/"
+    url: "https://sydan.fi/karpatiat/"
   },
   {
     name: "Lupus Suomi",
@@ -103,7 +103,7 @@ export const PATIENT_ASSOCIATION_LINKS: RegionalProvider[] = [
   },
   {
     name: "Marfan ja sen kaltaiset sairaudet ry",
-    url: "https://www.marfanyhdistys.fi/"
+    url: "https://www.marfan.fi/"
   },
   {
     name: "MeHyvät",
@@ -111,15 +111,15 @@ export const PATIENT_ASSOCIATION_LINKS: RegionalProvider[] = [
   },
   {
     name: "Mitokondrioyhdistys",
-    url: "https://www.mitokondrioyhdistys.fi/"
+    url: "https://mitokondrioyhdistys.neuroliitto.fi/"
   },
   {
     name: "OUKALI ry",
-    url: "https://www.oukali.fi/"
+    url: "https://www.oukali-lihastautiyhdistys.com/"
   },
   {
     name: "Pohjois-Suomen Alopecia- ja Vitiligoyhdistys",
-    url: "https://www.alopecia.fi/pohjois-suomi"
+    url: "https://www.alopeciavitiligo.fi/yhdistykset/pohjois-suomi/"
   },
   {
     name: "REDY",
@@ -139,19 +139,19 @@ export const PATIENT_ASSOCIATION_LINKS: RegionalProvider[] = [
   },
   {
     name: "SUHUPO",
-    url: "https://www.suhupo.fi/"
+    url: "https://www.halkio.com/"
   },
   {
     name: "Suomen Akustikusneurinoomayhdistys",
-    url: "https://www.akustikusneurinooma.fi/"
+    url: "https://www.akustikusneurinoomayhdistys.com/"
   },
   {
     name: "Suomen albinismiyhdistys",
-    url: "https://www.albinismi.fi/"
+    url: "https://albinismiyhdistys.omasivu.fi/"
   },
   {
     name: "Suomen Amyloidoosiyhdistys",
-    url: "https://www.amyloidoosi.fi/"
+    url: "https://suomenamyloidoosiyhdistys.fi/"
   },
   {
     name: "Suomen Angelman-yhdistys",
@@ -159,19 +159,19 @@ export const PATIENT_ASSOCIATION_LINKS: RegionalProvider[] = [
   },
   {
     name: "Suomen CF-yhdistys",
-    url: "https://www.cf-yhdistys.fi/"
+    url: "https://www.hengitysyhdistys.fi/suomencf/"
   },
   {
     name: "Suomen Chiari- ja syringomyeliayhdistys",
-    url: "https://www.chiari.fi/"
+    url: "https://neuroliitto.fi/yhdistykset/jasenyhdistykset/"
   },
   {
     name: "Suomen Dystoniayhdistys",
-    url: "https://www.dystonia.fi/"
+    url: "https://dystoniayhdistys.com/"
   },
   {
     name: "Suomen EB-yhdistys",
-    url: "https://www.eb-yhdistys.fi/"
+    url: "https://www.iholiitto.fi/eb-yhdistys/"
   },
   {
     name: "Suomen Ehlers-Danlos yhdistys (SEDY)",
@@ -179,7 +179,7 @@ export const PATIENT_ASSOCIATION_LINKS: RegionalProvider[] = [
   },
   {
     name: "Suomen Fabry-yhdistys",
-    url: "https://www.fabry.fi/"
+    url: "https://fabry.neuroliitto.fi/"
   },
   {
     name: "Suomen fruktoosi-intolerantikot (HFI)",
@@ -191,11 +191,11 @@ export const PATIENT_ASSOCIATION_LINKS: RegionalProvider[] = [
   },
   {
     name: "Suomen Hemofiliayhdistys",
-    url: "https://www.hemofilia.fi/"
+    url: "https://verenvuotosairaudet.fi/"
   },
   {
     name: "Suomen HHT/Osler-yhdistys",
-    url: "https://www.hhtosler.fi/"
+    url: "https://hht-osler.fi/"
   },
   {
     name: "Suomen Huntington-yhdistys",
@@ -207,7 +207,7 @@ export const PATIENT_ASSOCIATION_LINKS: RegionalProvider[] = [
   },
   {
     name: "Suomen Kampurajalkayhdistys",
-    url: "https://www.kampurajalkayhdistys.fi/"
+    url: "https://www.skyry.org/"
   },
   {
     name: "Suomen lymfayhdistys",
@@ -215,7 +215,7 @@ export const PATIENT_ASSOCIATION_LINKS: RegionalProvider[] = [
   },
   {
     name: "Suomen MG-yhdistys",
-    url: "https://www.mg-yhdistys.fi/"
+    url: "https://www.suomenmg-yhdistys.fi/"
   },
   {
     name: "Suomen Narkolepsiayhdistys",
@@ -223,11 +223,11 @@ export const PATIENT_ASSOCIATION_LINKS: RegionalProvider[] = [
   },
   {
     name: "Suomen NF-yhdistys",
-    url: "https://www.nf-yhdistys.fi/"
+    url: "https://www.snf.fi/"
   },
   {
     name: "Suomen Noonan-yhdistys",
-    url: "https://www.noonan.fi/"
+    url: "https://www.noonansuomi.net/"
   },
   {
     name: "Suomen Osteogenesis Imperfecta –yhdistys",
@@ -235,15 +235,15 @@ export const PATIENT_ASSOCIATION_LINKS: RegionalProvider[] = [
   },
   {
     name: "Suomen Palovammayhdistys",
-    url: "https://www.palovammayhdistys.fi/"
+    url: "https://www.iholiitto.fi/jasenjarjestot/palovammayhdistys/"
   },
   {
     name: "Suomen PAH-potilasyhdistys",
-    url: "https://www.pah.fi/"
+    url: "https://suomen-pah.org/"
   },
   {
     name: "Suomen PANS/PANDAS",
-    url: "https://www.panspandas.fi/"
+    url: "https://panspandas.wordpress.com/"
   },
   {
     name: "Suomen Perthes",
@@ -251,15 +251,15 @@ export const PATIENT_ASSOCIATION_LINKS: RegionalProvider[] = [
   },
   {
     name: "Suomen PWS-yhdistys",
-    url: "https://www.pws.fi/"
+    url: "https://www.pws-yhdistys.fi/"
   },
   {
     name: "Suomen Sklerodermayhdistys",
-    url: "https://www.skleroderma.fi/"
+    url: "https://www.sklero.org/"
   },
   {
-    name: "Suomen Sotos-perheiden tukiyhdistys",
-    url: "https://www.sotos.fi/"
+    name: "Sotosin oireyhtymä – Tukiliitto",
+    url: "https://www.tukiliitto.fi/diagnoosit/sotosin-oireyhtyma/"
   },
   {
     name: "Suomen Tourette- ja OCD -yhdistys",
@@ -275,7 +275,7 @@ export const PATIENT_ASSOCIATION_LINKS: RegionalProvider[] = [
   },
   {
     name: "Suomen Vaskuliittiyhdistys",
-    url: "https://www.vaskuliitti.fi/"
+    url: "https://www.vaskuliittiyhdistys.fi/"
   },
   {
     name: "Sydän- ja Keuhkosiirrokkaat (Syke)",
@@ -283,7 +283,7 @@ export const PATIENT_ASSOCIATION_LINKS: RegionalProvider[] = [
   },
   {
     name: "Sydänlapset ja -aikuiset",
-    url: "https://www.sydanlapset.fi/"
+    url: "https://sydanlapsetjaaikuiset.fi/"
   },
   {
     name: "Sylva",
@@ -291,11 +291,11 @@ export const PATIENT_ASSOCIATION_LINKS: RegionalProvider[] = [
   },
   {
     name: "Valoihottumayhdistys",
-    url: "https://www.valoihottuma.fi/"
+    url: "https://valoihottuma.allergia.fi/"
   },
   {
     name: "Waldenström Finland ry",
-    url: "https://www.waldenstrom.fi/"
+    url: "https://www.wmfin.fi/"
   },
   {
     name: "Aivovammaliitto ry",
@@ -491,7 +491,7 @@ export const PATIENT_ASSOCIATION_LINKS: RegionalProvider[] = [
   },
   {
     name: "Vantaan Muistiyhdistys ry",
-    url: "https://www.vantaanmuisti.fi/fi/etusivu",
+    url: "https://muistiliitto.fi/muistiyhdistykset/vantaan-muistiyhdistys-ry/etusivu-vantaa/",
     group: "Muistiyhdistykset",
     municipality: "Vantaa"
   },
@@ -560,7 +560,7 @@ export const SENIOR_ASSOCIATION_LINKS: RegionalProvider[] = [
   },
   {
     name: "Eläkeläisliittojen etujärjestö EETU ry",
-    url: "https://www.eetu.fi/",
+    url: "https://www.eetury.fi/",
     group: "Koko Suomi",
     type: "Valtakunnallinen",
     area: "Koko Suomi",
@@ -821,7 +821,7 @@ export const MUSEUM_LINKS: RegionalProvider[] = [
   },
   {
     name: "Luonnontieteellinen keskusmuseo LUOMUS",
-    url: "https://www.luomus.fi/",
+    url: "https://www.helsinki.fi/fi/luomus",
     group: "Helsinki",
     type: "Valtakunnallinen vastuumuseo",
     area: "Koko Suomi",
@@ -830,7 +830,7 @@ export const MUSEUM_LINKS: RegionalProvider[] = [
   },
   {
     name: "Suomen merimuseo",
-    url: "https://www.merimuseo.fi/",
+    url: "https://www.kansallismuseo.fi/fi/suomenmerimuseo",
     group: "Helsinki",
     type: "Valtakunnallinen vastuumuseo",
     area: "Koko Suomi",
@@ -884,7 +884,7 @@ export const MUSEUM_LINKS: RegionalProvider[] = [
   },
   {
     name: "Arkkitehtuurimuseo",
-    url: "https://www.mfa.fi/",
+    url: "https://admuseo.fi/",
     group: "Helsinki",
     type: "Valtakunnallinen vastuumuseo",
     area: "Koko Suomi",
@@ -902,7 +902,7 @@ export const MUSEUM_LINKS: RegionalProvider[] = [
   },
   {
     name: "Suomen urheilumuseo",
-    url: "https://www.urheilumuseo.fi/",
+    url: "https://tahto.com/",
     group: "Helsinki",
     type: "Valtakunnallinen vastuumuseo",
     area: "Koko Suomi",
@@ -911,7 +911,7 @@ export const MUSEUM_LINKS: RegionalProvider[] = [
   },
   {
     name: "Suomen pelimuseo",
-    url: "https://www.pelimuseo.fi/",
+    url: "https://www.vapriikki.fi/nayttelyt/suomen-pelimuseo-nayttelyt/",
     group: "Tampere",
     type: "Valtakunnallinen vastuumuseo",
     area: "Koko Suomi",
@@ -929,7 +929,7 @@ export const MUSEUM_LINKS: RegionalProvider[] = [
   },
   {
     name: "Suomen työväenmuseo Werstas",
-    url: "https://www.werstas.fi/",
+    url: "https://www.tyovaenmuseo.fi/",
     group: "Tampere",
     type: "Valtakunnallinen vastuumuseo",
     area: "Koko Suomi",
@@ -938,7 +938,7 @@ export const MUSEUM_LINKS: RegionalProvider[] = [
   },
   {
     name: "Suomen mediamuseo Rupriikki",
-    url: "https://www.rupriikki.fi/",
+    url: "https://www.postimuseo.fi/tiedotteet/postimuseo-ja-tampereen-historialliset-museot-saivat-yhdessa-valtakunnallisen-vastuumuseotehtavan/",
     group: "Tampere",
     type: "Valtakunnallinen vastuumuseo",
     area: "Koko Suomi",
@@ -947,7 +947,7 @@ export const MUSEUM_LINKS: RegionalProvider[] = [
   },
   {
     name: "Suomen kello- ja korumuseo",
-    url: "https://www.kellomuseo.fi/",
+    url: "https://www.museokruunu.fi/",
     group: "Espoo",
     type: "Valtakunnallinen vastuumuseo",
     area: "Koko Suomi",
@@ -965,7 +965,7 @@ export const MUSEUM_LINKS: RegionalProvider[] = [
   },
   {
     name: "Hämeenlinnan taidemuseo",
-    url: "https://www.hameenlinna.fi/taidemuseo",
+    url: "https://www.hameenlinnantaidemuseo.fi/",
     group: "Hämeenlinna",
     type: "Alueellinen vastuumuseo",
     area: "Kanta-Häme",
@@ -992,7 +992,7 @@ export const MUSEUM_LINKS: RegionalProvider[] = [
   },
   {
     name: "Oulun taidemuseo",
-    url: "https://www.ouka.fi/oulun-taidemuseo",
+    url: "https://ouluntaidemuseo.fi/",
     group: "Oulu",
     type: "Alueellinen vastuumuseo",
     area: "Pohjois-Pohjanmaa ja Kainuu",
@@ -1010,7 +1010,7 @@ export const MUSEUM_LINKS: RegionalProvider[] = [
   },
   {
     name: "Pohjanmaan museo",
-    url: "https://www.pohjanmaanmuseo.fi/",
+    url: "https://www.vaasa.fi/koe-ja-nae/kulttuuria-vaasassa-ja-seudulla/vaasan-museot/pohjanmaan-museo/",
     group: "Vaasa",
     type: "Alueellinen vastuumuseo",
     area: "Pohjanmaa ja Keski-Pohjanmaa",
@@ -1037,7 +1037,7 @@ export const MUSEUM_LINKS: RegionalProvider[] = [
   },
   {
     name: "Satakunnan museo",
-    url: "https://www.satakuntamuseo.fi/",
+    url: "https://satakunnanmuseo.pori.fi/",
     group: "Pori",
     type: "Alueellinen vastuumuseo",
     area: "Satakunta",
@@ -1046,7 +1046,7 @@ export const MUSEUM_LINKS: RegionalProvider[] = [
   },
   {
     name: "Aboa Vetus & Ars Nova",
-    url: "https://www.aboavetusarsnova.fi/",
+    url: "https://avan.fi/",
     group: "Turku",
     type: "Paikallismuseo",
     area: "Varsinais-Suomi",
@@ -1091,7 +1091,7 @@ export const MUSEUM_LINKS: RegionalProvider[] = [
   },
   {
     name: "Seurasaaren ulkomuseo",
-    url: "https://www.kansallismuseo.fi/seurasaari",
+    url: "https://www.kansallismuseo.fi/fi/seurasaarenulkomuseo",
     group: "Helsinki",
     type: "Paikallismuseo",
     area: "Uusimaa",
@@ -1128,7 +1128,7 @@ export const MUSEUM_LINKS: RegionalProvider[] = [
   },
   {
     name: "Oulun taidemuseo",
-    url: "https://www.ouka.fi/taidemuseo",
+    url: "https://ouluntaidemuseo.fi/",
     group: "Oulu",
     type: "Paikallismuseo",
     area: "Pohjois-Pohjanmaa",
@@ -1146,7 +1146,7 @@ export const MUSEUM_LINKS: RegionalProvider[] = [
   },
   {
     name: "Hämeen linna",
-    url: "https://www.hameenlinna.fi/hameenlinna",
+    url: "https://www.kansallismuseo.fi/fi/haemeenlinna",
     group: "Hämeenlinna",
     type: "Paikallismuseo",
     area: "Kanta-Häme",
@@ -1155,7 +1155,7 @@ export const MUSEUM_LINKS: RegionalProvider[] = [
   },
   {
     name: "Rovaniemen taidemuseo",
-    url: "https://www.rovaniemi.fi/taidemuseo",
+    url: "https://korundi.fi/fi/kavijalle/rovaniemen-taidemuseo",
     group: "Rovaniemi",
     type: "Paikallismuseo",
     area: "Lappi",

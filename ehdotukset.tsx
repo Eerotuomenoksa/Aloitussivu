@@ -44,6 +44,16 @@ import {
   isUsageTrackingDisabled,
   setUsageTrackingDisabled,
 } from './usageTracking';
+import {
+  actOnLinkCheck,
+  emptyLinkCheckOverview,
+  fetchLinkChecks,
+  getLinkCheckErrorLabel,
+  getLinkCheckRunMessage,
+  subscribeLinkChecks,
+  type LinkCheckItem,
+  type LinkCheckOverview,
+} from './linkChecks';
 
 const normalizeUrl = (url: string) => url.trim().replace(/\/+$/, '');
 
@@ -302,6 +312,11 @@ function App() {
   const [usageTrackingDisabled, setUsageTrackingDisabledState] = useState(() => isUsageTrackingDisabled());
   const [adminSession, setAdminSession] = useState<AdminSession | null>(null);
   const [adminAccessReady, setAdminAccessReady] = useState(false);
+  const [linkChecks, setLinkChecks] = useState<LinkCheckOverview>(emptyLinkCheckOverview);
+  const [linkCheckError, setLinkCheckError] = useState('');
+  const [linkCheckBusyId, setLinkCheckBusyId] = useState<string | null>(null);
+  const [linkCheckActionMessage, setLinkCheckActionMessage] = useState('');
+  const [linkCheckReasons, setLinkCheckReasons] = useState<Record<string, string>>({});
 
   const hasAdminAccess = adminSession !== null;
   const userEmail = adminSession?.email || getUserEmail(user);
@@ -396,6 +411,24 @@ function App() {
   }, [usageRangeMode]);
 
   useEffect(() => {
+    if (!hasAdminAccess) {
+      setLinkChecks(emptyLinkCheckOverview);
+      setLinkCheckError('');
+      return () => {};
+    }
+    return subscribeLinkChecks(
+      (overview) => {
+        setLinkChecks(overview);
+        setLinkCheckError('');
+      },
+      (error) => {
+        if (isAdminAccessError(error)) setAdminSession(null);
+        setLinkCheckError(error instanceof Error ? error.message : 'Linkkitarkistuksen tietoja ei voitu ladata.');
+      },
+    );
+  }, [hasAdminAccess]);
+
+  useEffect(() => {
     if (!hasAdminAccess) return;
     let isCurrent = true;
     setUsageStatsBusy(true);
@@ -474,6 +507,13 @@ function App() {
       note: 'Rikkinäiset, väärät tai poistettavat linkit.',
     },
     {
+      label: 'Linkkitarkistus',
+      count: linkChecks.summary.attention,
+      href: '#link-checks',
+      tone: linkCheckError || linkChecks.summary.attention > 0 ? 'bg-rose-100 text-rose-950 dark:bg-rose-900/40 dark:text-rose-100' : 'bg-emerald-100 text-emerald-950 dark:bg-emerald-900/40 dark:text-emerald-100',
+      note: linkCheckError || (linkChecks.enabled ? `${linkChecks.summary.ok} kunnossa, ${linkChecks.summary.pending} odottaa ensimmäistä tarkistusta.` : 'Automaattinen tarkistus ei ole käytössä.'),
+    },
+    {
       label: 'Huijausvaroitukset',
       count: activeScamAlerts.length,
       href: '#scam-alerts-admin',
@@ -494,7 +534,7 @@ function App() {
       tone: usageStatsError ? 'bg-rose-100 text-rose-950 dark:bg-rose-900/40 dark:text-rose-100' : 'bg-cyan-100 text-cyan-950 dark:bg-cyan-900/40 dark:text-cyan-100',
       note: usageStatsError || `${usageRange.start} - ${usageRange.end}`,
     },
-  ], [activeScamAlerts.length, approvedLinks.length, issueReports.length, ncscAttentionLogs.length, pendingNewReports.length, usageRange.end, usageRange.start, usageStatsError, usageTotals.frontPageViews]);
+  ], [activeScamAlerts.length, approvedLinks.length, issueReports.length, linkCheckError, linkChecks.enabled, linkChecks.summary.attention, linkChecks.summary.ok, linkChecks.summary.pending, ncscAttentionLogs.length, pendingNewReports.length, usageRange.end, usageRange.start, usageStatsError, usageTotals.frontPageViews]);
 
   useEffect(() => {
     setReportDrafts((current) => {
@@ -610,6 +650,74 @@ function App() {
     }
   };
 
+  const handleLinkCheckAction = async (item: LinkCheckItem, action: 'approve' | 'block') => {
+    const reason = (linkCheckReasons[item.id] ?? '').trim();
+    if (reason.length < 3) {
+      setLinkCheckActionMessage('Kirjoita käsittelylle vähintään kolmen merkin perustelu.');
+      return;
+    }
+    setLinkCheckBusyId(item.id);
+    setLinkCheckActionMessage('');
+    try {
+      await actOnLinkCheck(item.id, action, reason);
+      setLinkChecks(await fetchLinkChecks());
+      setLinkCheckReasons((current) => {
+        const next = { ...current };
+        delete next[item.id];
+        return next;
+      });
+      setLinkCheckActionMessage(action === 'approve'
+        ? `Linkki ${item.name} hyväksyttiin toimivaksi. Huomio tarkistetaan uudelleen kolmen kuukauden kuluttua.`
+        : `Linkki ${item.name} poistettiin käyttäjiltä näkyvistä ja lisättiin ylläpidon pysyvälle estolistalle.`);
+    } catch (error) {
+      if (isAdminAccessError(error)) setAdminSession(null);
+      setLinkCheckActionMessage(error instanceof Error
+        ? `Linkkihuomion käsittely epäonnistui: ${error.message}`
+        : 'Linkkihuomion käsittely epäonnistui.');
+    } finally {
+      setLinkCheckBusyId(null);
+    }
+  };
+
+  const renderLinkCheckActions = (item: LinkCheckItem) => (
+    <div className="mt-4 space-y-3 rounded-xl border border-slate-200 bg-white p-3 dark:border-slate-700 dark:bg-slate-900">
+      <label className="block space-y-2" htmlFor={`link-check-reason-${item.id}`}>
+        <span className="block text-sm font-black text-slate-700 dark:text-slate-200">Ylläpitäjän perustelu</span>
+        <input
+          id={`link-check-reason-${item.id}`}
+          type="text"
+          maxLength={900}
+          value={linkCheckReasons[item.id] ?? ''}
+          onChange={(event) => setLinkCheckReasons((current) => ({ ...current, [item.id]: event.target.value }))}
+          placeholder="Esimerkiksi: tarkistettu selaimessa 31.8.2026"
+          disabled={linkCheckBusyId === item.id}
+          className="w-full rounded-xl border-2 border-slate-300 bg-white px-3 py-3 font-bold text-slate-900 focus:border-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-600/25 disabled:opacity-60 dark:border-slate-600 dark:bg-slate-800 dark:text-white"
+        />
+      </label>
+      <p className="text-xs font-bold text-slate-500 dark:text-slate-400">
+        Hyväksyntä vaimentaa tämän huomion kolmeksi kuukaudeksi. Poistaminen piilottaa linkin käyttäjiltä ja lisää sen ylläpidon pysyvälle estolistalle.
+      </p>
+      <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+        <button
+          type="button"
+          disabled={linkCheckBusyId === item.id}
+          onClick={() => void handleLinkCheckAction(item, 'approve')}
+          className="rounded-full bg-emerald-600 px-5 py-3 font-black text-white shadow-md transition-all hover:bg-emerald-700 focus:outline-none focus:ring-4 focus:ring-emerald-600/35 active:scale-95 disabled:opacity-50"
+        >
+          {linkCheckBusyId === item.id ? 'Käsitellään…' : 'Hyväksy toimivaksi'}
+        </button>
+        <button
+          type="button"
+          disabled={linkCheckBusyId === item.id}
+          onClick={() => void handleLinkCheckAction(item, 'block')}
+          className="rounded-full bg-rose-700 px-5 py-3 font-black text-white shadow-md transition-all hover:bg-rose-800 focus:outline-none focus:ring-4 focus:ring-rose-700/35 active:scale-95 disabled:opacity-50"
+        >
+          {linkCheckBusyId === item.id ? 'Käsitellään…' : 'Poista linkki näkyvistä'}
+        </button>
+      </div>
+    </div>
+  );
+
   return (
     <main className="aurora-page">
       <div className="mx-auto max-w-7xl px-4 py-8 md:px-8 md:py-12 space-y-10">
@@ -724,7 +832,7 @@ function App() {
                   Nopea näkymä avoimiin asioihin ja automaation huomioihin.
                 </p>
               </div>
-              <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
+              <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-6">
                 {reviewTasks.map((task) => (
                   <a
                     key={task.href}
@@ -743,6 +851,140 @@ function App() {
                   </a>
                 ))}
               </div>
+            </section>
+
+            <section id="link-checks" className="scroll-mt-6 space-y-5 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+              <div className="flex flex-wrap items-start justify-between gap-4">
+                <div>
+                  <h2 className="text-2xl font-black md:text-3xl">Automaattinen linkkitarkistus</h2>
+                  <p className="mt-1 text-sm font-bold text-slate-500 dark:text-slate-400">
+                    Tarkistaa linkit pienissä erissä, vaatii HTTPS-yhteyden ja vahvistaa virheen toistolla ennen ilmoitusta.
+                  </p>
+                </div>
+                <span className={`rounded-full px-4 py-2 text-lg font-black ${linkChecks.summary.attention > 0 ? 'bg-rose-100 text-rose-950 dark:bg-rose-900/40 dark:text-rose-100' : 'bg-emerald-100 text-emerald-950 dark:bg-emerald-900/40 dark:text-emerald-100'}`}>
+                  Huomioitavia {linkChecks.summary.attention}
+                </span>
+              </div>
+
+              {linkCheckError ? (
+                <p className="rounded-2xl border border-rose-200 bg-rose-50 p-4 font-bold text-rose-900 dark:border-rose-900 dark:bg-rose-950/30 dark:text-rose-200">{linkCheckError}</p>
+              ) : (
+                <>
+                  {linkCheckActionMessage && (
+                    <p className="rounded-2xl border border-blue-200 bg-blue-50 p-4 font-bold text-blue-950 dark:border-blue-900 dark:bg-blue-950/30 dark:text-blue-100" role="status" aria-live="polite">
+                      {linkCheckActionMessage}
+                    </p>
+                  )}
+                  <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-8">
+                    {[
+                      ['Linkkejä', linkChecks.summary.total],
+                      ['Kunnossa', linkChecks.summary.ok],
+                      ['Odottaa', linkChecks.summary.pending],
+                      ['Varoituksia', linkChecks.summary.warnings],
+                      ['Epäonnistuu', linkChecks.summary.failing],
+                      ['HTTPS-sääntö', linkChecks.summary.rejected],
+                      ['Domain vaihtui', linkChecks.summary.domainChanged],
+                      ['Tarkistusvuorossa', linkChecks.summary.due],
+                    ].map(([label, value]) => (
+                      <div key={label} className="rounded-2xl bg-slate-50 p-4 dark:bg-slate-950/60">
+                        <p className="text-xs font-black uppercase tracking-wide text-slate-500 dark:text-slate-400">{label}</p>
+                        <p className="mt-2 text-3xl font-black">{value}</p>
+                      </div>
+                    ))}
+                  </div>
+                  <p className="text-sm font-bold text-slate-600 dark:text-slate-300">
+                    Viimeisin ajo: {linkChecks.lastRun ? `${formatDateTime(linkChecks.lastRun.startedAt)} · tarkistettu ${linkChecks.lastRun.checked} · tila ${linkChecks.lastRun.status}` : 'ei vielä ajohistoriaa'}.
+                    {' '}Hälytysraja on {linkChecks.alertAfterFailures} peräkkäistä epäonnistumista.
+                    {' '}Automaattinen piilotus on {linkChecks.autoBlockEnabled ? 'käytössä' : 'pois käytöstä'}.
+                    {' '}Arvioitu täysi kierros nykyisellä tuntiajolla on {linkChecks.summary.estimatedCycleDays.toLocaleString('fi-FI')} vrk.
+                    {linkChecks.summary.oldestCheckedAt ? ` Vanhin viimeisin tarkistus on ${formatDateTime(linkChecks.summary.oldestCheckedAt)}.` : ''}
+                  </p>
+                  {linkChecks.lastRun && (linkChecks.lastRun.blocked > 0 || linkChecks.lastRun.unblocked > 0 || linkChecks.lastRun.messageCode) && (
+                    <p className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm font-bold text-amber-950 dark:border-amber-900 dark:bg-amber-950/30 dark:text-amber-100" role="status">
+                      {linkChecks.lastRun.blocked > 0 && `Piilotettu automaattisesti ${linkChecks.lastRun.blocked}. `}
+                      {linkChecks.lastRun.unblocked > 0 && `Palautettu näkyviin ${linkChecks.lastRun.unblocked}. `}
+                      {getLinkCheckRunMessage(linkChecks.lastRun.messageCode)}
+                    </p>
+                  )}
+                  {linkChecks.domainChangedItems.length > 0 && (
+                    <details open className="rounded-2xl border border-violet-200 bg-violet-50/70 p-4 dark:border-violet-900 dark:bg-violet-950/20">
+                      <summary className="cursor-pointer font-black text-violet-950 dark:text-violet-100">
+                        Verkkotunnus vaihtui – tarkista kohde ({linkChecks.domainChangedItems.length})
+                      </summary>
+                      <p className="mt-3 text-sm font-bold text-violet-900 dark:text-violet-200">
+                        Linkki vastaa, mutta se päätyy eri verkkotunnukseen. Varmista kohdesivu ylläpidossa ennen kuin päivität linkin lähdetiedostoon.
+                      </p>
+                      <div className="mt-4 space-y-3">
+                        {linkChecks.domainChangedItems.map((item) => (
+                          <article key={item.id} className="rounded-xl bg-white p-4 shadow-sm dark:bg-slate-900">
+                            <h3 className="font-black">{item.name}</h3>
+                            <p className="text-sm font-bold text-slate-600 dark:text-slate-300">{item.category} · {item.source}</p>
+                            <p className="mt-3 text-xs font-black uppercase tracking-wide text-slate-500 dark:text-slate-400">Alkuperäinen</p>
+                            <a href={item.url} target="_blank" rel="noreferrer" className="block break-all font-bold text-blue-700 underline dark:text-blue-300">{item.url}</a>
+                            <p className="mt-3 text-xs font-black uppercase tracking-wide text-slate-500 dark:text-slate-400">Lopullinen kohde</p>
+                            {item.finalUrl ? (
+                              <a href={item.finalUrl} target="_blank" rel="noreferrer" className="block break-all font-bold text-blue-700 underline dark:text-blue-300">{item.finalUrl}</a>
+                            ) : (
+                              <p className="font-bold text-slate-700 dark:text-slate-200">Kohdeosoitetta ei saatu talteen.</p>
+                            )}
+                            <p className="mt-2 text-xs font-bold text-slate-500 dark:text-slate-400">Tarkistettu {formatDateTime(item.lastCheckedAt ?? undefined)}</p>
+                            {renderLinkCheckActions(item)}
+                          </article>
+                        ))}
+                      </div>
+                    </details>
+                  )}
+                  {linkChecks.items.length === 0 ? (
+                    <p className="rounded-2xl bg-emerald-50 p-4 font-bold text-emerald-900 dark:bg-emerald-950/30 dark:text-emerald-200">
+                      Vahvistettuja linkkiongelmia ei ole.
+                    </p>
+                  ) : (
+                    <div className="space-y-3">
+                      {linkChecks.items.map((item) => (
+                        <article key={item.id} className="rounded-2xl border border-rose-200 bg-rose-50/60 p-4 dark:border-rose-900 dark:bg-rose-950/20">
+                          <div className="flex flex-wrap items-start justify-between gap-3">
+                            <div>
+                              <h3 className="font-black text-slate-950 dark:text-white">{item.name}</h3>
+                              <p className="text-sm font-bold text-slate-600 dark:text-slate-300">{item.category} · {item.source}</p>
+                            </div>
+                            <span className="rounded-full bg-rose-100 px-3 py-1 text-sm font-black text-rose-950 dark:bg-rose-900/50 dark:text-rose-100">
+                              {item.failureCount} kertaa
+                            </span>
+                          </div>
+                          <a href={item.url} target="_blank" rel="noreferrer" className="mt-3 block break-all font-bold text-blue-700 underline dark:text-blue-300">{item.url}</a>
+                          <p className="mt-2 text-sm font-bold text-rose-900 dark:text-rose-200">
+                            {getLinkCheckErrorLabel(item.errorCode)}{item.httpStatus ? ` HTTP ${item.httpStatus}.` : ''}
+                          </p>
+                          <p className="mt-1 text-xs font-bold text-slate-500 dark:text-slate-400">
+                            Tarkistettu {formatDateTime(item.lastCheckedAt ?? undefined)} · seuraava yritys {formatDateTime(item.nextCheckAt)}
+                          </p>
+                          {renderLinkCheckActions(item)}
+                        </article>
+                      ))}
+                    </div>
+                  )}
+                  {linkChecks.rejectedItems.length > 0 && (
+                    <details className="rounded-2xl border border-amber-200 bg-amber-50/70 p-4 dark:border-amber-900 dark:bg-amber-950/20">
+                      <summary className="cursor-pointer font-black text-amber-950 dark:text-amber-100">
+                        HTTPS-säännön vastaiset linkit ({linkChecks.rejectedItems.length})
+                      </summary>
+                      <p className="mt-3 text-sm font-bold text-amber-900 dark:text-amber-200">
+                        Näitä osoitteita ei avata käyttäjille eikä tarkisteta toistuvasti. Päivitä lähdetiedostoon toimiva https://-osoite tai poista vanhentunut linkki.
+                      </p>
+                      <div className="mt-4 space-y-3">
+                        {linkChecks.rejectedItems.map((item) => (
+                          <article key={item.id} className="rounded-xl bg-white p-4 shadow-sm dark:bg-slate-900">
+                            <h3 className="font-black">{item.name}</h3>
+                            <p className="text-sm font-bold text-slate-600 dark:text-slate-300">{item.category} · {item.source}</p>
+                            <p className="mt-2 break-all font-bold text-slate-800 dark:text-slate-100">{item.url}</p>
+                            <p className="mt-2 text-sm font-bold text-amber-900 dark:text-amber-200">{getLinkCheckErrorLabel(item.errorCode)}</p>
+                          </article>
+                        ))}
+                      </div>
+                    </details>
+                  )}
+                </>
+              )}
             </section>
 
             <section id="usage-stats" className="scroll-mt-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm space-y-5">
