@@ -1,5 +1,7 @@
 # TODO_HUMAN
 
+> **Projektin työjono on `TYOJONO.md`.** Uudet tehtävät kirjataan sinne. Tämä tiedosto on julkaisuportin dokumentti: julkaisun ehdot, päätökset ja niiden perustelut.
+
 Tässä tiedostossa on jäljellä oleva siivous- ja tarkistuslista. Varsinaiset manuaaliset tietoturvakohdat on tehty, paitsi nimipäivädataan liittyvä SEC-015, joka tehdään aikaisintaan elokuussa 2026.
 
 Älä kirjoita salasanoja, API-avaimia, tokeneita tai service account -avainten sisältöjä tähän tiedostoon.
@@ -46,6 +48,8 @@ Pehmeä tuotantoavaus hyväksyttiin 28.8.2026 klo 11.36 ja nykyinen tuotantovers
 3. **P2 – ulkopuolisten palvelujen riippuvuuksien vähentäminen:** KO-01-seloste toteutettiin ennen laajaa tiedotusta. Julkaisun jälkeen tehdään määrittelyn `docs/codex-tehtava-kolmannen-osapuolen-palvelut-2026-08-30.md` KO-02–KO-04: RSS-haku siirretään palvelimelle, Nominatim korvataan omalla kuntahaulla ja jäljelle jääville rajapinnoille lisätään valvonta. Omistaja: kehitys.
 
 4. **P3 – näkymäasetusten kertapalautus, REL-13 tai myöhempi:** lisää Asetukset-paneeliin selkeä `Palauta näkymän oletusasetukset` -toiminto. Se saa palauttaa vihreän vaalean teeman, digitaalisen kellon, 100 prosentin tekstikoon, osioiden oletusnäkyvyyden, tyhjän kiinnostavien teemojen valinnan ja toissijaisen kellon oletusaikavyöhykkeen. Toiminto ei saa poistaa kotikuntaa, suosikkeja, kielivalintaa, perehdytyksen tilaa, käyttötilastovalintaa, lomake- tai lähetysjonoja, tunnistautumistietoja, välimuisteja eikä mitään palvelimen tietoja. Omistaja: kehitys. Testaa näppäimistöllä, ruudunlukijan perustilassa ja sivun uudelleenlatauksen yli.
+
+5. **P2 – 320 × 800 -näkymän viimeistely 200 prosentin suurennuksella:** tuotannon R-16-kokeessa 31.8.2026 sisältö säilyi luettavana, mutta asettelu hajosi selvästi 320 × 800 -näkymässä. Leveydellä 375 × 800 sama koe oli kunnossa, ja R-17:n 1280 × 800 -työpöytänäkymä oli PASS. Korjaa erityisesti ylätunnisteen toimintojen, haun ja sisältökorttien mukautuminen kapeimpaan näkymään. Varmista erikseen sekä sovelluksen 200 prosentin tekstikoko selaimen 100 prosentin zoomilla että selaimen 200 prosentin zoom, jotta testitavat eivät sekoitu. Hyväksymisehto: ei vaakavieritystä, päällekkäisyyttä tai leikkautuvia ohjaimia; pystysuuntainen vieritys ja kaikki ydintoiminnot säilyvät. Omistaja: kehitys.
 
 ## Tehty
 

@@ -938,3 +938,11 @@ Käyttöönoton linkkiajo valmistui tilassa `completed`: tarkistettu 10, onnistu
 Eero vahvisti, että ohjeen mukainen henkilötiedoton palautteen tuotantotesti on tehty ja testipalaute käsitelty hyväksytyssä ylläpidossa. DATA-02 on PASS ja havainto `REL11-DATA-01` suljettiin tuotantouusinnalla. Yksityisen palautteen sisältöä ei kopioitu päiväkirjaan.
 
 KO-01-tietosuojakorjaus toteutettiin paikallisesti suomeksi, ruotsiksi ja englanniksi. Seloste nimeää Open-Meteon, OpenStreetMap Nominatimin, rss2jsonin ja alloriginsin, kertoo koordinaattien sekä IP-osoitteen välittymisestä ja täsmentää, ettei Nominatimia käytetä valitun kotikunnan kanssa. Teksti odottaa Nina Ziesslerin hyväksyntää ja tuotantoonvientiä ennen laajaa tiedotusta. KO-02–KO-04 säilyvät julkaisun jälkeisinä tehtävinä.
+
+### Loppuportin R-03, R-09, R-11, R-16 ja R-17 31.8.2026
+
+Vain lukeva tuotantotarkistus vahvisti R-03:n PASSiksi. WordPressin etusivu, Etäopastus, Ajankohtaista, Yhteystiedot ja `digiopastus`-haku palauttivat HTTP 200:n odotetuilla otsikoilla ja pääotsikoilla. `/wp-admin/` ohjasi kirjautumissivulle, jonka käyttäjätunnus- ja salasanakentät näkyivät. Vertailumedia palautti HTTP 200:n, tyypin `image/jpeg`, koon 152 080 tavua ja mitat 1800 × 630 px.
+
+R-09 on PASS: tuotannon canonical ja `og:url` ovat `https://seniorsurf.fi/aloitus/`, Open Graph -otsikko ja kuvaus vastaavat hyväksyttyä sisältöä sekä 180 × 180 px:n PNG-kuva latautuu HTTP 200:lla. R-11 on PASS: HTTPS palauttaa 200:n ja vastauksessa ovat HSTS, CSP, `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`, `X-Frame-Options: DENY` ja rajattu Permissions Policy.
+
+Eeron käyttöliittymäkokeessa R-16:n 375 × 800 -näkymä oli PASS. 320 × 800 -näkymä hajosi selvästi 200 prosentin suurennuksella, mutta sisältö säilyi luettavana. Tuotevastuu hyväksyi tämän julkaisun jälkeiseksi P2-poikkeamaksi `REL11-UI-04`; korjaus lisättiin kehityslistalle. R-17:n 1280 × 800 -työpöytänäkymä on PASS käyttäjän toimittamalla kuvatodisteella. Kuvaa ei kopioitu versionhallintaan.
