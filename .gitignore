@@ -17,6 +17,7 @@ visual-check-report/
 .playwright-cli/
 tmp/
 .tmp/
+_to_delete/
 rel08-private/
 firestore-export*.json
 rel08-import*.sql

@@ -1,5 +1,7 @@
 [CmdletBinding()]
-param()
+param(
+    [string]$FirebaseEnvFile
+)
 
 $ErrorActionPreference = 'Stop'
 
@@ -11,6 +13,34 @@ $versionSlug = $version -replace '[^0-9A-Za-z.-]', '-'
 $packageRoot = [IO.Path]::GetFullPath((Join-Path $temporaryRoot "rel14-v$versionSlug-production-path-package"))
 $zipPath = [IO.Path]::GetFullPath((Join-Path $temporaryRoot "aloitussivu-rel14-v$versionSlug-production-path.zip"))
 $pathPrefix = $temporaryRoot.TrimEnd([IO.Path]::DirectorySeparatorChar) + [IO.Path]::DirectorySeparatorChar
+$firebaseEnvNames = @(
+    'VITE_FIREBASE_API_KEY',
+    'VITE_FIREBASE_AUTH_DOMAIN',
+    'VITE_FIREBASE_PROJECT_ID',
+    'VITE_FIREBASE_STORAGE_BUCKET',
+    'VITE_FIREBASE_MESSAGING_SENDER_ID',
+    'VITE_FIREBASE_APP_ID',
+    'VITE_FIREBASE_APPCHECK_SITE_KEY'
+)
+
+function Read-DotEnvFile([string]$Path) {
+    $values = @{}
+    foreach ($line in Get-Content -LiteralPath $Path) {
+        if ($line -match '^\s*#' -or $line -match '^\s*$') {
+            continue
+        }
+        if ($line -notmatch '^\s*([A-Za-z_][A-Za-z0-9_]*)=(.*)$') {
+            continue
+        }
+        $name = $Matches[1]
+        $value = $Matches[2].Trim()
+        if (($value.StartsWith('"') -and $value.EndsWith('"')) -or ($value.StartsWith("'") -and $value.EndsWith("'"))) {
+            $value = $value.Substring(1, $value.Length - 2)
+        }
+        $values[$name] = $value
+    }
+    return $values
+}
 
 if (-not $packageRoot.StartsWith($pathPrefix, [StringComparison]::OrdinalIgnoreCase)) {
     throw 'Tuotantopaketin kohde ei ole työtilan .tmp-hakemistossa.'
@@ -30,19 +60,45 @@ try {
         throw 'Tuotantopolun paketin commit-tunnistetta ei voitu ratkaista.'
     }
 
-    $previousApiBase = $env:VITE_API_BASE
-    $previousProvider = $env:VITE_DATA_PROVIDER
+    if (-not $FirebaseEnvFile) {
+        $FirebaseEnvFile = Join-Path $workspaceRoot '.env.local'
+    }
+    $firebaseEnvPath = [IO.Path]::GetFullPath($FirebaseEnvFile)
+    if (-not (Test-Path -LiteralPath $firebaseEnvPath -PathType Leaf)) {
+        throw "Firebase-julkiasetusten tiedostoa ei löydy: $firebaseEnvPath"
+    }
+    $firebaseEnv = Read-DotEnvFile $firebaseEnvPath
+    $missingFirebaseEnv = @($firebaseEnvNames | Where-Object { [string]::IsNullOrWhiteSpace([string]$firebaseEnv[$_]) })
+    if ($missingFirebaseEnv.Count -gt 0) {
+        $missingNames = $missingFirebaseEnv -join ', '
+        throw "Firebase-julkiasetuksia puuttuu: $missingNames"
+    }
+
+    $previousBuildEnv = @{}
+    foreach ($name in $firebaseEnvNames) {
+        $previousBuildEnv[$name] = [Environment]::GetEnvironmentVariable($name, 'Process')
+        [Environment]::SetEnvironmentVariable($name, [string]$firebaseEnv[$name], 'Process')
+    }
+    foreach ($name in @('VITE_API_BASE', 'VITE_DATA_PROVIDER', 'VITE_FIREBASE_VALIDATE_REFERER')) {
+        $previousBuildEnv[$name] = [Environment]::GetEnvironmentVariable($name, 'Process')
+    }
     try {
         $env:VITE_API_BASE = '/aloitus/api/v1'
         $env:VITE_DATA_PROVIDER = 'cloudcity'
+        $env:VITE_FIREBASE_VALIDATE_REFERER = 'https://seniorsurf.fi/aloitus/'
+        & node scripts/validate-firebase-config.mjs
+        if ($LASTEXITCODE -ne 0) {
+            throw "Firebase-julkiasetusten verkkovarmennus epäonnistui koodilla $LASTEXITCODE."
+        }
         & npm.cmd run build:cloudcity
         if ($LASTEXITCODE -ne 0) {
             throw "Cloudcity-build epäonnistui koodilla $LASTEXITCODE."
         }
     }
     finally {
-        $env:VITE_API_BASE = $previousApiBase
-        $env:VITE_DATA_PROVIDER = $previousProvider
+        foreach ($name in $previousBuildEnv.Keys) {
+            [Environment]::SetEnvironmentVariable($name, $previousBuildEnv[$name], 'Process')
+        }
     }
 
     if (Test-Path -LiteralPath $packageRoot) {
@@ -88,10 +144,15 @@ try {
         $null = New-Item -ItemType File -Path (Join-Path $privateRoot.FullName "$directory/.keep") -Force
     }
 
-    $builtJavaScript = Get-ChildItem -LiteralPath (Join-Path $publicRoot.FullName 'assets') -Filter '*.js' -File |
-        Get-Content -Raw
+    $builtJavaScript = (Get-ChildItem -LiteralPath (Join-Path $publicRoot.FullName 'assets') -Filter '*.js' -File |
+        Get-Content -Raw) -join "`n"
     if (-not ($builtJavaScript -match '/aloitus/api/v1')) {
         throw 'Tuotantobundlesta puuttuu odotettu /aloitus/api/v1-polku.'
+    }
+    foreach ($name in @('VITE_FIREBASE_API_KEY', 'VITE_FIREBASE_AUTH_DOMAIN', 'VITE_FIREBASE_PROJECT_ID', 'VITE_FIREBASE_APP_ID')) {
+        if (-not $builtJavaScript.Contains([string]$firebaseEnv[$name])) {
+            throw "Tuotantobundlesta puuttuu Firebase-julkiasetus $name."
+        }
     }
 
     $currentCommit = (& git rev-parse --short=12 HEAD).Trim()
@@ -115,6 +176,7 @@ try {
         schemaMigrations = @('001_initial_schema', '002_add_link_reports_triage_index', '003_usage_context_daily', '004_email_notifications', '005_automated_link_checks', '006_link_check_hardening', '007_link_check_admin_actions')
         backgroundJobs = @('ncsc', 'notifications', 'email-dispatch', 'link-check')
         manualTools = @('smtp-test')
+        firebaseAuthenticationConfigured = $true
     } | ConvertTo-Json
     [IO.File]::WriteAllText(
         (Join-Path $packageRoot 'build-info.json'),

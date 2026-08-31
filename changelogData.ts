@@ -24,11 +24,11 @@ export type ChangelogCommit = {
   tags: string[];
 };
 
-export const CHANGELOG_GENERATED_AT = "30.8.2026";
-export const CHANGELOG_VERSION = "0.77.0";
+export const CHANGELOG_GENERATED_AT = "31.8.2026";
+export const CHANGELOG_VERSION = "0.77.3";
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
-  "Automaattinen linkkitarkistus tarkistaa tuotannon linkit erissä, vaatii HTTPS-yhteyden, tallentaa ajohistorian ja näyttää toistuvat ongelmat ylläpidossa sekä sähköpostikoosteessa.",
-  "Tuotantopaketti sisältää muodostetun linkkiluettelon, tietokantamigraation ja Cloudcityn cron-käyttöönotto-ohjeen."
+  "Ylläpitäjä voi hyväksyä automaattisen linkkitarkistuksen huomion määräajaksi tai poistaa linkin pysyvästi näkyvistä kirjallisen perustelun kanssa.",
+  "Hyväksynnät, pysyvät estot ja muuttuneiden verkkotunnusten käsittely auditoidaan; myöhempi kohteen muutos tai varsinainen yhteysvika nostaa huomion uudelleen."
 ];
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
