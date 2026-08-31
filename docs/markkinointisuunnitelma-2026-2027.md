@@ -117,7 +117,7 @@ Lisäksi:
 
 ## 6. Mittarointi kanavittain
 
-Kaikki kampanjalinkit `?src=`-parametrilla. Sallitut arvot määritellään palvelimella (ks. mittarointidokumentti): `opastus`, `kirje`, `juttunetti`, `tyopaikka`, `pankki`, `kirjasto`, `koulu`, `some`, `lehti`, `esite`, `qr`.
+Kaikki kampanjalinkit käyttävät `?src=`-parametria, jossa `src` tarkoittaa aina kanavaa, ei linkin tai materiaalin muotoa. Sallitut kanavat ovat samassa järjestyksessä selaimessa ja palvelimella: `opastus`, `kirje`, `some`, `esite`, `lehti`, `esittely`, `vtkl`, `juttunetti`, `tyopaikka`, `pankki`, `kirjasto`, `koulu`. Palvelin hyväksyy lisäksi varmistusarvon `other`, joksi selain muuttaa tuntemattomat arvot; sitä ei kirjoiteta kampanjalinkkeihin. QR-koodi on linkin esitysmuoto, joten `qr` ei ole sallittu `src`-arvo. Esimerkiksi opastuskortin QR-linkki käyttää arvoa `?src=opastus`.
 
 Seurattavat luvut kuukausittain:
 

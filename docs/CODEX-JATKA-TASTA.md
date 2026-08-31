@@ -185,3 +185,13 @@ Tiedoston `docs/linkit-korjauslistan-tilanne-2026-08-30.md` 5 DNS-virhettä ja 5
 Viimeisellä kierroksella Rantasalmen englanninkielinen sivu korvattiin, Uudenkaupungin rikkinäinen footnote-osoite siivottiin ja päättyneet tai vahvistamattomat Välkkeen sekä Tuulensuun digiopastuspaikat poistettiin listalta. Kiuruveden PALI-sisältö vahvistettiin virallisesta WordPress-rajapinnasta, ja Vöyrin kirjastolle löydettiin virallinen suomenkielinen sivu. Korvaaja- ja näyttöosoitteiden verkkotarkistus oli lopulta 56/56 tavoitettavissa; Vöyrin myöhemmin löydetty suomenkielinen vastine vastasi lisäksi HTTP 200. Linkkikatalogi-, URL-käytäntö-, TypeScript-, salaisuus- ja tuotantobuild-testit ovat PASS.
 
 Täysi raportti: `docs/linkit-63-kohteen-loppuraportti-2026-08-31.md`. Muutokset ovat paikallisessa työpuussa, eikä tätä loppukierrosta ole vielä julkaistu tuotantoon.
+
+---
+
+## 8. Markkinointilinkkien kanavat tuotannossa 31.8.2026
+
+`?src=` tarkoittaa nyt yksinomaan markkinointikanavaa. Selain ja palvelin tuntevat samassa järjestyksessä arvot `opastus`, `kirje`, `some`, `esite`, `lehti`, `esittely`, `vtkl`, `juttunetti`, `tyopaikka`, `pankki`, `kirjasto` ja `koulu`. Palvelin hyväksyy lisäksi selaimen tuntemattomille arvoille käyttämän `other`-varmistusarvon. `qr` poistettiin kanavalistalta, koska QR on linkin esitysmuoto eikä kanava.
+
+Versio 0.77.9 aktivoitiin tuotantoon 31.8.2026 klo 13.40 Suomen aikaa. Aktiivinen build on `REL-14-v0.77.9-af8a4b0f0b31` ja paketin SHA-256 `7b242f30586978e869cf94e33f574724b5d9ab7b343d81b56f13694c677648b9`. Asennin palautti `CAMPAIGN_SOURCES_STATUS=PASS`, PHP-lint 59/59 ja `DATABASE_CHANGED=false`. Käyttöönoton linkkiajo tarkisti 10 kohdetta tuloksella 10 onnistunutta ja 0 varoitusta tai virhettä. Uutta tietokantamigraatiota ei tarvittu.
+
+Selaintesti varmisti ennen paketointia kaksi polkua: `?src=juttunetti` poistui osoiteriviltä ja pageview lähetti arvon `juttunetti`; tuntematon `?src=facebook-kampanja-3` poistui samoin ja lähetti arvon `other`. Tehtävän yksityiskohdat ovat tiedostossa `docs/codex-tehtava-markkinointilinkit-src-2026-08-31.md`.

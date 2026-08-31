@@ -18,7 +18,7 @@ Tarkistettu repositoriosta ja elävästä tuotannosta 31.8.2026.
 
 | Asia | Tila |
 | --- | --- |
-| Palvelu tuotannossa osoitteessa `seniorsurf.fi/aloitus` | Kyllä. Pehmeä avaus hyväksyttiin 28.8. klo 11.36, tuotannossa on versio 0.77.8. |
+| Palvelu tuotannossa osoitteessa `seniorsurf.fi/aloitus` | Kyllä. Pehmeä avaus hyväksyttiin 28.8. klo 11.36, tuotannossa on versio 0.77.9. |
 | Laajan tiedotuksen GO | **Ei vielä.** NO-GO on voimassa, kunnes WordPress-painikkeen P1-virhe on korjattu, tietosuojaselosteen kolmannen osapuolen täydennys (KO-01) tehty ja loppuportti hyväksytty. |
 | `?src=`-parametri | **Toteutettu.** Selain lukee ja poistaa parametrin (`usageTracking.ts`), ja selain sekä palvelin tuntevat kaikki luvun 6 kaksitoista kanavaa. Palvelin tallentaa tuntemattomat arvot selaimen lähettämään `other`-varmistusluokkaan. |
 | A5-kortti opastajille | Taitettu 28.8. (`docs/a5-kortti-aloitussivu.pdf`). Painatusta ei ole tilattu, eikä kortin osoitteessa ole `?src=`-parametria. |

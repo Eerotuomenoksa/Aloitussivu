@@ -1,7 +1,7 @@
 # Codex-tehtävä: markkinointilinkkien `?src=`-arvot
 
 Päivitetty: 31.8.2026
-Tila: toteutettu ja testattu paikallisesti versioon 0.77.9; tuotantoonvienti seuraavaksi
+Tila: toteutettu, testattu ja aktivoitu tuotantoon versiossa 0.77.9 31.8.2026
 Lähde: Eeron ja Clauden keskustelu 31.8.2026, markkinointisuunnitelman kanavalista
 Koskee: `usageTracking.ts`, `api/src/PublicApi.php`, `api/tests/run.php`
 Liittyy: `docs/codex-tehtava-kayttotilastot-ja-aloitussivuksi-asetus.md`, `docs/markkinointisuunnitelma-2026-2027.md` (luku 6)
