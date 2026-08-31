@@ -7,6 +7,19 @@ Kaikki muutokset ovat **committoimatta**. Mitään ei ole pushattu.
 
 ## 0. Lue tämä ensin — kaksi asiaa jotka voivat yllättää
 
+### 0.0 SSH- ja tuotantokomentojen pysyvä toimintatapa
+
+**Älä käynnistä SSH-, SCP- tai salasanaa pyytävää komentoa Codexin omassa terminaalissa.** Eero ajaa kaikki tällaiset komennot itse omassa Windows PowerShell -ikkunassaan ja palvelimelle avatussa SSH-istunnossa.
+
+Toimi jatkossa näin:
+
+1. Codex rakentaa ja varmentaa tiedostot paikallisesti, mutta ei aloita SSH- tai SCP-yhteyttä.
+2. Anna Eerolle erikseen otsikoidut, suoraan kopioitavat komennot: ensin **paikallinen Windows PowerShell**, sitten **palvelimen SSH-istunto**.
+3. Älä pyydä tai vastaanota SSH-salasanaa keskustelussa. Eero syöttää sen itse PowerShellin piilotettuun kehotteeseen.
+4. Käytä Cloudcityn SSH-isäntää `seniorsurffi.ssh.cchosting.fi`. Osoite `staging.aloitussivu.seniorsurf.fi` ei ole julkaisujen SSH-isäntä ja voi katkaista yhteyden.
+5. Windowsin `scp`-komennossa siirry ensin tiedostojen hakemistoon ja käytä paikallisille tiedostoille suhteellisia polkuja. Näin aseman `C:`-kaksoispistettä ei tulkita etäosoitteen erottimeksi.
+6. Odota, että Eero liittää komentojen tulosteen keskusteluun, ennen kuin päätät käyttöönoton onnistuneeksi tai annat seuraavan muuttavan komennon.
+
 ### 0.1 Saatoin ylikirjoittaa työtäsi tiedostossa `api/src/HttpLinkChecker.php`
 
 Kirjoitin sen kokonaan uusiksi klo 11.06. Tiedostoa ei ole **koskaan committoitu** (`git status` näyttää `??`), joten vertailukohtaa ei ole. Perustin uudelleenkirjoituksen siihen versioon jonka luin aiemmin aamulla, ja säilytin kaikki SSRF-suojaukset sanatarkasti — mutta jos muokkasit tiedostoa klo 08.05–08.10 välillä (kuten teit `LinkCheckJob.php`:lle, `AdminApi.php`:lle ja `LinkCatalog.php`:lle), se muutos on mennyt.
