@@ -262,7 +262,7 @@ Ympäristökohtaiset UID:t ja sähköpostit lisätään `admin_users`-tauluun tu
 | `DELETE /api/v1/admin/approved-links/{id}` | hyväksytyn linkin poisto |
 | `GET/POST /api/v1/admin/blocked-links` | estettyjen linkkien lista ja lisäys |
 | `DELETE /api/v1/admin/blocked-links/{id}` | estetyn linkin poisto |
-| `GET/POST /api/v1/admin/scam-alerts` | kaikkien huijausvaroitusten lista ja lisäys |
+| `GET/POST /api/v1/admin/scam-alerts` | kahden viime kuukauden huijausvaroitukset, vanhemmat yhä voimassa olevat varoitukset ja uuden varoituksen lisäys |
 | `PATCH /api/v1/admin/scam-alerts/{id}` | huijausvaroituksen rajattu päivitys |
 | `GET /api/v1/admin/ncsc-logs` | Kyberturvallisuuskeskuksen ajoloki |
 | `POST /api/v1/admin/ncsc-run` | editorin tai adminin turvallinen NCSC-käsiajo |

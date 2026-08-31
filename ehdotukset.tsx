@@ -1273,7 +1273,7 @@ function App() {
                 <div>
                   <h2 className="text-2xl md:text-3xl font-black">Huijausvaroitukset</h2>
                   <p className="text-sm font-bold text-slate-500 dark:text-slate-400">
-                    Aktiiviset varoitukset ja Kyberturvallisuuskeskuksen viikkokatsauksen automaattinen haku.
+                    Aktiiviset varoitukset ja Kyberturvallisuuskeskuksen viikkokatsauksen automaattinen haku. Ylläpitolista näyttää kahden viime kuukauden historian sekä sitä vanhemmat yhä voimassa olevat varoitukset.
                   </p>
                 </div>
                 <button

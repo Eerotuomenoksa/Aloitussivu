@@ -352,7 +352,10 @@ final class AdminApi
         $this->authenticator->authenticate($request);
         $rows = $this->database->fetchAll(
             'SELECT id, title, body, severity, active, source, source_url, source_week, original_heading, '
-            . 'structure_version, created_at, updated_at, expires_at FROM scam_alerts ORDER BY created_at DESC LIMIT 500',
+            . 'structure_version, created_at, updated_at, expires_at FROM scam_alerts '
+            . 'WHERE created_at >= DATE_SUB(UTC_TIMESTAMP(6), INTERVAL 2 MONTH) '
+            . 'OR (active = 1 AND expires_at > UTC_TIMESTAMP(6)) '
+            . 'ORDER BY created_at DESC LIMIT 500',
         );
         return $this->data($request, array_map(static fn (array $row): array => self::scamAlertItem($row), $rows));
     }

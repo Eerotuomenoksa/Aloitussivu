@@ -1307,6 +1307,24 @@ test('admin creates approved links with an audit entry and duplicate protection'
     ));
 });
 
+test('admin scam-alert list keeps two months of history and every currently public alert', static function (): void {
+    $database = new FakeDatabase();
+    $database->fetchOneResults = [adminRow()];
+    $database->fetchAllResults = [[]];
+
+    $response = testApp(
+        $database,
+        attachmentStorage: new FakeAttachmentStorage(),
+        idTokenVerifier: adminVerifier(),
+    )->handle(adminRequest('GET', '/api/v1/admin/scam-alerts'));
+
+    assertSameValue(200, $response->status);
+    $query = (string) ($database->executions[1]['sql'] ?? '');
+    assertTrue(str_contains($query, 'created_at >= DATE_SUB(UTC_TIMESTAMP(6), INTERVAL 2 MONTH)'));
+    assertTrue(str_contains($query, 'active = 1 AND expires_at > UTC_TIMESTAMP(6)'));
+    assertTrue(!str_contains(strtoupper($query), 'DELETE'));
+});
+
 test('admin link-check overview identifies every warning and failed target', static function (): void {
     $warningHash = str_repeat('d', 64);
     $failedHash = str_repeat('e', 64);
