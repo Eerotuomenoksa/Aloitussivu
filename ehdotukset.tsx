@@ -57,16 +57,6 @@ import {
 
 const normalizeUrl = (url: string) => url.trim().replace(/\/+$/, '');
 
-function exportJson(filename: string, content: unknown) {
-  const blob = new Blob([JSON.stringify(content, null, 2)], { type: 'application/json;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = filename;
-  link.click();
-  URL.revokeObjectURL(url);
-}
-
 const statusLabel = {
   pending: 'Odottaa',
   approved: 'Toteutettu',
@@ -614,10 +604,6 @@ function App() {
     }
   };
 
-  const copyApprovedJson = async () => {
-    await navigator.clipboard.writeText(JSON.stringify(approvedLinks, null, 2));
-  };
-
   const runNcscNow = async () => {
     setNcscBusy(true);
     setNcscMessage('');
@@ -804,20 +790,6 @@ function App() {
                 >
                   Palaa etusivulle
                 </a>
-                <button
-                  type="button"
-                  onClick={copyApprovedJson}
-                  className="rounded-full bg-[var(--theme-primary)] px-5 py-3 font-black text-white shadow-md transition-all hover:bg-[var(--theme-primary-mid)] active:scale-95"
-                >
-                  Kopioi hyväksytyt JSONina
-                </button>
-                <button
-                  type="button"
-                  onClick={() => exportJson('hyvaksytyt-linkit.json', approvedLinks)}
-                  className="aurora-secondary-button px-5 py-3 shadow-md"
-                >
-                  Lataa JSON
-                </button>
                 <button
                   type="button"
                   onClick={signOutAdmin}
