@@ -13,7 +13,7 @@ const pageNavLinkClass = 'aurora-nav-link px-4 py-2 text-sm';
 const sectionClass = 'aurora-panel';
 const headingClass = 'aurora-section-title text-2xl';
 const paragraphClass = 'mt-4 text-base font-bold leading-relaxed text-[var(--theme-text-2)]';
-const listClass = 'mt-4 space-y-2 text-base font-bold leading-relaxed text-[var(--theme-text-2)]';
+const listClass = 'mt-4 list-disc space-y-2 pl-6 text-base font-bold leading-relaxed text-[var(--theme-text-2)] marker:font-black marker:text-[var(--theme-primary)]';
 
 type ContentBlock =
   | { type: 'paragraph'; content: React.ReactNode }
@@ -517,14 +517,14 @@ function App() {
 
         <section className="aurora-soft-panel mt-10" aria-labelledby="privacy-summary-heading">
           <h2 id="privacy-summary-heading" className="aurora-section-title text-2xl">{copy.summaryTitle}</h2>
-          <ul className="mt-4 grid gap-3 text-base font-bold leading-relaxed text-[var(--theme-text-2)] md:grid-cols-2">
+          <ul className="mt-4 grid list-disc gap-3 pl-6 text-base font-bold leading-relaxed text-[var(--theme-text-2)] marker:font-black marker:text-[var(--theme-primary)] md:grid-cols-2">
             {copy.summaryItems.map((item) => <li key={item}>{item}</li>)}
           </ul>
         </section>
 
         <nav className="aurora-panel mt-8 p-5" aria-label={copy.tocLabel}>
           <h2 className="text-lg font-black text-[var(--theme-text)]">{copy.tocTitle}</h2>
-          <ol className="mt-4 grid gap-2 text-sm font-black text-[var(--theme-primary)] md:grid-cols-2">
+          <ol className="mt-4 grid list-decimal gap-2 pl-6 text-sm font-black text-[var(--theme-primary)] marker:text-[var(--theme-primary)] md:grid-cols-2">
             {copy.sections.map(({ id, title }) => (
               <li key={id}>
                 <a className="inline-flex min-h-10 items-center rounded-full px-3 py-1.5 hover:bg-[var(--theme-pale)] hover:underline focus:outline-none focus:ring-4 focus:ring-[var(--theme-focus)]/40" href={`#${id}`}>{title}</a>
