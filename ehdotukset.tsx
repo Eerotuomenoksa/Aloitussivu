@@ -814,9 +814,9 @@ function App() {
                     href={task.href}
                     className="aurora-card transition-all hover:-translate-y-0.5 hover:shadow-md focus:outline-none focus:ring-4 focus:ring-[var(--theme-focus)]/40"
                   >
-                    <div className="flex items-start justify-between gap-3">
+                    <div>
                       <p className="font-black text-[var(--theme-text)]">{task.label}</p>
-                      <span className={`rounded-full px-3 py-1 text-sm font-black ${task.tone}`}>
+                      <span className={`mt-3 inline-flex max-w-full items-center rounded-full px-3 py-1 text-sm font-black ${task.tone}`}>
                         {task.count}
                       </span>
                     </div>

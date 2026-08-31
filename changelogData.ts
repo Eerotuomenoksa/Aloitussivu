@@ -25,10 +25,10 @@ export type ChangelogCommit = {
 };
 
 export const CHANGELOG_GENERATED_AT = "31.8.2026";
-export const CHANGELOG_VERSION = "0.77.7";
+export const CHANGELOG_VERSION = "0.77.8";
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
-  "Ylläpidon yläpalkista poistettiin käyttämättömät Kopioi hyväksytyt JSONina- ja Lataa JSON -toiminnot.",
-  "Yläpalkki näyttää nyt vain kollegoille olennaiset etusivulle palaamisen ja uloskirjautumisen toiminnot."
+  "Tarkista nämä ensin -korttien numerot siirrettiin otsikoiden alle omalle rivilleen.",
+  "Pitkät otsikot ja luvut pysyvät nyt korttien sisällä myös kapeammissa ylläpitonäkymissä."
 ];
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [
