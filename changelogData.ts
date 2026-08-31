@@ -25,10 +25,10 @@ export type ChangelogCommit = {
 };
 
 export const CHANGELOG_GENERATED_AT = "31.8.2026";
-export const CHANGELOG_VERSION = "0.77.3";
+export const CHANGELOG_VERSION = "0.77.4";
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
-  "Ylläpitäjä voi hyväksyä automaattisen linkkitarkistuksen huomion määräajaksi tai poistaa linkin pysyvästi näkyvistä kirjallisen perustelun kanssa.",
-  "Hyväksynnät, pysyvät estot ja muuttuneiden verkkotunnusten käsittely auditoidaan; myöhempi kohteen muutos tai varsinainen yhteysvika nostaa huomion uudelleen."
+  "Automaattisen linkkitarkistuksen varoitusten ja epäonnistumisten kohteet näkyvät nyt ylläpidossa nimineen, osoitteineen, virhesyineen ja seuraavine tarkistusaikoineen.",
+  "Ylläpitäjä voi käsin tarkistettuaan hyväksyä tai piilottaa myös varoituksen tai ensimmäisen epäonnistumisen; aiemmin käsitellyt kohteet merkitään erikseen."
 ];
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [

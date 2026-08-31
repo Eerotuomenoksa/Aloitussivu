@@ -1307,6 +1307,85 @@ test('admin creates approved links with an audit entry and duplicate protection'
     ));
 });
 
+test('admin link-check overview identifies every warning and failed target', static function (): void {
+    $warningHash = str_repeat('d', 64);
+    $failedHash = str_repeat('e', 64);
+    $database = new FakeDatabase();
+    $database->fetchOneResults = [
+        adminRow(),
+        [
+            'total' => 2,
+            'pending' => 0,
+            'ok_count' => 0,
+            'warning_count' => 1,
+            'failing' => 1,
+            'rejected_count' => 0,
+            'domain_changed' => 0,
+            'attention' => 0,
+            'due_count' => 0,
+            'oldest_checked_at' => '2026-08-31 05:00:00.000000',
+        ],
+        null,
+    ];
+    $database->fetchAllResults = [
+        [],
+        [[
+            'url_hash' => $failedHash,
+            'url' => 'https://failed.example/',
+            'name' => 'Ensimmäinen virhe',
+            'category' => 'Testi',
+            'source' => 'catalog',
+            'last_checked_at' => '2026-08-31 05:10:00.000000',
+            'next_check_at' => '2026-08-31 11:10:00.000000',
+            'last_status' => 'failed',
+            'http_status' => 500,
+            'final_url' => null,
+            'failure_count' => 1,
+            'last_error_code' => 'server_error',
+            'response_ms' => 250,
+            'is_blocked' => 0,
+            'override_scope' => null,
+            'override_next_review_at' => null,
+        ], [
+            'url_hash' => $warningHash,
+            'url' => 'https://limited.example/',
+            'name' => 'Automaatiota rajoittava linkki',
+            'category' => 'Testi',
+            'source' => 'catalog',
+            'last_checked_at' => '2026-08-31 05:00:00.000000',
+            'next_check_at' => '2026-09-03 05:00:00.000000',
+            'last_status' => 'warning',
+            'http_status' => 403,
+            'final_url' => 'https://limited.example/',
+            'failure_count' => 0,
+            'last_error_code' => 'access_limited',
+            'response_ms' => 100,
+            'is_blocked' => 0,
+            'override_scope' => 'bot_protection',
+            'override_next_review_at' => '2026-11-30 05:00:00.000000',
+        ]],
+        [],
+        [],
+        [],
+    ];
+
+    $response = testApp(
+        $database,
+        attachmentStorage: new FakeAttachmentStorage(),
+        idTokenVerifier: adminVerifier(),
+    )->handle(adminRequest('GET', '/api/v1/admin/link-checks'));
+
+    assertSameValue(200, $response->status);
+    $data = jsonBody($response)['data'];
+    assertSameValue(2, count($data['statusItems']));
+    assertSameValue($failedHash, $data['statusItems'][0]['id']);
+    assertSameValue('failed', $data['statusItems'][0]['status']);
+    assertSameValue(false, $data['statusItems'][0]['isBlocked']);
+    assertSameValue($warningHash, $data['statusItems'][1]['id']);
+    assertSameValue('bot_protection', $data['statusItems'][1]['overrideScope']);
+    assertSameValue('2026-11-30T05:00:00.000000Z', $data['statusItems'][1]['overrideNextReviewAt']);
+});
+
 test('admin can approve a link-check redirect with a scoped expiring override', static function (): void {
     $urlHash = str_repeat('a', 64);
     $database = new FakeDatabase();

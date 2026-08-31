@@ -718,6 +718,9 @@ function App() {
     </div>
   );
 
+  const confirmedLinkCheckIds = new Set(linkChecks.items.map((item) => item.id));
+  const otherStatusItems = (linkChecks.statusItems ?? []).filter((item) => !confirmedLinkCheckIds.has(item.id));
+
   return (
     <main className="aurora-page">
       <div className="mx-auto max-w-7xl px-4 py-8 md:px-8 md:py-12 space-y-10">
@@ -962,6 +965,55 @@ function App() {
                         </article>
                       ))}
                     </div>
+                  )}
+                  {otherStatusItems.length > 0 && (
+                    <details open className="rounded-2xl border border-sky-200 bg-sky-50/70 p-4 dark:border-sky-900 dark:bg-sky-950/20">
+                      <summary className="cursor-pointer font-black text-sky-950 dark:text-sky-100">
+                        Varoitusten ja muiden epäonnistumisten tiedot ({otherStatusItems.length})
+                      </summary>
+                      <p className="mt-3 text-sm font-bold text-sky-900 dark:text-sky-200">
+                        Varoitus tarkoittaa usein sitä, että palvelin rajoittaa automaattista tarkistusta. Ensimmäisen epäonnistumisen automaatio tarkistaa uudelleen ennen vahvistettua huomiota. Linkin voi silti tarkistaa ja käsitellä heti ylläpidossa.
+                      </p>
+                      <div className="mt-4 space-y-3">
+                        {otherStatusItems.map((item) => (
+                          <article key={item.id} className="rounded-xl bg-white p-4 shadow-sm dark:bg-slate-900">
+                            <div className="flex flex-wrap items-start justify-between gap-3">
+                              <div>
+                                <h3 className="font-black">{item.name}</h3>
+                                <p className="text-sm font-bold text-slate-600 dark:text-slate-300">{item.category} · {item.source}</p>
+                              </div>
+                              <div className="flex flex-wrap gap-2">
+                                <span className={`rounded-full px-3 py-1 text-sm font-black ${item.status === 'warning' ? 'bg-amber-100 text-amber-950 dark:bg-amber-900/50 dark:text-amber-100' : 'bg-rose-100 text-rose-950 dark:bg-rose-900/50 dark:text-rose-100'}`}>
+                                  {item.status === 'warning' ? 'Varoitus' : `Epäonnistui ${item.failureCount} kertaa`}
+                                </span>
+                                {item.isBlocked && (
+                                  <span className="rounded-full bg-slate-200 px-3 py-1 text-sm font-black text-slate-800 dark:bg-slate-700 dark:text-slate-100">Piilotettu</span>
+                                )}
+                                {item.overrideScope && (
+                                  <span className="rounded-full bg-emerald-100 px-3 py-1 text-sm font-black text-emerald-950 dark:bg-emerald-900/50 dark:text-emerald-100">Hyväksytty poikkeus</span>
+                                )}
+                              </div>
+                            </div>
+                            <a href={item.url} target="_blank" rel="noreferrer" className="mt-3 block break-all font-bold text-blue-700 underline dark:text-blue-300">{item.url}</a>
+                            <p className="mt-2 text-sm font-bold text-sky-950 dark:text-sky-100">
+                              {getLinkCheckErrorLabel(item.errorCode)}{item.httpStatus ? ` HTTP ${item.httpStatus}.` : ''}
+                            </p>
+                            {item.finalUrl && normalizeUrl(item.finalUrl) !== normalizeUrl(item.url) && (
+                              <p className="mt-2 break-all text-sm font-bold text-slate-600 dark:text-slate-300">Lopullinen osoite: {item.finalUrl}</p>
+                            )}
+                            <p className="mt-2 text-xs font-bold text-slate-500 dark:text-slate-400">
+                              Tarkistettu {formatDateTime(item.lastCheckedAt ?? undefined)} · seuraava yritys {formatDateTime(item.nextCheckAt)}
+                            </p>
+                            {item.overrideScope && (
+                              <p className="mt-2 text-sm font-bold text-emerald-800 dark:text-emerald-200">
+                                Ylläpitäjän hyväksyntä on voimassa{item.overrideNextReviewAt ? ` ${formatDateTime(item.overrideNextReviewAt)} asti` : ''}.
+                              </p>
+                            )}
+                            {!item.isBlocked && !item.overrideScope && renderLinkCheckActions(item)}
+                          </article>
+                        ))}
+                      </div>
+                    </details>
                   )}
                   {linkChecks.rejectedItems.length > 0 && (
                     <details className="rounded-2xl border border-amber-200 bg-amber-50/70 p-4 dark:border-amber-900 dark:bg-amber-950/20">

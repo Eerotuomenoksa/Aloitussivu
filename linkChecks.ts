@@ -16,6 +16,9 @@ export type LinkCheckItem = {
   failureCount: number;
   errorCode: string | null;
   responseMs: number | null;
+  isBlocked: boolean;
+  overrideScope: string | null;
+  overrideNextReviewAt: string | null;
 };
 
 export type LinkCheckRun = {
@@ -54,6 +57,7 @@ export type LinkCheckOverview = {
   };
   lastRun: LinkCheckRun | null;
   items: LinkCheckItem[];
+  statusItems: LinkCheckItem[];
   rejectedItems: LinkCheckItem[];
   domainChangedItems: LinkCheckItem[];
   runs: LinkCheckRun[];
@@ -66,6 +70,7 @@ export const emptyLinkCheckOverview: LinkCheckOverview = {
   summary: { total: 0, pending: 0, ok: 0, warnings: 0, failing: 0, rejected: 0, domainChanged: 0, attention: 0, due: 0, oldestCheckedAt: null, estimatedCycleDays: 0 },
   lastRun: null,
   items: [],
+  statusItems: [],
   rejectedItems: [],
   domainChangedItems: [],
   runs: [],

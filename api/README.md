@@ -266,7 +266,7 @@ Ympäristökohtaiset UID:t ja sähköpostit lisätään `admin_users`-tauluun tu
 | `PATCH /api/v1/admin/scam-alerts/{id}` | huijausvaroituksen rajattu päivitys |
 | `GET /api/v1/admin/ncsc-logs` | Kyberturvallisuuskeskuksen ajoloki |
 | `POST /api/v1/admin/ncsc-run` | editorin tai adminin turvallinen NCSC-käsiajo |
-| `GET /api/v1/admin/link-checks` | automaattisen linkkitarkistuksen yhteenveto, vahvistetut ongelmat ja ajohistoria |
+| `GET /api/v1/admin/link-checks` | automaattisen linkkitarkistuksen yhteenveto, kaikkien nykyisten varoitusten ja virheiden kohdetiedot, vahvistetut ongelmat ja ajohistoria |
 | `POST /api/v1/admin/link-checks/{urlHash}/action` | hyväksy huomio määräaikaiseksi poikkeukseksi tai piilota linkki ylläpitäjän estolla |
 | `GET /api/v1/admin/usage-stats` | päivä-, sivu- ja linkkikohtaiset aggregaatit |
 | `GET /api/v1/admin/audit-log` | ylläpidon muutosloki |
@@ -300,6 +300,8 @@ Migraatio `005_automated_link_checks.sql` lisää tarkistuskohteet, viimeisimmä
 `cron/link-check.php` hyväksyy vain HTTPS-osoitteet, tarkistaa TLS-varmenteen ja jokaisen uudelleenohjauksen sekä estää paikalliset, yksityiset ja varatut IP-osoitteet. HTTP 401, 403 ja 429 kirjataan varoituksiksi; varsinaiset virheet vahvistetaan oletuksena kahdella peräkkäisellä tarkistuksella ennen ylläpidon huomiota. Vahvistettu 404/410-, DNS-, TLS-, uudelleenohjaus- tai verkkotunnuksen myyntivirhe voidaan piilottaa automaattisesti `blocked_links`-taulun kautta. Ihmisen tekemää estoa automaatio ei koskaan poista. MariaDB:n yhteyslukko estää rinnakkaiset ajot.
 
 Ylläpitäjä voi käsitellä huomion ylläpitonäkymässä kahdella tavalla. `Hyväksy toimivaksi` tallentaa perustellun poikkeuksen kolmeksi kuukaudeksi; verkkotunnusohjauksen hyväksyntä ei vaimenna myöhempää 404- tai DNS-vikaa. `Poista linkki näkyvistä` tekee ylläpitäjän pysyvän `blocked_links`-eston, jota automaattinen palautus ei poista.
+
+Yhteenvetolukujen `Varoituksia` ja `Epäonnistuu` alla olevat kohteet palautetaan myös yksittäin `statusItems`-listassa. Ylläpito näyttää nimen, osoitteen, turvallisen virhesyyn, HTTP-tilan sekä seuraavan tarkistusajan. Varoituksen tai ensimmäisen epäonnistumisen voi tarkistaa käsin ja käsitellä heti; voimassa oleva ylläpitäjän poikkeus ja jo piilotettu linkki merkitään listassa erikseen.
 
 Cloudcityn suositus on ajaa työ kerran tunnissa vapaalla ajastuksella `7 * * * *`. Oletuserä on 10 linkkiä. Uusi linkki aloittaa 72 tunnin tarkistusvälistä, ja onnistumiset kasvattavat väliä asteittain enintään 30 vuorokauteen. Epäonnistumiset yritetään uudelleen 6, 24 ja 72 tunnin sekä sen jälkeen 7 vuorokauden välein. Kohteen aikabudjetti on 15 sekuntia ja ajon 120 sekuntia. Jos kiintopiste ei vastaa tai yli 60 prosenttia erästä kaatuu verkkovirheeseen, ajo keskeytyy muuttamatta linkkien vikalaskureita tai näkyvyyttä. Käyttöönotto-ohje on tiedostossa `docs/rel14-v0770-automaattinen-linkkitarkistus.md`.
 

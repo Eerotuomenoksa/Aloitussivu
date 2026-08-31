@@ -72,6 +72,8 @@ SELECT url, reason, created_at FROM blocked_links WHERE created_by IS NULL ORDER
 
 Kirjaudu ylläpitoon ja avaa **Automaattinen linkkitarkistus**. Näkymässä pitää näkyä linkkien kokonaismäärä, viimeisin ajo ja vahvistetut ongelmat. Tarkista yhdellä oikealla huomiolla, että perustelun kirjoittamisen jälkeen **Hyväksy toimivaksi** poistaa huomion listalta. Hyväksyntä tallentuu tauluun `link_check_overrides`, ja saman uudelleenohjauksen myöhempi muuttuminen nostaa huomion uudelleen. **Poista linkki näkyvistä** lisää ylläpitäjän tekemän rivin `blocked_links`-tauluun; käytä tätä savussa vain aidosti poistettavalle testikohteelle.
 
+Yhteenvetokorttien **Varoituksia**- ja **Epäonnistuu**-lukujen kohteet näkyvät alempana nimettynä listana. Jokaisesta näytetään osoite, automaation turvallinen virhesyy, mahdollinen HTTP-tila sekä seuraava tarkistusaika. Varoitus on tavallisesti 401-, 403- tai 429-rajoitus eikä yksin tarkoita kuollutta linkkiä. Ensimmäinen epäonnistuminen tarkistetaan automaattisesti uudelleen ennen vahvistettua huomiota, mutta ylläpitäjä voi käsin tarkistettuaan hyväksyä tai piilottaa kohteen jo listasta. **Hyväksytty poikkeus**- ja **Piilotettu**-merkinnät kertovat, että kohde on jo käsitelty.
+
 ## Mitä tarkistin hyväksyy
 
 - Vain `https://`-osoitteet hyväksytään.

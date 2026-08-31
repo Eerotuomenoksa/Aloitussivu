@@ -552,6 +552,20 @@ final class AdminApi
             . 'ORDER BY t.failure_count DESC, t.last_checked_at DESC LIMIT 200',
             ['threshold' => $threshold, 'override_now' => $now],
         );
+        $statusItems = $this->database->fetchAll(
+            'SELECT t.url_hash, t.url, t.name, t.category, t.source, t.last_checked_at, t.next_check_at, '
+            . 't.last_status, t.http_status, t.final_url, t.failure_count, t.last_error_code, t.response_ms, '
+            . 'CASE WHEN b.id IS NULL THEN 0 ELSE 1 END AS is_blocked, o.scope AS override_scope, '
+            . 'o.next_review_at AS override_next_review_at '
+            . 'FROM link_check_targets t '
+            . 'LEFT JOIN blocked_links b ON b.url_hash = UNHEX(t.url_hash) '
+            . "LEFT JOIN link_check_overrides o ON o.url_hash = t.url_hash "
+            . "AND o.status IN ('verified', 'exception') AND o.next_review_at >= :override_now "
+            . "WHERE (t.catalog_active = 1 OR t.approved_active = 1) AND t.last_status IN ('warning', 'failed') "
+            . "ORDER BY CASE WHEN t.last_status = 'failed' THEN 0 ELSE 1 END, "
+            . 't.failure_count DESC, t.last_checked_at DESC LIMIT 400',
+            ['override_now' => $now],
+        );
         $rejectedItems = $this->database->fetchAll(
             'SELECT url_hash, url, name, category, source, last_checked_at, next_check_at, last_status, http_status, '
             . 'final_url, failure_count, last_error_code, response_ms '
@@ -606,6 +620,9 @@ final class AdminApi
             'failureCount' => (int) ($row['failure_count'] ?? 0),
             'errorCode' => self::nullableString($row['last_error_code'] ?? null),
             'responseMs' => isset($row['response_ms']) ? (int) $row['response_ms'] : null,
+            'isBlocked' => (bool) ($row['is_blocked'] ?? false),
+            'overrideScope' => self::nullableString($row['override_scope'] ?? null),
+            'overrideNextReviewAt' => self::nullableIsoDate($row['override_next_review_at'] ?? null),
         ];
         $totalTargets = (int) ($summary['total'] ?? 0);
         $dailyCapacity = max(1, $this->config->linkCheckBatchSize * 24);
@@ -628,6 +645,7 @@ final class AdminApi
             ],
             'lastRun' => $lastRun === null ? null : $mapRun($lastRun),
             'items' => array_map($mapItem, $items),
+            'statusItems' => array_map($mapItem, $statusItems),
             'rejectedItems' => array_map($mapItem, $rejectedItems),
             'domainChangedItems' => array_map($mapItem, $domainChangedItems),
             'runs' => array_map($mapRun, $runs),
