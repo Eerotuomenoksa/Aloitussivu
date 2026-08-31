@@ -50,6 +50,7 @@ const privacyTranslations: Record<PublicPageLanguage, PrivacyCopy> = {
       'Asetukset ja suosikit säilyvät käyttäjän omassa selaimessa.',
       'Käyttötilasto on karkea eikä perustu evästeisiin tai käyttäjäprofiileihin.',
       'Linkki-ilmoituksiin tallennetaan vain käyttäjän itse antamat tiedot.',
+      'Sää ja paikallisuutiset voivat käyttää ulkopuolisia palveluita. Niille välittyy IP-osoite.',
     ],
     tocLabel: 'Tietosuojasivun sisällysluettelo',
     tocTitle: 'Sisällysluettelo',
@@ -99,6 +100,21 @@ const privacyTranslations: Record<PublicPageLanguage, PrivacyCopy> = {
           paragraph('Osa asetuksista tallennetaan käyttäjän omaan selaimeen, jotta sivu muistaa käyttäjän valinnat.'),
           list('suosikit', 'valittu paikkakunta', 'tekstikoko', 'tumma tai vaalea tila', 'näkyvät osiot', 'onko esittelykierros jo nähty', 'toisen kellon aikavyöhyke'),
           paragraph('Nämä tiedot eivät muodosta palvelimella käyttäjäprofiilia. Käyttäjä voi poistaa ne tyhjentämällä selaimen sivustotiedot.'),
+        ],
+      },
+      {
+        id: 'kolmannen-osapuolen-palvelut',
+        title: 'Palvelut, joita sivu käyttää',
+        blocks: [
+          paragraph('Sivu käyttää ulkopuolisia palveluita sään ja paikallisuutisten näyttämiseen.'),
+          list(
+            'Open-Meteo saa sijainnin koordinaatit sään näyttämistä varten.',
+            'OpenStreetMapin Nominatim saa koordinaatit kunnan selvittämiseksi, jos käyttäjä sallii paikannuksen.',
+            'Nominatimia ei käytetä, jos käyttäjä on valinnut kotikunnan.',
+            'rss2json ja allorigins voivat välittää paikallisuutisia, jos suora haku ei onnistu.',
+            'Palveluille välittyy käyttäjän IP-osoite, kun selain muodostaa niihin yhteyden.',
+          ),
+          paragraph('Seniorin aloitussivu ei tallenna näitä koordinaatteja tai raakaa IP-osoitetta omiin järjestelmiinsä.'),
         ],
       },
       {
@@ -164,7 +180,7 @@ const privacyTranslations: Record<PublicPageLanguage, PrivacyCopy> = {
         title: 'Yhteydenotto',
         blocks: [
           paragraph(<>Tietosuojaan liittyvät kysymykset ja pyynnöt voi lähettää Nina Ziesslerille osoitteeseen <a className="underline" href="mailto:nina.ziessler@vtkl.fi">nina.ziessler@vtkl.fi</a>. Yleiset SeniorSurf-yhteydenotot voi lähettää osoitteeseen <a className="underline" href="mailto:seniorsurf@vtkl.fi">seniorsurf@vtkl.fi</a>.</>),
-          paragraph('Päivitetty 29.8.2026. Selostetta päivitetään, kun palvelun tietovirrat, säilytysajat tai yhteystiedot muuttuvat.'),
+          paragraph('Päivitetty 31.8.2026. Selostetta päivitetään, kun palvelun tietovirrat, säilytysajat tai yhteystiedot muuttuvat.'),
         ],
       },
     ],
@@ -182,6 +198,7 @@ const privacyTranslations: Record<PublicPageLanguage, PrivacyCopy> = {
       'Inställningar och favoriter sparas i användarens egen webbläsare.',
       'Användningsstatistiken är översiktlig och bygger inte på kakor eller användarprofiler.',
       'I länkmeddelanden sparas endast de uppgifter som användaren själv lämnar.',
+      'Väder och lokala nyheter kan använda externa tjänster. De får användarens IP-adress.',
     ],
     tocLabel: 'Innehållsförteckning för dataskyddssidan',
     tocTitle: 'Innehåll',
@@ -223,6 +240,21 @@ const privacyTranslations: Record<PublicPageLanguage, PrivacyCopy> = {
           paragraph('Vissa inställningar sparas i användarens egen webbläsare så att sidan kommer ihåg användarens val.'),
           list('favoriter', 'vald ort', 'textstorlek', 'mörkt eller ljust läge', 'synliga avsnitt', 'om introduktionsrundan redan har visats', 'tidszonen för den andra klockan'),
           paragraph('Dessa uppgifter bildar ingen användarprofil på servern. Användaren kan radera dem genom att rensa webbplatsdata i webbläsaren.'),
+        ],
+      },
+      {
+        id: 'kolmannen-osapuolen-palvelut',
+        title: 'Tjänster som sidan använder',
+        blocks: [
+          paragraph('Sidan använder externa tjänster för att visa väder och lokala nyheter.'),
+          list(
+            'Open-Meteo får platsens koordinater för att visa vädret.',
+            'OpenStreetMaps Nominatim får koordinater för att hitta kommunen när användaren tillåter positionering.',
+            'Nominatim används inte när användaren har valt sin hemkommun.',
+            'rss2json och allorigins kan förmedla lokala nyheter om direkt hämtning misslyckas.',
+            'Tjänsterna får användarens IP-adress när webbläsaren ansluter till dem.',
+          ),
+          paragraph('Seniorens startsida sparar inte dessa koordinater eller den råa IP-adressen i sina system.'),
         ],
       },
       {
@@ -288,7 +320,7 @@ const privacyTranslations: Record<PublicPageLanguage, PrivacyCopy> = {
         title: 'Kontakt',
         blocks: [
           paragraph(<>Frågor och begäranden som gäller dataskydd kan skickas till Nina Ziessler på <a className="underline" href="mailto:nina.ziessler@vtkl.fi">nina.ziessler@vtkl.fi</a>. Allmänna SeniorSurf-kontakter kan skickas till <a className="underline" href="mailto:seniorsurf@vtkl.fi">seniorsurf@vtkl.fi</a>.</>),
-          paragraph('Uppdaterad 29.8.2026. Beskrivningen uppdateras när tjänstens dataflöden, lagringstider eller kontaktuppgifter ändras.'),
+          paragraph('Uppdaterad 31.8.2026. Beskrivningen uppdateras när tjänstens dataflöden, lagringstider eller kontaktuppgifter ändras.'),
         ],
       },
     ],
@@ -306,6 +338,7 @@ const privacyTranslations: Record<PublicPageLanguage, PrivacyCopy> = {
       'Settings and favourites remain in the user’s own browser.',
       'Usage statistics are aggregated and are not based on cookies or user profiles.',
       'Only information supplied by the user is stored in link reports.',
+      'Weather and local news may use external services. They receive the user’s IP address.',
     ],
     tocLabel: 'Privacy page table of contents',
     tocTitle: 'Contents',
@@ -347,6 +380,22 @@ const privacyTranslations: Record<PublicPageLanguage, PrivacyCopy> = {
           paragraph('Some settings are stored in the user’s own browser so that the page remembers the user’s choices.'),
           list('favourites', 'selected municipality', 'text size', 'dark or light mode', 'visible sections', 'whether the introduction tour has already been viewed', 'the time zone of the second clock'),
           paragraph('This information does not form a user profile on the server. The user can remove it by clearing the website data in the browser.'),
+        ],
+      },
+      {
+        id: 'kolmannen-osapuolen-palvelut',
+        title: 'Services used by this page',
+        blocks: [
+          paragraph('The page uses external services to display weather and local news.'),
+          list(
+            'Open-Meteo receives location coordinates to display the weather.',
+            'OpenStreetMap Nominatim receives coordinates when the user allows location access.',
+            'Nominatim uses the coordinates to identify the municipality.',
+            'Nominatim is not used when the user has selected their home municipality.',
+            'rss2json and allorigins may relay local news when direct retrieval fails.',
+            'These services receive the user’s IP address when the browser connects to them.',
+          ),
+          paragraph('The Senior Start Page does not store these coordinates or raw IP addresses in its systems.'),
         ],
       },
       {
@@ -412,7 +461,7 @@ const privacyTranslations: Record<PublicPageLanguage, PrivacyCopy> = {
         title: 'Contact',
         blocks: [
           paragraph(<>Questions and requests concerning data protection can be sent to Nina Ziessler at <a className="underline" href="mailto:nina.ziessler@vtkl.fi">nina.ziessler@vtkl.fi</a>. General SeniorSurf enquiries can be sent to <a className="underline" href="mailto:seniorsurf@vtkl.fi">seniorsurf@vtkl.fi</a>.</>),
-          paragraph('Updated 29 August 2026. This notice is updated when the service’s data flows, retention periods or contact details change.'),
+          paragraph('Updated 31 August 2026. This notice is updated when the service’s data flows, retention periods or contact details change.'),
         ],
       },
     ],

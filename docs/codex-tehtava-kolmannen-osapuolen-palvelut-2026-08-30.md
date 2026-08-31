@@ -4,6 +4,8 @@ Päivitetty: 30.8.2026
 Eeron päätös: toteutetaan kaikki kolme tasoa (KO-01, KO-02, KO-03).
 Koskee: `tietosuoja.tsx`, `services/rssService.ts`, `components/WeatherCard.tsx`, `municipalRegistry.ts`, `api/src/`, `api/cron/`
 
+Tila 31.8.2026: KO-01 on toteutettu paikallisesti suomeksi, ruotsiksi ja englanniksi. Teksti odottaa Nina Ziesslerin hyväksyntää ja tuotantoonvientiä. KO-02, KO-03 ja KO-04 säilyvät julkaisun jälkeisinä tehtävinä.
+
 ## Miksi
 
 Sovellus kutsuu käyttäjän selaimesta **suoraan kolmea ulkopuolista palvelua**, joita palvelu ei omista eikä valvo. Jokainen niistä saa käyttäjän IP-osoitteen, ja yksi saa tarkat koordinaatit.
