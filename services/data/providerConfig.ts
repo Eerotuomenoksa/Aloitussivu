@@ -1,19 +1,19 @@
 import type { DataProviderKind } from './dataProvider';
 
 const configuredProvider = import.meta.env.VITE_DATA_PROVIDER?.trim().toLocaleLowerCase('en-US');
-const hasFirebaseConfig = Boolean(
-  import.meta.env.VITE_FIREBASE_API_KEY?.trim()
-  && import.meta.env.VITE_FIREBASE_AUTH_DOMAIN?.trim()
-  && import.meta.env.VITE_FIREBASE_PROJECT_ID?.trim()
-);
-
+// Oletus on tarkoituksella 'cloudcity'. Aiemmin oletus valittiin pelkkien
+// Firebase-avainten perusteella, jolloin ilman VITE_DATA_PROVIDER-arvoa syntyi
+// nippu joka kirjoittaa Firestoreen. Tietosuojaseloste lupaa, etta palautteet ja
+// kayttoluvut ovat Cloudcityn palvelimella, joten Firestoreen kirjoittava nippu
+// tekisi selosteesta virheellisen. 'firebase-rollback' on nykyisin vain
+// nimenomainen paluuvaihtoehto, ei oletus.
 export const dataProviderKind: DataProviderKind = (
   configuredProvider === 'cloudcity'
   || configuredProvider === 'firebase-rollback'
   || configuredProvider === 'local'
 )
   ? configuredProvider
-  : (hasFirebaseConfig ? 'firebase-rollback' : 'local');
+  : 'cloudcity';
 
 export const apiBase = (import.meta.env.VITE_API_BASE?.trim() || '/api/v1').replace(/\/+$/, '');
 

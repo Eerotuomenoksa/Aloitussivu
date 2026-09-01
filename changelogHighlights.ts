@@ -8,6 +8,18 @@ export type ChangelogHighlight = {
 
 export const AUGUST_2026_HIGHLIGHTS: ChangelogHighlight[] = [
   {
+    date: '1.9.2026',
+    title: 'Versio 1.0 ja uusi tunnus',
+    summary:
+      'Seniorin aloitussivu sai ensimmäisen virallisen versionumeronsa 1.0.0 ja uuden majakkatunnuksen.',
+    changes: [
+      'Versionumero nostettiin 1.0.0:aan. Aiemmat 0.x-versiot olivat kehitys- ja testiversioita.',
+      'Selaimen välilehden ja kotinäytön kuvake vaihtui majakaksi Vanhustyön keskusliiton violetilla ja oranssilla.',
+      'Kuvake päivitettiin kaikkiin kokoihin: favicon.svg, favicon-32.png ja apple-touch-icon.png.',
+    ],
+    tags: ['Julkaisu', 'Ulkoasu'],
+  },
+  {
     date: '25.8.2026',
     title: 'Julkaisukandidaatin linkit tarkistettu',
     summary:

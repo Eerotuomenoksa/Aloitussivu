@@ -24,8 +24,8 @@ export type ChangelogCommit = {
   tags: string[];
 };
 
-export const CHANGELOG_GENERATED_AT = "31.8.2026";
-export const CHANGELOG_VERSION = "0.78.0";
+export const CHANGELOG_GENERATED_AT = "1.9.2026";
+export const CHANGELOG_VERSION = "1.0.0";
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
   "Tietosuojaseloste kirjoitettiin selkeämmälle kielelle suomeksi, ruotsiksi ja englanniksi.",
   "Selosteeseen lisättiin lyhyt sanasto, joka selittää tärkeät tietosuojaan liittyvät sanat."

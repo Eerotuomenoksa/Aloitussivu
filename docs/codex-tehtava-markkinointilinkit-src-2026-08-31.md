@@ -3,7 +3,7 @@
 Päivitetty: 31.8.2026
 Tila: toteutettu, testattu ja aktivoitu tuotantoon versiossa 0.77.9 31.8.2026
 Lähde: Eeron ja Clauden keskustelu 31.8.2026, markkinointisuunnitelman kanavalista
-Koskee: `usageTracking.ts`, `api/src/PublicApi.php`, `api/tests/run.php`
+Koskee: `usageTracking.ts`, `api/src/PublicApi.php`, `api/tests/run.php`, `i18n.tsx`
 Liittyy: `docs/codex-tehtava-kayttotilastot-ja-aloitussivuksi-asetus.md`, `docs/markkinointisuunnitelma-2026-2027.md` (luku 6)
 
 ## Miksi
@@ -75,6 +75,30 @@ Kun MK-01 ja MK-02 on tehty, päivitä lista näihin:
 - `docs/markkinointisuunnitelma-2026-2027.md` luku 6, jossa lukee vielä vanha lista. **Huom:** tiedostosta on olemassa päivitetty versio `docs/markkinointisuunnitelma-2026-2027.PAIVITETTY-31-8.md`, jota ei ole vielä yhdistetty alkuperäiseen. Tarkista tilanne ennen muokkausta, ettei työ mene päällekkäin.
 - `docs/codex-tehtava-kayttotilastot-ja-aloitussivuksi-asetus.md`, jos siinä on arvolista.
 
+## MK-04 · Lisää `?lang=`-parametri (P1, ehto käännetyille materiaaleille)
+
+### Miksi
+
+Sovelluksessa ei ole tapaa avata sivua tietyllä kielellä osoitteen kautta. Kieli tulee `localStorage`sta tai selaimen kieliasetuksesta (`i18n.tsx`, `LanguageProvider` ja `detectBrowserLanguage`). Ruotsinkielisen kortin QR-koodi veisi siis lukijan sivulle *hänen puhelimensa* kielellä — ruotsinkielinen käyttäjä suomenkielisellä puhelimella saisi suomenkielisen sivun, eikä painettu kortti voi kertoa mistä kielen vaihtaa.
+
+Tämä on **ehto sille, että käännettyjä painomateriaaleja voi ylipäätään tehdä.** Ilman parametria jokainen käännetty kortti tarvitsisi ylimääräisen askeleen "vaihda kieli", ja se on juuri se askel, jossa kohderyhmä putoaa kyydistä.
+
+### Mitä tehdä
+
+1. Lue `?lang=`-parametri sivun latauksessa samaan tapaan kuin `?src=` luetaan (`usageTracking.ts:99` `readAndRemoveCampaignSource` on hyvä malli).
+2. Hyväksy vain koodit, jotka ovat jo olemassa: `fi`, `sv`, `en`, `uk`, `et`, `ru`, `se`. Validointiin on valmis apuri `isLanguageCode` (`i18n.tsx:1594`). Tuntematon arvo ohitetaan hiljaisesti eikä kaada mitään.
+3. Kelvollinen arvo asettaa kielen ja **tallentuu `localStorage`-avaimeen `language`**, jotta valinta säilyy seuraavalla käynnillä. Tämä on tärkeää: kortin saanut avaa sivun myöhemmin ilman parametria.
+4. **Parametri poistetaan osoiteriviltä** latauksen jälkeen `history.replaceState`illa, samoin kuin `src`. Käyttäjän on voitava tallentaa siisti osoite aloitussivukseen.
+5. Järjestys ratkaisee: `?lang=` **ohittaa** sekä tallennetun valinnan että selaimen kielitunnistuksen. Se on nimenomaan tarkoitettu ohittamaan ne.
+6. `?src=` ja `?lang=` on voitava antaa samassa osoitteessa: `/aloitus/?src=opastus&lang=sv` toimii molempien osalta.
+
+### Hyväksymiskriteerit
+
+- `/aloitus/?lang=sv` avaa sivun ruotsiksi riippumatta selaimen kieliasetuksesta.
+- Parametri katoaa osoiteriviltä, ja kieli säilyy myös ilman parametria tehdyssä uudelleenlatauksessa.
+- `/aloitus/?src=opastus&lang=sv` kirjaa lähteen `opastus` ja avaa sivun ruotsiksi.
+- `?lang=klingon` ei muuta kieltä eikä aiheuta virhettä.
+
 ## Mitä EI tehdä
 
 - **Ei tietokantamigraatiota.** `usage_context_daily.bucket` on `VARCHAR(32)` (`database/migrations/003_usage_context_daily.sql`) eikä sisällä ENUM-rajoitusta. Pisin uusi arvo on `juttunetti`, 10 merkkiä. Migraatiota ei tarvita.
@@ -106,3 +130,4 @@ Lisäksi manuaalisesti: avaa `/aloitus/?src=juttunetti`, tarkista että parametr
 3. `php api/tests/run.php` menee läpi, ja rivin 1634 testi käyttää arvoa `opastus`.
 4. `tsc --noEmit` on puhdas.
 5. Tuntematon `?src=`-arvo kirjautuu edelleen arvona `other` eikä kaada mitään.
+6. `?lang=sv` avaa sivun ruotsiksi ja valinta säilyy; parametri katoaa osoiteriviltä.

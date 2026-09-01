@@ -96,7 +96,7 @@ function updateAppVersion(nextVersion) {
     .replace(/APP_VERSION\s*=\s*['"][^'"]+['"]/, `APP_VERSION = '${nextVersion}'`)
     .replace(
       /APP_VERSION_BASIS\s*=\s*['"][^'"]+['"]/,
-      "APP_VERSION_BASIS = 'Versio noudattaa semanttista versionumerointia: major isoille tai rikkoville muutoksille, minor uusille ominaisuuksille ja patch korjauksille, dokumentaatiolle sekä ylläpidolle. Ennen 1.0-julkaisua isot käyttäjämuutokset nostavat 0.x-minoria.'",
+      "APP_VERSION_BASIS = 'Versio noudattaa semanttista versionumerointia: major isoille tai rikkoville muutoksille, minor uusille ominaisuuksille ja patch korjauksille, dokumentaatiolle sekä ylläpidolle. Versio 1.0.0 on ensimmäinen virallinen julkaisu.'",
     );
 
   writeFileSync(appVersionPath, updated, 'utf8');

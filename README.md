@@ -6,6 +6,10 @@
 
 SeniorSurf-kayttoon rakennettu React/Vite-sovellus, joka kokoaa helppokayttoisia yleisia ja alueellisia linkkeja, palautteenkeruuta, yllapitotoimintoja ja kevyita Firebase-taustapalveluja.
 
+## Tyojono
+
+Avoimet tehtavat ja niiden tila ovat tiedostossa `TYOJONO.md`. Uudet tehtavat kirjataan sinne; yksityiskohtaiset maarittelyt ovat `docs/codex-tehtava-*.md` -tiedostoissa. Julkaisun ehdot ja paatokset ovat tiedostossa `TODO_HUMAN.md`.
+
 ## Paikallinen kehitys
 
 **Edellytys:** Node.js 20 tai uudempi.
