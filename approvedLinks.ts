@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import { getDataProvider } from './services/data';
-import { Shortcut } from './types';
+import { LocalityInfo, Shortcut } from './types';
 
 export interface ApprovedLinkSuggestion {
   id: string;
   name: string;
   url: string;
   category: string;
+  municipality?: string;
   source: string;
   createdAt: string;
   note?: string;
@@ -132,6 +133,7 @@ export const approveLinkSuggestion = async (suggestion: Omit<ApprovedLinkSuggest
     name: suggestion.name.trim(),
     url: suggestion.url.trim(),
     category: suggestion.category.trim(),
+    municipality: suggestion.municipality?.trim() || '',
     source,
     note: suggestion.note?.trim() || '',
   });
@@ -141,6 +143,7 @@ export const approveLinkSuggestion = async (suggestion: Omit<ApprovedLinkSuggest
     name: suggestion.name.trim(),
     url: suggestion.url.trim(),
     category: suggestion.category.trim(),
+    municipality: suggestion.municipality?.trim() || '',
     source,
     note: suggestion.note?.trim() || '',
   };
@@ -181,7 +184,7 @@ export const useApprovedLinkSuggestionsVersion = () => {
   return version;
 };
 
-export const mergeApprovedLinksIntoShortcuts = (shortcuts: Shortcut[]) => {
+export const mergeApprovedLinksIntoShortcuts = (shortcuts: Shortcut[], locality: LocalityInfo | null = null) => {
   const approvedLinks = getApprovedLinkSuggestions();
   if (approvedLinks.length === 0) return shortcuts;
 
@@ -196,7 +199,9 @@ export const mergeApprovedLinksIntoShortcuts = (shortcuts: Shortcut[]) => {
   return shortcuts.map((shortcut) => {
     if (!shortcut.providers) return shortcut;
 
-    const approved = byCategory.get(normalizeText(shortcut.name)) ?? [];
+    const approved = (byCategory.get(normalizeText(shortcut.name)) ?? []).filter((link) => (
+      !link.municipality || normalizeText(link.municipality) === normalizeText(locality?.municipality ?? '')
+    ));
     if (approved.length === 0) return shortcut;
 
     const existingUrls = new Set(shortcut.providers.map((provider) => normalizeUrl(provider.url)));
@@ -209,6 +214,7 @@ export const mergeApprovedLinksIntoShortcuts = (shortcuts: Shortcut[]) => {
           name: link.name,
           url: link.url,
           group: link.category,
+          ...(link.municipality ? { municipality: link.municipality } : {}),
         })),
     ];
 

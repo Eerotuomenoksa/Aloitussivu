@@ -61,6 +61,7 @@ import {
   type LinkCheckItem,
   type LinkCheckOverview,
 } from './linkChecks';
+import { MUNICIPALITIES } from './municipalRegistry';
 
 const normalizeUrl = (url: string) => url.trim().replace(/\/+$/, '');
 const extractHttpsUrl = (value: string) => (
@@ -302,9 +303,9 @@ function App() {
   const [feedbackBusyId, setFeedbackBusyId] = useState<string | null>(null);
   const [feedbackMessage, setFeedbackMessage] = useState('');
   const [feedbackNotes, setFeedbackNotes] = useState<Record<string, string>>({});
-  const [feedbackLinkDrafts, setFeedbackLinkDrafts] = useState<Record<string, { name: string; url: string; category: string }>>({});
+  const [feedbackLinkDrafts, setFeedbackLinkDrafts] = useState<Record<string, { name: string; url: string; category: string; municipality: string }>>({});
   const [approvedLinks, setApprovedLinks] = useState<ApprovedLinkSuggestion[]>(() => getApprovedLinkSuggestions());
-  const [reportDrafts, setReportDrafts] = useState<Record<string, { name: string; url: string; category: string; note: string }>>({});
+  const [reportDrafts, setReportDrafts] = useState<Record<string, { name: string; url: string; category: string; municipality: string; note: string }>>({});
   const [reportReviewReasons, setReportReviewReasons] = useState<Record<string, string>>({});
   const [busyId, setBusyId] = useState<string | null>(null);
   const [scamAlerts, setScamAlerts] = useState<ScamAlertEntry[]>([]);
@@ -584,6 +585,7 @@ function App() {
             name: report.name || '',
             url: report.url || '',
             category: report.category || '',
+            municipality: '',
             note: report.note || '',
           };
         }
@@ -597,6 +599,7 @@ function App() {
       name: report.name,
       url: report.url,
       category: report.category ?? '',
+      municipality: '',
       note: report.note ?? '',
     };
 
@@ -606,6 +609,7 @@ function App() {
         name: draft.name || report.name || 'Tuntematon linkki',
         url: draft.url || report.url,
         category: draft.category || report.category || 'Yleiset linkit',
+        municipality: draft.municipality,
         source: report.source,
         note: draft.note || report.note || '',
         id: report.id,
@@ -696,6 +700,7 @@ function App() {
       name: item.title,
       url: extractHttpsUrl(item.description),
       category: '',
+      municipality: '',
     };
     if (!draft.name.trim() || !draft.url.trim() || !draft.category.trim()) {
       setFeedbackMessage('Täytä linkin nimi, HTTPS-osoite ja kategoria ennen hyväksymistä.');
@@ -709,6 +714,7 @@ function App() {
         name: draft.name,
         url: draft.url,
         category: draft.category,
+        municipality: draft.municipality,
         source: 'Palautteen käsittely',
         note: item.description.slice(0, 1000),
       });
@@ -1034,6 +1040,7 @@ function App() {
                       name: item.title,
                       url: extractHttpsUrl(item.description),
                       category: '',
+                      municipality: '',
                     };
                     return (
                       <article key={item.id} className={`rounded-2xl border p-5 shadow-sm ${isOpen ? 'border-rose-200 bg-white dark:border-rose-900 dark:bg-slate-900' : 'border-slate-200 bg-slate-50 dark:border-slate-800 dark:bg-slate-950/60'}`}>
@@ -1082,6 +1089,22 @@ function App() {
                                       placeholder="Esim. Asiointi"
                                       className="w-full rounded-xl border-2 border-blue-200 bg-white px-3 py-2 font-bold text-slate-900 dark:border-blue-800 dark:bg-slate-900 dark:text-white"
                                     />
+                                  </label>
+                                  <label className="space-y-1">
+                                    <span className="text-sm font-black text-blue-950 dark:text-blue-100">Paikkakunta</span>
+                                    <select
+                                      value={feedbackLinkDraft.municipality}
+                                      onChange={(event) => setFeedbackLinkDrafts((current) => ({
+                                        ...current,
+                                        [item.id]: { ...feedbackLinkDraft, municipality: event.target.value },
+                                      }))}
+                                      className="w-full rounded-xl border-2 border-blue-200 bg-white px-3 py-2 font-bold text-slate-900 dark:border-blue-800 dark:bg-slate-900 dark:text-white"
+                                    >
+                                      <option value="">Valtakunnallinen</option>
+                                      {MUNICIPALITIES.map((municipality) => (
+                                        <option key={municipality.code} value={municipality.name}>{municipality.name}</option>
+                                      ))}
+                                    </select>
                                   </label>
                                 </div>
                                 <label className="block space-y-1">
@@ -1711,6 +1734,7 @@ function App() {
                       name: report.name || '',
                       url: report.url || '',
                       category: report.category || '',
+                      municipality: '',
                       note: report.note || '',
                     };
 
@@ -1787,6 +1811,24 @@ function App() {
                             placeholder="Perustelu näkyy palautteiden käsittelysivulla."
                             maxLength={1000}
                           />
+                        </label>
+
+                        <label className="space-y-2 block">
+                          <span className="block font-black text-slate-700 dark:text-slate-200">Paikkakunta</span>
+                          <select
+                            value={draft.municipality}
+                            onChange={(event) => setReportDrafts((current) => ({
+                              ...current,
+                              [report.id]: { ...draft, municipality: event.target.value },
+                            }))}
+                            className="w-full rounded-2xl border-4 border-slate-200 bg-white px-4 py-3 font-bold text-slate-900 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+                          >
+                            <option value="">Valtakunnallinen</option>
+                            {MUNICIPALITIES.map((municipality) => (
+                              <option key={municipality.code} value={municipality.name}>{municipality.name}</option>
+                            ))}
+                          </select>
+                          <span className="block text-sm font-bold text-slate-500 dark:text-slate-400">Paikallinen linkki näkyy vain valitun kunnan käyttäjille.</span>
                         </label>
 
                         <div className="flex flex-wrap items-center justify-end gap-3">
@@ -1871,9 +1913,10 @@ function App() {
                 <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                   {approvedLinks.map((link) => (
                     <article key={link.id} className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm">
-                      <p className="font-black text-lg text-slate-900 dark:text-white">{link.name}</p>
-                      <p className="text-sm font-bold text-slate-500 dark:text-slate-400 break-all mt-1">{link.url}</p>
-                      <p className="text-sm font-bold text-slate-500 dark:text-slate-400 mt-2">{link.category}</p>
+                       <p className="font-black text-lg text-slate-900 dark:text-white">{link.name}</p>
+                       <p className="text-sm font-bold text-slate-500 dark:text-slate-400 break-all mt-1">{link.url}</p>
+                       <p className="text-sm font-bold text-slate-500 dark:text-slate-400 mt-2">{link.category}</p>
+                       <p className="text-sm font-bold text-slate-500 dark:text-slate-400 mt-1">{link.municipality ? `Paikkakunta: ${link.municipality}` : 'Valtakunnallinen'}</p>
                       <div className="mt-4 flex items-center justify-between gap-3">
                         <span className="text-xs font-black uppercase tracking-wide text-slate-400">{link.source}</span>
                         <button

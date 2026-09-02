@@ -1,17 +1,17 @@
-# REL-16 / v1.1.0 tuotantopäivitys
+# REL-16 / v1.1.1 tuotantopäivitys
 
 Tämä julkaisu tuo palautteiden julkisen käsittelyseurannan, yhdenmukaistaa linkkiehdotusten hyväksynnän ja päivittää automaattisen linkkitarkistuksen tuotantoasetuksen.
 
 ## Julkaisun sisältö
 
 - Kaikki käyttäjät näkevät `kehitysjono.html`-sivulla palautteiden ja linkki-ilmoitusten tilan sekä ylläpidon julkaiseman käsittelymerkinnän.
-- Linkkiehdotus kulkee aina rakenteiseen hyväksyntä- tai hylkäysprosessiin. Myös vanha `link`-tyyppinen palaute voidaan ylläpidossa hyväksyä tuotantolinkiksi tai hylätä.
+- Linkkiehdotus kulkee aina rakenteiseen hyväksyntä- tai hylkäysprosessiin. Myös vanha `link`-tyyppinen palaute voidaan ylläpidossa hyväksyä tuotantolinkiksi tai hylätä. Hyväksyttävä linkki voidaan kohdistaa yhdelle kunnalle tai jättää valtakunnalliseksi.
 - Julkiset API-listat palauttavat vain seurantaan tarvittavat kentät. Ilmoittajan selain- ja laitetiedot, liitteet sekä ylläpitäjän tunnisteet eivät vuoda julkisiksi.
 - Linkkitarkistuksen `timeout_seconds` on viisi sekuntia. `batch_size` jää arvoon 10 ja tarkistimen enimmäisrinnakkaisuus neljään ulkoiseen yhteyteen.
 
 Kahden tunnin staging-kuormitusajo päättyi ilman virheitä: 5 760 HTTP-pyyntöä, kaikki 200, p95 49 ms ja enimmäiskesto 240 ms. Ajo mittasi omaa API:a (0,8 pyyntöä/s), ei ulkoisia linkkikohteita. Siksi ulkoisten yhteyksien rinnakkaisuutta ei kasvateta tämän perusteella.
 
-Tietokantamigraatioita ei tarvita: palautteen ja linkki-ilmoitusten taulut sekä linkkitarkistuksen migraatiot ovat jo REL-15-tuotannossa.
+Ennen koodin aktivointia aja paketista `database_migrations/009_approved_links_municipality.sql` tuotantotietokantaan. Se lisää hyväksytylle linkille valinnaisen kunnan; tyhjä arvo tarkoittaa valtakunnallista linkkiä. Migraatio on uudelleenajettava turvallisesti.
 
 ## Ennen siirtoa
 
@@ -25,7 +25,7 @@ Siirrä ZIP palvelimelle ja pura se ehdokashakemistoon:
 
 ```bash
 set -eu
-ZIP=/home/seniorsurffi/aloitussivu-rel16-v1.1.0-production-path.zip
+ZIP=/home/seniorsurffi/aloitussivu-rel16-v1.1.1-production-path.zip
 CANDIDATE=/home/seniorsurffi/rel16-production-candidate-$(date +%Y%m%d-%H%M%S)
 test -f "$ZIP"
 mkdir "$CANDIDATE"

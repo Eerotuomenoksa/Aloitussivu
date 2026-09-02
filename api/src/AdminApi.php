@@ -70,6 +70,7 @@ final class AdminApi
             'name' => (string) ($row['name'] ?? ''),
             'url' => (string) ($row['url'] ?? ''),
             'category' => (string) ($row['category'] ?? ''),
+            'municipality' => self::nullableString($row['municipality'] ?? null),
             'source' => (string) ($row['source'] ?? ''),
             'note' => (string) ($row['note'] ?? ''),
             'status' => (string) ($row['status'] ?? ''),
@@ -241,7 +242,7 @@ final class AdminApi
     {
         $this->authenticator->authenticate($request);
         $rows = $this->database->fetchAll(
-            'SELECT id, name, url, category, source, note, created_from_report_id, created_at, updated_at '
+            'SELECT id, name, url, category, municipality, source, note, created_from_report_id, created_at, updated_at '
             . 'FROM approved_links ORDER BY created_at DESC LIMIT 500',
         );
         return $this->data($request, array_map(static fn (array $row): array => [
@@ -261,7 +262,7 @@ final class AdminApi
     {
         $actor = $this->authenticator->authenticate($request, true);
         $data = Validator::jsonObject($request);
-        Validator::shape($data, ['id', 'name', 'url', 'category', 'source', 'note', 'createdFromReportId'], ['name', 'url', 'category', 'source']);
+        Validator::shape($data, ['id', 'name', 'url', 'category', 'municipality', 'source', 'note', 'createdFromReportId'], ['name', 'url', 'category', 'source']);
         $id = array_key_exists('id', $data) ? Validator::uuid($data, 'id') : Uuid::generate();
         $url = Validator::httpsUrl($data, 'url');
         $values = [
@@ -270,6 +271,7 @@ final class AdminApi
             'url' => $url,
             'url_hash' => hash('sha256', $url, true),
             'category' => Validator::string($data, 'category', 1, 255),
+            'municipality' => self::nullableText(Validator::string($data, 'municipality', 0, 100, false)),
             'source' => Validator::string($data, 'source', 1, 255),
             'note' => Validator::string($data, 'note', 0, 1000, false),
             'created_from_report_id' => self::optionalUuid($data, 'createdFromReportId'),
@@ -285,11 +287,11 @@ final class AdminApi
             }
             $database->execute(
                 'INSERT INTO approved_links '
-                . '(id, name, url, url_hash, category, source, note, created_from_report_id, created_at, updated_at) '
-                . 'VALUES (:id, :name, :url, :url_hash, :category, :source, :note, :created_from_report_id, :created_at, :updated_at)',
+                . '(id, name, url, url_hash, category, municipality, source, note, created_from_report_id, created_at, updated_at) '
+                . 'VALUES (:id, :name, :url, :url_hash, :category, :municipality, :source, :note, :created_from_report_id, :created_at, :updated_at)',
                 [...$values, 'note' => $values['note'] === '' ? null : $values['note'], 'created_at' => $createdAt, 'updated_at' => $createdAt],
             );
-            $this->audit($database, $actor, 'approved_link.create', 'approved_link', $values['id'], ['fields' => ['name', 'url', 'category', 'source', 'note', 'createdFromReportId']]);
+            $this->audit($database, $actor, 'approved_link.create', 'approved_link', $values['id'], ['fields' => ['name', 'url', 'category', 'municipality', 'source', 'note', 'createdFromReportId']]);
         });
         return $this->created($request, $id, $createdAt);
     }

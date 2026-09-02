@@ -500,7 +500,7 @@ const AppContent: React.FC = () => {
     setIsFeedbackOpen(false);
     openReportModal({ name: '', url: '', category: '', source: 'Palaute' });
   }, [openReportModal]);
-  const selectedShortcut = selectedCategory ? mergeApprovedLinksIntoShortcuts([selectedCategory])[0] ?? selectedCategory : null;
+  const selectedShortcut = selectedCategory ? mergeApprovedLinksIntoShortcuts([selectedCategory], locality)[0] ?? selectedCategory : null;
   const isFinnishLocality = locality?.isInFinland !== false;
   const regionalLocality = isFinnishLocality ? locality : null;
   const selectedSecondaryTimeZone = SECONDARY_TIME_ZONE_OPTIONS.find((option) => option.value === secondaryTimeZone) ?? SECONDARY_TIME_ZONE_OPTIONS[0];

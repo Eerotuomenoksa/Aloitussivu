@@ -105,6 +105,7 @@ CREATE TABLE IF NOT EXISTS approved_links (
   url VARCHAR(2048) NOT NULL,
   url_hash BINARY(32) NOT NULL,
   category VARCHAR(255) NOT NULL,
+  municipality VARCHAR(100) NULL,
   source VARCHAR(255) NOT NULL,
   note TEXT NULL,
   created_from_report_id CHAR(36) NULL,
@@ -113,6 +114,7 @@ CREATE TABLE IF NOT EXISTS approved_links (
   PRIMARY KEY (id),
   UNIQUE KEY uq_approved_links_url_hash (url_hash),
   KEY idx_approved_links_category_created (category, created_at),
+  KEY idx_approved_links_municipality_created (municipality, created_at),
   KEY idx_approved_links_source_report (created_from_report_id),
   CONSTRAINT fk_approved_links_source_report
     FOREIGN KEY (created_from_report_id) REFERENCES link_reports (id)

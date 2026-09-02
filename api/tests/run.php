@@ -733,6 +733,7 @@ test('public list routes expose only contracted fields and support ETag', static
         'name' => 'Turvallinen palvelu',
         'url' => 'https://example.com/',
         'category' => 'Palvelut',
+        'municipality' => 'Seinäjoki',
         'source' => 'Ylläpito',
         'note' => 'Julkinen huomio',
         'created_at' => '2026-08-20 09:00:00.123456',
@@ -800,6 +801,7 @@ test('public list routes expose only contracted fields and support ETag', static
     $approved = $app->handle(Request::fromValues('GET', '/api/v1/approved-links'));
     assertSameValue(200, $approved->status);
     assertSameValue('Turvallinen palvelu', jsonBody($approved)['data'][0]['name']);
+    assertSameValue('Seinäjoki', jsonBody($approved)['data'][0]['municipality']);
     assertTrue(!str_contains($approved->body, 'created_from_report_id'));
     assertSameValue('public, max-age=60, stale-while-revalidate=300', $approved->headers['Cache-Control']);
 
@@ -1345,6 +1347,7 @@ test('admin creates approved links with an audit entry and duplicate protection'
         'name' => 'Hyväksytty palvelu',
         'url' => 'https://Example.com/service#details',
         'category' => 'Asiointi',
+        'municipality' => 'Seinäjoki',
         'source' => 'Ylläpito',
         'note' => '',
     ]));
@@ -1355,6 +1358,7 @@ test('admin creates approved links with an audit entry and duplicate protection'
     ))[0];
     assertSameValue('https://example.com/service', $insert['parameters']['url']);
     assertSameValue(32, strlen($insert['parameters']['url_hash']));
+    assertSameValue('Seinäjoki', $insert['parameters']['municipality']);
     assertTrue((bool) array_filter(
         $database->executions,
         static fn (array $execution): bool => str_contains($execution['sql'], 'INSERT INTO audit_log'),

@@ -14,6 +14,7 @@ export const AUGUST_2026_HIGHLIGHTS: ChangelogHighlight[] = [
       'Palautteen jättäjä ja muut käyttäjät voivat nyt seurata kehitysjonosta, miten palaute ja linkkiehdotukset etenevät.',
     changes: [
       'Linkkiehdotus ohjautuu aina rakenteiseen käsittelyyn, jossa ylläpitäjä voi hyväksyä sen tuotantoon tai hylätä sen perusteluineen.',
+      'Ylläpito voi merkitä hyväksyttävän linkin valtakunnalliseksi tai yhdelle kunnalle paikalliseksi.',
       'Ylläpito voi muuntaa aiemman linkkityyppisen palautteen hyväksyttäväksi linkiksi tai hylätä palautteen.',
       'Julkinen kehitysjono näyttää palautteen tilan ja ylläpidon julkaiseman käsittelymerkinnän ilman ilmoittajan tai ylläpitäjän yksityisiä tietoja.',
     ],

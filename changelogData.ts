@@ -25,9 +25,10 @@ export type ChangelogCommit = {
 };
 
 export const CHANGELOG_GENERATED_AT = "2.9.2026";
-export const CHANGELOG_VERSION = "1.1.0";
+export const CHANGELOG_VERSION = "1.1.1";
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
   "Palaute- ja linkkiehdotusten käsittely palautettiin näkyväksi kehitysjonoksi kaikille käyttäjille.",
+  "Ylläpito voi kohdistaa hyväksyttävän linkin tiettyyn kuntaan; linkki näkyy silloin vain kyseisen kunnan käyttäjille.",
   "Automaattisen linkkitarkistuksen aikakatkaisu yhdenmukaistettiin viiteen sekuntiin; ulkoisten yhteyksien samanaikaisuuden kattoa ei nostettu."
 ];
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];

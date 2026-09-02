@@ -110,7 +110,7 @@ Kaikkien kirjoituspyyntöjen valinnainen `website`-kenttä on honeypot ja sen pi
 
 | Reitti | Julkiset kentät |
 | --- | --- |
-| `GET /api/v1/approved-links` | `id`, `name`, `url`, `category`, `source`, `createdAt`, valinnainen `note` |
+| `GET /api/v1/approved-links` | `id`, `name`, `url`, `category`, `source`, `createdAt`, valinnaiset `municipality` ja `note` |
 | `GET /api/v1/blocked-links` | `id`, `url`, `createdAt`; syy ja ylläpitäjä eivät ole julkisia |
 | `GET /api/v1/scam-alerts` | vain aktiiviset ja vanhenemattomat varoitukset; julkinen sisältö ja lähdetiedot |
 | `GET /api/v1/feedback` | palautteen teksti, tila ja julkinen käsittelymerkintä; selain- ja laitetiedot, ylläpitäjän tunniste sekä kuvakaappaus eivät ole julkisia |

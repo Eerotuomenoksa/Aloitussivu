@@ -48,7 +48,7 @@ final class PublicApi
     private function approvedLinks(Request $request): Response
     {
         $rows = $this->database->fetchAll(
-            'SELECT id, name, url, category, source, note, created_at '
+            'SELECT id, name, url, category, municipality, source, note, created_at '
             . 'FROM approved_links ORDER BY created_at DESC LIMIT 500',
         );
         $data = array_map(static function (array $row): array {
@@ -62,6 +62,9 @@ final class PublicApi
             ];
             if (isset($row['note']) && $row['note'] !== '') {
                 $item['note'] = (string) $row['note'];
+            }
+            if (isset($row['municipality']) && $row['municipality'] !== '') {
+                $item['municipality'] = (string) $row['municipality'];
             }
             return $item;
         }, $rows);

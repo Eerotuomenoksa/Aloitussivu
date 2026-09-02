@@ -66,7 +66,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({
   const shortcuts = filterVisibleShortcuts(getLocalizedShortcuts(SHORTCUTS, locality, language));
   useLinkVisibilityVersion();
   useApprovedLinkSuggestionsVersion();
-  const approvedShortcuts = mergeApprovedLinksIntoShortcuts(shortcuts);
+  const approvedShortcuts = mergeApprovedLinksIntoShortcuts(shortcuts, locality);
   const sortedShortcuts = [...approvedShortcuts].sort((a, b) => categoryName(a.name).localeCompare(categoryName(b.name), 'fi'));
   const shortcutsByName = new Map(sortedShortcuts.map((shortcut) => [shortcut.name, shortcut]));
   const groupedShortcutNames = new Set(shortcutGroups.flatMap((group) => group.categories));
