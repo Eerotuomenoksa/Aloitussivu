@@ -197,7 +197,7 @@ final class Config
 
         $linkCheckEnabled = self::boolValue($linkChecks, 'enabled', false);
         $linkCheckBatchSize = self::boundedInt($linkChecks, 'batch_size', 10, 1, 50);
-        $linkCheckTimeoutSeconds = self::boundedInt($linkChecks, 'timeout_seconds', 8, 2, 20);
+        $linkCheckTimeoutSeconds = self::boundedInt($linkChecks, 'timeout_seconds', 5, 2, 20);
         $linkCheckRefreshDays = self::boundedInt($linkChecks, 'refresh_days', 30, 1, 365);
         $linkCheckRetryHours = self::boundedInt($linkChecks, 'retry_hours', 24, 1, 168);
         $linkCheckAlertAfterFailures = self::boundedInt($linkChecks, 'alert_after_failures', 2, 1, 10);

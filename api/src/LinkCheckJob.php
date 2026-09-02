@@ -76,28 +76,53 @@ final class LinkCheckJob
                 ['now' => self::databaseDate($now)],
             );
             $targets = $this->fairBatch($candidates);
-            $observations = [];
+                        $observations = [];
+            $concurrency = 4;  // LC-PERF-01: 3-5 concurrent HTTP requests
+            $urlToTarget = [];
+            $urlBatch = [];
+            
             foreach ($targets as $target) {
-                if (hrtime(true) >= $runDeadline) {
-                    $result['messageCode'] = 'time_budget_reached';
-                    break;
+                $url = (string) ($target['url'] ?? '');
+                if ($url === '') continue;
+                
+                $urlBatch[] = $url;
+                $urlToTarget[$url] = $target;
+                
+                // Process batch when concurrency limit reached or at end
+                if (count($urlBatch) >= $concurrency || $target === end($targets)) {
+                    if (hrtime(true) >= $runDeadline) {
+                        $result['messageCode'] = 'time_budget_reached';
+                        break 2;
+                    }
+                    
+                    // Process batch using curl_multi
+                    $checks = HttpLinkChecker::checkBatch($urlBatch, $runDeadline, $concurrency);
+                    
+                    foreach ($checks as $url => $check) {
+                        if (!isset($urlToTarget[$url])) continue;
+                        
+                        $target = $urlToTarget[$url];
+                        $previousFailures = max(0, (int) ($target['failure_count'] ?? 0));
+                        $failures = $check->status === 'failed'
+                            ? min(65535, $previousFailures + 1)
+                            : 0;
+                        $intervalHours = $this->adaptiveIntervalHours(
+                            $check->status,
+                            max($this->config->linkCheckMinIntervalHours, (int) ($target['check_interval_hours'] ?? 0)),
+                        );
+                        $observations[] = [
+                            'target' => $target,
+                            'check' => $check,
+                            'failures' => $failures,
+                            'intervalHours' => $intervalHours,
+                        ];
+                        $this->countCheck($result, $check);
+                    }
+                    
+                    $urlBatch = [];
+                    $urlToTarget = [];
                 }
-                $check = $this->safeCheck((string) ($target['url'] ?? ''));
-                $previousFailures = max(0, (int) ($target['failure_count'] ?? 0));
-                $failures = $check->status === 'failed'
-                    ? min(65535, $previousFailures + 1)
-                    : 0;
-                $intervalHours = $this->adaptiveIntervalHours(
-                    $check->status,
-                    max($this->config->linkCheckMinIntervalHours, (int) ($target['check_interval_hours'] ?? 0)),
-                );
-                $observations[] = [
-                    'target' => $target,
-                    'check' => $check,
-                    'failures' => $failures,
-                    'intervalHours' => $intervalHours,
-                ];
-                $this->countCheck($result, $check);
+            }
             }
 
             // Results must remain in memory until this decision has been made. Otherwise

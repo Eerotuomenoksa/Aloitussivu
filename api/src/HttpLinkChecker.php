@@ -23,7 +23,7 @@ final class HttpLinkChecker implements LinkChecker
     ];
     private const FOR_SALE_PATTERN = '#/verkkotunnukset/|utm_medium=Parking|sales_lander|domain(name)?[-_]?for[-_]?sale#i';
 
-    public function __construct(private readonly int $timeoutSeconds = 8)
+    public function __construct(private readonly int $timeoutSeconds = 5)
     {
     }
 
@@ -321,4 +321,122 @@ final class HttpLinkChecker implements LinkChecker
             default => 'request_failed',
         };
     }
-}
+
+    /**
+     * Check multiple URLs in parallel using curl_multi.
+     * @param list<string> $urls
+     * @param int $deadline hrtime(true) deadline
+     * @param int $concurrency Number of parallel connections (3-5)
+     * @return array<string, LinkCheckResult>
+     */
+    public static function checkBatch(array $urls, int $deadline, int $concurrency = 3): array
+    {
+        $results = [];
+        $queue = $urls;
+        $active = [];
+        
+        $mh = curl_multi_init();
+        if ($mh === false) {
+            foreach ($urls as $url) {
+                $results[$url] = new LinkCheckResult('failed', null, null, 'curl_multi_init_failed', 0);
+            }
+            return $results;
+        }
+        
+        // Prime pump with initial concurrent requests
+        while (count($active) < $concurrency && !empty($queue)) {
+            $url = array_shift($queue);
+            $ch = self::initCurlHandle($url, $deadline);
+            if ($ch !== null) {
+                curl_multi_add_handle($mh, $ch);
+                $active[(int)$ch] = ['url' => $url, 'handle' => $ch];
+            } else {
+                $results[$url] = new LinkCheckResult('failed', null, null, 'curl_init_failed', 0);
+            }
+        }
+        
+        while (!empty($active) || !empty($queue)) {
+            $mrc = curl_multi_exec($mh, $active_count);
+            
+            // Process completed requests
+            while ($info = curl_multi_info_read($mh)) {
+                $ch = $info['handle'];
+                $key = (int)$ch;
+                if (isset($active[$key])) {
+                    $url = $active[$key]['url'];
+                    $error = curl_errno($ch);
+                    $status = (int)curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
+                    
+                    $results[$url] = new LinkCheckResult(
+                        $error === 0 && $status >= 200 && $status < 300 ? 'ok' : 'failed',
+                        $error === 0 ? $status : null,
+                        curl_getinfo($ch, CURLINFO_EFFECTIVE_URL),
+                        $error === 0 ? null : self::curlErrorCode($error),
+                        max(0, (int)round(curl_getinfo($ch, CURLINFO_TOTAL_TIME) * 1000))
+                    );
+                    
+                    curl_multi_remove_handle($mh, $ch);
+                    curl_close($ch);
+                    unset($active[$key]);
+                    
+                    // Queue next URL if time allows
+                    if (!empty($queue) && hrtime(true) < $deadline) {
+                        $nextUrl = array_shift($queue);
+                        $nextCh = self::initCurlHandle($nextUrl, $deadline);
+                        if ($nextCh !== null) {
+                            curl_multi_add_handle($mh, $nextCh);
+                            $active[(int)$nextCh] = ['url' => $nextUrl, 'handle' => $nextCh];
+                        } else {
+                            $results[$nextUrl] = new LinkCheckResult('failed', null, null, 'curl_init_failed', 0);
+                        }
+                    }
+                }
+            }
+            
+            if ($mrc === CURLM_OK && !empty($active)) {
+                curl_multi_select($mh, 0.1);
+            }
+        }
+        
+        curl_multi_close($mh);
+        
+        // Fill in any remaining URLs that weren't processed
+        foreach ($urls as $url) {
+            if (!isset($results[$url])) {
+                $results[$url] = new LinkCheckResult('failed', null, null, 'request_failed', 0);
+            }
+        }
+        
+        return $results;
+    }
+    
+    private static function initCurlHandle(string $url, int $deadline): mixed
+    {
+        // Simplified validation
+        $parts = parse_url($url);
+        if (!is_array($parts) || strtolower((string)($parts['scheme'] ?? '')) !== 'https') {
+            return null;
+        }
+        
+        $handle = curl_init($url);
+        if ($handle === false) return null;
+        
+        $timeoutMs = max(1, (int)floor((($deadline - hrtime(true)) / 1_000_000)));
+        if ($timeoutMs <= 0) return null;
+        
+        curl_setopt_array($handle, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_NOBODY => true,
+            CURLOPT_FOLLOWLOCATION => false,
+            CURLOPT_CONNECTTIMEOUT_MS => min(5000, $timeoutMs),
+            CURLOPT_TIMEOUT_MS => $timeoutMs,
+            CURLOPT_PROTOCOLS => CURLPROTO_HTTPS,
+            CURLOPT_REDIR_PROTOCOLS => CURLPROTO_HTTPS,
+            CURLOPT_SSL_VERIFYPEER => true,
+            CURLOPT_SSL_VERIFYHOST => 2,
+            CURLOPT_USERAGENT => self::USER_AGENT,
+        ]);
+        
+        return $handle;
+    }
+    }
