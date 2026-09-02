@@ -16,11 +16,6 @@ final class PublicApi
         'entry' => ['direct', 'internal', 'seniorsurf', 'search', 'external'],
         'navtype' => ['navigate', 'reload', 'back_forward', 'prerender'],
         'freshtab' => ['true', 'false'],
-        'src' => [
-            'opastus', 'kirje', 'some', 'esite', 'lehti', 'esittely',
-            'vtkl', 'juttunetti', 'tyopaikka', 'pankki', 'kirjasto', 'koulu',
-            'other',
-        ],
         'display' => ['browser', 'standalone'],
         'guide' => [
             'opened', 'done',
@@ -358,8 +353,8 @@ final class PublicApi
         $this->limit($request, '/api/v1/usage-events', 120, 60);
         $data = Validator::jsonObject($request);
         Validator::shape($data, [
-            'type', 'page', 'url', 'label', 'category', 'entry', 'navType', 'freshTab',
-            'hour', 'src', 'displayMode', 'step', 'value', 'website',
+            'type', 'page', 'category', 'entry', 'navType', 'freshTab',
+            'displayMode', 'step', 'value', 'website',
         ], ['type', 'page']);
         Validator::honeypotIsEmpty($data);
         $type = Validator::enum($data, 'type', ['pageview', 'linkClick', 'guide']);
@@ -369,7 +364,7 @@ final class PublicApi
 
         if ($type === 'pageview') {
             Validator::shape($data, [
-                'type', 'page', 'entry', 'navType', 'freshTab', 'hour', 'src', 'displayMode', 'website',
+                'type', 'page', 'entry', 'navType', 'freshTab', 'displayMode', 'website',
             ], ['type', 'page']);
             $context = [];
             $this->addAllowedContext($context, 'entry', $data['entry'] ?? null);
@@ -377,10 +372,6 @@ final class PublicApi
             if (isset($data['freshTab']) && is_bool($data['freshTab'])) {
                 $this->addAllowedContext($context, 'freshtab', $data['freshTab'] ? 'true' : 'false');
             }
-            if (isset($data['hour']) && is_int($data['hour']) && $data['hour'] >= 0 && $data['hour'] <= 23) {
-                $context['hour'] = str_pad((string) $data['hour'], 2, '0', STR_PAD_LEFT);
-            }
-            $this->addAllowedContext($context, 'src', $data['src'] ?? null);
             $this->addAllowedContext($context, 'display', $data['displayMode'] ?? null);
             $this->database->transaction(static function (DatabaseConnection $database) use (
                 $usageDate,
@@ -432,18 +423,11 @@ final class PublicApi
             return Response::empty(204);
         }
 
-        Validator::shape($data, ['type', 'page', 'url', 'label', 'category', 'website'], ['type', 'page', 'url']);
-        $url = UrlNormalizer::trackable(Validator::string($data, 'url', 1, 500), 'url', 500);
-        $label = Validator::string($data, 'label', 0, 180, false);
-        if ($label === '') {
-            $label = self::truncate($url, 180);
-        }
+        Validator::shape($data, ['type', 'page', 'category', 'website'], ['type', 'page']);
         $category = Validator::string($data, 'category', 0, 180, false);
-        $linkHash = hash('sha256', $url, true);
+        $linkHash = hash('sha256', $page . "\n" . $category, true);
         $this->database->transaction(static function (DatabaseConnection $database) use (
             $usageDate,
-            $url,
-            $label,
             $category,
             $page,
             $linkHash,
@@ -456,13 +440,13 @@ final class PublicApi
             $database->execute(
                 'INSERT INTO usage_link_daily (usage_date, link_hash, url, label, category, page, count) '
                 . 'VALUES (:usage_date, :link_hash, :url, :label, :category, :page, 1) '
-                . 'ON DUPLICATE KEY UPDATE count = count + 1, label = VALUES(label), '
+                . 'ON DUPLICATE KEY UPDATE count = count + 1, url = \'\', label = \'\', '
                 . 'category = VALUES(category), page = VALUES(page)',
                 [
                     'usage_date' => $usageDate,
                     'link_hash' => $linkHash,
-                    'url' => $url,
-                    'label' => $label,
+                    'url' => '',
+                    'label' => '',
                     'category' => $category,
                     'page' => $page,
                 ],

@@ -6,7 +6,7 @@ Tämä julkaisu lisää HTTPS-linkkien erissä tehtävän taustatarkistuksen. Ta
 
 1. Ota varmuuskopio nykyisestä julkisesta ja yksityisestä tuotantopolusta sekä tietokannasta.
 2. Pura paketti ehdokashakemistoon ja tarkista `build-info.json` sekä SHA-256.
-3. Aja järjestyksessä `database_migrations/005_automated_link_checks.sql`, `database_migrations/006_link_check_hardening.sql` ja `database_migrations/007_link_check_admin_actions.sql` tuotantotietokantaan.
+3. Aja järjestyksessä `database_migrations/005_automated_link_checks.sql`, `database_migrations/006_link_check_hardening.sql`, `database_migrations/007_link_check_admin_actions.sql` ja `database_migrations/008_usage_privacy_cleanup.sql` tuotantotietokantaan.
 4. Kopioi julkiset tiedostot polkuun `/website.wp33403/aloitus/` ja yksityiset tiedostot polkuun `/aloitus-production/`. Säilytä aina nykyinen `secrets/config.php`.
 5. Tarkista, että `/aloitus-production/data/link-catalog.json` on mukana ja yksityisen web-juuren ulkopuolella.
 

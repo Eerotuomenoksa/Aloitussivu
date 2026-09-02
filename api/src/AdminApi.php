@@ -475,11 +475,12 @@ final class AdminApi
             'SELECT usage_date, page, count FROM usage_page_daily ORDER BY usage_date DESC, count DESC LIMIT 2000',
         );
         $links = $this->database->fetchAll(
-            'SELECT usage_date, url, label, category, page, count FROM usage_link_daily '
+            'SELECT usage_date, category, page, count FROM usage_link_daily '
             . 'ORDER BY usage_date DESC, count DESC LIMIT 2000',
         );
         $context = $this->database->fetchAll(
             'SELECT usage_date, dimension, bucket, count FROM usage_context_daily '
+            . "WHERE dimension IN ('entry', 'navtype', 'freshtab', 'display', 'guide') "
             . 'ORDER BY usage_date DESC, dimension, bucket LIMIT 5000',
         );
         return $this->data($request, [
@@ -495,8 +496,6 @@ final class AdminApi
             ], $pages),
             'links' => array_map(static fn (array $row): array => [
                 'date' => (string) ($row['usage_date'] ?? ''),
-                'url' => (string) ($row['url'] ?? ''),
-                'label' => (string) ($row['label'] ?? ''),
                 'category' => (string) ($row['category'] ?? ''),
                 'page' => (string) ($row['page'] ?? ''),
                 'count' => (int) ($row['count'] ?? 0),
@@ -660,9 +659,10 @@ final class AdminApi
         $actor = $this->authenticator->authenticate($request, true);
         $urlHash = $this->routeUrlHash($request);
         $data = Validator::jsonObject($request);
-        Validator::shape($data, ['action', 'reason'], ['action', 'reason']);
-        $action = Validator::enum($data, 'action', ['approve', 'block']);
+        Validator::shape($data, ['action', 'reason', 'replacementUrl'], ['action', 'reason']);
+        $action = Validator::enum($data, 'action', ['approve', 'block', 'replace']);
         $reason = Validator::string($data, 'reason', 3, 900);
+        $replacementUrl = $action === 'replace' ? Validator::httpsUrl($data, 'replacementUrl') : null;
         $nowDate = new DateTimeImmutable('now', new DateTimeZone('UTC'));
         $now = $nowDate->format('Y-m-d H:i:s.u');
         $nextReviewAt = $nowDate->modify('+3 months')->format('Y-m-d H:i:s.u');
@@ -672,16 +672,95 @@ final class AdminApi
             $urlHash,
             $action,
             $reason,
+            $replacementUrl,
             $now,
             $nextReviewAt,
         ): void {
             $target = $database->fetchOne(
-                'SELECT url_hash, url, last_status, final_url, final_domain_changed FROM link_check_targets '
+                'SELECT url_hash, url, name, category, source, last_status, final_url, final_domain_changed FROM link_check_targets '
                 . 'WHERE url_hash = :url_hash AND (catalog_active = 1 OR approved_active = 1) FOR UPDATE',
                 ['url_hash' => $urlHash],
             );
             if ($target === null) {
                 throw $this->notFound();
+            }
+
+            if ($action === 'replace') {
+                if (!(bool) ($target['final_domain_changed'] ?? false)) {
+                    throw new ApiException(422, 'validation_failed', 'Vain verkkotunnuksen vaihtuneen linkin voi korvata.', ['field' => 'action']);
+                }
+                $replacementHash = hash('sha256', (string) $replacementUrl);
+                if ($replacementHash === $urlHash) {
+                    throw new ApiException(422, 'validation_failed', 'Korvaavan osoitteen pitää poiketa alkuperäisestä.', ['field' => 'replacementUrl']);
+                }
+                $existingApproved = $database->fetchOne(
+                    'SELECT id FROM approved_links WHERE url_hash = :url_hash LIMIT 1 FOR UPDATE',
+                    ['url_hash' => hex2bin($replacementHash)],
+                );
+                $existingBlocked = $database->fetchOne(
+                    'SELECT id FROM blocked_links WHERE url_hash = UNHEX(:url_hash) LIMIT 1 FOR UPDATE',
+                    ['url_hash' => $replacementHash],
+                );
+                if ($existingBlocked !== null) {
+                    throw new ApiException(409, 'conflict', 'Korvaava osoite on jo estolistalla.');
+                }
+                $approvedLinkId = (string) ($existingApproved['id'] ?? Uuid::generate());
+                if ($existingApproved === null) {
+                    $database->execute(
+                        'INSERT INTO approved_links '
+                        . '(id, name, url, url_hash, category, source, note, created_from_report_id, created_at, updated_at) '
+                        . 'VALUES (:id, :name, :url, :url_hash, :category, :source, NULL, NULL, :created_at, :updated_at)',
+                        [
+                            'id' => $approvedLinkId,
+                            'name' => (string) ($target['name'] ?? ''),
+                            'url' => $replacementUrl,
+                            'url_hash' => hex2bin($replacementHash),
+                            'category' => (string) ($target['category'] ?? ''),
+                            'source' => (string) ($target['source'] ?? 'Ylläpito'),
+                            'created_at' => $now,
+                            'updated_at' => $now,
+                        ],
+                    );
+                }
+
+                $existingBlock = $database->fetchOne(
+                    'SELECT id FROM blocked_links WHERE url_hash = UNHEX(:url_hash) LIMIT 1 FOR UPDATE',
+                    ['url_hash' => $urlHash],
+                );
+                $blockId = (string) ($existingBlock['id'] ?? Uuid::generate());
+                if ($existingBlock === null) {
+                    $database->execute(
+                        'INSERT INTO blocked_links (id, url, url_hash, reason, created_at, created_by) '
+                        . 'VALUES (:id, :url, UNHEX(:url_hash), :reason, :created_at, :created_by)',
+                        [
+                            'id' => $blockId,
+                            'url' => (string) ($target['url'] ?? ''),
+                            'url_hash' => $urlHash,
+                            'reason' => 'manual:' . $reason,
+                            'created_at' => $now,
+                            'created_by' => $actor->uid,
+                        ],
+                    );
+                } else {
+                    $database->execute(
+                        'UPDATE blocked_links SET reason = :reason, created_by = :created_by WHERE id = :id',
+                        ['id' => $blockId, 'reason' => 'manual:' . $reason, 'created_by' => $actor->uid],
+                    );
+                }
+                $database->execute(
+                    "UPDATE link_check_overrides SET status = 'retired', updated_at = :updated_at WHERE url_hash = :url_hash",
+                    ['url_hash' => $urlHash, 'updated_at' => $now],
+                );
+                $database->execute(
+                    'UPDATE link_check_targets SET auto_blocked_at = NULL WHERE url_hash = :url_hash',
+                    ['url_hash' => $urlHash],
+                );
+                $this->audit($database, $actor, 'link_check.replace', 'link_check_target', $urlHash, [
+                    'replacementUrl' => $replacementUrl,
+                    'approvedLinkId' => $approvedLinkId,
+                    'blockedLinkId' => $blockId,
+                ]);
+                return;
             }
 
             if ($action === 'approve') {

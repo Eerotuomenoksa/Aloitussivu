@@ -992,8 +992,6 @@ test('usage events store aggregates without raw client identifiers', static func
     )->handle(jsonRequest('POST', '/api/v1/usage-events', [
         'type' => 'linkClick',
         'page' => 'index',
-        'url' => 'https://Example.com/service#details',
-        'label' => 'Palvelu',
         'category' => 'Asiointi',
     ], ['REMOTE_ADDR' => '203.0.113.45']));
     assertSameValue(204, $response->status);
@@ -1003,6 +1001,20 @@ test('usage events store aggregates without raw client identifiers', static func
     assertTrue(str_contains($stored, 'usage_daily'));
     assertTrue(str_contains($stored, 'usage_link_daily'));
     assertSameValue(32, strlen($database->executions[1]['parameters']['link_hash']));
+
+    $privateFieldsDatabase = new FakeDatabase();
+    $privateFields = testApp(
+        $privateFieldsDatabase,
+        rateLimiter: new FakeRateLimiter(),
+        attachmentStorage: new FakeAttachmentStorage(),
+    )->handle(jsonRequest('POST', '/api/v1/usage-events', [
+        'type' => 'linkClick',
+        'page' => 'index',
+        'category' => 'Asiointi',
+        'url' => 'https://example.com/private',
+    ]));
+    assertSameValue(422, $privateFields->status);
+    assertSameValue([], $privateFieldsDatabase->executions);
 
     $invalidDatabase = new FakeDatabase();
     $invalid = testApp(
@@ -1630,39 +1642,14 @@ test('usage pageview context and guide funnel are stored only as allowed daily b
         'entry' => 'direct',
         'navType' => 'navigate',
         'freshTab' => true,
-        'hour' => 7,
-        'src' => 'opastus',
         'displayMode' => 'browser',
     ]));
     assertSameValue(204, $response->status);
-    assertSameValue(8, count($database->executions));
+    assertSameValue(6, count($database->executions));
     $stored = serialize($database->executions);
     assertTrue(str_contains($stored, 'usage_context_daily'));
     assertTrue(str_contains($stored, 'direct'));
-    assertTrue(str_contains($stored, '07'));
     assertTrue(!str_contains($stored, 'referrer'));
-
-    foreach ([
-        'opastus', 'kirje', 'some', 'esite', 'lehti', 'esittely',
-        'vtkl', 'juttunetti', 'tyopaikka', 'pankki', 'kirjasto', 'koulu',
-        'other',
-    ] as $source) {
-        $sourceDatabase = new FakeDatabase();
-        $sourceResponse = testApp(
-            $sourceDatabase,
-            rateLimiter: new FakeRateLimiter(),
-            attachmentStorage: new FakeAttachmentStorage(),
-        )->handle(jsonRequest('POST', '/api/v1/usage-events', [
-            'type' => 'pageview',
-            'page' => 'index',
-            'src' => $source,
-        ]));
-        assertSameValue(204, $sourceResponse->status);
-        assertSameValue(3, count($sourceDatabase->executions));
-        $sourceStored = serialize($sourceDatabase->executions);
-        assertTrue(str_contains($sourceStored, 'src'));
-        assertTrue(str_contains($sourceStored, $source));
-    }
 
     $unknownDatabase = new FakeDatabase();
     $unknown = testApp(
@@ -1673,8 +1660,6 @@ test('usage pageview context and guide funnel are stored only as allowed daily b
         'type' => 'pageview',
         'page' => 'index',
         'entry' => 'not-allowed',
-        'hour' => 99,
-        'src' => 'free-text-campaign',
     ]));
     assertSameValue(204, $unknown->status);
     assertSameValue(2, count($unknownDatabase->executions));
@@ -2526,7 +2511,7 @@ test('monthly report compares aggregate usage and explains privacy limitations',
         ],
         [['page' => '/', 'total' => 90]],
         [['category' => 'Terveys', 'total' => 20]],
-        [['url' => 'https://example.fi', 'label' => 'Esimerkkipalvelu', 'category' => 'Terveys', 'total' => 15]],
+        [['label' => 'Terveys – /', 'category' => 'Terveys', 'page' => '/', 'total' => 15]],
         [
             ['dimension' => 'entry', 'bucket' => 'direct', 'total' => 40],
             ['dimension' => 'entry', 'bucket' => 'search', 'total' => 40],
@@ -2544,7 +2529,7 @@ test('monthly report compares aggregate usage and explains privacy limitations',
     assertTrue(str_contains($message->textBody, 'Suoran avauksen osuus: 60,0 %'));
     assertTrue(str_contains($message->textBody, '10,0 prosenttiyksikköä suurempi kuin edellisellä jaksolla'));
     assertTrue(str_contains($message->textBody, 'tunnisteettomia tapahtumakoosteita'));
-    assertTrue(str_contains($message->textBody, 'Esimerkkipalvelu: 15'));
+    assertTrue(str_contains($message->textBody, 'Terveys – /: 15'));
     assertTrue(str_contains($message->htmlBody, 'Sivuston käyttö'));
     assertTrue(str_contains($message->htmlBody, 'Aloitussivuopas'));
     assertTrue(str_contains($message->htmlBody, 'Ylläpitotyö'));

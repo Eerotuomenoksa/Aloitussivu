@@ -10,8 +10,6 @@ type UsageEventType = 'pageview' | 'linkClick';
 type UsagePayload = {
   type?: unknown;
   page?: unknown;
-  url?: unknown;
-  label?: unknown;
   category?: unknown;
 };
 
@@ -55,18 +53,6 @@ const getDateKey = () => new Intl.DateTimeFormat('sv-SE', {
 const cleanText = (value: unknown, fallback = '') => {
   if (typeof value !== 'string') return fallback;
   return value.trim().replace(/\s+/g, ' ').slice(0, 180) || fallback;
-};
-
-const cleanUrl = (value: unknown) => {
-  if (typeof value !== 'string') return '';
-  try {
-    const url = new URL(value.trim());
-    if (!['http:', 'https:', 'mailto:', 'tel:'].includes(url.protocol)) return '';
-    url.hash = '';
-    return url.toString().slice(0, 500);
-  } catch {
-    return '';
-  }
 };
 
 const getSafeKey = (value: string) => (
@@ -117,17 +103,14 @@ const buildUpdate = (payload: UsagePayload) => {
   }
 
   if (type === 'linkClick') {
-    const url = cleanUrl(payload.url);
-    if (!url) return null;
-    const linkKey = getSafeKey(url);
+    const category = cleanText(payload.category);
+    const linkKey = getSafeKey(`${page}\n${category}`);
     return {
       totalLinkClicks: FieldValue.increment(1),
       linkClicks: {
         [linkKey]: {
           count: FieldValue.increment(1),
-          url,
-          label: cleanText(payload.label, url),
-          category: cleanText(payload.category),
+          category,
           page,
         },
       },

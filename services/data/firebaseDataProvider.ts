@@ -180,7 +180,7 @@ export const firebaseDataProvider: DataProvider = {
     throw new DataProviderError('Ylläpidon käsiajoa ei tueta Firebase-palautusproviderissa.', 'unsupported_operation');
   },
 
-  async actOnLinkCheck() {
+  async actOnLinkCheck(_urlHash, _action, _reason, _replacementUrl) {
     throw new DataProviderError('Linkkitarkistuksen huomioita ei käsitellä Firebase-palautusproviderissa.', 'unsupported_operation');
   },
 

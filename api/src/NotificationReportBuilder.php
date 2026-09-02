@@ -397,9 +397,9 @@ final class NotificationReportBuilder
             $dateParameters,
         );
         $result['links'] = $this->database->fetchAll(
-            'SELECT url, label, category, SUM(count) AS total FROM usage_link_daily '
+            "SELECT CONCAT(CASE WHEN category = '' THEN 'Ei luokkaa' ELSE category END, ' – ', page) AS label, SUM(count) AS total FROM usage_link_daily "
             . 'WHERE usage_date >= :start_date AND usage_date < :end_date '
-            . 'GROUP BY url, label, category ORDER BY total DESC, label ASC LIMIT 5',
+            . 'GROUP BY page, category ORDER BY total DESC, label ASC LIMIT 5',
             $dateParameters,
         );
         if ($trend) {
@@ -511,7 +511,7 @@ final class NotificationReportBuilder
             . $this->textList($stats['pages'], 'page')
             . "\n\nSUOSITUIMMAT LINKKILUOKAT\nPalvelulinkkien avaukset ryhmiteltynä linkkiluokan mukaan.\n"
             . $this->textList($stats['categories'], 'category')
-            . "\n\nSUOSITUIMMAT LINKIT\nYksittäiset palvelulinkit, joita avattiin eniten.\n"
+            . "\n\nSUOSITUIMMAT OSIOT JA KATEGORIAT\nLinkkien avaukset ryhmiteltynä sivuston osion ja linkkikategorian mukaan.\n"
             . $this->textList($stats['links'], 'label');
     }
 
@@ -532,8 +532,8 @@ final class NotificationReportBuilder
                 'category',
             )
             . $this->htmlRanking(
-                'Suosituimmat linkit',
-                'Yksittäiset palvelulinkit, joita avattiin eniten.',
+                'Suosituimmat osiot ja kategoriat',
+                'Linkkien avaukset ryhmiteltynä sivuston osion ja linkkikategorian mukaan.',
                 $stats['links'],
                 'label',
             )

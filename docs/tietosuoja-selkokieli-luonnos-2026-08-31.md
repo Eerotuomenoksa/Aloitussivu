@@ -2,7 +2,13 @@
 
 **Tunniste:** TS-01
 **Päivä:** 31.8.2026
-**Tila:** Luonnos. Ei viety koodiin. Odottaa Eeron ja Nina Ziesslerin hyväksyntää.
+**Tila 2.9.2026:** teksti on **tuotannossa**. Viety koodiin 31.8. (commit `1472c10`),
+julkaistu v1.0.0:n mukana 1.9. **Nina ei ole vielä hyväksynyt tekstiä** — tämä tiedosto on
+edelleen se dokumentti, jonka perusteella hyväksyntä annetaan.
+
+**Huomio 2.9.:** tehtävä E-02 poistaa tilastoinnista kentät `hour`, `url` ja `src`.
+Selosteen osio "Miten sivun käyttöä lasketaan" luettelee ne yhä. Kun E-02 toteutetaan,
+samat rivit on poistettava selosteesta kaikilta kolmelta kieleltä. Ks. työjonon TS-07.
 **Koskee:** `tietosuoja.tsx`, vain suomenkielinen osio (`privacyTranslations.fi`)
 **Ruotsi ja englanti:** ennallaan. Käännetään vasta kun suomi on hyväksytty.
 
@@ -190,20 +196,18 @@ Näin tiedämme, mikä toimii ja mitä pitää parantaa.
 Laskemme päivittäin:
 
 - montako kertaa sivu on avattu ja montako linkkiä napsautettu
-- mitä linkkejä on napsautettu: linkin osoite ja sen näkyvä nimi
+- millä sivuston osiolla ja missä linkkikategoriassa klikkaus tapahtui
 - mistä sivulle tultiin: suoraan, sivuston sisältä, SeniorSurfista, hakukoneesta vai muualta netistä
 - tultiinko uutena käyntinä vai takaisin-painikkeella
-- monellako sivulla selaimessa on jo käyty, karkeana lukuna
-- mikä kellonaika on ja onko selain koko ruudulla
-- mistä mainoksesta tai jaetusta linkistä tulit, jos linkissä oli siitä merkintä
+- onko selain tavallisessa vai asennetun sovelluksen tilassa
 - avasitko aloitussivuohjeen ja miten käytit sitä
 
-Emme tallenna sen sivun osoitetta, jolta tulit.
-Tallennamme vain luokan, esimerkiksi "hakukone".
+Emme tallenna yksittäisen linkin osoitetta tai kellonaikaa.
+Tallennamme vain osion ja kategorian sekä tulon lähteen luokan, esimerkiksi "hakukone".
 
 Nämä luvut eivät kerro, kuka sinä olet.
 Ne kertovat vain lukumääriä.
-Ylläpitäjä näkee esimerkiksi, että jotakin linkkiä napsautettiin 40 kertaa.
+Ylläpitäjä näkee esimerkiksi, että tietyn osion linkkikategoriaa napsautettiin 40 kertaa.
 Hän ei näe, kuka niitä napsautti.
 
 Luvut lähetetään saman sivuston omalle palvelimelle.

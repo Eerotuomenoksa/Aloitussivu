@@ -23,6 +23,7 @@ type PrivacyCopy = {
   navigationLabel: string;
   backHome: string;
   accessibility: string;
+  seniorSurfPrivacy: string;
   kicker: string;
   title: string;
   intro: string;
@@ -41,6 +42,7 @@ const privacyTranslations: Record<PublicPageLanguage, PrivacyCopy> = {
     navigationLabel: 'Sivun linkit',
     backHome: 'Takaisin aloitussivulle',
     accessibility: 'Saavutettavuus',
+    seniorSurfPrivacy: 'SeniorSurfin tietosuojaseloste',
     kicker: 'Sinulle',
     title: 'Tietosuoja',
     intro: 'Seniorin aloitussivua voit käyttää ilman tunnusta ja salasanaa. Sivu ei seuraa sinua. Sivu ei tee sinusta profiilia. Omat valintasi tallentuvat pääosin vain omaan selaimeesi.',
@@ -154,16 +156,14 @@ const privacyTranslations: Record<PublicPageLanguage, PrivacyCopy> = {
           paragraph('Laskemme päivittäin:'),
           list(
             'montako kertaa sivu on avattu ja montako linkkiä napsautettu',
-            'mitä linkkejä on napsautettu: linkin osoite ja sen näkyvä nimi',
+            'millä sivuston osiolla ja missä linkkikategoriassa klikkaus tapahtui',
             'mistä sivulle tultiin: suoraan, sivuston sisältä, SeniorSurfista, hakukoneesta vai muualta netistä',
             'tultiinko uutena käyntinä vai takaisin-painikkeella',
-            'monellako sivulla selaimessa on jo käyty, karkeana lukuna',
-            'mikä kellonaika on ja onko selain koko ruudulla',
-            'mistä mainoksesta tai jaetusta linkistä tulit, jos linkissä oli siitä merkintä',
+            'onko selain tavallisessa vai asennetun sovelluksen tilassa',
             'avasitko aloitussivuohjeen ja miten käytit sitä',
           ),
-          paragraph('Emme tallenna sen sivun osoitetta, jolta tulit. Tallennamme vain luokan, esimerkiksi hakukone.'),
-          paragraph('Nämä luvut eivät kerro, kuka sinä olet. Ne kertovat vain lukumääriä. Ylläpitäjä näkee esimerkiksi, että jotakin linkkiä napsautettiin 40 kertaa. Hän ei näe, kuka niitä napsautti.'),
+          paragraph('Emme tallenna yksittäisen linkin osoitetta tai kellonaikaa. Tallennamme vain osion ja kategorian sekä tulon lähteen luokan, esimerkiksi hakukone.'),
+          paragraph('Nämä luvut eivät kerro, kuka sinä olet. Ne kertovat vain lukumääriä. Ylläpitäjä näkee esimerkiksi, että tietyn osion linkkikategoriaa napsautettiin 40 kertaa. Hän ei näe, kuka napsautti.'),
           paragraph('Luvut lähetetään saman sivuston omalle palvelimelle. Ne tallennetaan päivittäisinä yhteenvetoina.'),
           paragraph('Laskenta ei käytä evästeitä. Se ei tallenna eikä lue mitään laitteeltasi. Siksi sivun ei tarvitse kysyä sinulta lupaa evästeisiin.'),
           paragraph('Palvelin näkee pyynnön mukana tulevan IP-osoitteen. Se muuttaa osoitteen heti merkkijonoksi, josta ei voi palata takaisin osoitteeseen. Merkkijonolla estetään ylimääräiset pyynnöt lyhyen ajan sisällä. Alkuperäistä IP-osoitetta ei tallenneta.'),
@@ -277,6 +277,7 @@ const privacyTranslations: Record<PublicPageLanguage, PrivacyCopy> = {
     navigationLabel: 'Sidans länkar',
     backHome: 'Tillbaka till startsidan',
     accessibility: 'Tillgänglighet',
+    seniorSurfPrivacy: 'SeniorSurfs dataskyddsbeskrivning',
     kicker: 'Till dig',
     title: 'Dataskydd',
     intro: 'Du kan använda Seniorens startsida utan konto och utan lösenord. Sidan följer dig inte. Sidan skapar ingen profil av dig. Dina egna val sparas i huvudsak bara i din egen webbläsare.',
@@ -390,16 +391,14 @@ const privacyTranslations: Record<PublicPageLanguage, PrivacyCopy> = {
           paragraph('Vi räknar varje dag:'),
           list(
             'hur många gånger sidan har öppnats och hur många länkar som klickats',
-            'vilka länkar som klickats: länkens adress och dess synliga namn',
+            'på vilken del av webbplatsen och i vilken länkkategori klicket skedde',
             'varifrån man kom till sidan: direkt, inifrån webbplatsen, från SeniorSurf, från en sökmotor eller någon annanstans på nätet',
             'om det var ett nytt besök eller om man kom med bakåtknappen',
-            'på hur många sidor man redan har varit i webbläsaren, som ett grovt tal',
-            'vilken tid på dygnet det är och om webbläsaren fyller hela skärmen',
-            'från vilken annons eller delad länk du kom, om länken hade en märkning om det',
+            'om webbläsaren är i vanligt läge eller i läget för en installerad app',
             'om du öppnade guiden för startsidan och hur du använde den',
           ),
-          paragraph('Vi sparar inte adressen till den sida du kom från. Vi sparar bara kategorin, till exempel sökmotor.'),
-          paragraph('De här siffrorna berättar inte vem du är. De berättar bara antal. Administratören ser till exempel att en länk klickades 40 gånger. Han eller hon ser inte vem som klickade.'),
+          paragraph('Vi sparar inte en enskild länkadress eller klockslag. Vi sparar bara webbplatsens del, länkkategorin och klassen för varifrån besöket kom, till exempel sökmotor.'),
+          paragraph('De här siffrorna berättar inte vem du är. De berättar bara antal. Administratören ser till exempel att en länkkategori klickades 40 gånger. Han eller hon ser inte vem som klickade.'),
           paragraph('Siffrorna skickas till webbplatsens egen server. De sparas som dagliga sammanställningar.'),
           paragraph('Räkningen använder inga kakor. Den sparar och läser ingenting på din enhet. Därför behöver sidan inte fråga dig om lov till kakor.'),
           paragraph('Servern ser den IP-adress som följer med förfrågan. Den gör genast om adressen till en teckensträng som man inte kan gå tillbaka till adressen från. Med teckensträngen hindras extra förfrågningar under en kort tid. Den ursprungliga IP-adressen sparas inte.'),
@@ -513,6 +512,7 @@ const privacyTranslations: Record<PublicPageLanguage, PrivacyCopy> = {
     navigationLabel: 'Page links',
     backHome: 'Back to the start page',
     accessibility: 'Accessibility',
+    seniorSurfPrivacy: 'SeniorSurf Privacy Statement',
     kicker: 'For you',
     title: 'Privacy',
     intro: 'You can use the Senior Start Page without an account and without a password. The page does not track you. The page does not build a profile of you. Your own choices are saved mainly in your own browser.',
@@ -626,16 +626,14 @@ const privacyTranslations: Record<PublicPageLanguage, PrivacyCopy> = {
           paragraph('Every day we count:'),
           list(
             'how many times the page was opened and how many links were clicked',
-            'which links were clicked: the link address and its visible name',
+            'which part of the website and which link category received the click',
             'where people came from: directly, from within the site, from SeniorSurf, from a search engine or from elsewhere online',
             'whether it was a new visit or someone used the back button',
-            'roughly how many pages have already been visited in the browser',
-            'what time of day it is and whether the browser fills the whole screen',
-            'which advert or shared link you came from, if the link had a marker for it',
+            'whether the browser is in regular mode or installed-app mode',
             'whether you opened the start page guide and how you used it',
           ),
-          paragraph('We do not store the address of the page you came from. We store only the category, for example search engine.'),
-          paragraph('These counts do not tell us who you are. They only tell us numbers. An administrator sees, for example, that a link was clicked 40 times. They do not see who clicked it.'),
+          paragraph('We do not store an individual link address or the time of day. We store only the website section, link category and the class of where the visit came from, for example a search engine.'),
+          paragraph('These counts do not tell us who you are. They only tell us numbers. An administrator sees, for example, that a link category was clicked 40 times. They do not see who clicked it.'),
           paragraph('The counts are sent to the website’s own server. They are stored as daily summaries.'),
           paragraph('The counting uses no cookies. It stores and reads nothing on your device. That is why the page does not have to ask you for cookie consent.'),
           paragraph('The server sees the IP address that comes with the request. It immediately turns the address into a string of characters that cannot be turned back into an address. The string is used to block extra requests for a short time. The original IP address is not stored.'),
@@ -783,6 +781,7 @@ function App() {
             <nav className="flex flex-wrap items-center gap-3" aria-label={copy.navigationLabel}>
               <a href="./index.html" className={pageNavLinkClass}>{copy.backHome}</a>
               <a href={getLocalizedPublicPageHref('saavutettavuus', language)} className={pageNavLinkClass}>{copy.accessibility}</a>
+              <a href="https://seniorsurf.fi/seniorsurf/tietosuojaseloste/" className={pageNavLinkClass} target="_blank" rel="noreferrer">{copy.seniorSurfPrivacy}</a>
             </nav>
             <PublicPageLanguageSwitcher page="tietosuoja" language={language} />
           </div>

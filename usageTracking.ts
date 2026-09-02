@@ -3,14 +3,11 @@ import { getDataProvider } from './services/data';
 export type UsageEvent = {
   type: 'pageview' | 'linkClick' | 'guide';
   page: string;
-  url?: string;
   label?: string;
   category?: string;
   entry?: 'direct' | 'internal' | 'seniorsurf' | 'search' | 'external';
   navType?: 'navigate' | 'reload' | 'back_forward' | 'prerender';
   freshTab?: boolean;
-  hour?: number;
-  src?: string;
   displayMode?: 'browser' | 'standalone';
   step?: 'opened' | 'browser' | 'done' | 'shared';
   value?: string;
@@ -18,25 +15,11 @@ export type UsageEvent = {
 
 export type EntryContext = Pick<
   UsageEvent,
-  'entry' | 'navType' | 'freshTab' | 'hour' | 'src' | 'displayMode'
+  'entry' | 'navType' | 'freshTab' | 'displayMode'
 >;
 
 const USAGE_TRACKING_DISABLED_KEY = 'seniorSurfUsageTrackingDisabled';
 const PAGEVIEW_DELAY_MS = 15000;
-const ALLOWED_CAMPAIGN_SOURCES = new Set([
-  'opastus',
-  'kirje',
-  'some',
-  'esite',
-  'lehti',
-  'esittely',
-  'vtkl',
-  'juttunetti',
-  'tyopaikka',
-  'pankki',
-  'kirjasto',
-  'koulu',
-]);
 const SEARCH_HOSTS = ['google.', 'bing.', 'duckduckgo.', 'search.yahoo.', 'ecosia.'];
 const GUIDE_VALUES = {
   browser: new Set(['chrome', 'edge', 'firefox', 'safari', 'android', 'ios', 'other']),
@@ -109,28 +92,26 @@ const getReferrerCategory = (
   }
 };
 
-const readAndRemoveCampaignSource = () => {
+// Campaign parameters are presentation metadata only. Remove them from the
+// visible URL, but never include their value in usage events.
+const removeCampaignSourceFromUrl = () => {
   try {
     const currentUrl = new URL(window.location.href);
-    const rawSource = currentUrl.searchParams.get('src');
-    if (rawSource === null) return undefined;
-    const normalizedSource = rawSource.trim().toLocaleLowerCase('en-US');
-    const source = ALLOWED_CAMPAIGN_SOURCES.has(normalizedSource) ? normalizedSource : 'other';
+    if (!currentUrl.searchParams.has('src')) return;
     currentUrl.searchParams.delete('src');
     window.history.replaceState(window.history.state, '', `${currentUrl.pathname}${currentUrl.search}${currentUrl.hash}`);
-    return source;
   } catch {
-    return undefined;
+    // URL cleanup is best effort only.
   }
 };
 
 export const getEntryContext = (): EntryContext => {
   if (typeof window === 'undefined' || typeof document === 'undefined') return {};
   try {
+    removeCampaignSourceFromUrl();
     const navType = getNavigationType();
     const freshTab = window.history.length === 1;
     const entry = getReferrerCategory(document.referrer, navType, freshTab);
-    const src = readAndRemoveCampaignSource();
     const displayMode = window.matchMedia?.('(display-mode: standalone)').matches
       || ('standalone' in navigator && Boolean((navigator as Navigator & { standalone?: boolean }).standalone))
       ? 'standalone'
@@ -139,8 +120,6 @@ export const getEntryContext = (): EntryContext => {
       ...(entry ? { entry } : {}),
       ...(navType ? { navType } : {}),
       freshTab,
-      hour: new Date().getHours(),
-      ...(src ? { src } : {}),
       displayMode,
     };
   } catch {
@@ -165,12 +144,10 @@ export const trackPageView = (page = getPageName()) => {
   void sendUsageEvent({ type: 'pageview', page, ...initialEntryContext });
 };
 
-export const trackLinkClick = (values: { url: string; label?: string; category?: string; page?: string }) => {
+export const trackLinkClick = (values: { category?: string; page?: string }) => {
   void sendUsageEvent({
     type: 'linkClick',
     page: values.page || getPageName(),
-    url: values.url,
-    label: values.label,
     category: values.category,
   });
 };
@@ -199,12 +176,7 @@ export const installUsageTracking = (page = getPageName()) => {
     const link = target.closest('a[href]');
     if (!(link instanceof HTMLAnchorElement)) return;
 
-    const href = link.href;
-    if (!href) return;
-
     trackLinkClick({
-      url: href,
-      label: link.textContent?.trim().replace(/\s+/g, ' ').slice(0, 120),
       category: link.closest('[data-usage-category]')?.getAttribute('data-usage-category') ?? '',
       page,
     });

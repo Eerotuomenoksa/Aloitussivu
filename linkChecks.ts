@@ -83,11 +83,12 @@ export const fetchLinkChecks = async () => {
 
 export const actOnLinkCheck = async (
   urlHash: string,
-  action: 'approve' | 'block',
+  action: 'approve' | 'block' | 'replace',
   reason: string,
+  replacementUrl?: string,
 ) => {
   const provider = await getDataProvider();
-  return provider.actOnLinkCheck(urlHash, action, reason);
+  return provider.actOnLinkCheck(urlHash, action, reason, replacementUrl);
 };
 
 export const subscribeLinkChecks = (

@@ -2,8 +2,6 @@ import { getDataProvider } from './services/data';
 
 export type UsageLinkStats = {
   count: number;
-  url: string;
-  label: string;
   category: string;
   page: string;
 };
@@ -65,8 +63,6 @@ const normalizeLinkClicks = (value: unknown) => {
     id,
     {
       count: toNumber(item.count),
-      url: toString(item.url),
-      label: toString(item.label),
       category: toString(item.category),
       page: toString(item.page),
     },
@@ -90,7 +86,7 @@ export const fetchUsageStats = async (startDate: string, endDate: string): Promi
   type CloudcityUsageStats = {
     daily: Array<{ date: string; pageviews: number; linkClicks: number }>;
     pages: Array<{ date: string; page: string; count: number }>;
-    links: Array<{ date: string; url: string; label: string; category: string; page: string; count: number }>;
+    links: Array<{ date: string; category: string; page: string; count: number }>;
     context?: Array<{ date: string; dimension: string; bucket: string; count: number }>;
   };
   const raw = await (await getDataProvider()).listAdmin<UsageDailyStats[] | CloudcityUsageStats>('usage-stats');
@@ -134,8 +130,6 @@ export const fetchUsageStats = async (startDate: string, endDate: string): Promi
     const target = byDate.get(link.date)!;
     target.linkClicks[`link-${index}`] = {
       count: toNumber(link.count),
-      url: toString(link.url),
-      label: toString(link.label),
       category: toString(link.category),
       page: toString(link.page),
     };

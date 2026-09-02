@@ -60,7 +60,7 @@ Tämä on palvelun varsinainen sisältö, noin 700 kB lähdedataa:
 
 `api/cron/` sisältää viisi ajastettua työtä: `link-check.php`, `ncsc.php`, `notifications.php`, `email-dispatch.php`, `smtp-test.php`.
 
-`database/migrations/` sisältää kuusi migraatiota, joista **006 on uusi eikä sitä ole ajettu missään**.
+`database/migrations/` sisältää kahdeksan migraatiota. `008_usage_privacy_cleanup.sql` tekee käyttötilastojen tietojen minimoinnin ennen uuden tilastointikoodin aktivointia.
 
 ### Generoivat skriptit — `scripts/`
 

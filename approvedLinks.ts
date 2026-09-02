@@ -66,6 +66,13 @@ const setApprovedLinksCache = (links: ApprovedLinkSuggestion[]) => {
 
 export const getApprovedLinkSuggestions = () => approvedLinksCache;
 
+export const refreshApprovedLinkSuggestions = async () => {
+  const provider = await getDataProvider();
+  const links = await provider.listPublic<ApprovedLinkSuggestion>('approved-links', { fresh: true });
+  setApprovedLinksCache(links);
+  return links;
+};
+
 const startApprovedLinksRemoteSync = () => {
   let cancelled = false;
   void getDataProvider()

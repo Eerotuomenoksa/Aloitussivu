@@ -20,23 +20,30 @@ Koottu ensimmäisen kerran 31.8.2026 tiedostoista `TODO_HUMAN.md` ja `docs/codex
 | Tehtävä | Tila | Lisätiedot |
 | --- | --- | --- |
 | Tulosta A5-opastuskortti, 100 kpl | Valmis painettavaksi | `docs/a5-opastuskortti-A4-2up.pdf`, kaksipuolinen, käännä pitkältä sivulta |
-| **P1 – WordPress-esittelysivun painikkeen `href`** | Avoin, estää laajan tiedotuksen | `TODO_HUMAN.md` › Avoinna ennen 1.9. |
+| **P1 – WordPress-esittelysivun painikkeen `href`** | Todennettu toimivaksi 1.9. klo 08.45; WP-01–WP-05 ja WP-11 uusimatta | `TODO_HUMAN.md` › Avoinna ennen 1.9. |
 | **P1 – 1.0.0:n ja tiedotuspäivän loppuportti** | Versionosto 1.0.0 tehty 1.9.2026, loppuportin tarkistuslista ja tiedotuksen GO yhä avoinna | `TODO_HUMAN.md` › Avoinna ennen 1.9. |
 | P2 – palautteen onnistumisen tuotantouusinta 0.74.7:llä | Avoin | `TODO_HUMAN.md` › Avoinna ennen 1.9. |
-| **Kävijätilastojen nollaus julkaisuaamuna** | Skripti valmis, ajamatta | `database/maintenance/reset-usage-stats.sql` ja sen README |
-| **v1.0.0:n tuotantoonvienti** | Ajokirja valmis, ajamatta. Este: paketointi vaatii puhtaan työpuun (234 muutettua, joista 19 oikeita) | `docs/rel15-v100-tuotantopaivitys.md` |
+| **Kävijätilastojen nollaus julkaisuaamuna** | VALMIS 1.9. klo 08.39 | `database/maintenance/reset-usage-stats.sql` ja sen README |
+| **v1.0.0:n tuotantoonvienti** | VALMIS 1.9. klo 08.28, savukoe PASS | `docs/rel15-v100-tuotantopaivitys.md` |
 
 ### Codex — viikko 36 (1.–6.9.)
 
 | Tunnisteet | Tehtävä | Prioriteetti | Määrittely |
 | --- | --- | --- | --- |
 | **MK-01…MK-03** | `?src=`-arvojen täydennys, `qr` pois | P1 | `docs/codex-tehtava-markkinointilinkit-src-2026-08-31.md` |
+| **E-02** | RATKAISTU: Poistetaan `hour`, `url`, `src` tilastoinnista → aggregoitu data, ei banneria tarvita | P1, ratkaistu 2.9. | `docs/codex-tehtava-tilastoinnin-gdpr-korjaus-2026-09-02.md` |
+| **T-04** | Nina vahvistaa: onko paikkakunta henkilötieto jos sitä ei voi yhdistää käyttäjään | P1, kriittinen päätös | Kollegipalautekierros 2.9. |
+| **TS-05** | Tietosuoja-sivun uusinta: linkitys SeniorSurfin selosteeseen, ei-TS-materiaalin irrotus | P2 | Kollegipalautekierros 2.9. |
+| **SA-01** | VALMIS 2.9.2026: Saavutettavuusseloste linkittää SeniorSurfin omaan selosteeseen ja luettelot on jäsennetty listoiksi | P2 | `docs/codex-tehtava-saavutettavuusselosteen-linkitys-2026-09-02.md` |
+| **PER-01** | "Tietoa"-painikkeen suorityskykyprofilointi (CPU-kuormitus avautuessa) | P2 | Kollegipalautekierros 2.9. |
 | **MK-04** | `?lang=`-parametri | P1 | sama tiedosto |
 | **KO-01** | Tietosuojaseloste: kolmannen osapuolen palvelut | P1, ehto laajalle tiedotukselle | `docs/codex-tehtava-kolmannen-osapuolen-palvelut-2026-08-30.md` |
-| **TS-01** | Tietosuojaselosteen selkokielistys (fi). Luonnos valmis, odottaa Eeron ja Ninan hyväksyntää. Ei viety koodiin. | P2 | `docs/tietosuoja-selkokieli-luonnos-2026-08-31.md` |
-| **TS-02** | Selkokielistyksen käännös sv ja en | P3, tehdään vasta kun TS-01 hyväksytty | sama tiedosto |
-| **TS-03** | Poista kuollut Gemini-koodi: `services/geminiService.ts`, `components/Assistant.tsx`, `components/NewsFeed.tsx`, `functions/gemini.ts`. Mitään ei renderöidä, mutta koodi pitää yllä reittiä Googlelle jota seloste ei mainitse | P3 | `docs/tietosuoja-selkokieli-luonnos-2026-08-31.md` › Koodista tarkistettu |
-| **TS-04** | `services/data/providerConfig.ts`: vaihda oletusprovideriksi `cloudcity`. Nyt oletus on `firebase-rollback` (Firestore), jos `VITE_DATA_PROVIDER` unohtuu — silloin seloste olisi väärässä | P3 | sama tiedosto |
+| **TS-01** | Tietosuojaselosteen selkokielistys (fi). **JULKAISTU** commitissa `1472c10`, tuotannossa v1.0.0:n mukana 1.9. **Ninan hyväksyntää ei ole yhä saatu** — teksti on tuotannossa hyväksymättä | Tehty, hyväksyntä avoinna | `docs/codex-tehtava-tietosuoja-selkokieli-2026-08-31.md` |
+| **TS-02** | Selkokielistyksen käännös sv ja en. **JULKAISTU** samassa commitissa `1472c10` | Tehty | sama tiedosto |
+| **TS-03** | Kuollut Gemini-koodi poistettu, mukana commitissa `131853b`. **JÄLJELLÄ: `firebase functions:list` ja `firebase functions:delete geminiChat`** — lähdekoodin poisto ei poista julkaistua funktiota, joten pystyssä voi yhä olla päätepiste jota mikään seloste ei kuvaa. HUOM `services/ncscScraper.ts` käyttää Geminiä yhä ja SE JÄÄ | P1 kunnes funktio tarkistettu | `docs/codex-tehtava-tietosuoja-selkokieli-2026-08-31.md` |
+| **TS-04** | Provider-oletus vaihdettu `cloudcity`:ksi, mukana commitissa `131853b` | Tehty | sama tiedosto |
+| **TS-06** | Tietosuojasivun ulkoasu: nosta "Lyhyesti" ingressin yläpuolelle, taita sisällysluettelo kiinni. Senioritestaus: 83- ja 91-vuotias pitivät 15 osiota liian pitkänä. Koskettaa A11Y-testattua rakennetta → oma julkaisunsa | P3, ei tämän julkaisun mukana | `docs/tietosuoja-selkokieli-luonnos-2026-08-31.md` › Avoinna |
+| **TS-07** | **VALMIS 2.9.2026:** Tietosuojaselosteen tilastointikuvaus päivitetty E-02:n mukaiseksi kaikilla kolmella kielellä; `url`-, `hour`- ja `src`-tiedot poistettu kuvauksesta | P1, valmis E-02:n mukana | `tietosuoja.tsx` › `kayttotilasto`-osio |
 
 MK-04 on ehto ruotsinkieliselle kortille. KO-01 on ehto laajalle tiedotukselle.
 

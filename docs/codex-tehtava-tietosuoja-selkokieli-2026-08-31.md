@@ -2,8 +2,14 @@
 
 **Tunnisteet:** TS-01 (fi), TS-02 (sv + en), TS-03 (kuollut Gemini-koodi), TS-04 (provider-oletus)
 **Päivä:** 31.8.2026
-**Tila:** koodimuutokset tehty ja `tsc` puhdas. **Buildia ei ole ajettu.** Julkaisu on Codexin tehtävä.
-**Lähtökohta:** HEAD `e18ced8`. Muutokset ovat työpuussa, **ei committia**.
+**Tila 2.9.2026: TEHTY JA JULKAISTU.** Tekstimuutos on commitissa `1472c10` (31.8.),
+koodimuutokset TS-03 ja TS-04 commitissa `131853b`, ja molemmat menivät tuotantoon
+v1.0.0:n mukana 1.9. Alla oleva vaiheistus on tehty — se jää tähän kuvaukseksi siitä,
+mitä julkaisussa tapahtui.
+
+**Kaksi asiaa on yhä auki, ks. luvut 2 ja 3:**
+1. `firebase functions:delete geminiChat` — lähdekoodin poisto ei poistanut julkaistua funktiota.
+2. Ninan hyväksyntä tekstille. Teksti on tuotannossa ilman sitä.
 
 ---
 

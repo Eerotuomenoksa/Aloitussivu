@@ -17,6 +17,12 @@ const adminLinks = [
     protected: true,
   },
   {
+    title: 'Palautteet',
+    description: 'Tarkastele avoimia palautteita ja merkitse käsitellyt palautteet valmiiksi suojatussa työtilassa.',
+    href: './ehdotukset.html#feedback',
+    protected: true,
+  },
+  {
     title: 'Linkkiluettelo',
     description: 'Tarkastele kaikkia linkkejä, alueellisia linkkejä ja paikkakuntakohtaista listausta.',
     href: './linkit.html',

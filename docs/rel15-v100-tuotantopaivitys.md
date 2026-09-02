@@ -24,7 +24,7 @@ Työpuussa on **19 oikeasti muuttunutta tiedostoa** (`git diff --ignore-cr-at-eo
 
 > **Huomaa:** tämä ei siis ole TODO_HUMAN.md:n tarkoittama "ominaisuuksia muuttamaton versionosto". Poistettua koodia ei renderöity missään ja `tsc --noEmit` menee puhtaana läpi, joten käyttäjälle näkyvää muutosta ei pitäisi olla — mutta poisto on silti mukana paketissa. Jos versio 1.0.0 halutaan viedä yksinään, TS-03/TS-04-muutokset on siirrettävä omaan haaraansa ennen paketointia.
 
-**Tietokantamigraatioita ei tarvita.** Migraatiot 001–007 ovat jo tuotannossa (viimeisimmät tulivat REL-14:n mukana). Paketti sisältää migraatiotiedostot 004–007, mutta niitä **ei ajeta**; ne ovat `CREATE TABLE IF NOT EXISTS` -muotoisia ja kirjaavat itsensä `schema_migrations`-tauluun.
+**Tietokantamigraatioita ei tarvita tässä päivityksessä.** Migraatiot 001–007 ovat jo tuotannossa (viimeisimmät tulivat REL-14:n mukana). GDPR-korjauksen migraatio `008_usage_privacy_cleanup.sql` pitää ajaa erillisenä tietojen minimointina ennen uuden tilastointikoodin aktivointia. Paketti sisältää migraatiotiedostot 004–008, mutta niitä **ei ajeta automaattisesti**; ne ovat versionoituja ja kirjaavat itsensä `schema_migrations`-tauluun.
 
 ## Päätettävä ennen aloitusta
 
@@ -103,7 +103,7 @@ git worktree add C:\dev\Aloitussivu.tmp\rel15-v100-release --detach main
 
 Copy-Item C:\dev\Aloitussivu\.env.local C:\dev\Aloitussivu.tmp\rel15-v100-release\.env.local
 Set-Location C:\dev\Aloitussivu.tmp\rel15-v100-release
-npm ci
+npm.cmd ci
 git status --porcelain      # pitää olla TYHJÄ
 ```
 
@@ -113,13 +113,15 @@ git status --porcelain      # pitää olla TYHJÄ
 
 Aja kaikki Windowsilta. Linux-VM ei kelpaa: `node_modules/rollup` on asennettu Windowsille, joten `vite build` kaatuu siellä virheeseen `MODULE_NOT_FOUND`.
 
+> **PowerShell ja npm.** Jos komento kaatuu virheeseen `npm.ps1 cannot be loaded because running scripts is disabled on this system`, käytä `npm.cmd`-muotoa kaikissa npm-komennoissa. `npm.cmd` on tavallinen komentotiedosto eikä osu suorituskäytäntöön. Vaihtoehto on avata istunnolle poikkeus komennolla `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass`, joka raukeaa kun ikkuna suljetaan. Paketointiskripti itse ajaa sisäisesti `npm.cmd`- ja `powershell -ExecutionPolicy Bypass` -komentoja, joten se toimii kummallakin tavalla.
+
 Kaikki tämän vaiheen komennot ajetaan **julkaisutyöpuussa** (`C:\dev\Aloitussivu.tmp\rel14-v0780-release` tai `…\rel15-v100-release`), ei päätyöpuussa.
 
 ```powershell
-npm run check:secrets
+npm.cmd run check:secrets
 node node_modules/typescript/lib/tsc.js --noEmit -p tsconfig.json
-npm run test:link-policy
-npm run test:link-catalog
+npm.cmd run test:link-policy
+npm.cmd run test:link-catalog
 ```
 
 Kaikkien pitää mennä läpi. `tsc` on jo ajettu puhtaana 1.9.2026 tämän työpuun sisällöllä.
@@ -131,7 +133,7 @@ PHP-sopimustestit (`api/tests/run.php`) koskevat koodia, joka **ei ole muuttunut
 Yhä julkaisutyöpuussa:
 
 ```powershell
-npm run package:production-path
+npm.cmd run package:production-path
 ```
 
 ZIP ja purettu paketti syntyvät **julkaisutyöpuun omaan** `.tmp`-hakemistoon, eivät `C:\dev\Aloitussivu\.tmp`-hakemistoon.
@@ -159,7 +161,15 @@ Get-ChildItem .tmp\rel14-v1.0.0-production-path-package\wordpress_aloitus\favico
   Select-Object Name, Length
 ```
 
-Odotetut koot ovat 1002, 999 ja 3588 tavua. Jos vanhat koot (837 / 4460 / 44755) näkyvät, `dist/` on vanha eikä buildi ajanut.
+PNG-tiedostojen pitää olla **999** ja **3588** tavua. Jos vanhat koot (4460 / 44755) näkyvät, `dist/` on vanha eikä buildi ajanut.
+
+`favicon.svg`-tiedoston kokoa **ei saa verrata tavulukuun**: git muuntaa sen rivinvaihdot Windowsissa CRLF-muotoon, jolloin sama sisältö on 1023 tavua eikä 1002. Tarkista sisältö:
+
+```powershell
+Select-String -Path "$pkg\favicon.svg" -Pattern '#492280' -Quiet
+```
+
+Pitää tulostaa `True`. Vanhassa faviconissa ei ole VTKL:n violettia.
 
 ## Vaihe 4 — varmistukset palvelimella
 
@@ -225,11 +235,11 @@ test -f "$CANDIDATE/wordpress_aloitus/api/index.php"
 test -f "$CANDIDATE/wordpress_aloitus/favicon.svg"
 test -f "$CANDIDATE/private_root/data/link-catalog.json"
 test ! -f "$CANDIDATE/private_root/secrets/config.php"
-test "$(stat -c '%s' "$CANDIDATE/wordpress_aloitus/favicon.svg")" = 1002
+grep -q '#492280' "$CANDIDATE/wordpress_aloitus/favicon.svg"
 echo "ehdokas=ok polku=$CANDIDATE"
 ```
 
-`test ! -f .../secrets/config.php` on tärkeä: paketti ei saa sisältää oikeaa asetustiedostoa, vain mallipohjan. Viimeinen rivi varmistaa, että mukana on uusi favicon eikä vanha 837-tavuinen.
+`test ! -f .../secrets/config.php` on tärkeä: paketti ei saa sisältää oikeaa asetustiedostoa, vain mallipohjan. Viimeinen rivi varmistaa, että mukana on uusi favicon: vanhassa ei ole VTKL:n violettia `#492280`. Tavukokoa ei verrata, koska git muuntaa SVG:n rivinvaihdot Windowsissa CRLF-muotoon (1023 tavua, sama sisältö).
 
 ## Vaihe 6 — yksityinen koodi
 
@@ -310,6 +320,16 @@ Jos tilastot nollataan tämän julkaisun yhteydessä, tee se **vasta kun vaihe 7
 
 ### Tekninen savukoe
 
+> **Mittari: `curl` palvelimelta tai PowerShell omalta koneelta.** Älä käytä Clauden hakutyökalua julkaisuportin mittarina. 1.9.2026 se palautti 404:n osoitteille `favicon.svg`, `muutosloki.html` ja `api/v1/health`, kun palvelimen oma `curl` palautti samoista osoitteista 200. Väärä hälytys johti tarpeettomaan palautukseen. Aja tämä **heti aktivoinnin jälkeen** SSH-istunnossa, ennen mitään muuta:
+
+```bash
+for u in / favicon.svg favicon-32.png apple-touch-icon.png muutosloki.html tietosuoja.html linkit.html saavutettavuus.html api/v1/health; do
+  printf '%-24s %s\n' "$u" "$(curl -s -o /dev/null -w '%{http_code} %{content_type}' https://seniorsurf.fi/aloitus/$u)"
+done
+```
+
+Kaikkien pitää olla 200. `favicon.svg` tyyppinä `image/svg+xml`, `health` tyyppinä `application/json`.
+
 ```powershell
 $home1 = Invoke-WebRequest -Uri 'https://seniorsurf.fi/aloitus/' -MaximumRedirection 0
 $health = Invoke-WebRequest -Uri 'https://seniorsurf.fi/aloitus/api/v1/health' -MaximumRedirection 0
@@ -324,7 +344,7 @@ $icon = Invoke-WebRequest -Uri 'https://seniorsurf.fi/aloitus/favicon.svg' -Maxi
     ApiVersion  = $healthJson.version
     CacheControl = [string]$health.Headers['Cache-Control']
     FaviconStatus = [int]$icon.StatusCode
-    FaviconBytes  = $icon.RawContentLength
+    FaviconOnUusi = $icon.Content -match '#492280'
 } | ConvertTo-Json
 ```
 
@@ -332,7 +352,7 @@ Hyväksy vain kun:
 
 - `/aloitus/` palauttaa 200 ilman ulkoista ohjausta
 - health palauttaa 200 sekä `status: ok`, `database: up`, `version: v1` ja `Cache-Control: no-store`
-- `favicon.svg` palauttaa 200 ja **1002 tavua** (vanha tiedosto oli 837)
+- `favicon.svg` palauttaa 200 ja sen sisällössä on `#492280` (vanhassa faviconissa ei ole VTKL:n violettia). **Älä vertaa tavukokoa** — CRLF-muunnos tekee siitä 1023, ei 1002.
 - tarkoituksella puuttuva alipolku palauttaa Aloitussivun oman 404:n
 
 > `health`-vastauksen `version: v1` on **rajapinnan** sopimusversio, ei sovelluksen versio. Se pysyy `v1`:nä eikä kerro mitään 1.0.0:sta.
@@ -348,6 +368,7 @@ Selaimet pitävät faviconeja omassa, sitkeässä välimuistissaan. `.htaccess` 
 Tarkista siis näin, tässä järjestyksessä:
 
 1. Avaa `https://seniorsurf.fi/aloitus/favicon.svg` suoraan — pitää näyttää majakka. Tämä on ainoa varma tarkistus.
+   Vanha kuvake oli sininen pyöreä hymynaama, joten sekaannuksen vaaraa ei ole.
 2. Sama osoitteille `favicon-32.png` ja `apple-touch-icon.png`.
 3. Vasta sitten välilehden kuvake yksityisessä selainikkunassa.
 
@@ -371,16 +392,26 @@ Laukaisee mikä tahansa P1-virhe hyväksymiskokeissa.
 ```bash
 set -eu
 TARGET=/home/seniorsurffi/website.wp33403/aloitus
-PREVIOUS=/home/seniorsurffi/aloitus-v0779-VAIHDA_STAMP
+PREVIOUS=            # liita tahan vaiheen 7 tulosteen PALAUTUSPOLKU-arvo
 FAILED=/home/seniorsurffi/aloitus-rel15-failed-$(date +%Y%m%d-%H%M%S)
 
-test -d "$PREVIOUS"
-test ! -e "$FAILED"
+# Lahde on tarkistettava ENNEN kuin kohdetta siirretaan mihinkaan.
+test -n "${PREVIOUS:-}" || { echo "STOP: PALAUTUSPOLKU puuttuu." >&2; exit 1; }
+test -d "$PREVIOUS"     || { echo "STOP: palautuslahdetta $PREVIOUS ei ole." >&2; exit 1; }
+test -f "$PREVIOUS/index.html" || { echo "STOP: $PREVIOUS ei ole sovellushakemisto." >&2; exit 1; }
+test -d "$TARGET"       || { echo "STOP: kohdetta ei ole; ala aja tata uudelleen." >&2; exit 1; }
+test ! -e "$FAILED"     || { echo "STOP: $FAILED on jo olemassa." >&2; exit 1; }
+
 mv "$TARGET" "$FAILED"
 mv "$PREVIOUS" "$TARGET"
 test -f "$TARGET/index.html"
 echo "palautus=ok epaonnistunut=$FAILED"
 ```
+
+> **Kaksi sudenkuoppaa, jotka kaatoivat tämän 1.9.2026.**
+> Jos `mv`:n kohde on jo olemassa oleva hakemisto, lähde siirtyy **sen sisään** eikä sen tilalle. Siksi yllä on `test ! -e "$FAILED"`.
+> Aikaleima `$(date …)` ei laajene, jos komento päätyy shelliin ilman komentosubstituutiota. Siksi lähde tarkistetaan erikseen, eikä nimen yksilöivyyteen luoteta.
+> **Tätä lohkoa ei ajeta kahdesti.** Toinen ajo siirtäisi juuri palautetun version pois eikä löytäisi enää lähdettä.
 
 Yksityinen puoli palautetaan vaiheen 4 tarballista, jos ongelma on API:ssa:
 

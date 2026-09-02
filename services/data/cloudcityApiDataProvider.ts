@@ -171,11 +171,11 @@ export const cloudcityApiDataProvider: DataProvider = {
     return envelope.data;
   },
 
-  async actOnLinkCheck(urlHash, action, reason) {
+  async actOnLinkCheck(urlHash, action, reason, replacementUrl) {
     const envelope = await request<ApiEnvelope<MutationReceipt>>(`/admin/link-checks/${encodeURIComponent(urlHash)}/action`, {
       method: 'POST',
       headers: await adminHeaders(true),
-      body: body({ action, reason }),
+      body: body({ action, reason, ...(replacementUrl ? { replacementUrl } : {}) }),
     });
     return envelope.data;
   },

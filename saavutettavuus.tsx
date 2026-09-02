@@ -23,6 +23,7 @@ type AccessibilityCopy = {
   navigationLabel: string;
   backHome: string;
   privacy: string;
+  seniorSurfAccessibility: string;
   kicker: string;
   title: string;
   intro: string;
@@ -41,11 +42,12 @@ const accessibilityTranslations: Record<PublicPageLanguage, AccessibilityCopy> =
     navigationLabel: 'Sivun linkit',
     backHome: 'Takaisin aloitussivulle',
     privacy: 'Tietosuoja',
+    seniorSurfAccessibility: 'SeniorSurfin saavutettavuusseloste',
     kicker: 'Käyttäjälle',
     title: 'Saavutettavuusseloste',
     intro: 'Seniorin aloitussivu on suunniteltu ikääntyneille käyttäjille. Selkeä rakenne, isot painikkeet, tekstikoon säätö ja rauhallinen näkymä ovat palvelun peruslähtökohtia.',
     summaryTitle: 'Lyhyesti',
-    summary: 'Seniorin aloitussivu täyttää saavutettavuuden tavoitteet osittain. Sivustolla on jo paljon saavutettavuutta tukevia ratkaisuja, mutta ruudunlukija-, näppäimistö-, kontrasti- ja käyttäjätestausta täydennetään ennen laajempaa julkaisua.',
+    summary: 'Seniorin aloitussivu täyttää saavutettavuuden tavoitteet osittain. Saavutettavuutta tukevia ratkaisuja on jo käytössä, mutta ruudunlukija-, näppäimistö-, kontrasti- ja käyttäjätestausta täydennetään ennen laajempaa julkaisua.',
     tocLabel: 'Saavutettavuusselosteen sisällysluettelo',
     tocTitle: 'Sisällysluettelo',
     sections: [
@@ -62,7 +64,9 @@ const accessibilityTranslations: Record<PublicPageLanguage, AccessibilityCopy> =
         title: 'Palvelun saavutettavuuden tila',
         blocks: [
           paragraph('Seniorin aloitussivu täyttää saavutettavuuden tavoitteet osittain.'),
-          paragraph('Sivustolla on jo paljon saavutettavuutta tukevia ratkaisuja, kuten suuret painikkeet, selkeä rakenne, tekstikoon säätö, pääsisältöön hyppäämisen linkki ja kuvaavat nimet painikkeille. Kaikkia kohtia ei ole kuitenkaan vielä testattu riittävän kattavasti ruudunlukijalla ja pelkällä näppäimistöllä.'),
+          paragraph('Sivustolla on jo paljon saavutettavuutta tukevia ratkaisuja:'),
+          list('suuret painikkeet', 'selkeä rakenne', 'tekstikoon säätö', 'pääsisältöön hyppäämisen linkki', 'kuvaavat nimet painikkeille'),
+          paragraph('Kaikkia kohtia ei ole kuitenkaan vielä testattu riittävän kattavasti ruudunlukijalla ja pelkällä näppäimistöllä.'),
         ],
       },
       {
@@ -138,11 +142,12 @@ const accessibilityTranslations: Record<PublicPageLanguage, AccessibilityCopy> =
     navigationLabel: 'Sidans länkar',
     backHome: 'Tillbaka till startsidan',
     privacy: 'Dataskydd',
+    seniorSurfAccessibility: 'SeniorSurfs tillgänglighetsredogörelse',
     kicker: 'För användaren',
     title: 'Tillgänglighetsutlåtande',
     intro: 'Seniorens startsida har utformats för äldre användare. En tydlig struktur, stora knappar, justerbar textstorlek och en lugn vy är grundläggande utgångspunkter för tjänsten.',
     summaryTitle: 'I korthet',
-    summary: 'Seniorens startsida uppfyller tillgänglighetsmålen delvis. Webbplatsen har redan många lösningar som stöder tillgängligheten, men tester med skärmläsare och tangentbord samt kontrast- och användartester kompletteras före en bredare lansering.',
+    summary: 'Seniorens startsida uppfyller tillgänglighetsmålen delvis. Lösningar som stöder tillgängligheten används redan, men tester med skärmläsare och tangentbord samt kontrast- och användartester kompletteras före en bredare lansering.',
     tocLabel: 'Tillgänglighetsutlåtandets innehållsförteckning',
     tocTitle: 'Innehåll',
     sections: [
@@ -159,7 +164,9 @@ const accessibilityTranslations: Record<PublicPageLanguage, AccessibilityCopy> =
         title: 'Tjänstens tillgänglighetsstatus',
         blocks: [
           paragraph('Seniorens startsida uppfyller tillgänglighetsmålen delvis.'),
-          paragraph('Webbplatsen har redan många lösningar som stöder tillgängligheten, till exempel stora knappar, tydlig struktur, justerbar textstorlek, en länk för att hoppa till huvudinnehållet och beskrivande namn på knappar. Alla delar har dock ännu inte testats tillräckligt omfattande med skärmläsare och enbart tangentbord.'),
+          paragraph('Webbplatsen har redan många lösningar som stöder tillgängligheten:'),
+          list('stora knappar', 'tydlig struktur', 'justerbar textstorlek', 'en länk för att hoppa till huvudinnehållet', 'beskrivande namn på knappar'),
+          paragraph('Alla delar har dock ännu inte testats tillräckligt omfattande med skärmläsare och enbart tangentbord.'),
         ],
       },
       {
@@ -235,6 +242,7 @@ const accessibilityTranslations: Record<PublicPageLanguage, AccessibilityCopy> =
     navigationLabel: 'Page links',
     backHome: 'Back to the start page',
     privacy: 'Privacy',
+    seniorSurfAccessibility: 'SeniorSurf Accessibility Statement',
     kicker: 'For users',
     title: 'Accessibility statement',
     intro: 'The Senior Start Page is designed for older users. A clear structure, large buttons, adjustable text size and a calm view are fundamental principles of the service.',
@@ -256,7 +264,9 @@ const accessibilityTranslations: Record<PublicPageLanguage, AccessibilityCopy> =
         title: 'Accessibility status of the service',
         blocks: [
           paragraph('The Senior Start Page partially meets its accessibility objectives.'),
-          paragraph('The website already includes many solutions that support accessibility, such as large buttons, a clear structure, adjustable text size, a link to skip to the main content and descriptive button names. However, all areas have not yet been tested comprehensively enough with a screen reader and keyboard alone.'),
+          paragraph('The website already includes many solutions that support accessibility:'),
+          list('large buttons', 'a clear structure', 'adjustable text size', 'a link to skip to the main content', 'descriptive button names'),
+          paragraph('However, all areas have not yet been tested comprehensively enough with a screen reader and keyboard alone.'),
         ],
       },
       {
@@ -366,6 +376,7 @@ function App() {
             <nav className="flex flex-wrap items-center gap-3" aria-label={copy.navigationLabel}>
               <a href="./index.html" className={pageNavLinkClass}>{copy.backHome}</a>
               <a href={getLocalizedPublicPageHref('tietosuoja', language)} className={pageNavLinkClass}>{copy.privacy}</a>
+              <a href="https://seniorsurf.fi/seniorsurf/saavutettavuusseloste/" className={pageNavLinkClass} target="_blank" rel="noreferrer">{copy.seniorSurfAccessibility}</a>
             </nav>
             <PublicPageLanguageSwitcher page="saavutettavuus" language={language} />
           </div>

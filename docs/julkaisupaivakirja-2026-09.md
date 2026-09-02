@@ -946,3 +946,22 @@ Vain lukeva tuotantotarkistus vahvisti R-03:n PASSiksi. WordPressin etusivu, Et�
 R-09 on PASS: tuotannon canonical ja `og:url` ovat `https://seniorsurf.fi/aloitus/`, Open Graph -otsikko ja kuvaus vastaavat hyväksyttyä sisältöä sekä 180 × 180 px:n PNG-kuva latautuu HTTP 200:lla. R-11 on PASS: HTTPS palauttaa 200:n ja vastauksessa ovat HSTS, CSP, `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`, `X-Frame-Options: DENY` ja rajattu Permissions Policy.
 
 Eeron käyttöliittymäkokeessa R-16:n 375 × 800 -näkymä oli PASS. 320 × 800 -näkymä hajosi selvästi 200 prosentin suurennuksella, mutta sisältö säilyi luettavana. Tuotevastuu hyväksyi tämän julkaisun jälkeiseksi P2-poikkeamaksi `REL11-UI-04`; korjaus lisättiin kehityslistalle. R-17:n 1280 × 800 -työpöytänäkymä on PASS käyttäjän toimittamalla kuvatodisteella. Kuvaa ei kopioitu versionhallintaan.
+
+
+### Versio 1.0.0 ja majakkatunnus 1.9.2026
+
+Versio 1.0.0 aktivoitiin tuotantoon 1.9.2026 klo 08.28 Suomen aikaa, toisella yrityksellä. Aktiivinen build on `REL-14-v1.0.0-131853bcb724`, paketin SHA-256 `41b46fe398e3408f7df59901514122e1f48c3853652305f0ba18bb2374606fe6`, paketissa 141 tiedostoa ja linkkiluettelossa 2 374 osoitetta. Migraatioita ei ajettu; migraatiot 001-007 olivat jo tuotannossa REL-14:n jäljiltä ja tietokanta pysyi muuttumattomana. Yksityinen koodi päivitettiin klo 08.09; PHP-koodi ei muuttunut tässä julkaisussa lainkaan.
+
+Julkaisun sisältö oli kolmiosainen: uusi majakkafavicon Vanhustyön keskusliiton violetilla ja oranssilla (`favicon.svg`, `favicon-32.png`, `apple-touch-icon.png`), versionosto 0.78.0:sta 1.0.0:aan, sekä työpuussa jo valmiina olleet TS-03 (kuollut Gemini-koodi poistettu) ja TS-04 (dataproviderin oletukseksi `cloudcity`). Ajokirja on `docs/rel15-v100-tuotantopaivitys.md`.
+
+Savukoe palvelimen omalla `curl`-kyselyllä palautti HTTP 200:n yhdeksälle osoitteelle oikeilla sisältötyypeillä: etusivu, `favicon.svg` (`image/svg+xml`), `favicon-32.png`, `apple-touch-icon.png`, `muutosloki.html`, `tietosuoja.html`, `linkit.html`, `saavutettavuus.html` ja `api/v1/health` (`application/json`, `ok`/`up`/`v1`). Livenä oleva `favicon.svg` sisältää VTKL:n violetin `#492280`, versio 1.0.0 löytyy bundlesta `assets/changelog-Cex216hB.js`, `/aloitus` ohjaa 301:llä osoitteeseen `/aloitus/` ja tarkoituksella puuttuva alipolku palauttaa Aloitussivun oman 404:n.
+
+Koodivarmistukset ovat `/home/seniorsurffi/rel15-varmistus-public-20260901-080759.tar.gz` ja `/home/seniorsurffi/rel15-varmistus-private-20260901-080759.tar.gz`. Palautushakemisto on `/home/seniorsurffi/aloitus-v0779-20260901-082828`.
+
+#### Aiheutettu katko klo 08.11-08.18
+
+Ensimmäinen aktivointi klo 08.11 oli virheetön, mutta se palautettiin tarpeettomasti ja tuotanto oli noin seitsemän minuuttia ilman sovellusta. Syy oli väärä mittari: Clauden verkkohakutyökalu palautti HTTP 404:n osoitteille `favicon.svg`, `muutosloki.html` ja `api/v1/health`, vaikka tiedostot olivat paikallaan ja palvelimen oma `curl` palautti samoista osoitteista 200. Sama työkalu antoi 404:n vielä palautetulla versiolla 0.77.9:lläkin, mikä osoitti vian olevan työkalussa eikä viennissä.
+
+Palautus tehtiin irrallisella kahden rivin `mv`-parilla, jossa oli kaksi vikaa. Komentosubstituutio `$(date +%H%M%S)` ei laajentunut, joten kohdehakemisto sai kiinteän nimen `aloitus-rel15-failed`. Komentopari ajettiin kahdesti: ensimmäinen ajo palautti 0.77.9:n onnistuneesti ja kulutti palautuslähteen, toinen ajo siirsi juuri palautetun version olemassa olevan hakemiston **sisään** (`aloitus-rel15-failed/aloitus`) ja kaatui palautuslähteen puuttumiseen. Julkinen hakemisto jäi kokonaan pois, jolloin WordPress-ohjaus otti `/aloitus/`-osoitteen. Tuotanto palautettiin klo 08.18 vaiheen 4 varmistustarballista.
+
+Mitään tiedostoja ei menetetty. Korjaukset ajokirjaan: savukokeen mittari on palvelimen `curl` tai käyttäjän PowerShell, ei Clauden hakutyökalu; ja palautus on suojattu skripti, joka tarkistaa palautuslähteen olemassaolon ennen kuin siirtää kohdetta mihinkään, tarkistaa ettei siirtokohde ole jo olemassa, ja jota ei ajeta kahdesti.

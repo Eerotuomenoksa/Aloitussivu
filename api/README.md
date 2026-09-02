@@ -200,14 +200,14 @@ Valinnainen `screenshot` sisältää kentät `name`, `type`, `size` ja `dataUrl`
 
 ### Käyttötilasto
 
-`POST /api/v1/usage-events` hyväksyy `pageview`- tai `linkClick`-tapahtuman ja palauttaa 204. Sivun nimi on enintään 180 merkkiä. Linkkitapahtuman URL on enintään 500 merkkiä ja sen protokolla voi olla HTTP, HTTPS, `mailto` tai `tel`; nimi ja kategoria ovat enintään 180 merkkiä.
+`POST /api/v1/usage-events` hyväksyy `pageview`- tai `linkClick`-tapahtuman ja palauttaa 204. Sivun nimi ja linkin kategoria ovat enintään 180 merkkiä. Tilastointi ei vastaanota yksittäisen linkin osoitetta, linkin nimeä, kellonaikaa tai kampanjalähdettä.
 
 ```json
 {"type":"pageview","page":"index"}
 ```
 
 ```json
-{"type":"linkClick","page":"index","url":"https://example.com/palvelu","label":"Esimerkkipalvelu","category":"Asiointi"}
+{"type":"linkClick","page":"index","category":"Asiointi"}
 ```
 
 Käyttötilasto tallentaa vain Helsinki-päivän kokonaislaskurit sekä sivu- ja linkkikohtaiset laskurit. Se ei hyväksy eikä tallenna käyttäjätunnistetta, raakaa IP-osoitetta, user agentia tai selaimen sormenjälkeä. Pyyntörajoitin käyttää IP-osoitteesta palvelinsalaisuudella laskettua HMAC-SHA-256-tiivistettä; raakaa osoitetta ei tallenneta.
@@ -267,8 +267,8 @@ Ympäristökohtaiset UID:t ja sähköpostit lisätään `admin_users`-tauluun tu
 | `GET /api/v1/admin/ncsc-logs` | Kyberturvallisuuskeskuksen ajoloki |
 | `POST /api/v1/admin/ncsc-run` | editorin tai adminin turvallinen NCSC-käsiajo |
 | `GET /api/v1/admin/link-checks` | automaattisen linkkitarkistuksen yhteenveto, kaikkien nykyisten varoitusten ja virheiden kohdetiedot, vahvistetut ongelmat ja ajohistoria |
-| `POST /api/v1/admin/link-checks/{urlHash}/action` | hyväksy huomio määräaikaiseksi poikkeukseksi tai piilota linkki ylläpitäjän estolla |
-| `GET /api/v1/admin/usage-stats` | päivä-, sivu- ja linkkikohtaiset aggregaatit |
+| `POST /api/v1/admin/link-checks/{urlHash}/action` | hyväksy huomio määräaikaiseksi poikkeukseksi, piilota linkki ylläpitäjän estolla tai korvaa domain-muutoksen saanut osoite (`action: replace`, `replacementUrl`) |
+| `GET /api/v1/admin/usage-stats` | päivä-, sivu- ja osio-/kategoriakohtaiset aggregaatit |
 | `GET /api/v1/admin/audit-log` | ylläpidon muutosloki |
 
 ## REL-09: tausta-ajo
@@ -295,11 +295,11 @@ Cloudcityn suositus on ajaa `notifications.php` päivittäin klo 08.15 ja `email
 
 ## REL-14: automaattinen linkkitarkistus
 
-Migraatio `005_automated_link_checks.sql` lisää tarkistuskohteet, viimeisimmän tilan, 180 vuorokauden tuloshistorian ja ajokoosteen. Migraatio `006_link_check_hardening.sql` lisää mukautuvan tarkistusvälin, domain-muutoksen, automaattisen eston sekä ajokohtaiset esto- ja palautuslaskurit. Migraatio `007_link_check_admin_actions.sql` lisää auditoidut, kolmen kuukauden välein uudelleen tarkistettavat ylläpitäjän varmennukset. Tuotantopaketin `data/link-catalog.json` muodostetaan sovelluksen linkkilähteistä paketoinnin aikana. Cron yhdistää siihen tietokannan hyväksytyt linkit ja tarkistaa vain vuorossa olevan, asetuksella rajatun erän.
+Migraatio `005_automated_link_checks.sql` lisää tarkistuskohteet, viimeisimmän tilan, 180 vuorokauden tuloshistorian ja ajokoosteen. Migraatio `006_link_check_hardening.sql` lisää mukautuvan tarkistusvälin, domain-muutoksen, automaattisen eston sekä ajokohtaiset esto- ja palautuslaskurit. Migraatio `007_link_check_admin_actions.sql` lisää auditoidut, kolmen kuukauden välein uudelleen tarkistettavat ylläpitäjän varmennukset. Migraatio `008_usage_privacy_cleanup.sql` poistaa vanhat tunti- ja kampanjalähdebucketit sekä yhdistää vanhat linkkikohtaiset käyttöluvut osio- ja kategoriatasolle. Tuotantopaketin `data/link-catalog.json` muodostetaan sovelluksen linkkilähteistä paketoinnin aikana. Cron yhdistää siihen tietokannan hyväksytyt linkit ja tarkistaa vain vuorossa olevan, asetuksella rajatun erän.
 
 `cron/link-check.php` hyväksyy vain HTTPS-osoitteet, tarkistaa TLS-varmenteen ja jokaisen uudelleenohjauksen sekä estää paikalliset, yksityiset ja varatut IP-osoitteet. HTTP 401, 403 ja 429 kirjataan varoituksiksi; varsinaiset virheet vahvistetaan oletuksena kahdella peräkkäisellä tarkistuksella ennen ylläpidon huomiota. Vahvistettu 404/410-, DNS-, TLS-, uudelleenohjaus- tai verkkotunnuksen myyntivirhe voidaan piilottaa automaattisesti `blocked_links`-taulun kautta. Ihmisen tekemää estoa automaatio ei koskaan poista. MariaDB:n yhteyslukko estää rinnakkaiset ajot.
 
-Ylläpitäjä voi käsitellä huomion ylläpitonäkymässä kahdella tavalla. `Hyväksy toimivaksi` tallentaa perustellun poikkeuksen kolmeksi kuukaudeksi; verkkotunnusohjauksen hyväksyntä ei vaimenna myöhempää 404- tai DNS-vikaa. `Poista linkki näkyvistä` tekee ylläpitäjän pysyvän `blocked_links`-eston, jota automaattinen palautus ei poista.
+Ylläpitäjä voi käsitellä huomion ylläpitonäkymässä kolmella tavalla. `Hyväksy toimivaksi` tallentaa perustellun poikkeuksen kolmeksi kuukaudeksi; verkkotunnusohjauksen hyväksyntä ei vaimenna myöhempää 404- tai DNS-vikaa. `Poista linkki näkyvistä` tekee ylläpitäjän pysyvän `blocked_links`-eston, jota automaattinen palautus ei poista. Verkkotunnuksen vaihtuessa `Korvaa linkki` ottaa ylläpitäjän syöttämän HTTPS-osoitteen käyttöön hyväksyttynä linkkinä ja piilottaa alkuperäisen osoitteen.
 
 Yhteenvetolukujen `Varoituksia` ja `Epäonnistuu` alla olevat kohteet palautetaan myös yksittäin `statusItems`-listassa. Ylläpito näyttää nimen, osoitteen, turvallisen virhesyyn, HTTP-tilan sekä seuraavan tarkistusajan. Varoituksen tai ensimmäisen epäonnistumisen voi tarkistaa käsin ja käsitellä heti; voimassa oleva ylläpitäjän poikkeus ja jo piilotettu linkki merkitään listassa erikseen.
 

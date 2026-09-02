@@ -1146,7 +1146,7 @@ export const MUSEUM_LINKS: RegionalProvider[] = [
   },
   {
     name: "Hämeen linna",
-    url: "https://www.kansallismuseo.fi/fi/haemeenlinna",
+    url: "https://suomenkansallismuseo.fi/kohde/hameen-linna/",
     group: "Hämeenlinna",
     type: "Paikallismuseo",
     area: "Kanta-Häme",

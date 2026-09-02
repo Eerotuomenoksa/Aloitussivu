@@ -44,7 +44,7 @@ return [
         ],
     ],
     'link_checks' => [
-        // Enable after migrations 005-007 and the hourly link-check cron are installed.
+        // Enable after migrations 005-008 and the hourly link-check cron are installed.
         'enabled' => true,
         'batch_size' => 10,
         'timeout_seconds' => 12,

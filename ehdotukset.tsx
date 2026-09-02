@@ -5,6 +5,7 @@ import './index.css';
 import {
   getApprovedLinkSuggestions,
   approveLinkSuggestion,
+  refreshApprovedLinkSuggestions,
   removeApprovedLinkSuggestion,
   subscribeApprovedLinkSuggestions,
   ApprovedLinkSuggestion,
@@ -45,6 +46,12 @@ import {
   setUsageTrackingDisabled,
 } from './usageTracking';
 import {
+  subscribeFeedbackItems,
+  updateFeedbackItem,
+  type FeedbackItem,
+  type FeedbackStatus,
+} from './feedback';
+import {
   actOnLinkCheck,
   emptyLinkCheckOverview,
   fetchLinkChecks,
@@ -61,6 +68,24 @@ const statusLabel = {
   pending: 'Odottaa',
   approved: 'Toteutettu',
   rejected: 'Sivuutettu',
+};
+
+const feedbackStatusLabel: Record<FeedbackStatus, string> = {
+  new: 'Uusi',
+  triage: 'Arvioitavana',
+  planned: 'Suunniteltu',
+  in_progress: 'Työn alla',
+  done: 'Käsitelty',
+  rejected: 'Sivuutettu',
+};
+
+const feedbackTypeLabel: Record<FeedbackItem['type'], string> = {
+  bug: 'Virhe',
+  content: 'Sisältö',
+  link: 'Linkki',
+  accessibility: 'Saavutettavuus',
+  idea: 'Idea',
+  other: 'Muu',
 };
 
 const severityLabel = {
@@ -96,7 +121,7 @@ const normalizeUsagePage = (page: string) => (page === 'index' ? 'etusivu' : pag
 
 const sumUsageStats = (stats: UsageDailyStats[]) => {
   const pages = new Map<string, { count: number; page: string }>();
-  const links = new Map<string, { count: number; url: string; label: string; category: string; page: string }>();
+  const links = new Map<string, { count: number; category: string; page: string }>();
   let totalPageviews = 0;
   let totalLinkClicks = 0;
 
@@ -111,16 +136,15 @@ const sumUsageStats = (stats: UsageDailyStats[]) => {
       pages.set(page, current);
     });
 
-    Object.entries(day.linkClicks).forEach(([id, link]) => {
-      const current = links.get(id) ?? {
+    Object.values(day.linkClicks).forEach((link) => {
+      const key = `${link.page}\n${link.category}`;
+      const current = links.get(key) ?? {
         count: 0,
-        url: link.url,
-        label: link.label || link.url,
         category: link.category,
         page: link.page,
       };
       current.count += link.count;
-      links.set(id, current);
+      links.set(key, current);
     });
   });
 
@@ -173,16 +197,6 @@ const getGrowthMetrics = (stats: UsageDailyStats[]) => {
   const shared = Object.entries(guide).reduce((sum, [bucket, count]) => (
     bucket.startsWith('shared:') ? sum + count : sum
   ), 0);
-  const hours = Array.from({ length: 24 }, (_, hour) => {
-    const bucket = String(hour).padStart(2, '0');
-    return { hour: bucket, count: sumContext(stats, 'hour', bucket) };
-  });
-  const sources = Object.entries(stats.reduce<Record<string, number>>((totals, day) => {
-    Object.entries(day.context?.src ?? {}).forEach(([bucket, count]) => {
-      totals[bucket] = (totals[bucket] ?? 0) + count;
-    });
-    return totals;
-  }, {})).sort(([, first], [, second]) => second - first);
   const totalViews = stats.reduce((sum, day) => sum + day.totalPageviews, 0);
   const direct = sumContext(stats, 'entry', 'direct');
   return {
@@ -190,9 +204,6 @@ const getGrowthMetrics = (stats: UsageDailyStats[]) => {
     direct,
     directShare: totalViews > 0 ? (direct / totalViews) * 100 : 0,
     funnel: { opened, browser, done, shared, completion: opened > 0 ? (done / opened) * 100 : 0 },
-    hours,
-    maxHour: Math.max(1, ...hours.map((item) => item.count)),
-    sources,
   };
 };
 
@@ -284,6 +295,10 @@ function App() {
   const [authReady, setAuthReady] = useState(false);
   const [authError, setAuthError] = useState('');
   const [reports, setReports] = useState<ManagedLinkReportEntry[]>([]);
+  const [feedbackItems, setFeedbackItems] = useState<FeedbackItem[]>([]);
+  const [feedbackBusyId, setFeedbackBusyId] = useState<string | null>(null);
+  const [feedbackMessage, setFeedbackMessage] = useState('');
+  const [feedbackNotes, setFeedbackNotes] = useState<Record<string, string>>({});
   const [approvedLinks, setApprovedLinks] = useState<ApprovedLinkSuggestion[]>(() => getApprovedLinkSuggestions());
   const [reportDrafts, setReportDrafts] = useState<Record<string, { name: string; url: string; category: string; note: string }>>({});
   const [busyId, setBusyId] = useState<string | null>(null);
@@ -307,6 +322,7 @@ function App() {
   const [linkCheckBusyId, setLinkCheckBusyId] = useState<string | null>(null);
   const [linkCheckActionMessage, setLinkCheckActionMessage] = useState('');
   const [linkCheckReasons, setLinkCheckReasons] = useState<Record<string, string>>({});
+  const [linkCheckReplacementUrls, setLinkCheckReplacementUrls] = useState<Record<string, string>>({});
 
   const hasAdminAccess = adminSession !== null;
   const userEmail = adminSession?.email || getUserEmail(user);
@@ -419,6 +435,23 @@ function App() {
   }, [hasAdminAccess]);
 
   useEffect(() => {
+    if (!hasAdminAccess) {
+      setFeedbackItems([]);
+      return () => {};
+    }
+    return subscribeFeedbackItems(
+      (items) => {
+        setFeedbackItems(items);
+        setFeedbackMessage('');
+      },
+      (error) => {
+        if (isAdminAccessError(error)) setAdminSession(null);
+        setFeedbackMessage(error instanceof Error ? error.message : 'Palautteita ei voitu ladata.');
+      },
+    );
+  }, [hasAdminAccess]);
+
+  useEffect(() => {
     if (!hasAdminAccess) return;
     let isCurrent = true;
     setUsageStatsBusy(true);
@@ -455,6 +488,10 @@ function App() {
 
   const approvedUrls = useMemo(() => new Set(approvedLinks.map((item) => normalizeUrl(item.url))), [approvedLinks]);
   const pendingReports = useMemo(() => reports.filter((report) => report.status === 'pending'), [reports]);
+  const openFeedbackItems = useMemo(
+    () => feedbackItems.filter((item) => ['new', 'triage', 'planned', 'in_progress'].includes(item.status)),
+    [feedbackItems],
+  );
   const pendingNewReports = useMemo(
     () => pendingReports.filter((report) => report.type === 'new' && !approvedUrls.has(normalizeUrl(report.url))),
     [pendingReports, approvedUrls]
@@ -497,6 +534,13 @@ function App() {
       note: 'Rikkinäiset, väärät tai poistettavat linkit.',
     },
     {
+      label: 'Palautteet',
+      count: openFeedbackItems.length,
+      href: '#feedback',
+      tone: openFeedbackItems.length > 0 ? 'bg-rose-100 text-rose-950 dark:bg-rose-900/40 dark:text-rose-100' : 'bg-emerald-100 text-emerald-950 dark:bg-emerald-900/40 dark:text-emerald-100',
+      note: feedbackMessage || 'Avoimet käyttäjäpalautteet ja niiden käsittely.',
+    },
+    {
       label: 'Linkkitarkistus',
       count: linkChecks.summary.attention,
       href: '#link-checks',
@@ -524,7 +568,7 @@ function App() {
       tone: usageStatsError ? 'bg-rose-100 text-rose-950 dark:bg-rose-900/40 dark:text-rose-100' : 'bg-cyan-100 text-cyan-950 dark:bg-cyan-900/40 dark:text-cyan-100',
       note: usageStatsError || `${usageRange.start} - ${usageRange.end}`,
     },
-  ], [activeScamAlerts.length, approvedLinks.length, issueReports.length, linkCheckError, linkChecks.enabled, linkChecks.summary.attention, linkChecks.summary.ok, linkChecks.summary.pending, ncscAttentionLogs.length, pendingNewReports.length, usageRange.end, usageRange.start, usageStatsError, usageTotals.frontPageViews]);
+  ], [activeScamAlerts.length, approvedLinks.length, feedbackMessage, issueReports.length, linkCheckError, linkChecks.enabled, linkChecks.summary.attention, linkChecks.summary.ok, linkChecks.summary.pending, ncscAttentionLogs.length, openFeedbackItems.length, pendingNewReports.length, usageRange.end, usageRange.start, usageStatsError, usageTotals.frontPageViews]);
 
   useEffect(() => {
     setReportDrafts((current) => {
@@ -604,6 +648,31 @@ function App() {
     }
   };
 
+  const handleFeedbackStatus = async (item: FeedbackItem, status: FeedbackStatus) => {
+    setFeedbackBusyId(item.id);
+    setFeedbackMessage('');
+    try {
+      await updateFeedbackItem(item.id, status, feedbackNotes[item.id] ?? '', user?.email);
+      setFeedbackItems((current) => current.map((currentItem) => (
+        currentItem.id === item.id
+          ? {
+            ...currentItem,
+            status,
+            publicNote: feedbackNotes[item.id] ?? '',
+            updatedAt: new Date().toISOString(),
+            ...(status === 'done' || status === 'rejected' ? { handledAt: new Date().toISOString(), handledBy: user?.email } : {}),
+          }
+          : currentItem
+      )));
+      setFeedbackMessage(status === 'done' ? `Palaute ”${item.title}” merkitty käsitellyksi.` : `Palautteen ”${item.title}” tila päivitetty.`);
+    } catch (error) {
+      if (isAdminAccessError(error)) setAdminSession(null);
+      setFeedbackMessage(error instanceof Error ? `Palautteen käsittely epäonnistui: ${error.message}` : 'Palautteen käsittely epäonnistui.');
+    } finally {
+      setFeedbackBusyId(null);
+    }
+  };
+
   const runNcscNow = async () => {
     setNcscBusy(true);
     setNcscMessage('');
@@ -636,25 +705,43 @@ function App() {
     }
   };
 
-  const handleLinkCheckAction = async (item: LinkCheckItem, action: 'approve' | 'block') => {
+  const handleLinkCheckAction = async (item: LinkCheckItem, action: 'approve' | 'block' | 'replace') => {
     const reason = (linkCheckReasons[item.id] ?? '').trim();
     if (reason.length < 3) {
       setLinkCheckActionMessage('Kirjoita käsittelylle vähintään kolmen merkin perustelu.');
       return;
     }
+    const replacementUrl = (linkCheckReplacementUrls[item.id] ?? '').trim();
+    if (action === 'replace') {
+      try {
+        const parsed = new URL(replacementUrl);
+        if (parsed.protocol !== 'https:' || !parsed.hostname) throw new Error('invalid');
+      } catch {
+        setLinkCheckActionMessage('Syötä uusi osoite HTTPS-muodossa, esimerkiksi https://esimerkki.fi/palvelu.');
+        return;
+      }
+    }
     setLinkCheckBusyId(item.id);
     setLinkCheckActionMessage('');
     try {
-      await actOnLinkCheck(item.id, action, reason);
+      await actOnLinkCheck(item.id, action, reason, action === 'replace' ? replacementUrl : undefined);
+      if (action === 'replace') await refreshApprovedLinkSuggestions().catch(() => undefined);
       setLinkChecks(await fetchLinkChecks());
       setLinkCheckReasons((current) => {
         const next = { ...current };
         delete next[item.id];
         return next;
       });
+      setLinkCheckReplacementUrls((current) => {
+        const next = { ...current };
+        delete next[item.id];
+        return next;
+      });
       setLinkCheckActionMessage(action === 'approve'
         ? `Linkki ${item.name} hyväksyttiin toimivaksi. Huomio tarkistetaan uudelleen kolmen kuukauden kuluttua.`
-        : `Linkki ${item.name} poistettiin käyttäjiltä näkyvistä ja lisättiin ylläpidon pysyvälle estolistalle.`);
+        : action === 'replace'
+          ? `Linkki ${item.name} korvattiin uudella osoitteella ja vanha linkki piilotettiin käyttäjiltä.`
+          : `Linkki ${item.name} poistettiin käyttäjiltä näkyvistä ja lisättiin ylläpidon pysyvälle estolistalle.`);
     } catch (error) {
       if (isAdminAccessError(error)) setAdminSession(null);
       setLinkCheckActionMessage(error instanceof Error
@@ -665,8 +752,25 @@ function App() {
     }
   };
 
-  const renderLinkCheckActions = (item: LinkCheckItem) => (
+  const renderLinkCheckActions = (item: LinkCheckItem, allowReplacement = false) => (
     <div className="mt-4 space-y-3 rounded-xl border border-slate-200 bg-white p-3 dark:border-slate-700 dark:bg-slate-900">
+      {allowReplacement && (
+        <label className="block space-y-2" htmlFor={`link-check-replacement-${item.id}`}>
+          <span className="block text-sm font-black text-violet-950 dark:text-violet-100">Oikea linkki (korvaa alkuperäisen)</span>
+          <input
+            id={`link-check-replacement-${item.id}`}
+            type="url"
+            inputMode="url"
+            maxLength={2048}
+            value={linkCheckReplacementUrls[item.id] ?? ''}
+            onChange={(event) => setLinkCheckReplacementUrls((current) => ({ ...current, [item.id]: event.target.value }))}
+            placeholder="https://esimerkki.fi/palvelu"
+            disabled={linkCheckBusyId === item.id}
+            className="w-full rounded-xl border-2 border-violet-300 bg-white px-3 py-3 font-bold text-slate-900 focus:border-violet-600 focus:outline-none focus:ring-4 focus:ring-violet-600/25 disabled:opacity-60 dark:border-violet-700 dark:bg-slate-800 dark:text-white"
+          />
+          <span className="block text-xs font-bold text-violet-900 dark:text-violet-200">Uusi HTTPS-osoite lisätään käyttäjille ja vanha osoite poistetaan näkyvistä.</span>
+        </label>
+      )}
       <label className="block space-y-2" htmlFor={`link-check-reason-${item.id}`}>
         <span className="block text-sm font-black text-slate-700 dark:text-slate-200">Ylläpitäjän perustelu</span>
         <input
@@ -681,9 +785,21 @@ function App() {
         />
       </label>
       <p className="text-xs font-bold text-slate-500 dark:text-slate-400">
-        Hyväksyntä vaimentaa tämän huomion kolmeksi kuukaudeksi. Poistaminen piilottaa linkin käyttäjiltä ja lisää sen ylläpidon pysyvälle estolistalle.
+        {allowReplacement
+          ? 'Korvaaminen lisää uuden osoitteen käyttäjille ja piilottaa vanhan osoitteen. Hyväksyntä vaimentaa huomion kolmeksi kuukaudeksi.'
+          : 'Hyväksyntä vaimentaa tämän huomion kolmeksi kuukaudeksi. Poistaminen piilottaa linkin käyttäjiltä ja lisää sen ylläpidon pysyvälle estolistalle.'}
       </p>
       <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+        {allowReplacement && (
+          <button
+            type="button"
+            disabled={linkCheckBusyId === item.id}
+            onClick={() => void handleLinkCheckAction(item, 'replace')}
+            className="rounded-full bg-violet-700 px-5 py-3 font-black text-white shadow-md transition-all hover:bg-violet-800 focus:outline-none focus:ring-4 focus:ring-violet-700/35 active:scale-95 disabled:opacity-50"
+          >
+            {linkCheckBusyId === item.id ? 'Käsitellään…' : 'Korvaa linkki'}
+          </button>
+        )}
         <button
           type="button"
           disabled={linkCheckBusyId === item.id}
@@ -775,7 +891,7 @@ function App() {
               <div>
                 <p className="font-black">Kirjautunut: {userEmail}</p>
                 <p className="text-sm font-bold text-[var(--theme-text-3)]">
-                  Odottaa: {pendingReports.length} · Hyväksyttyjä linkkejä: {approvedLinks.length}
+                  Odottaa: {pendingReports.length} linkkiehdotusta · Avoimia palautteita: {openFeedbackItems.length} · Hyväksyttyjä linkkejä: {approvedLinks.length}
                 </p>
                 {authDebugInfo && (
                   <p className="mt-2 max-w-3xl text-xs font-bold text-[var(--theme-text-3)]">
@@ -807,7 +923,7 @@ function App() {
                   Nopea näkymä avoimiin asioihin ja automaation huomioihin.
                 </p>
               </div>
-              <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-6">
+              <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-7">
                 {reviewTasks.map((task) => (
                   <a
                     key={task.href}
@@ -826,6 +942,91 @@ function App() {
                   </a>
                 ))}
               </div>
+            </section>
+
+            <section id="feedback" className="scroll-mt-6 space-y-5 rounded-2xl border border-rose-200 bg-rose-50/40 p-5 shadow-sm dark:border-rose-900 dark:bg-rose-950/20">
+              <div className="flex flex-wrap items-start justify-between gap-4">
+                <div>
+                  <h2 className="text-2xl font-black md:text-3xl">Palautteet</h2>
+                  <p className="mt-1 text-sm font-bold text-slate-600 dark:text-slate-300">
+                    Avoimet palautteet haetaan suoraan ylläpidon tietokannasta. Tila <span className="font-black">Käsitelty</span> tai <span className="font-black">Sivuutettu</span> poistaa palautteen avoimesta laskurista.
+                  </p>
+                </div>
+                <span className={`rounded-full px-4 py-2 text-lg font-black ${openFeedbackItems.length > 0 ? 'bg-rose-100 text-rose-950 dark:bg-rose-900/50 dark:text-rose-100' : 'bg-emerald-100 text-emerald-950 dark:bg-emerald-900/50 dark:text-emerald-100'}`}>
+                  Avoimia {openFeedbackItems.length}
+                </span>
+              </div>
+              {feedbackMessage && (
+                <p className="rounded-2xl border border-blue-200 bg-blue-50 p-4 font-bold text-blue-950 dark:border-blue-900 dark:bg-blue-950/30 dark:text-blue-100" role="status" aria-live="polite">
+                  {feedbackMessage}
+                </p>
+              )}
+              {feedbackItems.length === 0 ? (
+                <p className="rounded-2xl bg-white p-4 font-bold text-slate-600 dark:bg-slate-900 dark:text-slate-300">
+                  Palautteita ei löytynyt palvelimen palautetaulusta.
+                </p>
+              ) : (
+                <div className="space-y-3">
+                  {feedbackItems.map((item) => {
+                    const isOpen = openFeedbackItems.some((openItem) => openItem.id === item.id);
+                    return (
+                      <article key={item.id} className={`rounded-2xl border p-5 shadow-sm ${isOpen ? 'border-rose-200 bg-white dark:border-rose-900 dark:bg-slate-900' : 'border-slate-200 bg-slate-50 dark:border-slate-800 dark:bg-slate-950/60'}`}>
+                        <div className="flex flex-wrap items-start justify-between gap-3">
+                          <div>
+                            <div className="flex flex-wrap items-center gap-2">
+                              <span className="rounded-full bg-slate-200 px-3 py-1 text-xs font-black uppercase tracking-wide text-slate-800 dark:bg-slate-700 dark:text-slate-100">{feedbackTypeLabel[item.type]}</span>
+                              <span className={`rounded-full px-3 py-1 text-xs font-black uppercase tracking-wide ${isOpen ? 'bg-rose-100 text-rose-950 dark:bg-rose-900/50 dark:text-rose-100' : 'bg-emerald-100 text-emerald-950 dark:bg-emerald-900/50 dark:text-emerald-100'}`}>
+                                {feedbackStatusLabel[item.status]}
+                              </span>
+                            </div>
+                            <h3 className="mt-3 text-xl font-black text-slate-950 dark:text-white">{item.title}</h3>
+                            <p className="mt-1 text-sm font-bold text-slate-500 dark:text-slate-400">{item.page || 'Ei sivutietoa'} · Lähetetty {formatDateTime(item.createdAt)}</p>
+                          </div>
+                        </div>
+                        <p className="mt-4 whitespace-pre-wrap text-base font-bold text-slate-700 dark:text-slate-200">{item.description}</p>
+                        {item.publicNote && <p className="mt-3 rounded-xl bg-slate-100 p-3 text-sm font-bold text-slate-700 dark:bg-slate-800 dark:text-slate-200">Ylläpidon huomio: {item.publicNote}</p>}
+                        {isOpen && (
+                          <div className="mt-4 space-y-3 border-t border-slate-200 pt-4 dark:border-slate-700">
+                            <label className="block space-y-2" htmlFor={`feedback-note-${item.id}`}>
+                              <span className="block text-sm font-black text-slate-700 dark:text-slate-200">Ylläpidon huomio (valinnainen)</span>
+                              <textarea
+                                id={`feedback-note-${item.id}`}
+                                value={feedbackNotes[item.id] ?? item.publicNote ?? ''}
+                                onChange={(event) => setFeedbackNotes((current) => ({ ...current, [item.id]: event.target.value }))}
+                                maxLength={1600}
+                                rows={2}
+                                disabled={feedbackBusyId === item.id}
+                                className="w-full rounded-xl border-2 border-slate-300 bg-white px-3 py-3 font-bold text-slate-900 focus:border-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-600/25 disabled:opacity-60 dark:border-slate-600 dark:bg-slate-800 dark:text-white"
+                              />
+                            </label>
+                            <div className="flex flex-wrap items-center justify-end gap-3">
+                              <label className="flex items-center gap-2 text-sm font-black text-slate-700 dark:text-slate-200">
+                                <span className="sr-only">Palautteen tila</span>
+                                <select
+                                  value={item.status}
+                                  onChange={(event) => void handleFeedbackStatus(item, event.target.value as FeedbackStatus)}
+                                  disabled={feedbackBusyId === item.id}
+                                  className="rounded-full border-2 border-slate-300 bg-white px-3 py-2 font-black text-slate-900 dark:border-slate-600 dark:bg-slate-800 dark:text-white"
+                                >
+                                  {(['new', 'triage', 'planned', 'in_progress', 'done', 'rejected'] as FeedbackStatus[]).map((status) => <option key={status} value={status}>{feedbackStatusLabel[status]}</option>)}
+                                </select>
+                              </label>
+                              <button
+                                type="button"
+                                disabled={feedbackBusyId === item.id}
+                                onClick={() => void handleFeedbackStatus(item, 'done')}
+                                className="rounded-full bg-emerald-600 px-5 py-3 font-black text-white shadow-md transition-all hover:bg-emerald-700 active:scale-95 disabled:opacity-50"
+                              >
+                                {feedbackBusyId === item.id ? 'Päivitetään...' : 'Merkitse käsitellyksi'}
+                              </button>
+                            </div>
+                          </div>
+                        )}
+                      </article>
+                    );
+                  })}
+                </div>
+              )}
             </section>
 
             <section id="link-checks" className="scroll-mt-6 space-y-5 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
@@ -903,7 +1104,7 @@ function App() {
                               <p className="font-bold text-slate-700 dark:text-slate-200">Kohdeosoitetta ei saatu talteen.</p>
                             )}
                             <p className="mt-2 text-xs font-bold text-slate-500 dark:text-slate-400">Tarkistettu {formatDateTime(item.lastCheckedAt ?? undefined)}</p>
-                            {renderLinkCheckActions(item)}
+                            {renderLinkCheckActions(item, true)}
                           </article>
                         ))}
                       </div>
@@ -1154,36 +1355,10 @@ function App() {
                       </div>
 
                       <div className="space-y-3">
-                        <h4 className="text-lg font-black">Kampanjalähteet</h4>
-                        {growthMetrics.sources.length === 0 ? (
-                          <p className="rounded-2xl bg-white p-4 font-bold text-slate-500 dark:bg-slate-900 dark:text-slate-400">Ei kampanja-avauksia valitulla aikavälillä.</p>
-                        ) : (
-                          <ul className="space-y-2">
-                            {growthMetrics.sources.map(([source, count]) => (
-                              <li key={source} className="flex items-center justify-between gap-3 rounded-xl bg-white px-4 py-3 dark:bg-slate-900">
-                                <span className="font-black">{source}</span>
-                                <span className="rounded-full bg-cyan-100 px-3 py-1 text-sm font-black text-cyan-950 dark:bg-cyan-900 dark:text-cyan-100">{count}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        )}
-                      </div>
-                    </div>
-
-                    <div className="space-y-3">
-                      <h4 className="text-lg font-black">Avausten kellonaikajakauma</h4>
-                      <div className="flex h-48 items-end gap-1 overflow-x-auto rounded-2xl bg-white p-3 dark:bg-slate-900" role="img" aria-label="Avausten määrä tunneittain">
-                        {growthMetrics.hours.map((item) => (
-                          <div key={item.hour} className="flex h-full min-w-7 flex-1 flex-col items-center justify-end gap-1" title={`${item.hour}:00 – ${item.count} avausta`}>
-                            <span className="text-[10px] font-black text-slate-500">{item.count}</span>
-                            <span
-                              aria-hidden="true"
-                              className="w-full rounded-t-md bg-cyan-600"
-                              style={{ height: `${Math.max(3, (item.count / growthMetrics.maxHour) * 100)}%` }}
-                            />
-                            <span className="text-[10px] font-black text-slate-500">{item.hour}</span>
-                          </div>
-                        ))}
+                        <h4 className="text-lg font-black">Tilastoinnin tietosuoja</h4>
+                        <p className="rounded-2xl bg-white p-4 font-bold text-slate-600 dark:bg-slate-900 dark:text-slate-300">
+                          Tilastot ovat päiväkohtaisia yhteenvetoja. Niissä ei näytetä yksittäisiä linkkiosoitteita, kellonaikoja tai kampanjalähteitä.
+                        </p>
                       </div>
                     </div>
                   </section>
@@ -1214,17 +1389,17 @@ function App() {
                     </div>
 
                     <div className="space-y-3">
-                      <h3 className="text-xl font-black">Klikatuimmat linkit</h3>
+                      <h3 className="text-xl font-black">Suosituimmat osiot ja kategoriat</h3>
                       {usageTotals.topLinks.length === 0 ? (
                         <p className="font-bold text-slate-500 dark:text-slate-400">Ei linkkiklikkauksia valitulla aikavälillä.</p>
                       ) : (
                         <div className="grid gap-3">
                           {usageTotals.topLinks.map((link) => (
-                            <article key={link.url} className="rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-950/60">
+                            <article key={`${link.page}-${link.category}`} className="rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-950/60">
                               <div className="flex items-start justify-between gap-3">
                                 <div className="min-w-0">
-                                  <p className="font-black break-words">{link.label || link.url}</p>
-                                  <p className="mt-1 text-xs font-bold text-slate-500 break-all dark:text-slate-400">{link.url}</p>
+                                  <p className="font-black break-words">{link.category || 'Muu kategoria'}</p>
+                                  <p className="mt-1 text-xs font-bold text-slate-500 dark:text-slate-400">Osio: {normalizeUsagePage(link.page) || 'tuntematon'}</p>
                                 </div>
                                 <span className="shrink-0 rounded-full bg-cyan-100 px-3 py-1 text-sm font-black text-cyan-950 dark:bg-cyan-900/40 dark:text-cyan-100">
                                   {link.count}
