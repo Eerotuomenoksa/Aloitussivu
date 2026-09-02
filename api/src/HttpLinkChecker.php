@@ -323,110 +323,230 @@ final class HttpLinkChecker implements LinkChecker
     }
 
     /**
-     * Check multiple URLs in parallel using curl_multi.
+     * Check multiple URLs in parallel using curl_multi while retaining the
+     * validation, redirect and HEAD/GET retry rules of check().
+     *
      * @param list<string> $urls
      * @param int $deadline hrtime(true) deadline
      * @param int $concurrency Number of parallel connections (3-5)
      * @return array<string, LinkCheckResult>
      */
-    public static function checkBatch(array $urls, int $deadline, int $concurrency = 3): array
+    public function checkBatch(array $urls, int $deadline, int $concurrency = 3): array
     {
-        $results = [];
-        $queue = $urls;
-        $active = [];
-        
-        $mh = curl_multi_init();
-        if ($mh === false) {
+        if (!function_exists('curl_multi_init') || !function_exists('curl_multi_exec')) {
+            $results = [];
             foreach ($urls as $url) {
-                $results[$url] = new LinkCheckResult('failed', null, null, 'curl_multi_init_failed', 0);
+                if (hrtime(true) >= $deadline) {
+                    break;
+                }
+                $results[$url] = $this->check($url);
             }
             return $results;
         }
-        
-        // Prime pump with initial concurrent requests
-        while (count($active) < $concurrency && !empty($queue)) {
-            $url = array_shift($queue);
-            $ch = self::initCurlHandle($url, $deadline);
-            if ($ch !== null) {
-                curl_multi_add_handle($mh, $ch);
-                $active[(int)$ch] = ['url' => $url, 'handle' => $ch];
-            } else {
-                $results[$url] = new LinkCheckResult('failed', null, null, 'curl_init_failed', 0);
+
+        $multi = curl_multi_init();
+        if ($multi === false) {
+            $results = [];
+            foreach ($urls as $url) {
+                if (hrtime(true) >= $deadline) {
+                    break;
+                }
+                $results[$url] = $this->check($url);
             }
+            return $results;
         }
-        
-        while (!empty($active) || !empty($queue)) {
-            $mrc = curl_multi_exec($mh, $active_count);
-            
-            // Process completed requests
-            while ($info = curl_multi_info_read($mh)) {
-                $ch = $info['handle'];
-                $key = (int)$ch;
-                if (isset($active[$key])) {
-                    $url = $active[$key]['url'];
-                    $error = curl_errno($ch);
-                    $status = (int)curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
-                    
-                    $results[$url] = new LinkCheckResult(
-                        $error === 0 && $status >= 200 && $status < 300 ? 'ok' : 'failed',
-                        $error === 0 ? $status : null,
-                        curl_getinfo($ch, CURLINFO_EFFECTIVE_URL),
-                        $error === 0 ? null : self::curlErrorCode($error),
-                        max(0, (int)round(curl_getinfo($ch, CURLINFO_TOTAL_TIME) * 1000))
+
+        $concurrency = max(1, min(5, $concurrency));
+        $results = [];
+        $states = [];
+        $queue = [];
+        foreach ($urls as $urlIndex => $url) {
+            if (hrtime(true) >= $deadline) {
+                break;
+            }
+            $original = trim((string) $url);
+            $started = hrtime(true);
+            $validation = $this->validateTarget($original);
+            if ($validation['error'] !== null) {
+                $status = $validation['error'] === 'dns_failed' ? 'failed' : 'rejected';
+                $results[$url] = $this->result(
+                    $status,
+                    null,
+                    $original,
+                    $validation['error'],
+                    $started,
+                    $original,
+                );
+                continue;
+            }
+            $states[$urlIndex] = [
+                'url' => (string) $url,
+                'original' => $original,
+                'current' => $original,
+                'resolve' => $validation['resolve'],
+                'redirects' => 0,
+                'started' => $started,
+                'attempt' => 'head',
+                'useRange' => false,
+                'fallbackResponse' => null,
+            ];
+            $queue[] = $urlIndex;
+        }
+
+        /** @var array<int, array{state:int, handle:mixed, headers:\stdClass}> $active */
+        $active = [];
+        while ($queue !== [] || $active !== []) {
+            while (count($active) < $concurrency && $queue !== []) {
+                if (hrtime(true) >= $deadline) {
+                    $queue = [];
+                    break;
+                }
+                $stateIndex = array_shift($queue);
+                $state = $states[$stateIndex];
+                $prepared = $this->initBatchHandle($state, $deadline);
+                if ($prepared === null) {
+                    $results[$state['url']] = $this->result(
+                        'failed',
+                        null,
+                        $state['current'],
+                        'curl_init_failed',
+                        $state['started'],
+                        $state['original'],
                     );
-                    
-                    curl_multi_remove_handle($mh, $ch);
-                    curl_close($ch);
-                    unset($active[$key]);
-                    
-                    // Queue next URL if time allows
-                    if (!empty($queue) && hrtime(true) < $deadline) {
-                        $nextUrl = array_shift($queue);
-                        $nextCh = self::initCurlHandle($nextUrl, $deadline);
-                        if ($nextCh !== null) {
-                            curl_multi_add_handle($mh, $nextCh);
-                            $active[(int)$nextCh] = ['url' => $nextUrl, 'handle' => $nextCh];
-                        } else {
-                            $results[$nextUrl] = new LinkCheckResult('failed', null, null, 'curl_init_failed', 0);
-                        }
-                    }
+                    continue;
+                }
+                $handle = $prepared['handle'];
+                curl_multi_add_handle($multi, $handle);
+                $active[(int) $handle] = [
+                    'state' => $stateIndex,
+                    'handle' => $handle,
+                    'headers' => $prepared['headers'],
+                ];
+            }
+
+            if ($active === []) {
+                continue;
+            }
+            if (hrtime(true) >= $deadline) {
+                foreach ($active as $entry) {
+                    $state = $states[$entry['state']];
+                    curl_multi_remove_handle($multi, $entry['handle']);
+                    curl_close($entry['handle']);
+                    $results[$state['url']] = $this->result(
+                        'failed',
+                        null,
+                        $state['current'],
+                        'timeout',
+                        $state['started'],
+                        $state['original'],
+                    );
+                }
+                $active = [];
+                $queue = [];
+                break;
+            }
+
+            do {
+                $multiResult = curl_multi_exec($multi, $running);
+            } while ($multiResult === CURLM_CALL_MULTI_PERFORM);
+
+            if ($multiResult !== CURLM_OK) {
+                foreach ($active as $entry) {
+                    $state = $states[$entry['state']];
+                    curl_multi_remove_handle($multi, $entry['handle']);
+                    curl_close($entry['handle']);
+                    $results[$state['url']] = $this->result(
+                        'failed',
+                        null,
+                        $state['current'],
+                        'request_failed',
+                        $state['started'],
+                        $state['original'],
+                    );
+                }
+                $active = [];
+                $queue = [];
+                break;
+            }
+
+            while ($info = curl_multi_info_read($multi)) {
+                $handle = $info['handle'];
+                $handleKey = (int) $handle;
+                if (!isset($active[$handleKey])) {
+                    continue;
+                }
+                $entry = $active[$handleKey];
+                $stateIndex = $entry['state'];
+                $state = $states[$stateIndex];
+                $errorNumber = curl_errno($handle);
+                if ($errorNumber === 0 && (int) ($info['result'] ?? CURLE_OK) !== CURLE_OK) {
+                    $errorNumber = (int) $info['result'];
+                }
+                $response = [
+                    'status' => (int) curl_getinfo($handle, CURLINFO_RESPONSE_CODE),
+                    'location' => $entry['headers']->location,
+                    'error' => $errorNumber === 0 ? null : self::curlErrorCode($errorNumber),
+                    'retryAfter' => $entry['headers']->retryAfter,
+                ];
+                curl_multi_remove_handle($multi, $handle);
+                curl_close($handle);
+                unset($active[$handleKey]);
+
+                $result = $this->advanceBatchState($state, $response);
+                $states[$stateIndex] = $state;
+                if ($result !== null) {
+                    $results[$state['url']] = $result;
+                } elseif (hrtime(true) < $deadline) {
+                    $queue[] = $stateIndex;
+                } else {
+                    $results[$state['url']] = $this->result(
+                        'failed',
+                        null,
+                        $state['current'],
+                        'timeout',
+                        $state['started'],
+                        $state['original'],
+                    );
                 }
             }
-            
-            if ($mrc === CURLM_OK && !empty($active)) {
-                curl_multi_select($mh, 0.1);
+
+            if ($active !== [] && $multiResult === CURLM_OK) {
+                $selected = curl_multi_select($multi, 0.1);
+                if ($selected === -1) {
+                    usleep(1000);
+                }
             }
         }
-        
-        curl_multi_close($mh);
-        
-        // Fill in any remaining URLs that weren't processed
-        foreach ($urls as $url) {
-            if (!isset($results[$url])) {
-                $results[$url] = new LinkCheckResult('failed', null, null, 'request_failed', 0);
-            }
+
+        foreach ($active as $entry) {
+            curl_multi_remove_handle($multi, $entry['handle']);
+            curl_close($entry['handle']);
         }
-        
+        curl_multi_close($multi);
         return $results;
     }
-    
-    private static function initCurlHandle(string $url, int $deadline): mixed
+
+    /**
+     * @param array{current:string, resolve:list<string>, attempt:string, useRange:bool} $state
+     * @return array{handle:mixed, headers:\stdClass}|null
+     */
+    private function initBatchHandle(array $state, int $deadline): ?array
     {
-        // Simplified validation
-        $parts = parse_url($url);
-        if (!is_array($parts) || strtolower((string)($parts['scheme'] ?? '')) !== 'https') {
+        $remainingMs = (int) floor(($deadline - hrtime(true)) / 1_000_000);
+        if ($remainingMs <= 0) {
             return null;
         }
-        
-        $handle = curl_init($url);
-        if ($handle === false) return null;
-        
-        $timeoutMs = max(1, (int)floor((($deadline - hrtime(true)) / 1_000_000)));
-        if ($timeoutMs <= 0) return null;
-        
+        $handle = curl_init($state['current']);
+        if ($handle === false) {
+            return null;
+        }
+        $headers = new \stdClass();
+        $headers->location = null;
+        $headers->retryAfter = null;
+        $timeoutMs = max(1, min($this->timeoutSeconds * 1000, $remainingMs));
         curl_setopt_array($handle, [
             CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_NOBODY => true,
+            CURLOPT_NOBODY => $state['attempt'] === 'head',
             CURLOPT_FOLLOWLOCATION => false,
             CURLOPT_CONNECTTIMEOUT_MS => min(5000, $timeoutMs),
             CURLOPT_TIMEOUT_MS => $timeoutMs,
@@ -435,8 +555,107 @@ final class HttpLinkChecker implements LinkChecker
             CURLOPT_SSL_VERIFYPEER => true,
             CURLOPT_SSL_VERIFYHOST => 2,
             CURLOPT_USERAGENT => self::USER_AGENT,
+            CURLOPT_HTTPHEADER => [
+                'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+                'Accept-Language: fi-FI,fi;q=0.9,sv;q=0.8,en;q=0.7',
+            ],
+            CURLOPT_RESOLVE => $state['resolve'],
+            CURLOPT_RANGE => $state['useRange'] ? '0-16383' : null,
+            CURLOPT_HEADERFUNCTION => static function ($curl, string $header) use ($headers): int {
+                if (stripos($header, 'Location:') === 0) {
+                    $candidate = trim(substr($header, 9));
+                    $headers->location = $candidate !== '' ? $candidate : null;
+                } elseif (stripos($header, 'Retry-After:') === 0) {
+                    $candidate = trim(substr($header, 12));
+                    if (preg_match('/^[0-9]{1,7}$/D', $candidate) === 1) {
+                        $seconds = (int) $candidate;
+                        $headers->retryAfter = ($seconds > 0 && $seconds <= 604800) ? $seconds : null;
+                    }
+                }
+                return strlen($header);
+            },
         ]);
-        
-        return $handle;
+        return ['handle' => $handle, 'headers' => $headers];
     }
+
+    /**
+     * @param array{current:string, original:string, redirects:int, attempt:string, useRange:bool, fallbackResponse:array<string,mixed>|null, started:int} $state
+     * @param array{status:int, location:?string, error:?string, retryAfter:?int} $response
+     */
+    private function advanceBatchState(array &$state, array $response): ?LinkCheckResult
+    {
+        if ($state['attempt'] === 'head'
+            && ($response['error'] !== null
+                || in_array($response['status'], [400, 403, 405, 417, 501], true)
+                || $response['status'] >= 500)
+        ) {
+            $state['fallbackResponse'] = $response['error'] === null ? $response : null;
+            $state['attempt'] = 'get-range';
+            $state['useRange'] = true;
+            return null;
+        }
+        if ($state['attempt'] === 'get-range'
+            && $response['error'] === null
+            && in_array($response['status'], [416, 417], true)
+        ) {
+            $state['attempt'] = 'get-full';
+            $state['useRange'] = false;
+            return null;
+        }
+
+        if ($response['error'] !== null && $state['fallbackResponse'] !== null) {
+            /** @var array{status:int, location:?string, error:?string, retryAfter:?int} $response */
+            $response = $state['fallbackResponse'];
+        }
+        $state['fallbackResponse'] = null;
+        if ($response['error'] !== null) {
+            return $this->result(
+                'failed',
+                null,
+                $state['current'],
+                $response['error'],
+                $state['started'],
+                $state['original'],
+            );
+        }
+
+        $status = $response['status'];
+        if ($status >= 300 && $status < 400) {
+            if ($response['location'] === null) {
+                return $this->result('failed', $status, $state['current'], 'redirect_location_missing', $state['started'], $state['original']);
+            }
+            if ($state['redirects'] >= self::MAX_REDIRECTS) {
+                return $this->result('failed', $status, $state['current'], 'too_many_redirects', $state['started'], $state['original']);
+            }
+            $next = $this->resolveLocation($state['current'], $response['location']);
+            if ($next === null) {
+                return $this->result('failed', $status, $state['current'], 'redirect_location_invalid', $state['started'], $state['original']);
+            }
+            $validation = $this->validateTarget($next);
+            if ($validation['error'] !== null) {
+                $error = $validation['error'];
+                $statusName = $error === 'dns_failed' ? 'failed' : 'rejected';
+                return $this->result($statusName, null, $next, $error, $state['started'], $state['original']);
+            }
+            $state['current'] = $next;
+            $state['resolve'] = $validation['resolve'];
+            $state['redirects'] += 1;
+            $state['attempt'] = 'head';
+            $state['useRange'] = false;
+            return null;
+        }
+        if ($this->looksLikeDomainForSale($state['current'])) {
+            return $this->result('failed', $status, $state['current'], 'domain_for_sale', $state['started'], $state['original']);
+        }
+        if ($status >= 200 && $status < 300) {
+            return $this->result('ok', $status, $state['current'], null, $state['started'], $state['original']);
+        }
+        if (in_array($status, [401, 403, 405, 417, 429], true)) {
+            return $this->result('warning', $status, $state['current'], 'access_limited', $state['started'], $state['original'], $response['retryAfter']);
+        }
+        if ($status >= 500) {
+            return $this->result('failed', $status, $state['current'], 'server_error', $state['started'], $state['original'], $response['retryAfter']);
+        }
+        return $this->result('failed', $status > 0 ? $status : null, $state['current'], 'http_status_error', $state['started'], $state['original']);
     }
+}

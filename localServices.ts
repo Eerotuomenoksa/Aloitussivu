@@ -1789,8 +1789,13 @@ const addFirst = (providers: Provider[] | undefined, provider?: Provider): Provi
   return [provider, ...providers];
 };
 
+// Sama lähde-URL voi sisältää useita eri puhelinnumeroita, kuten Kelan
+// maakunnittaisella taksisivulla. Puhelinnumero on siksi osa palvelun
+// yksilöintiä, jotta alueen molemmat tilausvälityskeskukset säilyvät näkyvissä.
 const uniqueProviders = (providers: Provider[]) => providers.filter(
-  (provider, index, all) => all.findIndex((item) => item.url === provider.url) === index
+  (provider, index, all) => all.findIndex((item) => (
+    item.url === provider.url && item.phone === provider.phone
+  )) === index
 );
 
 const normalizeArea = (value: string) => normalizeText(value)
@@ -1907,6 +1912,7 @@ const alwaysVisibleTransportProviders: Provider[] = [
 const alwaysVisibleLibraryProviders: Provider[] = [
   { name: 'Finna', url: 'https://www.finna.fi', group: 'Kirjastot' },
   { name: 'Kirjastot.fi', url: 'https://www.kirjastot.fi', group: 'Kirjastot' },
+  { name: 'Kirjastohakemisto', url: 'https://hakemisto.kirjastot.fi/', group: 'Kirjastot' },
   { name: 'Celia-äänikirjat', url: 'https://www.celia.fi', group: 'Kirjastot' },
 ];
 

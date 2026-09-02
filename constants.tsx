@@ -144,6 +144,7 @@ export const SHORTCUTS: Shortcut[] = [
     providers: [
       { name: 'Finna', url: 'https://www.finna.fi' },
       { name: 'Kirjastot.fi', url: 'https://www.kirjastot.fi' },
+      { name: 'Kirjastohakemisto', url: 'https://hakemisto.kirjastot.fi/' },
       { name: 'Helmet', url: 'https://helmet.finna.fi/' },
       { name: 'Celia-äänikirjat', url: 'https://www.celia.fi' }
     ]

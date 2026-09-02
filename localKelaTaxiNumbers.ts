@@ -2,7 +2,7 @@ import type { RegionalProvider } from './communityLinks';
 
 export const KELA_TAXI_SOURCE_URL = 'https://www.kela.fi/taksimatkat#tilausnumerot-maakunnittain';
 
-// Tarkistettu Kelan ajantasaiselta taksimatkasivulta 25.8.2026.
+// Tarkistettu Kelan ajantasaiselta taksimatkasivulta 2.9.2026: 42 numeroa / 17 aluetta.
 // Nykyiset palveluntuottajat jatkavat vuoden 2026 loppuun; tarkista tiedot ennen 1.1.2027.
 export const KELA_TAXI_PROVIDERS: RegionalProvider[] = [
   {

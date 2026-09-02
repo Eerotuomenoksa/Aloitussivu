@@ -10,8 +10,8 @@ $temporaryRoot = [IO.Path]::GetFullPath((Join-Path $workspaceRoot '.tmp'))
 $packageJson = Get-Content -LiteralPath (Join-Path $workspaceRoot 'package.json') -Raw | ConvertFrom-Json
 $version = [string]$packageJson.version
 $versionSlug = $version -replace '[^0-9A-Za-z.-]', '-'
-$packageRoot = [IO.Path]::GetFullPath((Join-Path $temporaryRoot "rel14-v$versionSlug-production-path-package"))
-$zipPath = [IO.Path]::GetFullPath((Join-Path $temporaryRoot "aloitussivu-rel14-v$versionSlug-production-path.zip"))
+$packageRoot = [IO.Path]::GetFullPath((Join-Path $temporaryRoot "rel15-v$versionSlug-production-path-package"))
+$zipPath = [IO.Path]::GetFullPath((Join-Path $temporaryRoot "aloitussivu-rel15-v$versionSlug-production-path.zip"))
 $pathPrefix = $temporaryRoot.TrimEnd([IO.Path]::DirectorySeparatorChar) + [IO.Path]::DirectorySeparatorChar
 $firebaseEnvNames = @(
     'VITE_FIREBASE_API_KEY',
@@ -139,7 +139,7 @@ try {
     Copy-Item -LiteralPath (Join-Path $workspaceRoot 'database/migrations/006_link_check_hardening.sql') -Destination $migrationsRoot.FullName -Force
     Copy-Item -LiteralPath (Join-Path $workspaceRoot 'database/migrations/007_link_check_admin_actions.sql') -Destination $migrationsRoot.FullName -Force
     Copy-Item -LiteralPath (Join-Path $workspaceRoot 'database/migrations/008_usage_privacy_cleanup.sql') -Destination $migrationsRoot.FullName -Force
-    Copy-Item -LiteralPath (Join-Path $workspaceRoot 'docs/rel14-v0770-automaattinen-linkkitarkistus.md') -Destination (Join-Path $packageRoot 'DEPLOY_INSTRUCTIONS.md') -Force
+    Copy-Item -LiteralPath (Join-Path $workspaceRoot 'docs/rel15-v100-tuotantopaivitys.md') -Destination (Join-Path $packageRoot 'DEPLOY_INSTRUCTIONS.md') -Force
 
     foreach ($directory in @('logs', 'cache', 'protected_uploads')) {
         $null = New-Item -ItemType File -Path (Join-Path $privateRoot.FullName "$directory/.keep") -Force
@@ -161,9 +161,9 @@ try {
     if ($LASTEXITCODE -ne 0 -or $workingTreeDirty -or $currentCommit -ne $commit) {
         throw 'Git-tila muuttui paketoinnin aikana. Tuotantopolun pakettia ei muodostettu.'
     }
-    $buildId = "REL-14-v$version-$commit"
+    $buildId = "REL-15-v$version-$commit"
     $buildInfoJson = [ordered]@{
-        package = 'REL-14'
+        package = 'REL-15'
         mode = 'production-path'
         buildId = $buildId
         publicUrl = 'https://seniorsurf.fi/aloitus/'

@@ -175,7 +175,7 @@ export const PATIENT_ASSOCIATION_LINKS: RegionalProvider[] = [
   },
   {
     name: "Suomen Ehlers-Danlos yhdistys (SEDY)",
-    url: "https://www.sedy.fi/"
+    url: "https://www.ehlers-danlos.fi/"
   },
   {
     name: "Suomen Fabry-yhdistys",

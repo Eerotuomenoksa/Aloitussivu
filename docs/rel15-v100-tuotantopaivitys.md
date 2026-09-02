@@ -10,7 +10,7 @@ Tämän voi tehdä yksin. Kaikki vaiheet ovat samoja kuin versioiden 0.77.8 ja 0
 
 Realistinen kesto keskeytyksettä noin **2–3 tuntia**, josta suurin osa on vaiheen 9 hyväksymiskokeita. Varaa aikaa neljä tuntia.
 
-Tarvitset: Windows-työaseman (Linux-VM ei kelpaa, `vite build` kaatuu siellä rollupin natiivibinääriin), verkkoyhteyden, SSH-tunnuksen `seniorsurffi@staging.aloitussivu.seniorsurf.fi`, tietokannan tunnukset ja pääsyn phpMyAdminiin.
+Tarvitset: Windows-työaseman (Linux-VM ei kelpaa, `vite build` kaatuu siellä rollupin natiivibinääriin), verkkoyhteyden, SSH-tunnuksen `seniorsurffi@seniorsurffi.ssh.cchosting.fi`, tietokannan tunnukset ja pääsyn phpMyAdminiin.
 
 Yhtä asiaa et voi tehdä yksin: **TODO_HUMAN.md vaatii nimetyn riippumattoman hyväksyjän** loppuportin savukokeelle. Se on tuotepäätös, ei tekninen este — jos hyväksyjää ei ole, voit silti tehdä tämän teknisen päivityksen, mutta loppuportti jää auki ja se on kirjattava.
 
@@ -28,10 +28,9 @@ Työpuussa on **19 oikeasti muuttunutta tiedostoa** (`git diff --ignore-cr-at-eo
 
 ## Päätettävä ennen aloitusta
 
-**Paketointiskriptin nimeäminen.** `scripts/build-production-path-package.ps1` on kovakoodattu REL-14:ään: se nimeää ZIPin `aloitussivu-rel14-v1.0.0-production-path.zip`, kirjoittaa `build-info.json`-tiedostoon `package: "REL-14"` ja `buildId: "REL-14-v1.0.0-<commit>"`, ja kopioi paketin `DEPLOY_INSTRUCTIONS.md`-tiedostoksi `docs/rel14-v0770-automaattinen-linkkitarkistus.md`:n. Vaihtoehdot:
+**Paketointiskriptin nimeäminen.** `scripts/build-production-path-package.ps1` käyttää nyt REL-15-leimaa: ZIP on `aloitussivu-rel15-v1.0.0-production-path.zip`, `build-info.json` sisältää `package: "REL-15"` ja `buildId: "REL-15-v1.0.0-<commit>"`, ja paketin `DEPLOY_INSTRUCTIONS.md` perustuu tähän tiedostoon.
 
-- **A:** jätä ennalleen. Paketti on toimiva, mutta sen mukana kulkee väärä ohjetiedosto ja REL-14-leima 1.0.0-julkaisussa.
-- **B:** päivitä skriptiin REL-15 ja tämä tiedosto `DEPLOY_INSTRUCTIONS.md`:ksi. Skripti on tuotantobuildin syöte, joten muutos on tehtävä **ennen** ehdokkaan rakentamista, ei sen jälkeen.
+- **Toteutus:** vaihtoehto B on tehty ennen ehdokkaan rakentamista. Paketin leima ja ohjetiedosto vastaavat nyt REL-15-julkaisua.
 
 Suositus on B. Se on kolmen rivin muutos ja poistaa riskin, että palvelimella luetaan väärää ohjetta palautustilanteessa.
 
@@ -126,7 +125,7 @@ npm.cmd run test:link-catalog
 
 Kaikkien pitää mennä läpi. `tsc` on jo ajettu puhtaana 1.9.2026 tämän työpuun sisällöllä.
 
-PHP-sopimustestit (`api/tests/run.php`) koskevat koodia, joka **ei ole muuttunut tässä julkaisussa** — `git diff --ignore-cr-at-eol HEAD -- api/` on tyhjä. Ne voi ajaa, jos työasemalla on PHP 8.4; muuten ne voi tässä julkaisussa perustellusti ohittaa ja kirjata syyn.
+PHP-sopimustestit (`api/tests/run.php`) koskevat tässä ehdokkaassa muuttunutta linkkitarkistuskoodia. Aja ne, jos työasemalla on PHP 8.4; muutoin tee vähintään vaiheen 6 palvelinpuolen `php -l`-tarkistukset ja kirjaa työaseman PHP:n puuttuminen.
 
 ## Vaihe 3 — ehdokkaan rakentaminen
 
@@ -152,12 +151,12 @@ build-info.json
 DEPLOY_INSTRUCTIONS.md
 ```
 
-Tarkista `build-info.json`: `version` on `1.0.0` ja `commit` sama kuin vaiheessa 1. Tarkista myös, että faviconit tulivat mukaan:
+Tarkista `build-info.json`: `package` on `REL-15`, `version` on `1.0.0` ja `commit` sama kuin vaiheessa 1. Tarkista myös, että faviconit tulivat mukaan:
 
 ```powershell
-Get-ChildItem .tmp\rel14-v1.0.0-production-path-package\wordpress_aloitus\favicon.svg,
-              .tmp\rel14-v1.0.0-production-path-package\wordpress_aloitus\favicon-32.png,
-              .tmp\rel14-v1.0.0-production-path-package\wordpress_aloitus\apple-touch-icon.png |
+Get-ChildItem .tmp\rel15-v1.0.0-production-path-package\wordpress_aloitus\favicon.svg,
+              .tmp\rel15-v1.0.0-production-path-package\wordpress_aloitus\favicon-32.png,
+              .tmp\rel15-v1.0.0-production-path-package\wordpress_aloitus\apple-touch-icon.png |
   Select-Object Name, Length
 ```
 
@@ -195,24 +194,24 @@ Ota lisäksi tietokantavarmistus. Se tarvitaan joka tapauksessa kävijätilastoj
 
 ## Vaihe 5 — ehdokkaan siirto ja tarkistus
 
-SSH- ja SCP-kohde on sama tunnus kuin aiemmissakin vienneissä; sen kotihakemistossa `/home/seniorsurffi/` ovat sekä staging että tuotanto.
+SSH- ja SCP-kohde on `seniorsurffi.ssh.cchosting.fi`; sen kotihakemistossa `/home/seniorsurffi/` ovat sekä staging että tuotanto.
 
 Windowsin `scp` tulkitsee `C:`-kaksoispisteen etäosoitteen erottimeksi, joten siirry ensin paketin hakemistoon ja käytä suhteellista polkua.
 
 ```powershell
-Set-Location C:\dev\Aloitussivu.tmp\rel14-v0780-release\.tmp
-scp .\aloitussivu-rel14-v1.0.0-production-path.zip `
-  seniorsurffi@staging.aloitussivu.seniorsurf.fi:/home/seniorsurffi/aloitussivu-rel14-v1.0.0-production-path.zip
+Set-Location C:\dev\Aloitussivu.tmp\rel15-v100-release\.tmp
+scp .\aloitussivu-rel15-v1.0.0-production-path.zip `
+  seniorsurffi@seniorsurffi.ssh.cchosting.fi:/home/seniorsurffi/aloitussivu-rel15-v1.0.0-production-path.zip
 ```
 
 Avaa sitten SSH-yhteys:
 
 ```powershell
-ssh seniorsurffi@staging.aloitussivu.seniorsurf.fi
+ssh seniorsurffi@seniorsurffi.ssh.cchosting.fi
 ```
 
 ```bash
-sha256sum /home/seniorsurffi/aloitussivu-rel14-v1.0.0-production-path.zip
+sha256sum /home/seniorsurffi/aloitussivu-rel15-v1.0.0-production-path.zip
 ```
 
 Vertaa tulostetta paikalliseen `Sha256`-arvoon. **STOP, jos ne eivät täsmää.**
@@ -221,7 +220,7 @@ Jokainen SSH-lohko on oma shellinsä, joten muuttujat eivät säily lohkojen vä
 
 ```bash
 set -eu
-ZIP=/home/seniorsurffi/aloitussivu-rel14-v1.0.0-production-path.zip
+ZIP=/home/seniorsurffi/aloitussivu-rel15-v1.0.0-production-path.zip
 CANDIDATE=/home/seniorsurffi/rel15-production-candidate-$(date +%Y%m%d-%H%M%S)
 
 test -f "$ZIP"
