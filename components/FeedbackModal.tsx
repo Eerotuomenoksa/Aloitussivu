@@ -8,6 +8,7 @@ import { useI18n } from '../i18n';
 interface FeedbackModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onRequestLinkReport?: () => void;
 }
 
 const feedbackTranslations = {
@@ -16,7 +17,7 @@ const feedbackTranslations = {
     types: [
       { value: 'bug', label: 'Virhe', description: 'Jokin ei toimi tai näkyy väärin.' },
       { value: 'content', label: 'Sisältö', description: 'Teksti, otsikko tai tieto kaipaa korjausta.' },
-      { value: 'link', label: 'Linkki', description: 'Linkki puuttuu, ei toimi tai vie väärään paikkaan.' },
+      { value: 'link', label: 'Linkki', description: 'Ehdota uutta linkkiä tai ilmoita linkkiongelmasta erillisellä lomakkeella.' },
       { value: 'accessibility', label: 'Saavutettavuus', description: 'Käyttö on hankalaa näppäimistöllä, ruudunlukijalla tai mobiilissa.' },
       { value: 'idea', label: 'Idea', description: 'Ehdotus sivun parantamiseen.' },
       { value: 'other', label: 'Muu', description: 'Jokin muu palaute.' },
@@ -32,7 +33,7 @@ const feedbackTranslations = {
     savedLocal: 'Kiitos. Palaute tallennettiin tähän selaimeen, mutta tietokantaan ei juuri nyt saatu yhteyttä.',
     saveFailed: 'Palautteen tallennus ei onnistunut. Yritä hetken päästä uudelleen.',
     sentOnce: 'Palaute on lähetetty vain kerran. Voit nyt sulkea ikkunan.',
-    privacy: 'Palaute näkyy vain hyväksytylle ylläpidolle. Älä kirjoita henkilötietoja, terveystietoja, salasanoja tai muuta arkaluonteista tietoa. Kuvakaappaus tallennetaan vain ylläpidon tarkistusta varten.',
+    privacy: 'Palautteen teksti ja ylläpidon julkinen vastaus näkyvät palautteiden käsittelyjonossa. Älä kirjoita henkilötietoja, terveystietoja, salasanoja tai muuta arkaluonteista tietoa. Laitetiedot ja kuvakaappaus näkyvät vain ylläpidolle.',
     oneIssue: 'Kirjoita mieluiten vain yksi palautekokonaisuus kerrallaan. Se auttaa kehittäjää käsittelemään palautteen nopeammin ja merkitsemään sen valmiiksi selkeämmin.',
     shortTitle: 'Lyhyt otsikko', titlePlaceholder: 'Esim. Hakupainike jää puhelimella piiloon',
     concernsPage: 'Koskee sivua', descriptionLabel: 'Mitä pitäisi korjata tai käsitellä?',
@@ -48,7 +49,7 @@ const feedbackTranslations = {
     types: [
       { value: 'bug', label: 'Fel', description: 'Något fungerar inte eller visas fel.' },
       { value: 'content', label: 'Innehåll', description: 'Text, rubrik eller information behöver korrigeras.' },
-      { value: 'link', label: 'Länk', description: 'En länk saknas, fungerar inte eller leder fel.' },
+      { value: 'link', label: 'Länk', description: 'Föreslå en ny länk eller rapportera ett länkproblem med det separata formuläret.' },
       { value: 'accessibility', label: 'Tillgänglighet', description: 'Användningen är svår med tangentbord, skärmläsare eller mobil.' },
       { value: 'idea', label: 'Idé', description: 'Förslag på hur sidan kan förbättras.' },
       { value: 'other', label: 'Annat', description: 'Någon annan respons.' },
@@ -64,7 +65,7 @@ const feedbackTranslations = {
     savedLocal: 'Tack. Responsen sparades i den här webbläsaren, men databasen kunde inte nås just nu.',
     saveFailed: 'Responsen kunde inte sparas. Försök igen om en stund.',
     sentOnce: 'Responsen har skickats endast en gång. Du kan nu stänga fönstret.',
-    privacy: 'Responsen visas endast för godkända administratörer. Skriv inte personuppgifter, hälsouppgifter, lösenord eller annan känslig information. Skärmbilden sparas endast för administrationens granskning.',
+    privacy: 'Responsens text och administrationens offentliga svar visas i responskön. Skriv inte personuppgifter, hälsouppgifter, lösenord eller annan känslig information. Enhetsuppgifter och skärmbilden visas endast för administrationen.',
     oneIssue: 'Beskriv helst endast en responshelhet åt gången. Det hjälper utvecklaren att behandla responsen snabbare och tydligare markera den som klar.',
     shortTitle: 'Kort rubrik', titlePlaceholder: 'T.ex. sökknappen döljs på telefonen',
     concernsPage: 'Gäller sidan', descriptionLabel: 'Vad borde korrigeras eller behandlas?',
@@ -80,7 +81,7 @@ const feedbackTranslations = {
     types: [
       { value: 'bug', label: 'Error', description: 'Something does not work or is displayed incorrectly.' },
       { value: 'content', label: 'Content', description: 'Text, a heading or information needs correcting.' },
-      { value: 'link', label: 'Link', description: 'A link is missing, does not work or leads to the wrong place.' },
+      { value: 'link', label: 'Link', description: 'Suggest a new link or report a link problem using the dedicated form.' },
       { value: 'accessibility', label: 'Accessibility', description: 'The page is difficult to use with a keyboard, screen reader or mobile device.' },
       { value: 'idea', label: 'Idea', description: 'A suggestion for improving the page.' },
       { value: 'other', label: 'Other', description: 'Some other feedback.' },
@@ -96,7 +97,7 @@ const feedbackTranslations = {
     savedLocal: 'Thank you. The feedback was saved in this browser, but the database could not be reached right now.',
     saveFailed: 'The feedback could not be saved. Please try again in a moment.',
     sentOnce: 'The feedback was sent only once. You can now close the window.',
-    privacy: 'Feedback is visible only to approved administrators. Do not enter personal data, health information, passwords or other sensitive information. A screenshot is stored only for administrative review.',
+    privacy: 'The feedback text and the administrator’s public reply are shown in the public feedback queue. Do not enter personal data, health information, passwords or other sensitive information. Device details and screenshots are visible only to administrators.',
     oneIssue: 'Please describe only one feedback item at a time. This helps the developer process it faster and mark it as completed more clearly.',
     shortTitle: 'Short title', titlePlaceholder: 'For example, the search button is hidden on a phone',
     concernsPage: 'Page concerned', descriptionLabel: 'What should be corrected or addressed?',
@@ -193,7 +194,7 @@ const fileToScreenshot = (file: File): Promise<FeedbackScreenshotDraft> => new P
   reader.readAsDataURL(file);
 });
 
-const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose }) => {
+const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose, onRequestLinkReport }) => {
   const { language } = useI18n();
   const copy = feedbackTranslations[language === 'sv' || language === 'en' ? language : 'fi'];
   const [type, setType] = useState<FeedbackType>('bug');
@@ -280,6 +281,14 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose }) => {
     if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
+  const chooseType = (nextType: FeedbackType) => {
+    if (nextType === 'link' && onRequestLinkReport) {
+      onRequestLinkReport();
+      return;
+    }
+    setType(nextType);
+  };
+
   const submit = async (event: React.FormEvent) => {
     event.preventDefault();
     if (submitted || isSubmitting || submissionLockedRef.current) return;
@@ -358,6 +367,9 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose }) => {
             >
               <p>{submitNotice}</p>
               <p className="mt-1 text-sm font-bold">{copy.sentOnce}</p>
+              <a href="./kehitysjono.html" className="mt-3 inline-flex font-black text-green-900 underline dark:text-green-100">
+                {language === 'sv' ? 'Följ behandlingen' : language === 'en' ? 'Follow the processing' : 'Seuraa palautteen käsittelyä'}
+              </a>
             </div>
           </div>
         ) : null}
@@ -376,7 +388,7 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose }) => {
                 <button
                   key={option.value}
                   type="button"
-                  onClick={() => setType(option.value)}
+                  onClick={() => chooseType(option.value)}
                   aria-pressed={type === option.value}
                   className={`rounded-2xl border-2 p-4 text-left transition-all ${type === option.value ? 'border-[var(--theme-primary)] bg-[var(--theme-pale)]' : 'border-[var(--theme-border)] bg-[var(--theme-surface)]'}`}
                 >

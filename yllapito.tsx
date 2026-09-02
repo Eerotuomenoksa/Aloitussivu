@@ -17,7 +17,12 @@ const adminLinks = [
     protected: true,
   },
   {
-    title: 'Palautteet',
+    title: 'Palautteiden käsittely',
+    description: 'Avaa julkinen seurantasivu, jolla näkyvät palautteiden ja linkkiehdotusten tilat sekä ylläpidon vastaukset.',
+    href: './kehitysjono.html',
+  },
+  {
+    title: 'Palautteiden ylläpito',
     description: 'Tarkastele avoimia palautteita ja merkitse käsitellyt palautteet valmiiksi suojatussa työtilassa.',
     href: './ehdotukset.html#feedback',
     protected: true,
@@ -59,7 +64,7 @@ function App() {
           </p>
         </header>
 
-        <section className="grid gap-4 md:grid-cols-3" aria-label="Ylläpidon työkalut">
+        <section className="grid gap-4 md:grid-cols-2 lg:grid-cols-3" aria-label="Ylläpidon työkalut">
           {adminLinks.map((link) => (
             <a
               key={link.href}

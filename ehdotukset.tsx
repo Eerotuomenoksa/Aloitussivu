@@ -63,11 +63,14 @@ import {
 } from './linkChecks';
 
 const normalizeUrl = (url: string) => url.trim().replace(/\/+$/, '');
+const extractHttpsUrl = (value: string) => (
+  value.match(/https:\/\/[^\s<>"']+/i)?.[0]?.replace(/[),.;!?]+$/, '') ?? ''
+);
 
 const statusLabel = {
   pending: 'Odottaa',
-  approved: 'Toteutettu',
-  rejected: 'Sivuutettu',
+  approved: 'Hyväksytty tuotantoon',
+  rejected: 'Hylätty',
 };
 
 const feedbackStatusLabel: Record<FeedbackStatus, string> = {
@@ -76,7 +79,7 @@ const feedbackStatusLabel: Record<FeedbackStatus, string> = {
   planned: 'Suunniteltu',
   in_progress: 'Työn alla',
   done: 'Käsitelty',
-  rejected: 'Sivuutettu',
+  rejected: 'Hylätty',
 };
 
 const feedbackTypeLabel: Record<FeedbackItem['type'], string> = {
@@ -299,8 +302,10 @@ function App() {
   const [feedbackBusyId, setFeedbackBusyId] = useState<string | null>(null);
   const [feedbackMessage, setFeedbackMessage] = useState('');
   const [feedbackNotes, setFeedbackNotes] = useState<Record<string, string>>({});
+  const [feedbackLinkDrafts, setFeedbackLinkDrafts] = useState<Record<string, { name: string; url: string; category: string }>>({});
   const [approvedLinks, setApprovedLinks] = useState<ApprovedLinkSuggestion[]>(() => getApprovedLinkSuggestions());
   const [reportDrafts, setReportDrafts] = useState<Record<string, { name: string; url: string; category: string; note: string }>>({});
+  const [reportReviewReasons, setReportReviewReasons] = useState<Record<string, string>>({});
   const [busyId, setBusyId] = useState<string | null>(null);
   const [scamAlerts, setScamAlerts] = useState<ScamAlertEntry[]>([]);
   const [scamAlertBusyId, setScamAlertBusyId] = useState<string | null>(null);
@@ -612,6 +617,11 @@ function App() {
         delete next[report.id];
         return next;
       });
+      setReportReviewReasons((current) => {
+        const next = { ...current };
+        delete next[report.id];
+        return next;
+      });
     } finally {
       setBusyId(null);
     }
@@ -620,7 +630,14 @@ function App() {
   const rejectReport = async (report: ManagedLinkReportEntry) => {
     setBusyId(report.id);
     try {
-      await updateLinkReportStatus(report.id, 'rejected', user?.email);
+      const reviewReason = reportReviewReasons[report.id]?.trim()
+        || (report.type === 'new' ? 'Ehdotusta ei hyväksytty tuotantoon.' : '');
+      await updateLinkReportStatus(report.id, 'rejected', user?.email, undefined, reviewReason);
+      setReportReviewReasons((current) => {
+        const next = { ...current };
+        delete next[report.id];
+        return next;
+      });
     } finally {
       setBusyId(null);
     }
@@ -652,13 +669,14 @@ function App() {
     setFeedbackBusyId(item.id);
     setFeedbackMessage('');
     try {
-      await updateFeedbackItem(item.id, status, feedbackNotes[item.id] ?? '', user?.email);
+      const publicNote = feedbackNotes[item.id] ?? item.publicNote ?? '';
+      await updateFeedbackItem(item.id, status, publicNote, user?.email);
       setFeedbackItems((current) => current.map((currentItem) => (
         currentItem.id === item.id
           ? {
             ...currentItem,
             status,
-            publicNote: feedbackNotes[item.id] ?? '',
+            publicNote,
             updatedAt: new Date().toISOString(),
             ...(status === 'done' || status === 'rejected' ? { handledAt: new Date().toISOString(), handledBy: user?.email } : {}),
           }
@@ -668,6 +686,49 @@ function App() {
     } catch (error) {
       if (isAdminAccessError(error)) setAdminSession(null);
       setFeedbackMessage(error instanceof Error ? `Palautteen käsittely epäonnistui: ${error.message}` : 'Palautteen käsittely epäonnistui.');
+    } finally {
+      setFeedbackBusyId(null);
+    }
+  };
+
+  const approveFeedbackLink = async (item: FeedbackItem) => {
+    const draft = feedbackLinkDrafts[item.id] ?? {
+      name: item.title,
+      url: extractHttpsUrl(item.description),
+      category: '',
+    };
+    if (!draft.name.trim() || !draft.url.trim() || !draft.category.trim()) {
+      setFeedbackMessage('Täytä linkin nimi, HTTPS-osoite ja kategoria ennen hyväksymistä.');
+      return;
+    }
+
+    setFeedbackBusyId(item.id);
+    setFeedbackMessage('');
+    try {
+      const approved = await approveLinkSuggestion({
+        name: draft.name,
+        url: draft.url,
+        category: draft.category,
+        source: 'Palautteen käsittely',
+        note: item.description.slice(0, 1000),
+      });
+      const publicNote = `Linkki hyväksyttiin tuotantoon: ${approved.url}`;
+      await updateFeedbackItem(item.id, 'done', publicNote, user?.email);
+      setFeedbackItems((current) => current.map((currentItem) => (
+        currentItem.id === item.id
+          ? { ...currentItem, status: 'done', publicNote, updatedAt: new Date().toISOString() }
+          : currentItem
+      )));
+      setFeedbackNotes((current) => ({ ...current, [item.id]: publicNote }));
+      setFeedbackLinkDrafts((current) => {
+        const next = { ...current };
+        delete next[item.id];
+        return next;
+      });
+      setFeedbackMessage(`Linkki ”${approved.name}” lisättiin tuotantoon ja palaute merkittiin käsitellyksi.`);
+    } catch (error) {
+      if (isAdminAccessError(error)) setAdminSession(null);
+      setFeedbackMessage(error instanceof Error ? `Linkin hyväksyminen epäonnistui: ${error.message}` : 'Linkin hyväksyminen epäonnistui.');
     } finally {
       setFeedbackBusyId(null);
     }
@@ -969,6 +1030,11 @@ function App() {
                 <div className="space-y-3">
                   {feedbackItems.map((item) => {
                     const isOpen = openFeedbackItems.some((openItem) => openItem.id === item.id);
+                    const feedbackLinkDraft = feedbackLinkDrafts[item.id] ?? {
+                      name: item.title,
+                      url: extractHttpsUrl(item.description),
+                      category: '',
+                    };
                     return (
                       <article key={item.id} className={`rounded-2xl border p-5 shadow-sm ${isOpen ? 'border-rose-200 bg-white dark:border-rose-900 dark:bg-slate-900' : 'border-slate-200 bg-slate-50 dark:border-slate-800 dark:bg-slate-950/60'}`}>
                         <div className="flex flex-wrap items-start justify-between gap-3">
@@ -987,6 +1053,62 @@ function App() {
                         {item.publicNote && <p className="mt-3 rounded-xl bg-slate-100 p-3 text-sm font-bold text-slate-700 dark:bg-slate-800 dark:text-slate-200">Ylläpidon huomio: {item.publicNote}</p>}
                         {isOpen && (
                           <div className="mt-4 space-y-3 border-t border-slate-200 pt-4 dark:border-slate-700">
+                            {item.type === 'link' ? (
+                              <div className="space-y-3 rounded-2xl border-2 border-blue-200 bg-blue-50 p-4 dark:border-blue-900 dark:bg-blue-950/30">
+                                <div>
+                                  <p className="font-black text-blue-950 dark:text-blue-100">Hyväksy linkki suoraan tuotantoon</p>
+                                  <p className="mt-1 text-sm font-bold text-blue-900 dark:text-blue-200">Tarkista tiedot. Hyväksyminen lisää linkin linkkiluetteloon ja merkitsee palautteen käsitellyksi.</p>
+                                </div>
+                                <div className="grid gap-3 md:grid-cols-2">
+                                  <label className="space-y-1">
+                                    <span className="text-sm font-black text-blue-950 dark:text-blue-100">Linkin nimi</span>
+                                    <input
+                                      value={feedbackLinkDraft.name}
+                                      onChange={(event) => setFeedbackLinkDrafts((current) => ({
+                                        ...current,
+                                        [item.id]: { ...feedbackLinkDraft, name: event.target.value },
+                                      }))}
+                                      className="w-full rounded-xl border-2 border-blue-200 bg-white px-3 py-2 font-bold text-slate-900 dark:border-blue-800 dark:bg-slate-900 dark:text-white"
+                                    />
+                                  </label>
+                                  <label className="space-y-1">
+                                    <span className="text-sm font-black text-blue-950 dark:text-blue-100">Kategoria</span>
+                                    <input
+                                      value={feedbackLinkDraft.category}
+                                      onChange={(event) => setFeedbackLinkDrafts((current) => ({
+                                        ...current,
+                                        [item.id]: { ...feedbackLinkDraft, category: event.target.value },
+                                      }))}
+                                      placeholder="Esim. Asiointi"
+                                      className="w-full rounded-xl border-2 border-blue-200 bg-white px-3 py-2 font-bold text-slate-900 dark:border-blue-800 dark:bg-slate-900 dark:text-white"
+                                    />
+                                  </label>
+                                </div>
+                                <label className="block space-y-1">
+                                  <span className="text-sm font-black text-blue-950 dark:text-blue-100">HTTPS-osoite</span>
+                                  <input
+                                    type="url"
+                                    value={feedbackLinkDraft.url}
+                                    onChange={(event) => setFeedbackLinkDrafts((current) => ({
+                                      ...current,
+                                      [item.id]: { ...feedbackLinkDraft, url: event.target.value },
+                                    }))}
+                                    placeholder="https://..."
+                                    className="w-full rounded-xl border-2 border-blue-200 bg-white px-3 py-2 font-bold text-slate-900 dark:border-blue-800 dark:bg-slate-900 dark:text-white"
+                                  />
+                                </label>
+                                <div className="flex justify-end">
+                                  <button
+                                    type="button"
+                                    disabled={feedbackBusyId === item.id}
+                                    onClick={() => void approveFeedbackLink(item)}
+                                    className="rounded-full bg-blue-700 px-5 py-3 font-black text-white shadow-md transition-all hover:bg-blue-800 active:scale-95 disabled:opacity-50"
+                                  >
+                                    Hyväksy linkki tuotantoon
+                                  </button>
+                                </div>
+                              </div>
+                            ) : null}
                             <label className="block space-y-2" htmlFor={`feedback-note-${item.id}`}>
                               <span className="block text-sm font-black text-slate-700 dark:text-slate-200">Ylläpidon huomio (valinnainen)</span>
                               <textarea
@@ -1011,6 +1133,14 @@ function App() {
                                   {(['new', 'triage', 'planned', 'in_progress', 'done', 'rejected'] as FeedbackStatus[]).map((status) => <option key={status} value={status}>{feedbackStatusLabel[status]}</option>)}
                                 </select>
                               </label>
+                              <button
+                                type="button"
+                                disabled={feedbackBusyId === item.id}
+                                onClick={() => void handleFeedbackStatus(item, 'rejected')}
+                                className="rounded-full bg-slate-200 px-5 py-3 font-black text-slate-900 shadow-md transition-all hover:bg-slate-300 active:scale-95 disabled:opacity-50"
+                              >
+                                Hylkää palaute
+                              </button>
                               <button
                                 type="button"
                                 disabled={feedbackBusyId === item.id}
@@ -1645,6 +1775,20 @@ function App() {
                           />
                         </label>
 
+                        <label className="space-y-2 block">
+                          <span className="block font-black text-slate-700 dark:text-slate-200">Hylkäyksen perustelu (julkinen, valinnainen)</span>
+                          <textarea
+                            value={reportReviewReasons[report.id] ?? ''}
+                            onChange={(event) => setReportReviewReasons((current) => ({
+                              ...current,
+                              [report.id]: event.target.value,
+                            }))}
+                            className="w-full min-h-[84px] rounded-2xl border-4 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 font-bold text-slate-900 dark:text-white resize-y"
+                            placeholder="Perustelu näkyy palautteiden käsittelysivulla."
+                            maxLength={1000}
+                          />
+                        </label>
+
                         <div className="flex flex-wrap items-center justify-end gap-3">
                           <button
                             type="button"
@@ -1652,7 +1796,7 @@ function App() {
                             onClick={() => rejectReport(report)}
                             className="rounded-full bg-slate-200 hover:bg-slate-300 disabled:opacity-50 text-slate-900 px-5 py-3 font-black shadow-md transition-all active:scale-95"
                           >
-                            Sivuuta ilmoitus
+                            Hylkää ehdotus
                           </button>
                           <button
                             type="button"

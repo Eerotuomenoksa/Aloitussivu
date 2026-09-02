@@ -18,7 +18,7 @@ Lisää nykyisen `/home/seniorsurffi/aloitus-production/secrets/config.php`-tied
 'link_checks' => [
     'enabled' => true,
     'batch_size' => 10,
-    'timeout_seconds' => 12,
+    'timeout_seconds' => 5,
     'refresh_days' => 30,
     'retry_hours' => 24,
     'alert_after_failures' => 2,
@@ -42,7 +42,7 @@ Lisää PHP-skriptinä ajettava työ:
 - Nimi: `Aloitussivu – automaattinen linkkitarkistus`
 - Testaa toiminta: käytössä ensimmäisen tallennuksen yhteydessä
 
-Ajastus tarkistaa enintään kymmenen vuorossa olevaa linkkiä tunnissa ja enintään kolme linkkiä samalta isännältä. Yksi kohde saa käyttää enintään 15 sekuntia ja koko ajo enintään 120 sekuntia. Tietokantalukko estää päällekkäiset ajot.
+Ajastus tarkistaa enintään kymmenen vuorossa olevaa linkkiä tunnissa ja enintään kolme linkkiä samalta isännältä. Erässä on enintään neljä samanaikaista ulkoista yhteyttä. Yksittäisen HTTP-yrityksen aikakatkaisu on viisi sekuntia, yhden kohteen kokonaisbudjetti 15 sekuntia ja koko ajo enintään 120 sekuntia. Tietokantalukko estää päällekkäiset ajot.
 
 Ennen erää tarkistetaan `https://www.suomi.fi/`. Jos kiintopiste ei vastaa tai yli 60 prosenttia erästä kaatuu DNS-, yhteys- tai aikakatkaisuvirheeseen, ajo merkitään `network_suspect`-tilaan eikä yhtään kohdetta päivitetä tai piiloteta. Kahdesta peräkkäisestä tapauksesta tulee `network_suspect_repeated`, joka näkyy ylläpidossa ja seuraavassa ylläpitokoosteessa.
 

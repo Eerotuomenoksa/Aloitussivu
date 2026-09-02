@@ -32,6 +32,19 @@ export interface ManagedLinkReportEntry extends LinkReportEntry {
   reviewReason?: string;
 }
 
+export interface PublicLinkReportEntry {
+  id: string;
+  type: LinkReportEntry['type'];
+  name: string;
+  url: string;
+  category?: string;
+  status: LinkReportStatus;
+  reviewReason?: string;
+  createdAt: string;
+  updatedAt?: string;
+  reviewedAt?: string;
+}
+
 const readJsonArray = (key: string) => {
   try {
     if (typeof localStorage === 'undefined') return [];
@@ -242,6 +255,42 @@ export const subscribeLinkReports = (
     async () => (await getDataProvider()).listAdmin<ManagedLinkReportEntry[]>('link-reports'),
     callback,
     onError,
+    adminPollIntervalMs,
+  );
+
+  return () => {
+    stopPolling();
+    window.removeEventListener('storage', handleChange);
+    window.removeEventListener(LINK_REPORTS_CHANGE_EVENT, handleChange);
+  };
+};
+
+export const subscribePublicLinkReports = (
+  callback: (reports: PublicLinkReportEntry[]) => void,
+  onError?: (error: unknown) => void,
+) => {
+  const readLocalReports = (): PublicLinkReportEntry[] => getManagedLinkReports().map((report) => ({
+    id: report.id,
+    type: report.type,
+    name: report.name,
+    url: report.url,
+    category: report.category,
+    status: report.status,
+    reviewReason: report.reviewReason,
+    createdAt: report.createdAt,
+    updatedAt: report.updatedAt,
+    reviewedAt: report.reviewedAt,
+  }));
+  const handleChange = () => callback(readLocalReports());
+  window.addEventListener('storage', handleChange);
+  window.addEventListener(LINK_REPORTS_CHANGE_EVENT, handleChange);
+  const stopPolling = subscribeWithPolling(
+    async () => (await getDataProvider()).listPublic<PublicLinkReportEntry>('link-reports', { fresh: true }),
+    callback,
+    (error) => {
+      callback(readLocalReports());
+      onError?.(error);
+    },
     adminPollIntervalMs,
   );
 

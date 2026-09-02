@@ -762,6 +762,37 @@ test('public list routes expose only contracted fields and support ETag', static
             'updated_at' => '2026-08-20 09:02:00.000000',
             'expires_at' => '2026-08-27 09:02:00.000000',
         ]],
+        [[
+            'id' => '40000000-0000-4000-8000-000000000001',
+            'type' => 'idea',
+            'title' => 'Selkeämpi otsikko',
+            'description' => 'Otsikko voisi kertoa sisällöstä tarkemmin.',
+            'page' => 'Etusivu',
+            'status' => 'planned',
+            'public_note' => 'Lisätty kehitysjonoon.',
+            'created_at' => '2026-08-20 09:03:00.000000',
+            'updated_at' => '2026-08-20 09:04:00.000000',
+            'handled_at' => null,
+            'handled_by' => 'must-not-leak',
+            'client_json' => 'must-not-leak',
+            'has_screenshot' => 1,
+        ]],
+        [[
+            'id' => '30000000-0000-4000-8000-000000000001',
+            'type' => 'new',
+            'name' => 'Uusi palvelu',
+            'url' => 'https://example.com/new',
+            'category' => 'Palvelut',
+            'status' => 'rejected',
+            'review_reason' => 'Palvelu ei ole valtakunnallinen.',
+            'created_at' => '2026-08-20 09:05:00.000000',
+            'updated_at' => '2026-08-20 09:06:00.000000',
+            'reviewed_at' => '2026-08-20 09:06:00.000000',
+            'source' => 'must-not-leak',
+            'note' => 'must-not-leak',
+            'reviewed_by' => 'must-not-leak',
+            'approved_link_id' => 'must-not-leak',
+        ]],
         $approvedRows,
     ];
     $app = testApp($database, rateLimiter: new FakeRateLimiter(), attachmentStorage: new FakeAttachmentStorage());
@@ -783,6 +814,17 @@ test('public list routes expose only contracted fields and support ETag', static
     assertTrue(str_contains($scamQuery, 'active = 1'));
     assertTrue(str_contains($scamQuery, 'expires_at > UTC_TIMESTAMP(6)'));
     assertTrue(str_contains($scamQuery, 'LIMIT 2'));
+
+    $feedback = $app->handle(Request::fromValues('GET', '/api/v1/feedback'));
+    assertSameValue(200, $feedback->status);
+    assertSameValue('Lisätty kehitysjonoon.', jsonBody($feedback)['data'][0]['publicNote']);
+    assertTrue(!str_contains($feedback->body, 'must-not-leak'));
+    assertTrue(!str_contains($feedback->body, 'hasScreenshot'));
+
+    $linkReports = $app->handle(Request::fromValues('GET', '/api/v1/link-reports'));
+    assertSameValue(200, $linkReports->status);
+    assertSameValue('Palvelu ei ole valtakunnallinen.', jsonBody($linkReports)['data'][0]['reviewReason']);
+    assertTrue(!str_contains($linkReports->body, 'must-not-leak'));
 
     $notModified = $app->handle(Request::fromValues(
         'GET',
@@ -2022,7 +2064,7 @@ test('link-check configuration has safe defaults and bounded values', static fun
     $defaults = testConfig();
     assertSameValue(false, $defaults->linkCheckEnabled);
     assertSameValue(10, $defaults->linkCheckBatchSize);
-    assertSameValue(8, $defaults->linkCheckTimeoutSeconds);
+    assertSameValue(5, $defaults->linkCheckTimeoutSeconds);
     assertSameValue(2, $defaults->linkCheckAlertAfterFailures);
     assertSameValue(false, $defaults->linkCheckAutoBlockEnabled);
     assertSameValue(25, $defaults->linkCheckAutoBlockMaxPerRun);

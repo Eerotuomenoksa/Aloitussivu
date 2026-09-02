@@ -8,6 +8,18 @@ export type ChangelogHighlight = {
 
 export const AUGUST_2026_HIGHLIGHTS: ChangelogHighlight[] = [
   {
+    date: '2.9.2026',
+    title: 'Palautteiden käsittely näkyviin',
+    summary:
+      'Palautteen jättäjä ja muut käyttäjät voivat nyt seurata kehitysjonosta, miten palaute ja linkkiehdotukset etenevät.',
+    changes: [
+      'Linkkiehdotus ohjautuu aina rakenteiseen käsittelyyn, jossa ylläpitäjä voi hyväksyä sen tuotantoon tai hylätä sen perusteluineen.',
+      'Ylläpito voi muuntaa aiemman linkkityyppisen palautteen hyväksyttäväksi linkiksi tai hylätä palautteen.',
+      'Julkinen kehitysjono näyttää palautteen tilan ja ylläpidon julkaiseman käsittelymerkinnän ilman ilmoittajan tai ylläpitäjän yksityisiä tietoja.',
+    ],
+    tags: ['Palaute', 'Linkit', 'Ylläpito'],
+  },
+  {
     date: '1.9.2026',
     title: 'Versio 1.0 ja uusi tunnus',
     summary:

@@ -480,15 +480,26 @@ const AppContent: React.FC = () => {
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const params = new URLSearchParams(window.location.search);
-    if (params.get('feedback') !== '1') return;
-    setIsFeedbackOpen(true);
+    const showFeedback = params.get('feedback') === '1';
+    const showLinkReport = params.get('link-report') === '1';
+    if (!showFeedback && !showLinkReport) return;
+    if (showLinkReport) {
+      setReportDraft({ name: '', url: '', category: '', source: 'Kehitysjono' });
+    } else {
+      setIsFeedbackOpen(true);
+    }
     params.delete('feedback');
+    params.delete('link-report');
     const nextSearch = params.toString();
     const nextUrl = `${window.location.pathname}${nextSearch ? `?${nextSearch}` : ''}${window.location.hash}`;
     window.history.replaceState(null, '', nextUrl);
   }, []);
   const openReportModal = useCallback((draft: LinkReportDraft) => setReportDraft(draft), []);
   const closeReportModal = useCallback(() => setReportDraft(null), []);
+  const openLinkReportFromFeedback = useCallback(() => {
+    setIsFeedbackOpen(false);
+    openReportModal({ name: '', url: '', category: '', source: 'Palaute' });
+  }, [openReportModal]);
   const selectedShortcut = selectedCategory ? mergeApprovedLinksIntoShortcuts([selectedCategory])[0] ?? selectedCategory : null;
   const isFinnishLocality = locality?.isInFinland !== false;
   const regionalLocality = isFinnishLocality ? locality : null;
@@ -982,6 +993,7 @@ const AppContent: React.FC = () => {
               </p>
               {[
                 { href: getLocalizedPublicPageHref('linkit', language), label: t('linkList') },
+                { href: './kehitysjono.html', label: t('feedbackQueue') },
                 { href: getLocalizedPublicPageHref('tietosuoja', language), label: t('privacyNotice') },
                 { href: getLocalizedPublicPageHref('saavutettavuus', language), label: t('accessibilityStatement') },
               ].map((link) => (
@@ -1053,7 +1065,13 @@ const AppContent: React.FC = () => {
             />
           )}
           {reportDraft && <LinkReportModal draft={reportDraft} onClose={closeReportModal} />}
-          {isFeedbackOpen && <FeedbackModal isOpen={isFeedbackOpen} onClose={() => setIsFeedbackOpen(false)} />}
+          {isFeedbackOpen && (
+            <FeedbackModal
+              isOpen={isFeedbackOpen}
+              onClose={() => setIsFeedbackOpen(false)}
+              onRequestLinkReport={openLinkReportFromFeedback}
+            />
+          )}
         </Suspense>
       </div>
       <FloatingControls

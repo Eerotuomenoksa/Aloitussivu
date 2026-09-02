@@ -37,6 +37,8 @@ final class PublicApi
         $router->add('GET', '/api/v1/approved-links', fn (Request $request): Response => $this->approvedLinks($request));
         $router->add('GET', '/api/v1/blocked-links', fn (Request $request): Response => $this->blockedLinks($request));
         $router->add('GET', '/api/v1/scam-alerts', fn (Request $request): Response => $this->scamAlerts($request));
+        $router->add('GET', '/api/v1/feedback', fn (Request $request): Response => $this->feedback($request));
+        $router->add('GET', '/api/v1/link-reports', fn (Request $request): Response => $this->linkReports($request));
         $router->add('POST', '/api/v1/link-reports', fn (Request $request): Response => $this->submitLinkReport($request));
         $router->add('POST', '/api/v1/feedback', fn (Request $request): Response => $this->submitFeedback($request));
         $router->add('POST', '/api/v1/test-feedback', fn (Request $request): Response => $this->submitTestFeedback($request));
@@ -110,6 +112,48 @@ final class PublicApi
             }
             return $item;
         }, $rows);
+        return $this->listResponse($request, $data);
+    }
+
+    private function feedback(Request $request): Response
+    {
+        $rows = $this->database->fetchAll(
+            'SELECT id, type, title, description, page, status, public_note, created_at, updated_at, handled_at '
+            . 'FROM feedback_items ORDER BY updated_at DESC, created_at DESC LIMIT 500',
+        );
+        $data = array_map(static fn (array $row): array => [
+            'id' => (string) ($row['id'] ?? ''),
+            'type' => (string) ($row['type'] ?? 'other'),
+            'title' => (string) ($row['title'] ?? ''),
+            'description' => (string) ($row['description'] ?? ''),
+            'page' => (string) ($row['page'] ?? ''),
+            'status' => (string) ($row['status'] ?? 'new'),
+            'publicNote' => (string) ($row['public_note'] ?? ''),
+            'createdAt' => self::isoDate($row['created_at'] ?? ''),
+            'updatedAt' => self::isoDate($row['updated_at'] ?? ''),
+            'handledAt' => self::isoDate($row['handled_at'] ?? ''),
+        ], $rows);
+        return $this->listResponse($request, $data);
+    }
+
+    private function linkReports(Request $request): Response
+    {
+        $rows = $this->database->fetchAll(
+            'SELECT id, type, name, url, category, status, review_reason, created_at, updated_at, reviewed_at '
+            . 'FROM link_reports ORDER BY updated_at DESC, created_at DESC LIMIT 500',
+        );
+        $data = array_map(static fn (array $row): array => [
+            'id' => (string) ($row['id'] ?? ''),
+            'type' => (string) ($row['type'] ?? 'new'),
+            'name' => (string) ($row['name'] ?? ''),
+            'url' => (string) ($row['url'] ?? ''),
+            'category' => (string) ($row['category'] ?? ''),
+            'status' => (string) ($row['status'] ?? 'pending'),
+            'reviewReason' => (string) ($row['review_reason'] ?? ''),
+            'createdAt' => self::isoDate($row['created_at'] ?? ''),
+            'updatedAt' => self::isoDate($row['updated_at'] ?? ''),
+            'reviewedAt' => self::isoDate($row['reviewed_at'] ?? ''),
+        ], $rows);
         return $this->listResponse($request, $data);
     }
 

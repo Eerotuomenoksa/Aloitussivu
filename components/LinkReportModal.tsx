@@ -109,7 +109,7 @@ const LinkReportModal: React.FC<LinkReportModalProps> = ({ draft, onClose }) => 
       if (closeTimerRef.current !== null) {
         window.clearTimeout(closeTimerRef.current);
       }
-      closeTimerRef.current = window.setTimeout(onClose, result.storage === 'cloud' ? 900 : 3500);
+      closeTimerRef.current = window.setTimeout(onClose, result.storage === 'cloud' ? 7000 : 9000);
     } catch {
       setSubmitError(t('reportSaveFailed'));
     } finally {
@@ -212,9 +212,12 @@ const LinkReportModal: React.FC<LinkReportModalProps> = ({ draft, onClose }) => 
             </label>
 
             {submitted ? (
-              <p role="status" className="rounded-2xl bg-green-50 dark:bg-green-900/20 border-4 border-green-200 dark:border-green-900 p-4 font-black text-green-800 dark:text-green-200">
-                {submitNotice || t('reportSaved')}
-              </p>
+              <div role="status" className="rounded-2xl bg-green-50 dark:bg-green-900/20 border-4 border-green-200 dark:border-green-900 p-4 font-black text-green-800 dark:text-green-200">
+                <p>{submitNotice || t('reportSaved')}</p>
+                <a href="./kehitysjono.html" className="mt-3 inline-flex text-green-900 underline dark:text-green-100">
+                  {t('feedbackQueue')}
+                </a>
+              </div>
             ) : null}
 
             {syncNotice ? (

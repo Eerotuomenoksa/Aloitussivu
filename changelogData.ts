@@ -24,11 +24,11 @@ export type ChangelogCommit = {
   tags: string[];
 };
 
-export const CHANGELOG_GENERATED_AT = "1.9.2026";
-export const CHANGELOG_VERSION = "1.0.0";
+export const CHANGELOG_GENERATED_AT = "2.9.2026";
+export const CHANGELOG_VERSION = "1.1.0";
 export const CHANGELOG_WORKTREE_SUMMARY: string[] = [
-  "Tietosuojaseloste kirjoitettiin selkeämmälle kielelle suomeksi, ruotsiksi ja englanniksi.",
-  "Selosteeseen lisättiin lyhyt sanasto, joka selittää tärkeät tietosuojaan liittyvät sanat."
+  "Palaute- ja linkkiehdotusten käsittely palautettiin näkyväksi kehitysjonoksi kaikille käyttäjille.",
+  "Automaattisen linkkitarkistuksen aikakatkaisu yhdenmukaistettiin viiteen sekuntiin; ulkoisten yhteyksien samanaikaisuuden kattoa ei nostettu."
 ];
 export const CHANGELOG_DEPLOYMENTS: ChangelogDeployment[] = [];
 export const CHANGELOG_RECENT_COMMITS: ChangelogCommit[] = [

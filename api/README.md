@@ -113,6 +113,8 @@ Kaikkien kirjoituspyyntöjen valinnainen `website`-kenttä on honeypot ja sen pi
 | `GET /api/v1/approved-links` | `id`, `name`, `url`, `category`, `source`, `createdAt`, valinnainen `note` |
 | `GET /api/v1/blocked-links` | `id`, `url`, `createdAt`; syy ja ylläpitäjä eivät ole julkisia |
 | `GET /api/v1/scam-alerts` | vain aktiiviset ja vanhenemattomat varoitukset; julkinen sisältö ja lähdetiedot |
+| `GET /api/v1/feedback` | palautteen teksti, tila ja julkinen käsittelymerkintä; selain- ja laitetiedot, ylläpitäjän tunniste sekä kuvakaappaus eivät ole julkisia |
+| `GET /api/v1/link-reports` | linkkiehdotuksen tai -ilmoituksen perustiedot, tila ja julkinen käsittelyperuste; ilmoittajan lähde, lisätieto ja ylläpitäjän tunniste eivät ole julkisia |
 
 Listavastaus on `{"data": [...], "requestId": "..."}`. Listoilla on 60 sekunnin selainvälimuisti ja `ETag`; vastaava `If-None-Match` palauttaa 304.
 

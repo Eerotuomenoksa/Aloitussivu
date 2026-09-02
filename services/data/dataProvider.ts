@@ -1,6 +1,6 @@
 export type DataProviderKind = 'cloudcity' | 'firebase-rollback' | 'local';
 
-export type PublicListResource = 'approved-links' | 'blocked-links' | 'scam-alerts';
+export type PublicListResource = 'approved-links' | 'blocked-links' | 'scam-alerts' | 'feedback' | 'link-reports';
 export type PublicWriteResource = 'link-reports' | 'feedback' | 'test-feedback' | 'usage-events';
 export type AdminListResource =
   | 'link-reports'

@@ -5,6 +5,7 @@ import './index.css';
 import {
   getFeedbackAttachment,
   subscribeFeedbackItems,
+  subscribePublicFeedbackItems,
   updateFeedbackItem,
 } from './feedback';
 import type {
@@ -13,6 +14,11 @@ import type {
   FeedbackStatus,
   FeedbackType,
 } from './feedback';
+import {
+  subscribePublicLinkReports,
+  type LinkReportStatus,
+  type PublicLinkReportEntry,
+} from './linkVisibility';
 import {
   getUserEmail,
   signInWithGoogle,
@@ -46,6 +52,24 @@ const statusClasses: Record<FeedbackStatus, string> = {
   planned: 'bg-cyan-100 text-cyan-950 dark:bg-cyan-900/40 dark:text-cyan-100',
   in_progress: 'bg-violet-100 text-violet-950 dark:bg-violet-900/40 dark:text-violet-100',
   done: 'bg-emerald-100 text-emerald-950 dark:bg-emerald-900/40 dark:text-emerald-100',
+  rejected: 'bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-200',
+};
+
+const linkTypeLabels: Record<PublicLinkReportEntry['type'], string> = {
+  new: 'Uusi linkkiehdotus',
+  broken: 'Rikkinäinen linkki',
+  wrong: 'Väärä linkki',
+};
+
+const linkStatusLabels: Record<LinkReportStatus, string> = {
+  pending: 'Odottaa käsittelyä',
+  approved: 'Hyväksytty tuotantoon',
+  rejected: 'Hylätty',
+};
+
+const linkStatusClasses: Record<LinkReportStatus, string> = {
+  pending: 'bg-amber-100 text-amber-950 dark:bg-amber-900/40 dark:text-amber-100',
+  approved: 'bg-emerald-100 text-emerald-950 dark:bg-emerald-900/40 dark:text-emerald-100',
   rejected: 'bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-200',
 };
 
@@ -121,7 +145,7 @@ function AdminEditor({
             onChange={(event) => setPublicNote(event.target.value)}
             className="aurora-input rounded-2xl px-4 py-3 font-bold"
             placeholder="Esim. Korjattu versiossa 0.71.1"
-            maxLength={4000}
+            maxLength={1600}
             rows={3}
           />
         </label>
@@ -257,8 +281,59 @@ function FeedbackCard({
   );
 }
 
+function LinkReportCard({ report }: { report: PublicLinkReportEntry }) {
+  return (
+    <article className="rounded-[28px] border border-[var(--theme-border)] bg-[var(--theme-surface)] p-5 shadow-sm md:p-6">
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div className="min-w-0">
+          <div className="mb-3 flex flex-wrap gap-2">
+            <span className={`rounded-full px-3 py-1 text-sm font-black ${linkStatusClasses[report.status]}`}>
+              {linkStatusLabels[report.status]}
+            </span>
+            <span className="rounded-full bg-[var(--theme-pale)] px-3 py-1 text-sm font-black text-[var(--theme-muted)]">
+              {linkTypeLabels[report.type]}
+            </span>
+            {report.category ? (
+              <span className="rounded-full bg-[var(--theme-pale)] px-3 py-1 text-sm font-black text-[var(--theme-muted)]">
+                {report.category}
+              </span>
+            ) : null}
+          </div>
+          <h3 className="font-display text-2xl font-bold leading-tight text-[var(--theme-text)] md:text-3xl">
+            {report.name || 'Linkkiehdotus'}
+          </h3>
+          <a
+            href={report.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-2 block break-all font-bold text-[var(--theme-primary)] underline"
+          >
+            {report.url}
+          </a>
+        </div>
+        <p className="text-sm font-bold text-[var(--theme-muted)]">
+          Lisätty {formatDateTime(report.createdAt)}
+        </p>
+      </div>
+
+      {report.status !== 'pending' ? (
+        <div className="mt-5 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-pale)] p-4">
+          <p className="text-sm font-black uppercase tracking-wide text-[var(--theme-muted)]">Käsittely</p>
+          <p className="mt-1 font-bold text-[var(--theme-text)]">
+            {report.reviewReason || linkStatusLabels[report.status]}
+          </p>
+          <p className="mt-2 text-sm font-bold text-[var(--theme-muted)]">
+            Päivitetty {formatDateTime(report.reviewedAt || report.updatedAt)}
+          </p>
+        </div>
+      ) : null}
+    </article>
+  );
+}
+
 function DevelopmentQueuePage() {
   const [items, setItems] = useState<FeedbackItem[]>([]);
+  const [linkReports, setLinkReports] = useState<PublicLinkReportEntry[]>([]);
   const [user, setUser] = useState<User | null>(null);
   const [authReady, setAuthReady] = useState(false);
   const [authError, setAuthError] = useState('');
@@ -266,6 +341,7 @@ function DevelopmentQueuePage() {
   const [adminSession, setAdminSession] = useState<AdminSession | null>(null);
   const [adminAccessReady, setAdminAccessReady] = useState(false);
   const [loadError, setLoadError] = useState('');
+  const [linkLoadError, setLinkLoadError] = useState('');
 
   useEffect(() => installUsageTracking('kehitysjono'), []);
 
@@ -295,16 +371,20 @@ function DevelopmentQueuePage() {
   const canEdit = adminSession !== null;
 
   useEffect(() => {
-    if (!canEdit) {
-      setItems([]);
-      return () => {};
-    }
     setLoadError('');
-    return subscribeFeedbackItems(setItems, (error) => {
-      if (isAdminAccessError(error)) setAdminSession(null);
+    const subscribe = canEdit ? subscribeFeedbackItems : subscribePublicFeedbackItems;
+    return subscribe(setItems, (error) => {
+      if (canEdit && isAdminAccessError(error)) setAdminSession(null);
       setLoadError(error instanceof Error ? error.message : 'Palautteita ei voitu ladata.');
     });
   }, [canEdit]);
+
+  useEffect(() => {
+    setLinkLoadError('');
+    return subscribePublicLinkReports(setLinkReports, (error) => {
+      setLinkLoadError(error instanceof Error ? error.message : 'Linkkiehdotuksia ei voitu ladata.');
+    });
+  }, []);
 
   const counts = useMemo(() => statusOrder.map((status) => ({
     status,
@@ -334,12 +414,12 @@ function DevelopmentQueuePage() {
         <HomeLink />
 
         <header className="rounded-[32px] border border-[var(--theme-border)] bg-[var(--theme-surface)] p-6 shadow-sm md:p-8">
-          <p className="text-sm font-black uppercase tracking-[.2em] text-[var(--theme-muted)]">Testipalautteet</p>
+          <p className="text-sm font-black uppercase tracking-[.2em] text-[var(--theme-muted)]">Palautteiden käsittely</p>
           <div className="mt-3 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
               <h1 className="font-display text-4xl font-bold tracking-tight md:text-6xl">Kehitysjono</h1>
               <p className="mt-3 max-w-3xl text-lg font-semibold leading-relaxed text-[var(--theme-text-2)]">
-                Tällä sivulla ylläpitäjä käsittelee sivuilta lähetettyä palautetta. Palautteet eivät ole luettavissa julkisesta rajapinnasta.
+                Tällä sivulla kaikki voivat seurata palautteiden ja linkkiehdotusten käsittelyä sekä ylläpidon julkisia vastauksia. Älä lisää palautteeseen henkilötietoja tai muuta arkaluonteista tietoa.
               </p>
             </div>
             <a
@@ -365,7 +445,7 @@ function DevelopmentQueuePage() {
             <div>
               <h2 className="font-display text-2xl font-bold">Ylläpidon käsittely</h2>
               <p className="mt-1 font-semibold text-[var(--theme-muted)]">
-                Jonon lukeminen ja tilan päivittäminen vaativat palvelimen vahvistaman ylläpito-oikeuden.
+                Kaikki voivat lukea jonon. Tilan ja julkisen käsittelymerkinnän päivittäminen vaatii ylläpito-oikeuden.
               </p>
             </div>
             {authReady && canEdit ? (
@@ -388,6 +468,7 @@ function DevelopmentQueuePage() {
           </div>
           {authError && <p className="mt-4 rounded-2xl bg-rose-50 p-4 font-bold text-rose-800 dark:bg-rose-900/20 dark:text-rose-200">{authError}</p>}
           {loadError && <p className="mt-4 rounded-2xl bg-rose-50 p-4 font-bold text-rose-800 dark:bg-rose-900/20 dark:text-rose-200">{loadError}</p>}
+          {linkLoadError && <p className="mt-4 rounded-2xl bg-rose-50 p-4 font-bold text-rose-800 dark:bg-rose-900/20 dark:text-rose-200">{linkLoadError}</p>}
           {authReady && user && adminAccessReady && !canEdit && (
             <p className="mt-4 rounded-2xl bg-amber-50 p-4 font-bold text-amber-900 dark:bg-amber-900/20 dark:text-amber-100">
               Olet kirjautunut, mutta tällä tunnuksella ei ole ylläpito-oikeutta.
@@ -395,7 +476,8 @@ function DevelopmentQueuePage() {
           )}
         </section>
 
-        <section className="space-y-4" aria-label="Palautelista">
+        <section className="space-y-4" aria-labelledby="feedback-list-title">
+          <h2 id="feedback-list-title" className="font-display text-3xl font-bold">Palautteet ja vastaukset</h2>
           {items.length === 0 ? (
             <div className="rounded-[28px] border border-dashed border-[var(--theme-border)] bg-[var(--theme-surface)] p-8 text-center">
               <p className="font-black text-[var(--theme-muted)]">Palautteita ei ole vielä kehitysjonossa.</p>
@@ -404,6 +486,25 @@ function DevelopmentQueuePage() {
             items.map((item) => (
               <FeedbackCard key={item.id} item={item} canEdit={canEdit} userEmail={userEmail} />
             ))
+          )}
+        </section>
+
+        <section className="space-y-4" aria-labelledby="link-report-list-title">
+          <div className="flex flex-wrap items-end justify-between gap-3">
+            <div>
+              <h2 id="link-report-list-title" className="font-display text-3xl font-bold">Linkkiehdotukset ja linkki-ilmoitukset</h2>
+              <p className="mt-2 font-semibold text-[var(--theme-muted)]">
+                Täältä näet, odottaako ehdotus käsittelyä ja hyväksyttiinkö se tuotantoon vai hylättiinkö se.
+              </p>
+            </div>
+            <a href="./index.html?link-report=1" className="aurora-primary-link text-base">Ehdota uutta linkkiä</a>
+          </div>
+          {linkReports.length === 0 ? (
+            <div className="rounded-[28px] border border-dashed border-[var(--theme-border)] bg-[var(--theme-surface)] p-8 text-center">
+              <p className="font-black text-[var(--theme-muted)]">Linkkiehdotuksia tai linkki-ilmoituksia ei ole vielä.</p>
+            </div>
+          ) : (
+            linkReports.map((report) => <LinkReportCard key={report.id} report={report} />)
           )}
         </section>
       </main>

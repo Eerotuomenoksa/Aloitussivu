@@ -251,6 +251,29 @@ export const subscribeFeedbackItems = (
   };
 };
 
+export const subscribePublicFeedbackItems = (
+  callback: (items: FeedbackItem[]) => void,
+  onError?: (error: unknown) => void,
+) => {
+  const handleChange = () => callback(readLocalFeedback());
+  window.addEventListener('storage', handleChange);
+  window.addEventListener(FEEDBACK_CHANGE_EVENT, handleChange);
+  const stopPolling = subscribeWithPolling(
+    async () => (await getDataProvider()).listPublic<FeedbackItem>('feedback', { fresh: true }),
+    callback,
+    (error) => {
+      callback(readLocalFeedback());
+      onError?.(error);
+    },
+    adminPollIntervalMs,
+  );
+  return () => {
+    stopPolling();
+    window.removeEventListener('storage', handleChange);
+    window.removeEventListener(FEEDBACK_CHANGE_EVENT, handleChange);
+  };
+};
+
 export const updateFeedbackItem = async (
   id: string,
   status: FeedbackStatus,
