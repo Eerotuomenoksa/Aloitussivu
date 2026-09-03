@@ -313,13 +313,29 @@ final class HttpLinkChecker implements LinkChecker
 
     private static function curlErrorCode(int $errno): string
     {
-        return match ($errno) {
-            CURLE_OPERATION_TIMEDOUT => 'timeout',
-            CURLE_COULDNT_RESOLVE_HOST => 'dns_failed',
-            CURLE_COULDNT_CONNECT => 'connection_failed',
-            CURLE_SSL_CONNECT_ERROR, CURLE_PEER_FAILED_VERIFICATION => 'tls_failed',
-            default => 'request_failed',
-        };
+        if ($errno === CURLE_OPERATION_TIMEDOUT) {
+            return 'timeout';
+        }
+        if ($errno === CURLE_COULDNT_RESOLVE_HOST) {
+            return 'dns_failed';
+        }
+        if ($errno === CURLE_COULDNT_CONNECT) {
+            return 'connection_failed';
+        }
+
+        // libcurl renamed error 60 to CURLE_PEER_FAILED_VERIFICATION, but some
+        // PHP/cURL builds expose only one of its older aliases. Referencing the
+        // missing constant directly causes a fatal Error while handling the
+        // original TLS failure and turns the whole run into link_check_job_failed.
+        // Error 60 is stable in libcurl even when PHP exposes none of the
+        // corresponding symbolic aliases.
+        $tlsErrors = [CURLE_SSL_CONNECT_ERROR, 60];
+        foreach (['CURLE_PEER_FAILED_VERIFICATION', 'CURLE_SSL_PEER_CERTIFICATE', 'CURLE_SSL_CACERT'] as $constant) {
+            if (defined($constant)) {
+                $tlsErrors[] = (int) constant($constant);
+            }
+        }
+        return in_array($errno, $tlsErrors, true) ? 'tls_failed' : 'request_failed';
     }
 
     /**

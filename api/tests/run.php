@@ -2115,6 +2115,12 @@ test('HTTP link checker rejects insecure and internal targets before a request',
     assertSameValue('dns_failed', $missingDns->errorCode);
 });
 
+test('HTTP link checker maps TLS verification errors across PHP cURL builds', static function (): void {
+    $method = new ReflectionMethod(HttpLinkChecker::class, 'curlErrorCode');
+
+    assertSameValue('tls_failed', $method->invoke(null, 60));
+});
+
 test('link-check job is disabled without database access and persists a checked batch', static function (): void {
     $catalogPath = sys_get_temp_dir() . '/aloitussivu-link-catalog-' . bin2hex(random_bytes(6)) . '.json';
     file_put_contents($catalogPath, json_encode([
