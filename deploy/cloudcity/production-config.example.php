@@ -46,10 +46,10 @@ return [
     'link_checks' => [
         // Enable after migrations 005-008 and the hourly link-check cron are installed.
         'enabled' => true,
-        // Tunnin välein ajettava 10 kohteen erä tekee koko katalogista kierroksen
-        // noin kymmenessä vuorokaudessa. Tarkistin käyttää enintään neljää
+        // Tunnin välein ajettava 50 kohteen erä tekee koko katalogista kierroksen
+        // noin kahdessa vuorokaudessa. Tarkistin käyttää enintään neljää
         // samanaikaista ulkoista yhteyttä.
-        'batch_size' => 10,
+        'batch_size' => 50,
         'timeout_seconds' => 5,
         'refresh_days' => 30,
         'retry_hours' => 24,

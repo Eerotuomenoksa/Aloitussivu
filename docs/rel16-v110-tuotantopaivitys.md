@@ -7,7 +7,7 @@ Tämä julkaisu tuo palautteiden julkisen käsittelyseurannan, yhdenmukaistaa li
 - Kaikki käyttäjät näkevät `kehitysjono.html`-sivulla palautteiden ja linkki-ilmoitusten tilan sekä ylläpidon julkaiseman käsittelymerkinnän.
 - Linkkiehdotus kulkee aina rakenteiseen hyväksyntä- tai hylkäysprosessiin. Myös vanha `link`-tyyppinen palaute voidaan ylläpidossa hyväksyä tuotantolinkiksi tai hylätä. Hyväksyttävä linkki voidaan kohdistaa yhdelle kunnalle tai jättää valtakunnalliseksi.
 - Julkiset API-listat palauttavat vain seurantaan tarvittavat kentät. Ilmoittajan selain- ja laitetiedot, liitteet sekä ylläpitäjän tunnisteet eivät vuoda julkisiksi.
-- Linkkitarkistuksen `timeout_seconds` on viisi sekuntia. `batch_size` jää arvoon 10 ja tarkistimen enimmäisrinnakkaisuus neljään ulkoiseen yhteyteen.
+- Linkkitarkistuksen `timeout_seconds` on viisi sekuntia. `batch_size` on 50, jolloin noin 2 379 linkin täysi kierros kestää vähintään noin kaksi vuorokautta. Tarkistimen enimmäisrinnakkaisuus on neljä ulkoista yhteyttä, ja 120 sekunnin ajobudjetin täyttyessä loput vuorossa olevat kohteet jäävät seuraavaan tuntiajoon.
 
 Kahden tunnin staging-kuormitusajo päättyi ilman virheitä: 5 760 HTTP-pyyntöä, kaikki 200, p95 49 ms ja enimmäiskesto 240 ms. Ajo mittasi omaa API:a (0,8 pyyntöä/s), ei ulkoisia linkkikohteita. Siksi ulkoisten yhteyksien rinnakkaisuutta ei kasvateta tämän perusteella.
 
