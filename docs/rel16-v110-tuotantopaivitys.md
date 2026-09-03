@@ -15,7 +15,7 @@ Ennen koodin aktivointia aja paketista `database_migrations/009_approved_links_m
 
 ## Ennen siirtoa
 
-1. Varmista paketin `build-info.json`: `package` on `REL-16`, `version` on `1.1.0` ja `commit` vastaa git-committia.
+1. Varmista paketin `build-info.json`: `package` on `REL-16`, `version` on `1.1.1` ja `commit` vastaa git-committia.
 2. Varmista ZIPin SHA-256 sekä palvelimella että paikallisesti. Keskeytä, jos arvot poikkeavat.
 3. Ota varmistukset nykyisestä julkisesta hakemistosta, yksityisestä API-polusta ja tietokannasta ennen yhtäkään muutosta.
 

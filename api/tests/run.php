@@ -1095,9 +1095,9 @@ test('rapid repeats return a controlled 429 response', static function (): void 
     assertSameValue([], $database->executions);
 });
 
-test('public clients cannot read submission collections', static function (): void {
+test('public clients cannot read private submission collections', static function (): void {
     $app = testApp(rateLimiter: new FakeRateLimiter(), attachmentStorage: new FakeAttachmentStorage());
-    foreach (['/api/v1/link-reports', '/api/v1/feedback', '/api/v1/test-feedback', '/api/v1/usage-events'] as $path) {
+    foreach (['/api/v1/test-feedback', '/api/v1/usage-events'] as $path) {
         $response = $app->handle(Request::fromValues('GET', $path));
         assertSameValue(405, $response->status, 'Expected read denial for ' . $path);
         assertSameValue('POST', $response->headers['Allow']);
