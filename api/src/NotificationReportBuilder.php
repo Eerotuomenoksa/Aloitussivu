@@ -376,30 +376,18 @@ final class NotificationReportBuilder
             'link_reports_handled' => (int) ($operations['link_reports_handled'] ?? 0),
             'feedback_backlog' => (int) ($operations['feedback_backlog'] ?? 0),
             'link_backlog' => (int) ($operations['link_backlog'] ?? 0),
-            'pages' => [],
             'categories' => [],
-            'links' => [],
             'trend' => [],
         ];
         if (!$details) {
             return $result;
         }
-        $result['pages'] = $this->database->fetchAll(
-            'SELECT page, SUM(count) AS total FROM usage_page_daily '
-            . 'WHERE usage_date >= :start_date AND usage_date < :end_date '
-            . 'GROUP BY page ORDER BY total DESC, page ASC LIMIT 5',
-            $dateParameters,
-        );
         $result['categories'] = $this->database->fetchAll(
-            "SELECT CASE WHEN category = '' THEN 'Ei luokkaa' ELSE category END AS category, SUM(count) AS total "
+            'SELECT category, SUM(count) AS total '
             . 'FROM usage_link_daily WHERE usage_date >= :start_date AND usage_date < :end_date '
+            . "AND category <> '' AND LOWER(TRIM(category)) NOT IN ('ylläpito', 'saavutettavuus', 'saavutettavuusseloste') "
+            . "AND page NOT IN ('ehdotukset', 'yllapito', 'testipalaute-yllapito') AND page NOT LIKE 'saavutettavuus%' "
             . 'GROUP BY category ORDER BY total DESC, category ASC LIMIT 5',
-            $dateParameters,
-        );
-        $result['links'] = $this->database->fetchAll(
-            "SELECT CONCAT(CASE WHEN category = '' THEN 'Ei luokkaa' ELSE category END, ' – ', page) AS label, SUM(count) AS total FROM usage_link_daily "
-            . 'WHERE usage_date >= :start_date AND usage_date < :end_date '
-            . 'GROUP BY page, category ORDER BY total DESC, label ASC LIMIT 5',
             $dateParameters,
         );
         if ($trend) {
@@ -507,12 +495,8 @@ final class NotificationReportBuilder
     /** @param array<string, mixed> $stats */
     private function textTopLists(array $stats): string
     {
-        return "\n\nSUOSITUIMMAT SIVUT\nSivut, joille kirjautui eniten latauksia. Luvut eivät tarkoita eri käyttäjien määriä.\n"
-            . $this->textList($stats['pages'], 'page')
-            . "\n\nSUOSITUIMMAT LINKKILUOKAT\nPalvelulinkkien avaukset ryhmiteltynä linkkiluokan mukaan.\n"
-            . $this->textList($stats['categories'], 'category')
-            . "\n\nSUOSITUIMMAT OSIOT JA KATEGORIAT\nLinkkien avaukset ryhmiteltynä sivuston osion ja linkkikategorian mukaan.\n"
-            . $this->textList($stats['links'], 'label');
+        return "\n\nSUOSITUIMMAT KATEGORIAT\nPalvelulinkkien avaukset ryhmiteltynä kategorian mukaan.\n"
+            . $this->textList($stats['categories'], 'category');
     }
 
     /** @param array<string, mixed> $stats */
@@ -520,22 +504,10 @@ final class NotificationReportBuilder
     {
         return '<div style="margin:30px 0 12px"><h2 style="font-size:21px;line-height:1.3;color:#103f4c;margin:0 0 14px">Mitä käytettiin eniten?</h2>'
             . $this->htmlRanking(
-                'Suosituimmat sivut',
-                'Sivut, joille kirjautui eniten latauksia. Luvut eivät tarkoita eri käyttäjien määriä.',
-                $stats['pages'],
-                'page',
-            )
-            . $this->htmlRanking(
-                'Suosituimmat linkkiluokat',
-                'Palvelulinkkien avaukset ryhmiteltynä linkkiluokan mukaan.',
+                'Suosituimmat kategoriat',
+                'Palvelulinkkien avaukset ryhmiteltynä kategorian mukaan.',
                 $stats['categories'],
                 'category',
-            )
-            . $this->htmlRanking(
-                'Suosituimmat osiot ja kategoriat',
-                'Linkkien avaukset ryhmiteltynä sivuston osion ja linkkikategorian mukaan.',
-                $stats['links'],
-                'label',
             )
             . '</div>';
     }

@@ -875,7 +875,7 @@ export const MUSEUM_LINKS: RegionalProvider[] = [
   },
   {
     name: "Designmuseo",
-    url: "https://www.designmuseo.fi/",
+    url: "https://admuseo.fi/",
     group: "Helsinki",
     type: "Valtakunnallinen vastuumuseo",
     area: "Koko Suomi",

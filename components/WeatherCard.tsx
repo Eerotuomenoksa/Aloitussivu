@@ -528,6 +528,7 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ locality, onLocationResolved,
             {!isCompact && isLinkVisible('https://www.ilmatieteenlaitos.fi/') && (
               <a
                 href={weatherDetailsUrl}
+                data-usage-category="Sää"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-3 inline-flex min-h-[44px] items-center gap-2 rounded-xl bg-white/15 px-4 py-2 text-base font-black text-white underline decoration-2 underline-offset-4 transition-colors hover:bg-white/25 focus:outline-none focus:ring-4 focus:ring-white/50"
@@ -545,6 +546,7 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ locality, onLocationResolved,
       {isLinkVisible('https://www.ilmatieteenlaitos.fi/') ? (
         <a
           href={weatherDetailsUrl}
+          data-usage-category="Sää"
           target="_blank"
           rel="noopener noreferrer"
           className={`${isCompact ? 'text-2xl min-w-[44px] min-h-[44px] md:text-5xl md:min-w-[76px] md:min-h-[76px]' : 'text-8xl min-w-[120px] min-h-[120px]'} drop-shadow-2xl hover:scale-110 transition-transform cursor-pointer p-2 md:p-4 bg-white/10 rounded-full flex items-center justify-center focus:ring-4 focus:ring-white/50 focus:outline-none`}

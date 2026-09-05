@@ -1579,6 +1579,15 @@ const extraTranslationFallbacks: Record<Exclude<LanguageCode, 'fi' | 'sv' | 'en'
   se: extraTranslations.en,
 };
 
+export const getTranslationText = (language: LanguageCode, key: string): string => (
+  (translations[language] as Record<string, string>)[key]
+  ?? (extraTranslations[language as keyof typeof extraTranslations] as Record<string, string> | undefined)?.[key]
+  ?? (extraTranslationFallbacks[language as keyof typeof extraTranslationFallbacks] as Record<string, string> | undefined)?.[key]
+  ?? (translations.fi as Record<string, string>)[key]
+  ?? (extraTranslations.fi as Record<string, string>)[key]
+  ?? key
+);
+
 type TranslationKey = keyof typeof translations.fi;
 type ExtraTranslationKey = keyof typeof extraTranslations.fi;
 
@@ -1648,14 +1657,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       setLanguage: setLanguageState,
       locale: languageInfo.locale,
       speechLocale: languageInfo.speechLocale,
-      t: (key) => (
-        (translations[language] as Record<string, string>)[key]
-        ?? (extraTranslations[language as keyof typeof extraTranslations] as Record<string, string> | undefined)?.[key]
-        ?? (extraTranslationFallbacks[language as keyof typeof extraTranslationFallbacks] as Record<string, string> | undefined)?.[key]
-        ?? (translations.fi as Record<string, string>)[key]
-        ?? (extraTranslations.fi as Record<string, string>)[key]
-        ?? key
-      ),
+      t: (key) => getTranslationText(language, key),
       categoryName: (name) => translateCategoryName(name, language),
     };
   }, [language]);

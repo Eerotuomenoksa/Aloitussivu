@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { useI18n } from '../i18n';
 import { useModalFocusTrap } from '../hooks/useModalFocusTrap';
 import { trackGuideStep } from '../usageTracking';
+import { getSiteContentValue, isSiteContentLocale, type SiteContentLocale } from '../siteContent';
 
 interface HomepageModalProps {
   isOpen: boolean;
@@ -65,7 +66,13 @@ const copyText = async (value: string) => {
 };
 
 const HomepageModal: React.FC<HomepageModalProps> = ({ isOpen, onClose, fontSizeStep = 0 }) => {
-  const { t } = useI18n();
+  const { language, t } = useI18n();
+  const contentLocale: SiteContentLocale | null = isSiteContentLocale(language) ? language : null;
+  const managedText = (key: string, fallback: string) => contentLocale
+    ? getSiteContentValue(key, contentLocale, fallback)
+    : fallback;
+  const managedTitle = managedText('homepage.title', t('homepageTitle'));
+  const managedIntro = contentLocale ? getSiteContentValue('homepage.intro', contentLocale) : '';
   const [guidePath, setGuidePath] = useState<GuidePath | null>(null);
   const [copyStatus, setCopyStatus] = useState<'address' | 'message' | null>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
@@ -146,7 +153,7 @@ const HomepageModal: React.FC<HomepageModalProps> = ({ isOpen, onClose, fontSize
   const shareOnDevice = async () => {
     if (!navigator.share) return;
     try {
-      await navigator.share({ title: t('homepageTitle'), text: shareMessage, url: HOMEPAGE_URL });
+      await navigator.share({ title: managedTitle, text: shareMessage, url: HOMEPAGE_URL });
       trackGuideStep('shared', 'share');
     } catch {
       // Cancelling the native share sheet is not an error for the user.
@@ -155,7 +162,7 @@ const HomepageModal: React.FC<HomepageModalProps> = ({ isOpen, onClose, fontSize
 
   const addressCard = (
     <section className="aurora-panel space-y-4 p-4 sm:p-6" aria-labelledby="homepage-address-heading">
-      <p id="homepage-address-heading" className="text-base font-black text-[var(--theme-text-2)] sm:text-lg">{t('useThisAddress')}</p>
+      <p id="homepage-address-heading" className="text-base font-black text-[var(--theme-text-2)] sm:text-lg">{managedText('homepage.addressLabel', t('useThisAddress'))}</p>
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
         <div className={`min-w-0 flex-1 select-all break-all rounded-2xl border-2 border-[var(--theme-border)] bg-[var(--theme-surface)] p-4 text-center font-mono font-black text-[var(--theme-primary)] shadow-inner ${urlClasses[fontSizeStep]}`}>
           seniorsurf.fi/aloitus
@@ -231,7 +238,7 @@ const HomepageModal: React.FC<HomepageModalProps> = ({ isOpen, onClose, fontSize
           <div className="aurora-modal-header sticky top-0 z-10 flex items-center justify-between gap-3 p-4 text-white shadow-lg sm:p-6">
             <div className="flex min-w-0 items-center gap-3 sm:gap-5">
               <span className={`shrink-0 rounded-2xl bg-white/10 p-3 ${iconClasses[fontSizeStep]}`} aria-hidden="true">🏠</span>
-              <h2 id="homepage-modal-title" className={`font-display min-w-0 font-bold leading-tight ${titleClasses[fontSizeStep]}`}>{t('homepageTitle')}</h2>
+              <h2 id="homepage-modal-title" className={`font-display min-w-0 font-bold leading-tight ${titleClasses[fontSizeStep]}`}>{managedTitle}</h2>
             </div>
             <button ref={closeButtonRef} type="button" onClick={onClose} className="aurora-close-button h-12 w-12 shrink-0 text-3xl" aria-label={t('closeInstructions')}>✕</button>
           </div>
@@ -239,9 +246,13 @@ const HomepageModal: React.FC<HomepageModalProps> = ({ isOpen, onClose, fontSize
           <div className="aurora-modal-body min-h-0 flex-1 space-y-6 overflow-y-auto p-4 sm:p-6 md:p-8">
             {addressCard}
 
+            {managedIntro && (
+              <p className="rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-surface)] p-4 text-lg font-bold leading-relaxed text-[var(--theme-text-2)]">{managedIntro}</p>
+            )}
+
             {!guidePath ? (
               <section className="space-y-4" aria-labelledby="homepage-path-heading">
-                <h3 id="homepage-path-heading" className="aurora-section-title text-2xl sm:text-3xl">{t('homepageChoosePathTitle')}</h3>
+                <h3 id="homepage-path-heading" className="aurora-section-title text-2xl sm:text-3xl">{managedText('homepage.choosePathTitle', t('homepageChoosePathTitle'))}</h3>
                 <div className="grid gap-4 md:grid-cols-3">
                   {([
                     ['own', '👤', 'homepageOwnPath', 'homepageOwnPathDescription'],
@@ -289,7 +300,7 @@ const HomepageModal: React.FC<HomepageModalProps> = ({ isOpen, onClose, fontSize
                   {typeof navigator.share === 'function' && (
                     <button type="button" onClick={() => void shareOnDevice()} className="aurora-primary-button min-h-12 px-5 py-3">{t('homepageNativeShare')}</button>
                   )}
-                  <a href={`mailto:?subject=${encodeURIComponent(t('homepageTitle'))}&body=${encodeURIComponent(shareMessage)}`} onClick={() => trackGuideStep('shared', 'email')} className="aurora-secondary-button flex min-h-12 items-center justify-center px-5 py-3 text-center">{t('homepageEmail')}</a>
+                  <a href={`mailto:?subject=${encodeURIComponent(managedTitle)}&body=${encodeURIComponent(shareMessage)}`} onClick={() => trackGuideStep('shared', 'email')} className="aurora-secondary-button flex min-h-12 items-center justify-center px-5 py-3 text-center">{t('homepageEmail')}</a>
                   <a href={`sms:?body=${encodeURIComponent(shareMessage)}`} onClick={() => trackGuideStep('shared', 'sms')} className="aurora-secondary-button flex min-h-12 items-center justify-center px-5 py-3 text-center">{t('homepageSms')}</a>
                   <button type="button" onClick={() => void handleCopy('message')} className="aurora-secondary-button min-h-12 px-5 py-3">{copyStatus === 'message' ? t('homepageMessageCopied') : t('homepageCopyMessage')}</button>
                   <button type="button" onClick={printGuide} className="aurora-secondary-button min-h-12 px-5 py-3 sm:col-span-2">🖨️ {t('homepagePrint')}</button>
@@ -302,8 +313,8 @@ const HomepageModal: React.FC<HomepageModalProps> = ({ isOpen, onClose, fontSize
             )}
 
             <section className="aurora-soft-panel space-y-3 p-5">
-              <h3 className="text-xl font-black text-[var(--theme-primary)]">💡 {t('helpTipTitle')}</h3>
-              <p className="font-bold leading-relaxed text-[var(--theme-text-2)]">{t('helpTipBody')}</p>
+              <h3 className="text-xl font-black text-[var(--theme-primary)]">💡 {managedText('homepage.tipTitle', t('helpTipTitle'))}</h3>
+              <p className="font-bold leading-relaxed text-[var(--theme-text-2)]">{managedText('homepage.tipBody', t('helpTipBody'))}</p>
             </section>
           </div>
 
@@ -314,7 +325,7 @@ const HomepageModal: React.FC<HomepageModalProps> = ({ isOpen, onClose, fontSize
       </div>
 
       <article className="homepage-print-sheet" aria-hidden="true">
-        <h1>{t('homepageTitle')}</h1>
+        <h1>{managedTitle}</h1>
         <p>{shareMessage}</p>
         <p className="homepage-print-url">seniorsurf.fi/aloitus</p>
         <img src="./aloitussivu-qr.svg" alt="" />

@@ -8,6 +8,7 @@ import { filterVisibleShortcuts, useLinkVisibilityVersion } from '../linkVisibil
 import { useI18n } from '../i18n';
 import { useModalFocusTrap } from '../hooks/useModalFocusTrap';
 import { getLocalizedPublicPageHref } from '../publicPageLocalization';
+import { getSiteContentValue, isSiteContentLocale, type SiteContentLocale } from '../siteContent';
 
 interface InfoModalProps {
   isOpen: boolean;
@@ -99,6 +100,10 @@ const infoPageTranslations = {
 const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, fontSizeStep = 0, showOnboardingOffer = false, onStartOnboarding }) => {
   const { language, t, categoryName } = useI18n();
   const copy = infoPageTranslations[language === 'sv' || language === 'en' ? language : 'fi'];
+  const contentLocale: SiteContentLocale | null = isSiteContentLocale(language) ? language : null;
+  const managedText = (key: string, fallback: string) => contentLocale
+    ? getSiteContentValue(key, contentLocale, fallback)
+    : fallback;
   useLinkVisibilityVersion();
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
@@ -137,7 +142,7 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, fontSizeStep = 0
         <div className="aurora-modal-header z-10 flex shrink-0 items-center justify-between gap-4 p-5 text-white md:p-8">
           <div className="flex min-w-0 items-center gap-4">
             <span className={`rounded-[1.5rem] bg-white/10 p-3 transition-all duration-300 ${headerIconClasses[fontSizeStep]}`}>ℹ️</span>
-            <h2 id="info-modal-title" className={`font-display font-bold transition-all duration-300 ${titleClasses[fontSizeStep]}`}>{t('infoTitle')}</h2>
+            <h2 id="info-modal-title" className={`font-display font-bold transition-all duration-300 ${titleClasses[fontSizeStep]}`}>{managedText('info.title', t('infoTitle'))}</h2>
           </div>
           <button
             type="button"
@@ -152,9 +157,9 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, fontSizeStep = 0
         
         <div className="aurora-modal-body min-h-0 flex-1 space-y-10 overflow-y-auto p-6 md:p-10">
           <section className="space-y-4">
-            <h3 className="aurora-section-title text-2xl underline decoration-[var(--theme-gold)] underline-offset-8">{t('infoWhatTitle')}</h3>
+            <h3 className="aurora-section-title text-2xl underline decoration-[var(--theme-gold)] underline-offset-8">{managedText('info.whatTitle', t('infoWhatTitle'))}</h3>
             <p className="text-xl leading-relaxed text-[var(--theme-text-2)]">
-              {t('infoWhatBody')} {scopeSummary}
+              {managedText('info.whatBody', t('infoWhatBody'))} {scopeSummary}
             </p>
           </section>
 
@@ -194,9 +199,9 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, fontSizeStep = 0
           </section>
 
           <section className="space-y-4">
-            <h3 className="aurora-section-title text-2xl underline decoration-[var(--theme-gold)] underline-offset-8">{t('usageStatsTitle')}</h3>
+            <h3 className="aurora-section-title text-2xl underline decoration-[var(--theme-gold)] underline-offset-8">{managedText('info.usageTitle', t('usageStatsTitle'))}</h3>
             <p className="text-xl leading-relaxed text-[var(--theme-text-2)]">
-              {t('usageStatsBody')}
+              {managedText('info.usageBody', t('usageStatsBody'))}
             </p>
           </section>
 
@@ -218,9 +223,9 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, fontSizeStep = 0
           </section>
 
           <section className="aurora-panel space-y-4 rounded-3xl p-6">
-            <h3 className="aurora-section-title text-2xl">{t('legalInfoTitle')}</h3>
+            <h3 className="aurora-section-title text-2xl">{managedText('info.legalTitle', t('legalInfoTitle'))}</h3>
             <p className="text-lg font-bold leading-relaxed text-[var(--theme-text-2)]">
-              {t('legalInfoBody')}
+              {managedText('info.legalBody', t('legalInfoBody'))}
             </p>
             <div className="flex flex-wrap gap-3">
               <a

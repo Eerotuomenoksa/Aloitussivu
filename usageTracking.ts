@@ -175,9 +175,11 @@ export const installUsageTracking = (page = getPageName()) => {
     if (!(target instanceof Element)) return;
     const link = target.closest('a[href]');
     if (!(link instanceof HTMLAnchorElement)) return;
+    const category = link.closest('[data-usage-category]')?.getAttribute('data-usage-category')?.trim() ?? '';
+    if (!category) return;
 
     trackLinkClick({
-      category: link.closest('[data-usage-category]')?.getAttribute('data-usage-category') ?? '',
+      category,
       page,
     });
   };

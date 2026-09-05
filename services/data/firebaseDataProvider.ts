@@ -36,6 +36,7 @@ const collectionNames = {
   'ncsc-logs': 'ncscScrapeLog',
   'link-checks': 'linkChecks',
   'usage-stats': 'usageStats',
+  'site-content': 'siteContent',
 } as const;
 
 const orderFields: Partial<Record<keyof typeof collectionNames, string>> = {
@@ -46,6 +47,7 @@ const orderFields: Partial<Record<keyof typeof collectionNames, string>> = {
   feedback: 'createdAt',
   'test-feedback': 'createdAt',
   'ncsc-logs': 'processedAt',
+  'site-content': 'updatedAt',
 };
 
 const requireDb = async () => {
@@ -168,6 +170,16 @@ export const firebaseDataProvider: DataProvider = {
 
   async updateAdmin(resource: AdminMutableResource, id: string, payload: Record<string, unknown>) {
     const updatedAt = new Date().toISOString();
+    if (resource === 'site-content') {
+      const locale = typeof payload.locale === 'string' ? payload.locale : 'fi';
+      await setDoc(doc(await requireDb(), collectionNames[resource], `${id}-${locale}`), {
+        ...payload,
+        id: `${id}-${locale}`,
+        key: id,
+        updatedAt,
+      }, { merge: true });
+      return { id, updatedAt };
+    }
     await updateDoc(doc(await requireDb(), collectionNames[resource], id), { ...payload, updatedAt });
     return { id, updatedAt };
   },
@@ -180,7 +192,7 @@ export const firebaseDataProvider: DataProvider = {
     throw new DataProviderError('Ylläpidon käsiajoa ei tueta Firebase-palautusproviderissa.', 'unsupported_operation');
   },
 
-  async actOnLinkCheck(_urlHash, _action, _reason, _replacementUrl) {
+  async actOnLinkCheck(_urlHash, _action, _reason, _replacementUrl, _replacementName) {
     throw new DataProviderError('Linkkitarkistuksen huomioita ei käsitellä Firebase-palautusproviderissa.', 'unsupported_operation');
   },
 

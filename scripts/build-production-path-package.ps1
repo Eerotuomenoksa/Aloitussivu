@@ -140,6 +140,9 @@ try {
     Copy-Item -LiteralPath (Join-Path $workspaceRoot 'database/migrations/007_link_check_admin_actions.sql') -Destination $migrationsRoot.FullName -Force
     Copy-Item -LiteralPath (Join-Path $workspaceRoot 'database/migrations/008_usage_privacy_cleanup.sql') -Destination $migrationsRoot.FullName -Force
     Copy-Item -LiteralPath (Join-Path $workspaceRoot 'database/migrations/009_approved_links_municipality.sql') -Destination $migrationsRoot.FullName -Force
+    Copy-Item -LiteralPath (Join-Path $workspaceRoot 'database/migrations/010_link_content_corrections.sql') -Destination $migrationsRoot.FullName -Force
+    Copy-Item -LiteralPath (Join-Path $workspaceRoot 'database/migrations/011_site_content_editor.sql') -Destination $migrationsRoot.FullName -Force
+    Copy-Item -LiteralPath (Join-Path $workspaceRoot 'database/migrations/012_site_content_additional_locales.sql') -Destination $migrationsRoot.FullName -Force
     Copy-Item -LiteralPath (Join-Path $workspaceRoot 'docs/rel16-v110-tuotantopaivitys.md') -Destination (Join-Path $packageRoot 'DEPLOY_INSTRUCTIONS.md') -Force
 
     foreach ($directory in @('logs', 'cache', 'protected_uploads')) {
@@ -175,7 +178,7 @@ try {
         commit = $commit
         workingTreeDirty = $false
         builtAtUtc = [DateTime]::UtcNow.ToString('o')
-        schemaMigrations = @('001_initial_schema', '002_add_link_reports_triage_index', '003_usage_context_daily', '004_email_notifications', '005_automated_link_checks', '006_link_check_hardening', '007_link_check_admin_actions', '008_usage_privacy_cleanup', '009_approved_links_municipality')
+        schemaMigrations = @('001_initial_schema', '002_add_link_reports_triage_index', '003_usage_context_daily', '004_email_notifications', '005_automated_link_checks', '006_link_check_hardening', '007_link_check_admin_actions', '008_usage_privacy_cleanup', '009_approved_links_municipality', '010_link_content_corrections', '011_site_content_editor', '012_site_content_additional_locales')
         backgroundJobs = @('ncsc', 'notifications', 'email-dispatch', 'link-check')
         manualTools = @('smtp-test')
         firebaseAuthenticationConfigured = $true

@@ -72,6 +72,7 @@ Nämä on määritelty aiemmin. **Tarkista tila ennen aloitusta** — osa on voi
 
 | Aika | Tehtävä | Lisätiedot |
 | --- | --- | --- |
+| Ennen seuraavaa tuotantojulkaisua | **GH-01…GH-08 – SeniorSurfin GitHub-organisaatio, Aloitussivu-repositorion siirto ja CloudCity-julkaisupolku** | `docs/codex-tehtava-seniorsurf-github-organisaatio-ja-siirto-2026-09-05.md` |
 | 9.9. | Juttunetin avaus — aloitussivun omaa tiedotusta ei tuolle viikolle | `docs/markkinointisuunnitelma-2026-2027.md` |
 | 28.9. mennessä | Ruotsinkielinen A5-kortti valmiiksi Vanhustenviikolle | `docs/kortin-kieliversiot-jarjestys-2026-08-31.md` |
 | 28.9. mennessä | A4 "Näin asetat läheisellesi aloitussivun" | markkinointisuunnitelma › luku 9 |

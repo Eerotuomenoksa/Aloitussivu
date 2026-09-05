@@ -95,6 +95,7 @@ const LocalNewsHeadlines: React.FC<LocalNewsHeadlinesProps> = ({ feeds, fallback
         {fallbackUrl && isLinkVisible(fallbackUrl) && (
           <a
             href={fallbackUrl}
+            data-usage-category="Paikallisuutiset"
             target="_blank"
             rel="noopener noreferrer"
             className={`inline-flex items-center justify-center rounded-full bg-[var(--theme-primary)] px-6 py-3 font-black text-white transition-all hover:bg-[var(--theme-primary-mid)] active:scale-95 ${smallTextClasses[fontSizeStep]}`}
@@ -142,6 +143,7 @@ const LocalNewsHeadlines: React.FC<LocalNewsHeadlinesProps> = ({ feeds, fallback
         {fallbackUrl && isLinkVisible(fallbackUrl) && (
           <a
             href={fallbackUrl}
+            data-usage-category="Paikallisuutiset"
             target="_blank"
             rel="noopener noreferrer"
             className={`inline-flex items-center justify-center rounded-full bg-[var(--theme-primary)] px-6 py-3 font-black text-white transition-all hover:bg-[var(--theme-primary-mid)] active:scale-95 ${smallTextClasses[fontSizeStep]}`}
@@ -159,6 +161,7 @@ const LocalNewsHeadlines: React.FC<LocalNewsHeadlinesProps> = ({ feeds, fallback
         <a
           key={headline.link}
           href={headline.link}
+          data-usage-category="Paikallisuutiset"
           target="_blank"
           rel="noopener noreferrer"
           className={`flex flex-col justify-between gap-4 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-surface)] p-5 text-[var(--theme-text)] shadow-sm transition-all hover:-translate-y-0.5 hover:border-[var(--theme-border-strong)] hover:bg-[var(--theme-pale)] hover:shadow-md active:scale-[.99] ${compact ? 'min-h-[72px]' : 'min-h-[130px]'}`}

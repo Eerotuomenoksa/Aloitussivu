@@ -11,6 +11,16 @@ use Throwable;
 
 final class AdminApi
 {
+    /** @var list<string> */
+    private const SITE_CONTENT_KEYS = [
+        'header.title', 'header.tagline',
+        'footer.title', 'footer.tagline', 'footer.description',
+        'info.title', 'info.whatTitle', 'info.whatBody', 'info.usageTitle', 'info.usageBody', 'info.legalTitle', 'info.legalBody',
+        'homepage.title', 'homepage.intro', 'homepage.addressLabel', 'homepage.choosePathTitle', 'homepage.tipTitle', 'homepage.tipBody',
+        'privacy.title', 'privacy.intro', 'privacy.body',
+        'accessibility.title', 'accessibility.intro', 'accessibility.body',
+    ];
+
     public function __construct(
         private readonly DatabaseConnection $database,
         private readonly AdminAuthenticator $authenticator,
@@ -24,6 +34,8 @@ final class AdminApi
     public function register(Router $router): void
     {
         $router->add('GET', '/api/v1/admin/me', fn (Request $request): Response => $this->me($request));
+        $router->add('GET', '/api/v1/admin/site-content', fn (Request $request): Response => $this->siteContent($request));
+        $router->add('PATCH', '/api/v1/admin/site-content/{id}', fn (Request $request): Response => $this->updateSiteContent($request));
         $router->add('GET', '/api/v1/admin/link-reports', fn (Request $request): Response => $this->linkReports($request));
         $router->add('PATCH', '/api/v1/admin/link-reports/{id}', fn (Request $request): Response => $this->updateLinkReport($request));
         $router->add('GET', '/api/v1/admin/feedback', fn (Request $request): Response => $this->feedback($request));
@@ -242,13 +254,14 @@ final class AdminApi
     {
         $this->authenticator->authenticate($request);
         $rows = $this->database->fetchAll(
-            'SELECT id, name, url, category, municipality, source, note, created_from_report_id, created_at, updated_at '
+            'SELECT id, name, url, replaces_url, category, municipality, source, note, created_from_report_id, created_at, updated_at '
             . 'FROM approved_links ORDER BY created_at DESC LIMIT 500',
         );
         return $this->data($request, array_map(static fn (array $row): array => [
             'id' => (string) ($row['id'] ?? ''),
             'name' => (string) ($row['name'] ?? ''),
             'url' => (string) ($row['url'] ?? ''),
+            'replacesUrl' => self::nullableString($row['replaces_url'] ?? null),
             'category' => (string) ($row['category'] ?? ''),
             'source' => (string) ($row['source'] ?? ''),
             'note' => self::nullableString($row['note'] ?? null),
@@ -511,6 +524,67 @@ final class AdminApi
         ]);
     }
 
+    private function siteContent(Request $request): Response
+    {
+        $this->authenticator->authenticate($request);
+        $rows = $this->database->fetchAll(
+            'SELECT content_key, locale, value, updated_at FROM site_content ORDER BY content_key, locale',
+        );
+        return $this->data($request, array_map(static fn (array $row): array => [
+            'key' => (string) ($row['content_key'] ?? ''),
+            'locale' => (string) ($row['locale'] ?? ''),
+            'value' => (string) ($row['value'] ?? ''),
+            'updatedAt' => self::isoDate($row['updated_at'] ?? ''),
+        ], $rows));
+    }
+
+    private function updateSiteContent(Request $request): Response
+    {
+        $actor = $this->authenticator->authenticate($request, true);
+        $contentKey = $this->routeContentKey($request);
+        $data = Validator::jsonObject($request);
+        Validator::shape($data, ['locale', 'value'], ['locale', 'value']);
+        $locale = Validator::enum($data, 'locale', ['fi', 'sv', 'en', 'se', 'uk', 'et', 'ru']);
+        $maxLength = in_array($contentKey, ['privacy.body', 'accessibility.body'], true) ? 100000 : 5000;
+        $value = Validator::string($data, 'value', 0, $maxLength);
+        $updatedAt = self::databaseNow();
+
+        $this->database->transaction(function (DatabaseConnection $database) use (
+            $actor,
+            $contentKey,
+            $locale,
+            $value,
+            $updatedAt,
+        ): void {
+            if ($value === '') {
+                $database->execute(
+                    'DELETE FROM site_content WHERE content_key = :content_key AND locale = :locale',
+                    ['content_key' => $contentKey, 'locale' => $locale],
+                );
+            } else {
+                $database->execute(
+                    'INSERT INTO site_content (content_key, locale, value, updated_at, updated_by) '
+                    . 'VALUES (:content_key, :locale, :value, :updated_at, :updated_by) '
+                    . 'ON DUPLICATE KEY UPDATE value = VALUES(value), updated_at = VALUES(updated_at), updated_by = VALUES(updated_by)',
+                    [
+                        'content_key' => $contentKey,
+                        'locale' => $locale,
+                        'value' => $value,
+                        'updated_at' => $updatedAt,
+                        'updated_by' => $actor->uid,
+                    ],
+                );
+            }
+            $this->audit($database, $actor, 'site_content.update', 'site_content', $contentKey . ':' . $locale, [
+                'locale' => $locale,
+                'characters' => strlen($value),
+                'resetToDefault' => $value === '',
+            ]);
+        });
+
+        return $this->updated($request, $contentKey . ':' . $locale, $updatedAt);
+    }
+
     private function linkChecks(Request $request): Response
     {
         $this->authenticator->authenticate($request);
@@ -560,6 +634,7 @@ final class AdminApi
             'SELECT t.url_hash, t.url, t.name, t.category, t.source, t.last_checked_at, t.next_check_at, '
             . 't.last_status, t.http_status, t.final_url, t.failure_count, t.last_error_code, t.response_ms, '
             . 'CASE WHEN b.id IS NULL THEN 0 ELSE 1 END AS is_blocked, o.scope AS override_scope, '
+            . "CASE WHEN b.id IS NOT NULL AND b.created_by IS NULL AND b.reason LIKE 'auto:%' THEN 1 ELSE 0 END AS is_auto_blocked, "
             . 'o.next_review_at AS override_next_review_at '
             . 'FROM link_check_targets t '
             . 'LEFT JOIN blocked_links b ON b.url_hash = UNHEX(t.url_hash) '
@@ -625,6 +700,7 @@ final class AdminApi
             'errorCode' => self::nullableString($row['last_error_code'] ?? null),
             'responseMs' => isset($row['response_ms']) ? (int) $row['response_ms'] : null,
             'isBlocked' => (bool) ($row['is_blocked'] ?? false),
+            'isAutoBlocked' => (bool) ($row['is_auto_blocked'] ?? false),
             'overrideScope' => self::nullableString($row['override_scope'] ?? null),
             'overrideNextReviewAt' => self::nullableIsoDate($row['override_next_review_at'] ?? null),
         ];
@@ -661,10 +737,13 @@ final class AdminApi
         $actor = $this->authenticator->authenticate($request, true);
         $urlHash = $this->routeUrlHash($request);
         $data = Validator::jsonObject($request);
-        Validator::shape($data, ['action', 'reason', 'replacementUrl'], ['action', 'reason']);
+        Validator::shape($data, ['action', 'reason', 'replacementUrl', 'replacementName'], ['action', 'reason']);
         $action = Validator::enum($data, 'action', ['approve', 'block', 'replace']);
         $reason = Validator::string($data, 'reason', 3, 900);
         $replacementUrl = $action === 'replace' ? Validator::httpsUrl($data, 'replacementUrl') : null;
+        $replacementName = $action === 'replace' && array_key_exists('replacementName', $data)
+            ? Validator::string($data, 'replacementName', 1, 160)
+            : null;
         $nowDate = new DateTimeImmutable('now', new DateTimeZone('UTC'));
         $now = $nowDate->format('Y-m-d H:i:s.u');
         $nextReviewAt = $nowDate->modify('+3 months')->format('Y-m-d H:i:s.u');
@@ -675,6 +754,7 @@ final class AdminApi
             $action,
             $reason,
             $replacementUrl,
+            $replacementName,
             $now,
             $nextReviewAt,
         ): void {
@@ -688,13 +768,12 @@ final class AdminApi
             }
 
             if ($action === 'replace') {
-                if (!(bool) ($target['final_domain_changed'] ?? false)) {
-                    throw new ApiException(422, 'validation_failed', 'Vain verkkotunnuksen vaihtuneen linkin voi korvata.', ['field' => 'action']);
+                $replacementName ??= trim((string) ($target['name'] ?? ''));
+                if ($replacementName === '') {
+                    throw new ApiException(422, 'validation_failed', 'Linkin nimi puuttuu.', ['field' => 'replacementName']);
                 }
                 $replacementHash = hash('sha256', (string) $replacementUrl);
-                if ($replacementHash === $urlHash) {
-                    throw new ApiException(422, 'validation_failed', 'Korvaavan osoitteen pitää poiketa alkuperäisestä.', ['field' => 'replacementUrl']);
-                }
+                $urlChanged = $replacementHash !== $urlHash;
                 $existingApproved = $database->fetchOne(
                     'SELECT id FROM approved_links WHERE url_hash = :url_hash LIMIT 1 FOR UPDATE',
                     ['url_hash' => hex2bin($replacementHash)],
@@ -703,26 +782,57 @@ final class AdminApi
                     'SELECT id FROM blocked_links WHERE url_hash = UNHEX(:url_hash) LIMIT 1 FOR UPDATE',
                     ['url_hash' => $replacementHash],
                 );
-                if ($existingBlocked !== null) {
+                if ($existingBlocked !== null && $urlChanged) {
                     throw new ApiException(409, 'conflict', 'Korvaava osoite on jo estolistalla.');
                 }
                 $approvedLinkId = (string) ($existingApproved['id'] ?? Uuid::generate());
                 if ($existingApproved === null) {
                     $database->execute(
                         'INSERT INTO approved_links '
-                        . '(id, name, url, url_hash, category, source, note, created_from_report_id, created_at, updated_at) '
-                        . 'VALUES (:id, :name, :url, :url_hash, :category, :source, NULL, NULL, :created_at, :updated_at)',
+                        . '(id, name, url, url_hash, replaces_url, replaces_url_hash, category, source, note, created_from_report_id, created_at, updated_at) '
+                        . 'VALUES (:id, :name, :url, :url_hash, :replaces_url, :replaces_url_hash, :category, :source, NULL, NULL, :created_at, :updated_at)',
                         [
                             'id' => $approvedLinkId,
-                            'name' => (string) ($target['name'] ?? ''),
+                            'name' => $replacementName,
                             'url' => $replacementUrl,
                             'url_hash' => hex2bin($replacementHash),
+                            'replaces_url' => (string) ($target['url'] ?? ''),
+                            'replaces_url_hash' => hex2bin($urlHash),
                             'category' => (string) ($target['category'] ?? ''),
                             'source' => (string) ($target['source'] ?? 'Ylläpito'),
                             'created_at' => $now,
                             'updated_at' => $now,
                         ],
                     );
+                } else {
+                    $database->execute(
+                        'UPDATE approved_links SET name = :name, url = :url, replaces_url = :replaces_url, '
+                        . 'replaces_url_hash = :replaces_url_hash, category = :category, source = :source, '
+                        . 'updated_at = :updated_at WHERE id = :id',
+                        [
+                            'id' => $approvedLinkId,
+                            'name' => $replacementName,
+                            'url' => $replacementUrl,
+                            'replaces_url' => (string) ($target['url'] ?? ''),
+                            'replaces_url_hash' => hex2bin($urlHash),
+                            'category' => (string) ($target['category'] ?? ''),
+                            'source' => (string) ($target['source'] ?? 'Ylläpito'),
+                            'updated_at' => $now,
+                        ],
+                    );
+                }
+
+                if (!$urlChanged) {
+                    $database->execute(
+                        'UPDATE link_check_targets SET name = :name, updated_at = :updated_at WHERE url_hash = :url_hash',
+                        ['name' => $replacementName, 'updated_at' => $now, 'url_hash' => $urlHash],
+                    );
+                    $this->audit($database, $actor, 'link_check.update', 'link_check_target', $urlHash, [
+                        'replacementName' => $replacementName,
+                        'replacementUrl' => $replacementUrl,
+                        'approvedLinkId' => $approvedLinkId,
+                    ]);
+                    return;
                 }
 
                 $existingBlock = $database->fetchOne(
@@ -758,6 +868,7 @@ final class AdminApi
                     ['url_hash' => $urlHash],
                 );
                 $this->audit($database, $actor, 'link_check.replace', 'link_check_target', $urlHash, [
+                    'replacementName' => $replacementName,
                     'replacementUrl' => $replacementUrl,
                     'approvedLinkId' => $approvedLinkId,
                     'blockedLinkId' => $blockId,
@@ -964,6 +1075,15 @@ final class AdminApi
             throw new ApiException(422, 'validation_error', 'Linkin tunniste ei kelpaa.');
         }
         return $urlHash;
+    }
+
+    private function routeContentKey(Request $request): string
+    {
+        $contentKey = trim($request->pathParameter('id'));
+        if (preg_match('/^[A-Za-z][A-Za-z0-9.-]{1,99}$/D', $contentKey) !== 1 || !in_array($contentKey, self::SITE_CONTENT_KEYS, true)) {
+            throw new ApiException(422, 'validation_error', 'Sisältöavaimen muoto ei kelpaa.');
+        }
+        return $contentKey;
     }
 
     /** @param array<string, mixed> $data */

@@ -34,6 +34,7 @@ final class PublicApi
 
     public function register(Router $router): void
     {
+        $router->add('GET', '/api/v1/site-content', fn (Request $request): Response => $this->siteContent($request));
         $router->add('GET', '/api/v1/approved-links', fn (Request $request): Response => $this->approvedLinks($request));
         $router->add('GET', '/api/v1/blocked-links', fn (Request $request): Response => $this->blockedLinks($request));
         $router->add('GET', '/api/v1/scam-alerts', fn (Request $request): Response => $this->scamAlerts($request));
@@ -45,10 +46,24 @@ final class PublicApi
         $router->add('POST', '/api/v1/usage-events', fn (Request $request): Response => $this->submitUsageEvent($request));
     }
 
+    private function siteContent(Request $request): Response
+    {
+        $rows = $this->database->fetchAll(
+            'SELECT content_key, locale, value, updated_at FROM site_content ORDER BY content_key, locale',
+        );
+        $data = array_map(static fn (array $row): array => [
+            'key' => (string) ($row['content_key'] ?? ''),
+            'locale' => (string) ($row['locale'] ?? ''),
+            'value' => (string) ($row['value'] ?? ''),
+            'updatedAt' => self::isoDate($row['updated_at'] ?? ''),
+        ], $rows);
+        return $this->listResponse($request, $data);
+    }
+
     private function approvedLinks(Request $request): Response
     {
         $rows = $this->database->fetchAll(
-            'SELECT id, name, url, category, municipality, source, note, created_at '
+            'SELECT id, name, url, replaces_url, category, municipality, source, note, created_at '
             . 'FROM approved_links ORDER BY created_at DESC LIMIT 500',
         );
         $data = array_map(static function (array $row): array {
@@ -60,6 +75,9 @@ final class PublicApi
                 'source' => (string) ($row['source'] ?? ''),
                 'createdAt' => self::isoDate($row['created_at'] ?? ''),
             ];
+            if (isset($row['replaces_url']) && $row['replaces_url'] !== '') {
+                $item['replacesUrl'] = (string) $row['replaces_url'];
+            }
             if (isset($row['note']) && $row['note'] !== '') {
                 $item['note'] = (string) $row['note'];
             }

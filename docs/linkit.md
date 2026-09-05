@@ -34,6 +34,6 @@ Manuaaliseen tarkistusjonoon nostettu: 236 linkkiä.
 
 Turvallisuustarkistus kattaa URL-muodon, protokollan, DNS/IP-riskit, HTTP-polun, uudelleenohjaukset, kevyen sisältösignaalin, riskipisteytyksen sekä RDAP-pohjaisen domain-signaalin silloin kun julkista tietoa on saatavilla.
 
-RDAP-signaali on taustatieto manuaaliselle tarkistukselle. Se voi kertoa rekisteröijän, välittäjän tai omistajaan liittyvän julkisen tiedon, mutta ei yksin todista linkkia aidoksi tai turvalliseksi.
+RDAP-signaali on erillisen taustapalvelun omistajatieto eikä tarkistettavan sivun HTTP-vastaus. Pyyntörajoitus koskee RDAP-taustapalvelua, ei kohdesivua, eikä se vaikuta linkin riskipisteisiin tai näkyvyyteen. Onnistuneet tulokset säilytetään 90 päivän välimuistissa.
 
 Huomio: paikalliset uutisotsikot ja käyttäjän tekemät Google-haut muodostuvat ajossa, joten yksittäisiä hakutuloksia ei listata staattisessa taulukossa.

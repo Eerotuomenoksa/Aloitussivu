@@ -397,7 +397,7 @@ const LinkList = ({ links }: { links: RegionalLinkRow[] }) => (
   <ul className="space-y-2">
     {links.map((link) => (
       <li key={`${link.category}|${link.name}|${link.url}`} className="leading-snug">
-        <a className="inline-flex min-h-8 items-center break-words font-black text-[var(--theme-primary)] hover:underline focus:outline-none focus:ring-4 focus:ring-[var(--theme-focus)]/40" href={link.url} target="_blank" rel="noopener noreferrer">
+        <a className="inline-flex min-h-8 items-center break-words font-black text-[var(--theme-primary)] hover:underline focus:outline-none focus:ring-4 focus:ring-[var(--theme-focus)]/40" href={link.url} data-usage-category={link.category} target="_blank" rel="noopener noreferrer">
           {link.name}
         </a>
         <span className="block break-all text-xs font-bold text-[var(--theme-text-3)]">{link.url}</span>
@@ -608,7 +608,7 @@ function App() {
                   <tr key={`${row.category}|${row.group}|${row.name}|${row.url}`}>
                     <td className="px-4 py-3 font-black">{row.name}</td>
                     <td className="px-4 py-3">
-                      <a className="inline-flex min-h-8 items-center break-all text-[var(--theme-primary)] hover:underline focus:outline-none focus:ring-4 focus:ring-[var(--theme-focus)]/40" href={row.url} target="_blank" rel="noopener noreferrer">{row.url}</a>
+                      <a className="inline-flex min-h-8 items-center break-all text-[var(--theme-primary)] hover:underline focus:outline-none focus:ring-4 focus:ring-[var(--theme-focus)]/40" href={row.url} data-usage-category={row.category} target="_blank" rel="noopener noreferrer">{row.url}</a>
                     </td>
                     <td className="px-4 py-3 font-bold">{localizeLinkValue(row.category, language)}</td>
                     <td className="px-4 py-3 text-[var(--theme-muted)]">{row.group ? localizeLinkValue(row.group, language) : '-'}</td>
@@ -643,7 +643,7 @@ function App() {
                     <td className="px-4 py-3 font-bold">{localizeLinkValue(row.category, language)}</td>
                     <td className="px-4 py-3">{row.name}</td>
                     <td className="px-4 py-3">
-                      <a className="inline-flex min-h-8 items-center break-all text-[var(--theme-primary)] hover:underline focus:outline-none focus:ring-4 focus:ring-[var(--theme-focus)]/40" href={row.url} target="_blank" rel="noopener noreferrer">{row.url}</a>
+                      <a className="inline-flex min-h-8 items-center break-all text-[var(--theme-primary)] hover:underline focus:outline-none focus:ring-4 focus:ring-[var(--theme-focus)]/40" href={row.url} data-usage-category={row.category} target="_blank" rel="noopener noreferrer">{row.url}</a>
                     </td>
                   </tr>
                 ))}

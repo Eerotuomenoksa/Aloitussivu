@@ -222,7 +222,8 @@ final class LinkCheckJob
                     'INSERT INTO link_check_targets '
                     . '(url_hash, url, name, category, source, approved_active, next_check_at, check_interval_hours, created_at, updated_at) '
                     . 'VALUES (:url_hash, :url, :name, :category, :source, 1, :next_check_at, :check_interval_hours, :created_at, :updated_at) '
-                    . 'ON DUPLICATE KEY UPDATE approved_active = 1, updated_at = VALUES(updated_at)',
+                    . 'ON DUPLICATE KEY UPDATE url = VALUES(url), name = VALUES(name), category = VALUES(category), '
+                    . 'source = VALUES(source), approved_active = 1, updated_at = VALUES(updated_at)',
                     [
                         'url_hash' => $urlHash,
                         'url' => $url,

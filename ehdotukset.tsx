@@ -62,6 +62,7 @@ import {
   type LinkCheckOverview,
 } from './linkChecks';
 import { MUNICIPALITIES } from './municipalRegistry';
+import SiteContentEditor from './components/admin/SiteContentEditor';
 
 const normalizeUrl = (url: string) => url.trim().replace(/\/+$/, '');
 const extractHttpsUrl = (value: string) => (
@@ -123,9 +124,24 @@ const getUsagePresetRange = (mode: UsageRangeMode) => {
 
 const normalizeUsagePage = (page: string) => (page === 'index' ? 'etusivu' : page);
 
+const isExcludedUsageSection = (page: string) => {
+  const normalized = normalizeUsagePage(page).toLocaleLowerCase('fi-FI');
+  return normalized === 'ehdotukset'
+    || normalized === 'yllapito'
+    || normalized === 'testipalaute-yllapito'
+    || normalized.startsWith('saavutettavuus');
+};
+
+const isExcludedUsageCategory = (category: string) => {
+  const normalized = category.trim().toLocaleLowerCase('fi-FI');
+  return normalized === 'ylläpito'
+    || normalized === 'saavutettavuus'
+    || normalized === 'saavutettavuusseloste';
+};
+
 const sumUsageStats = (stats: UsageDailyStats[]) => {
   const pages = new Map<string, { count: number; page: string }>();
-  const links = new Map<string, { count: number; category: string; page: string }>();
+  const categories = new Map<string, { count: number; category: string }>();
   let totalPageviews = 0;
   let totalLinkClicks = 0;
 
@@ -141,14 +157,15 @@ const sumUsageStats = (stats: UsageDailyStats[]) => {
     });
 
     Object.values(day.linkClicks).forEach((link) => {
-      const key = `${link.page}\n${link.category}`;
-      const current = links.get(key) ?? {
+      const category = link.category.trim();
+      if (!category || isExcludedUsageSection(link.page) || isExcludedUsageCategory(category)) return;
+      const key = category.toLocaleLowerCase('fi-FI');
+      const current = categories.get(key) ?? {
         count: 0,
-        category: link.category,
-        page: link.page,
+        category,
       };
       current.count += link.count;
-      links.set(key, current);
+      categories.set(key, current);
     });
   });
 
@@ -156,7 +173,7 @@ const sumUsageStats = (stats: UsageDailyStats[]) => {
     totalPageviews,
     totalLinkClicks,
     frontPageViews: pages.get('etusivu')?.count ?? 0,
-    topLinks: [...links.values()].sort((a, b) => b.count - a.count).slice(0, 12),
+    topCategories: [...categories.values()].sort((a, b) => b.count - a.count).slice(0, 12),
   };
 };
 
@@ -328,6 +345,7 @@ function App() {
   const [linkCheckBusyId, setLinkCheckBusyId] = useState<string | null>(null);
   const [linkCheckActionMessage, setLinkCheckActionMessage] = useState('');
   const [linkCheckReasons, setLinkCheckReasons] = useState<Record<string, string>>({});
+  const [linkCheckReplacementNames, setLinkCheckReplacementNames] = useState<Record<string, string>>({});
   const [linkCheckReplacementUrls, setLinkCheckReplacementUrls] = useState<Record<string, string>>({});
 
   const hasAdminAccess = adminSession !== null;
@@ -568,6 +586,13 @@ function App() {
       note: 'Täältä voi poistaa aiemmin hyväksyttyjä lisäyksiä.',
     },
     {
+      label: 'Sivutekstit',
+      count: 'Muokkaa',
+      href: '#site-content',
+      tone: 'bg-violet-100 text-violet-950 dark:bg-violet-900/40 dark:text-violet-100',
+      note: 'Tietosuoja, saavutettavuus, ohjeikkunat sekä ylä- ja alatunniste.',
+    },
+    {
       label: 'Käyttötilastot',
       count: usageTotals.frontPageViews,
       href: '#usage-stats',
@@ -778,8 +803,13 @@ function App() {
       setLinkCheckActionMessage('Kirjoita käsittelylle vähintään kolmen merkin perustelu.');
       return;
     }
-    const replacementUrl = (linkCheckReplacementUrls[item.id] ?? '').trim();
+    const replacementName = (linkCheckReplacementNames[item.id] ?? item.name).trim();
+    const replacementUrl = (linkCheckReplacementUrls[item.id] ?? item.url).trim();
     if (action === 'replace') {
+      if (!replacementName) {
+        setLinkCheckActionMessage('Anna linkille nimi.');
+        return;
+      }
       try {
         const parsed = new URL(replacementUrl);
         if (parsed.protocol !== 'https:' || !parsed.hostname) throw new Error('invalid');
@@ -791,7 +821,13 @@ function App() {
     setLinkCheckBusyId(item.id);
     setLinkCheckActionMessage('');
     try {
-      await actOnLinkCheck(item.id, action, reason, action === 'replace' ? replacementUrl : undefined);
+      await actOnLinkCheck(
+        item.id,
+        action,
+        reason,
+        action === 'replace' ? replacementUrl : undefined,
+        action === 'replace' ? replacementName : undefined,
+      );
       if (action === 'replace') await refreshApprovedLinkSuggestions().catch(() => undefined);
       setLinkChecks(await fetchLinkChecks());
       setLinkCheckReasons((current) => {
@@ -804,10 +840,19 @@ function App() {
         delete next[item.id];
         return next;
       });
+      setLinkCheckReplacementNames((current) => {
+        const next = { ...current };
+        delete next[item.id];
+        return next;
+      });
       setLinkCheckActionMessage(action === 'approve'
-        ? `Linkki ${item.name} hyväksyttiin toimivaksi. Huomio tarkistetaan uudelleen kolmen kuukauden kuluttua.`
+        ? item.isAutoBlocked
+          ? `Linkki ${item.name} palautettiin näkyviin. Se tarkistetaan uudelleen kolmen kuukauden kuluttua.`
+          : `Linkki ${item.name} hyväksyttiin toimivaksi. Huomio tarkistetaan uudelleen kolmen kuukauden kuluttua.`
         : action === 'replace'
-          ? `Linkki ${item.name} korvattiin uudella osoitteella ja vanha linkki piilotettiin käyttäjiltä.`
+          ? normalizeUrl(replacementUrl) === normalizeUrl(item.url)
+            ? `Linkin ${item.name} nimi ja osoite tallennettiin.`
+            : `Linkki ${item.name} korvattiin linkillä ${replacementName}, ja vanha osoite piilotettiin käyttäjiltä.`
           : `Linkki ${item.name} poistettiin käyttäjiltä näkyvistä ja lisättiin ylläpidon pysyvälle estolistalle.`);
     } catch (error) {
       if (isAdminAccessError(error)) setAdminSession(null);
@@ -819,25 +864,35 @@ function App() {
     }
   };
 
-  const renderLinkCheckActions = (item: LinkCheckItem, allowReplacement = false) => (
+  const renderLinkCheckActions = (item: LinkCheckItem) => (
     <div className="mt-4 space-y-3 rounded-xl border border-slate-200 bg-white p-3 dark:border-slate-700 dark:bg-slate-900">
-      {allowReplacement && (
+      <div className="grid gap-3 md:grid-cols-2">
+        <label className="block space-y-2" htmlFor={`link-check-replacement-name-${item.id}`}>
+          <span className="block text-sm font-black text-violet-950 dark:text-violet-100">Linkin nimi</span>
+          <input
+            id={`link-check-replacement-name-${item.id}`}
+            type="text"
+            maxLength={160}
+            value={linkCheckReplacementNames[item.id] ?? item.name}
+            onChange={(event) => setLinkCheckReplacementNames((current) => ({ ...current, [item.id]: event.target.value }))}
+            disabled={linkCheckBusyId === item.id}
+            className="w-full rounded-xl border-2 border-violet-300 bg-white px-3 py-3 font-bold text-slate-900 focus:border-violet-600 focus:outline-none focus:ring-4 focus:ring-violet-600/25 disabled:opacity-60 dark:border-violet-700 dark:bg-slate-800 dark:text-white"
+          />
+        </label>
         <label className="block space-y-2" htmlFor={`link-check-replacement-${item.id}`}>
-          <span className="block text-sm font-black text-violet-950 dark:text-violet-100">Oikea linkki (korvaa alkuperäisen)</span>
+          <span className="block text-sm font-black text-violet-950 dark:text-violet-100">HTTPS-osoite</span>
           <input
             id={`link-check-replacement-${item.id}`}
             type="url"
             inputMode="url"
             maxLength={2048}
-            value={linkCheckReplacementUrls[item.id] ?? ''}
+            value={linkCheckReplacementUrls[item.id] ?? item.url}
             onChange={(event) => setLinkCheckReplacementUrls((current) => ({ ...current, [item.id]: event.target.value }))}
-            placeholder="https://esimerkki.fi/palvelu"
             disabled={linkCheckBusyId === item.id}
             className="w-full rounded-xl border-2 border-violet-300 bg-white px-3 py-3 font-bold text-slate-900 focus:border-violet-600 focus:outline-none focus:ring-4 focus:ring-violet-600/25 disabled:opacity-60 dark:border-violet-700 dark:bg-slate-800 dark:text-white"
           />
-          <span className="block text-xs font-bold text-violet-900 dark:text-violet-200">Uusi HTTPS-osoite lisätään käyttäjille ja vanha osoite poistetaan näkyvistä.</span>
         </label>
-      )}
+      </div>
       <label className="block space-y-2" htmlFor={`link-check-reason-${item.id}`}>
         <span className="block text-sm font-black text-slate-700 dark:text-slate-200">Ylläpitäjän perustelu</span>
         <input
@@ -852,43 +907,48 @@ function App() {
         />
       </label>
       <p className="text-xs font-bold text-slate-500 dark:text-slate-400">
-        {allowReplacement
-          ? 'Korvaaminen lisää uuden osoitteen käyttäjille ja piilottaa vanhan osoitteen. Hyväksyntä vaimentaa huomion kolmeksi kuukaudeksi.'
-          : 'Hyväksyntä vaimentaa tämän huomion kolmeksi kuukaudeksi. Poistaminen piilottaa linkin käyttäjiltä ja lisää sen ylläpidon pysyvälle estolistalle.'}
+        Tietojen tallentaminen päivittää käyttäjille näytettävän nimen ja osoitteen. Jos osoite vaihtuu, vanha osoite piilotetaan.
+        {item.isAutoBlocked && ' Palauttaminen poistaa automaattisen eston ja hyväksyy tarkistetun linkin kolmeksi kuukaudeksi.'}
+        {item.isBlocked && !item.isAutoBlocked && ' Linkki on ylläpitäjän pysyvällä estolistalla; sen voi palauttaa estolistojen hallinnasta tai korvata uudella osoitteella.'}
       </p>
       <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
-        {allowReplacement && (
+        <button
+          type="button"
+          disabled={linkCheckBusyId === item.id}
+          onClick={() => void handleLinkCheckAction(item, 'replace')}
+          className="rounded-full bg-violet-700 px-5 py-3 font-black text-white shadow-md transition-all hover:bg-violet-800 focus:outline-none focus:ring-4 focus:ring-violet-700/35 active:scale-95 disabled:opacity-50"
+        >
+          {linkCheckBusyId === item.id ? 'Käsitellään…' : 'Tallenna nimi ja osoite'}
+        </button>
+        {(!item.isBlocked || item.isAutoBlocked) && item.status !== 'rejected' && (
           <button
             type="button"
             disabled={linkCheckBusyId === item.id}
-            onClick={() => void handleLinkCheckAction(item, 'replace')}
-            className="rounded-full bg-violet-700 px-5 py-3 font-black text-white shadow-md transition-all hover:bg-violet-800 focus:outline-none focus:ring-4 focus:ring-violet-700/35 active:scale-95 disabled:opacity-50"
+            onClick={() => void handleLinkCheckAction(item, 'approve')}
+            className="rounded-full bg-emerald-600 px-5 py-3 font-black text-white shadow-md transition-all hover:bg-emerald-700 focus:outline-none focus:ring-4 focus:ring-emerald-600/35 active:scale-95 disabled:opacity-50"
           >
-            {linkCheckBusyId === item.id ? 'Käsitellään…' : 'Korvaa linkki'}
+            {linkCheckBusyId === item.id ? 'Käsitellään…' : item.isAutoBlocked ? 'Palauta näkyviin' : 'Hyväksy toimivaksi'}
           </button>
         )}
-        <button
-          type="button"
-          disabled={linkCheckBusyId === item.id}
-          onClick={() => void handleLinkCheckAction(item, 'approve')}
-          className="rounded-full bg-emerald-600 px-5 py-3 font-black text-white shadow-md transition-all hover:bg-emerald-700 focus:outline-none focus:ring-4 focus:ring-emerald-600/35 active:scale-95 disabled:opacity-50"
-        >
-          {linkCheckBusyId === item.id ? 'Käsitellään…' : 'Hyväksy toimivaksi'}
-        </button>
-        <button
-          type="button"
-          disabled={linkCheckBusyId === item.id}
-          onClick={() => void handleLinkCheckAction(item, 'block')}
-          className="rounded-full bg-rose-700 px-5 py-3 font-black text-white shadow-md transition-all hover:bg-rose-800 focus:outline-none focus:ring-4 focus:ring-rose-700/35 active:scale-95 disabled:opacity-50"
-        >
-          {linkCheckBusyId === item.id ? 'Käsitellään…' : 'Poista linkki näkyvistä'}
-        </button>
+        {!item.isBlocked && (
+          <button
+            type="button"
+            disabled={linkCheckBusyId === item.id}
+            onClick={() => void handleLinkCheckAction(item, 'block')}
+            className="rounded-full bg-rose-700 px-5 py-3 font-black text-white shadow-md transition-all hover:bg-rose-800 focus:outline-none focus:ring-4 focus:ring-rose-700/35 active:scale-95 disabled:opacity-50"
+          >
+            {linkCheckBusyId === item.id ? 'Käsitellään…' : 'Poista linkki näkyvistä'}
+          </button>
+        )}
       </div>
     </div>
   );
 
-  const confirmedLinkCheckIds = new Set(linkChecks.items.map((item) => item.id));
-  const otherStatusItems = (linkChecks.statusItems ?? []).filter((item) => !confirmedLinkCheckIds.has(item.id));
+  const primaryLinkCheckIds = new Set([
+    ...linkChecks.items.map((item) => item.id),
+    ...linkChecks.domainChangedItems.map((item) => item.id),
+  ]);
+  const otherStatusItems = (linkChecks.statusItems ?? []).filter((item) => !primaryLinkCheckIds.has(item.id));
 
   return (
     <main className="aurora-page">
@@ -987,10 +1047,10 @@ function App() {
               <div>
                 <h2 id="review-dashboard-heading" className="aurora-section-title text-2xl md:text-3xl">Tarkista nämä ensin</h2>
                 <p className="text-sm font-bold text-[var(--theme-text-3)]">
-                  Nopea näkymä avoimiin asioihin ja automaation huomioihin.
+                  Nopea näkymä avoimiin asioihin, automaation huomioihin ja sivutekstien editoriin.
                 </p>
               </div>
-              <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-7">
+              <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-8">
                 {reviewTasks.map((task) => (
                   <a
                     key={task.href}
@@ -1010,6 +1070,8 @@ function App() {
                 ))}
               </div>
             </section>
+
+            <SiteContentEditor onAccessError={() => setAdminSession(null)} />
 
             <section id="feedback" className="scroll-mt-6 space-y-5 rounded-2xl border border-rose-200 bg-rose-50/40 p-5 shadow-sm dark:border-rose-900 dark:bg-rose-950/20">
               <div className="flex flex-wrap items-start justify-between gap-4">
@@ -1257,7 +1319,7 @@ function App() {
                               <p className="font-bold text-slate-700 dark:text-slate-200">Kohdeosoitetta ei saatu talteen.</p>
                             )}
                             <p className="mt-2 text-xs font-bold text-slate-500 dark:text-slate-400">Tarkistettu {formatDateTime(item.lastCheckedAt ?? undefined)}</p>
-                            {renderLinkCheckActions(item, true)}
+                            {renderLinkCheckActions(item)}
                           </article>
                         ))}
                       </div>
@@ -1335,7 +1397,7 @@ function App() {
                                 Ylläpitäjän hyväksyntä on voimassa{item.overrideNextReviewAt ? ` ${formatDateTime(item.overrideNextReviewAt)} asti` : ''}.
                               </p>
                             )}
-                            {!item.isBlocked && !item.overrideScope && renderLinkCheckActions(item)}
+                            {renderLinkCheckActions(item)}
                           </article>
                         ))}
                       </div>
@@ -1356,6 +1418,7 @@ function App() {
                             <p className="text-sm font-bold text-slate-600 dark:text-slate-300">{item.category} · {item.source}</p>
                             <p className="mt-2 break-all font-bold text-slate-800 dark:text-slate-100">{item.url}</p>
                             <p className="mt-2 text-sm font-bold text-amber-900 dark:text-amber-200">{getLinkCheckErrorLabel(item.errorCode)}</p>
+                            {renderLinkCheckActions(item)}
                           </article>
                         ))}
                       </div>
@@ -1542,20 +1605,19 @@ function App() {
                     </div>
 
                     <div className="space-y-3">
-                      <h3 className="text-xl font-black">Suosituimmat osiot ja kategoriat</h3>
-                      {usageTotals.topLinks.length === 0 ? (
+                      <h3 className="text-xl font-black">Suosituimmat kategoriat</h3>
+                      {usageTotals.topCategories.length === 0 ? (
                         <p className="font-bold text-slate-500 dark:text-slate-400">Ei linkkiklikkauksia valitulla aikavälillä.</p>
                       ) : (
                         <div className="grid gap-3">
-                          {usageTotals.topLinks.map((link) => (
-                            <article key={`${link.page}-${link.category}`} className="rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-950/60">
+                          {usageTotals.topCategories.map((category) => (
+                            <article key={category.category} className="rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-950/60">
                               <div className="flex items-start justify-between gap-3">
                                 <div className="min-w-0">
-                                  <p className="font-black break-words">{link.category || 'Muu kategoria'}</p>
-                                  <p className="mt-1 text-xs font-bold text-slate-500 dark:text-slate-400">Osio: {normalizeUsagePage(link.page) || 'tuntematon'}</p>
+                                  <p className="font-black break-words">{category.category}</p>
                                 </div>
                                 <span className="shrink-0 rounded-full bg-cyan-100 px-3 py-1 text-sm font-black text-cyan-950 dark:bg-cyan-900/40 dark:text-cyan-100">
-                                  {link.count}
+                                  {category.count}
                                 </span>
                               </div>
                             </article>

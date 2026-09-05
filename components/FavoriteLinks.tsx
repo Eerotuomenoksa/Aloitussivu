@@ -136,6 +136,7 @@ const FavoriteLinks: React.FC<FavoriteLinksProps> = ({ favorites, onToggleFavori
     <div key={fav.url} className="group/fav inline-flex items-center gap-2">
       <a
         href={fav.url}
+        data-usage-category={fav.categoryName}
         target="_blank"
         rel="noopener noreferrer"
         onClick={() => onFavoriteOpen(fav.url)}

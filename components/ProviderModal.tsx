@@ -204,6 +204,7 @@ const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSi
                         <div className="grid w-full grid-cols-1 gap-3">
                           <a
                             href={provider.url}
+                            data-usage-category={shortcut.name}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="inline-flex min-h-14 items-center justify-center gap-3 rounded-full bg-[var(--theme-primary)] px-5 py-3 text-base font-black text-white shadow-sm transition-all hover:bg-[var(--theme-primary-mid)] focus-visible:ring-4 focus-visible:ring-[var(--theme-focus)]/40 active:scale-95 md:text-lg"
@@ -216,6 +217,7 @@ const ProviderModal: React.FC<ProviderModalProps> = ({ shortcut, onClose, fontSi
                           {provider.phone && phoneHref && (
                             <a
                               href={phoneHref}
+                              data-usage-category={shortcut.name}
                               className="inline-flex min-h-16 items-center justify-center gap-3 rounded-full bg-[var(--theme-gold)] px-5 py-3 text-xl font-black text-[var(--theme-cta-label)] shadow-sm transition-all hover:bg-[var(--theme-gold-light)] focus-visible:ring-4 focus-visible:ring-[var(--theme-focus)]/40 active:scale-95 md:text-2xl"
                               title={`${t('call')}: ${provider.name}`}
                               aria-label={`${t('call')}: ${provider.name}, ${provider.phone}`}

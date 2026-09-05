@@ -48,6 +48,7 @@ const NearbyGuidancePlaces: React.FC<NearbyGuidancePlacesProps> = ({ locality, f
         {isLinkVisible('https://seniorsurf.fi/seniorit/opastuspaikat/') && (
           <a
             href="https://seniorsurf.fi/seniorit/opastuspaikat/"
+            data-usage-category="Digiapu"
             target="_blank"
             rel="noopener noreferrer"
             className={`font-black text-[var(--theme-primary)] hover:underline ${smallTextClasses[fontSizeStep]}`}
@@ -84,6 +85,7 @@ const NearbyGuidancePlaces: React.FC<NearbyGuidancePlacesProps> = ({ locality, f
               <a
                 key={place.id}
                 href={visibleHref}
+                data-usage-category="Digiapu"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex min-h-[150px] flex-col justify-between gap-4 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-surface)] p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:border-[var(--theme-border-strong)] hover:bg-[var(--theme-pale)] hover:shadow-md active:scale-[.99]"

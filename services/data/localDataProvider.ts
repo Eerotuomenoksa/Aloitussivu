@@ -18,6 +18,7 @@ const storageKeys = {
   'ncsc-logs': 'ncscScrapeLog',
   'link-checks': 'linkChecks',
   'usage-stats': 'usageStats',
+  'site-content': 'siteContent',
 } as const;
 
 const readArray = <T>(key: string): T[] => {
@@ -99,7 +100,11 @@ export const localDataProvider: DataProvider = {
     const key = resourceKey(resource);
     const current = readArray<Record<string, unknown>>(key);
     const updatedAt = new Date().toISOString();
-    writeArray(key, current.map((item) => item.id === id ? { ...item, ...payload, updatedAt } : item));
+    const nextItem = { ...payload, id, ...(resource === 'site-content' ? { key: id } : {}), updatedAt };
+    const exists = current.some((item) => item.id === id && (resource !== 'site-content' || item.locale === payload.locale));
+    writeArray(key, exists
+      ? current.map((item) => item.id === id && (resource !== 'site-content' || item.locale === payload.locale) ? { ...item, ...nextItem } : item)
+      : [nextItem, ...current]);
     return { id, updatedAt };
   },
 
@@ -112,7 +117,7 @@ export const localDataProvider: DataProvider = {
     throw new DataProviderError('Ylläpidon käsiajoa ei tueta paikallisproviderissa.', 'unsupported_operation');
   },
 
-  async actOnLinkCheck(_urlHash, _action, _reason, _replacementUrl) {
+  async actOnLinkCheck(_urlHash, _action, _reason, _replacementUrl, _replacementName) {
     throw new DataProviderError('Linkkitarkistuksen huomioita ei käsitellä paikallisproviderissa.', 'unsupported_operation');
   },
 

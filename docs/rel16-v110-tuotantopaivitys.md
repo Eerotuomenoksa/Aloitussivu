@@ -11,7 +11,7 @@ Tämä julkaisu tuo palautteiden julkisen käsittelyseurannan, yhdenmukaistaa li
 
 Kahden tunnin staging-kuormitusajo päättyi ilman virheitä: 5 760 HTTP-pyyntöä, kaikki 200, p95 49 ms ja enimmäiskesto 240 ms. Ajo mittasi omaa API:a (0,8 pyyntöä/s), ei ulkoisia linkkikohteita. Siksi ulkoisten yhteyksien rinnakkaisuutta ei kasvateta tämän perusteella.
 
-Ennen koodin aktivointia aja paketista `database_migrations/009_approved_links_municipality.sql` tuotantotietokantaan. Se lisää hyväksytylle linkille valinnaisen kunnan; tyhjä arvo tarkoittaa valtakunnallista linkkiä. Migraatio on uudelleenajettava turvallisesti.
+Ennen koodin aktivointia aja paketista tuotantotietokantaan järjestyksessä `database_migrations/009_approved_links_municipality.sql`, `database_migrations/010_link_content_corrections.sql`, `database_migrations/011_site_content_editor.sql` ja `database_migrations/012_site_content_additional_locales.sql`. Ensimmäinen lisää hyväksytylle linkille valinnaisen kunnan; tyhjä arvo tarkoittaa valtakunnallista linkkiä. Toinen lisää ylläpidossa vaihdetuille linkeille alkuperäisen osoitteen kohdistuksen ja korjaa tietokantaan aiemmin hyväksytyn Bluesky-linkin nimen. Kolmas lisää auditoidun sivutekstien editorin tietovaraston. Viimeinen laajentaa editorin pohjoissaameen, ukrainaan, eestiin ja venäjään. Migraatiot ovat uudelleenajettavia turvallisesti.
 
 ## Ennen siirtoa
 

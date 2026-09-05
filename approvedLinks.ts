@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { getDataProvider } from './services/data';
-import { LocalityInfo, Shortcut } from './types';
+import { LocalityInfo, Provider, Shortcut } from './types';
 
 export interface ApprovedLinkSuggestion {
   id: string;
   name: string;
   url: string;
+  replacesUrl?: string;
   category: string;
   municipality?: string;
   source: string;
@@ -30,6 +31,12 @@ const normalizeUrl = (url: string) => {
   }
 };
 
+const normalizeKnownApprovedLink = (link: ApprovedLinkSuggestion): ApprovedLinkSuggestion => (
+  normalizeText(link.name) === 'blusky' && normalizeUrl(link.url) === normalizeUrl('https://bsky.social')
+    ? { ...link, name: 'Bluesky' }
+    : link
+);
+
 const readJsonArray = <T,>(key: string): T[] => {
   try {
     if (typeof localStorage === 'undefined') return [];
@@ -51,7 +58,7 @@ const writeJsonArray = <T,>(key: string, value: T[]) => {
   }
 };
 
-let approvedLinksCache = readJsonArray<ApprovedLinkSuggestion>(APPROVED_LINKS_KEY);
+let approvedLinksCache = readJsonArray<ApprovedLinkSuggestion>(APPROVED_LINKS_KEY).map(normalizeKnownApprovedLink);
 
 const emitApprovedLinksChange = () => {
   if (typeof window !== 'undefined') {
@@ -60,8 +67,8 @@ const emitApprovedLinksChange = () => {
 };
 
 const setApprovedLinksCache = (links: ApprovedLinkSuggestion[]) => {
-  approvedLinksCache = links;
-  writeJsonArray(APPROVED_LINKS_KEY, links);
+  approvedLinksCache = links.map(normalizeKnownApprovedLink);
+  writeJsonArray(APPROVED_LINKS_KEY, approvedLinksCache);
   emitApprovedLinksChange();
 };
 
@@ -96,7 +103,7 @@ let stopApprovedLinksRemoteSync: (() => void) | null = null;
 export const subscribeApprovedLinkSuggestions = (callback: (links: ApprovedLinkSuggestion[]) => void) => {
   const handleStorage = (event: StorageEvent) => {
     if (event.key !== APPROVED_LINKS_KEY) return;
-    approvedLinksCache = readJsonArray<ApprovedLinkSuggestion>(APPROVED_LINKS_KEY);
+    approvedLinksCache = readJsonArray<ApprovedLinkSuggestion>(APPROVED_LINKS_KEY).map(normalizeKnownApprovedLink);
     callback(getApprovedLinkSuggestions());
   };
   const handleChange = () => callback(getApprovedLinkSuggestions());
@@ -184,6 +191,32 @@ export const useApprovedLinkSuggestionsVersion = () => {
   return version;
 };
 
+const appliesToProvider = (link: ApprovedLinkSuggestion, provider: Provider) => (
+  !link.municipality
+  || normalizeText(link.municipality) === normalizeText(provider.municipality ?? provider.sourceMunicipality ?? '')
+);
+
+export const resolveApprovedProvider = <T extends Provider>(provider: T): T => {
+  const providerUrl = normalizeUrl(provider.url);
+  const replacement = approvedLinksCache.find((link) => (
+    link.replacesUrl
+    && normalizeUrl(link.replacesUrl) === providerUrl
+    && appliesToProvider(link, provider)
+  )) ?? approvedLinksCache.find((link) => (
+    normalizeUrl(link.url) === providerUrl
+    && appliesToProvider(link, provider)
+  ));
+  if (!replacement) return provider;
+  return {
+    ...provider,
+    name: replacement.name,
+    url: replacement.url,
+    ...(replacement.municipality ? { municipality: replacement.municipality } : {}),
+  };
+};
+
+export const resolveApprovedUrl = (url: string) => resolveApprovedProvider({ name: '', url }).url;
+
 export const mergeApprovedLinksIntoShortcuts = (shortcuts: Shortcut[], locality: LocalityInfo | null = null) => {
   const approvedLinks = getApprovedLinkSuggestions();
   if (approvedLinks.length === 0) return shortcuts;
@@ -199,15 +232,29 @@ export const mergeApprovedLinksIntoShortcuts = (shortcuts: Shortcut[], locality:
   return shortcuts.map((shortcut) => {
     if (!shortcut.providers) return shortcut;
 
+    const globallyOverriddenProviders = shortcut.providers.map(resolveApprovedProvider);
+    const resolvedShortcut = { ...shortcut, providers: globallyOverriddenProviders };
+
     const approved = (byCategory.get(normalizeText(shortcut.name)) ?? []).filter((link) => (
       !link.municipality || normalizeText(link.municipality) === normalizeText(locality?.municipality ?? '')
     ));
-    if (approved.length === 0) return shortcut;
+    if (approved.length === 0) return resolvedShortcut;
 
-    const existingUrls = new Set(shortcut.providers.map((provider) => normalizeUrl(provider.url)));
-    const existingNames = new Set(shortcut.providers.map((provider) => normalizeText(provider.name)));
+    const approvedByUrl = new Map(approved.map((link) => [normalizeUrl(link.url), link]));
+    const overriddenProviders = globallyOverriddenProviders.map((provider) => {
+      const override = approvedByUrl.get(normalizeUrl(provider.url));
+      if (!override) return provider;
+      return {
+        ...provider,
+        name: override.name,
+        url: override.url,
+        ...(override.municipality ? { municipality: override.municipality } : {}),
+      };
+    });
+    const existingUrls = new Set(overriddenProviders.map((provider) => normalizeUrl(provider.url)));
+    const existingNames = new Set(overriddenProviders.map((provider) => normalizeText(provider.name)));
     const mergedProviders = [
-      ...shortcut.providers,
+      ...overriddenProviders,
       ...approved
         .filter((link) => !existingUrls.has(normalizeUrl(link.url)) && !existingNames.has(normalizeText(link.name)))
         .map((link) => ({

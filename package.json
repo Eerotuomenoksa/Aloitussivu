@@ -16,6 +16,7 @@
     "links": "node scripts/update-links.mjs",
     "test:link-policy": "node scripts/link-url-policy-test.mjs",
     "test:link-catalog": "node scripts/link-catalog-test.mjs",
+    "test:rdap-cache": "node scripts/rdap-domain-lookup-test.mjs",
     "build:link-catalog": "node scripts/build-link-catalog.mjs",
     "visual-check": "node scripts/visual-check.mjs",
     "municipality-locales": "node scripts/update-municipality-website-locales.mjs",

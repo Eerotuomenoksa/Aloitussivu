@@ -1,6 +1,6 @@
 export type DataProviderKind = 'cloudcity' | 'firebase-rollback' | 'local';
 
-export type PublicListResource = 'approved-links' | 'blocked-links' | 'scam-alerts' | 'feedback' | 'link-reports';
+export type PublicListResource = 'approved-links' | 'blocked-links' | 'scam-alerts' | 'feedback' | 'link-reports' | 'site-content';
 export type PublicWriteResource = 'link-reports' | 'feedback' | 'test-feedback' | 'usage-events';
 export type AdminListResource =
   | 'link-reports'
@@ -11,12 +11,14 @@ export type AdminListResource =
   | 'scam-alerts'
   | 'ncsc-logs'
   | 'link-checks'
+  | 'site-content'
   | 'usage-stats';
 export type AdminMutableResource =
   | 'link-reports'
   | 'feedback'
   | 'approved-links'
   | 'blocked-links'
+  | 'site-content'
   | 'scam-alerts';
 export type AdminAction = 'ncsc-run';
 export type LinkCheckAdminAction = 'approve' | 'block' | 'replace';
@@ -51,7 +53,13 @@ export interface DataProvider {
   updateAdmin(resource: AdminMutableResource, id: string, payload: Record<string, unknown>): Promise<MutationReceipt>;
   deleteAdmin(resource: 'approved-links' | 'blocked-links', id: string): Promise<void>;
   runAdminAction<T>(action: AdminAction): Promise<T>;
-  actOnLinkCheck(urlHash: string, action: LinkCheckAdminAction, reason: string, replacementUrl?: string): Promise<MutationReceipt>;
+  actOnLinkCheck(
+    urlHash: string,
+    action: LinkCheckAdminAction,
+    reason: string,
+    replacementUrl?: string,
+    replacementName?: string,
+  ): Promise<MutationReceipt>;
   getFeedbackAttachment(feedbackId: string): Promise<AdminAttachment | null>;
 }
 

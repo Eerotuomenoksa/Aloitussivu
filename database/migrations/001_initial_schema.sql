@@ -104,6 +104,8 @@ CREATE TABLE IF NOT EXISTS approved_links (
   name VARCHAR(160) NOT NULL,
   url VARCHAR(2048) NOT NULL,
   url_hash BINARY(32) NOT NULL,
+  replaces_url VARCHAR(2048) NULL,
+  replaces_url_hash BINARY(32) NULL,
   category VARCHAR(255) NOT NULL,
   municipality VARCHAR(100) NULL,
   source VARCHAR(255) NOT NULL,
@@ -113,6 +115,7 @@ CREATE TABLE IF NOT EXISTS approved_links (
   updated_at DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
   PRIMARY KEY (id),
   UNIQUE KEY uq_approved_links_url_hash (url_hash),
+  KEY idx_approved_links_replaces_url_hash (replaces_url_hash),
   KEY idx_approved_links_category_created (category, created_at),
   KEY idx_approved_links_municipality_created (municipality, created_at),
   KEY idx_approved_links_source_report (created_from_report_id),
@@ -222,6 +225,19 @@ CREATE TABLE IF NOT EXISTS audit_log (
   KEY idx_audit_log_actor_created (actor_firebase_uid, created_at),
   CONSTRAINT fk_audit_log_actor
     FOREIGN KEY (actor_firebase_uid) REFERENCES admin_users (firebase_uid)
+    ON UPDATE CASCADE ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS site_content (
+  content_key VARCHAR(100) NOT NULL,
+  locale ENUM('fi', 'sv', 'en', 'se', 'uk', 'et', 'ru') NOT NULL,
+  value LONGTEXT NOT NULL,
+  updated_at DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
+  updated_by VARCHAR(128) NULL,
+  PRIMARY KEY (content_key, locale),
+  KEY idx_site_content_updated (updated_at),
+  CONSTRAINT fk_site_content_updated_by
+    FOREIGN KEY (updated_by) REFERENCES admin_users (firebase_uid)
     ON UPDATE CASCADE ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 

@@ -3,12 +3,14 @@ import { lookup } from 'node:dns/promises';
 import path from 'node:path';
 
 import { evaluateHttpsUrl } from './link-url-policy.mjs';
+import { RdapDomainLookup } from './rdap-domain-lookup.mjs';
 
 const ROOT = process.cwd();
 const CHECK_TIMEOUT_MS = 10_000;
 const CHECK_CONCURRENCY = 12;
 const CONTENT_CHECK_BYTES = 65_536;
 const PHONE_SOURCE_CHECK_BYTES = 1_048_576;
+const RDAP_CACHE_PATH = path.join(ROOT, '.tmp', 'rdap-domain-cache.json');
 const MANUALLY_VERIFIED_URLS = new Set([
   'http://kuopionkaupunginteatteri.fi',
   'https://haapavesi.fi',
@@ -88,47 +90,8 @@ const getUrlDetails = (rawUrl) => {
   }
 };
 
-const rdapCache = new Map();
-
-const collectRdapNames = (value, names = new Set()) => {
-  if (!value) return names;
-  if (Array.isArray(value)) {
-    if (value[0] === 'fn' || value[0] === 'org') {
-      const item = String(value[3] ?? '').trim();
-      if (item) names.add(item);
-    }
-    value.forEach((item) => collectRdapNames(item, names));
-    return names;
-  }
-  if (typeof value === 'object') {
-    if (typeof value.name === 'string' && value.name.trim()) names.add(value.name.trim());
-    Object.values(value).forEach((item) => collectRdapNames(item, names));
-  }
-  return names;
-};
-
-const getDomainOwnershipSignal = async (domain) => {
-  if (!domain) return '';
-  if (!rdapCache.has(domain)) {
-    rdapCache.set(domain, (async () => {
-      try {
-        const response = await fetchWithTimeout(`https://rdap.org/domain/${encodeURIComponent(domain)}`, {
-          method: 'GET',
-          headers: { accept: 'application/rdap+json, application/json;q=0.9, */*;q=0.5' },
-        });
-        if (!response.ok) return `RDAP ${response.status}`;
-        const data = await response.json();
-        const names = [...collectRdapNames(data)]
-          .filter((name) => !/^(redacted|not disclosed|data protected)$/i.test(name))
-          .slice(0, 3);
-        return names.length > 0 ? names.join(' | ') : 'RDAP löytyi, omistaja ei julkinen';
-      } catch (error) {
-        return `RDAP ei saatavilla: ${error.name === 'AbortError' ? 'aikakatkaisu' : error.message}`;
-      }
-    })());
-  }
-  return rdapCache.get(domain);
-};
+const rdapLookup = new RdapDomainLookup({ cachePath: RDAP_CACHE_PATH });
+const getDomainOwnershipSignal = (domain) => rdapLookup.lookup(domain);
 
 const readVerifiedLinks = async () => {
   try {
@@ -702,6 +665,7 @@ const collectLinks = async () => {
 };
 
 const main = async () => {
+  await rdapLookup.load();
   const {
     categoryNames,
     localTransportCount,
@@ -764,9 +728,11 @@ const main = async () => {
     };
   }, CHECK_CONCURRENCY);
 
+  await rdapLookup.save();
+
   await mkdir(path.join(ROOT, 'docs'), { recursive: true });
 
-  const csvHeader = ['Osio', 'Kategoria', 'Nimi', 'URL', 'Lähde', 'Tarkistus', 'HTTP', 'Turvallisuus', 'Lopullinen URL', 'Alkuperäinen domain', 'Lopullinen domain', 'Domain vaihtui', 'RDAP-signaali', 'Sisältösignaali', 'Sivun otsikko', 'Riskipisteet', 'Suositus', 'Manuaalinen tila', 'Luottamustaso', 'Huomiot'];
+  const csvHeader = ['Osio', 'Kategoria', 'Nimi', 'URL', 'Lähde', 'Tarkistus', 'HTTP', 'Turvallisuus', 'Lopullinen URL', 'Alkuperäinen domain', 'Lopullinen domain', 'Domain vaihtui', 'Domainin omistajatieto (RDAP-taustapalvelu)', 'Sisältösignaali', 'Sivun otsikko', 'Riskipisteet', 'Suositus', 'Manuaalinen tila', 'Luottamustaso', 'Huomiot'];
   const csvRows = checkedRows.map((row) => [
     row.section,
     row.category,
@@ -938,7 +904,7 @@ const main = async () => {
   ];
   await writeFile(path.join(ROOT, 'linkStats.ts'), linkStats.join('\n'), 'utf8');
 
-  const adminHeader = ['Päivitetty', 'Osio', 'Kategoria', 'Nimi', 'URL', 'Lähde', 'Tarkistus', 'HTTP', 'Turvallisuus', 'Lopullinen URL', 'Alkuperäinen domain', 'Lopullinen domain', 'Domain vaihtui', 'RDAP-signaali', 'Sisältösignaali', 'Sivun otsikko', 'Riskipisteet', 'Suositus', 'Manuaalinen tila', 'Luottamustaso', 'Huomiot'];
+  const adminHeader = ['Päivitetty', 'Osio', 'Kategoria', 'Nimi', 'URL', 'Lähde', 'Tarkistus', 'HTTP', 'Turvallisuus', 'Lopullinen URL', 'Alkuperäinen domain', 'Lopullinen domain', 'Domain vaihtui', 'Domainin omistajatieto (RDAP-taustapalvelu)', 'Sisältösignaali', 'Sivun otsikko', 'Riskipisteet', 'Suositus', 'Manuaalinen tila', 'Luottamustaso', 'Huomiot'];
   const adminCsvRows = adminRows.map((row) => [
     generatedAt,
     row.section,
@@ -1010,7 +976,7 @@ const main = async () => {
       row.verificationConfidence,
       row.notes,
     ].map(csvEscape).join(','));
-  const manualReviewHeader = ['Päivitetty', 'Osio', 'Kategoria', 'Nimi', 'URL', 'Lähde', 'Riskipisteet', 'Suositus', 'Alkuperäinen domain', 'Lopullinen domain', 'Domain vaihtui', 'RDAP-signaali', 'Sisältösignaali', 'Sivun otsikko', 'Manuaalinen tila', 'Luottamustaso', 'Huomiot'];
+  const manualReviewHeader = ['Päivitetty', 'Osio', 'Kategoria', 'Nimi', 'URL', 'Lähde', 'Riskipisteet', 'Suositus', 'Alkuperäinen domain', 'Lopullinen domain', 'Domain vaihtui', 'Domainin omistajatieto (RDAP-taustapalvelu)', 'Sisältösignaali', 'Sivun otsikko', 'Manuaalinen tila', 'Luottamustaso', 'Huomiot'];
   await writeFile(path.join(ROOT, 'docs', 'linkit-manuaalinen-tarkistus.csv'), `${manualReviewHeader.map(csvEscape).join(',')}\n${manualReviewRows.join('\n')}\n`, 'utf8');
 
   const markdown = [
@@ -1038,7 +1004,7 @@ const main = async () => {
     '',
     'Turvallisuustarkistus kattaa URL-muodon, protokollan, DNS/IP-riskit, HTTP-polun, uudelleenohjaukset, kevyen sisältösignaalin, riskipisteytyksen sekä RDAP-pohjaisen domain-signaalin silloin kun julkista tietoa on saatavilla.',
     '',
-    'RDAP-signaali on taustatieto manuaaliselle tarkistukselle. Se voi kertoa rekisteröijän, välittäjän tai omistajaan liittyvän julkisen tiedon, mutta ei yksin todista linkkia aidoksi tai turvalliseksi.',
+    'RDAP-signaali on erillisen taustapalvelun omistajatieto eikä tarkistettavan sivun HTTP-vastaus. Pyyntörajoitus koskee RDAP-taustapalvelua, ei kohdesivua, eikä se vaikuta linkin riskipisteisiin tai näkyvyyteen. Onnistuneet tulokset säilytetään 90 päivän välimuistissa.',
     '',
     'Huomio: paikalliset uutisotsikot ja käyttäjän tekemät Google-haut muodostuvat ajossa, joten yksittäisiä hakutuloksia ei listata staattisessa taulukossa.',
   ];

@@ -18,6 +18,7 @@ import { getLocalizedPublicPageHref } from './publicPageLocalization';
 import { normalizeInterestThemeAnchors } from './components/shortcutGroups';
 import { defaultUiVisibility, UiVisibilityKey, UiVisibilityOption, UiVisibilityState } from './uiPreferences';
 import { installUsageTracking, trackGuideStep } from './usageTracking';
+import { getSiteContentValue, isSiteContentLocale, type SiteContentLocale, useSiteContentVersion } from './siteContent';
 // Valkoinen logo näytetään tummassa teemassa, värillinen vaaleassa.
 import seniorSurfLogoTummaTeema from './assets/seniorsurf-logo-tumma-teema.png';
 import seniorSurfLogoVaaleaTeema from './assets/seniorsurf-logo-vaalea-teema.png';
@@ -474,6 +475,12 @@ const AppContent: React.FC = () => {
   const fullBleedWidth = `calc(100vw / ${uiZoom})`;
   useLinkVisibilityVersion();
   useApprovedLinkSuggestionsVersion();
+  useSiteContentVersion();
+  const contentLocale: SiteContentLocale | null = isSiteContentLocale(language) ? language : null;
+  const managedText = (key: string, fallback: string) => contentLocale
+    ? getSiteContentValue(key, contentLocale, fallback)
+    : fallback;
+  const footerDescription = contentLocale ? getSiteContentValue('footer.description', contentLocale) : '';
   useEffect(() => {
     return installUsageTracking('etusivu');
   }, []);
@@ -581,10 +588,10 @@ const AppContent: React.FC = () => {
             <nav className="mb-8 flex flex-wrap items-center gap-3 border-b border-white/[.08] pb-5 lg:mb-5 lg:flex-nowrap" aria-label={t('topArea')}>
               <div className="mr-auto flex flex-col gap-1">
                 <h1 className="font-display text-[clamp(1.5rem,3vw,2.2rem)] font-semibold leading-none tracking-tight text-white">
-                  {t('pageTitle')}
+                  {managedText('header.title', t('pageTitle'))}
                 </h1>
                 <p className="text-[.95rem] font-bold text-white/80">
-                  {t('pageTagline')}
+                  {managedText('header.tagline', t('pageTagline'))}
                 </p>
               </div>
               <div className="flex w-full flex-wrap items-center gap-2 sm:w-auto sm:justify-end">
@@ -900,6 +907,7 @@ const AppContent: React.FC = () => {
         </main>
 
         <footer
+          id="footer"
           className="relative left-1/2 w-screen -translate-x-1/2 overflow-hidden text-[var(--theme-footer-text)]"
           style={{ width: fullBleedWidth, background: 'var(--theme-footer-bg)' }}
         >
@@ -918,31 +926,35 @@ const AppContent: React.FC = () => {
           <div className="footer-inner-grid relative mx-auto grid w-full max-w-[1400px] grid-cols-2 gap-10 px-6 pb-10 pt-8">
             <div>
               <p className="font-display text-2xl text-[var(--theme-footer-text)]">
-                Seniorin aloitussivu
+                {managedText('footer.title', 'Seniorin aloitussivu')}
               </p>
               <p className="mt-1 text-sm font-semibold text-[var(--theme-footer-muted)]">
-                {t('pageTagline')}
+                {managedText('footer.tagline', t('pageTagline'))}
               </p>
               <p className="mt-3 max-w-[40ch] text-sm font-semibold leading-relaxed text-[var(--theme-footer-muted)]">
-                {t('footerProvidedBy')}{' '}
-                <a
-                  href="https://vtkl.fi/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  title={t('openVtklSite')}
-                  className="font-normal text-[var(--theme-footer-text)] underline decoration-[var(--theme-footer-muted)] underline-offset-4 hover:decoration-[var(--theme-footer-text)]"
-                >
-                  {t('footerVtklLink')}
-                </a>{' '}
-                <a
-                  href="https://seniorsurf.fi/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  title={t('openSeniorSurfSite')}
-                  className="font-normal text-[var(--theme-footer-text)] underline decoration-[var(--theme-footer-muted)] underline-offset-4 hover:decoration-[var(--theme-footer-text)]"
-                >
-                  {t('footerSeniorSurfLink')}
-                </a>.
+                {footerDescription || (
+                  <>
+                    {t('footerProvidedBy')}{' '}
+                    <a
+                      href="https://vtkl.fi/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title={t('openVtklSite')}
+                      className="font-normal text-[var(--theme-footer-text)] underline decoration-[var(--theme-footer-muted)] underline-offset-4 hover:decoration-[var(--theme-footer-text)]"
+                    >
+                      {t('footerVtklLink')}
+                    </a>{' '}
+                    <a
+                      href="https://seniorsurf.fi/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title={t('openSeniorSurfSite')}
+                      className="font-normal text-[var(--theme-footer-text)] underline decoration-[var(--theme-footer-muted)] underline-offset-4 hover:decoration-[var(--theme-footer-text)]"
+                    >
+                      {t('footerSeniorSurfLink')}
+                    </a>.
+                  </>
+                )}
               </p>
               {isLinkVisible('https://seniorsurf.fi/') && (
                 <a

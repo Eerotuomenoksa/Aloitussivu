@@ -151,6 +151,7 @@ const ScamAlertsBanner: React.FC<ScamAlertsBannerProps> = ({ compact = false, fr
           </p>
           <a
             href={selectedAlert.sourceUrl || MORE_SCAM_ALERTS_URL}
+            data-usage-category="Huijausvaroitukset"
             target="_blank"
             rel="noopener noreferrer"
             className="mt-auto inline-flex w-fit items-center gap-2 rounded-full bg-[var(--theme-gold)] px-6 py-3 text-lg font-black text-[var(--theme-cta-label)] no-underline shadow-md transition-all hover:bg-[var(--theme-gold-light)] focus:outline-none focus:ring-4 focus:ring-[var(--theme-focus)]/30 md:mt-8"
@@ -250,6 +251,7 @@ const ScamAlertsBanner: React.FC<ScamAlertsBannerProps> = ({ compact = false, fr
 
       <a
         href={MORE_SCAM_ALERTS_URL}
+        data-usage-category="Huijausvaroitukset"
         target="_blank"
         rel="noopener noreferrer"
         className="inline-flex font-black text-[var(--theme-primary)] hover:underline"

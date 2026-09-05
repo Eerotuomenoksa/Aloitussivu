@@ -732,6 +732,7 @@ test('public list routes expose only contracted fields and support ETag', static
         'id' => '20000000-0000-4000-8000-000000000001',
         'name' => 'Turvallinen palvelu',
         'url' => 'https://example.com/',
+        'replaces_url' => 'https://old.example.com/',
         'category' => 'Palvelut',
         'municipality' => 'Seinäjoki',
         'source' => 'Ylläpito',
@@ -801,6 +802,7 @@ test('public list routes expose only contracted fields and support ETag', static
     $approved = $app->handle(Request::fromValues('GET', '/api/v1/approved-links'));
     assertSameValue(200, $approved->status);
     assertSameValue('Turvallinen palvelu', jsonBody($approved)['data'][0]['name']);
+    assertSameValue('https://old.example.com/', jsonBody($approved)['data'][0]['replacesUrl']);
     assertSameValue('Seinäjoki', jsonBody($approved)['data'][0]['municipality']);
     assertTrue(!str_contains($approved->body, 'created_from_report_id'));
     assertSameValue('public, max-age=60, stale-while-revalidate=300', $approved->headers['Cache-Control']);
@@ -835,6 +837,30 @@ test('public list routes expose only contracted fields and support ETag', static
     ));
     assertSameValue(304, $notModified->status);
     assertSameValue('', $notModified->body);
+});
+
+test('public site content exposes only published text fields', static function (): void {
+    $database = new FakeDatabase();
+    $database->fetchAllResults = [[[
+        'content_key' => 'header.title',
+        'locale' => 'se',
+        'value' => 'Seniorin oma aloitussivu',
+        'updated_at' => '2026-09-05 12:00:00.000000',
+        'updated_by' => 'must-not-leak',
+    ]]];
+    $response = testApp(
+        $database,
+        rateLimiter: new FakeRateLimiter(),
+        attachmentStorage: new FakeAttachmentStorage(),
+    )->handle(Request::fromValues('GET', '/api/v1/site-content'));
+
+    assertSameValue(200, $response->status);
+    $item = jsonBody($response)['data'][0];
+    assertSameValue('header.title', $item['key']);
+    assertSameValue('se', $item['locale']);
+    assertSameValue('Seniorin oma aloitussivu', $item['value']);
+    assertTrue(!str_contains($response->body, 'must-not-leak'));
+    assertSameValue('public, max-age=60, stale-while-revalidate=300', $response->headers['Cache-Control']);
 });
 
 test('link report validates, parameterizes and deduplicates submissions', static function (): void {
@@ -1365,6 +1391,49 @@ test('admin creates approved links with an audit entry and duplicate protection'
     ));
 });
 
+test('admin updates and resets public site content with an audit entry', static function (): void {
+    $database = new FakeDatabase();
+    $database->fetchOneResults = [adminRow(), adminRow()];
+    $app = testApp(
+        $database,
+        attachmentStorage: new FakeAttachmentStorage(),
+        idTokenVerifier: adminVerifier(),
+    );
+
+    $updateResponse = $app->handle(adminJsonRequest(
+        'PATCH',
+        '/api/v1/admin/site-content/header.title',
+        ['locale' => 'se', 'value' => 'Seniorin oma aloitussivu'],
+    ));
+    assertSameValue(200, $updateResponse->status);
+    $upsert = array_values(array_filter(
+        $database->executions,
+        static fn (array $execution): bool => str_starts_with($execution['sql'], 'INSERT INTO site_content'),
+    ))[0];
+    assertSameValue('header.title', $upsert['parameters']['content_key']);
+    assertSameValue('se', $upsert['parameters']['locale']);
+    assertSameValue('Seniorin oma aloitussivu', $upsert['parameters']['value']);
+    $firstAudit = array_values(array_filter(
+        $database->executions,
+        static fn (array $execution): bool => str_contains($execution['sql'], 'INSERT INTO audit_log'),
+    ))[0];
+    assertSameValue('site_content.update', $firstAudit['parameters']['action']);
+    assertTrue(!str_contains((string) $firstAudit['parameters']['metadata_json'], 'Seniorin oma aloitussivu'));
+
+    $resetResponse = $app->handle(adminJsonRequest(
+        'PATCH',
+        '/api/v1/admin/site-content/header.title',
+        ['locale' => 'se', 'value' => ''],
+    ));
+    assertSameValue(200, $resetResponse->status);
+    $delete = array_values(array_filter(
+        $database->executions,
+        static fn (array $execution): bool => str_starts_with($execution['sql'], 'DELETE FROM site_content'),
+    ))[0];
+    assertSameValue('header.title', $delete['parameters']['content_key']);
+    assertSameValue('se', $delete['parameters']['locale']);
+});
+
 test('admin scam-alert list keeps two months of history and every currently public alert', static function (): void {
     $database = new FakeDatabase();
     $database->fetchOneResults = [adminRow()];
@@ -1419,7 +1488,8 @@ test('admin link-check overview identifies every warning and failed target', sta
             'failure_count' => 1,
             'last_error_code' => 'server_error',
             'response_ms' => 250,
-            'is_blocked' => 0,
+            'is_blocked' => 1,
+            'is_auto_blocked' => 1,
             'override_scope' => null,
             'override_next_review_at' => null,
         ], [
@@ -1437,6 +1507,7 @@ test('admin link-check overview identifies every warning and failed target', sta
             'last_error_code' => 'access_limited',
             'response_ms' => 100,
             'is_blocked' => 0,
+            'is_auto_blocked' => 0,
             'override_scope' => 'bot_protection',
             'override_next_review_at' => '2026-11-30 05:00:00.000000',
         ]],
@@ -1456,8 +1527,10 @@ test('admin link-check overview identifies every warning and failed target', sta
     assertSameValue(2, count($data['statusItems']));
     assertSameValue($failedHash, $data['statusItems'][0]['id']);
     assertSameValue('failed', $data['statusItems'][0]['status']);
-    assertSameValue(false, $data['statusItems'][0]['isBlocked']);
+    assertSameValue(true, $data['statusItems'][0]['isBlocked']);
+    assertSameValue(true, $data['statusItems'][0]['isAutoBlocked']);
     assertSameValue($warningHash, $data['statusItems'][1]['id']);
+    assertSameValue(false, $data['statusItems'][1]['isAutoBlocked']);
     assertSameValue('bot_protection', $data['statusItems'][1]['overrideScope']);
     assertSameValue('2026-11-30T05:00:00.000000Z', $data['statusItems'][1]['overrideNextReviewAt']);
 });
@@ -1539,6 +1612,156 @@ test('admin can permanently hide a link-check target with a manual block', stati
         static fn (array $execution): bool => str_contains($execution['sql'], 'INSERT INTO audit_log'),
     ))[0];
     assertSameValue('link_check.block', $audit['parameters']['action']);
+});
+
+test('admin can restore an automatically hidden link with an expiring approval', static function (): void {
+    $urlHash = str_repeat('f', 64);
+    $database = new FakeDatabase();
+    $database->fetchOneResults = [
+        adminRow(),
+        [
+            'url_hash' => $urlHash,
+            'url' => 'https://example.com/palvelu',
+            'name' => 'Palautettava palvelu',
+            'category' => 'Testi',
+            'source' => 'catalog',
+            'last_status' => 'failed',
+            'final_url' => null,
+            'final_domain_changed' => 0,
+        ],
+        null,
+    ];
+    $response = testApp(
+        $database,
+        attachmentStorage: new FakeAttachmentStorage(),
+        idTokenVerifier: adminVerifier(),
+    )->handle(adminJsonRequest(
+        'POST',
+        '/api/v1/admin/link-checks/' . $urlHash . '/action',
+        ['action' => 'approve', 'reason' => 'Tarkistettu selaimessa toimivaksi.'],
+    ));
+    assertSameValue(200, $response->status);
+    $automaticUnblock = array_values(array_filter(
+        $database->executions,
+        static fn (array $execution): bool => str_starts_with($execution['sql'], 'DELETE FROM blocked_links'),
+    ))[0];
+    assertTrue(str_contains($automaticUnblock['sql'], 'created_by IS NULL'));
+    assertTrue(str_contains($automaticUnblock['sql'], "reason LIKE 'auto:%'"));
+    $audit = array_values(array_filter(
+        $database->executions,
+        static fn (array $execution): bool => str_contains($execution['sql'], 'INSERT INTO audit_log'),
+    ))[0];
+    assertSameValue('link_check.approve', $audit['parameters']['action']);
+});
+
+test('admin can update the name of any flagged link without changing its URL', static function (): void {
+    $urlHash = hash('sha256', 'https://bsky.social');
+    $approvedLinkId = '51000000-0000-4000-8000-000000000001';
+    $database = new FakeDatabase();
+    $database->fetchOneResults = [
+        adminRow(),
+        [
+            'url_hash' => $urlHash,
+            'url' => 'https://bsky.social',
+            'name' => 'Blusky',
+            'category' => 'Sosiaalinen media',
+            'source' => 'ProviderModal',
+            'last_status' => 'warning',
+            'final_url' => 'https://bsky.social/',
+            'final_domain_changed' => 0,
+        ],
+        ['id' => $approvedLinkId],
+        null,
+    ];
+    $response = testApp(
+        $database,
+        attachmentStorage: new FakeAttachmentStorage(),
+        idTokenVerifier: adminVerifier(),
+    )->handle(adminJsonRequest(
+        'POST',
+        '/api/v1/admin/link-checks/' . $urlHash . '/action',
+        [
+            'action' => 'replace',
+            'reason' => 'Korjattu palvelun kirjoitusasu.',
+            'replacementName' => 'Bluesky',
+            'replacementUrl' => 'https://bsky.social',
+        ],
+    ));
+    assertSameValue(200, $response->status);
+    $approvedUpdate = array_values(array_filter(
+        $database->executions,
+        static fn (array $execution): bool => str_starts_with($execution['sql'], 'UPDATE approved_links SET name'),
+    ))[0];
+    assertSameValue('Bluesky', $approvedUpdate['parameters']['name']);
+    assertSameValue('https://bsky.social', $approvedUpdate['parameters']['url']);
+    $targetUpdate = array_values(array_filter(
+        $database->executions,
+        static fn (array $execution): bool => str_starts_with($execution['sql'], 'UPDATE link_check_targets SET name'),
+    ))[0];
+    assertSameValue('Bluesky', $targetUpdate['parameters']['name']);
+    assertTrue(count(array_filter(
+        $database->executions,
+        static fn (array $execution): bool => str_contains($execution['sql'], 'INSERT INTO blocked_links'),
+    )) === 0);
+    $audit = array_values(array_filter(
+        $database->executions,
+        static fn (array $execution): bool => str_contains($execution['sql'], 'INSERT INTO audit_log'),
+    ))[0];
+    assertSameValue('link_check.update', $audit['parameters']['action']);
+});
+
+test('admin can replace any flagged link with a new name and URL', static function (): void {
+    $urlHash = hash('sha256', 'https://www.designmuseo.fi/');
+    $database = new FakeDatabase();
+    $database->fetchOneResults = [
+        adminRow(),
+        [
+            'url_hash' => $urlHash,
+            'url' => 'https://www.designmuseo.fi/',
+            'name' => 'Designmuseo',
+            'category' => 'Yhdistykset ja yhteisöt',
+            'source' => 'communityLinks.ts',
+            'last_status' => 'failed',
+            'final_url' => null,
+            'final_domain_changed' => 0,
+        ],
+        null,
+        null,
+        null,
+    ];
+    $response = testApp(
+        $database,
+        attachmentStorage: new FakeAttachmentStorage(),
+        idTokenVerifier: adminVerifier(),
+    )->handle(adminJsonRequest(
+        'POST',
+        '/api/v1/admin/link-checks/' . $urlHash . '/action',
+        [
+            'action' => 'replace',
+            'reason' => 'Museon verkkosivun osoite vaihtui.',
+            'replacementName' => 'Designmuseo',
+            'replacementUrl' => 'https://admuseo.fi/',
+        ],
+    ));
+    assertSameValue(200, $response->status);
+    $approvedInsert = array_values(array_filter(
+        $database->executions,
+        static fn (array $execution): bool => str_contains($execution['sql'], 'INSERT INTO approved_links'),
+    ))[0];
+    assertSameValue('Designmuseo', $approvedInsert['parameters']['name']);
+    assertSameValue('https://admuseo.fi/', $approvedInsert['parameters']['url']);
+    assertSameValue('https://www.designmuseo.fi/', $approvedInsert['parameters']['replaces_url']);
+    assertSameValue(32, strlen($approvedInsert['parameters']['replaces_url_hash']));
+    $blockInsert = array_values(array_filter(
+        $database->executions,
+        static fn (array $execution): bool => str_contains($execution['sql'], 'INSERT INTO blocked_links'),
+    ))[0];
+    assertSameValue('https://www.designmuseo.fi/', $blockInsert['parameters']['url']);
+    $audit = array_values(array_filter(
+        $database->executions,
+        static fn (array $execution): bool => str_contains($execution['sql'], 'INSERT INTO audit_log'),
+    ))[0];
+    assertSameValue('link_check.replace', $audit['parameters']['action']);
 });
 
 test('link-check actions validate the target hash and require an administrator reason', static function (): void {
@@ -2561,9 +2784,7 @@ test('monthly report compares aggregate usage and explains privacy limitations',
             ['dimension' => 'guide', 'bucket' => 'done', 'total' => 10],
             ['dimension' => 'guide', 'bucket' => 'shared:copy', 'total' => 3],
         ],
-        [['page' => '/', 'total' => 90]],
         [['category' => 'Terveys', 'total' => 20]],
-        [['label' => 'Terveys – /', 'category' => 'Terveys', 'page' => '/', 'total' => 15]],
         [
             ['dimension' => 'entry', 'bucket' => 'direct', 'total' => 40],
             ['dimension' => 'entry', 'bucket' => 'search', 'total' => 40],
@@ -2581,7 +2802,8 @@ test('monthly report compares aggregate usage and explains privacy limitations',
     assertTrue(str_contains($message->textBody, 'Suoran avauksen osuus: 60,0 %'));
     assertTrue(str_contains($message->textBody, '10,0 prosenttiyksikköä suurempi kuin edellisellä jaksolla'));
     assertTrue(str_contains($message->textBody, 'tunnisteettomia tapahtumakoosteita'));
-    assertTrue(str_contains($message->textBody, 'Terveys – /: 15'));
+    assertTrue(str_contains($message->textBody, 'Terveys: 20'));
+    assertTrue(!str_contains($message->textBody, 'Suosituimmat osiot'));
     assertTrue(str_contains($message->htmlBody, 'Sivuston käyttö'));
     assertTrue(str_contains($message->htmlBody, 'Aloitussivuopas'));
     assertTrue(str_contains($message->htmlBody, 'Ylläpitotyö'));

@@ -25,6 +25,11 @@ service cloud.firestore {
       allow write: if false;
     }
 
+    match /siteContent/{contentId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
     match /{document=**} {
       allow read, write: if false;
     }

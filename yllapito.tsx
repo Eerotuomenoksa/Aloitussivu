@@ -12,7 +12,7 @@ const adminLinks = [
   },
   {
     title: 'Suojattu työtila',
-    description: 'Kirjaudu suojattuun työtilaan, tarkastele käyttö- ja kasvumittareita, käsittele linkkiehdotukset ja ylläpidä huijausvaroituksia.',
+    description: 'Kirjaudu suojattuun työtilaan, muokkaa sivutekstejä, tarkastele käyttö- ja kasvumittareita, käsittele linkkiehdotukset ja ylläpidä huijausvaroituksia.',
     href: './ehdotukset.html',
     protected: true,
   },

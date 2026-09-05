@@ -419,6 +419,7 @@ export const SHORTCUTS: Shortcut[] = [
       { name: 'YouTube', url: 'https://www.youtube.com' },
       { name: 'WhatsApp Web', url: 'https://web.whatsapp.com' },
       { name: 'X (Twitter)', url: 'https://twitter.com/' },
+      { name: 'Bluesky', url: 'https://bsky.social' },
       { name: 'LinkedIn', url: 'https://www.linkedin.com/' }
     ]
   },

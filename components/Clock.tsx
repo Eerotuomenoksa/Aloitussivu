@@ -99,6 +99,7 @@ const Clock: React.FC<ClockProps> = ({ fontSizeStep = 0, variant = 'hero', mode 
             {secondaryClock && (
               <a
                 href={WORLD_CLOCK_URL}
+                data-usage-category="Kello ja aika"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex max-w-full flex-wrap items-baseline gap-x-2 gap-y-1 self-start rounded-full border border-white/15 bg-white/10 px-4 py-2 text-white backdrop-blur transition-colors hover:bg-white/20 lg:mt-2 lg:w-[7.5rem] lg:flex-col lg:items-start lg:rounded-3xl"
@@ -142,6 +143,7 @@ const Clock: React.FC<ClockProps> = ({ fontSizeStep = 0, variant = 'hero', mode 
           {secondaryClock && (
             <a
               href={WORLD_CLOCK_URL}
+              data-usage-category="Kello ja aika"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex max-w-full flex-wrap items-baseline gap-x-2 gap-y-1 self-start rounded-full border border-white/15 bg-white/10 px-4 py-2 text-white backdrop-blur transition-colors hover:bg-white/20 lg:mt-2 lg:w-[7.5rem] lg:flex-col lg:items-start lg:rounded-3xl"
@@ -185,6 +187,7 @@ const Clock: React.FC<ClockProps> = ({ fontSizeStep = 0, variant = 'hero', mode 
         {secondaryClock && (
           <a
             href={WORLD_CLOCK_URL}
+            data-usage-category="Kello ja aika"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex max-w-full flex-wrap items-baseline gap-x-2 gap-y-1 rounded-2xl bg-white/10 px-3 py-2 text-white ring-1 ring-white/20 transition-colors hover:bg-white/20 focus:outline-none focus:ring-4 focus:ring-white/50"
@@ -224,6 +227,7 @@ const Clock: React.FC<ClockProps> = ({ fontSizeStep = 0, variant = 'hero', mode 
       {secondaryClock && (
         <a
           href={WORLD_CLOCK_URL}
+          data-usage-category="Kello ja aika"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex flex-wrap items-baseline gap-x-3 gap-y-1 rounded-2xl bg-white/80 px-5 py-3 text-slate-900 shadow-sm ring-1 ring-slate-200 transition-colors hover:bg-white focus:outline-none focus:ring-4 focus:ring-indigo-300 dark:bg-slate-800 dark:text-white dark:ring-slate-700 dark:hover:bg-slate-700"

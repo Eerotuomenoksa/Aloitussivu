@@ -17,6 +17,7 @@ export type LinkCheckItem = {
   errorCode: string | null;
   responseMs: number | null;
   isBlocked: boolean;
+  isAutoBlocked: boolean;
   overrideScope: string | null;
   overrideNextReviewAt: string | null;
 };
@@ -86,9 +87,10 @@ export const actOnLinkCheck = async (
   action: 'approve' | 'block' | 'replace',
   reason: string,
   replacementUrl?: string,
+  replacementName?: string,
 ) => {
   const provider = await getDataProvider();
-  return provider.actOnLinkCheck(urlHash, action, reason, replacementUrl);
+  return provider.actOnLinkCheck(urlHash, action, reason, replacementUrl, replacementName);
 };
 
 export const subscribeLinkChecks = (

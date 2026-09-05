@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { BLOCKED_LINK_URLS } from './linkHealth';
+import { resolveApprovedProvider, resolveApprovedUrl } from './approvedLinks';
 import { adminPollIntervalMs, getDataProvider, subscribeWithPolling } from './services/data';
 import { LinkReportEntry, Provider, Shortcut } from './types';
 
@@ -139,13 +140,20 @@ const updateLocalLinkReportStatus = (
 
 export const isLinkVisible = (url?: string | null) => {
   if (!url) return false;
-  if (!normalizeReportUrl(url)) return false;
-  return !blockedUrlsCache.has(normalizeUrl(url));
+  const resolvedUrl = resolveApprovedUrl(url);
+  if (!normalizeReportUrl(resolvedUrl)) return false;
+  return !blockedUrlsCache.has(normalizeUrl(resolvedUrl));
 };
 
-export const filterVisibleProviders = (providers: Provider[] | undefined) => {
+export const getVisibleLinkUrl = (url?: string | null) => {
+  if (!url) return '';
+  const resolvedUrl = resolveApprovedUrl(url);
+  return isLinkVisible(resolvedUrl) ? resolvedUrl : '';
+};
+
+export const filterVisibleProviders = <T extends Provider>(providers: T[] | undefined): T[] | undefined => {
   if (!providers) return providers;
-  return providers.filter((provider) => isLinkVisible(provider.url));
+  return providers.map(resolveApprovedProvider).filter((provider) => isLinkVisible(provider.url));
 };
 
 export const filterVisibleShortcuts = (shortcuts: Shortcut[]) => shortcuts

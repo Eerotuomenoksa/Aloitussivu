@@ -103,6 +103,7 @@ const ServiceLink: React.FC<{ provider: Provider; index: number; fontSizeStep: n
     <div className="relative group/service">
       <a
         href={href}
+        data-usage-category={provider.group}
         target={isPhoneLink ? undefined : '_blank'}
         rel={isPhoneLink ? undefined : 'noopener noreferrer'}
         className="zone-link"
@@ -286,6 +287,7 @@ const RegionalServicesPanel: React.FC<RegionalServicesPanelProps> = ({ locality,
               {fallbackNewsUrl && (
                 <a
                   href={fallbackNewsUrl}
+                  data-usage-category="Paikallisuutiset"
                   target="_blank"
                   rel="noopener noreferrer"
                   className={`inline-flex font-black text-[var(--zone-strong)] hover:underline ${smallTextClasses[fontSizeStep]}`}

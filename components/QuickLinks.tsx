@@ -349,6 +349,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({
                     <div key={idx} className="relative group/link">
                       <a
                         href={link.url}
+                        data-usage-category={link.categoryName}
                         target="_blank"
                         rel="noopener noreferrer"
                         title={`${t('goToSite')}: ${link.name}`}
@@ -414,6 +415,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({
                     <a
                       key={idx}
                       href={phoneHref}
+                      data-usage-category={phone.categoryName}
                       className={baseCardStyles(phone.color)}
                       aria-label={`${t('call')}: ${phone.name}, ${phone.phone}`}
                     >
@@ -509,6 +511,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({
                       <a
                         key={shortcut.name}
                         href={shortcut.url}
+                        data-usage-category={shortcut.name}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="zone-link"
@@ -550,6 +553,7 @@ const QuickLinks: React.FC<QuickLinksProps> = ({
                       <a
                         key={shortcut.name}
                         href={shortcut.url}
+                        data-usage-category={shortcut.name}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="zone-link"

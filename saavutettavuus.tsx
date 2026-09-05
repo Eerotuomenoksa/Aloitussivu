@@ -8,6 +8,8 @@ import {
   PublicPageLanguageSwitcher,
   usePublicPageLanguage,
 } from './publicPageLocalization';
+import ManagedMarkdown from './components/ManagedMarkdown';
+import { getSiteContentValue, useSiteContentVersion } from './siteContent';
 
 const pageNavLinkClass = 'aurora-nav-link px-4 py-2 text-sm';
 const sectionClass = 'aurora-panel';
@@ -340,6 +342,32 @@ const accessibilityTranslations: Record<PublicPageLanguage, AccessibilityCopy> =
   },
 };
 
+const nodeToMarkdown = (node: React.ReactNode): string => {
+  if (typeof node === 'string' || typeof node === 'number') return String(node);
+  if (Array.isArray(node)) return node.map(nodeToMarkdown).join('');
+  if (!React.isValidElement<{ children?: React.ReactNode; href?: string }>(node)) return '';
+  const text = nodeToMarkdown(node.props.children);
+  if (node.type === 'a' && node.props.href) return `[${text}](${node.props.href})`;
+  if (node.type === 'strong') return text;
+  return text;
+};
+
+export const getAccessibilityDefaultMarkdown = (language: PublicPageLanguage) => {
+  const copy = accessibilityTranslations[language];
+  const lines = [`## ${copy.summaryTitle}`, '', copy.summary];
+  copy.sections.forEach((section) => {
+    lines.push('', `## ${section.title}`, '');
+    section.blocks.forEach((block) => {
+      if (block.type === 'list') {
+        lines.push(...block.items.map((item) => `- ${item}`), '');
+      } else {
+        lines.push(nodeToMarkdown(block.content), '');
+      }
+    });
+  });
+  return lines.join('\n').trim();
+};
+
 function AccessibilitySection({ id, title, blocks }: { id: string; title: string; blocks: ContentBlock[] }) {
   return (
     <section id={id} className={sectionClass} aria-labelledby={`${id}-heading`}>
@@ -365,6 +393,10 @@ function AccessibilitySection({ id, title, blocks }: { id: string; title: string
 function App() {
   const language = usePublicPageLanguage();
   const copy = accessibilityTranslations[language];
+  useSiteContentVersion();
+  const title = getSiteContentValue('accessibility.title', language, copy.title);
+  const intro = getSiteContentValue('accessibility.intro', language, copy.intro);
+  const customBody = getSiteContentValue('accessibility.body', language).trim();
 
   useEffect(() => installUsageTracking('saavutettavuus'), []);
 
@@ -383,37 +415,48 @@ function App() {
 
           <div className="space-y-4">
             <span className="aurora-kicker">{copy.kicker}</span>
-            <h1 className="font-display text-4xl font-bold tracking-tight md:text-6xl">{copy.title}</h1>
-            <p className="max-w-3xl text-lg font-bold leading-relaxed text-white/75">{copy.intro}</p>
+            <h1 className="font-display text-4xl font-bold tracking-tight md:text-6xl">{title}</h1>
+            <p className="max-w-3xl text-lg font-bold leading-relaxed text-white/75">{intro}</p>
           </div>
         </header>
 
-        <section className="aurora-soft-panel mt-10" aria-labelledby="accessibility-summary-heading">
-          <h2 id="accessibility-summary-heading" className="aurora-section-title text-2xl">{copy.summaryTitle}</h2>
-          <p className={paragraphClass}>{copy.summary}</p>
-        </section>
+        {customBody ? (
+          <section className="aurora-panel mt-10" aria-label={title}>
+            <ManagedMarkdown value={customBody} />
+          </section>
+        ) : (
+          <>
+            <section className="aurora-soft-panel mt-10" aria-labelledby="accessibility-summary-heading">
+              <h2 id="accessibility-summary-heading" className="aurora-section-title text-2xl">{copy.summaryTitle}</h2>
+              <p className={paragraphClass}>{copy.summary}</p>
+            </section>
 
-        <nav className="aurora-panel mt-8 p-5" aria-label={copy.tocLabel}>
-          <h2 className="text-lg font-black text-[var(--theme-text)]">{copy.tocTitle}</h2>
-          <ol className="mt-4 grid gap-2 text-sm font-black text-[var(--theme-primary)] md:grid-cols-2">
-            {copy.sections.map(({ id, title }) => (
-              <li key={id}>
-                <a className="inline-flex min-h-10 items-center rounded-full px-3 py-1.5 hover:bg-[var(--theme-pale)] hover:underline focus:outline-none focus:ring-4 focus:ring-[var(--theme-focus)]/40" href={`#${id}`}>{title}</a>
-              </li>
-            ))}
-          </ol>
-        </nav>
+            <nav className="aurora-panel mt-8 p-5" aria-label={copy.tocLabel}>
+              <h2 className="text-lg font-black text-[var(--theme-text)]">{copy.tocTitle}</h2>
+              <ol className="mt-4 grid gap-2 text-sm font-black text-[var(--theme-primary)] md:grid-cols-2">
+                {copy.sections.map(({ id, title: sectionTitle }) => (
+                  <li key={id}>
+                    <a className="inline-flex min-h-10 items-center rounded-full px-3 py-1.5 hover:bg-[var(--theme-pale)] hover:underline focus:outline-none focus:ring-4 focus:ring-[var(--theme-focus)]/40" href={`#${id}`}>{sectionTitle}</a>
+                  </li>
+                ))}
+              </ol>
+            </nav>
 
-        <div className="mt-8 space-y-6">
-          {copy.sections.map((section) => <AccessibilitySection key={section.id} {...section} />)}
-        </div>
+            <div className="mt-8 space-y-6">
+              {copy.sections.map((section) => <AccessibilitySection key={section.id} {...section} />)}
+            </div>
+          </>
+        )}
       </div>
     </main>
   );
 }
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+const accessibilityRoot = document.getElementById('root');
+if (accessibilityRoot && /\/saavutettavuus(?:-(?:sv|en))?(?:\.html)?\/?$/i.test(window.location.pathname)) {
+  ReactDOM.createRoot(accessibilityRoot).render(
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>,
+  );
+}
